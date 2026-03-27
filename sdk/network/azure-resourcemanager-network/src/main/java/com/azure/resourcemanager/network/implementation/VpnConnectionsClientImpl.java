@@ -35,8 +35,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VpnConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.VpnConnectionInner;
 import com.azure.resourcemanager.network.implementation.models.ListVpnConnectionsResult;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse12;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse13;
 import com.azure.resourcemanager.network.models.VpnConnectionPacketCaptureStartParameters;
 import com.azure.resourcemanager.network.models.VpnConnectionPacketCaptureStopParameters;
 import java.nio.ByteBuffer;
@@ -861,13 +859,11 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse12>, ArmAcceptedLroResponse12> beginStartPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, String vpnConnectionName,
-        VpnConnectionPacketCaptureStartParameters parameters) {
+    public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
+        String gatewayName, String vpnConnectionName, VpnConnectionPacketCaptureStartParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startPacketCaptureWithResponseAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse12, ArmAcceptedLroResponse12>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse12.class, ArmAcceptedLroResponse12.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -883,13 +879,12 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse12>, ArmAcceptedLroResponse12>
-        beginStartPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName) {
+    public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
+        String gatewayName, String vpnConnectionName) {
         final VpnConnectionPacketCaptureStartParameters parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = startPacketCaptureWithResponseAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse12, ArmAcceptedLroResponse12>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse12.class, ArmAcceptedLroResponse12.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -908,14 +903,14 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ArmAcceptedLroResponse12>, ArmAcceptedLroResponse12> beginStartPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, String vpnConnectionName,
-        VpnConnectionPacketCaptureStartParameters parameters, Context context) {
+    private PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
+        String gatewayName, String vpnConnectionName, VpnConnectionPacketCaptureStartParameters parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startPacketCaptureWithResponseAsync(resourceGroupName, gatewayName,
             vpnConnectionName, parameters, context);
-        return this.client.<ArmAcceptedLroResponse12, ArmAcceptedLroResponse12>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse12.class, ArmAcceptedLroResponse12.class, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
     }
 
     /**
@@ -930,8 +925,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse12>, ArmAcceptedLroResponse12>
-        beginStartPacketCapture(String resourceGroupName, String gatewayName, String vpnConnectionName) {
+    public SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName, String gatewayName,
+        String vpnConnectionName) {
         final VpnConnectionPacketCaptureStartParameters parameters = null;
         return this.beginStartPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters)
             .getSyncPoller();
@@ -952,9 +947,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse12>, ArmAcceptedLroResponse12> beginStartPacketCapture(
-        String resourceGroupName, String gatewayName, String vpnConnectionName,
-        VpnConnectionPacketCaptureStartParameters parameters, Context context) {
+    public SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName, String gatewayName,
+        String vpnConnectionName, VpnConnectionPacketCaptureStartParameters parameters, Context context) {
         return this.beginStartPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters, context)
             .getSyncPoller();
     }
@@ -973,8 +967,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse12> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
-        String vpnConnectionName, VpnConnectionPacketCaptureStartParameters parameters) {
+    public Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName,
+        VpnConnectionPacketCaptureStartParameters parameters) {
         return beginStartPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -991,7 +985,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse12> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
+    public Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
         String vpnConnectionName) {
         final VpnConnectionPacketCaptureStartParameters parameters = null;
         return beginStartPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters).last()
@@ -1013,8 +1007,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAcceptedLroResponse12> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
-        String vpnConnectionName, VpnConnectionPacketCaptureStartParameters parameters, Context context) {
+    private Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName,
+        VpnConnectionPacketCaptureStartParameters parameters, Context context) {
         return beginStartPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1032,8 +1026,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse12 startPacketCapture(String resourceGroupName, String gatewayName,
-        String vpnConnectionName) {
+    public String startPacketCapture(String resourceGroupName, String gatewayName, String vpnConnectionName) {
         final VpnConnectionPacketCaptureStartParameters parameters = null;
         return startPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters).block();
     }
@@ -1053,8 +1046,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse12 startPacketCapture(String resourceGroupName, String gatewayName,
-        String vpnConnectionName, VpnConnectionPacketCaptureStartParameters parameters, Context context) {
+    public String startPacketCapture(String resourceGroupName, String gatewayName, String vpnConnectionName,
+        VpnConnectionPacketCaptureStartParameters parameters, Context context) {
         return startPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters, context).block();
     }
 
@@ -1163,13 +1156,11 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse13>, ArmAcceptedLroResponse13> beginStopPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, String vpnConnectionName,
-        VpnConnectionPacketCaptureStopParameters parameters) {
+    public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
+        String gatewayName, String vpnConnectionName, VpnConnectionPacketCaptureStopParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopPacketCaptureWithResponseAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse13, ArmAcceptedLroResponse13>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse13.class, ArmAcceptedLroResponse13.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -1185,13 +1176,12 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse13>, ArmAcceptedLroResponse13>
-        beginStopPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName) {
+    public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
+        String gatewayName, String vpnConnectionName) {
         final VpnConnectionPacketCaptureStopParameters parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopPacketCaptureWithResponseAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse13, ArmAcceptedLroResponse13>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse13.class, ArmAcceptedLroResponse13.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -1209,14 +1199,14 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ArmAcceptedLroResponse13>, ArmAcceptedLroResponse13> beginStopPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, String vpnConnectionName,
-        VpnConnectionPacketCaptureStopParameters parameters, Context context) {
+    private PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
+        String gatewayName, String vpnConnectionName, VpnConnectionPacketCaptureStopParameters parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = stopPacketCaptureWithResponseAsync(resourceGroupName, gatewayName,
             vpnConnectionName, parameters, context);
-        return this.client.<ArmAcceptedLroResponse13, ArmAcceptedLroResponse13>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse13.class, ArmAcceptedLroResponse13.class, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
     }
 
     /**
@@ -1231,8 +1221,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse13>, ArmAcceptedLroResponse13>
-        beginStopPacketCapture(String resourceGroupName, String gatewayName, String vpnConnectionName) {
+    public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName,
+        String vpnConnectionName) {
         final VpnConnectionPacketCaptureStopParameters parameters = null;
         return this.beginStopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters)
             .getSyncPoller();
@@ -1252,9 +1242,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse13>, ArmAcceptedLroResponse13> beginStopPacketCapture(
-        String resourceGroupName, String gatewayName, String vpnConnectionName,
-        VpnConnectionPacketCaptureStopParameters parameters, Context context) {
+    public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName,
+        String vpnConnectionName, VpnConnectionPacketCaptureStopParameters parameters, Context context) {
         return this.beginStopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters, context)
             .getSyncPoller();
     }
@@ -1272,8 +1261,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse13> stopPacketCaptureAsync(String resourceGroupName, String gatewayName,
-        String vpnConnectionName, VpnConnectionPacketCaptureStopParameters parameters) {
+    public Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName,
+        VpnConnectionPacketCaptureStopParameters parameters) {
         return beginStopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1290,8 +1279,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse13> stopPacketCaptureAsync(String resourceGroupName, String gatewayName,
-        String vpnConnectionName) {
+    public Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName) {
         final VpnConnectionPacketCaptureStopParameters parameters = null;
         return beginStopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1311,8 +1299,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAcceptedLroResponse13> stopPacketCaptureAsync(String resourceGroupName, String gatewayName,
-        String vpnConnectionName, VpnConnectionPacketCaptureStopParameters parameters, Context context) {
+    private Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName, String vpnConnectionName,
+        VpnConnectionPacketCaptureStopParameters parameters, Context context) {
         return beginStopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1330,8 +1318,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse13 stopPacketCapture(String resourceGroupName, String gatewayName,
-        String vpnConnectionName) {
+    public String stopPacketCapture(String resourceGroupName, String gatewayName, String vpnConnectionName) {
         final VpnConnectionPacketCaptureStopParameters parameters = null;
         return stopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters).block();
     }
@@ -1350,8 +1337,8 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse13 stopPacketCapture(String resourceGroupName, String gatewayName,
-        String vpnConnectionName, VpnConnectionPacketCaptureStopParameters parameters, Context context) {
+    public String stopPacketCapture(String resourceGroupName, String gatewayName, String vpnConnectionName,
+        VpnConnectionPacketCaptureStopParameters parameters, Context context) {
         return stopPacketCaptureAsync(resourceGroupName, gatewayName, vpnConnectionName, parameters, context).block();
     }
 

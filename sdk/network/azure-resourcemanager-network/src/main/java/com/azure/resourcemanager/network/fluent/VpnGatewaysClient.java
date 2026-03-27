@@ -14,8 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.VpnGatewayInner;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse10;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse11;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStartParameters;
 import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStopParameters;
@@ -612,8 +610,8 @@ public interface VpnGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ArmAcceptedLroResponse10>, ArmAcceptedLroResponse10> beginStartPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters);
+    PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName, String gatewayName,
+        VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -626,8 +624,7 @@ public interface VpnGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ArmAcceptedLroResponse10>, ArmAcceptedLroResponse10>
-        beginStartPacketCaptureAsync(String resourceGroupName, String gatewayName);
+    PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName, String gatewayName);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -640,8 +637,7 @@ public interface VpnGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ArmAcceptedLroResponse10>, ArmAcceptedLroResponse10>
-        beginStartPacketCapture(String resourceGroupName, String gatewayName);
+    SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName, String gatewayName);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -656,9 +652,8 @@ public interface VpnGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ArmAcceptedLroResponse10>, ArmAcceptedLroResponse10> beginStartPacketCapture(
-        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters,
-        Context context);
+    SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName, String gatewayName,
+        VpnGatewayPacketCaptureStartParameters parameters, Context context);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -672,7 +667,7 @@ public interface VpnGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ArmAcceptedLroResponse10> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
+    Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
@@ -686,7 +681,7 @@ public interface VpnGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ArmAcceptedLroResponse10> startPacketCaptureAsync(String resourceGroupName, String gatewayName);
+    Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -699,7 +694,7 @@ public interface VpnGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAcceptedLroResponse10 startPacketCapture(String resourceGroupName, String gatewayName);
+    String startPacketCapture(String resourceGroupName, String gatewayName);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -714,7 +709,7 @@ public interface VpnGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAcceptedLroResponse10 startPacketCapture(String resourceGroupName, String gatewayName,
+    String startPacketCapture(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStartParameters parameters, Context context);
 
     /**
@@ -744,8 +739,8 @@ public interface VpnGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ArmAcceptedLroResponse11>, ArmAcceptedLroResponse11> beginStopPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters);
+    PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName, String gatewayName,
+        VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -758,8 +753,7 @@ public interface VpnGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ArmAcceptedLroResponse11>, ArmAcceptedLroResponse11>
-        beginStopPacketCaptureAsync(String resourceGroupName, String gatewayName);
+    PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName, String gatewayName);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -772,8 +766,7 @@ public interface VpnGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ArmAcceptedLroResponse11>, ArmAcceptedLroResponse11>
-        beginStopPacketCapture(String resourceGroupName, String gatewayName);
+    SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -788,9 +781,8 @@ public interface VpnGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ArmAcceptedLroResponse11>, ArmAcceptedLroResponse11> beginStopPacketCapture(
-        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters,
-        Context context);
+    SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName,
+        VpnGatewayPacketCaptureStopParameters parameters, Context context);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -804,7 +796,7 @@ public interface VpnGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ArmAcceptedLroResponse11> stopPacketCaptureAsync(String resourceGroupName, String gatewayName,
+    Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
@@ -818,7 +810,7 @@ public interface VpnGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ArmAcceptedLroResponse11> stopPacketCaptureAsync(String resourceGroupName, String gatewayName);
+    Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -831,7 +823,7 @@ public interface VpnGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAcceptedLroResponse11 stopPacketCapture(String resourceGroupName, String gatewayName);
+    String stopPacketCapture(String resourceGroupName, String gatewayName);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -846,6 +838,6 @@ public interface VpnGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAcceptedLroResponse11 stopPacketCapture(String resourceGroupName, String gatewayName,
+    String stopPacketCapture(String resourceGroupName, String gatewayName,
         VpnGatewayPacketCaptureStopParameters parameters, Context context);
 }

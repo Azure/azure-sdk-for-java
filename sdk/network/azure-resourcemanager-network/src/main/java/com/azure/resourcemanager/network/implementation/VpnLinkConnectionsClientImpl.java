@@ -36,7 +36,6 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyResult
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import com.azure.resourcemanager.network.implementation.models.ConnectionSharedKeyResultList;
 import com.azure.resourcemanager.network.implementation.models.ListVpnSiteLinkConnectionsResult;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse14;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1476,12 +1475,11 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14> beginGetIkeSasAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName) {
+    public PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = getIkeSasWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName);
-        return this.client.<ArmAcceptedLroResponse14, ArmAcceptedLroResponse14>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse14.class, ArmAcceptedLroResponse14.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -1499,14 +1497,13 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14> beginGetIkeSasAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
-        Context context) {
+    private PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = getIkeSasWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context);
-        return this.client.<ArmAcceptedLroResponse14, ArmAcceptedLroResponse14>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse14.class, ArmAcceptedLroResponse14.class, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
     }
 
     /**
@@ -1522,8 +1519,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14>
-        beginGetIkeSas(String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName) {
+    public SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
         return this.beginGetIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName)
             .getSyncPoller();
     }
@@ -1542,9 +1539,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14> beginGetIkeSas(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
-        Context context) {
+    public SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, Context context) {
         return this.beginGetIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context)
             .getSyncPoller();
     }
@@ -1562,8 +1558,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse14> getIkeSasAsync(String resourceGroupName, String gatewayName,
-        String connectionName, String linkConnectionName) {
+    public Mono<String> getIkeSasAsync(String resourceGroupName, String gatewayName, String connectionName,
+        String linkConnectionName) {
         return beginGetIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1582,8 +1578,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAcceptedLroResponse14> getIkeSasAsync(String resourceGroupName, String gatewayName,
-        String connectionName, String linkConnectionName, Context context) {
+    private Mono<String> getIkeSasAsync(String resourceGroupName, String gatewayName, String connectionName,
+        String linkConnectionName, Context context) {
         return beginGetIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1601,7 +1597,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse14 getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
+    public String getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName) {
         return getIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName).block();
     }
@@ -1620,7 +1616,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse14 getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
+    public String getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName, Context context) {
         return getIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context).block();
     }

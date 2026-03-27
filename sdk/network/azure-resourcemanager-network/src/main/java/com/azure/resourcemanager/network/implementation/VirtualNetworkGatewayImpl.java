@@ -213,15 +213,10 @@ class VirtualNetworkGatewayImpl extends
 
     @Override
     public String generateVpnProfile() {
-        this.manager()
-            .serviceClient()
-            .getVirtualNetworkGateways()
-            .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
         return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
-            .getVpnProfilePackageUrl(resourceGroupName(), name())
-            .body();
+            .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
     }
 
     @Override
@@ -229,12 +224,7 @@ class VirtualNetworkGatewayImpl extends
         return this.manager()
             .serviceClient()
             .getVirtualNetworkGateways()
-            .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters())
-            .then(this.manager()
-                .serviceClient()
-                .getVirtualNetworkGateways()
-                .getVpnProfilePackageUrlAsync(resourceGroupName(), name()))
-            .map(result -> result.body());
+            .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters());
     }
 
     @Override

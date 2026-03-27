@@ -38,9 +38,6 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionResetSharedKeyI
 import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.network.implementation.models.VirtualNetworkGatewayConnectionListResult;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse7;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse8;
-import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse9;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
@@ -1965,13 +1962,11 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse7>, ArmAcceptedLroResponse7> beginStartPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName,
-        VpnPacketCaptureStartParameters parameters) {
+    public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStartParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse7, ArmAcceptedLroResponse7>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse7.class, ArmAcceptedLroResponse7.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -1986,13 +1981,12 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse7>, ArmAcceptedLroResponse7>
-        beginStartPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
+    public PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName) {
         final VpnPacketCaptureStartParameters parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = startPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse7, ArmAcceptedLroResponse7>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse7.class, ArmAcceptedLroResponse7.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -2010,14 +2004,13 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ArmAcceptedLroResponse7>, ArmAcceptedLroResponse7> beginStartPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName,
-        VpnPacketCaptureStartParameters parameters, Context context) {
+    private PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStartParameters parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startPacketCaptureWithResponseAsync(resourceGroupName,
             virtualNetworkGatewayConnectionName, parameters, context);
-        return this.client.<ArmAcceptedLroResponse7, ArmAcceptedLroResponse7>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse7.class, ArmAcceptedLroResponse7.class, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
     }
 
     /**
@@ -2031,8 +2024,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse7>, ArmAcceptedLroResponse7>
-        beginStartPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
+    public SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName) {
         final VpnPacketCaptureStartParameters parameters = null;
         return this.beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
@@ -2052,9 +2045,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse7>, ArmAcceptedLroResponse7> beginStartPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName,
-        VpnPacketCaptureStartParameters parameters, Context context) {
+    public SyncPoller<PollResult<String>, String> beginStartPacketCapture(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStartParameters parameters, Context context) {
         return this
             .beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
@@ -2073,8 +2065,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse7> startPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStartParameters parameters) {
+    public Mono<String> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters) {
         return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2090,8 +2082,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse7> startPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName) {
+    public Mono<String> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         final VpnPacketCaptureStartParameters parameters = null;
         return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2111,8 +2102,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAcceptedLroResponse7> startPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStartParameters parameters, Context context) {
+    private Mono<String> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters, Context context) {
         return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2129,8 +2120,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse7 startPacketCapture(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName) {
+    public String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         final VpnPacketCaptureStartParameters parameters = null;
         return startPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).block();
     }
@@ -2149,8 +2139,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse7 startPacketCapture(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStartParameters parameters, Context context) {
+    public String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters, Context context) {
         return startPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .block();
     }
@@ -2259,13 +2249,11 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse8>, ArmAcceptedLroResponse8> beginStopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName,
-        VpnPacketCaptureStopParameters parameters) {
+    public PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopPacketCaptureWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters);
-        return this.client.<ArmAcceptedLroResponse8, ArmAcceptedLroResponse8>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse8.class, ArmAcceptedLroResponse8.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -2283,14 +2271,13 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ArmAcceptedLroResponse8>, ArmAcceptedLroResponse8> beginStopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = stopPacketCaptureWithResponseAsync(resourceGroupName,
             virtualNetworkGatewayConnectionName, parameters, context);
-        return this.client.<ArmAcceptedLroResponse8, ArmAcceptedLroResponse8>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse8.class, ArmAcceptedLroResponse8.class, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
     }
 
     /**
@@ -2306,9 +2293,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse8>, ArmAcceptedLroResponse8> beginStopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName,
-        VpnPacketCaptureStopParameters parameters) {
+    public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters) {
         return this.beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
             .getSyncPoller();
     }
@@ -2327,9 +2313,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse8>, ArmAcceptedLroResponse8> beginStopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters,
-        Context context) {
+    public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters, Context context) {
         return this
             .beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .getSyncPoller();
@@ -2348,8 +2333,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse8> stopPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters) {
+    public Mono<String> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters) {
         return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2368,8 +2353,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAcceptedLroResponse8> stopPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters, Context context) {
+    private Mono<String> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters, Context context) {
         return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2388,8 +2373,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse8 stopPacketCapture(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters) {
+    public String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters) {
         return stopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).block();
     }
 
@@ -2407,8 +2392,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse8 stopPacketCapture(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, VpnPacketCaptureStopParameters parameters, Context context) {
+    public String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters, Context context) {
         return stopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
             .block();
     }
@@ -2499,12 +2484,11 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ArmAcceptedLroResponse9>, ArmAcceptedLroResponse9>
-        beginGetIkeSasAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
+    public PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = getIkeSasWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName);
-        return this.client.<ArmAcceptedLroResponse9, ArmAcceptedLroResponse9>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse9.class, ArmAcceptedLroResponse9.class,
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
             this.client.getContext());
     }
 
@@ -2520,13 +2504,13 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ArmAcceptedLroResponse9>, ArmAcceptedLroResponse9>
-        beginGetIkeSasAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
+    private PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = getIkeSasWithResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context);
-        return this.client.<ArmAcceptedLroResponse9, ArmAcceptedLroResponse9>getLroResult(mono,
-            this.client.getHttpPipeline(), ArmAcceptedLroResponse9.class, ArmAcceptedLroResponse9.class, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
     }
 
     /**
@@ -2540,8 +2524,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse9>, ArmAcceptedLroResponse9>
-        beginGetIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
+    public SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName) {
         return this.beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName).getSyncPoller();
     }
 
@@ -2557,8 +2541,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ArmAcceptedLroResponse9>, ArmAcceptedLroResponse9>
-        beginGetIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
+    public SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName,
+        String virtualNetworkGatewayConnectionName, Context context) {
         return this.beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context)
             .getSyncPoller();
     }
@@ -2574,8 +2558,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArmAcceptedLroResponse9> getIkeSasAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName) {
+    public Mono<String> getIkeSasAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2592,8 +2575,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmAcceptedLroResponse9> getIkeSasAsync(String resourceGroupName,
-        String virtualNetworkGatewayConnectionName, Context context) {
+    private Mono<String> getIkeSasAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
+        Context context) {
         return beginGetIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2609,7 +2592,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse9 getIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
+    public String getIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return getIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName).block();
     }
 
@@ -2625,8 +2608,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArmAcceptedLroResponse9 getIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName,
-        Context context) {
+    public String getIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context) {
         return getIkeSasAsync(resourceGroupName, virtualNetworkGatewayConnectionName, context).block();
     }
 
