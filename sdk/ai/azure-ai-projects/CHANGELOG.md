@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0 (Unreleased)
 
 ### Features Added
 
@@ -23,6 +23,8 @@
 - Fixed `createDatasetWithFile` using the dataset name as the blob name instead of the actual file name.
 
 ### Other Changes
+
+- Regenerated from updated API spec.
 
 ## 2.0.0-beta.3 (2026-03-19)
 
