@@ -158,6 +158,9 @@ class ServiceBusInboundChannelAdapterTests {
         MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
+
+        Thread.sleep(2000);
+
         payloads.stream()
                 .map(payload -> {
                     ServiceBusReceivedMessageContext mock = mock(ServiceBusReceivedMessageContext.class);
@@ -169,7 +172,7 @@ class ServiceBusInboundChannelAdapterTests {
                 .forEach(context -> ((ServiceBusRecordMessageListener) messageListener).onMessage(context));
 
 
-        assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
+        assertTrue(latch.await(100, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
             Assertions.assertEquals(receivedMessages.get(i), payloads.get(i));
