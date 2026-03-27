@@ -183,12 +183,10 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent version Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
+    public void deleteAgentVersionWithResponse(String agentName, String agentVersion, RequestOptions requestOptions) {
+        internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
     }
 
     /**
@@ -1474,11 +1472,10 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return internalDeleteAgentWithResponse(agentName, requestOptions);
+    public void deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        internalDeleteAgentWithResponse(agentName, requestOptions);
     }
 
     /**

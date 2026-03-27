@@ -283,11 +283,11 @@ public final class MemoryStoresAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the memory store is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        return internalDeleteMemoryStoreWithResponse(name, requestOptions);
+    public Mono<Void> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteMemoryStoreWithResponse(name, requestOptions).then();
     }
 
     /**
@@ -536,13 +536,12 @@ public final class MemoryStoresAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response for deleting memories from a scope along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a {@link Mono} that completes when the scope is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+    public Mono<Void> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
-        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
+        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions).then();
     }
 
     /**

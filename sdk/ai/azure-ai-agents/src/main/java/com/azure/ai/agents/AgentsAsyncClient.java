@@ -190,12 +190,12 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent version Object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the agent version is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    public Mono<Void> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
-        return internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
+        return internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).then();
     }
 
     /**
@@ -1565,11 +1565,11 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent Object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the agent is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return internalDeleteAgentWithResponse(agentName, requestOptions);
+    public Mono<Void> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return internalDeleteAgentWithResponse(agentName, requestOptions).then();
     }
 
     /**

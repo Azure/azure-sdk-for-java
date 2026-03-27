@@ -274,11 +274,10 @@ public final class MemoryStoresClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        return internalDeleteMemoryStoreWithResponse(name, requestOptions);
+    public void deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        internalDeleteMemoryStoreWithResponse(name, requestOptions);
     }
 
     /**
@@ -533,12 +532,10 @@ public final class MemoryStoresClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response for deleting memories from a scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
-        RequestOptions requestOptions) {
-        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
+    public void deleteScopeWithResponse(String name, BinaryData deleteScopeRequest, RequestOptions requestOptions) {
+        internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
     }
 
     /**
