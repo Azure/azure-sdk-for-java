@@ -9,16 +9,19 @@ import com.azure.resourcemanager.search.models.AadAuthFailureMode;
 import com.azure.resourcemanager.search.models.ComputeType;
 import com.azure.resourcemanager.search.models.DataPlaneAadOrApiKeyAuthOption;
 import com.azure.resourcemanager.search.models.DataPlaneAuthOptions;
+import com.azure.resourcemanager.search.models.DataUserAssignedIdentity;
 import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.HostingMode;
 import com.azure.resourcemanager.search.models.Identity;
 import com.azure.resourcemanager.search.models.IdentityType;
 import com.azure.resourcemanager.search.models.IpRule;
+import com.azure.resourcemanager.search.models.KnowledgeRetrieval;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.SearchBypass;
 import com.azure.resourcemanager.search.models.SearchDataExfiltrationProtection;
 import com.azure.resourcemanager.search.models.SearchEncryptionWithCmk;
+import com.azure.resourcemanager.search.models.SearchResourceEncryptionKey;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.Sku;
 import com.azure.resourcemanager.search.models.SkuName;
@@ -32,53 +35,7 @@ import java.util.Map;
  */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
-     */
-    /**
-     * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.
-     * 
-     * @param manager Entry point to SearchServiceManager.
-     */
-    public static void searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
-            .getServices()
-            .createOrUpdate("rg1", "mysearchservice",
-                new SearchServiceInner().withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withComputeType(ComputeType.DEFAULT)
-                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateService.json
-     */
-    /**
-     * Sample code: SearchCreateOrUpdateService.
-     * 
-     * @param manager Entry point to SearchServiceManager.
-     */
-    public static void searchCreateOrUpdateService(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
-            .getServices()
-            .createOrUpdate("rg1", "mysearchservice",
-                new SearchServiceInner().withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withComputeType(ComputeType.DEFAULT),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceAuthOptions.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceAuthOptions.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceAuthOptions.
@@ -103,7 +60,7 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateWithSemanticSearch.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateWithSemanticSearch.json
      */
     /**
      * Sample code: SearchCreateOrUpdateWithSemanticSearch.
@@ -127,7 +84,121 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceWithIdentity.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateServiceWithCmkEnforcement.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void
+        searchCreateOrUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .createOrUpdate("rg1", "mysearchservice",
+                new SearchServiceInner().withLocation("westus")
+                    .withTags(mapOf("app-name", "My e-commerce app"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withReplicaCount(3)
+                    .withPartitionCount(1)
+                    .withHostingMode(HostingMode.DEFAULT)
+                    .withComputeType(ComputeType.DEFAULT)
+                    .withEncryptionWithCmk(new EncryptionWithCmk().withEnforcement(SearchEncryptionWithCmk.ENABLED)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceWithDataExfiltration.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateServiceWithDataExfiltration.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void
+        searchCreateOrUpdateServiceWithDataExfiltration(com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .createOrUpdate("rg1", "mysearchservice",
+                new SearchServiceInner().withLocation("westus")
+                    .withTags(mapOf("app-name", "My e-commerce app"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withReplicaCount(3)
+                    .withPartitionCount(1)
+                    .withHostingMode(HostingMode.DEFAULT)
+                    .withComputeType(ComputeType.DEFAULT)
+                    .withDataExfiltrationProtections(Arrays.asList(SearchDataExfiltrationProtection.BLOCK_ALL)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceWithServerless.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateServiceWithServerless.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void
+        searchCreateOrUpdateServiceWithServerless(com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .createOrUpdate("rg1", "myserverlessservice",
+                new SearchServiceInner().withLocation("westus")
+                    .withTags(mapOf("app-name", "My e-commerce app"))
+                    .withSku(new Sku().withName(SkuName.SERVERLESS))
+                    .withHostingMode(HostingMode.DEFAULT),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints(
+        com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .createOrUpdate("rg1", "mysearchservice",
+                new SearchServiceInner().withLocation("westus")
+                    .withTags(mapOf("app-name", "My e-commerce app"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withReplicaCount(3)
+                    .withPartitionCount(1)
+                    .withHostingMode(HostingMode.DEFAULT)
+                    .withComputeType(ComputeType.DEFAULT)
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateService.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateService.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void searchCreateOrUpdateService(com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .createOrUpdate("rg1", "mysearchservice",
+                new SearchServiceInner().withLocation("westus")
+                    .withTags(mapOf("app-name", "My e-commerce app"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withReplicaCount(3)
+                    .withPartitionCount(1)
+                    .withHostingMode(HostingMode.DEFAULT)
+                    .withComputeType(ComputeType.DEFAULT),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceWithIdentity.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceWithIdentity.
@@ -152,7 +223,7 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
@@ -174,12 +245,36 @@ public final class ServicesCreateOrUpdateSamples {
                     .withNetworkRuleSet(new NetworkRuleSet()
                         .withIpRules(
                             Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
-                        .withBypass(SearchBypass.AZURE_SERVICES)),
+                        .withBypass(SearchBypass.AZURE_PORTAL)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceDisableLocalAuth.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateWithKnowledgeRetrieval.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateWithKnowledgeRetrieval.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void
+        searchCreateOrUpdateWithKnowledgeRetrieval(com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .createOrUpdate("rg1", "mysearchservice",
+                new SearchServiceInner().withLocation("westus")
+                    .withTags(mapOf("app-name", "My e-commerce app"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withReplicaCount(3)
+                    .withPartitionCount(1)
+                    .withHostingMode(HostingMode.DEFAULT)
+                    .withComputeType(ComputeType.DEFAULT)
+                    .withKnowledgeRetrieval(KnowledgeRetrieval.FREE),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceDisableLocalAuth.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceDisableLocalAuth.
@@ -203,7 +298,7 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.
@@ -228,50 +323,36 @@ public final class ServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+     * x-ms-original-file:
+     * 2026-03-01-preview/SearchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity.json
      */
     /**
-     * Sample code: SearchCreateOrUpdateServiceWithCmkEnforcement.
+     * Sample code: SearchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity.
      * 
      * @param manager Entry point to SearchServiceManager.
      */
-    public static void
-        searchCreateOrUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.search.SearchServiceManager manager) {
+    public static void searchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity(
+        com.azure.resourcemanager.search.SearchServiceManager manager) {
         manager.serviceClient()
             .getServices()
-            .createOrUpdate("rg1", "mysearchservice",
-                new SearchServiceInner().withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withComputeType(ComputeType.DEFAULT)
-                    .withEncryptionWithCmk(new EncryptionWithCmk().withEnforcement(SearchEncryptionWithCmk.ENABLED)),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-05-01/SearchCreateOrUpdateServiceWithDataExfiltration.json
-     */
-    /**
-     * Sample code: SearchCreateOrUpdateServiceWithDataExfiltration.
-     * 
-     * @param manager Entry point to SearchServiceManager.
-     */
-    public static void
-        searchCreateOrUpdateServiceWithDataExfiltration(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
-            .getServices()
-            .createOrUpdate("rg1", "mysearchservice",
-                new SearchServiceInner().withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withComputeType(ComputeType.DEFAULT)
-                    .withDataExfiltrationProtections(Arrays.asList(SearchDataExfiltrationProtection.BLOCK_ALL)),
+            .createOrUpdate("rg1", "mysearchservice", new SearchServiceInner().withLocation("westus")
+                .withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD))
+                .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi",
+                        new UserAssignedIdentity())))
+                .withReplicaCount(3)
+                .withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT)
+                .withComputeType(ComputeType.DEFAULT)
+                .withEncryptionWithCmk(new EncryptionWithCmk().withEnforcement(SearchEncryptionWithCmk.ENABLED)
+                    .withServiceLevelEncryptionKey(new SearchResourceEncryptionKey().withKeyName("fakeTokenPlaceholder")
+                        .withKeyVersion("fakeTokenPlaceholder")
+                        .withVaultUri("fakeTokenPlaceholder")
+                        .withIdentity(new DataUserAssignedIdentity().withUserAssignedIdentity(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi")
+                            .withFederatedIdentityClientId("f83c6b1b-4d34-47e4-bb34-9d83df58b540")))),
                 com.azure.core.util.Context.NONE);
     }
 

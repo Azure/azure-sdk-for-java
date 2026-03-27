@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates if the search service has an upgrade available.
+ * Indicates if the dedicated search service has an upgrade available.
  */
 public final class UpgradeAvailable extends ExpandableStringEnum<UpgradeAvailable> {
     /**
-     * An upgrade is currently not available for the service.
+     * An upgrade is currently not available for the dedicated service.
      */
     public static final UpgradeAvailable NOT_AVAILABLE = fromString("notAvailable");
 
     /**
-     * There is an upgrade available for the service.
+     * There is an upgrade available for the dedicated service.
      */
     public static final UpgradeAvailable AVAILABLE = fromString("available");
 

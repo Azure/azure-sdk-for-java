@@ -14,6 +14,7 @@ import com.azure.resourcemanager.search.models.ComputeType;
 import com.azure.resourcemanager.search.models.DataPlaneAuthOptions;
 import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.HostingMode;
+import com.azure.resourcemanager.search.models.KnowledgeRetrieval;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.ProvisioningState;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
@@ -31,15 +32,15 @@ import java.util.List;
 @Fluent
 public final class SearchServiceProperties implements JsonSerializable<SearchServiceProperties> {
     /*
-     * The number of replicas in the search service. If specified, it must be a value between 1 and 12 inclusive for
-     * standard SKUs or between 1 and 3 inclusive for basic SKU.
+     * The number of replicas in the dedicated search service. If specified, it must be a value between 1 and 12
+     * inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
      */
     private Integer replicaCount;
 
     /*
-     * The number of partitions in the search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater than
-     * 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the allowed
-     * values are between 1 and 3.
+     * The number of partitions in the dedicated search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values
+     * greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity',
+     * the allowed values are between 1 and 3.
      */
     private Integer partitionCount;
 
@@ -127,10 +128,16 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     private DataPlaneAuthOptions authOptions;
 
     /*
-     * Sets options that control the availability of semantic search. This configuration is only possible for certain
-     * Azure AI Search SKUs in certain locations.
+     * Specifies the availability and billing plan for semantic search on the Azure AI Search service. This
+     * configuration is only available for certain pricing tiers in certain regions.
      */
     private SearchSemanticSearch semanticSearch;
+
+    /*
+     * Specifies the billing plan for agentic retrieval on the Azure AI Search service. This configuration is only
+     * available for certain pricing tiers in certain regions.
+     */
+    private KnowledgeRetrieval knowledgeRetrieval;
 
     /*
      * The list of private endpoint connections to the Azure AI Search service.
@@ -166,8 +173,8 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Get the replicaCount property: The number of replicas in the search service. If specified, it must be a value
-     * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
+     * Get the replicaCount property: The number of replicas in the dedicated search service. If specified, it must be a
+     * value between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
      * 
      * @return the replicaCount value.
      */
@@ -176,8 +183,8 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Set the replicaCount property: The number of replicas in the search service. If specified, it must be a value
-     * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
+     * Set the replicaCount property: The number of replicas in the dedicated search service. If specified, it must be a
+     * value between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
      * 
      * @param replicaCount the replicaCount value to set.
      * @return the SearchServiceProperties object itself.
@@ -188,9 +195,9 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Get the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
-     * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
-     * set to 'highDensity', the allowed values are between 1 and 3.
+     * Get the partitionCount property: The number of partitions in the dedicated search service; if specified, it can
+     * be 1, 2, 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with
+     * hostingMode set to 'highDensity', the allowed values are between 1 and 3.
      * 
      * @return the partitionCount value.
      */
@@ -199,9 +206,9 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Set the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
-     * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
-     * set to 'highDensity', the allowed values are between 1 and 3.
+     * Set the partitionCount property: The number of partitions in the dedicated search service; if specified, it can
+     * be 1, 2, 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with
+     * hostingMode set to 'highDensity', the allowed values are between 1 and 3.
      * 
      * @param partitionCount the partitionCount value to set.
      * @return the SearchServiceProperties object itself.
@@ -458,8 +465,8 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Get the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
+     * Get the semanticSearch property: Specifies the availability and billing plan for semantic search on the Azure AI
+     * Search service. This configuration is only available for certain pricing tiers in certain regions.
      * 
      * @return the semanticSearch value.
      */
@@ -468,14 +475,36 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
     }
 
     /**
-     * Set the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
+     * Set the semanticSearch property: Specifies the availability and billing plan for semantic search on the Azure AI
+     * Search service. This configuration is only available for certain pricing tiers in certain regions.
      * 
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceProperties object itself.
      */
     public SearchServiceProperties withSemanticSearch(SearchSemanticSearch semanticSearch) {
         this.semanticSearch = semanticSearch;
+        return this;
+    }
+
+    /**
+     * Get the knowledgeRetrieval property: Specifies the billing plan for agentic retrieval on the Azure AI Search
+     * service. This configuration is only available for certain pricing tiers in certain regions.
+     * 
+     * @return the knowledgeRetrieval value.
+     */
+    public KnowledgeRetrieval knowledgeRetrieval() {
+        return this.knowledgeRetrieval;
+    }
+
+    /**
+     * Set the knowledgeRetrieval property: Specifies the billing plan for agentic retrieval on the Azure AI Search
+     * service. This configuration is only available for certain pricing tiers in certain regions.
+     * 
+     * @param knowledgeRetrieval the knowledgeRetrieval value to set.
+     * @return the SearchServiceProperties object itself.
+     */
+    public SearchServiceProperties withKnowledgeRetrieval(KnowledgeRetrieval knowledgeRetrieval) {
+        this.knowledgeRetrieval = knowledgeRetrieval;
         return this;
     }
 
@@ -583,6 +612,8 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
         jsonWriter.writeJsonField("authOptions", this.authOptions);
         jsonWriter.writeStringField("semanticSearch",
             this.semanticSearch == null ? null : this.semanticSearch.toString());
+        jsonWriter.writeStringField("knowledgeRetrieval",
+            this.knowledgeRetrieval == null ? null : this.knowledgeRetrieval.toString());
         jsonWriter.writeStringField("upgradeAvailable",
             this.upgradeAvailable == null ? null : this.upgradeAvailable.toString());
         return jsonWriter.writeEndObject();
@@ -638,6 +669,9 @@ public final class SearchServiceProperties implements JsonSerializable<SearchSer
                 } else if ("semanticSearch".equals(fieldName)) {
                     deserializedSearchServiceProperties.semanticSearch
                         = SearchSemanticSearch.fromString(reader.getString());
+                } else if ("knowledgeRetrieval".equals(fieldName)) {
+                    deserializedSearchServiceProperties.knowledgeRetrieval
+                        = KnowledgeRetrieval.fromString(reader.getString());
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));

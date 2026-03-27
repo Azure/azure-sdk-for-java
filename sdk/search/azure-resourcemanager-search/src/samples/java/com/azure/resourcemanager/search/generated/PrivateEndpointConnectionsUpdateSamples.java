@@ -14,7 +14,7 @@ import com.azure.resourcemanager.search.models.PrivateLinkServiceConnectionStatu
  */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/UpdatePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-03-01-preview/UpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnectionUpdate.
@@ -29,7 +29,8 @@ public final class PrivateEndpointConnectionsUpdateSamples {
                     .withProperties(new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
                         new PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState()
                             .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                            .withDescription("Rejected for some reason."))),
+                            .withDescription(
+                                "Connection is rejected due to lack of authorization or failure to meet security compliance requirements."))),
                 com.azure.core.util.Context.NONE);
     }
 }

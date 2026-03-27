@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class PrivateEndpointConnectionsListByServiceSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ListPrivateEndpointConnectionsByService.json
+     * x-ms-original-file: 2026-03-01-preview/ListPrivateEndpointConnectionsByService.json
      */
     /**
      * Sample code: ListPrivateEndpointConnectionsByService.
