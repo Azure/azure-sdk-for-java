@@ -57,7 +57,7 @@
 - Added structured input convenience methods to `ResponsesClient` and `ResponsesAsyncClient` for creating responses with agent-defined template parameters:
   - `createWithAgentStructuredInput` accepts a `Map<String, Object>` of runtime values that are substituted into the agent's prompt template.
   - `createStreamingWithAgentStructuredInput` provides the streaming equivalent, returning `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
-- Added `CreateResponseWithStructuredInput` sample demonstrating how to define structured inputs on an agent and pass runtime values when creating a response. 
+- Added `CreateResponseWithStructuredInput` sample demonstrating how to define structured inputs on an agent and pass runtime values when creating a response.
 
 ### Breaking Changes
 
