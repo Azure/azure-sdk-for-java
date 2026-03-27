@@ -180,9 +180,6 @@ class EventHubsInboundChannelAdapterTests {
         MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof EventHubsRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
-
-        Thread.sleep(2000);
-
         payloads.stream()
                 .map(payload -> {
                     EventContext mock = mock(EventContext.class);
@@ -194,7 +191,7 @@ class EventHubsInboundChannelAdapterTests {
                 .forEach(eventContext -> ((EventHubsRecordMessageListener) messageListener).onMessage(eventContext));
 
 
-        assertTrue(latch.await(100, TimeUnit.SECONDS), "Failed to receive message");
+        assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
             Assertions.assertEquals(receivedMessages.get(i), payloads.get(i));
@@ -233,9 +230,6 @@ class EventHubsInboundChannelAdapterTests {
         MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof EventHubsBatchMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c", "d", "e", "f");
-
-        Thread.sleep(2000);
-
         IntStream.range(0, 3)
                  .mapToObj(i -> {
                      EventBatchContext mock = mock(EventBatchContext.class);
@@ -247,7 +241,7 @@ class EventHubsInboundChannelAdapterTests {
                 .forEach(eventContext -> ((EventHubsBatchMessageListener) messageListener).onMessage(eventContext));
 
 
-        assertTrue(latch.await(100, TimeUnit.SECONDS), "Failed to receive message");
+        assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
             Assertions.assertEquals(receivedMessages.get(i), Arrays.asList(payloads.get(2 * i), payloads.get(2 * i + 1)));
