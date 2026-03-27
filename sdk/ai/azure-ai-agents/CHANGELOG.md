@@ -8,7 +8,22 @@
 
 ### Breaking Changes
 
-- `MemoryStoreUpdateStatus` changed from a standard Java `enum` to an `ExpandableStringEnum`-based class. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`.
+- The following types changed from standard Java `enum` to `ExpandableStringEnum`-based classes, allowing unknown values to be handled without throwing exceptions. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`:
+  - `ComputerEnvironment`
+  - `ContainerMemoryLimit`
+  - `GrammarSyntax`
+  - `ImageGenActionEnum`
+  - `ImageGenToolBackground`
+  - `ImageGenToolModeration`
+  - `ImageGenToolOutputFormat`
+  - `ImageGenToolQuality`
+  - `ImageGenToolSize`
+  - `InputFidelity`
+  - `McpToolConnectorId`
+  - `MemoryStoreUpdateStatus`
+  - `RankerVersionType`
+  - `SearchContextSize`
+  - `WebSearchToolSearchContextSize`
 - Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
 - Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
 - `getContainerAsAutoCodeInterpreterToolParam()` on `CodeInterpreterTool` renamed to `getContainerAsAutoCodeInterpreterToolParameter()`, and `setContainer(AutoCodeInterpreterToolParam)` now accepts `AutoCodeInterpreterToolParameter` instead.

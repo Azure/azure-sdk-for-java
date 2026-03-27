@@ -109,7 +109,7 @@ PagedIterable<Connection> connections = connectionsClient.listConnections();
 for (Connection connection : connections) {
     System.out.println("Connection name: " + connection.getName());
     System.out.println("Connection type: " + connection.getType());
-    System.out.println("Connection credential type: " + connection.getCredentials().getType());
+    System.out.println("Connection credential type: " + connection.getCredential().getType());
     System.out.println("-------------------------------------------------");
 }
 ```

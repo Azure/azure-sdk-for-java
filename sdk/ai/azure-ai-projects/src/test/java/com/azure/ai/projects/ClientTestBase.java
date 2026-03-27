@@ -153,7 +153,7 @@ public class ClientTestBase extends TestProxyTestBase {
         Assertions.assertNotNull(connection.getId());
         Assertions.assertNotNull(connection.getType());
         Assertions.assertNotNull(connection.getTarget());
-        Assertions.assertNotNull(connection.getCredentials());
+        Assertions.assertNotNull(connection.getCredential());
 
         if (expectedName != null) {
             Assertions.assertEquals(expectedName, connection.getName());

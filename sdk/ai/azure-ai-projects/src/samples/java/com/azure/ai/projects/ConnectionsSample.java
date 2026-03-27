@@ -27,7 +27,7 @@ public class ConnectionsSample {
         for (Connection connection : connections) {
             System.out.println("Connection name: " + connection.getName());
             System.out.println("Connection type: " + connection.getType());
-            System.out.println("Connection credential type: " + connection.getCredentials().getType());
+            System.out.println("Connection credential type: " + connection.getCredential().getType());
             System.out.println("-------------------------------------------------");
         }
         // END:com.azure.ai.projects.ConnectionsSample.listConnections
@@ -51,7 +51,7 @@ public class ConnectionsSample {
         Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
 
         System.out.printf("Connection name: %s%n", connection.getName());
-        System.out.printf("Connection credentials: %s%n", connection.getCredentials().getType());
+        System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
 
         // END:com.azure.ai.projects.ConnectionsSample.getConnectionWithCredentials
     }
