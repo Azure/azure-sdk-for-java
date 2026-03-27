@@ -144,29 +144,11 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     deserializedSearchIndexerStatus.limits = SearchIndexerLimits.fromJson(reader);
                 } else if ("lastResult".equals(fieldName)) {
                     deserializedSearchIndexerStatus.lastResult = IndexerExecutionResult.fromJson(reader);
-                } else if ("currentState".equals(fieldName)) {
-                    deserializedSearchIndexerStatus.currentState = IndexerCurrentState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedSearchIndexerStatus;
         });
-    }
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    @Generated
-    private IndexerCurrentState currentState;
-
-    /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
-     * @return the currentState value.
-     */
-    @Generated
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
     }
 }

@@ -2584,8 +2584,6 @@ public final class SearchIndexerAsyncClient {
      *     status: String(unknown/error/running) (Required)
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
-     *         statusDetail: String(resetDocs/resync) (Optional)
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
      *         errorMessage: String (Optional)
      *         startTime: OffsetDateTime (Optional)
      *         endTime: OffsetDateTime (Optional)
@@ -2620,21 +2618,6 @@ public final class SearchIndexerAsyncClient {
      *         maxRunTime: Duration (Optional)
      *         maxDocumentExtractionSize: Long (Optional)
      *         maxDocumentContentCharactersToExtract: Long (Optional)
-     *     }
-     *     currentState (Optional): {
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
-     *         allDocsInitialTrackingState: String (Optional)
-     *         allDocsFinalTrackingState: String (Optional)
-     *         resetDocsInitialTrackingState: String (Optional)
-     *         resetDocsFinalTrackingState: String (Optional)
-     *         resyncInitialTrackingState: String (Optional)
-     *         resyncFinalTrackingState: String (Optional)
-     *         resetDocumentKeys (Optional): [
-     *             String (Optional)
-     *         ]
-     *         resetDatasourceDocumentIds (Optional): [
-     *             String (Optional)
-     *         ]
      *     }
      * }
      * }

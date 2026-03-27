@@ -748,9 +748,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeBooleanField("filterable", this.filterable);
         jsonWriter.writeBooleanField("sortable", this.sortable);
         jsonWriter.writeBooleanField("facetable", this.facetable);
-        jsonWriter.writeStringField("permissionFilter",
-            this.permissionFilter == null ? null : this.permissionFilter.toString());
-        jsonWriter.writeBooleanField("sensitivityLabel", this.sensitivityLabel);
         jsonWriter.writeStringField("analyzer", this.analyzerName == null ? null : this.analyzerName.toString());
         jsonWriter.writeStringField("searchAnalyzer",
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
@@ -788,8 +785,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
             Boolean filterable = null;
             Boolean sortable = null;
             Boolean facetable = null;
-            PermissionFilter permissionFilter = null;
-            Boolean sensitivityLabel = null;
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
@@ -820,10 +815,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     sortable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("facetable".equals(fieldName)) {
                     facetable = reader.getNullable(JsonReader::getBoolean);
-                } else if ("permissionFilter".equals(fieldName)) {
-                    permissionFilter = PermissionFilter.fromString(reader.getString());
-                } else if ("sensitivityLabel".equals(fieldName)) {
-                    sensitivityLabel = reader.getNullable(JsonReader::getBoolean);
                 } else if ("analyzer".equals(fieldName)) {
                     analyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("searchAnalyzer".equals(fieldName)) {
@@ -854,8 +845,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.filterable = filterable;
             deserializedSearchField.sortable = sortable;
             deserializedSearchField.facetable = facetable;
-            deserializedSearchField.permissionFilter = permissionFilter;
-            deserializedSearchField.sensitivityLabel = sensitivityLabel;
             deserializedSearchField.analyzerName = analyzerName;
             deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
             deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
@@ -867,61 +856,5 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.fields = fields;
             return deserializedSearchField;
         });
-    }
-
-    /*
-     * A value indicating whether the field should be used as a permission filter.
-     */
-    @Generated
-    private PermissionFilter permissionFilter;
-
-    /*
-     * A value indicating whether the field contains sensitivity label information.
-     */
-    @Generated
-    private Boolean sensitivityLabel;
-
-    /**
-     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
-     *
-     * @return the permissionFilter value.
-     */
-    @Generated
-    public PermissionFilter getPermissionFilter() {
-        return this.permissionFilter;
-    }
-
-    /**
-     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
-     *
-     * @param permissionFilter the permissionFilter value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
-        this.permissionFilter = permissionFilter;
-        return this;
-    }
-
-    /**
-     * Get the sensitivityLabel property: A value indicating whether the field contains sensitivity label information.
-     *
-     * @return the sensitivityLabel value.
-     */
-    @Generated
-    public Boolean isSensitivityLabel() {
-        return this.sensitivityLabel;
-    }
-
-    /**
-     * Set the sensitivityLabel property: A value indicating whether the field contains sensitivity label information.
-     *
-     * @param sensitivityLabel the sensitivityLabel value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setSensitivityLabel(Boolean sensitivityLabel) {
-        this.sensitivityLabel = sensitivityLabel;
-        return this;
     }
 }

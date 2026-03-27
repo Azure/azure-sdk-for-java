@@ -111,9 +111,6 @@ public final class VectorizableTextQuery extends VectorQuery {
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
-        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -136,9 +133,6 @@ public final class VectorizableTextQuery extends VectorQuery {
             Boolean exhaustive = null;
             Double oversampling = null;
             Float weight = null;
-            VectorThreshold threshold = null;
-            String filterOverride = null;
-            Integer perDocumentVectorLimit = null;
             String text = null;
             VectorQueryKind kind = VectorQueryKind.TEXT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -154,12 +148,6 @@ public final class VectorizableTextQuery extends VectorQuery {
                     oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     weight = reader.getNullable(JsonReader::getFloat);
-                } else if ("threshold".equals(fieldName)) {
-                    threshold = VectorThreshold.fromJson(reader);
-                } else if ("filterOverride".equals(fieldName)) {
-                    filterOverride = reader.getString();
-                } else if ("perDocumentVectorLimit".equals(fieldName)) {
-                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("kind".equals(fieldName)) {
@@ -174,9 +162,6 @@ public final class VectorizableTextQuery extends VectorQuery {
             deserializedVectorizableTextQuery.setExhaustive(exhaustive);
             deserializedVectorizableTextQuery.setOversampling(oversampling);
             deserializedVectorizableTextQuery.setWeight(weight);
-            deserializedVectorizableTextQuery.setThreshold(threshold);
-            deserializedVectorizableTextQuery.setFilterOverride(filterOverride);
-            deserializedVectorizableTextQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
             deserializedVectorizableTextQuery.kind = kind;
             return deserializedVectorizableTextQuery;
         });
@@ -189,36 +174,6 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Override
     public VectorizableTextQuery setWeight(Float weight) {
         super.setWeight(weight);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableTextQuery setThreshold(VectorThreshold threshold) {
-        super.setThreshold(threshold);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableTextQuery setFilterOverride(String filterOverride) {
-        super.setFilterOverride(filterOverride);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableTextQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
-        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
         return this;
     }
 }
