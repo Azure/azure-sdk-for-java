@@ -102,6 +102,13 @@
       <version>6.0.3</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
