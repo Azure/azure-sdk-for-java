@@ -35,8 +35,6 @@
 - `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
 - `ResponsesUtils` class has been removed. Use `ResponsesClient.getAzureFields(Response)` instead of `ResponsesUtils.getAzureFields(Response)` to extract Azure-specific fields from a response.
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Regenerated client from updated TypeSpec specification.
