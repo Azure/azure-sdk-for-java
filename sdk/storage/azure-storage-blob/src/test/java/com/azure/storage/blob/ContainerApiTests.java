@@ -2390,8 +2390,8 @@ public class ContainerApiTests extends BlobTestBase {
         List<ListBlobsIncludeItem> include = Collections.singletonList(ListBlobsIncludeItem.METADATA);
 
         ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, null, include, null, null,
-                null, null, Context.NONE);
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
+                null, com.azure.core.util.Context.NONE);
 
         // Verify Content-Type header
         String contentType = response.getDeserializedHeaders().getContentType();
@@ -2436,8 +2436,8 @@ public class ContainerApiTests extends BlobTestBase {
         List<ListBlobsIncludeItem> include = Collections.singletonList(ListBlobsIncludeItem.METADATA);
 
         ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, null, include, null, null,
-                null, null, Context.NONE);
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
+                null, com.azure.core.util.Context.NONE);
 
         // Verify Content-Type is Arrow
         String contentType = response.getDeserializedHeaders().getContentType();
