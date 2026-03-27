@@ -12,10 +12,10 @@ import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * The ContainersListBlobFlatSegmentApacheArrowHeaders model.
+ * The ContainersListBlobHierarchySegmentApacheArrowHeaders model.
  */
 @Fluent
-public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
+public final class ContainersListBlobHierarchySegmentApacheArrowHeaders {
     /*
      * The Content-Type property.
      */
@@ -50,11 +50,11 @@ public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of ContainersListBlobFlatSegmentApacheArrowHeaders class.
+     * Creates an instance of ContainersListBlobHierarchySegmentApacheArrowHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public ContainersListBlobFlatSegmentApacheArrowHeaders(HttpHeaders rawHeaders) {
+    public ContainersListBlobHierarchySegmentApacheArrowHeaders(HttpHeaders rawHeaders) {
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
@@ -81,10 +81,10 @@ public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
      * Set the contentType property: The Content-Type property.
      * 
      * @param contentType the contentType value to set.
-     * @return the ContainersListBlobFlatSegmentApacheArrowHeaders object itself.
+     * @return the ContainersListBlobHierarchySegmentApacheArrowHeaders object itself.
      */
     @Generated
-    public ContainersListBlobFlatSegmentApacheArrowHeaders setContentType(String contentType) {
+    public ContainersListBlobHierarchySegmentApacheArrowHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -103,10 +103,10 @@ public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the ContainersListBlobFlatSegmentApacheArrowHeaders object itself.
+     * @return the ContainersListBlobHierarchySegmentApacheArrowHeaders object itself.
      */
     @Generated
-    public ContainersListBlobFlatSegmentApacheArrowHeaders setXMsClientRequestId(String xMsClientRequestId) {
+    public ContainersListBlobHierarchySegmentApacheArrowHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
@@ -125,10 +125,10 @@ public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      * 
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the ContainersListBlobFlatSegmentApacheArrowHeaders object itself.
+     * @return the ContainersListBlobHierarchySegmentApacheArrowHeaders object itself.
      */
     @Generated
-    public ContainersListBlobFlatSegmentApacheArrowHeaders setXMsRequestId(String xMsRequestId) {
+    public ContainersListBlobHierarchySegmentApacheArrowHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -147,10 +147,10 @@ public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
      * Set the xMsVersion property: The x-ms-version property.
      * 
      * @param xMsVersion the xMsVersion value to set.
-     * @return the ContainersListBlobFlatSegmentApacheArrowHeaders object itself.
+     * @return the ContainersListBlobHierarchySegmentApacheArrowHeaders object itself.
      */
     @Generated
-    public ContainersListBlobFlatSegmentApacheArrowHeaders setXMsVersion(String xMsVersion) {
+    public ContainersListBlobHierarchySegmentApacheArrowHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -172,10 +172,10 @@ public final class ContainersListBlobFlatSegmentApacheArrowHeaders {
      * Set the date property: The Date property.
      * 
      * @param date the date value to set.
-     * @return the ContainersListBlobFlatSegmentApacheArrowHeaders object itself.
+     * @return the ContainersListBlobHierarchySegmentApacheArrowHeaders object itself.
      */
     @Generated
-    public ContainersListBlobFlatSegmentApacheArrowHeaders setDate(OffsetDateTime date) {
+    public ContainersListBlobHierarchySegmentApacheArrowHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
         } else {
