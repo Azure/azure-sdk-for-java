@@ -30,6 +30,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.models.conversations.Conversation;
@@ -193,9 +194,10 @@ public final class AgentsAsyncClient {
      * @return a {@link Mono} that completes when the agent version is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    public Mono<Response<Void>> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
-        return internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).then();
+        return internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -1568,8 +1570,9 @@ public final class AgentsAsyncClient {
      * @return a {@link Mono} that completes when the agent is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return internalDeleteAgentWithResponse(agentName, requestOptions).then();
+    public Mono<Response<Void>> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return internalDeleteAgentWithResponse(agentName, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

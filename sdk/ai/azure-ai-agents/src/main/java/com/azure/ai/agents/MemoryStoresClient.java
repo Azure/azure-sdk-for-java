@@ -28,6 +28,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.openai.models.responses.ResponseInputItem;
@@ -276,8 +277,8 @@ public final class MemoryStoresClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        internalDeleteMemoryStoreWithResponse(name, requestOptions);
+    public Response<Void> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteMemoryStoreWithResponse(name, requestOptions), null);
     }
 
     /**
@@ -534,8 +535,9 @@ public final class MemoryStoresClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteScopeWithResponse(String name, BinaryData deleteScopeRequest, RequestOptions requestOptions) {
-        internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
+    public Response<Void> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+        RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions), null);
     }
 
     /**

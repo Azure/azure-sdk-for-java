@@ -28,6 +28,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.openai.models.conversations.Conversation;
 import java.util.Map;
@@ -185,8 +186,10 @@ public final class AgentsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAgentVersionWithResponse(String agentName, String agentVersion, RequestOptions requestOptions) {
-        internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
+    public Response<Void> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+        RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions),
+            null);
     }
 
     /**
@@ -1474,8 +1477,8 @@ public final class AgentsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        internalDeleteAgentWithResponse(agentName, requestOptions);
+    public Response<Void> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteAgentWithResponse(agentName, requestOptions), null);
     }
 
     /**

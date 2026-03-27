@@ -30,6 +30,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -286,8 +287,9 @@ public final class MemoryStoresAsyncClient {
      * @return a {@link Mono} that completes when the memory store is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        return internalDeleteMemoryStoreWithResponse(name, requestOptions).then();
+    public Mono<Response<Void>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteMemoryStoreWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -539,9 +541,10 @@ public final class MemoryStoresAsyncClient {
      * @return a {@link Mono} that completes when the scope is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+    public Mono<Response<Void>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
-        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions).then();
+        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
