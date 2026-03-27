@@ -8,7 +8,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
-import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.ManagementAction;
@@ -19,8 +18,6 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDatasetDataPoint;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceEvent;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceStream;
 import com.azure.resourcemanager.deviceregistry.models.StorageDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.StreamMqttDestination;
@@ -36,7 +33,7 @@ import java.util.Map;
  */
 public final class NamespaceAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceAsset.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceAsset.
@@ -100,23 +97,6 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
                             .withDataPointConfiguration(
                                 "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
                             .withTypeRef("dataset1DataPoint2TypeRef")))))
-                .withEventGroups(Arrays.asList(new NamespaceEventGroup().withName("default")
-                    .withEvents(Arrays.asList(
-                        new NamespaceEvent().withName("event1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5")
-                            .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
-                            .withDestinations(Arrays.asList(new EventMqttDestination()
-                                .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
-                                    .withRetain(TopicRetainType.KEEP)
-                                    .withQos(MqttDestinationQos.QOS0)
-                                    .withTtl(7200L))))
-                            .withTypeRef("event1Ref"),
-                        new NamespaceEvent().withName("event2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt8")
-                            .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
-                            .withDestinations(Arrays.asList(new EventStorageDestination()
-                                .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/event2"))))
-                            .withTypeRef("event2Ref")))))
                 .withStreams(Arrays.asList(
                     new NamespaceStream().withName("stream1")
                         .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")

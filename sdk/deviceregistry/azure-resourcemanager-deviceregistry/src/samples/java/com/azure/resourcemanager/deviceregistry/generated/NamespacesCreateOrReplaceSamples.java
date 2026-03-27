@@ -7,8 +7,6 @@ package com.azure.resourcemanager.deviceregistry.generated;
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +15,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
      */
     /**
      * Sample code: CreateOrReplace_Namespace_With_Endpoints.
@@ -31,14 +29,16 @@ public final class NamespacesCreateOrReplaceSamples {
             .withRegion("North Europe")
             .withExistingResourceGroup("myResourceGroup")
             .withProperties(
-                new NamespaceProperties().withMessaging(new Messaging().withEndpoints(mapOf("eventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                        .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
-                    "anotherEventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                        .withAddress("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events")))))
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+                new NamespaceProperties()
+                    .withMessaging(
+                        new Messaging()
+                            .withEndpoints(
+                                mapOf("iothubEndpoint",
+                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                                        .withAddress("https://iothub-for-dps.azure-devices.net"),
+                                    "anotherIothubEndpoint",
+                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                                        .withAddress("https://iothub-for-dps-2.azure-devices.net")))))
             .create();
     }
 

@@ -4,20 +4,19 @@
 
 package com.azure.resourcemanager.deviceregistry.generated;
 
+import com.azure.resourcemanager.deviceregistry.models.BringYourOwnRoot;
 import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
 import com.azure.resourcemanager.deviceregistry.models.SupportedKeyType;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Policies CreateOrUpdate.
  */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Policies.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Policies.json
      */
     /**
      * Sample code: CreateOrReplace_Policies.
@@ -27,25 +26,12 @@ public final class PoliciesCreateOrUpdateSamples {
     public static void createOrReplacePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.policies()
             .define("mypolicy")
-            .withRegion("zjqtuvprnxvimzkkxaobgkm")
             .withExistingNamespace("rgdeviceregistry", "mynamespace")
-            .withTags(mapOf("key1088", "fakeTokenPlaceholder"))
             .withProperties(new PolicyProperties().withCertificate(new CertificateConfiguration()
                 .withCertificateAuthorityConfiguration(
-                    new CertificateAuthorityConfiguration().withKeyType(SupportedKeyType.ECC))
+                    new CertificateAuthorityConfiguration().withKeyType(SupportedKeyType.ECC)
+                        .withBringYourOwnRoot(new BringYourOwnRoot().withEnabled(true)))
                 .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
             .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

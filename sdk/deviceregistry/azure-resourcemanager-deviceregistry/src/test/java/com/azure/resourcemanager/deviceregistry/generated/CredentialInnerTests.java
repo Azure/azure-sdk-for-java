@@ -15,20 +15,20 @@ public final class CredentialInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"rcvpnazzmhjrunmp\",\"tags\":{\"skpbhenbtkcxywn\":\"dbhrbnlankxm\",\"qidybyx\":\"tnrsyn\",\"aaxdbabphlwrq\":\"zfcl\"},\"id\":\"fkts\",\"name\":\"hsucoc\",\"type\":\"nyyazttbtwwrqpue\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"krbm\",\"tags\":{\"wflzlfbxzpuzy\":\"gr\",\"y\":\"ispnqzahmgkbrp\",\"rgvtqag\":\"hibnuqqkpika\"},\"id\":\"buynhijggm\",\"name\":\"bfs\",\"type\":\"arbu\"}")
             .toObject(CredentialInner.class);
-        Assertions.assertEquals("rcvpnazzmhjrunmp", model.location());
-        Assertions.assertEquals("dbhrbnlankxm", model.tags().get("skpbhenbtkcxywn"));
+        Assertions.assertEquals("krbm", model.location());
+        Assertions.assertEquals("gr", model.tags().get("wflzlfbxzpuzy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialInner model = new CredentialInner().withLocation("rcvpnazzmhjrunmp")
-            .withTags(mapOf("skpbhenbtkcxywn", "dbhrbnlankxm", "qidybyx", "tnrsyn", "aaxdbabphlwrq", "zfcl"))
+        CredentialInner model = new CredentialInner().withLocation("krbm")
+            .withTags(mapOf("wflzlfbxzpuzy", "gr", "y", "ispnqzahmgkbrp", "rgvtqag", "hibnuqqkpika"))
             .withProperties(new CredentialProperties());
         model = BinaryData.fromObject(model).toObject(CredentialInner.class);
-        Assertions.assertEquals("rcvpnazzmhjrunmp", model.location());
-        Assertions.assertEquals("dbhrbnlankxm", model.tags().get("skpbhenbtkcxywn"));
+        Assertions.assertEquals("krbm", model.location());
+        Assertions.assertEquals("gr", model.tags().get("wflzlfbxzpuzy"));
     }
 
     // Use "Map.of" if available
