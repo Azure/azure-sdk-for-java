@@ -1054,8 +1054,8 @@ public final class BlobContainerClient {
             if (Boolean.TRUE.equals(finalOptions.getUseArrow())) {
                 Callable<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>> operation
                     = () -> this.azureBlobStorage.getContainers()
-                        .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, finalOptions.getPrefix(),
-                            nextMarker, finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
+                        .listBlobFlatSegmentApacheArrowWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
+                            finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
                             finalOptions.getEndBefore(), null, Context.NONE);
                 ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response
                     = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
