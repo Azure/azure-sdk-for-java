@@ -195,7 +195,7 @@ public class ClientTestBase extends TestProxyTestBase {
         String expectedVersion, String expectedDataUri) {
         assertDatasetVersion(fileDatasetVersion, expectedName, expectedVersion);
         if (expectedDataUri != null) {
-            Assertions.assertEquals(expectedDataUri, fileDatasetVersion.getDataUri(),
+            Assertions.assertEquals(expectedDataUri, fileDatasetVersion.getDataUrl(),
                 "Dataset dataUri should match expected value");
         }
     }

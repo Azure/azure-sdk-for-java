@@ -9,6 +9,14 @@
 
 ### Breaking Changes
 
+- Methods across sub-clients were renamed to include the resource name for disambiguation (continuing the pattern from `2.0.0-beta.1`):
+  - `DatasetsClient`: `listLatestVersion()` → `listLatestDatasetVersions()`, `listVersions()` → `listDatasetVersions()`, `deleteVersion()` → `deleteDatasetVersion()`, `createOrUpdateVersion()` → `createOrUpdateDatasetVersion()`
+  - `IndexesClient`: `listLatest()` → `listLatestIndexVersions()`, `listVersions()` → `listIndexVersions()`, `getVersion()` → `getIndexVersion()`, `createOrUpdateVersion()` → `createOrUpdateIndexVersion()`, `deleteVersion()` → `deleteIndexVersion()`
+  - `EvaluatorsClient`: `createVersion()` → `createEvaluatorVersion()`, `getVersion()` → `getEvaluatorVersion()`, `updateVersion()` → `updateEvaluatorVersion()`, `deleteVersion()` → `deleteEvaluatorVersion()`, `listVersions()` → `listEvaluatorVersions()`, `listLatestVersions()` → `listLatestEvaluatorVersions()`
+  - Same renames apply to the corresponding async clients.
+- `DatasetVersion.getDataUri()` / `setDataUri()` renamed to `getDataUrl()` / `setDataUrl()` (also on `FileDatasetVersion` and `FolderDatasetVersion`).
+- `DatasetsClient.createDatasetWithFolder()` no longer throws checked `IOException`; it now throws `UncheckedIOException` instead.
+
 ### Bugs Fixed
 
 - Fixed `createDatasetWithFolder` producing an invalid `dataUri` that caused a 400 error when registering the dataset.

@@ -20,7 +20,7 @@ public class IndexesClientTest extends ClientTestBase {
         IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         // Verify that listing indexes returns results
-        Iterable<AIProjectIndex> indexes = indexesClient.listLatest();
+        Iterable<AIProjectIndex> indexes = indexesClient.listLatestIndexVersions();
         Assertions.assertNotNull(indexes);
 
         // Verify that at least one index can be retrieved if available
@@ -43,7 +43,7 @@ public class IndexesClientTest extends ClientTestBase {
         IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         // First, get the name of an existing index from the list
-        Iterable<AIProjectIndex> indexes = indexesClient.listLatest();
+        Iterable<AIProjectIndex> indexes = indexesClient.listLatestIndexVersions();
         String indexName = null;
         for (AIProjectIndex index : indexes) {
             indexName = index.getName();
@@ -56,7 +56,7 @@ public class IndexesClientTest extends ClientTestBase {
         }
 
         // Verify that listing index versions returns results
-        Iterable<AIProjectIndex> indexVersions = indexesClient.listVersions(indexName);
+        Iterable<AIProjectIndex> indexVersions = indexesClient.listIndexVersions(indexName);
         Assertions.assertNotNull(indexVersions);
 
         boolean hasAtLeastOneVersion = false;
@@ -76,7 +76,7 @@ public class IndexesClientTest extends ClientTestBase {
         IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         // First, get the name and version of an existing index from the list
-        Iterable<AIProjectIndex> indexes = indexesClient.listLatest();
+        Iterable<AIProjectIndex> indexes = indexesClient.listLatestIndexVersions();
         String indexName = null;
         String indexVersion = null;
         for (AIProjectIndex index : indexes) {
@@ -90,7 +90,7 @@ public class IndexesClientTest extends ClientTestBase {
             return;
         }
 
-        AIProjectIndex index = indexesClient.getVersion(indexName, indexVersion);
+        AIProjectIndex index = indexesClient.getIndexVersion(indexName, indexVersion);
 
         // Verify the index properties
         assertValidIndex(index, indexName, indexVersion);
@@ -114,7 +114,7 @@ public class IndexesClientTest extends ClientTestBase {
         AzureAISearchIndex searchIndex
             = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
-        AIProjectIndex createdIndex = indexesClient.createOrUpdateVersion(indexName, indexVersion, searchIndex);
+        AIProjectIndex createdIndex = indexesClient.createOrUpdateIndexVersion(indexName, indexVersion, searchIndex);
 
         // Verify the created/updated index
         assertValidIndex(createdIndex, indexName, indexVersion);
@@ -126,6 +126,6 @@ public class IndexesClientTest extends ClientTestBase {
             + createdIndex.getVersion() + ")");
 
         // Clean up
-        indexesClient.deleteVersion(indexName, indexVersion);
+        indexesClient.deleteIndexVersion(indexName, indexVersion);
     }
 }
