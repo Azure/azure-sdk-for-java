@@ -31,12 +31,8 @@ public final class ApplicationsImpl implements Applications {
         Context context) {
         Response<ApplicationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, applicationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplicationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplicationImpl(inner.getValue(), this.manager()));
     }
 
     public Application get(String resourceGroupName, String accountName, String applicationName) {
