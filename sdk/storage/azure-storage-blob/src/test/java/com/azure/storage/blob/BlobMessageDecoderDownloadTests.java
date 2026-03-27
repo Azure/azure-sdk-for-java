@@ -86,13 +86,193 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     }
 
     /**
-     * Mirrors .NET StructuredMessagePopulatesCrcDownloadStreaming: after consuming the response stream with
-     * StorageCrc64 validation, the response details (ContentCrc64) are populated with the computed CRC.
-     * Aligned with .NET: decoder-only client, live/playback returns structured-encoded body.
+     * Async downloadContentWithResponse with CRC64 content validation.
+     */
+    @Test
+    public void downloadContentWithResponseContentValidation() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient
+            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        StepVerifier
+            .create(downloadClient.downloadContentWithResponse(
+                new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64)))
+            .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
+            .verifyComplete();
+    }
+
+    /**
+     * Async downloadToFileWithResponse with CRC64 content validation (parallel, multiple block sizes).
+     */
+    @ParameterizedTest
+    @ValueSource(ints = { 512, 2048 })
+    @Timeout(value = 5, unit = TimeUnit.MINUTES)
+    public void downloadToFileWithResponseContentValidation(int blockSize) throws IOException {
+        int payloadSize = (4 * blockSize) + 1;
+        byte[] randomData = getRandomByteArray(payloadSize);
+        bc.upload(Flux.just(ByteBuffer.wrap(randomData)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient
+            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        Path tempFile = Files.createTempFile("structured-download", ".bin");
+        Files.deleteIfExists(tempFile);
+
+        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) blockSize)
+            .setInitialTransferSizeLong((long) blockSize);
+        BlobDownloadToFileOptions options
+            = new BlobDownloadToFileOptions(tempFile.toString()).setParallelTransferOptions(parallelOptions)
+                .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+
+        try {
+            StepVerifier.create(downloadClient.downloadToFileWithResponse(options))
+                .assertNext(r -> assertNotNull(r.getValue()))
+                .expectComplete()
+                .verify(Duration.ofSeconds(60));
+
+            TestUtils.assertArraysEqual(randomData, Files.readAllBytes(tempFile));
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    /**
+     * Sync downloadStreamWithResponse with CRC64 content validation.
+     */
+    @Test
+    public void downloadStreamWithResponseContentValidationSync() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobClient syncClient
+            = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        syncClient.downloadStreamWithResponse(outputStream,
+            new BlobDownloadStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64), null,
+            Context.NONE);
+
+        TestUtils.assertArraysEqual(data, outputStream.toByteArray());
+    }
+
+    /**
+     * Sync downloadContentWithResponse with CRC64 content validation.
+     */
+    @Test
+    public void downloadContentWithResponseContentValidationSync() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobClient syncClient
+            = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        byte[] result
+            = syncClient
+                .downloadContentWithResponse(
+                    new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64), null,
+                    Context.NONE)
+                .getValue()
+                .toBytes();
+
+        TestUtils.assertArraysEqual(data, result);
+    }
+
+    /**
+     * Sync downloadToFileWithResponse with CRC64 content validation (parallel, multiple block sizes).
+     */
+    @ParameterizedTest
+    @ValueSource(ints = { 512, 2048 })
+    @Timeout(value = 5, unit = TimeUnit.MINUTES)
+    public void downloadToFileWithResponseContentValidationSync(int blockSize) throws IOException {
+        int payloadSize = (4 * blockSize) + 1;
+        byte[] randomData = getRandomByteArray(payloadSize);
+        bc.upload(Flux.just(ByteBuffer.wrap(randomData)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobClient downloadClient
+            = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        Path tempFile = Files.createTempFile("structured-download-sync", ".bin");
+        Files.deleteIfExists(tempFile);
+
+        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) blockSize)
+            .setInitialTransferSizeLong((long) blockSize);
+        BlobDownloadToFileOptions options
+            = new BlobDownloadToFileOptions(tempFile.toString()).setParallelTransferOptions(parallelOptions)
+                .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+
+        try {
+            assertNotNull(downloadClient.downloadToFileWithResponse(options, null, Context.NONE).getValue());
+            TestUtils.assertArraysEqual(randomData, Files.readAllBytes(tempFile));
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    /**
+     * Sync openInputStream with CRC64 content validation.
+     */
+    @Test
+    public void openInputStreamContentValidation() throws IOException {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobClient syncClient
+            = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        try (BlobInputStream blobInputStream = syncClient.openInputStream(
+            new BlobInputStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64), Context.NONE)) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buf = new byte[4096];
+            int n;
+            while ((n = blobInputStream.read(buf)) != -1) {
+                baos.write(buf, 0, n);
+            }
+            TestUtils.assertArraysEqual(data, baos.toByteArray());
+        }
+    }
+
+    /**
+     * Sync openSeekableByteChannelRead with CRC64 content validation.
+     */
+    @Test
+    public void openSeekableByteChannelReadContentValidation() throws IOException {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobClient syncClient
+            = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        try (SeekableByteChannel channel = syncClient.openSeekableByteChannelRead(
+            new BlobSeekableByteChannelReadOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64),
+            Context.NONE).getChannel()) {
+            ByteBuffer buf = ByteBuffer.allocate(data.length + 100);
+            int totalRead = 0;
+            int bytesRead;
+            while ((bytesRead = channel.read(buf)) > 0) {
+                totalRead += bytesRead;
+            }
+            buf.flip();
+            byte[] result = new byte[totalRead];
+            buf.get(result, 0, totalRead);
+            TestUtils.assertArraysEqual(data, result);
+        }
+    }
+
+    /**
+     * After consuming the response stream with CRC64 validation, ContentCrc64 header is populated.
      */
     @Test
     public void structuredMessagePopulatesCrc64DownloadStreaming() throws IOException {
-        int dataLength = Constants.KB;
+        int dataLength = 10 * 1024 * 1024;
         byte[] data = getRandomByteArray(dataLength);
         bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
@@ -480,7 +660,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     @Timeout(value = 2, unit = TimeUnit.MINUTES)
     @EnabledIf("isLiveMode")
     public void olderServiceVersionThrowsOnStructuredMessage() {
-        int dataLength = Constants.KB;
+        int dataLength = 10 * 1024 * 1024;
         byte[] data = getRandomByteArray(dataLength);
         bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
@@ -495,9 +675,100 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
             = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
 
         StepVerifier
-            .create(oldVersionClient.downloadStreamWithResponse(range, null, null, false, validationOptions)
+            .create(oldVersionClient
+                .downloadStreamWithResponse(
+                    new BlobDownloadStreamOptions().setRange(new BlobRange(0, (long) (10 * 1024 * 1024)))
+                        .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .verifyError(BlobStorageException.class);
+    }
+
+    /**
+     * Default behavior: when no algorithm is specified, default is NONE (no validation).
+     */
+    @Test
+    public void downloadStreamDefaultAlgorithmIsNone() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StepVerifier.create(bc.downloadStreamWithResponse(new BlobDownloadStreamOptions())
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
+                assertNotNull(result);
+                assertEquals(data.length, result.length);
+            }).verifyComplete();
+    }
+
+    /**
+     * MD5 on downloadStream (supported): MD5 transactional validation path.
+     */
+    @Test
+    public void downloadStreamWithMd5() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StepVerifier
+            .create(bc
+                .downloadStreamWithResponse(
+                    new BlobDownloadStreamOptions().setRange(new BlobRange(0, (long) data.length))
+                        .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.MD5))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(result -> TestUtils.assertArraysEqual(data, result))
+            .verifyComplete();
+    }
+
+    /**
+     * AUTO on downloadStream resolves to CRC64 behavior.
+     */
+    @Test
+    public void downloadStreamWithAuto() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient
+            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        StepVerifier
+            .create(downloadClient
+                .downloadStreamWithResponse(
+                    new BlobDownloadStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.AUTO))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(result -> TestUtils.assertArraysEqual(data, result))
+            .verifyComplete();
+    }
+
+    /**
+     * downloadContentWithResponse with NONE: no validation triggered.
+     */
+    @Test
+    public void downloadContentWithNone() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StepVerifier
+            .create(bc.downloadContentWithResponse(
+                new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.NONE)))
+            .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
+            .verifyComplete();
+    }
+
+    /**
+     * downloadContentWithResponse with AUTO resolves to CRC64 behavior.
+     */
+    @Test
+    public void downloadContentWithAuto() {
+        byte[] data = getRandomByteArray(10 * 1024 * 1024);
+        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient
+            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        StepVerifier
+            .create(downloadClient.downloadContentWithResponse(
+                new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)))
+            .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
+            .verifyComplete();
     }
 
     static boolean isLiveMode() {
