@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response of a ExpressRouteProviderPort list operation.
+ * Response for ListExpressRouteProviderPort API service call.
  */
 @Immutable
 public final class ExpressRouteProviderPortListResultInner
@@ -77,7 +77,6 @@ public final class ExpressRouteProviderPortListResultInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 

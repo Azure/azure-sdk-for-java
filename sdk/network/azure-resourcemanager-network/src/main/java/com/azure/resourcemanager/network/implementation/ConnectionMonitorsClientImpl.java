@@ -37,7 +37,6 @@ import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.implementation.models.ConnectionMonitorListResult;
-import com.azure.resourcemanager.network.models.StopFinalResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -1237,12 +1236,12 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
-        String networkWatcherName, String connectionMonitorName) {
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this.client.<StopFinalResult, StopFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            StopFinalResult.class, StopFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1258,13 +1257,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
-        String networkWatcherName, String connectionMonitorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this.client.<StopFinalResult, StopFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            StopFinalResult.class, StopFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1279,8 +1278,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
-        String networkWatcherName, String connectionMonitorName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
@@ -1297,8 +1296,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
-        String networkWatcherName, String connectionMonitorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .getSyncPoller();
     }
@@ -1312,11 +1311,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopFinalResult> stopAsync(String resourceGroupName, String networkWatcherName,
-        String connectionMonitorName) {
+    public Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1331,11 +1329,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StopFinalResult> stopAsync(String resourceGroupName, String networkWatcherName,
-        String connectionMonitorName, Context context) {
+    private Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
         return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1349,11 +1347,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopFinalResult stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
+    public void stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
     }
 
     /**
@@ -1366,12 +1363,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopFinalResult stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+    public void stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         Context context) {
-        return stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
+        stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
     /**

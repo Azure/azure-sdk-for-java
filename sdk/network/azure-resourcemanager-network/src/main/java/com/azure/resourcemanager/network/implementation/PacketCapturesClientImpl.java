@@ -33,7 +33,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
-import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureInner;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureQueryStatusResultInner;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
@@ -259,12 +258,13 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return the {@link PollerFlux} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreateAsync(String resourceGroupName,
-        String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
+    public PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreateAsync(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters);
-        return this.client.<NetworkWatcherInner, NetworkWatcherInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NetworkWatcherInner.class, NetworkWatcherInner.class, this.client.getContext());
+        return this.client.<PacketCaptureResultInner, PacketCaptureResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PacketCaptureResultInner.class, PacketCaptureResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -281,13 +281,14 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return the {@link PollerFlux} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreateAsync(String resourceGroupName,
-        String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters, Context context) {
+    private PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreateAsync(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context);
-        return this.client.<NetworkWatcherInner, NetworkWatcherInner>getLroResult(mono, this.client.getHttpPipeline(),
-            NetworkWatcherInner.class, NetworkWatcherInner.class, context);
+        return this.client.<PacketCaptureResultInner, PacketCaptureResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PacketCaptureResultInner.class, PacketCaptureResultInner.class, context);
     }
 
     /**
@@ -303,8 +304,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreate(String resourceGroupName,
-        String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
+    public SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
         return this.beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters)
             .getSyncPoller();
     }
@@ -323,8 +324,9 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreate(String resourceGroupName,
-        String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters, Context context) {
+    public SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters,
+        Context context) {
         return this.beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context)
             .getSyncPoller();
     }
@@ -342,7 +344,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return information about packet capture session on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkWatcherInner> createAsync(String resourceGroupName, String networkWatcherName,
+    public Mono<PacketCaptureResultInner> createAsync(String resourceGroupName, String networkWatcherName,
         String packetCaptureName, PacketCaptureInner parameters) {
         return beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -362,7 +364,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return information about packet capture session on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkWatcherInner> createAsync(String resourceGroupName, String networkWatcherName,
+    private Mono<PacketCaptureResultInner> createAsync(String resourceGroupName, String networkWatcherName,
         String packetCaptureName, PacketCaptureInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -381,8 +383,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkWatcherInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName,
-        PacketCaptureInner parameters) {
+    public PacketCaptureResultInner create(String resourceGroupName, String networkWatcherName,
+        String packetCaptureName, PacketCaptureInner parameters) {
         return createAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters).block();
     }
 
@@ -400,8 +402,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkWatcherInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName,
-        PacketCaptureInner parameters, Context context) {
+    public PacketCaptureResultInner create(String resourceGroupName, String networkWatcherName,
+        String packetCaptureName, PacketCaptureInner parameters, Context context) {
         return createAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context).block();
     }
 

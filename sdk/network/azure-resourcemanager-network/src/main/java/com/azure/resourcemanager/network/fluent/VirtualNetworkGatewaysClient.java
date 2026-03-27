@@ -25,16 +25,14 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInne
 import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersInner;
 import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse;
-import com.azure.resourcemanager.network.models.DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse1;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse2;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse3;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse4;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse5;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse6;
 import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
-import com.azure.resourcemanager.network.models.GeneratevpnclientpackageFinalResult;
-import com.azure.resourcemanager.network.models.GetVpnProfilePackageUrlFinalResult;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
-import com.azure.resourcemanager.network.models.ResetVpnClientSharedKeyFinalResult;
-import com.azure.resourcemanager.network.models.StartExpressRouteSiteFailoverSimulationFinalResult;
-import com.azure.resourcemanager.network.models.StartPacketCaptureFinalResult;
-import com.azure.resourcemanager.network.models.StopExpressRouteSiteFailoverSimulationFinalResult;
-import com.azure.resourcemanager.network.models.StopPacketCaptureFinalResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayMigrationParameters;
 import com.azure.resourcemanager.network.models.VpnClientParameters;
@@ -661,8 +659,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ResetVpnClientSharedKeyFinalResult>, ResetVpnClientSharedKeyFinalResult>
-        beginResetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName);
+    PollerFlux<PollResult<Void>, Void> beginResetVpnClientSharedKeyAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -675,8 +673,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResetVpnClientSharedKeyFinalResult>, ResetVpnClientSharedKeyFinalResult>
-        beginResetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName);
+    SyncPoller<PollResult<Void>, Void> beginResetVpnClientSharedKey(String resourceGroupName,
+        String virtualNetworkGatewayName);
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
@@ -690,51 +688,46 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResetVpnClientSharedKeyFinalResult>, ResetVpnClientSharedKeyFinalResult>
-        beginResetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName, Context context);
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResetVpnClientSharedKeyFinalResult> resetVpnClientSharedKeyAsync(String resourceGroupName,
-        String virtualNetworkGatewayName);
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResetVpnClientSharedKeyFinalResult resetVpnClientSharedKey(String resourceGroupName,
-        String virtualNetworkGatewayName);
-
-    /**
-     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResetVpnClientSharedKeyFinalResult resetVpnClientSharedKey(String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginResetVpnClientSharedKey(String resourceGroupName,
         String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetVpnClientSharedKey(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -763,9 +756,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<GeneratevpnclientpackageFinalResult>, GeneratevpnclientpackageFinalResult>
-        beginGeneratevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName,
-            VpnClientParameters parameters);
+    PollerFlux<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGeneratevpnclientpackageAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -779,9 +771,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GeneratevpnclientpackageFinalResult>, GeneratevpnclientpackageFinalResult>
-        beginGeneratevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName,
-            VpnClientParameters parameters);
+    SyncPoller<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGeneratevpnclientpackage(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -796,9 +787,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GeneratevpnclientpackageFinalResult>, GeneratevpnclientpackageFinalResult>
-        beginGeneratevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName,
-            VpnClientParameters parameters, Context context);
+    SyncPoller<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGeneratevpnclientpackage(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -812,7 +802,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GeneratevpnclientpackageFinalResult> generatevpnclientpackageAsync(String resourceGroupName,
+    Mono<ArmAcceptedLroResponse> generatevpnclientpackageAsync(String resourceGroupName,
         String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
@@ -827,8 +817,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GeneratevpnclientpackageFinalResult generatevpnclientpackage(String resourceGroupName,
-        String virtualNetworkGatewayName, VpnClientParameters parameters);
+    ArmAcceptedLroResponse generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName,
+        VpnClientParameters parameters);
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
@@ -843,8 +833,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GeneratevpnclientpackageFinalResult generatevpnclientpackage(String resourceGroupName,
-        String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
+    ArmAcceptedLroResponse generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName,
+        VpnClientParameters parameters, Context context);
 
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
@@ -875,7 +865,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfileAsync(
+    PollerFlux<PollResult<ArmAcceptedLroResponse1>, ArmAcceptedLroResponse1> beginGenerateVpnProfileAsync(
         String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
@@ -891,7 +881,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfile(
+    SyncPoller<PollResult<ArmAcceptedLroResponse1>, ArmAcceptedLroResponse1> beginGenerateVpnProfile(
         String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
@@ -908,7 +898,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfile(
+    SyncPoller<PollResult<ArmAcceptedLroResponse1>, ArmAcceptedLroResponse1> beginGenerateVpnProfile(
         String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context);
 
     /**
@@ -924,7 +914,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ArmAcceptedLroResponse> generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName,
+    Mono<ArmAcceptedLroResponse1> generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName,
         VpnClientParameters parameters);
 
     /**
@@ -940,7 +930,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAcceptedLroResponse generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
+    ArmAcceptedLroResponse1 generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
         VpnClientParameters parameters);
 
     /**
@@ -957,7 +947,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAcceptedLroResponse generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
+    ArmAcceptedLroResponse1 generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
         VpnClientParameters parameters, Context context);
 
     /**
@@ -989,7 +979,7 @@ public interface VirtualNetworkGatewaysClient
      * gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<GetVpnProfilePackageUrlFinalResult>, GetVpnProfilePackageUrlFinalResult>
+    PollerFlux<PollResult<ArmAcceptedLroResponse2>, ArmAcceptedLroResponse2>
         beginGetVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
@@ -1005,7 +995,7 @@ public interface VirtualNetworkGatewaysClient
      * gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GetVpnProfilePackageUrlFinalResult>, GetVpnProfilePackageUrlFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse2>, ArmAcceptedLroResponse2>
         beginGetVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
@@ -1022,7 +1012,7 @@ public interface VirtualNetworkGatewaysClient
      * gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GetVpnProfilePackageUrlFinalResult>, GetVpnProfilePackageUrlFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse2>, ArmAcceptedLroResponse2>
         beginGetVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 
     /**
@@ -1038,7 +1028,7 @@ public interface VirtualNetworkGatewaysClient
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GetVpnProfilePackageUrlFinalResult> getVpnProfilePackageUrlAsync(String resourceGroupName,
+    Mono<ArmAcceptedLroResponse2> getVpnProfilePackageUrlAsync(String resourceGroupName,
         String virtualNetworkGatewayName);
 
     /**
@@ -1053,8 +1043,7 @@ public interface VirtualNetworkGatewaysClient
      * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GetVpnProfilePackageUrlFinalResult getVpnProfilePackageUrl(String resourceGroupName,
-        String virtualNetworkGatewayName);
+    ArmAcceptedLroResponse2 getVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
@@ -1069,8 +1058,8 @@ public interface VirtualNetworkGatewaysClient
      * @return pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GetVpnProfilePackageUrlFinalResult getVpnProfilePackageUrl(String resourceGroupName,
-        String virtualNetworkGatewayName, Context context);
+    ArmAcceptedLroResponse2 getVpnProfilePackageUrl(String resourceGroupName, String virtualNetworkGatewayName,
+        Context context);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -2067,7 +2056,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StartPacketCaptureFinalResult>, StartPacketCaptureFinalResult> beginStartPacketCaptureAsync(
+    PollerFlux<PollResult<ArmAcceptedLroResponse3>, ArmAcceptedLroResponse3> beginStartPacketCaptureAsync(
         String resourceGroupName, String virtualNetworkGatewayName, VpnPacketCaptureStartParameters parameters);
 
     /**
@@ -2081,7 +2070,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StartPacketCaptureFinalResult>, StartPacketCaptureFinalResult>
+    PollerFlux<PollResult<ArmAcceptedLroResponse3>, ArmAcceptedLroResponse3>
         beginStartPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
@@ -2095,7 +2084,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StartPacketCaptureFinalResult>, StartPacketCaptureFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse3>, ArmAcceptedLroResponse3>
         beginStartPacketCapture(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
@@ -2111,7 +2100,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StartPacketCaptureFinalResult>, StartPacketCaptureFinalResult> beginStartPacketCapture(
+    SyncPoller<PollResult<ArmAcceptedLroResponse3>, ArmAcceptedLroResponse3> beginStartPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayName, VpnPacketCaptureStartParameters parameters,
         Context context);
 
@@ -2127,8 +2116,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StartPacketCaptureFinalResult> startPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayName, VpnPacketCaptureStartParameters parameters);
+    Mono<ArmAcceptedLroResponse3> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName,
+        VpnPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -2141,8 +2130,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StartPacketCaptureFinalResult> startPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayName);
+    Mono<ArmAcceptedLroResponse3> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -2155,7 +2143,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StartPacketCaptureFinalResult startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName);
+    ArmAcceptedLroResponse3 startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
@@ -2170,7 +2158,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StartPacketCaptureFinalResult startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
+    ArmAcceptedLroResponse3 startPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
         VpnPacketCaptureStartParameters parameters, Context context);
 
     /**
@@ -2200,7 +2188,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StopPacketCaptureFinalResult>, StopPacketCaptureFinalResult> beginStopPacketCaptureAsync(
+    PollerFlux<PollResult<ArmAcceptedLroResponse4>, ArmAcceptedLroResponse4> beginStopPacketCaptureAsync(
         String resourceGroupName, String virtualNetworkGatewayName, VpnPacketCaptureStopParameters parameters);
 
     /**
@@ -2215,7 +2203,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopPacketCaptureFinalResult>, StopPacketCaptureFinalResult> beginStopPacketCapture(
+    SyncPoller<PollResult<ArmAcceptedLroResponse4>, ArmAcceptedLroResponse4> beginStopPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayName, VpnPacketCaptureStopParameters parameters);
 
     /**
@@ -2231,7 +2219,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopPacketCaptureFinalResult>, StopPacketCaptureFinalResult> beginStopPacketCapture(
+    SyncPoller<PollResult<ArmAcceptedLroResponse4>, ArmAcceptedLroResponse4> beginStopPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayName, VpnPacketCaptureStopParameters parameters,
         Context context);
 
@@ -2247,8 +2235,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StopPacketCaptureFinalResult> stopPacketCaptureAsync(String resourceGroupName,
-        String virtualNetworkGatewayName, VpnPacketCaptureStopParameters parameters);
+    Mono<ArmAcceptedLroResponse4> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayName,
+        VpnPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
@@ -2262,7 +2250,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopPacketCaptureFinalResult stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
+    ArmAcceptedLroResponse4 stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
         VpnPacketCaptureStopParameters parameters);
 
     /**
@@ -2278,7 +2266,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopPacketCaptureFinalResult stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
+    ArmAcceptedLroResponse4 stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
         VpnPacketCaptureStopParameters parameters, Context context);
 
     /**
@@ -2556,7 +2544,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StartExpressRouteSiteFailoverSimulationFinalResult>, StartExpressRouteSiteFailoverSimulationFinalResult>
+    PollerFlux<PollResult<ArmAcceptedLroResponse5>, ArmAcceptedLroResponse5>
         beginStartExpressRouteSiteFailoverSimulationAsync(String resourceGroupName, String virtualNetworkGatewayName,
             String peeringLocation);
 
@@ -2572,7 +2560,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StartExpressRouteSiteFailoverSimulationFinalResult>, StartExpressRouteSiteFailoverSimulationFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse5>, ArmAcceptedLroResponse5>
         beginStartExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
             String peeringLocation);
 
@@ -2589,7 +2577,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StartExpressRouteSiteFailoverSimulationFinalResult>, StartExpressRouteSiteFailoverSimulationFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse5>, ArmAcceptedLroResponse5>
         beginStartExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
             String peeringLocation, Context context);
 
@@ -2605,8 +2593,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StartExpressRouteSiteFailoverSimulationFinalResult> startExpressRouteSiteFailoverSimulationAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation);
+    Mono<ArmAcceptedLroResponse5> startExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation);
 
     /**
      * This operation starts failover simulation on the gateway for the specified peering location.
@@ -2620,7 +2608,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StartExpressRouteSiteFailoverSimulationFinalResult startExpressRouteSiteFailoverSimulation(String resourceGroupName,
+    ArmAcceptedLroResponse5 startExpressRouteSiteFailoverSimulation(String resourceGroupName,
         String virtualNetworkGatewayName, String peeringLocation);
 
     /**
@@ -2636,7 +2624,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StartExpressRouteSiteFailoverSimulationFinalResult startExpressRouteSiteFailoverSimulation(String resourceGroupName,
+    ArmAcceptedLroResponse5 startExpressRouteSiteFailoverSimulation(String resourceGroupName,
         String virtualNetworkGatewayName, String peeringLocation, Context context);
 
     /**
@@ -2668,7 +2656,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StopExpressRouteSiteFailoverSimulationFinalResult>, StopExpressRouteSiteFailoverSimulationFinalResult>
+    PollerFlux<PollResult<ArmAcceptedLroResponse6>, ArmAcceptedLroResponse6>
         beginStopExpressRouteSiteFailoverSimulationAsync(String resourceGroupName, String virtualNetworkGatewayName,
             ExpressRouteFailoverStopApiParameters stopParameters);
 
@@ -2685,7 +2673,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopExpressRouteSiteFailoverSimulationFinalResult>, StopExpressRouteSiteFailoverSimulationFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse6>, ArmAcceptedLroResponse6>
         beginStopExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
             ExpressRouteFailoverStopApiParameters stopParameters);
 
@@ -2703,7 +2691,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopExpressRouteSiteFailoverSimulationFinalResult>, StopExpressRouteSiteFailoverSimulationFinalResult>
+    SyncPoller<PollResult<ArmAcceptedLroResponse6>, ArmAcceptedLroResponse6>
         beginStopExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
             ExpressRouteFailoverStopApiParameters stopParameters, Context context);
 
@@ -2720,9 +2708,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StopExpressRouteSiteFailoverSimulationFinalResult> stopExpressRouteSiteFailoverSimulationAsync(
-        String resourceGroupName, String virtualNetworkGatewayName,
-        ExpressRouteFailoverStopApiParameters stopParameters);
+    Mono<ArmAcceptedLroResponse6> stopExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
 
     /**
      * This operation stops failover simulation on the gateway for the specified peering location.
@@ -2737,7 +2724,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopExpressRouteSiteFailoverSimulationFinalResult stopExpressRouteSiteFailoverSimulation(String resourceGroupName,
+    ArmAcceptedLroResponse6 stopExpressRouteSiteFailoverSimulation(String resourceGroupName,
         String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
 
     /**
@@ -2754,7 +2741,7 @@ public interface VirtualNetworkGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopExpressRouteSiteFailoverSimulationFinalResult stopExpressRouteSiteFailoverSimulation(String resourceGroupName,
+    ArmAcceptedLroResponse6 stopExpressRouteSiteFailoverSimulation(String resourceGroupName,
         String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context);
 
     /**
@@ -2898,9 +2885,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult>, DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult>
-        beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(String resourceGroupName,
-            String virtualNetworkGatewayName, P2SVpnConnectionRequest request);
+    PollerFlux<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnectionsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, P2SVpnConnectionRequest request);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -2914,9 +2900,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult>, DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult>
-        beginDisconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName, String virtualNetworkGatewayName,
-            P2SVpnConnectionRequest request);
+    SyncPoller<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName,
+        String virtualNetworkGatewayName, P2SVpnConnectionRequest request);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -2931,9 +2916,8 @@ public interface VirtualNetworkGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult>, DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult>
-        beginDisconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName, String virtualNetworkGatewayName,
-            P2SVpnConnectionRequest request, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDisconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName,
+        String virtualNetworkGatewayName, P2SVpnConnectionRequest request, Context context);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -2944,11 +2928,11 @@ public interface VirtualNetworkGatewaysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult> disconnectVirtualNetworkGatewayVpnConnectionsAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, P2SVpnConnectionRequest request);
+    Mono<Void> disconnectVirtualNetworkGatewayVpnConnectionsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, P2SVpnConnectionRequest request);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -2959,11 +2943,10 @@ public interface VirtualNetworkGatewaysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult disconnectVirtualNetworkGatewayVpnConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, P2SVpnConnectionRequest request);
+    void disconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName, String virtualNetworkGatewayName,
+        P2SVpnConnectionRequest request);
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
@@ -2975,11 +2958,10 @@ public interface VirtualNetworkGatewaysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult disconnectVirtualNetworkGatewayVpnConnections(
-        String resourceGroupName, String virtualNetworkGatewayName, P2SVpnConnectionRequest request, Context context);
+    void disconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName, String virtualNetworkGatewayName,
+        P2SVpnConnectionRequest request, Context context);
 
     /**
      * Trigger prepare migration for the virtual network gateway.

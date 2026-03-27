@@ -12,15 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The UnprepareNetworkPoliciesFinalResult model.
+ * Resource operation accepted.
  */
 @Immutable
-public final class UnprepareNetworkPoliciesFinalResult
-    implements JsonSerializable<UnprepareNetworkPoliciesFinalResult> {
+public final class ArmAcceptedLroResponse2 implements JsonSerializable<ArmAcceptedLroResponse2> {
     /**
-     * Creates an instance of UnprepareNetworkPoliciesFinalResult class.
+     * Creates an instance of ArmAcceptedLroResponse2 class.
      */
-    private UnprepareNetworkPoliciesFinalResult() {
+    private ArmAcceptedLroResponse2() {
     }
 
     /**
@@ -41,17 +40,16 @@ public final class UnprepareNetworkPoliciesFinalResult
     }
 
     /**
-     * Reads an instance of UnprepareNetworkPoliciesFinalResult from the JsonReader.
+     * Reads an instance of ArmAcceptedLroResponse2 from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UnprepareNetworkPoliciesFinalResult if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the UnprepareNetworkPoliciesFinalResult.
+     * @return An instance of ArmAcceptedLroResponse2 if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmAcceptedLroResponse2.
      */
-    public static UnprepareNetworkPoliciesFinalResult fromJson(JsonReader jsonReader) throws IOException {
+    public static ArmAcceptedLroResponse2 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            UnprepareNetworkPoliciesFinalResult deserializedUnprepareNetworkPoliciesFinalResult
-                = new UnprepareNetworkPoliciesFinalResult();
+            ArmAcceptedLroResponse2 deserializedArmAcceptedLroResponse2 = new ArmAcceptedLroResponse2();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -59,7 +57,7 @@ public final class UnprepareNetworkPoliciesFinalResult
                 reader.skipChildren();
             }
 
-            return deserializedUnprepareNetworkPoliciesFinalResult;
+            return deserializedArmAcceptedLroResponse2;
         });
     }
 }

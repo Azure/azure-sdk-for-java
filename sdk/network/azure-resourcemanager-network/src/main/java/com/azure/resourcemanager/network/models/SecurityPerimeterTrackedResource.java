@@ -4,17 +4,29 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location.
  */
-@Immutable
+@Fluent
 public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource {
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * The geo-location where the resource lives
+     */
+    private String location;
+
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
@@ -40,6 +52,46 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
      * Creates an instance of SecurityPerimeterTrackedResource class.
      */
     public SecurityPerimeterTrackedResource() {
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the SecurityPerimeterTrackedResource object itself.
+     */
+    public SecurityPerimeterTrackedResource withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The geo-location where the resource lives.
+     * 
+     * @param location the location value to set.
+     * @return the SecurityPerimeterTrackedResource object itself.
+     */
+    public SecurityPerimeterTrackedResource withLocation(String location) {
+        this.location = location;
+        return this;
     }
 
     /**
@@ -91,10 +143,17 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
      */
     @Override
     public void validate() {
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model SecurityPerimeterTrackedResource"));
+        }
         if (systemData() != null) {
             systemData().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPerimeterTrackedResource.class);
 
     /**
      * {@inheritDoc}
@@ -102,6 +161,8 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -111,6 +172,7 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecurityPerimeterTrackedResource if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SecurityPerimeterTrackedResource.
      */
     public static SecurityPerimeterTrackedResource fromJson(JsonReader jsonReader) throws IOException {
@@ -130,6 +192,11 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSecurityPerimeterTrackedResource.systemData
                         = SecurityPerimeterSystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSecurityPerimeterTrackedResource.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecurityPerimeterTrackedResource.tags = tags;
                 } else {
                     reader.skipChildren();
                 }

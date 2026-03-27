@@ -82,7 +82,6 @@ import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurations
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
-import com.azure.resourcemanager.network.fluent.NetworkInterfacesOperationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagerCommitsClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagerDeploymentStatusOperationsClient;
@@ -2520,20 +2519,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The NetworkInterfacesOperationsClient object to access its operations.
-     */
-    private final NetworkInterfacesOperationsClient networkInterfacesOperations;
-
-    /**
-     * Gets the NetworkInterfacesOperationsClient object to access its operations.
-     * 
-     * @return the NetworkInterfacesOperationsClient object.
-     */
-    public NetworkInterfacesOperationsClient getNetworkInterfacesOperations() {
-        return this.networkInterfacesOperations;
-    }
-
-    /**
      * Initializes an instance of NetworkManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -2718,6 +2703,5 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.serviceTags = new ServiceTagsClientImpl(this);
         this.serviceTagInformations = new ServiceTagInformationsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
-        this.networkInterfacesOperations = new NetworkInterfacesOperationsClientImpl(this);
     }
 }

@@ -19,7 +19,6 @@ import com.azure.resourcemanager.network.fluent.models.BastionSessionStateInner;
 import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
 import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
 import com.azure.resourcemanager.network.models.BastionShareableLinkTokenListRequest;
-import com.azure.resourcemanager.network.models.DeleteBastionShareableLinkFinalResult;
 import com.azure.resourcemanager.network.models.SessionIds;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -533,56 +532,7 @@ public interface BastionHostsClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest, Context context);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bastionHostName The name of the Bastion Host.
-     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeleteBastionShareableLinkFinalResult> deleteBastionShareableLinkAsync(String resourceGroupName,
+    PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName,
         String bastionHostName, BastionShareableLinkListRequest bslRequest);
 
     /**
@@ -594,10 +544,10 @@ public interface BastionHostsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeleteBastionShareableLinkFinalResult deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName,
         BastionShareableLinkListRequest bslRequest);
 
     /**
@@ -610,10 +560,54 @@ public interface BastionHostsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest, Context context);
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeleteBastionShareableLinkFinalResult deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
+    Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest);
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest);
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
         BastionShareableLinkListRequest bslRequest, Context context);
 
     /**

@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The StopFinalResult model.
+ * Resource operation accepted.
  */
 @Immutable
-public final class StopFinalResult implements JsonSerializable<StopFinalResult> {
+public final class ArmAcceptedLroResponse13 implements JsonSerializable<ArmAcceptedLroResponse13> {
     /**
-     * Creates an instance of StopFinalResult class.
+     * Creates an instance of ArmAcceptedLroResponse13 class.
      */
-    private StopFinalResult() {
+    private ArmAcceptedLroResponse13() {
     }
 
     /**
@@ -40,16 +40,16 @@ public final class StopFinalResult implements JsonSerializable<StopFinalResult> 
     }
 
     /**
-     * Reads an instance of StopFinalResult from the JsonReader.
+     * Reads an instance of ArmAcceptedLroResponse13 from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StopFinalResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StopFinalResult.
+     * @return An instance of ArmAcceptedLroResponse13 if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmAcceptedLroResponse13.
      */
-    public static StopFinalResult fromJson(JsonReader jsonReader) throws IOException {
+    public static ArmAcceptedLroResponse13 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StopFinalResult deserializedStopFinalResult = new StopFinalResult();
+            ArmAcceptedLroResponse13 deserializedArmAcceptedLroResponse13 = new ArmAcceptedLroResponse13();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -57,7 +57,7 @@ public final class StopFinalResult implements JsonSerializable<StopFinalResult> 
                 reader.skipChildren();
             }
 
-            return deserializedStopFinalResult;
+            return deserializedArmAcceptedLroResponse13;
         });
     }
 }

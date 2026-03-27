@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.OfficeTrafficCategory;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
+import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Map;
  * VirtualWAN Resource.
  */
 @Fluent
-public final class VirtualWanInner extends ResourceWithRequiredLocation {
+public final class VirtualWanInner extends TrackedResourceWithSettableId {
     /*
      * Properties of the virtual WAN.
      */

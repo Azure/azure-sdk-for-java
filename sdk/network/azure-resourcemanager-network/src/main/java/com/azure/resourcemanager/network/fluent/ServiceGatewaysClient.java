@@ -16,7 +16,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ServiceGatewayAddressLocationResponseInner;
 import com.azure.resourcemanager.network.fluent.models.ServiceGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ServiceGatewayServiceInner;
-import com.azure.resourcemanager.network.models.NoContentResponse;
 import com.azure.resourcemanager.network.models.ServiceGatewayUpdateAddressLocationsRequest;
 import com.azure.resourcemanager.network.models.ServiceGatewayUpdateServicesRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -464,33 +463,7 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocationsAsync(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters);
-
-    /**
-     * Creates or updates address locations within the service gateway.
-     * 
-     * The request supports both full and partial update modes at two levels: location and address.
-     * 
-     * Full update replaces all existing data.
-     * 
-     * Partial update modifies only the specified entries:
-     * 
-     * For location-level partial updates, if no address is provided, the existing address will be deleted.
-     * 
-     * For address-level partial updates, if no services are provided, the existing services will be considered for
-     * deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceGatewayName The name of the service gateway.
-     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocations(String resourceGroupName,
+    PollerFlux<PollResult<Void>, Void> beginUpdateAddressLocationsAsync(String resourceGroupName,
         String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters);
 
     /**
@@ -510,6 +483,32 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceGatewayName The name of the service gateway.
      * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdateAddressLocations(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateAddressLocationsRequest parameters);
+
+    /**
+     * Creates or updates address locations within the service gateway.
+     * 
+     * The request supports both full and partial update modes at two levels: location and address.
+     * 
+     * Full update replaces all existing data.
+     * 
+     * Partial update modifies only the specified entries:
+     * 
+     * For location-level partial updates, if no address is provided, the existing address will be deleted.
+     * 
+     * For address-level partial updates, if no services are provided, the existing services will be considered for
+     * deletion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceGatewayName The name of the service gateway.
+     * @param parameters Parameters supplied to the create or updates address locations in service gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -517,8 +516,8 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocations(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdateAddressLocations(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateAddressLocationsRequest parameters, Context context);
 
     /**
      * Creates or updates address locations within the service gateway.
@@ -540,10 +539,10 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NoContentResponse> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
+    Mono<Void> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters);
 
     /**
@@ -566,10 +565,9 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NoContentResponse updateAddressLocations(String resourceGroupName, String serviceGatewayName,
+    void updateAddressLocations(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters);
 
     /**
@@ -593,10 +591,9 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NoContentResponse updateAddressLocations(String resourceGroupName, String serviceGatewayName,
+    void updateAddressLocations(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters, Context context);
 
     /**
@@ -634,8 +631,8 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServicesAsync(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters);
+    PollerFlux<PollResult<Void>, Void> beginUpdateServicesAsync(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateServicesRequest parameters);
 
     /**
      * Creates, updates, or deletes services within the service gateway.
@@ -653,8 +650,8 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServices(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters);
+    SyncPoller<PollResult<Void>, Void> beginUpdateServices(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateServicesRequest parameters);
 
     /**
      * Creates, updates, or deletes services within the service gateway.
@@ -673,8 +670,8 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServices(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdateServices(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateServicesRequest parameters, Context context);
 
     /**
      * Creates, updates, or deletes services within the service gateway.
@@ -689,10 +686,10 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NoContentResponse> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
+    Mono<Void> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters);
 
     /**
@@ -708,10 +705,9 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NoContentResponse updateServices(String resourceGroupName, String serviceGatewayName,
+    void updateServices(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters);
 
     /**
@@ -728,10 +724,9 @@ public interface ServiceGatewaysClient extends InnerSupportsGet<ServiceGatewayIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NoContentResponse updateServices(String resourceGroupName, String serviceGatewayName,
+    void updateServices(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters, Context context);
 
     /**

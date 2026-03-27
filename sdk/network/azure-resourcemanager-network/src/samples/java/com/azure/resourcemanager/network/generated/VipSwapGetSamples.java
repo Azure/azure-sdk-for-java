@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.resourcemanager.network.models.SingletonResource;
-
 /**
  * Samples for VipSwap Get.
  */
@@ -21,6 +19,6 @@ public final class VipSwapGetSamples {
     public static void getSwapResource(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getVipSwaps()
-            .getWithResponse("rg1", "testCloudService", SingletonResource.SWAP, com.azure.core.util.Context.NONE);
+            .getWithResponse("rg1", "testCloudService", com.azure.core.util.Context.NONE);
     }
 }

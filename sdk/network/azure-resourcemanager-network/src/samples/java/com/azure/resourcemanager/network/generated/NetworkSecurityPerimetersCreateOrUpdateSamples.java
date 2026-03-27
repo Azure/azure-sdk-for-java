@@ -21,7 +21,7 @@ public final class NetworkSecurityPerimetersCreateOrUpdateSamples {
     public static void putNetworkSecurityPerimeter(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getNetworkSecurityPerimeters()
-            .createOrUpdateWithResponse("rg1", "nsp1", new NetworkSecurityPerimeterInner(),
+            .createOrUpdateWithResponse("rg1", "nsp1", new NetworkSecurityPerimeterInner().withLocation("location1"),
                 com.azure.core.util.Context.NONE);
     }
 }

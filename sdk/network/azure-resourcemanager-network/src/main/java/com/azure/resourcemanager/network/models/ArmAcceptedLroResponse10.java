@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResetVpnClientSharedKeyFinalResult model.
+ * Resource operation accepted.
  */
 @Immutable
-public final class ResetVpnClientSharedKeyFinalResult implements JsonSerializable<ResetVpnClientSharedKeyFinalResult> {
+public final class ArmAcceptedLroResponse10 implements JsonSerializable<ArmAcceptedLroResponse10> {
     /**
-     * Creates an instance of ResetVpnClientSharedKeyFinalResult class.
+     * Creates an instance of ArmAcceptedLroResponse10 class.
      */
-    private ResetVpnClientSharedKeyFinalResult() {
+    private ArmAcceptedLroResponse10() {
     }
 
     /**
@@ -40,17 +40,16 @@ public final class ResetVpnClientSharedKeyFinalResult implements JsonSerializabl
     }
 
     /**
-     * Reads an instance of ResetVpnClientSharedKeyFinalResult from the JsonReader.
+     * Reads an instance of ArmAcceptedLroResponse10 from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResetVpnClientSharedKeyFinalResult if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResetVpnClientSharedKeyFinalResult.
+     * @return An instance of ArmAcceptedLroResponse10 if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmAcceptedLroResponse10.
      */
-    public static ResetVpnClientSharedKeyFinalResult fromJson(JsonReader jsonReader) throws IOException {
+    public static ArmAcceptedLroResponse10 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResetVpnClientSharedKeyFinalResult deserializedResetVpnClientSharedKeyFinalResult
-                = new ResetVpnClientSharedKeyFinalResult();
+            ArmAcceptedLroResponse10 deserializedArmAcceptedLroResponse10 = new ArmAcceptedLroResponse10();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -58,7 +57,7 @@ public final class ResetVpnClientSharedKeyFinalResult implements JsonSerializabl
                 reader.skipChildren();
             }
 
-            return deserializedResetVpnClientSharedKeyFinalResult;
+            return deserializedArmAcceptedLroResponse10;
         });
     }
 }

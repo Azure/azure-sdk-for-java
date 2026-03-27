@@ -13,48 +13,43 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Tracked resource with optional location.
+ * Common resource representation.
  */
 @Fluent
-public class TrackedResourcewithOptionalLocation implements JsonSerializable<TrackedResourcewithOptionalLocation> {
+public class TrackedResourceWithOptionalLocation implements JsonSerializable<TrackedResourceWithOptionalLocation> {
     /*
-     * ID of the connection monitor.
+     * Resource ID.
      */
     private String id;
 
     /*
-     * Name of the connection monitor.
+     * Resource name.
      */
     private String name;
 
     /*
-     * Connection monitor type.
+     * Resource type.
      */
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
-     */
-    private String etag;
-
-    /*
-     * Connection monitor location.
+     * Resource location.
      */
     private String location;
 
     /*
-     * Connection monitor tags.
+     * Resource tags.
      */
     private Map<String, String> tags;
 
     /**
-     * Creates an instance of TrackedResourcewithOptionalLocation class.
+     * Creates an instance of TrackedResourceWithOptionalLocation class.
      */
-    public TrackedResourcewithOptionalLocation() {
+    public TrackedResourceWithOptionalLocation() {
     }
 
     /**
-     * Get the id property: ID of the connection monitor.
+     * Get the id property: Resource ID.
      * 
      * @return the id value.
      */
@@ -63,18 +58,18 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     }
 
     /**
-     * Set the id property: ID of the connection monitor.
+     * Set the id property: Resource ID.
      * 
      * @param id the id value to set.
-     * @return the TrackedResourcewithOptionalLocation object itself.
+     * @return the TrackedResourceWithOptionalLocation object itself.
      */
-    TrackedResourcewithOptionalLocation withId(String id) {
+    TrackedResourceWithOptionalLocation withId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get the name property: Name of the connection monitor.
+     * Get the name property: Resource name.
      * 
      * @return the name value.
      */
@@ -83,18 +78,18 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     }
 
     /**
-     * Set the name property: Name of the connection monitor.
+     * Set the name property: Resource name.
      * 
      * @param name the name value to set.
-     * @return the TrackedResourcewithOptionalLocation object itself.
+     * @return the TrackedResourceWithOptionalLocation object itself.
      */
-    TrackedResourcewithOptionalLocation withName(String name) {
+    TrackedResourceWithOptionalLocation withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
-     * Get the type property: Connection monitor type.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -103,38 +98,18 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     }
 
     /**
-     * Set the type property: Connection monitor type.
+     * Set the type property: Resource type.
      * 
      * @param type the type value to set.
-     * @return the TrackedResourcewithOptionalLocation object itself.
+     * @return the TrackedResourceWithOptionalLocation object itself.
      */
-    TrackedResourcewithOptionalLocation withType(String type) {
+    TrackedResourceWithOptionalLocation withType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
-     * @param etag the etag value to set.
-     * @return the TrackedResourcewithOptionalLocation object itself.
-     */
-    TrackedResourcewithOptionalLocation withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
-     * Get the location property: Connection monitor location.
+     * Get the location property: Resource location.
      * 
      * @return the location value.
      */
@@ -143,18 +118,18 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     }
 
     /**
-     * Set the location property: Connection monitor location.
+     * Set the location property: Resource location.
      * 
      * @param location the location value to set.
-     * @return the TrackedResourcewithOptionalLocation object itself.
+     * @return the TrackedResourceWithOptionalLocation object itself.
      */
-    public TrackedResourcewithOptionalLocation withLocation(String location) {
+    public TrackedResourceWithOptionalLocation withLocation(String location) {
         this.location = location;
         return this;
     }
 
     /**
-     * Get the tags property: Connection monitor tags.
+     * Get the tags property: Resource tags.
      * 
      * @return the tags value.
      */
@@ -163,12 +138,12 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     }
 
     /**
-     * Set the tags property: Connection monitor tags.
+     * Set the tags property: Resource tags.
      * 
      * @param tags the tags value to set.
-     * @return the TrackedResourcewithOptionalLocation object itself.
+     * @return the TrackedResourceWithOptionalLocation object itself.
      */
-    public TrackedResourcewithOptionalLocation withTags(Map<String, String> tags) {
+    public TrackedResourceWithOptionalLocation withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -193,40 +168,38 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     }
 
     /**
-     * Reads an instance of TrackedResourcewithOptionalLocation from the JsonReader.
+     * Reads an instance of TrackedResourceWithOptionalLocation from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TrackedResourcewithOptionalLocation if the JsonReader was pointing to an instance of it,
+     * @return An instance of TrackedResourceWithOptionalLocation if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TrackedResourcewithOptionalLocation.
+     * @throws IOException If an error occurs while reading the TrackedResourceWithOptionalLocation.
      */
-    public static TrackedResourcewithOptionalLocation fromJson(JsonReader jsonReader) throws IOException {
+    public static TrackedResourceWithOptionalLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TrackedResourcewithOptionalLocation deserializedTrackedResourcewithOptionalLocation
-                = new TrackedResourcewithOptionalLocation();
+            TrackedResourceWithOptionalLocation deserializedTrackedResourceWithOptionalLocation
+                = new TrackedResourceWithOptionalLocation();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedTrackedResourcewithOptionalLocation.id = reader.getString();
+                    deserializedTrackedResourceWithOptionalLocation.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedTrackedResourcewithOptionalLocation.name = reader.getString();
+                    deserializedTrackedResourceWithOptionalLocation.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedTrackedResourcewithOptionalLocation.type = reader.getString();
-                } else if ("etag".equals(fieldName)) {
-                    deserializedTrackedResourcewithOptionalLocation.etag = reader.getString();
+                    deserializedTrackedResourceWithOptionalLocation.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedTrackedResourcewithOptionalLocation.location = reader.getString();
+                    deserializedTrackedResourceWithOptionalLocation.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedTrackedResourcewithOptionalLocation.tags = tags;
+                    deserializedTrackedResourceWithOptionalLocation.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedTrackedResourcewithOptionalLocation;
+            return deserializedTrackedResourceWithOptionalLocation;
         });
     }
 }

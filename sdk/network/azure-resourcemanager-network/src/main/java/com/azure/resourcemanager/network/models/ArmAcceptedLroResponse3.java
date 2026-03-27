@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * There is no content to send for this request, but the headers may be useful.
+ * Resource operation accepted.
  */
 @Immutable
-public final class NoContentResponse implements JsonSerializable<NoContentResponse> {
+public final class ArmAcceptedLroResponse3 implements JsonSerializable<ArmAcceptedLroResponse3> {
     /**
-     * Creates an instance of NoContentResponse class.
+     * Creates an instance of ArmAcceptedLroResponse3 class.
      */
-    private NoContentResponse() {
+    private ArmAcceptedLroResponse3() {
     }
 
     /**
@@ -40,16 +40,16 @@ public final class NoContentResponse implements JsonSerializable<NoContentRespon
     }
 
     /**
-     * Reads an instance of NoContentResponse from the JsonReader.
+     * Reads an instance of ArmAcceptedLroResponse3 from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NoContentResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the NoContentResponse.
+     * @return An instance of ArmAcceptedLroResponse3 if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmAcceptedLroResponse3.
      */
-    public static NoContentResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static ArmAcceptedLroResponse3 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            NoContentResponse deserializedNoContentResponse = new NoContentResponse();
+            ArmAcceptedLroResponse3 deserializedArmAcceptedLroResponse3 = new ArmAcceptedLroResponse3();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -57,7 +57,7 @@ public final class NoContentResponse implements JsonSerializable<NoContentRespon
                 reader.skipChildren();
             }
 
-            return deserializedNoContentResponse;
+            return deserializedArmAcceptedLroResponse3;
         });
     }
 }

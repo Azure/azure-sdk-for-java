@@ -13,8 +13,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubRoutingPreference;
 import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
 import com.azure.resourcemanager.network.models.RoutingState;
+import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
 import com.azure.resourcemanager.network.models.VirtualRouterAutoScaleConfiguration;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.Map;
  * VirtualHub Resource.
  */
 @Fluent
-public final class VirtualHubInner extends ResourceWithRequiredLocation {
+public final class VirtualHubInner extends TrackedResourceWithSettableId {
     /*
      * Properties of the virtual hub.
      */

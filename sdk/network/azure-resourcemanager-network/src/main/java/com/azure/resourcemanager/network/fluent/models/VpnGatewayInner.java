@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
+import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import com.azure.resourcemanager.network.models.VpnGatewayIpConfiguration;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.Map;
  * VpnGateway Resource.
  */
 @Fluent
-public final class VpnGatewayInner extends ResourceWithRequiredLocation {
+public final class VpnGatewayInner extends TrackedResourceWithSettableId {
     /*
      * Properties of the VPN gateway.
      */

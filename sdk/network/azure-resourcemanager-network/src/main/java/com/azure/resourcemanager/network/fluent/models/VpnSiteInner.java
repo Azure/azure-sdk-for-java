@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
+import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ import java.util.Map;
  * VpnSite Resource.
  */
 @Fluent
-public final class VpnSiteInner extends ResourceWithRequiredLocation {
+public final class VpnSiteInner extends TrackedResourceWithSettableId {
     /*
      * Properties of the VPN site.
      */

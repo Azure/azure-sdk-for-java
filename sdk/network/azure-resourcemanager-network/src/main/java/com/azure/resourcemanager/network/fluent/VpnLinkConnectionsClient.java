@@ -15,7 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
-import com.azure.resourcemanager.network.models.GetIkeSasFinalResult;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse14;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -535,8 +535,8 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<GetIkeSasFinalResult>, GetIkeSasFinalResult> beginGetIkeSasAsync(String resourceGroupName,
-        String gatewayName, String connectionName, String linkConnectionName);
+    PollerFlux<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14> beginGetIkeSasAsync(
+        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
@@ -551,7 +551,7 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GetIkeSasFinalResult>, GetIkeSasFinalResult> beginGetIkeSas(String resourceGroupName,
+    SyncPoller<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14> beginGetIkeSas(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName);
 
     /**
@@ -568,7 +568,7 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GetIkeSasFinalResult>, GetIkeSasFinalResult> beginGetIkeSas(String resourceGroupName,
+    SyncPoller<PollResult<ArmAcceptedLroResponse14>, ArmAcceptedLroResponse14> beginGetIkeSas(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName, Context context);
 
     /**
@@ -584,7 +584,7 @@ public interface VpnLinkConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GetIkeSasFinalResult> getIkeSasAsync(String resourceGroupName, String gatewayName, String connectionName,
+    Mono<ArmAcceptedLroResponse14> getIkeSasAsync(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName);
 
     /**
@@ -600,7 +600,7 @@ public interface VpnLinkConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GetIkeSasFinalResult getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
+    ArmAcceptedLroResponse14 getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName);
 
     /**
@@ -617,6 +617,6 @@ public interface VpnLinkConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GetIkeSasFinalResult getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
+    ArmAcceptedLroResponse14 getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName, Context context);
 }

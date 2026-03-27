@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -12,11 +13,12 @@ import com.azure.resourcemanager.network.models.NspProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import com.azure.resourcemanager.network.models.SecurityPerimeterTrackedResource;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The Network Security Perimeter resource.
  */
-@Immutable
+@Fluent
 public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTrackedResource {
     /*
      * The network security perimeter properties
@@ -102,6 +104,24 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NetworkSecurityPerimeterInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NetworkSecurityPerimeterInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
      * 
      * @return the provisioningState value.
@@ -132,7 +152,14 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
         if (systemData() != null) {
             systemData().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model NetworkSecurityPerimeterInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkSecurityPerimeterInner.class);
 
     /**
      * {@inheritDoc}
@@ -140,6 +167,8 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -150,6 +179,7 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkSecurityPerimeterInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterInner.
      */
     public static NetworkSecurityPerimeterInner fromJson(JsonReader jsonReader) throws IOException {
@@ -160,7 +190,9 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("location".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterInner.withLocation(reader.getString());
+                } else if ("id".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.name = reader.getString();
@@ -168,6 +200,9 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
                     deserializedNetworkSecurityPerimeterInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkSecurityPerimeterInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.innerProperties
                         = NetworkSecurityPerimeterProperties.fromJson(reader);

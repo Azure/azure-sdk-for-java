@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.ResourceWithReadOnlyNameAndID;
+import com.azure.resourcemanager.network.models.TrackedResourceWithOptionalLocation;
 import java.io.IOException;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * ExpressRouteProviderPort resource.
  */
 @Immutable
-public final class ExpressRouteProviderPortInner extends ResourceWithReadOnlyNameAndID {
+public final class ExpressRouteProviderPortInner extends TrackedResourceWithOptionalLocation {
     /*
      * Properties of the express route Service Provider Port.
      */
@@ -26,16 +26,6 @@ public final class ExpressRouteProviderPortInner extends ResourceWithReadOnlyNam
      * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
-
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * Resource location.
-     */
-    private String location;
 
     /*
      * Resource type.
@@ -74,26 +64,6 @@ public final class ExpressRouteProviderPortInner extends ResourceWithReadOnlyNam
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    @Override
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the location property: Resource location.
-     * 
-     * @return the location value.
-     */
-    @Override
-    public String location() {
-        return this.location;
     }
 
     /**
@@ -245,10 +215,10 @@ public final class ExpressRouteProviderPortInner extends ResourceWithReadOnlyNam
                 } else if ("type".equals(fieldName)) {
                     deserializedExpressRouteProviderPortInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedExpressRouteProviderPortInner.location = reader.getString();
+                    deserializedExpressRouteProviderPortInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedExpressRouteProviderPortInner.tags = tags;
+                    deserializedExpressRouteProviderPortInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedExpressRouteProviderPortInner.innerProperties
                         = ExpressRouteProviderPortProperties.fromJson(reader);

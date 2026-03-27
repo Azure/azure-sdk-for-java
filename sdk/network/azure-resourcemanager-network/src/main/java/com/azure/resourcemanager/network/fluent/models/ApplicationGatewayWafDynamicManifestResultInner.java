@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallManifestRuleSet;
-import com.azure.resourcemanager.network.models.ProxyResourcewithoutEtag;
+import com.azure.resourcemanager.network.models.ProxyResourceWithSettableId;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Response for ApplicationGatewayWafDynamicManifest API service call.
  */
 @Immutable
-public final class ApplicationGatewayWafDynamicManifestResultInner extends ProxyResourcewithoutEtag {
+public final class ApplicationGatewayWafDynamicManifestResultInner extends ProxyResourceWithSettableId {
     /*
      * Properties of the ApplicationGatewayWafDynamicManifest .
      */

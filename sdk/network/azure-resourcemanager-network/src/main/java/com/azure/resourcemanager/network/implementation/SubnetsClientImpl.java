@@ -35,9 +35,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.implementation.models.SubnetListResult;
-import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesFinalResult;
 import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
-import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesFinalResult;
 import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -1033,14 +1031,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<PrepareNetworkPoliciesFinalResult>, PrepareNetworkPoliciesFinalResult>
-        beginPrepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName,
-            PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
+    public PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = prepareNetworkPoliciesWithResponseAsync(resourceGroupName,
             virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters);
-        return this.client.<PrepareNetworkPoliciesFinalResult, PrepareNetworkPoliciesFinalResult>getLroResult(mono,
-            this.client.getHttpPipeline(), PrepareNetworkPoliciesFinalResult.class,
-            PrepareNetworkPoliciesFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1058,15 +1055,14 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PrepareNetworkPoliciesFinalResult>, PrepareNetworkPoliciesFinalResult>
-        beginPrepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName,
-            PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = prepareNetworkPoliciesWithResponseAsync(resourceGroupName,
             virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context);
-        return this.client.<PrepareNetworkPoliciesFinalResult, PrepareNetworkPoliciesFinalResult>getLroResult(mono,
-            this.client.getHttpPipeline(), PrepareNetworkPoliciesFinalResult.class,
-            PrepareNetworkPoliciesFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1083,9 +1079,9 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PrepareNetworkPoliciesFinalResult>, PrepareNetworkPoliciesFinalResult>
-        beginPrepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
-            PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
+    public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
         return this
             .beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
                 prepareNetworkPoliciesRequestParameters)
@@ -1107,9 +1103,9 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PrepareNetworkPoliciesFinalResult>, PrepareNetworkPoliciesFinalResult>
-        beginPrepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
-            PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
         return this
             .beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
                 prepareNetworkPoliciesRequestParameters, context)
@@ -1127,12 +1123,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrepareNetworkPoliciesFinalResult> prepareNetworkPoliciesAsync(String resourceGroupName,
-        String virtualNetworkName, String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
+    public Mono<Void> prepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName, PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
         return beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             prepareNetworkPoliciesRequestParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1149,12 +1144,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrepareNetworkPoliciesFinalResult> prepareNetworkPoliciesAsync(String resourceGroupName,
-        String virtualNetworkName, String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
+    private Mono<Void> prepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName, PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
         return beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             prepareNetworkPoliciesRequestParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1170,12 +1164,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrepareNetworkPoliciesFinalResult prepareNetworkPolicies(String resourceGroupName, String virtualNetworkName,
-        String subnetName, PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return prepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+    public void prepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
+        prepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             prepareNetworkPoliciesRequestParameters).block();
     }
 
@@ -1191,12 +1184,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrepareNetworkPoliciesFinalResult prepareNetworkPolicies(String resourceGroupName, String virtualNetworkName,
-        String subnetName, PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
-        return prepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+    public void prepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
+        prepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             prepareNetworkPoliciesRequestParameters, context).block();
     }
 
@@ -1316,14 +1308,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<UnprepareNetworkPoliciesFinalResult>, UnprepareNetworkPoliciesFinalResult>
-        beginUnprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName,
-            UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
+    public PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = unprepareNetworkPoliciesWithResponseAsync(resourceGroupName,
             virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters);
-        return this.client.<UnprepareNetworkPoliciesFinalResult, UnprepareNetworkPoliciesFinalResult>getLroResult(mono,
-            this.client.getHttpPipeline(), UnprepareNetworkPoliciesFinalResult.class,
-            UnprepareNetworkPoliciesFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1341,15 +1332,14 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<UnprepareNetworkPoliciesFinalResult>, UnprepareNetworkPoliciesFinalResult>
-        beginUnprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName, String subnetName,
-            UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = unprepareNetworkPoliciesWithResponseAsync(resourceGroupName,
             virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context);
-        return this.client.<UnprepareNetworkPoliciesFinalResult, UnprepareNetworkPoliciesFinalResult>getLroResult(mono,
-            this.client.getHttpPipeline(), UnprepareNetworkPoliciesFinalResult.class,
-            UnprepareNetworkPoliciesFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1366,9 +1356,9 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UnprepareNetworkPoliciesFinalResult>, UnprepareNetworkPoliciesFinalResult>
-        beginUnprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
-            UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
+    public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
         return this
             .beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
                 unprepareNetworkPoliciesRequestParameters)
@@ -1390,9 +1380,9 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<UnprepareNetworkPoliciesFinalResult>, UnprepareNetworkPoliciesFinalResult>
-        beginUnprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
-            UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(String resourceGroupName,
+        String virtualNetworkName, String subnetName,
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
         return this
             .beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
                 unprepareNetworkPoliciesRequestParameters, context)
@@ -1410,12 +1400,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnprepareNetworkPoliciesFinalResult> unprepareNetworkPoliciesAsync(String resourceGroupName,
-        String virtualNetworkName, String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
+    public Mono<Void> unprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName, UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
         return beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             unprepareNetworkPoliciesRequestParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1432,12 +1421,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UnprepareNetworkPoliciesFinalResult> unprepareNetworkPoliciesAsync(String resourceGroupName,
-        String virtualNetworkName, String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
+    private Mono<Void> unprepareNetworkPoliciesAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName, UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
         return beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             unprepareNetworkPoliciesRequestParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1453,13 +1441,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnprepareNetworkPoliciesFinalResult unprepareNetworkPolicies(String resourceGroupName,
-        String virtualNetworkName, String subnetName,
+    public void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+        unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             unprepareNetworkPoliciesRequestParameters).block();
     }
 
@@ -1475,13 +1461,11 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnprepareNetworkPoliciesFinalResult unprepareNetworkPolicies(String resourceGroupName,
-        String virtualNetworkName, String subnetName,
+    public void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName,
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
-        return unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+        unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
             unprepareNetworkPoliciesRequestParameters, context).block();
     }
 

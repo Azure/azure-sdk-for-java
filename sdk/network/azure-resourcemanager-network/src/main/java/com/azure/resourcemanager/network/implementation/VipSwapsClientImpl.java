@@ -29,7 +29,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VipSwapsClient;
 import com.azure.resourcemanager.network.fluent.models.SwapResourceInner;
 import com.azure.resourcemanager.network.fluent.models.SwapResourceListResultInner;
-import com.azure.resourcemanager.network.models.SingletonResource;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -72,7 +71,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         Mono<Response<SwapResourceInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("groupName") String groupName, @PathParam("resourceName") String resourceName,
-            @PathParam("singletonResource") SingletonResource singletonResource, @HeaderParam("Accept") String accept,
+            @PathParam("singletonResource") String singletonResource, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9" })
@@ -82,8 +81,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("groupName") String groupName, @PathParam("resourceName") String resourceName,
-            @PathParam("singletonResource") SingletonResource singletonResource,
-            @HeaderParam("Content-Type") String contentType,
+            @PathParam("singletonResource") String singletonResource, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") SwapResourceInner parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -102,7 +100,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -110,8 +107,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SwapResourceInner>> getWithResponseAsync(String groupName, String resourceName,
-        SingletonResource singletonResource) {
+    public Mono<Response<SwapResourceInner>> getWithResponseAsync(String groupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -126,11 +122,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (singletonResource == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter singletonResource is required and cannot be null."));
-        }
         final String apiVersion = "2025-05-01";
+        final String singletonResource = "swap";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -144,7 +137,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,7 +146,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SwapResourceInner>> getWithResponseAsync(String groupName, String resourceName,
-        SingletonResource singletonResource, Context context) {
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -169,11 +161,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (singletonResource == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter singletonResource is required and cannot be null."));
-        }
         final String apiVersion = "2025-05-01";
+        final String singletonResource = "swap";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName,
@@ -186,7 +175,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,10 +182,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SwapResourceInner> getAsync(String groupName, String resourceName,
-        SingletonResource singletonResource) {
-        return getWithResponseAsync(groupName, resourceName, singletonResource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SwapResourceInner> getAsync(String groupName, String resourceName) {
+        return getWithResponseAsync(groupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -206,7 +192,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -215,9 +200,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SwapResourceInner> getWithResponse(String groupName, String resourceName,
-        SingletonResource singletonResource, Context context) {
-        return getWithResponseAsync(groupName, resourceName, singletonResource, context).block();
+    public Response<SwapResourceInner> getWithResponse(String groupName, String resourceName, Context context) {
+        return getWithResponseAsync(groupName, resourceName, context).block();
     }
 
     /**
@@ -226,15 +210,14 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SwapResource which identifies the slot type for the specified cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SwapResourceInner get(String groupName, String resourceName, SingletonResource singletonResource) {
-        return getWithResponse(groupName, resourceName, singletonResource, Context.NONE).getValue();
+    public SwapResourceInner get(String groupName, String resourceName) {
+        return getWithResponse(groupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -242,7 +225,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +234,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String groupName, String resourceName,
-        SingletonResource singletonResource, SwapResourceInner parameters) {
+        SwapResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -267,16 +249,13 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (singletonResource == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter singletonResource is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String singletonResource = "swap";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(
@@ -290,7 +269,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @param context The context to associate with this operation.
@@ -301,7 +279,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String groupName, String resourceName,
-        SingletonResource singletonResource, SwapResourceInner parameters, Context context) {
+        SwapResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -316,16 +294,13 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (singletonResource == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter singletonResource is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String singletonResource = "swap";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName,
@@ -337,7 +312,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -347,9 +321,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateAsync(String groupName, String resourceName,
-        SingletonResource singletonResource, SwapResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(groupName, resourceName, singletonResource, parameters);
+        SwapResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(groupName, resourceName, parameters);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -359,7 +332,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @param context The context to associate with this operation.
@@ -370,10 +342,9 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateAsync(String groupName, String resourceName,
-        SingletonResource singletonResource, SwapResourceInner parameters, Context context) {
+        SwapResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(groupName, resourceName, singletonResource, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(groupName, resourceName, parameters, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -383,7 +354,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,8 +363,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String groupName, String resourceName,
-        SingletonResource singletonResource, SwapResourceInner parameters) {
-        return this.beginCreateAsync(groupName, resourceName, singletonResource, parameters).getSyncPoller();
+        SwapResourceInner parameters) {
+        return this.beginCreateAsync(groupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -402,7 +372,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @param context The context to associate with this operation.
@@ -413,8 +382,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String groupName, String resourceName,
-        SingletonResource singletonResource, SwapResourceInner parameters, Context context) {
-        return this.beginCreateAsync(groupName, resourceName, singletonResource, parameters, context).getSyncPoller();
+        SwapResourceInner parameters, Context context) {
+        return this.beginCreateAsync(groupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -422,7 +391,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -431,9 +399,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAsync(String groupName, String resourceName, SingletonResource singletonResource,
-        SwapResourceInner parameters) {
-        return beginCreateAsync(groupName, resourceName, singletonResource, parameters).last()
+    public Mono<Void> createAsync(String groupName, String resourceName, SwapResourceInner parameters) {
+        return beginCreateAsync(groupName, resourceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -442,7 +409,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @param context The context to associate with this operation.
@@ -452,9 +418,9 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createAsync(String groupName, String resourceName, SingletonResource singletonResource,
-        SwapResourceInner parameters, Context context) {
-        return beginCreateAsync(groupName, resourceName, singletonResource, parameters, context).last()
+    private Mono<Void> createAsync(String groupName, String resourceName, SwapResourceInner parameters,
+        Context context) {
+        return beginCreateAsync(groupName, resourceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -463,7 +429,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -471,9 +436,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(String groupName, String resourceName, SingletonResource singletonResource,
-        SwapResourceInner parameters) {
-        createAsync(groupName, resourceName, singletonResource, parameters).block();
+    public void create(String groupName, String resourceName, SwapResourceInner parameters) {
+        createAsync(groupName, resourceName, parameters).block();
     }
 
     /**
@@ -481,7 +445,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * 
      * @param groupName The groupName parameter.
      * @param resourceName The name of the cloud service.
-     * @param singletonResource The name of the singleton resource.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
      * cloud service.
      * @param context The context to associate with this operation.
@@ -490,9 +453,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(String groupName, String resourceName, SingletonResource singletonResource,
-        SwapResourceInner parameters, Context context) {
-        createAsync(groupName, resourceName, singletonResource, parameters, context).block();
+    public void create(String groupName, String resourceName, SwapResourceInner parameters, Context context) {
+        createAsync(groupName, resourceName, parameters, context).block();
     }
 
     /**

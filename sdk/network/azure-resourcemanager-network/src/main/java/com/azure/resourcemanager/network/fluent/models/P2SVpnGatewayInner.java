@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
+import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.Map;
  * P2SVpnGateway Resource.
  */
 @Fluent
-public final class P2SVpnGatewayInner extends ResourceWithRequiredLocation {
+public final class P2SVpnGatewayInner extends TrackedResourceWithSettableId {
     /*
      * Properties of the P2SVpnGateway.
      */

@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AadAuthenticationParameters;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.RadiusServer;
-import com.azure.resourcemanager.network.models.ResourceWithWritableName;
+import com.azure.resourcemanager.network.models.TrackedResourceWithSettableName;
 import com.azure.resourcemanager.network.models.VpnAuthenticationType;
 import com.azure.resourcemanager.network.models.VpnGatewayTunnelingProtocol;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootCertificate;
@@ -26,7 +26,7 @@ import java.util.Map;
  * VpnServerConfiguration Resource.
  */
 @Fluent
-public final class VpnServerConfigurationInner extends ResourceWithWritableName {
+public final class VpnServerConfigurationInner extends TrackedResourceWithSettableName {
     /*
      * Properties of the P2SVpnServer configuration.
      */

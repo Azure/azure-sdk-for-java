@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Common resource representation.
  */
 @Fluent
-public class ResourceWithWritableName implements JsonSerializable<ResourceWithWritableName> {
+public class TrackedResourceWithSettableId implements JsonSerializable<TrackedResourceWithSettableId> {
     /*
      * Resource ID.
      */
@@ -43,9 +44,9 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
     private Map<String, String> tags;
 
     /**
-     * Creates an instance of ResourceWithWritableName class.
+     * Creates an instance of TrackedResourceWithSettableId class.
      */
-    public ResourceWithWritableName() {
+    public TrackedResourceWithSettableId() {
     }
 
     /**
@@ -61,9 +62,9 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
      * Set the id property: Resource ID.
      * 
      * @param id the id value to set.
-     * @return the ResourceWithWritableName object itself.
+     * @return the TrackedResourceWithSettableId object itself.
      */
-    public ResourceWithWritableName withId(String id) {
+    public TrackedResourceWithSettableId withId(String id) {
         this.id = id;
         return this;
     }
@@ -81,9 +82,9 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
      * Set the name property: Resource name.
      * 
      * @param name the name value to set.
-     * @return the ResourceWithWritableName object itself.
+     * @return the TrackedResourceWithSettableId object itself.
      */
-    public ResourceWithWritableName withName(String name) {
+    TrackedResourceWithSettableId withName(String name) {
         this.name = name;
         return this;
     }
@@ -101,9 +102,9 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
      * Set the type property: Resource type.
      * 
      * @param type the type value to set.
-     * @return the ResourceWithWritableName object itself.
+     * @return the TrackedResourceWithSettableId object itself.
      */
-    ResourceWithWritableName withType(String type) {
+    TrackedResourceWithSettableId withType(String type) {
         this.type = type;
         return this;
     }
@@ -121,9 +122,9 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
      * Set the location property: Resource location.
      * 
      * @param location the location value to set.
-     * @return the ResourceWithWritableName object itself.
+     * @return the TrackedResourceWithSettableId object itself.
      */
-    public ResourceWithWritableName withLocation(String location) {
+    public TrackedResourceWithSettableId withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -141,9 +142,9 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
      * Set the tags property: Resource tags.
      * 
      * @param tags the tags value to set.
-     * @return the ResourceWithWritableName object itself.
+     * @return the TrackedResourceWithSettableId object itself.
      */
-    public ResourceWithWritableName withTags(Map<String, String> tags) {
+    public TrackedResourceWithSettableId withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -154,7 +155,14 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model TrackedResourceWithSettableId"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TrackedResourceWithSettableId.class);
 
     /**
      * {@inheritDoc}
@@ -162,45 +170,46 @@ public class ResourceWithWritableName implements JsonSerializable<ResourceWithWr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResourceWithWritableName from the JsonReader.
+     * Reads an instance of TrackedResourceWithSettableId from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceWithWritableName if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceWithWritableName.
+     * @return An instance of TrackedResourceWithSettableId if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrackedResourceWithSettableId.
      */
-    public static ResourceWithWritableName fromJson(JsonReader jsonReader) throws IOException {
+    public static TrackedResourceWithSettableId fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceWithWritableName deserializedResourceWithWritableName = new ResourceWithWritableName();
+            TrackedResourceWithSettableId deserializedTrackedResourceWithSettableId
+                = new TrackedResourceWithSettableId();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedResourceWithWritableName.id = reader.getString();
+                if ("location".equals(fieldName)) {
+                    deserializedTrackedResourceWithSettableId.location = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedTrackedResourceWithSettableId.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedResourceWithWritableName.name = reader.getString();
+                    deserializedTrackedResourceWithSettableId.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedResourceWithWritableName.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedResourceWithWritableName.location = reader.getString();
+                    deserializedTrackedResourceWithSettableId.type = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedResourceWithWritableName.tags = tags;
+                    deserializedTrackedResourceWithSettableId.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedResourceWithWritableName;
+            return deserializedTrackedResourceWithSettableId;
         });
     }
 }

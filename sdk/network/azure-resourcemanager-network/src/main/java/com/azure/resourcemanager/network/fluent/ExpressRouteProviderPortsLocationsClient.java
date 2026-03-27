@@ -22,7 +22,7 @@ public interface ExpressRouteProviderPortsLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteProviderPort list operation along with {@link Response} on successful
+     * @return response for ListExpressRouteProviderPort API service call along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -33,7 +33,7 @@ public interface ExpressRouteProviderPortsLocationsClient {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteProviderPort list operation on successful completion of {@link Mono}.
+     * @return response for ListExpressRouteProviderPort API service call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteProviderPortListResultInner> listAsync();
@@ -46,7 +46,7 @@ public interface ExpressRouteProviderPortsLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteProviderPort list operation along with {@link Response}.
+     * @return response for ListExpressRouteProviderPort API service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteProviderPortListResultInner> listWithResponse(String filter, Context context);
@@ -56,7 +56,7 @@ public interface ExpressRouteProviderPortsLocationsClient {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteProviderPort list operation.
+     * @return response for ListExpressRouteProviderPort API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteProviderPortListResultInner list();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,7 +16,7 @@ import java.util.Map;
  * Common resource representation.
  */
 @Fluent
-public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWithRequiredLocation> {
+public class TrackedResourceWithSettableName implements JsonSerializable<TrackedResourceWithSettableName> {
     /*
      * Resource ID.
      */
@@ -44,9 +43,9 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
     private Map<String, String> tags;
 
     /**
-     * Creates an instance of ResourceWithRequiredLocation class.
+     * Creates an instance of TrackedResourceWithSettableName class.
      */
-    public ResourceWithRequiredLocation() {
+    public TrackedResourceWithSettableName() {
     }
 
     /**
@@ -62,9 +61,9 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
      * Set the id property: Resource ID.
      * 
      * @param id the id value to set.
-     * @return the ResourceWithRequiredLocation object itself.
+     * @return the TrackedResourceWithSettableName object itself.
      */
-    public ResourceWithRequiredLocation withId(String id) {
+    public TrackedResourceWithSettableName withId(String id) {
         this.id = id;
         return this;
     }
@@ -82,9 +81,9 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
      * Set the name property: Resource name.
      * 
      * @param name the name value to set.
-     * @return the ResourceWithRequiredLocation object itself.
+     * @return the TrackedResourceWithSettableName object itself.
      */
-    ResourceWithRequiredLocation withName(String name) {
+    public TrackedResourceWithSettableName withName(String name) {
         this.name = name;
         return this;
     }
@@ -102,9 +101,9 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
      * Set the type property: Resource type.
      * 
      * @param type the type value to set.
-     * @return the ResourceWithRequiredLocation object itself.
+     * @return the TrackedResourceWithSettableName object itself.
      */
-    ResourceWithRequiredLocation withType(String type) {
+    TrackedResourceWithSettableName withType(String type) {
         this.type = type;
         return this;
     }
@@ -122,9 +121,9 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
      * Set the location property: Resource location.
      * 
      * @param location the location value to set.
-     * @return the ResourceWithRequiredLocation object itself.
+     * @return the TrackedResourceWithSettableName object itself.
      */
-    public ResourceWithRequiredLocation withLocation(String location) {
+    public TrackedResourceWithSettableName withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -142,9 +141,9 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
      * Set the tags property: Resource tags.
      * 
      * @param tags the tags value to set.
-     * @return the ResourceWithRequiredLocation object itself.
+     * @return the TrackedResourceWithSettableName object itself.
      */
-    public ResourceWithRequiredLocation withTags(Map<String, String> tags) {
+    public TrackedResourceWithSettableName withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -155,14 +154,7 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model ResourceWithRequiredLocation"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceWithRequiredLocation.class);
 
     /**
      * {@inheritDoc}
@@ -170,45 +162,46 @@ public class ResourceWithRequiredLocation implements JsonSerializable<ResourceWi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ResourceWithRequiredLocation from the JsonReader.
+     * Reads an instance of TrackedResourceWithSettableName from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceWithRequiredLocation if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResourceWithRequiredLocation.
+     * @return An instance of TrackedResourceWithSettableName if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrackedResourceWithSettableName.
      */
-    public static ResourceWithRequiredLocation fromJson(JsonReader jsonReader) throws IOException {
+    public static TrackedResourceWithSettableName fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceWithRequiredLocation deserializedResourceWithRequiredLocation = new ResourceWithRequiredLocation();
+            TrackedResourceWithSettableName deserializedTrackedResourceWithSettableName
+                = new TrackedResourceWithSettableName();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("location".equals(fieldName)) {
-                    deserializedResourceWithRequiredLocation.location = reader.getString();
-                } else if ("id".equals(fieldName)) {
-                    deserializedResourceWithRequiredLocation.id = reader.getString();
+                if ("id".equals(fieldName)) {
+                    deserializedTrackedResourceWithSettableName.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedResourceWithRequiredLocation.name = reader.getString();
+                    deserializedTrackedResourceWithSettableName.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedResourceWithRequiredLocation.type = reader.getString();
+                    deserializedTrackedResourceWithSettableName.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedTrackedResourceWithSettableName.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedResourceWithRequiredLocation.tags = tags;
+                    deserializedTrackedResourceWithSettableName.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedResourceWithRequiredLocation;
+            return deserializedTrackedResourceWithSettableName;
         });
     }
 }

@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ErrorDetail;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,7 +60,12 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
     /*
      * If present, details of the operation error.
      */
-    private ManagementError error;
+    private ErrorDetail error;
+
+    /*
+     * Fully qualified ID of the resource against which the original async operation was started.
+     */
+    private String resourceId;
 
     /**
      * Creates an instance of OperationStatusResultInner class.
@@ -136,8 +141,18 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the error value.
      */
-    public ManagementError error() {
+    public ErrorDetail error() {
         return this.error;
+    }
+
+    /**
+     * Get the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.resourceId;
     }
 
     /**
@@ -153,6 +168,9 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
         }
         if (operations() != null) {
             operations().forEach(e -> e.validate());
+        }
+        if (error() != null) {
+            error().validate();
         }
     }
 
@@ -212,7 +230,9 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
                         = reader.readArray(reader1 -> OperationStatusResultInner.fromJson(reader1));
                     deserializedOperationStatusResultInner.operations = operations;
                 } else if ("error".equals(fieldName)) {
-                    deserializedOperationStatusResultInner.error = ManagementError.fromJson(reader);
+                    deserializedOperationStatusResultInner.error = ErrorDetail.fromJson(reader);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.resourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

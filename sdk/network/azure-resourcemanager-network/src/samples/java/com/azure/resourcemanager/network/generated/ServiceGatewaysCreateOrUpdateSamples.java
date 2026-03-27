@@ -25,8 +25,9 @@ public final class ServiceGatewaysCreateOrUpdateSamples {
     public static void createServiceGateway(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getServiceGateways()
-            .createOrUpdate("rg1", "sg", new ServiceGatewayInner().withVirtualNetwork(new VirtualNetworkInner().withId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet"))
+            .createOrUpdate("rg1", "sg", new ServiceGatewayInner().withLocation("eastus")
+                .withVirtualNetwork(new VirtualNetworkInner().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet"))
                 .withRouteTargetAddress(new RouteTargetAddressPropertiesFormatInner()
                     .withSubnet(new SubnetInner().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"))

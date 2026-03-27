@@ -44,7 +44,6 @@ import com.azure.resourcemanager.network.implementation.models.BastionSessionDel
 import com.azure.resourcemanager.network.implementation.models.BastionShareableLinkListResult;
 import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
 import com.azure.resourcemanager.network.models.BastionShareableLinkTokenListRequest;
-import com.azure.resourcemanager.network.models.DeleteBastionShareableLinkFinalResult;
 import com.azure.resourcemanager.network.models.SessionIds;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -1574,14 +1573,12 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName,
+        String bastionHostName, BastionShareableLinkListRequest bslRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostName, bslRequest);
-        return this.client.<DeleteBastionShareableLinkFinalResult, DeleteBastionShareableLinkFinalResult>getLroResult(
-            mono, this.client.getHttpPipeline(), DeleteBastionShareableLinkFinalResult.class,
-            DeleteBastionShareableLinkFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1597,15 +1594,13 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName,
+        String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostName, bslRequest, context);
-        return this.client.<DeleteBastionShareableLinkFinalResult, DeleteBastionShareableLinkFinalResult>getLroResult(
-            mono, this.client.getHttpPipeline(), DeleteBastionShareableLinkFinalResult.class,
-            DeleteBastionShareableLinkFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1620,9 +1615,8 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest) {
+    public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(String resourceGroupName,
+        String bastionHostName, BastionShareableLinkListRequest bslRequest) {
         return this.beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest)
             .getSyncPoller();
     }
@@ -1640,9 +1634,8 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeleteBastionShareableLinkFinalResult>, DeleteBastionShareableLinkFinalResult>
-        beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName,
-            BastionShareableLinkListRequest bslRequest, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(String resourceGroupName,
+        String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
         return this.beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest, context)
             .getSyncPoller();
     }
@@ -1656,11 +1649,11 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteBastionShareableLinkFinalResult> deleteBastionShareableLinkAsync(String resourceGroupName,
-        String bastionHostName, BastionShareableLinkListRequest bslRequest) {
+    public Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest) {
         return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1675,11 +1668,11 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeleteBastionShareableLinkFinalResult> deleteBastionShareableLinkAsync(String resourceGroupName,
-        String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
+    private Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest, Context context) {
         return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1693,12 +1686,11 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteBastionShareableLinkFinalResult deleteBastionShareableLink(String resourceGroupName,
-        String bastionHostName, BastionShareableLinkListRequest bslRequest) {
-        return deleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest).block();
+    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest).block();
     }
 
     /**
@@ -1711,12 +1703,11 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteBastionShareableLinkFinalResult deleteBastionShareableLink(String resourceGroupName,
-        String bastionHostName, BastionShareableLinkListRequest bslRequest, Context context) {
-        return deleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest, context).block();
+    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostName,
+        BastionShareableLinkListRequest bslRequest, Context context) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostName, bslRequest, context).block();
     }
 
     /**

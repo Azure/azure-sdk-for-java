@@ -13,7 +13,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureInner;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureQueryStatusResultInner;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
@@ -55,8 +54,8 @@ public interface PacketCapturesClient {
      * @return the {@link PollerFlux} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreateAsync(String resourceGroupName,
-        String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters);
+    PollerFlux<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreateAsync(
+        String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters);
 
     /**
      * Create and start a packet capture on the specified VM.
@@ -71,7 +70,7 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreate(String resourceGroupName,
+    SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(String resourceGroupName,
         String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters);
 
     /**
@@ -88,7 +87,7 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkWatcherInner>, NetworkWatcherInner> beginCreate(String resourceGroupName,
+    SyncPoller<PollResult<PacketCaptureResultInner>, PacketCaptureResultInner> beginCreate(String resourceGroupName,
         String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters, Context context);
 
     /**
@@ -104,8 +103,8 @@ public interface PacketCapturesClient {
      * @return information about packet capture session on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkWatcherInner> createAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName,
-        PacketCaptureInner parameters);
+    Mono<PacketCaptureResultInner> createAsync(String resourceGroupName, String networkWatcherName,
+        String packetCaptureName, PacketCaptureInner parameters);
 
     /**
      * Create and start a packet capture on the specified VM.
@@ -120,7 +119,7 @@ public interface PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkWatcherInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName,
+    PacketCaptureResultInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName,
         PacketCaptureInner parameters);
 
     /**
@@ -137,7 +136,7 @@ public interface PacketCapturesClient {
      * @return information about packet capture session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkWatcherInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName,
+    PacketCaptureResultInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName,
         PacketCaptureInner parameters, Context context);
 
     /**

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.SwapResourceInner;
-import com.azure.resourcemanager.network.models.SingletonResource;
 import com.azure.resourcemanager.network.models.SlotType;
 import com.azure.resourcemanager.network.models.SwapResourceProperties;
 
@@ -24,7 +23,7 @@ public final class VipSwapCreateSamples {
     public static void putVipSwapOperation(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getVipSwaps()
-            .create("rg1", "testCloudService", SingletonResource.SWAP,
+            .create("rg1", "testCloudService",
                 new SwapResourceInner().withProperties(new SwapResourceProperties().withSlotType(SlotType.PRODUCTION)),
                 com.azure.core.util.Context.NONE);
     }

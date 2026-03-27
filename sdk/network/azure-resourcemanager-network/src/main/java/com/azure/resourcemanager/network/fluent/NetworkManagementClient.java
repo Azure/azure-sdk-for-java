@@ -1172,11 +1172,4 @@ public interface NetworkManagementClient {
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
-
-    /**
-     * Gets the NetworkInterfacesOperationsClient object to access its operations.
-     * 
-     * @return the NetworkInterfacesOperationsClient object.
-     */
-    NetworkInterfacesOperationsClient getNetworkInterfacesOperations();
 }

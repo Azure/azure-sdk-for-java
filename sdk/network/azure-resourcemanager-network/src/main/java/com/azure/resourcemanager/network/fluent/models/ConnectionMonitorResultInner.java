@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfigurati
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrackedResourcewithOptionalLocation;
+import com.azure.resourcemanager.network.models.TrackedResourceWithEtag;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.Map;
  * Information about the connection monitor.
  */
 @Fluent
-public final class ConnectionMonitorResultInner extends TrackedResourcewithOptionalLocation {
+public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag {
     /*
      * Properties of the connection monitor result.
      */

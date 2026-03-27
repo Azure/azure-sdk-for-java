@@ -40,7 +40,6 @@ import com.azure.resourcemanager.network.fluent.models.ServiceGatewayServiceInne
 import com.azure.resourcemanager.network.implementation.models.GetServiceGatewayAddressLocationsResult;
 import com.azure.resourcemanager.network.implementation.models.GetServiceGatewayServicesResult;
 import com.azure.resourcemanager.network.implementation.models.ServiceGatewayListResult;
-import com.azure.resourcemanager.network.models.NoContentResponse;
 import com.azure.resourcemanager.network.models.ServiceGatewayUpdateAddressLocationsRequest;
 import com.azure.resourcemanager.network.models.ServiceGatewayUpdateServicesRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -1288,12 +1287,12 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocationsAsync(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginUpdateAddressLocationsAsync(String resourceGroupName,
+        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateAddressLocationsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters);
-        return this.client.<NoContentResponse, NoContentResponse>getLroResult(mono, this.client.getHttpPipeline(),
-            NoContentResponse.class, NoContentResponse.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1320,14 +1319,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocationsAsync(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAddressLocationsAsync(String resourceGroupName,
+        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateAddressLocationsWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context);
-        return this.client.<NoContentResponse, NoContentResponse>getLroResult(mono, this.client.getHttpPipeline(),
-            NoContentResponse.class, NoContentResponse.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1353,8 +1351,8 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocations(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginUpdateAddressLocations(String resourceGroupName,
+        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters) {
         return this.beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).getSyncPoller();
     }
 
@@ -1382,9 +1380,8 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateAddressLocations(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUpdateAddressLocations(String resourceGroupName,
+        String serviceGatewayName, ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
         return this.beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context)
             .getSyncPoller();
     }
@@ -1409,10 +1406,10 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NoContentResponse> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
+    public Mono<Void> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters) {
         return beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1439,10 +1436,10 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NoContentResponse> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
+    private Mono<Void> updateAddressLocationsAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
         return beginUpdateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1468,12 +1465,11 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NoContentResponse updateAddressLocations(String resourceGroupName, String serviceGatewayName,
+    public void updateAddressLocations(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters) {
-        return updateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).block();
+        updateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters).block();
     }
 
     /**
@@ -1497,12 +1493,11 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NoContentResponse updateAddressLocations(String resourceGroupName, String serviceGatewayName,
+    public void updateAddressLocations(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateAddressLocationsRequest parameters, Context context) {
-        return updateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
+        updateAddressLocationsAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
     }
 
     /**
@@ -1614,12 +1609,12 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServicesAsync(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginUpdateServicesAsync(String resourceGroupName,
+        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateServicesWithResponseAsync(resourceGroupName, serviceGatewayName, parameters);
-        return this.client.<NoContentResponse, NoContentResponse>getLroResult(mono, this.client.getHttpPipeline(),
-            NoContentResponse.class, NoContentResponse.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1639,14 +1634,13 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServicesAsync(
-        String resourceGroupName, String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpdateServicesAsync(String resourceGroupName,
+        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateServicesWithResponseAsync(resourceGroupName, serviceGatewayName, parameters, context);
-        return this.client.<NoContentResponse, NoContentResponse>getLroResult(mono, this.client.getHttpPipeline(),
-            NoContentResponse.class, NoContentResponse.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1665,8 +1659,8 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServices(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginUpdateServices(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateServicesRequest parameters) {
         return this.beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters).getSyncPoller();
     }
 
@@ -1687,8 +1681,8 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NoContentResponse>, NoContentResponse> beginUpdateServices(String resourceGroupName,
-        String serviceGatewayName, ServiceGatewayUpdateServicesRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUpdateServices(String resourceGroupName, String serviceGatewayName,
+        ServiceGatewayUpdateServicesRequest parameters, Context context) {
         return this.beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context)
             .getSyncPoller();
     }
@@ -1706,10 +1700,10 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NoContentResponse> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
+    public Mono<Void> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters) {
         return beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1729,10 +1723,10 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NoContentResponse> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
+    private Mono<Void> updateServicesAsync(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters, Context context) {
         return beginUpdateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1751,12 +1745,11 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NoContentResponse updateServices(String resourceGroupName, String serviceGatewayName,
+    public void updateServices(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters) {
-        return updateServicesAsync(resourceGroupName, serviceGatewayName, parameters).block();
+        updateServicesAsync(resourceGroupName, serviceGatewayName, parameters).block();
     }
 
     /**
@@ -1773,12 +1766,11 @@ public final class ServiceGatewaysClientImpl implements InnerSupportsGet<Service
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NoContentResponse updateServices(String resourceGroupName, String serviceGatewayName,
+    public void updateServices(String resourceGroupName, String serviceGatewayName,
         ServiceGatewayUpdateServicesRequest parameters, Context context) {
-        return updateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
+        updateServicesAsync(resourceGroupName, serviceGatewayName, parameters, context).block();
     }
 
     /**

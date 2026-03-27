@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,6 +15,7 @@ import com.azure.resourcemanager.network.models.SecurityPerimeterTrackedResource
 import com.azure.resourcemanager.network.models.ServiceGatewaySku;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ServiceGateway resource.
@@ -176,6 +178,24 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServiceGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServiceGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
      * Get the virtualNetwork property: Reference to an existing virtual network.
      * 
      * @return the virtualNetwork value.
@@ -278,7 +298,13 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
         if (systemData() != null) {
             systemData().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ServiceGatewayInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceGatewayInner.class);
 
     /**
      * {@inheritDoc}
@@ -286,6 +312,8 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
@@ -298,6 +326,7 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServiceGatewayInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServiceGatewayInner.
      */
     public static ServiceGatewayInner fromJson(JsonReader jsonReader) throws IOException {
@@ -307,7 +336,9 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("location".equals(fieldName)) {
+                    deserializedServiceGatewayInner.withLocation(reader.getString());
+                } else if ("id".equals(fieldName)) {
                     deserializedServiceGatewayInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedServiceGatewayInner.name = reader.getString();
@@ -315,6 +346,9 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
                     deserializedServiceGatewayInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedServiceGatewayInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceGatewayInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedServiceGatewayInner.innerProperties
                         = ServiceGatewayPropertiesFormatInner.fromJson(reader);

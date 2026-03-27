@@ -15,7 +15,7 @@ import java.io.IOException;
  * Proxy resource representation.
  */
 @Immutable
-public class ProxyResourcewithoutEtag implements JsonSerializable<ProxyResourcewithoutEtag> {
+public class ProxyResourceWithSettableId implements JsonSerializable<ProxyResourceWithSettableId> {
     /*
      * Resource ID.
      */
@@ -32,9 +32,9 @@ public class ProxyResourcewithoutEtag implements JsonSerializable<ProxyResourcew
     private String type;
 
     /**
-     * Creates an instance of ProxyResourcewithoutEtag class.
+     * Creates an instance of ProxyResourceWithSettableId class.
      */
-    protected ProxyResourcewithoutEtag() {
+    protected ProxyResourceWithSettableId() {
     }
 
     /**
@@ -50,9 +50,9 @@ public class ProxyResourcewithoutEtag implements JsonSerializable<ProxyResourcew
      * Set the id property: Resource ID.
      * 
      * @param id the id value to set.
-     * @return the ProxyResourcewithoutEtag object itself.
+     * @return the ProxyResourceWithSettableId object itself.
      */
-    ProxyResourcewithoutEtag withId(String id) {
+    ProxyResourceWithSettableId withId(String id) {
         this.id = id;
         return this;
     }
@@ -70,9 +70,9 @@ public class ProxyResourcewithoutEtag implements JsonSerializable<ProxyResourcew
      * Set the name property: Resource name.
      * 
      * @param name the name value to set.
-     * @return the ProxyResourcewithoutEtag object itself.
+     * @return the ProxyResourceWithSettableId object itself.
      */
-    ProxyResourcewithoutEtag withName(String name) {
+    ProxyResourceWithSettableId withName(String name) {
         this.name = name;
         return this;
     }
@@ -90,9 +90,9 @@ public class ProxyResourcewithoutEtag implements JsonSerializable<ProxyResourcew
      * Set the type property: Resource type.
      * 
      * @param type the type value to set.
-     * @return the ProxyResourcewithoutEtag object itself.
+     * @return the ProxyResourceWithSettableId object itself.
      */
-    ProxyResourcewithoutEtag withType(String type) {
+    ProxyResourceWithSettableId withType(String type) {
         this.type = type;
         return this;
     }
@@ -116,32 +116,32 @@ public class ProxyResourcewithoutEtag implements JsonSerializable<ProxyResourcew
     }
 
     /**
-     * Reads an instance of ProxyResourcewithoutEtag from the JsonReader.
+     * Reads an instance of ProxyResourceWithSettableId from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ProxyResourcewithoutEtag if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ProxyResourcewithoutEtag.
+     * @return An instance of ProxyResourceWithSettableId if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProxyResourceWithSettableId.
      */
-    public static ProxyResourcewithoutEtag fromJson(JsonReader jsonReader) throws IOException {
+    public static ProxyResourceWithSettableId fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ProxyResourcewithoutEtag deserializedProxyResourcewithoutEtag = new ProxyResourcewithoutEtag();
+            ProxyResourceWithSettableId deserializedProxyResourceWithSettableId = new ProxyResourceWithSettableId();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedProxyResourcewithoutEtag.id = reader.getString();
+                    deserializedProxyResourceWithSettableId.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedProxyResourcewithoutEtag.name = reader.getString();
+                    deserializedProxyResourceWithSettableId.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedProxyResourcewithoutEtag.type = reader.getString();
+                    deserializedProxyResourceWithSettableId.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedProxyResourcewithoutEtag;
+            return deserializedProxyResourceWithSettableId;
         });
     }
 }

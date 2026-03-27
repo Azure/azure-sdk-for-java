@@ -78,7 +78,6 @@ public final class ServiceAssociationLinksListResultInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
