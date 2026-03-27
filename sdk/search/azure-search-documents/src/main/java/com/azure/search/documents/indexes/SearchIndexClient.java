@@ -232,7 +232,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -257,9 +257,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -377,7 +377,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -445,7 +445,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -617,9 +617,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -891,7 +891,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -903,9 +903,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1006,7 +1006,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1038,9 +1038,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1160,7 +1160,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1183,9 +1183,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2010,16 +2010,6 @@ public final class SearchIndexClient {
     /**
      * Creates a new knowledge base or updates a knowledge base if it already exists.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateKnowledgeBase#KnowledgeBase -->
-     * <pre>
-     * KnowledgeBase knowledgeBase = searchIndexClient.getKnowledgeBase&#40;&quot;my-knowledge-base&quot;&#41;;
-     * knowledgeBase.setDescription&#40;&quot;Updated description for my knowledge base&quot;&#41;;
-     *
-     * KnowledgeBase updated = searchIndexClient.createOrUpdateKnowledgeBase&#40;knowledgeBase&#41;;
-     * System.out.println&#40;&quot;Updated knowledge base: &quot; + updated.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateKnowledgeBase#KnowledgeBase -->
-     *
      * @param knowledgeBase The definition of the knowledge base to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2064,12 +2054,6 @@ public final class SearchIndexClient {
     /**
      * Deletes a knowledge base.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteKnowledgeBase#String -->
-     * <pre>
-     * searchIndexClient.deleteKnowledgeBase&#40;&quot;my-knowledge-base&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteKnowledgeBase#String -->
-     *
      * @param name The name of the knowledge base.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2087,15 +2071,6 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a knowledge base definition.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getKnowledgeBase#String -->
-     * <pre>
-     * KnowledgeBase knowledgeBase = searchIndexClient.getKnowledgeBase&#40;&quot;my-knowledge-base&quot;&#41;;
-     * System.out.println&#40;&quot;Knowledge base: &quot; + knowledgeBase.getName&#40;&#41;&#41;;
-     * System.out.println&#40;&quot;ETag: &quot; + knowledgeBase.getETag&#40;&#41;&#41;;
-     * System.out.println&#40;&quot;Knowledge sources: &quot; + knowledgeBase.getKnowledgeSources&#40;&#41;.size&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getKnowledgeBase#String -->
      *
      * @param name The name of the knowledge base.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2118,13 +2093,6 @@ public final class SearchIndexClient {
     /**
      * Lists all knowledge bases available for a search service.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listKnowledgeBases -->
-     * <pre>
-     * searchIndexClient.listKnowledgeBases&#40;&#41;
-     *     .forEach&#40;kb -&gt; System.out.println&#40;&quot;Knowledge base: &quot; + kb.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listKnowledgeBases -->
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2143,16 +2111,6 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new knowledge base.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createKnowledgeBase#KnowledgeBase -->
-     * <pre>
-     * KnowledgeBase knowledgeBase = new KnowledgeBase&#40;&quot;my-knowledge-base&quot;,
-     *     new KnowledgeSourceReference&#40;&quot;my-knowledge-source&quot;&#41;&#41;;
-     *
-     * KnowledgeBase created = searchIndexClient.createKnowledgeBase&#40;knowledgeBase&#41;;
-     * System.out.println&#40;&quot;Created knowledge base: &quot; + created.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createKnowledgeBase#KnowledgeBase -->
      *
      * @param knowledgeBase The definition of the knowledge base to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2208,16 +2166,6 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new knowledge source or updates an knowledge source if it already exists.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateKnowledgeSource#KnowledgeSource -->
-     * <pre>
-     * KnowledgeSource knowledgeSource = searchIndexClient.getKnowledgeSource&#40;&quot;my-knowledge-source&quot;&#41;;
-     * knowledgeSource.setDescription&#40;&quot;Updated description&quot;&#41;;
-     *
-     * KnowledgeSource updated = searchIndexClient.createOrUpdateKnowledgeSource&#40;knowledgeSource&#41;;
-     * System.out.println&#40;&quot;Updated knowledge source: &quot; + updated.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateKnowledgeSource#KnowledgeSource -->
      *
      * @param knowledgeSource The definition of the knowledge source to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2286,12 +2234,6 @@ public final class SearchIndexClient {
     /**
      * Deletes an existing knowledge source.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteKnowledgeSource#String -->
-     * <pre>
-     * searchIndexClient.deleteKnowledgeSource&#40;&quot;my-knowledge-source&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteKnowledgeSource#String -->
-     *
      * @param name The name of the knowledge source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2309,14 +2251,6 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a knowledge source definition.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getKnowledgeSource#String -->
-     * <pre>
-     * KnowledgeSource knowledgeSource = searchIndexClient.getKnowledgeSource&#40;&quot;my-knowledge-source&quot;&#41;;
-     * System.out.println&#40;&quot;Knowledge source: &quot; + knowledgeSource.getName&#40;&#41;&#41;;
-     * System.out.println&#40;&quot;Kind: &quot; + knowledgeSource.getKind&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getKnowledgeSource#String -->
      *
      * @param name The name of the knowledge source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2339,13 +2273,6 @@ public final class SearchIndexClient {
     /**
      * Lists all knowledge sources available for a search service.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listKnowledgeSources -->
-     * <pre>
-     * searchIndexClient.listKnowledgeSources&#40;&#41;
-     *     .forEach&#40;ks -&gt; System.out.println&#40;&quot;Knowledge source: &quot; + ks.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listKnowledgeSources -->
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2364,18 +2291,6 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new knowledge source.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createKnowledgeSource#KnowledgeSource -->
-     * <pre>
-     * SearchIndexKnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource&#40;
-     *     &quot;my-knowledge-source&quot;,
-     *     new SearchIndexKnowledgeSourceParameters&#40;&quot;my-search-index&quot;&#41;&#41;;
-     * knowledgeSource.setDescription&#40;&quot;Knowledge source backed by a search index&quot;&#41;;
-     *
-     * KnowledgeSource created = searchIndexClient.createKnowledgeSource&#40;knowledgeSource&#41;;
-     * System.out.println&#40;&quot;Created knowledge source: &quot; + created.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createKnowledgeSource#KnowledgeSource -->
      *
      * @param knowledgeSource The definition of the knowledge source to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2398,13 +2313,6 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves the status of a knowledge source.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getKnowledgeSourceStatus#String -->
-     * <pre>
-     * KnowledgeSourceStatus status = searchIndexClient.getKnowledgeSourceStatus&#40;&quot;my-knowledge-source&quot;&#41;;
-     * System.out.println&#40;&quot;Synchronization status: &quot; + status.getSynchronizationStatus&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getKnowledgeSourceStatus#String -->
      *
      * @param name The name of the knowledge source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2774,7 +2682,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2825,7 +2733,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2850,9 +2758,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2904,7 +2812,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3103,7 +3011,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3300,7 +3208,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3472,9 +3380,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3673,7 +3581,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3709,7 +3617,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3726,9 +3634,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3771,7 +3679,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3810,7 +3718,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3847,7 +3755,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3859,9 +3767,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3900,7 +3808,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3958,7 +3866,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4015,7 +3923,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4047,9 +3955,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4108,7 +4016,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4157,7 +4065,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4205,7 +4113,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4228,9 +4136,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4280,7 +4188,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4345,7 +4253,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4408,7 +4316,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

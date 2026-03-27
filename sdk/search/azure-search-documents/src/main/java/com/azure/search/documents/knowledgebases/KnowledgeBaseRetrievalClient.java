@@ -72,23 +72,6 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
-     * <!-- src_embed com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalRequest -->
-     * <pre>
-     * KnowledgeBaseRetrievalRequest request = new KnowledgeBaseRetrievalRequest&#40;&#41;
-     *     .setMessages&#40;new KnowledgeBaseMessage&#40;
-     *         new KnowledgeBaseMessageTextContent&#40;&quot;What hotels are near the ocean?&quot;&#41;&#41;&#41;;
-     *
-     * KnowledgeBaseRetrievalResponse response = retrievalClient.retrieve&#40;&quot;my-knowledge-base&quot;, request&#41;;
-     *
-     * response.getResponse&#40;&#41;.forEach&#40;message -&gt;
-     *     message.getContent&#40;&#41;.forEach&#40;content -&gt; &#123;
-     *         if &#40;content instanceof KnowledgeBaseMessageTextContent&#41; &#123;
-     *             System.out.println&#40;&#40;&#40;KnowledgeBaseMessageTextContent&#41; content&#41;.getText&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalRequest -->
-     *
      * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +130,7 @@ public final class KnowledgeBaseRetrievalClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -181,9 +164,9 @@ public final class KnowledgeBaseRetrievalClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
