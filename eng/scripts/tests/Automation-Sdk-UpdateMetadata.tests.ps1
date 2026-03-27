@@ -1019,3 +1019,43 @@ Describe "End-to-End: New Service with CI update" {
         $ciContent | Should -Match "ServiceDirectory: compute"
     }
 }
+
+# ============================================================================
+# End-to-end: Unsupported SDK type should fail the run
+# ============================================================================
+Describe "End-to-End: Unsupported SDK Type" {
+    BeforeEach {
+        $script:E2ERoot = Join-Path $script:TestRoot "e2e-unsupported-$(New-Guid)"
+        New-Item -ItemType Directory -Path $script:E2ERoot -Force | Out-Null
+
+        Set-Content -Path (Join-Path $script:E2ERoot "pom.xml") -Value $script:SampleRootPomXml
+        $pkgDir = Join-Path $script:E2ERoot "sdk" "spring" "spring-cloud-azure-core"
+        New-Item -ItemType Directory -Path $pkgDir -Force | Out-Null
+
+        $springPom = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>spring-cloud-azure-core</artifactId>
+    <version>4.0.0</version>
+</project>
+"@
+        Set-Content -Path (Join-Path $pkgDir "pom.xml") -Value $springPom
+    }
+
+    AfterEach {
+        if (Test-Path $script:E2ERoot) {
+            Remove-Item -Path $script:E2ERoot -Recurse -Force
+        }
+    }
+
+    It "Should fail for unsupported groupId (e.g., com.azure.spring)" {
+        $scriptPath = Join-Path $PSScriptRoot ".." "Automation-Sdk-UpdateMetadata.ps1"
+        $pkgPath = Join-Path $script:E2ERoot "sdk" "spring" "spring-cloud-azure-core"
+
+        $output = pwsh -NoProfile -File $scriptPath -PackagePath $pkgPath -SdkRepoPath $script:E2ERoot 2>&1
+        $LASTEXITCODE | Should -Be 1
+        $output | Out-String | Should -Match "Unsupported SDK type"
+    }
+}

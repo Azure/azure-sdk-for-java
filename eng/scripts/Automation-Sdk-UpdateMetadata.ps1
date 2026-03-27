@@ -73,6 +73,13 @@ try {
     if (Test-Path $packagePomPath) {
         $groupId = Get-GroupIdFromPom -PomPath $packagePomPath
         LogInfo "  GroupId: $groupId"
+
+        $supportedGroupIds = @("com.azure", "com.azure.resourcemanager")
+        if ($groupId -notin $supportedGroupIds) {
+            LogError "Unsupported SDK type with groupId '$groupId' at '$PackagePath'. This script only supports: $($supportedGroupIds -join ', ')."
+            exit 1
+        }
+
         Update-CiYml -SdkRepoPath $SdkRepoPath -Service $service -Module $module -GroupId $groupId
     }
     else {
