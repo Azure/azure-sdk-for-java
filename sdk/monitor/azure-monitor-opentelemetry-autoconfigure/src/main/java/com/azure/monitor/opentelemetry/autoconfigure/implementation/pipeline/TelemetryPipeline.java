@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
@@ -45,6 +46,11 @@ public class TelemetryPipeline {
 
     public CompletableResultCode send(List<ByteBuffer> telemetry, String connectionString,
         TelemetryPipelineListener listener) {
+        return send(telemetry, connectionString, listener, TelemetryBatchMetadata.empty());
+    }
+
+    public CompletableResultCode send(List<ByteBuffer> telemetry, String connectionString,
+        TelemetryPipelineListener listener, TelemetryBatchMetadata batchMetadata) {
 
         ConnectionString connectionStringObj = ConnectionString.parse(connectionString);
 
@@ -52,7 +58,7 @@ public class TelemetryPipeline {
             k -> getFullIngestionUrl(connectionStringObj.getIngestionEndpoint()));
 
         TelemetryPipelineRequest request = new TelemetryPipelineRequest(url, connectionString,
-            connectionStringObj.getInstrumentationKey(), telemetry);
+            connectionStringObj.getInstrumentationKey(), telemetry, batchMetadata);
 
         try {
             CompletableResultCode result = new CompletableResultCode();
