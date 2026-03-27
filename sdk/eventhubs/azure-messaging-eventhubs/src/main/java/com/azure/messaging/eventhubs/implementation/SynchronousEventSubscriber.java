@@ -12,9 +12,9 @@ import reactor.util.context.Context;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
@@ -24,8 +24,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SUBSC
  * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
  */
 public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
-    private static final ScheduledExecutorService TIMEOUT_SCHEDULER
-        = Executors.newSingleThreadScheduledExecutor(new ReceiveTimeoutThreadFactory());
+    private static final ScheduledExecutorService TIMEOUT_SCHEDULER = createTimeoutScheduler();
 
     private final ClientLogger logger;
     private final SynchronousReceiveWork work;
@@ -112,6 +111,17 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         }
 
         super.dispose();
+    }
+
+    static ScheduledExecutorService getTimeoutScheduler() {
+        return TIMEOUT_SCHEDULER;
+    }
+
+    private static ScheduledExecutorService createTimeoutScheduler() {
+        final ScheduledThreadPoolExecutor scheduler
+            = new ScheduledThreadPoolExecutor(1, new ReceiveTimeoutThreadFactory());
+        scheduler.setRemoveOnCancelPolicy(true);
+        return scheduler;
     }
 
     private static class ReceiveTimeoutTask implements Runnable {

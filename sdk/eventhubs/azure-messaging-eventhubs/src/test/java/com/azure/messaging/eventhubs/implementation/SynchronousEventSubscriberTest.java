@@ -11,8 +11,10 @@ import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -41,5 +43,13 @@ class SynchronousEventSubscriberTest {
         assertTrue(completed.await(5, TimeUnit.SECONDS), "The timeout should complete the work.");
         verify(subscription, atLeastOnce()).request(1L);
         verify(subscription, atLeastOnce()).cancel();
+    }
+
+    @Test
+    void timeoutSchedulerRemovesCancelledTasksImmediately() {
+        final ScheduledThreadPoolExecutor scheduler
+            = assertInstanceOf(ScheduledThreadPoolExecutor.class, SynchronousEventSubscriber.getTimeoutScheduler());
+
+        assertTrue(scheduler.getRemoveOnCancelPolicy(), "Canceled timeout tasks should be removed immediately.");
     }
 }

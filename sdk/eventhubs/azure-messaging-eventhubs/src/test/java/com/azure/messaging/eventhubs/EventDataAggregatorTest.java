@@ -204,6 +204,37 @@ public class EventDataAggregatorTest {
         }).thenCancel().verify();
     }
 
+    @Test
+    public void doesNotCreateNewBatchAfterCompletion() throws InterruptedException {
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1);
+
+        final Duration waitTime = Duration.ofMillis(50);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+
+        final AtomicInteger batchSupplierInvocations = new AtomicInteger();
+        final Supplier<EventDataBatch> supplier = () -> {
+            batchSupplierInvocations.incrementAndGet();
+            return batch;
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+
+        StepVerifier.create(aggregator)
+            .then(() -> publisher.next(event1))
+            .then(publisher::complete)
+            .expectNext(batch)
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
+
+        Thread.sleep(waitTime.multipliedBy(3).toMillis());
+
+        assertEquals(1, batchSupplierInvocations.get(), "No batch should be recreated after completion.");
+    }
+
     /**
      * Tests that it pushes partial batches downstream when flush signal arrives.
      */

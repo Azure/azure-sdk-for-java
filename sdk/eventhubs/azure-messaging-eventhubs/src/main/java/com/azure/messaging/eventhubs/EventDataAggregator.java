@@ -130,6 +130,13 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.eventSink = Sinks.many().unicast().onBackpressureError();
             this.disposable
                 = eventSink.asFlux().switchMap(ignored -> Mono.delay(options.getMaxWaitTime())).subscribe(index -> {
+                    if (isCompleted.get()) {
+                        logger.atVerbose()
+                            .addKeyValue(PARTITION_ID_KEY, partitionId)
+                            .log("Aggregator already completed. Skipping timed publish.");
+                        return;
+                    }
+
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .log("Time elapsed. Attempt to publish downstream.");
@@ -179,10 +186,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             // Do not keep requesting more events upstream
             logger.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Disposing of aggregator.");
             subscription.cancel();
+            disposeTimeoutSubscription();
 
             updateOrPublishBatch(null, true);
             downstream.onComplete();
-            disposable.dispose();
         }
 
         @Override
@@ -218,6 +225,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 return;
             }
 
+            disposeTimeoutSubscription();
             updateOrPublishBatch(null, true);
             downstream.onError(t);
         }
@@ -228,6 +236,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         @Override
         public void onComplete() {
             if (isCompleted.compareAndSet(false, true)) {
+                disposeTimeoutSubscription();
                 updateOrPublishBatch(null, true);
                 downstream.onComplete();
             }
@@ -278,6 +287,11 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 synchronized (lock) {
                     previous = this.currentBatch;
                     if (previous == null) {
+                        if (isCompleted.get()) {
+                            logger.verbose("Aggregator is completed. Skipping batch recreation.");
+                            return;
+                        }
+
                         logger.warning("Batch should not be null, setting a new batch.");
                         this.currentBatch = batchSupplier.get();
                         if (isFlush) {
@@ -341,6 +355,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         private static boolean isFlushSignal(EventData eventData) {
             return eventData instanceof FlushSignal;
+        }
+
+        private void disposeTimeoutSubscription() {
+            disposable.dispose();
         }
     }
 }
