@@ -138,6 +138,16 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * <pre>
      * {@code
      * {
+     *     messages (Optional): [
+     *          (Optional){
+     *             role: String (Optional)
+     *             content (Required): [
+     *                  (Required){
+     *                     type: String(text/image) (Required)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
