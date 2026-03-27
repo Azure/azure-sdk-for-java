@@ -40,7 +40,7 @@ public class DatasetsClientTest extends ClientTestBase {
 
         assertFileDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString, null);
 
-        datasetsClient.deleteVersion(datasetName, datasetVersionString);
+        datasetsClient.deleteDatasetVersion(datasetName, datasetVersionString);
     }
 
     @LiveOnly
@@ -65,7 +65,7 @@ public class DatasetsClientTest extends ClientTestBase {
 
             assertDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString);
 
-            datasetsClient.deleteVersion(datasetName, datasetVersionString);
+            datasetsClient.deleteDatasetVersion(datasetName, datasetVersionString);
         } finally {
             Files.deleteIfExists(file1);
             Files.deleteIfExists(file2);
@@ -78,7 +78,7 @@ public class DatasetsClientTest extends ClientTestBase {
     public void testListDatasets(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
-        Iterable<DatasetVersion> datasets = datasetsClient.listLatestVersion();
+        Iterable<DatasetVersion> datasets = datasetsClient.listLatestDatasetVersions();
         Assertions.assertNotNull(datasets);
 
         datasets.forEach(dataset -> {
@@ -106,7 +106,7 @@ public class DatasetsClientTest extends ClientTestBase {
         DatasetVersion retrievedDataset = datasetsClient.getDatasetVersion(datasetName, datasetVersionString);
         assertDatasetVersion(retrievedDataset, datasetName, datasetVersionString);
 
-        Iterable<DatasetVersion> versions = datasetsClient.listVersions(datasetName);
+        Iterable<DatasetVersion> versions = datasetsClient.listDatasetVersions(datasetName);
         Assertions.assertNotNull(versions);
         boolean found = false;
         for (DatasetVersion version : versions) {
@@ -117,7 +117,7 @@ public class DatasetsClientTest extends ClientTestBase {
         }
         Assertions.assertTrue(found, "Created dataset version should appear in listVersions");
 
-        datasetsClient.deleteVersion(datasetName, datasetVersionString);
+        datasetsClient.deleteDatasetVersion(datasetName, datasetVersionString);
 
         try {
             datasetsClient.getDatasetVersion(datasetName, datasetVersionString);
