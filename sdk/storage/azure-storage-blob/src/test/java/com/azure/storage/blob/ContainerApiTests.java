@@ -66,6 +66,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
@@ -2328,6 +2329,84 @@ public class ContainerApiTests extends BlobTestBase {
             }
 
             // Basic assertions on the blob we uploaded
+            org.apache.arrow.vector.FieldVector nameVec = root.getVector("Name");
+            assertNotNull(nameVec, "Expected 'Name' column in Arrow schema");
+        }
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowHierarchySchemaDiscovery() throws Exception {
+        // Upload blobs with directory structure and metadata
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient("dir/blob1")
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+        cc.getBlobClient("dir/blob2")
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        // Construct AzureBlobStorageImpl directly to call generated Arrow methods
+        HttpPipeline pipeline = cc.getHttpPipeline();
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(pipeline)
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        // Call the Arrow hierarchy endpoint directly with delimiter "/"
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobHierarchySegmentApacheArrowWithResponse(containerName, "/", null, null, null, include, null, null,
+                null, null, com.azure.core.util.Context.NONE);
+
+        // Verify Content-Type header
+        String contentType = response.getDeserializedHeaders().getContentType();
+        System.out.println("Content-Type: " + contentType);
+        assertNotNull(contentType);
+
+        // Read the Arrow IPC stream
+        try (InputStream inputStream = response.getValue();
+            BufferAllocator allocator = new RootAllocator();
+            ArrowStreamReader reader = new ArrowStreamReader(inputStream, allocator)) {
+
+            VectorSchemaRoot root = reader.getVectorSchemaRoot();
+
+            // Print schema fields
+            System.out.println("=== Arrow Hierarchy Schema Fields ===");
+            root.getSchema()
+                .getFields()
+                .forEach(field -> System.out.println("  " + field.getName() + " : " + field.getType()));
+
+            // Print custom metadata
+            System.out.println("=== Schema Custom Metadata ===");
+            Map<String, String> schemaMetadata = root.getSchema().getCustomMetadata();
+            if (schemaMetadata != null) {
+                schemaMetadata.forEach((k, v) -> System.out.println("  " + k + " = " + v));
+            }
+
+            // Read all batches and print all row values
+            while (reader.loadNextBatch()) {
+                int rowCount = root.getRowCount();
+                System.out.println("=== Batch Row Count: " + rowCount + " ===");
+                assertTrue(rowCount >= 1, "Expected at least one row");
+
+                for (int rowIdx = 0; rowIdx < rowCount; rowIdx++) {
+                    System.out.println("--- Row " + rowIdx + " ---");
+                    for (int fieldIdx = 0; fieldIdx < root.getSchema().getFields().size(); fieldIdx++) {
+                        org.apache.arrow.vector.FieldVector vec = root.getVector(fieldIdx);
+                        Object value = vec.isNull(rowIdx) ? null : vec.getObject(rowIdx);
+                        System.out.println("  " + vec.getName() + " = " + value);
+                    }
+                }
+            }
+
+            // Basic assertions — we expect at least a Name column
             org.apache.arrow.vector.FieldVector nameVec = root.getVector("Name");
             assertNotNull(nameVec, "Expected 'Name' column in Arrow schema");
         }
