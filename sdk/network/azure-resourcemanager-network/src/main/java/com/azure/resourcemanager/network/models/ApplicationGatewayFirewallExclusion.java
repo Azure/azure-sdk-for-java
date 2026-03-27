@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Allow to exclude some variable satisfy the condition for the WAF check.
+ * The ApplicationGatewayFirewallExclusion model.
  */
 @Fluent
 public final class ApplicationGatewayFirewallExclusion
@@ -115,16 +115,6 @@ public final class ApplicationGatewayFirewallExclusion
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
-        }
-        if (selectorMatchOperator() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property selectorMatchOperator in model ApplicationGatewayFirewallExclusion"));
-        }
-        if (selector() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
         }
     }
 
