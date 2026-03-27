@@ -34,6 +34,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: SkipAzureTestReplace
+    type: boolean
+    default: false
   - name: PreBuildSteps
     type: object
     default: []
@@ -121,7 +124,8 @@ extends:
                 - ${{ each replacement in parameters.MatrixReplace }}:
                   - ${{ replacement }}
 
-                - AZURE_TEST.*=.*/
+                - ${{ if ne(parameters.SkipAzureTestReplace, true) }}:
+                  - AZURE_TEST.*=.*/
                 - ${{ if eq(parameters.SDKType, 'data') }}:
                   - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
               PreBuildSteps: ${{ parameters.PreBuildSteps }}
