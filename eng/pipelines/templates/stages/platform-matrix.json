@@ -91,7 +91,7 @@
     },
     {
       "Agent": {
-        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
@@ -106,7 +106,7 @@
     },
     {
       "Agent": {
-        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
@@ -121,7 +121,7 @@
     },
     {
       "Agent": {
-        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "VertxHttpClientProvider",

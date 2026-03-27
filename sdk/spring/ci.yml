@@ -612,8 +612,5 @@ extends:
         releaseInBatch: ${{ parameters.release_springcloudazurestartermonitor }}
     TestParallelization: '1'
     SkipAzureTestReplace: true
-    MatrixReplace:
-        - Pool=env:LINUXPOOL/env:WINDOWSPOOL
-        - OSVmImage=env:LINUXVMIMAGE/env:WINDOWSVMIMAGE
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
