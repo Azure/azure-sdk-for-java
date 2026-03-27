@@ -26,6 +26,10 @@
   - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
   - `LocalSkillParam` → `LocalSkillParameter`
   - `SkillReferenceParam` → `SkillReferenceParameter`
+- `deleteAgentWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteAgentVersionWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteMemoryStoreWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteScopeWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
 - `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
 - `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
 - `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
