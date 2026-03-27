@@ -10,6 +10,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -20,6 +21,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -63,6 +65,15 @@ public class Sample02_AnalyzeUrlAsync {
 
         System.out.println("\n--- Image Analysis Example ---");
         analyzeImageUrl(client);
+
+        System.out.println("\n--- Document URL with ContentRange Example ---");
+        analyzeDocumentUrlWithContentRange(client);
+
+        System.out.println("\n--- Video URL with ContentRange Example ---");
+        analyzeVideoUrlWithContentRange(client);
+
+        System.out.println("\n--- Audio URL with ContentRange Example ---");
+        analyzeAudioUrlWithContentRange(client);
     }
 
     /**
@@ -415,5 +426,446 @@ public class Sample02_AnalyzeUrlAsync {
             throw new RuntimeException("Interrupted while waiting for image analysis", e);
         }
         // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze a document URL with page-based ContentRange.
+     */
+    public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
+
+        // Analyze only page 1 using ContentRange
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+        input.setContentRange(ContentRange.page(1));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent document = (DocumentContent) result.getContents().get(0);
+                System.out.println("Page(1): returned " + document.getPages().size() + " page"
+                    + " (page " + document.getStartPageNumber() + ")");
+                System.out.println("Markdown length: " + document.getMarkdown().length() + " characters");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .doFinally(signalType -> latch.countDown())
+            .subscribe(
+                result -> { },
+                error -> { }
+            );
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for document analysis", e);
+        }
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.pages(1, 3),
+            ContentRange.page(5),
+            ContentRange.pagesFrom(9)));
+
+        CountDownLatch combineLatch = new CountDownLatch(1);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+
+        combineOperation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent combineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(1-3, 5, 9-): returned " + combineDoc.getPages().size() + " pages"
+                    + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+                System.out.println("Markdown length: " + combineDoc.getMarkdown().length() + " characters");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> combineLatch.countDown(),
+                error -> combineLatch.countDown()
+            );
+
+        try {
+            combineLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for combined range analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze a video URL with time-based ContentRange.
+     */
+    public static void analyzeVideoUrlWithContentRange(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithContentRangeAsync
+        String videoUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        // Analyze the first 5 seconds of the video
+        AnalysisInput input1 = new AnalysisInput();
+        input1.setUrl(videoUrl);
+        input1.setContentRange(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation1
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input1));
+
+        CountDownLatch latch1 = new CountDownLatch(1);
+
+        operation1.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("TimeRange(0, 5s): Start=" + videoContent.getStartTime().toMillis()
+                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch1.countDown(),
+                error -> latch1.countDown()
+            );
+
+        try {
+            latch1.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for video analysis", e);
+        }
+
+        // Analyze from 10 seconds onward using ContentRange.timeRangeFrom()
+        AnalysisInput input2 = new AnalysisInput();
+        input2.setUrl(videoUrl);
+        input2.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(10)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation2
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input2));
+
+        CountDownLatch latch2 = new CountDownLatch(1);
+
+        operation2.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("TimeRangeFrom(10s): Start=" + videoContent.getStartTime().toMillis()
+                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch2.countDown(),
+                error -> latch2.countDown()
+            );
+
+        try {
+            latch2.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for video analysis", e);
+        }
+
+        // Analyze with sub-second precision using milliseconds
+        AnalysisInput input3 = new AnalysisInput();
+        input3.setUrl(videoUrl);
+        input3.setContentRange(
+            ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation3
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input3));
+
+        CountDownLatch latch3 = new CountDownLatch(1);
+
+        operation3.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("TimeRange(1200ms, 3651ms): Start=" + videoContent.getStartTime().toMillis()
+                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch3.countDown(),
+                error -> latch3.countDown()
+            );
+
+        try {
+            latch3.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for video analysis", e);
+        }
+
+        // Analyze with combined time ranges
+        AnalysisInput input4 = new AnalysisInput();
+        input4.setUrl(videoUrl);
+        input4.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation4
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input4));
+
+        CountDownLatch latch4 = new CountDownLatch(1);
+
+        operation4.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                int segmentIndex = 1;
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println(
+                        "Combined segment " + segmentIndex + ": Start="
+                            + videoContent.getStartTime().toMillis()
+                            + " ms, End="
+                            + videoContent.getEndTime().toMillis()
+                            + " ms");
+                    segmentIndex++;
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch4.countDown(),
+                error -> latch4.countDown()
+            );
+
+        try {
+            latch4.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for video analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeVideoUrlWithContentRangeAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze an audio URL with time-based ContentRange.
+     */
+    public static void analyzeAudioUrlWithContentRange(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithContentRangeAsync
+        String audioUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        // Analyze from 5 seconds onward
+        AnalysisInput input1 = new AnalysisInput();
+        input1.setUrl(audioUrl);
+        input1.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(5)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation1
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input1));
+
+        CountDownLatch latch1 = new CountDownLatch(1);
+
+        operation1.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("TimeRangeFrom(5s): Start=" + audioContent.getStartTime().toMillis()
+                    + " ms, End=" + audioContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch1.countDown(),
+                error -> latch1.countDown()
+            );
+
+        try {
+            latch1.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
+        }
+
+        // Analyze a specific time range (2s to 8s)
+        AnalysisInput input2 = new AnalysisInput();
+        input2.setUrl(audioUrl);
+        input2.setContentRange(ContentRange.timeRange(Duration.ofSeconds(2), Duration.ofSeconds(8)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation2
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input2));
+
+        CountDownLatch latch2 = new CountDownLatch(1);
+
+        operation2.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent windowContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("TimeRange(2s, 8s): Start=" + windowContent.getStartTime().toMillis()
+                    + " ms, End=" + windowContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch2.countDown(),
+                error -> latch2.countDown()
+            );
+
+        try {
+            latch2.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
+        }
+
+        // Analyze with sub-second precision using milliseconds
+        AnalysisInput input3 = new AnalysisInput();
+        input3.setUrl(audioUrl);
+        input3.setContentRange(
+            ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation3
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input3));
+
+        CountDownLatch latch3 = new CountDownLatch(1);
+
+        operation3.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent subSecondContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("TimeRange(1200ms, 3651ms): Start=" + subSecondContent.getStartTime().toMillis()
+                    + " ms, End=" + subSecondContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> latch3.countDown(),
+                error -> latch3.countDown()
+            );
+
+        try {
+            latch3.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
+        }
+
+        // Combine multiple time ranges
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(audioUrl);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
+
+        CountDownLatch latch4 = new CountDownLatch(1);
+
+        combineOperation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent combineContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("Combined time ranges: Start=" + combineContent.getStartTime().toMillis()
+                    + " ms, End=" + combineContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
+            .subscribe(result -> latch4.countDown(), error -> latch4.countDown());
+
+        try {
+            latch4.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeAudioUrlWithContentRangeAsync
     }
 }

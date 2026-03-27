@@ -17,16 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PageBlobsGetPageRangesHeaders {
     /*
-     * The x-ms-version property.
+     * The Last-Modified property.
      */
     @Generated
-    private String xMsVersion;
-
-    /*
-     * The x-ms-blob-content-length property.
-     */
-    @Generated
-    private Long xMsBlobContentLength;
+    private DateTimeRfc1123 lastModified;
 
     /*
      * The ETag property.
@@ -35,16 +29,10 @@ public final class PageBlobsGetPageRangesHeaders {
     private String eTag;
 
     /*
-     * The Last-Modified property.
+     * The x-ms-blob-content-length property.
      */
     @Generated
-    private DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
+    private Long xMsBlobContentLength;
 
     /*
      * The x-ms-client-request-id property.
@@ -53,15 +41,27 @@ public final class PageBlobsGetPageRangesHeaders {
     private String xMsClientRequestId;
 
     /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
     private static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH
         = HttpHeaderName.fromString("x-ms-blob-content-length");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -70,94 +70,28 @@ public final class PageBlobsGetPageRangesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PageBlobsGetPageRangesHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String xMsBlobContentLength = rawHeaders.getValue(X_MS_BLOB_CONTENT_LENGTH);
-        if (xMsBlobContentLength != null) {
-            this.xMsBlobContentLength = Long.parseLong(xMsBlobContentLength);
-        } else {
-            this.xMsBlobContentLength = null;
-        }
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
             this.lastModified = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsBlobContentLength = rawHeaders.getValue(X_MS_BLOB_CONTENT_LENGTH);
+        if (xMsBlobContentLength != null) {
+            this.xMsBlobContentLength = Long.parseLong(xMsBlobContentLength);
+        } else {
+            this.xMsBlobContentLength = null;
+        }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the PageBlobsGetPageRangesHeaders object itself.
-     */
-    @Generated
-    public PageBlobsGetPageRangesHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsBlobContentLength property: The x-ms-blob-content-length property.
-     * 
-     * @return the xMsBlobContentLength value.
-     */
-    @Generated
-    public Long getXMsBlobContentLength() {
-        return this.xMsBlobContentLength;
-    }
-
-    /**
-     * Set the xMsBlobContentLength property: The x-ms-blob-content-length property.
-     * 
-     * @param xMsBlobContentLength the xMsBlobContentLength value to set.
-     * @return the PageBlobsGetPageRangesHeaders object itself.
-     */
-    @Generated
-    public PageBlobsGetPageRangesHeaders setXMsBlobContentLength(Long xMsBlobContentLength) {
-        this.xMsBlobContentLength = xMsBlobContentLength;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The ETag property.
-     * 
-     * @return the eTag value.
-     */
-    @Generated
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The ETag property.
-     * 
-     * @param eTag the eTag value to set.
-     * @return the PageBlobsGetPageRangesHeaders object itself.
-     */
-    @Generated
-    public PageBlobsGetPageRangesHeaders setETag(String eTag) {
-        this.eTag = eTag;
-        return this;
     }
 
     /**
@@ -190,24 +124,46 @@ public final class PageBlobsGetPageRangesHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the eTag property: The ETag property.
      * 
-     * @return the xMsRequestId value.
+     * @return the eTag value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public String getETag() {
+        return this.eTag;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the eTag property: The ETag property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param eTag the eTag value to set.
      * @return the PageBlobsGetPageRangesHeaders object itself.
      */
     @Generated
-    public PageBlobsGetPageRangesHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public PageBlobsGetPageRangesHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsBlobContentLength property: The x-ms-blob-content-length property.
+     * 
+     * @return the xMsBlobContentLength value.
+     */
+    @Generated
+    public Long getXMsBlobContentLength() {
+        return this.xMsBlobContentLength;
+    }
+
+    /**
+     * Set the xMsBlobContentLength property: The x-ms-blob-content-length property.
+     * 
+     * @param xMsBlobContentLength the xMsBlobContentLength value to set.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
+     */
+    @Generated
+    public PageBlobsGetPageRangesHeaders setXMsBlobContentLength(Long xMsBlobContentLength) {
+        this.xMsBlobContentLength = xMsBlobContentLength;
         return this;
     }
 
@@ -230,6 +186,50 @@ public final class PageBlobsGetPageRangesHeaders {
     @Generated
     public PageBlobsGetPageRangesHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
+     */
+    @Generated
+    public PageBlobsGetPageRangesHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
+     */
+    @Generated
+    public PageBlobsGetPageRangesHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

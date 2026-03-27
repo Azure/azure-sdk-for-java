@@ -28,6 +28,12 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     private String name;
 
     /*
+     * The max number of upgrades that can run concurrently across all groups in this stage, resolved from the
+     * UpdateStrategy.UpdateStage.maxConcurrency value.
+     */
+    private Integer maxConcurrency;
+
+    /*
      * The list of groups to be updated as part of this UpdateStage.
      */
     private List<UpdateGroupStatus> groups;
@@ -69,6 +75,16 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
+     * stage, resolved from the UpdateStrategy.UpdateStage.maxConcurrency value.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public Integer maxConcurrency() {
+        return this.maxConcurrency;
     }
 
     /**
@@ -135,6 +151,8 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
                     deserializedUpdateStageStatus.status = UpdateStatus.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedUpdateStageStatus.name = reader.getString();
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateStageStatus.maxConcurrency = reader.getNullable(JsonReader::getInt);
                 } else if ("groups".equals(fieldName)) {
                     List<UpdateGroupStatus> groups = reader.readArray(reader1 -> UpdateGroupStatus.fromJson(reader1));
                     deserializedUpdateStageStatus.groups = groups;

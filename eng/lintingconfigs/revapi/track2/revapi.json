@@ -735,15 +735,6 @@
         },
         {
           "ignore": true,
-          "code": "java.method.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
-          },
-          "justification": "Read-only properties' getter removed in TypeSpec migration."
-        },
-        {
-          "ignore": true,
           "code": "java.method.returnTypeChanged",
           "new" : {
             "matcher": "regex",
@@ -1247,6 +1238,46 @@
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters visibility reduced."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobServiceItems|DeletedAccountListResult|EncryptionScopeListResult|FileServiceUsages|FileShareItems|ListBlobInventoryPolicy|ListContainerItems|ListQueueResource|ListTableResource|LocalUsers|NetworkSecurityPerimeterConfigurationList|ObjectReplicationPolicies|OperationListResult|PrivateEndpointConnectionListResult|StorageAccountListResult|StorageSkuListResult|StorageTaskAssignmentsList|StorageTaskReportSummary|UsageListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobContainers.*Headers|FileSharesLeaseHeaders)\\:\\:with.*\\(.*\\)"
+          },
+          "justification": "Header model setters removed in TypeSpec migration.",
+          "code": "java.method.removed"
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
           "justification": "Output-only immutable models' constructors are now private."
@@ -1322,7 +1353,8 @@
             "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\.EffectiveNetworkSecurityGroup\\:\\:tagMap\\(\\)"
           },
           "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
-        }]
+        }
+      ]
     }
   }
 ]

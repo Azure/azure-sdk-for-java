@@ -6,8 +6,10 @@
 
 ### Breaking Changes
 
-- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, `DeleteMemoryStoreResult`, `MemoryStoreDeleteScopeResponse`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
+- `MemoryStoreUpdateStatus` changed from a standard Java `enum` to an `ExpandableStringEnum`-based class. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`.
+- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
 - Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
+- `getContainerAsAutoCodeInterpreterToolParam()` on `CodeInterpreterTool` renamed to `getContainerAsAutoCodeInterpreterToolParameter()`, and `setContainer(AutoCodeInterpreterToolParam)` now accepts `AutoCodeInterpreterToolParameter` instead.
 - Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
   - `AutoCodeInterpreterToolParam` → `AutoCodeInterpreterToolParameter`
   - `ContainerAutoParam` → `ContainerAutoParameter`
@@ -22,6 +24,10 @@
   - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
   - `LocalSkillParam` → `LocalSkillParameter`
   - `SkillReferenceParam` → `SkillReferenceParameter`
+- `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
+- `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
+- `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
+- `ResponsesUtils` class has been removed. Use `ResponsesClient.getAzureFields(Response)` instead of `ResponsesUtils.getAzureFields(Response)` to extract Azure-specific fields from a response.
 
 ### Bugs Fixed
 

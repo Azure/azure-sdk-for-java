@@ -25,7 +25,7 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     /*
      * The effective outbound IP resources of the cluster NAT gateway.
      */
-    private List<ResourceReference> effectiveOutboundIps;
+    private List<ResourceReference> effectiveOutboundIPs;
 
     /*
      * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The
@@ -63,12 +63,12 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     }
 
     /**
-     * Get the effectiveOutboundIps property: The effective outbound IP resources of the cluster NAT gateway.
+     * Get the effectiveOutboundIPs property: The effective outbound IP resources of the cluster NAT gateway.
      * 
-     * @return the effectiveOutboundIps value.
+     * @return the effectiveOutboundIPs value.
      */
-    public List<ResourceReference> effectiveOutboundIps() {
-        return this.effectiveOutboundIps;
+    public List<ResourceReference> effectiveOutboundIPs() {
+        return this.effectiveOutboundIPs;
     }
 
     /**
@@ -102,8 +102,8 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
         if (managedOutboundIpProfile() != null) {
             managedOutboundIpProfile().validate();
         }
-        if (effectiveOutboundIps() != null) {
-            effectiveOutboundIps().forEach(e -> e.validate());
+        if (effectiveOutboundIPs() != null) {
+            effectiveOutboundIPs().forEach(e -> e.validate());
         }
     }
 
@@ -138,9 +138,9 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
                     deserializedManagedClusterNatGatewayProfile.managedOutboundIpProfile
                         = ManagedClusterManagedOutboundIpProfile.fromJson(reader);
                 } else if ("effectiveOutboundIPs".equals(fieldName)) {
-                    List<ResourceReference> effectiveOutboundIps
+                    List<ResourceReference> effectiveOutboundIPs
                         = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
-                    deserializedManagedClusterNatGatewayProfile.effectiveOutboundIps = effectiveOutboundIps;
+                    deserializedManagedClusterNatGatewayProfile.effectiveOutboundIPs = effectiveOutboundIPs;
                 } else if ("idleTimeoutInMinutes".equals(fieldName)) {
                     deserializedManagedClusterNatGatewayProfile.idleTimeoutInMinutes
                         = reader.getNullable(JsonReader::getInt);

@@ -1,4 +1,63 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
+
+## 6.2.0 (2026-03-25)
+- This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### New Features
+
+- Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add ConnectionDetails for EventHubs. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
+
+#### Bugs Fixed
+
+- Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
+
+#### Breaking Changes
+
+- Change sender's default JmsConnectionFactory from ServiceBusJmsConnectionFactory to CachingConnectionFactory. [#47923](https://github.com/Azure/azure-sdk-for-java/issues/47923)
+
+The ConnectionFactory type is determined by the following configuration properties:
+
+| `spring.jms.servicebus.pool.enabled` | `spring.jms.cache.enabled` | Sender ConnectionFactory       | Listener Container ConnectionFactory     |
+  |--------------------------------------|----------------------------|--------------------------------|--------------------------------|
+| not set                              | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
+| not set                              | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
+| not set                              | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
+| true                                 | not set                    | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
+| true                                 | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
+| true                                 | false                      | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
+| false                                | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
+| false                                | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
+| false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
+
+**Note:** `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
+
+### Spring Cloud Azure Docker Compose
+This section includes changes in `spring-cloud-azure-docker-compose` module.
+
+#### New Features
+
+- Add ServiceBusDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add EventHubsDockerComposeConnectionDetailsFactory. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
+
+### Spring Cloud Azure Test Containers
+
+This section includes changes in `spring-cloud-azure-testcontainers` module.
+
+#### New Features
+
+- Add ServiceBusContainerConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add EventHubsContainerConnectionDetailsFactory. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#620-2026-03-25) for more details.
 
 ## 7.1.0 (2026-03-11)
 - This release is compatible with Spring Boot 4.0.0-4.0.3. (Note: 4.0.x (x>3) should be supported, but they aren't tested with this release.)

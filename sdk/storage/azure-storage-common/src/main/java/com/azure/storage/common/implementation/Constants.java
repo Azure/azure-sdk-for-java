@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-04-06");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-06-06");
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
@@ -220,7 +220,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2026-04-06";
+        public static final String TARGET_STORAGE_VERSION = "2026-06-06";
 
         /**
          * Error code returned from the service.
@@ -283,6 +283,31 @@ public final class Constants {
      * RESERVED FOR INTERNAL USE.
      */
     public static final class UrlConstants {
+
+        /**
+         * DNS subdomain label for the Blob service ({@code account}.blob.{suffix}).
+         */
+        public static final String BLOB_URI_SUBDOMAIN = "blob";
+
+        /**
+         * DNS subdomain label for the Azure Files service ({@code account}.file.{suffix}).
+         */
+        public static final String FILE_URI_SUBDOMAIN = "file";
+
+        /**
+         * DNS subdomain label for the Queue service ({@code account}.queue.{suffix}).
+         */
+        public static final String QUEUE_URI_SUBDOMAIN = "queue";
+
+        /**
+         * DNS subdomain label for the Table service ({@code account}.table.{suffix}).
+         */
+        public static final String TABLE_URI_SUBDOMAIN = "table";
+
+        /**
+         * DNS subdomain label for Data Lake Storage ({@code account}.dfs.{suffix}).
+         */
+        public static final String DFS_URI_SUBDOMAIN = "dfs";
 
         /**
          * The snapshot parameters.
@@ -463,4 +488,5 @@ public final class Constants {
             // Private to prevent construction.
         }
     }
+
 }
