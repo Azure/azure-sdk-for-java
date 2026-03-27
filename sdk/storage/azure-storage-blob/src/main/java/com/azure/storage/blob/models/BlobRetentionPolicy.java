@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamException;
  * the retention policy which determines how long the associated data should persist.
  */
 @Fluent
-public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionPolicy> {
+public class BlobRetentionPolicy implements XmlSerializable<BlobRetentionPolicy> {
     /*
      * Indicates whether a retention policy is enabled for the storage service
      */
@@ -40,7 +40,7 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
 
     /**
      * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.
-     * 
+     *
      * @return the enabled value.
      */
     @Generated
@@ -50,7 +50,7 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
 
     /**
      * Set the enabled property: Indicates whether a retention policy is enabled for the storage service.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the BlobRetentionPolicy object itself.
      */
@@ -63,7 +63,7 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
     /**
      * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
      * retained. All data older than this value will be deleted.
-     * 
+     *
      * @return the days value.
      */
     @Generated
@@ -74,7 +74,7 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
     /**
      * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
      * retained. All data older than this value will be deleted.
-     * 
+     *
      * @param days the days value to set.
      * @return the BlobRetentionPolicy object itself.
      */
@@ -103,7 +103,7 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
 
     /**
      * Reads an instance of BlobRetentionPolicy from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
@@ -116,7 +116,7 @@ public final class BlobRetentionPolicy implements XmlSerializable<BlobRetentionP
 
     /**
      * Reads an instance of BlobRetentionPolicy from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
