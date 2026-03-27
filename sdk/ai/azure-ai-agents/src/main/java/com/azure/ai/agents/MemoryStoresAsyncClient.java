@@ -972,7 +972,7 @@ public final class MemoryStoresAsyncClient {
      * @param items Conversation items from which to extract memories (OpenAI SDK type).
      * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
      * where the last operation left off.
-     * @param updateDelay Timeout period before processing the memory update in seconds.
+     * @param updateDelayInSeconds Timeout period before processing the memory update in seconds.
      * If a new update request is received during this period, it will cancel the current request and reset the timeout.
      * Set to 0 to immediately trigger the update without delay.
      * Defaults to 300 (5 minutes).
@@ -986,10 +986,10 @@ public final class MemoryStoresAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
-        String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelay) {
+        String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelayInSeconds) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
         List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
-        return beginInternalUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
+        return beginInternalUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelayInSeconds);
     }
 
     /**
