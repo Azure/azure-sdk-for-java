@@ -870,38 +870,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /*
-     * A value indicating whether the field should be used as a permission filter.
-     */
-    @Generated
-    private PermissionFilter permissionFilter;
-
-    /*
      * A value indicating whether the field contains sensitivity label information.
      */
     @Generated
     private Boolean sensitivityLabel;
-
-    /**
-     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
-     *
-     * @return the permissionFilter value.
-     */
-    @Generated
-    public PermissionFilter getPermissionFilter() {
-        return this.permissionFilter;
-    }
-
-    /**
-     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
-     *
-     * @param permissionFilter the permissionFilter value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
-        this.permissionFilter = permissionFilter;
-        return this;
-    }
 
     /**
      * Get the sensitivityLabel property: A value indicating whether the field contains sensitivity label information.
@@ -922,6 +894,34 @@ public final class SearchField implements JsonSerializable<SearchField> {
     @Generated
     public SearchField setSensitivityLabel(Boolean sensitivityLabel) {
         this.sensitivityLabel = sensitivityLabel;
+        return this;
+    }
+
+    /*
+     * A value indicating whether the field should be used as a permission filter.
+     */
+    @Generated
+    private PermissionFilter permissionFilter;
+
+    /**
+     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @return the permissionFilter value.
+     */
+    @Generated
+    public PermissionFilter getPermissionFilter() {
+        return this.permissionFilter;
+    }
+
+    /**
+     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @param permissionFilter the permissionFilter value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
+        this.permissionFilter = permissionFilter;
         return this;
     }
 }
