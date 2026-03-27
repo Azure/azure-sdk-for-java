@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.management.SubResource;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -94,7 +94,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     }
 
     public String networkId() {
-        SubnetInner subnetRef = this.innerModel().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef == null) {
             return null;
         }
@@ -111,7 +111,7 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public String subnetName() {
-        SubnetInner subnetRef = this.innerModel().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef == null) {
             return null;
         }
