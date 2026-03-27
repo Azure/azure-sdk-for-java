@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0 (2026-03-27)
 
 ### Features Added
 
@@ -34,8 +34,6 @@
 - `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
 - `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
 - `ResponsesUtils` class has been removed. Use `ResponsesClient.getAzureFields(Response)` instead of `ResponsesUtils.getAzureFields(Response)` to extract Azure-specific fields from a response.
-
-### Bugs Fixed
 
 ### Other Changes
 
