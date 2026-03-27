@@ -8,9 +8,9 @@ import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
 import java.util.Arrays;
 
 /**
- * Samples for P2sVpnGatewaysOperation DisconnectP2sVpnConnections.
+ * Samples for P2SVpnGateways DisconnectP2sVpnConnections.
  */
-public final class P2sVpnGatewaysOperationDisconnectP2sVpnConnectionsSamples {
+public final class P2SVpnGatewaysDisconnectP2sVpnConnectionsSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2sVpnGatewaysDisconnectP2sVpnConnections.json
      */
@@ -22,7 +22,7 @@ public final class P2sVpnGatewaysOperationDisconnectP2sVpnConnectionsSamples {
     public static void
         disconnectVpnConnectionsFromP2sVpnGateway(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
+            .getP2SVpnGateways()
             .disconnectP2sVpnConnections("p2s-vpn-gateway-test", "p2svpngateway",
                 new P2SVpnConnectionRequest().withVpnConnectionIds(Arrays.asList("vpnconnId1", "vpnconnId2")),
                 com.azure.core.util.Context.NONE);

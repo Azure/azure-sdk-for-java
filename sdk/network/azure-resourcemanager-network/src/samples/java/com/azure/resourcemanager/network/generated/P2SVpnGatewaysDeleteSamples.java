@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for P2sVpnGatewaysOperation Delete.
+ * Samples for P2SVpnGateways Delete.
  */
-public final class P2sVpnGatewaysOperationDeleteSamples {
+public final class P2SVpnGatewaysDeleteSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayDelete.json
      */
@@ -17,8 +17,6 @@ public final class P2sVpnGatewaysOperationDeleteSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void p2SVpnGatewayDelete(com.azure.resourcemanager.network.NetworkManager manager) {
-        manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
-            .delete("rg1", "p2sVpnGateway1", com.azure.core.util.Context.NONE);
+        manager.serviceClient().getP2SVpnGateways().delete("rg1", "p2sVpnGateway1", com.azure.core.util.Context.NONE);
     }
 }

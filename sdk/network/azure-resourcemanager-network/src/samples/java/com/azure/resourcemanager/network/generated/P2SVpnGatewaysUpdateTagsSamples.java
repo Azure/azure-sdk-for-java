@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for P2sVpnGatewaysOperation UpdateTags.
+ * Samples for P2SVpnGateways UpdateTags.
  */
-public final class P2sVpnGatewaysOperationUpdateTagsSamples {
+public final class P2SVpnGatewaysUpdateTagsSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayUpdateTags.json
      */
@@ -22,7 +22,7 @@ public final class P2sVpnGatewaysOperationUpdateTagsSamples {
      */
     public static void p2SVpnGatewayUpdate(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
+            .getP2SVpnGateways()
             .updateTags("rg1", "p2sVpnGateway1", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
                 com.azure.core.util.Context.NONE);
     }

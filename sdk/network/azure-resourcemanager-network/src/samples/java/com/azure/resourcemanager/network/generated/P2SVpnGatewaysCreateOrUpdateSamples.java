@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for P2sVpnGatewaysOperation CreateOrUpdate.
+ * Samples for P2SVpnGateways CreateOrUpdate.
  */
-public final class P2sVpnGatewaysOperationCreateOrUpdateSamples {
+public final class P2SVpnGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayPut.json
      */
@@ -29,7 +29,7 @@ public final class P2sVpnGatewaysOperationCreateOrUpdateSamples {
      */
     public static void p2SVpnGatewayPut(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
+            .getP2SVpnGateways()
             .createOrUpdate("rg1", "p2sVpnGateway1", new P2SVpnGatewayInner().withLocation("West US")
                 .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withVirtualHub(new SubResource().withId(

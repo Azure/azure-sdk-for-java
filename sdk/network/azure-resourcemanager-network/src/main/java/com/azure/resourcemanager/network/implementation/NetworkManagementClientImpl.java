@@ -127,13 +127,11 @@ import com.azure.resourcemanager.network.fluent.NetworkVirtualAppliancesClient;
 import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
 import com.azure.resourcemanager.network.fluent.OperationsClient;
 import com.azure.resourcemanager.network.fluent.P2SVpnGatewaysClient;
-import com.azure.resourcemanager.network.fluent.P2sVpnGatewaysOperationsClient;
 import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
 import com.azure.resourcemanager.network.fluent.PeerExpressRouteCircuitConnectionsClient;
 import com.azure.resourcemanager.network.fluent.PrivateDnsZoneGroupsClient;
 import com.azure.resourcemanager.network.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.network.fluent.PrivateLinkServicesClient;
-import com.azure.resourcemanager.network.fluent.PublicIPAddressesOperationsClient;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.ReachabilityAnalysisIntentsClient;
@@ -1617,20 +1615,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The PublicIPAddressesOperationsClient object to access its operations.
-     */
-    private final PublicIPAddressesOperationsClient publicIPAddressesOperations;
-
-    /**
-     * Gets the PublicIPAddressesOperationsClient object to access its operations.
-     * 
-     * @return the PublicIPAddressesOperationsClient object.
-     */
-    public PublicIPAddressesOperationsClient getPublicIPAddressesOperations() {
-        return this.publicIPAddressesOperations;
-    }
-
-    /**
      * The ApplicationGatewayPrivateLinkResourcesClient object to access its operations.
      */
     private final ApplicationGatewayPrivateLinkResourcesClient applicationGatewayPrivateLinkResources;
@@ -2262,20 +2246,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The P2sVpnGatewaysOperationsClient object to access its operations.
-     */
-    private final P2sVpnGatewaysOperationsClient p2sVpnGatewaysOperations;
-
-    /**
-     * Gets the P2sVpnGatewaysOperationsClient object to access its operations.
-     * 
-     * @return the P2sVpnGatewaysOperationsClient object.
-     */
-    public P2sVpnGatewaysOperationsClient getP2sVpnGatewaysOperations() {
-        return this.p2sVpnGatewaysOperations;
-    }
-
-    /**
      * The ExpressRouteConnectionsClient object to access its operations.
      */
     private final ExpressRouteConnectionsClient expressRouteConnections;
@@ -2640,7 +2610,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesClientImpl(this);
         this.virtualNetworkAppliances = new VirtualNetworkAppliancesClientImpl(this);
         this.serviceGateways = new ServiceGatewaysClientImpl(this);
-        this.publicIPAddressesOperations = new PublicIPAddressesOperationsClientImpl(this);
         this.applicationGatewayPrivateLinkResources = new ApplicationGatewayPrivateLinkResourcesClientImpl(this);
         this.applicationGatewayWafDynamicManifestsDefaults
             = new ApplicationGatewayWafDynamicManifestsDefaultsClientImpl(this);
@@ -2689,7 +2658,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.vpnConnections = new VpnConnectionsClientImpl(this);
         this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
         this.natRules = new NatRulesClientImpl(this);
-        this.p2sVpnGatewaysOperations = new P2sVpnGatewaysOperationsClientImpl(this);
         this.expressRouteConnections = new ExpressRouteConnectionsClientImpl(this);
         this.virtualHubBgpConnections = new VirtualHubBgpConnectionsClientImpl(this);
         this.virtualHubIpConfigurations = new VirtualHubIpConfigurationsClientImpl(this);

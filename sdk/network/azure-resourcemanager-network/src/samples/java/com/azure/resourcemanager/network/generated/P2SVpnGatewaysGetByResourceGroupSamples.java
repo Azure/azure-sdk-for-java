@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for P2sVpnGatewaysOperation GetByResourceGroup.
+ * Samples for P2SVpnGateways GetByResourceGroup.
  */
-public final class P2sVpnGatewaysOperationGetByResourceGroupSamples {
+public final class P2SVpnGatewaysGetByResourceGroupSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayGet.json
      */
@@ -18,7 +18,7 @@ public final class P2sVpnGatewaysOperationGetByResourceGroupSamples {
      */
     public static void p2SVpnGatewayGet(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
+            .getP2SVpnGateways()
             .getByResourceGroupWithResponse("rg1", "p2sVpnGateway1", com.azure.core.util.Context.NONE);
     }
 }

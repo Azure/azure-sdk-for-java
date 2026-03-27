@@ -986,4 +986,145 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, Context context);
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @param publicIpAddressName The publicIpAddressName parameter.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a virtual machine scale set along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIPAddressWithResponseAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand);
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @param publicIpAddressName The publicIpAddressName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a virtual machine scale set on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
+        String ipConfigurationName, String publicIpAddressName);
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @param publicIpAddressName The publicIpAddressName parameter.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a virtual machine scale set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIPAddressWithResponse(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
+        String ipConfigurationName, String publicIpAddressName, String expand, Context context);
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @param publicIpAddressName The publicIpAddressName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a virtual machine scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpAddressInner getVirtualMachineScaleSetPublicIPAddress(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
+        String ipConfigurationName, String publicIpAddressName);
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
+     * set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
+     * scale set as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddressesAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
+        String ipConfigurationName);
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
+     * set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
+     * scale set as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
+        String ipConfigurationName);
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
+     * set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param ipConfigurationName The ipConfigurationName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
+     * scale set as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
+        String ipConfigurationName, Context context);
 }

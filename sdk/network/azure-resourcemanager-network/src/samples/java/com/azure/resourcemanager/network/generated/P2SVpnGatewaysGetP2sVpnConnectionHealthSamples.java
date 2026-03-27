@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for P2sVpnGatewaysOperation GetP2sVpnConnectionHealth.
+ * Samples for P2SVpnGateways GetP2sVpnConnectionHealth.
  */
-public final class P2sVpnGatewaysOperationGetP2sVpnConnectionHealthSamples {
+public final class P2SVpnGatewaysGetP2sVpnConnectionHealthSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayGetConnectionHealth.json
      */
@@ -18,7 +18,7 @@ public final class P2sVpnGatewaysOperationGetP2sVpnConnectionHealthSamples {
      */
     public static void p2SVpnGatewayGetConnectionHealth(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
+            .getP2SVpnGateways()
             .getP2sVpnConnectionHealth("rg1", "p2sVpnGateway1", com.azure.core.util.Context.NONE);
     }
 }

@@ -727,13 +727,6 @@ public interface NetworkManagementClient {
     ServiceGatewaysClient getServiceGateways();
 
     /**
-     * Gets the PublicIPAddressesOperationsClient object to access its operations.
-     * 
-     * @return the PublicIPAddressesOperationsClient object.
-     */
-    PublicIPAddressesOperationsClient getPublicIPAddressesOperations();
-
-    /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.
      * 
      * @return the ApplicationGatewayPrivateLinkResourcesClient object.
@@ -1047,13 +1040,6 @@ public interface NetworkManagementClient {
      * @return the NatRulesClient object.
      */
     NatRulesClient getNatRules();
-
-    /**
-     * Gets the P2sVpnGatewaysOperationsClient object to access its operations.
-     * 
-     * @return the P2sVpnGatewaysOperationsClient object.
-     */
-    P2sVpnGatewaysOperationsClient getP2sVpnGatewaysOperations();
 
     /**
      * Gets the ExpressRouteConnectionsClient object to access its operations.

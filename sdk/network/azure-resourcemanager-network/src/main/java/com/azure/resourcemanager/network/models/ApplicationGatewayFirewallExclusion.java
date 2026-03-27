@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ApplicationGatewayFirewallExclusion model.
+ * Allow to exclude some variable satisfy the condition for the WAF check.
  */
 @Fluent
 public final class ApplicationGatewayFirewallExclusion

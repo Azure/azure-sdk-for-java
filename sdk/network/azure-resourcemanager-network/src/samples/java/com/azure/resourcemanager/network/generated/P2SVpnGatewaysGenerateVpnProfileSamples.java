@@ -8,9 +8,9 @@ import com.azure.resourcemanager.network.models.AuthenticationMethod;
 import com.azure.resourcemanager.network.models.P2SVpnProfileParameters;
 
 /**
- * Samples for P2sVpnGatewaysOperation GenerateVpnProfile.
+ * Samples for P2SVpnGateways GenerateVpnProfile.
  */
-public final class P2sVpnGatewaysOperationGenerateVpnProfileSamples {
+public final class P2SVpnGatewaysGenerateVpnProfileSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayGenerateVpnProfile.json
      */
@@ -21,7 +21,7 @@ public final class P2sVpnGatewaysOperationGenerateVpnProfileSamples {
      */
     public static void generateP2SVpnGatewayVPNProfile(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getP2sVpnGatewaysOperations()
+            .getP2SVpnGateways()
             .generateVpnProfile("rg1", "p2sVpnGateway1",
                 new P2SVpnProfileParameters().withAuthenticationMethod(AuthenticationMethod.EAPTLS),
                 com.azure.core.util.Context.NONE);
