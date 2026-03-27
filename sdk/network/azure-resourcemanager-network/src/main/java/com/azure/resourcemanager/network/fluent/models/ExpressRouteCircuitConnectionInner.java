@@ -73,8 +73,8 @@ public final class ExpressRouteCircuitConnectionInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ExpressRouteCircuitConnectionInner withId(String id) {
-        super.withId(id);
+    public ExpressRouteCircuitConnectionInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class ExpressRouteCircuitConnectionInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ExpressRouteCircuitConnectionInner withName(String name) {
-        super.withName(name);
+    public ExpressRouteCircuitConnectionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

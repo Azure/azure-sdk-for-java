@@ -74,8 +74,8 @@ public final class SecurityRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public SecurityRuleInner withId(String id) {
-        super.withId(id);
+    public SecurityRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -83,8 +83,8 @@ public final class SecurityRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public SecurityRuleInner withName(String name) {
-        super.withName(name);
+    public SecurityRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

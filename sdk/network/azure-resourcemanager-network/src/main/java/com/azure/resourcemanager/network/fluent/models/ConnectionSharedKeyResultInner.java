@@ -67,8 +67,8 @@ public final class ConnectionSharedKeyResultInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ConnectionSharedKeyResultInner withId(String id) {
-        super.withId(id);
+    public ConnectionSharedKeyResultInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -76,8 +76,8 @@ public final class ConnectionSharedKeyResultInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ConnectionSharedKeyResultInner withName(String name) {
-        super.withName(name);
+    public ConnectionSharedKeyResultInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

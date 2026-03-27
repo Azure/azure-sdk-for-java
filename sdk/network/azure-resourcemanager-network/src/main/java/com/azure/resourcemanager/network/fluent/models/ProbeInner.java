@@ -74,8 +74,8 @@ public final class ProbeInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ProbeInner withId(String id) {
-        super.withId(id);
+    public ProbeInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -83,8 +83,8 @@ public final class ProbeInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ProbeInner withName(String name) {
-        super.withName(name);
+    public ProbeInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

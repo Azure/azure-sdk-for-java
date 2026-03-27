@@ -72,8 +72,8 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResourceMod
      * {@inheritDoc}
      */
     @Override
-    public FirewallPolicyRuleCollectionGroupInner withId(String id) {
-        super.withId(id);
+    public FirewallPolicyRuleCollectionGroupInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -81,8 +81,8 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResourceMod
      * {@inheritDoc}
      */
     @Override
-    public FirewallPolicyRuleCollectionGroupInner withName(String name) {
-        super.withName(name);
+    public FirewallPolicyRuleCollectionGroupInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

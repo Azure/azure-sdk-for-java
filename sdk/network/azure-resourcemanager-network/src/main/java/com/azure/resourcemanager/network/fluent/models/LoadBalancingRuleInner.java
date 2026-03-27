@@ -74,8 +74,8 @@ public final class LoadBalancingRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public LoadBalancingRuleInner withId(String id) {
-        super.withId(id);
+    public LoadBalancingRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -83,8 +83,8 @@ public final class LoadBalancingRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public LoadBalancingRuleInner withName(String name) {
-        super.withName(name);
+    public LoadBalancingRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

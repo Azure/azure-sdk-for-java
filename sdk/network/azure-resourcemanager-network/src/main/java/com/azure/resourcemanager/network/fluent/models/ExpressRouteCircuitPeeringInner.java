@@ -77,8 +77,8 @@ public final class ExpressRouteCircuitPeeringInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ExpressRouteCircuitPeeringInner withId(String id) {
-        super.withId(id);
+    public ExpressRouteCircuitPeeringInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -86,8 +86,8 @@ public final class ExpressRouteCircuitPeeringInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ExpressRouteCircuitPeeringInner withName(String name) {
-        super.withName(name);
+    public ExpressRouteCircuitPeeringInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

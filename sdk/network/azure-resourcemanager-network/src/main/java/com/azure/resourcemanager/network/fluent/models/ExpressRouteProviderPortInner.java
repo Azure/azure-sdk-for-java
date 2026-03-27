@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.TrackedResourceWithOptionalLocation;
 import java.io.IOException;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * ExpressRouteProviderPort resource.
  */
 @Immutable
-public final class ExpressRouteProviderPortInner extends TrackedResourceWithOptionalLocation {
+public final class ExpressRouteProviderPortInner extends Resource {
     /*
      * Properties of the express route Service Provider Port.
      */
@@ -28,17 +28,17 @@ public final class ExpressRouteProviderPortInner extends TrackedResourceWithOpti
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Resource ID.
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -67,7 +67,7 @@ public final class ExpressRouteProviderPortInner extends TrackedResourceWithOpti
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -77,7 +77,7 @@ public final class ExpressRouteProviderPortInner extends TrackedResourceWithOpti
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -87,7 +87,7 @@ public final class ExpressRouteProviderPortInner extends TrackedResourceWithOpti
     }
 
     /**
-     * Get the id property: Resource ID.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -173,7 +173,6 @@ public final class ExpressRouteProviderPortInner extends TrackedResourceWithOpti
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -198,6 +197,7 @@ public final class ExpressRouteProviderPortInner extends TrackedResourceWithOpti
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExpressRouteProviderPortInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExpressRouteProviderPortInner.
      */
     public static ExpressRouteProviderPortInner fromJson(JsonReader jsonReader) throws IOException {

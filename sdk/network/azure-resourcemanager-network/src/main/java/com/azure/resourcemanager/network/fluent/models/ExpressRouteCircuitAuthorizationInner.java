@@ -71,8 +71,8 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResourceMode
      * {@inheritDoc}
      */
     @Override
-    public ExpressRouteCircuitAuthorizationInner withId(String id) {
-        super.withId(id);
+    public ExpressRouteCircuitAuthorizationInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResourceMode
      * {@inheritDoc}
      */
     @Override
-    public ExpressRouteCircuitAuthorizationInner withName(String name) {
-        super.withName(name);
+    public ExpressRouteCircuitAuthorizationInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

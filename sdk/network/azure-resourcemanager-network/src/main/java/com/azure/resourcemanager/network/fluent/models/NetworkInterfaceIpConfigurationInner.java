@@ -76,8 +76,8 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      * {@inheritDoc}
      */
     @Override
-    public NetworkInterfaceIpConfigurationInner withId(String id) {
-        super.withId(id);
+    public NetworkInterfaceIpConfigurationInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -85,8 +85,8 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      * {@inheritDoc}
      */
     @Override
-    public NetworkInterfaceIpConfigurationInner withName(String name) {
-        super.withName(name);
+    public NetworkInterfaceIpConfigurationInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

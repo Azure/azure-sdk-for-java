@@ -75,8 +75,8 @@ public final class VpnGatewayNatRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VpnGatewayNatRuleInner withId(String id) {
-        super.withId(id);
+    public VpnGatewayNatRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -84,8 +84,8 @@ public final class VpnGatewayNatRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VpnGatewayNatRuleInner withName(String name) {
-        super.withName(name);
+    public VpnGatewayNatRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

@@ -73,8 +73,8 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResourceMod
      * {@inheritDoc}
      */
     @Override
-    public VpnServerConfigurationPolicyGroupInner withId(String id) {
-        super.withId(id);
+    public VpnServerConfigurationPolicyGroupInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResourceMod
      * {@inheritDoc}
      */
     @Override
-    public VpnServerConfigurationPolicyGroupInner withName(String name) {
-        super.withName(name);
+    public VpnServerConfigurationPolicyGroupInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

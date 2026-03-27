@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -15,7 +15,6 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import java.util.Map;
  * VpnSite Resource.
  */
 @Fluent
-public final class VpnSiteInner extends TrackedResourceWithSettableId {
+public final class VpnSiteInner extends Resource {
     /*
      * Properties of the VPN site.
      */
@@ -36,12 +35,17 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
     private String etag;
 
     /*
-     * Resource type.
+     * Resource ID.
+     */
+    private String id;
+
+    /*
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
 
@@ -70,7 +74,27 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the id property: Resource ID.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource ID.
+     * 
+     * @param id the id value to set.
+     * @return the VpnSiteInner object itself.
+     */
+    public VpnSiteInner withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -80,22 +104,13 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
     @Override
     public String name() {
         return this.name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VpnSiteInner withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**
@@ -337,18 +352,11 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model VpnSiteInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VpnSiteInner.class);
 
     /**
      * {@inheritDoc}
@@ -357,9 +365,9 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
-        jsonWriter.writeStringField("id", id());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -379,14 +387,12 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("location".equals(fieldName)) {
-                    deserializedVpnSiteInner.withLocation(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    deserializedVpnSiteInner.withId(reader.getString());
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedVpnSiteInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVpnSiteInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVpnSiteInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVpnSiteInner.withTags(tags);
@@ -394,6 +400,8 @@ public final class VpnSiteInner extends TrackedResourceWithSettableId {
                     deserializedVpnSiteInner.innerProperties = VpnSiteProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedVpnSiteInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVpnSiteInner.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

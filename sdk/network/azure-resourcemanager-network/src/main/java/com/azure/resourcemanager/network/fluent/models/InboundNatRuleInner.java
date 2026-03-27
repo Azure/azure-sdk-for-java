@@ -72,8 +72,8 @@ public final class InboundNatRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public InboundNatRuleInner withId(String id) {
-        super.withId(id);
+    public InboundNatRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -81,8 +81,8 @@ public final class InboundNatRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public InboundNatRuleInner withName(String name) {
-        super.withName(name);
+    public InboundNatRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

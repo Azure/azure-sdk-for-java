@@ -70,8 +70,8 @@ public final class VirtualRouterPeeringInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualRouterPeeringInner withId(String id) {
-        super.withId(id);
+    public VirtualRouterPeeringInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -79,8 +79,8 @@ public final class VirtualRouterPeeringInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualRouterPeeringInner withName(String name) {
-        super.withName(name);
+    public VirtualRouterPeeringInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

@@ -70,8 +70,8 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResourceMode
      * {@inheritDoc}
      */
     @Override
-    public NetworkInterfaceTapConfigurationInner withId(String id) {
-        super.withId(id);
+    public NetworkInterfaceTapConfigurationInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -79,8 +79,8 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResourceMode
      * {@inheritDoc}
      */
     @Override
-    public NetworkInterfaceTapConfigurationInner withName(String name) {
-        super.withName(name);
+    public NetworkInterfaceTapConfigurationInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

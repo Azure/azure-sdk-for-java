@@ -71,8 +71,8 @@ public final class RouteInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public RouteInner withId(String id) {
-        super.withId(id);
+    public RouteInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class RouteInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public RouteInner withName(String name) {
-        super.withName(name);
+    public RouteInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

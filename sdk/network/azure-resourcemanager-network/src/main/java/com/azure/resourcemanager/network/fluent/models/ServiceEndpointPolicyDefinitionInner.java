@@ -71,8 +71,8 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResourceModel
      * {@inheritDoc}
      */
     @Override
-    public ServiceEndpointPolicyDefinitionInner withId(String id) {
-        super.withId(id);
+    public ServiceEndpointPolicyDefinitionInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResourceModel
      * {@inheritDoc}
      */
     @Override
-    public ServiceEndpointPolicyDefinitionInner withName(String name) {
-        super.withName(name);
+    public ServiceEndpointPolicyDefinitionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

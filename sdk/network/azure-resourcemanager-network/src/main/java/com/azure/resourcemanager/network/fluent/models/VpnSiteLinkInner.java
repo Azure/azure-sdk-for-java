@@ -72,8 +72,8 @@ public final class VpnSiteLinkInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VpnSiteLinkInner withId(String id) {
-        super.withId(id);
+    public VpnSiteLinkInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -81,8 +81,8 @@ public final class VpnSiteLinkInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VpnSiteLinkInner withName(String name) {
-        super.withName(name);
+    public VpnSiteLinkInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

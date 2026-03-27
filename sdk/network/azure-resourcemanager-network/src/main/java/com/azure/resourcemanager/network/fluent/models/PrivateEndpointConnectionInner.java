@@ -71,8 +71,8 @@ public final class PrivateEndpointConnectionInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public PrivateEndpointConnectionInner withId(String id) {
-        super.withId(id);
+    public PrivateEndpointConnectionInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class PrivateEndpointConnectionInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public PrivateEndpointConnectionInner withName(String name) {
-        super.withName(name);
+    public PrivateEndpointConnectionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

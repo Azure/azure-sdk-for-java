@@ -80,8 +80,8 @@ public final class SubnetInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public SubnetInner withId(String id) {
-        super.withId(id);
+    public SubnetInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -89,8 +89,8 @@ public final class SubnetInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public SubnetInner withName(String name) {
-        super.withName(name);
+    public SubnetInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

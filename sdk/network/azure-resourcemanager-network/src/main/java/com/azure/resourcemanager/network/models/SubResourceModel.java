@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -15,12 +15,7 @@ import java.io.IOException;
  * Reference to another subresource.
  */
 @Fluent
-public class SubResourceModel implements JsonSerializable<SubResourceModel> {
-    /*
-     * Resource ID.
-     */
-    private String id;
-
+public class SubResourceModel extends SubResource {
     /*
      * Name of the resource.
      */
@@ -35,26 +30,6 @@ public class SubResourceModel implements JsonSerializable<SubResourceModel> {
      * Creates an instance of SubResourceModel class.
      */
     public SubResourceModel() {
-    }
-
-    /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: Resource ID.
-     * 
-     * @param id the id value to set.
-     * @return the SubResourceModel object itself.
-     */
-    public SubResourceModel withId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -98,6 +73,15 @@ public class SubResourceModel implements JsonSerializable<SubResourceModel> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SubResourceModel withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -111,7 +95,7 @@ public class SubResourceModel implements JsonSerializable<SubResourceModel> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -132,7 +116,7 @@ public class SubResourceModel implements JsonSerializable<SubResourceModel> {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedSubResourceModel.id = reader.getString();
+                    deserializedSubResourceModel.withId(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     deserializedSubResourceModel.name = reader.getString();
                 } else if ("type".equals(fieldName)) {

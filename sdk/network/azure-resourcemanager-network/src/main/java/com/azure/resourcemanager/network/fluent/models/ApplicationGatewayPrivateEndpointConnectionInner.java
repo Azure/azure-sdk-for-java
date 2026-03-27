@@ -71,8 +71,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
      * {@inheritDoc}
      */
     @Override
-    public ApplicationGatewayPrivateEndpointConnectionInner withId(String id) {
-        super.withId(id);
+    public ApplicationGatewayPrivateEndpointConnectionInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
      * {@inheritDoc}
      */
     @Override
-    public ApplicationGatewayPrivateEndpointConnectionInner withName(String name) {
-        super.withName(name);
+    public ApplicationGatewayPrivateEndpointConnectionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

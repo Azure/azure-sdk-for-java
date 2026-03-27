@@ -73,8 +73,8 @@ public final class OutboundRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public OutboundRuleInner withId(String id) {
-        super.withId(id);
+    public OutboundRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class OutboundRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public OutboundRuleInner withName(String name) {
-        super.withName(name);
+    public OutboundRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

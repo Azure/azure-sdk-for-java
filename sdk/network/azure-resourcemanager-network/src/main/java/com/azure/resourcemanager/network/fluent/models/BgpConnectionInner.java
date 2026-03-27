@@ -72,8 +72,8 @@ public final class BgpConnectionInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public BgpConnectionInner withId(String id) {
-        super.withId(id);
+    public BgpConnectionInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -81,8 +81,8 @@ public final class BgpConnectionInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public BgpConnectionInner withName(String name) {
-        super.withName(name);
+    public BgpConnectionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

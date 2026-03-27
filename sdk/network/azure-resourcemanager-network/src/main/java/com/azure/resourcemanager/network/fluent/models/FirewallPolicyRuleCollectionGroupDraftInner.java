@@ -57,8 +57,8 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
      * {@inheritDoc}
      */
     @Override
-    public FirewallPolicyRuleCollectionGroupDraftInner withId(String id) {
-        super.withId(id);
+    public FirewallPolicyRuleCollectionGroupDraftInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -66,8 +66,8 @@ public final class FirewallPolicyRuleCollectionGroupDraftInner extends SubResour
      * {@inheritDoc}
      */
     @Override
-    public FirewallPolicyRuleCollectionGroupDraftInner withName(String name) {
-        super.withName(name);
+    public FirewallPolicyRuleCollectionGroupDraftInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

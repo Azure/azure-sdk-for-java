@@ -72,8 +72,8 @@ public final class HubRouteTableInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public HubRouteTableInner withId(String id) {
-        super.withId(id);
+    public HubRouteTableInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -81,8 +81,8 @@ public final class HubRouteTableInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public HubRouteTableInner withName(String name) {
-        super.withName(name);
+    public HubRouteTableInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

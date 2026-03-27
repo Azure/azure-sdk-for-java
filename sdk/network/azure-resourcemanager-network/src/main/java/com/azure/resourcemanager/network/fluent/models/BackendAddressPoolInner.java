@@ -75,8 +75,8 @@ public final class BackendAddressPoolInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public BackendAddressPoolInner withId(String id) {
-        super.withId(id);
+    public BackendAddressPoolInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -84,8 +84,8 @@ public final class BackendAddressPoolInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public BackendAddressPoolInner withName(String name) {
-        super.withName(name);
+    public BackendAddressPoolInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

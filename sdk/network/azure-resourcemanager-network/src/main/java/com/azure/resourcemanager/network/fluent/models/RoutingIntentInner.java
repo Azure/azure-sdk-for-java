@@ -72,8 +72,8 @@ public final class RoutingIntentInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public RoutingIntentInner withId(String id) {
-        super.withId(id);
+    public RoutingIntentInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -81,8 +81,8 @@ public final class RoutingIntentInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public RoutingIntentInner withName(String name) {
-        super.withName(name);
+    public RoutingIntentInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

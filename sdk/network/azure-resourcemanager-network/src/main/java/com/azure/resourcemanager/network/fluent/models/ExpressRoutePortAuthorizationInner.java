@@ -73,8 +73,8 @@ public final class ExpressRoutePortAuthorizationInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ExpressRoutePortAuthorizationInner withId(String id) {
-        super.withId(id);
+    public ExpressRoutePortAuthorizationInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class ExpressRoutePortAuthorizationInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public ExpressRoutePortAuthorizationInner withName(String name) {
-        super.withName(name);
+    public ExpressRoutePortAuthorizationInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

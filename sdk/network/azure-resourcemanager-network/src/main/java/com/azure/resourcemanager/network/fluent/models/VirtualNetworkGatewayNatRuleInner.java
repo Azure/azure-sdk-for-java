@@ -74,8 +74,8 @@ public final class VirtualNetworkGatewayNatRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualNetworkGatewayNatRuleInner withId(String id) {
-        super.withId(id);
+    public VirtualNetworkGatewayNatRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -83,8 +83,8 @@ public final class VirtualNetworkGatewayNatRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualNetworkGatewayNatRuleInner withName(String name) {
-        super.withName(name);
+    public VirtualNetworkGatewayNatRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

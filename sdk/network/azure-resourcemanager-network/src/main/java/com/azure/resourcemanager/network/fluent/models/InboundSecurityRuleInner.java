@@ -73,8 +73,8 @@ public final class InboundSecurityRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public InboundSecurityRuleInner withId(String id) {
-        super.withId(id);
+    public InboundSecurityRuleInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class InboundSecurityRuleInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public InboundSecurityRuleInner withName(String name) {
-        super.withName(name);
+    public InboundSecurityRuleInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

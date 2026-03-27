@@ -101,8 +101,8 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public FrontendIpConfigurationInner withId(String id) {
-        super.withId(id);
+    public FrontendIpConfigurationInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -110,8 +110,8 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public FrontendIpConfigurationInner withName(String name) {
-        super.withName(name);
+    public FrontendIpConfigurationInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

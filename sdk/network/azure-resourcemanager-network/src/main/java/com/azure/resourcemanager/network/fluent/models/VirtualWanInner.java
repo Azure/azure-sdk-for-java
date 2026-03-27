@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.OfficeTrafficCategory;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrackedResourceWithSettableId;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.Map;
  * VirtualWAN Resource.
  */
 @Fluent
-public final class VirtualWanInner extends TrackedResourceWithSettableId {
+public final class VirtualWanInner extends Resource {
     /*
      * Properties of the virtual WAN.
      */
@@ -33,12 +32,17 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
     private String etag;
 
     /*
-     * Resource type.
+     * Resource ID.
+     */
+    private String id;
+
+    /*
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
 
@@ -67,7 +71,27 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the id property: Resource ID.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource ID.
+     * 
+     * @param id the id value to set.
+     * @return the VirtualWanInner object itself.
+     */
+    public VirtualWanInner withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -77,22 +101,13 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
     @Override
     public String name() {
         return this.name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VirtualWanInner withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**
@@ -246,18 +261,11 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model VirtualWanInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VirtualWanInner.class);
 
     /**
      * {@inheritDoc}
@@ -266,9 +274,9 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
-        jsonWriter.writeStringField("id", id());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -288,14 +296,12 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("location".equals(fieldName)) {
-                    deserializedVirtualWanInner.withLocation(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    deserializedVirtualWanInner.withId(reader.getString());
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedVirtualWanInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVirtualWanInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualWanInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVirtualWanInner.withTags(tags);
@@ -303,6 +309,8 @@ public final class VirtualWanInner extends TrackedResourceWithSettableId {
                     deserializedVirtualWanInner.innerProperties = VirtualWanProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedVirtualWanInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualWanInner.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -71,8 +71,8 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public HubIpConfigurationInner withId(String id) {
-        super.withId(id);
+    public HubIpConfigurationInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public HubIpConfigurationInner withName(String name) {
-        super.withName(name);
+    public HubIpConfigurationInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

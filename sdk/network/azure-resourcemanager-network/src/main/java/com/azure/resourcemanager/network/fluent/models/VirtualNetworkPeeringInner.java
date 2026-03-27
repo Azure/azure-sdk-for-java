@@ -77,8 +77,8 @@ public final class VirtualNetworkPeeringInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualNetworkPeeringInner withId(String id) {
-        super.withId(id);
+    public VirtualNetworkPeeringInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -86,8 +86,8 @@ public final class VirtualNetworkPeeringInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualNetworkPeeringInner withName(String name) {
-        super.withName(name);
+    public VirtualNetworkPeeringInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

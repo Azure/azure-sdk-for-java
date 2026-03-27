@@ -71,8 +71,8 @@ public final class VirtualApplianceSiteInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualApplianceSiteInner withId(String id) {
-        super.withId(id);
+    public VirtualApplianceSiteInner withName(String name) {
+        super.withName(name);
         return this;
     }
 
@@ -80,8 +80,8 @@ public final class VirtualApplianceSiteInner extends SubResourceModel {
      * {@inheritDoc}
      */
     @Override
-    public VirtualApplianceSiteInner withName(String name) {
-        super.withName(name);
+    public VirtualApplianceSiteInner withId(String id) {
+        super.withId(id);
         return this;
     }
 
