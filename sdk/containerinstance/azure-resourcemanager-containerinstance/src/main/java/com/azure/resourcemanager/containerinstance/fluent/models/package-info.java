@@ -4,6 +4,6 @@
 
 /**
  * Package containing the inner data models for ContainerInstance.
- * // (missing-service-description) Add service description.
+ * ContainerInstance.
  */
 package com.azure.resourcemanager.containerinstance.fluent.models;
