@@ -159,7 +159,7 @@ class ServiceBusInboundChannelAdapterTests {
         assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         payloads.stream()
                 .map(payload -> {

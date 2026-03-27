@@ -181,7 +181,7 @@ class EventHubsInboundChannelAdapterTests {
         assertTrue(messageListener instanceof EventHubsRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         payloads.stream()
                 .map(payload -> {
@@ -234,7 +234,7 @@ class EventHubsInboundChannelAdapterTests {
         assertTrue(messageListener instanceof EventHubsBatchMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c", "d", "e", "f");
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         IntStream.range(0, 3)
                  .mapToObj(i -> {
