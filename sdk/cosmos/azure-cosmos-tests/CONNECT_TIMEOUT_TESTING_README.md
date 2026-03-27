@@ -38,7 +38,7 @@ docker run --rm --cap-add=NET_ADMIN --memory 8g \
     java -DCOSMOS.THINCLIENT_ENABLED=true \
       -DCOSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS=1000 \
       -DCOSMOS.HTTP2_ENABLED=true \
-      org.testng.TestNG /workspace/azure-cosmos-tests/src/test/resources/manual-thinclient-network-delay-testng.xml \
+      org.testng.TestNG /workspace/azure-cosmos-tests/src/test/resources/manual-http-network-fault-testng.xml \
       -verbose 2
   '
 ```

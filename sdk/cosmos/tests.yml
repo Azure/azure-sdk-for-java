@@ -163,6 +163,48 @@ extends:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thin-client-canary-multi-writer-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-writer-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
 
+      # Network fault injection tests (tc netem, iptables) — runs natively on Linux CI VMs.
+      # PreSteps ensure iproute2 (tc) and iptables are installed and sch_netem kernel module is loaded.
+      # Tests use sudo for tc/iptables commands. Fail-fast if tc is not available.
+      # Tests run sequentially (MaxParallel: 1) to avoid tc/iptables interference between tests.
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Cosmos_Live_Test_HttpNetworkFault'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          PreSteps:
+            - script: |
+                sudo apt-get update -qq && sudo apt-get install -y -qq iproute2 iptables
+                sudo modprobe sch_netem || true
+                tc -Version && echo "tc available" || echo "tc not found"
+              displayName: 'Install tc (iproute2) and iptables for network fault injection'
+          MatrixConfigs:
+            - Name: Cosmos_live_test_http_network_fault
+              Path: sdk/cosmos/live-http-network-fault-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 30
+          MaxParallel: 1
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.THINCLIENT_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
+
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Spring_Data_Cosmos_Integration'

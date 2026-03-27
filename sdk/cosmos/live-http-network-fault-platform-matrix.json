@@ -1,0 +1,18 @@
+{
+  "displayNames": {
+    "-Pmanual-http-network-fault": "HttpNetworkFault",
+    "Session": "",
+    "ubuntu": ""
+  },
+  "include": [
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "ProfileFlag": [ "-Pmanual-http-network-fault" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    }
+  ]
+}

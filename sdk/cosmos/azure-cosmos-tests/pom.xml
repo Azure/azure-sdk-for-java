@@ -858,6 +858,30 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
+      <id>manual-http-network-fault</id>
+      <properties>
+        <test.groups>manual-http-network-fault</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/manual-http-network-fault-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <COSMOS.THINCLIENT_ENABLED>true</COSMOS.THINCLIENT_ENABLED>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <!-- thin client integration tests, requires thin client endpoint and key -->
       <id>fi-thinclient-multi-region</id>
       <properties>
