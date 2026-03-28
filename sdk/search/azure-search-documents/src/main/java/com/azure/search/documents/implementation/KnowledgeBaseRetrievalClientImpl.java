@@ -45,12 +45,12 @@ public final class KnowledgeBaseRetrievalClientImpl {
     private final KnowledgeBaseRetrievalClientService service;
 
     /**
-     * Service host.
+     * The endpoint URL of the search service.
      */
     private final String endpoint;
 
     /**
-     * Gets Service host.
+     * Gets The endpoint URL of the search service.
      * 
      * @return the endpoint value.
      */
@@ -103,7 +103,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
     /**
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(String endpoint, SearchServiceVersion serviceVersion) {
@@ -115,7 +115,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -128,7 +128,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -186,16 +186,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
@@ -304,16 +294,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)

@@ -229,8 +229,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                 } else if ("@search.answers".equals(fieldName)) {
                     List<QueryAnswerResult> answers = reader.readArray(reader1 -> QueryAnswerResult.fromJson(reader1));
                     deserializedSearchDocumentsResult.answers = answers;
-                } else if ("@search.debug".equals(fieldName)) {
-                    deserializedSearchDocumentsResult.debugInfo = DebugInfo.fromJson(reader);
                 } else if ("@search.nextPageParameters".equals(fieldName)) {
                     deserializedSearchDocumentsResult.nextPageParameters = SearchRequest.fromJson(reader);
                 } else if ("@odata.nextLink".equals(fieldName)) {
@@ -247,21 +245,5 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
             }
             return deserializedSearchDocumentsResult;
         });
-    }
-
-    /*
-     * Debug information that applies to the search results as a whole.
-     */
-    @Generated
-    private DebugInfo debugInfo;
-
-    /**
-     * Get the debugInfo property: Debug information that applies to the search results as a whole.
-     *
-     * @return the debugInfo value.
-     */
-    @Generated
-    public DebugInfo getDebugInfo() {
-        return this.debugInfo;
     }
 }

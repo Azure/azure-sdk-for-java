@@ -29,7 +29,7 @@ public final class KnowledgeBaseImageContent implements JsonSerializable<Knowled
      * @param url the url value to set.
      */
     @Generated
-    public KnowledgeBaseImageContent(String url) {
+    private KnowledgeBaseImageContent(String url) {
         this.url = url;
     }
 

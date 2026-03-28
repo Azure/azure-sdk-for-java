@@ -74,38 +74,14 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
     }
 
     /**
-     * Gpt4o model.
+     * Gpt54Mini model.
      */
     @Generated
-    public static final AzureOpenAIModelName GPT4O = fromString("gpt-4o");
+    public static final AzureOpenAIModelName GPT54MINI = fromString("gpt-5.4-mini");
 
     /**
-     * Gpt4oMini model.
+     * Gpt54Nano model.
      */
     @Generated
-    public static final AzureOpenAIModelName GPT4O_MINI = fromString("gpt-4o-mini");
-
-    /**
-     * Gpt41 model.
-     */
-    @Generated
-    public static final AzureOpenAIModelName GPT41 = fromString("gpt-4.1");
-
-    /**
-     * Gpt41Mini model.
-     */
-    @Generated
-    public static final AzureOpenAIModelName GPT41MINI = fromString("gpt-4.1-mini");
-
-    /**
-     * Gpt41Nano model.
-     */
-    @Generated
-    public static final AzureOpenAIModelName GPT41NANO = fromString("gpt-4.1-nano");
-
-    /**
-     * Gpt5 model.
-     */
-    @Generated
-    public static final AzureOpenAIModelName GPT5 = fromString("gpt-5");
+    public static final AzureOpenAIModelName GPT54NANO = fromString("gpt-5.4-nano");
 }

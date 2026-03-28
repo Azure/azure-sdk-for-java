@@ -20,12 +20,6 @@ import java.util.List;
 public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<KnowledgeBaseRetrievalRequest> {
 
     /*
-     * A list of chat message style input.
-     */
-    @Generated
-    private List<KnowledgeBaseMessage> messages;
-
-    /*
      * A list of intended queries to execute without model query planning.
      */
     @Generated
@@ -54,39 +48,6 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
      */
     @Generated
     public KnowledgeBaseRetrievalRequest() {
-    }
-
-    /**
-     * Get the messages property: A list of chat message style input.
-     *
-     * @return the messages value.
-     */
-    @Generated
-    public List<KnowledgeBaseMessage> getMessages() {
-        return this.messages;
-    }
-
-    /**
-     * Set the messages property: A list of chat message style input.
-     *
-     * @param messages the messages value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    public KnowledgeBaseRetrievalRequest setMessages(KnowledgeBaseMessage... messages) {
-        this.messages = (messages == null) ? null : Arrays.asList(messages);
-        return this;
-    }
-
-    /**
-     * Set the messages property: A list of chat message style input.
-     *
-     * @param messages the messages value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalRequest setMessages(List<KnowledgeBaseMessage> messages) {
-        this.messages = messages;
-        return this;
     }
 
     /**
@@ -195,7 +156,6 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("intents", this.intents, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("maxRuntimeInSeconds", this.maxRuntimeInSeconds);
         jsonWriter.writeNumberField("maxOutputSizeInTokens", this.maxOutputSizeInTokens);
@@ -221,11 +181,7 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("messages".equals(fieldName)) {
-                    List<KnowledgeBaseMessage> messages
-                        = reader.readArray(reader1 -> KnowledgeBaseMessage.fromJson(reader1));
-                    deserializedKnowledgeBaseRetrievalRequest.messages = messages;
-                } else if ("intents".equals(fieldName)) {
+                if ("intents".equals(fieldName)) {
                     List<KnowledgeRetrievalIntent> intents
                         = reader.readArray(reader1 -> KnowledgeRetrievalIntent.fromJson(reader1));
                     deserializedKnowledgeBaseRetrievalRequest.intents = intents;

@@ -5,7 +5,6 @@ package com.azure.search.documents.codesnippets;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
@@ -34,14 +33,13 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
     }
 
     /**
-     * Code snippet for a simple retrieval using a user message.
+     * Code snippet for a simple retrieval using a semantic intent.
      */
     public static void retrieve() {
         retrievalClient = createRetrievalClient();
         // BEGIN: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalRequest
         KnowledgeBaseRetrievalRequest request = new KnowledgeBaseRetrievalRequest()
-            .setMessages(new KnowledgeBaseMessage(
-                new KnowledgeBaseMessageTextContent("What hotels are near the ocean?")));
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels are near the ocean?"));
 
         KnowledgeBaseRetrievalResponse response = retrievalClient.retrieve("my-knowledge-base", request);
 
@@ -81,8 +79,7 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
         retrievalClient = createRetrievalClient();
         // BEGIN: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve.withSourceParams
         KnowledgeBaseRetrievalRequest request = new KnowledgeBaseRetrievalRequest()
-            .setMessages(new KnowledgeBaseMessage(
-                new KnowledgeBaseMessageTextContent("What hotels are available in Virginia?")))
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels are available in Virginia?"))
             .setKnowledgeSourceParams(Arrays.asList(
                 new SearchIndexKnowledgeSourceParams("my-knowledge-source")
                     .setFilterAddOn("Address/StateProvince eq 'VA'")
