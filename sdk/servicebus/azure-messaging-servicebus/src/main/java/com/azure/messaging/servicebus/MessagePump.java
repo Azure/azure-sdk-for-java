@@ -17,6 +17,8 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -56,6 +58,10 @@ final class MessagePump {
     private final boolean enableAutoLockRenew;
     private final Scheduler workerScheduler;
     private final ServiceBusReceiverInstrumentation instrumentation;
+    private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
+    private final Object drainLock = new Object();
+    private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private volatile boolean closing;
 
     /**
      * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -138,24 +144,39 @@ final class MessagePump {
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {
-        instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
-            final Disposable lockRenewDisposable;
-            if (enableAutoLockRenew) {
-                lockRenewDisposable = client.beginLockRenewal(message);
-            } else {
-                lockRenewDisposable = Disposables.disposed();
+        activeHandlerCount.incrementAndGet();
+        isHandlerThread.set(Boolean.TRUE);
+        try {
+            if (closing) {
+                logger.atVerbose().log("Skipping handler execution, pump is closing.");
+                return;
             }
-            final Throwable error = notifyMessage(message);
-            if (enableAutoDisposition) {
-                if (error == null) {
-                    complete(message);
+            instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+                final Disposable lockRenewDisposable;
+                if (enableAutoLockRenew) {
+                    lockRenewDisposable = client.beginLockRenewal(message);
                 } else {
-                    abandon(message);
+                    lockRenewDisposable = Disposables.disposed();
+                }
+                final Throwable error = notifyMessage(message);
+                if (enableAutoDisposition) {
+                    if (error == null) {
+                        complete(message);
+                    } else {
+                        abandon(message);
+                    }
+                }
+                lockRenewDisposable.dispose();
+                return error;
+            });
+        } finally {
+            isHandlerThread.remove();
+            if (activeHandlerCount.decrementAndGet() <= 1) {
+                synchronized (drainLock) {
+                    drainLock.notifyAll();
                 }
             }
-            lockRenewDisposable.dispose();
-            return error;
-        });
+        }
     }
 
     private Throwable notifyMessage(ServiceBusReceivedMessage message) {
@@ -191,6 +212,57 @@ final class MessagePump {
         } catch (Exception e) {
             logger.atVerbose().log("Failed to abandon message", e);
         }
+    }
+
+    /**
+     * Wait for all in-flight message handlers to complete, up to the specified timeout.
+     * This is called during processor close to ensure graceful shutdown — all messages currently
+     * being processed are allowed to complete (including settlement) before the underlying client
+     * is disposed.
+     *
+     * @param timeout the maximum time to wait for in-flight handlers to complete.
+     * @return true if all handlers completed within the timeout, false otherwise.
+     */
+    boolean drainHandlers(Duration timeout) {
+        closing = true;
+        final int threshold;
+        if (isHandlerThread.get()) {
+            // Re-entrant call from within a message handler (e.g., user called close() inside processMessage).
+            // Cannot wait for this thread's own handler to complete (would self-deadlock), but we can
+            // wait for OTHER concurrent handlers to finish settlement before the underlying client is disposed.
+            threshold = 1;
+            if (activeHandlerCount.get() <= threshold) {
+                return true;
+            }
+            logger.atInfo()
+                .addKeyValue("otherActiveHandlers", activeHandlerCount.get() - 1)
+                .log("drainHandlers called from within a message handler (re-entrant). "
+                    + "Waiting for other active handlers to complete.");
+        } else {
+            threshold = 0;
+        }
+        final long deadline = System.nanoTime() + timeout.toNanos();
+        synchronized (drainLock) {
+            while (activeHandlerCount.get() > threshold) {
+                final long remainingNanos = deadline - System.nanoTime();
+                if (remainingNanos <= 0) {
+                    logger.atWarning()
+                        .addKeyValue("activeHandlers", activeHandlerCount.get())
+                        .log("Drain timeout expired with active handlers still running.");
+                    return false;
+                }
+                try {
+                    final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                    final int nanos = (int) (remainingNanos % 1_000_000);
+                    drainLock.wait(millis, nanos);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    logger.atWarning().log("Drain interrupted while waiting for in-flight handlers.");
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void logCPUResourcesConcurrencyMismatch() {
