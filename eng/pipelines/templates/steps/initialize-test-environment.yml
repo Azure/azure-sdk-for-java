@@ -34,20 +34,6 @@ steps:
     parameters:
       AgentImage: ${{ parameters.OS }}
 
-  - task: PythonScript@0
-    displayName: 'Set versions for source build'
-    inputs:
-      scriptPath: 'eng/versioning/set_versions.py'
-      arguments: '--prep-source-testing'
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
-
-  - task: PythonScript@0
-    displayName: 'Update versions for source build'
-    inputs:
-      scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--skip-readme'
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
-
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
       JobType: 'test'
@@ -69,12 +55,30 @@ steps:
   # is for FromSource runs or, in the case of code quality reports, a run that needs to build
   # everything using the latest source. It'll greedily set any service directories as it figures
   # out what libraries, their dependents and so on, that need to be in ClientFromSourcePom.xml
+  # NOTE: This must run BEFORE set_versions/update_versions so that version_client.txt still has
+  # the original dependency versions. With --match-any-version, the script matches POM dependency
+  # versions against both the released (dependency) and development (current) versions, ensuring
+  # all inter-repo dependencies are correctly identified even when they differ.
   - task: PythonScript@0
     displayName: 'Generate FromSource POM and directories for sparse checkout'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
-      arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+      arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList) --match-any-version'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: PythonScript@0
+    displayName: 'Set versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/set_versions.py'
+      arguments: '--prep-source-testing'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: PythonScript@0
+    displayName: 'Update versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--skip-readme'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
