@@ -51,4 +51,17 @@ final class ConnectionCacheWrapper {
     boolean isChannelClosed() {
         return isV2 ? cache.isCurrentConnectionClosed() : processor.isChannelClosed();
     }
+
+    /**
+     * Force-closes the current cached connection so the next get() creates a fresh one.
+     * Used for connection-level recovery when the connection is stale but the cache
+     * has not detected it via endpoint state signals.
+     */
+    void forceCloseConnection() {
+        if (isV2) {
+            cache.forceCloseConnection();
+        } else {
+            processor.forceCloseChannel();
+        }
+    }
 }

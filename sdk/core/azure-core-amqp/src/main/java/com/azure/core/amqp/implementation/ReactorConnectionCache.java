@@ -48,6 +48,10 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
+    // Holds the ID of the connection that forceCloseConnection() asked to force-invalidate.
+    // Only the connection whose getId() matches this value will be invalidated by cacheInvalidateIf;
+    // a freshly created connection with a different ID is never accidentally invalidated.
+    private final AtomicReference<String> forceInvalidateConnectionId = new AtomicReference<>(null);
     private final State state = new State();
 
     /**
@@ -113,12 +117,23 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             }
         }).cacheInvalidateIf(c -> {
             if (c.isDisposed()) {
+                // Connection disposed for any reason. Clean up the force-invalidate marker if it
+                // was targeting this connection so it is not accidentally consumed by a future
+                // connection that happens to have the same ID.
+                forceInvalidateConnectionId.compareAndSet(c.getId(), null);
                 withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
                 return true;
-            } else {
-                // Emit cached connection.
-                return false;
             }
+            final String targetId = forceInvalidateConnectionId.get();
+            if (targetId != null
+                && targetId.equals(c.getId())
+                && forceInvalidateConnectionId.compareAndSet(targetId, null)) {
+                // forceCloseConnection() asked to invalidate exactly this connection.
+                withConnectionId(logger, c.getId()).log("Forcing connection close, requesting a new connection.");
+                return true;
+            }
+            // No forced invalidation targeted this connection — emit it from cache.
+            return false;
         });
     }
 
@@ -170,6 +185,37 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      */
     public boolean isCurrentConnectionClosed() {
         return (currentConnection != null && currentConnection.isDisposed()) || terminated;
+    }
+
+    /**
+     * Closes the current cached connection (if any) so that the next {@link #get()} call creates
+     * a fresh connection. This is used for connection-level recovery when the current connection
+     * is in a stale state that the cache's normal error detection (via endpoint state signals)
+     * has not detected — for example, when intermediate infrastructure (load balancers, NAT gateways)
+     * is echoing AMQP heartbeats on behalf of a dead connection.
+     *
+     * <p>This is modeled after the Go SDK's {@code Namespace.Recover()} which explicitly closes
+     * the old connection and increments the connection revision.</p>
+     *
+     * <p>This method is safe to call concurrently. If the connection is already closed or being
+     * closed, this is a no-op.</p>
+     */
+    public void forceCloseConnection() {
+        final T connection = currentConnection;
+        if (connection != null && !connection.isDisposed()) {
+            withConnectionId(logger, connection.getId())
+                .log("Force-closing connection for recovery. Next get() will create a fresh connection.");
+            // Set forceInvalidate before starting async close so that cacheInvalidateIf immediately
+            // invalidates this connection on the next get() call, without blocking the caller
+            // while the AMQP close handshake completes. ReactorConnection.dispose() calls
+            // closeAsync().block(), which is illegal on a non-blocking Reactor thread.
+            forceInvalidateConnectionId.set(connection.getId());
+            connection.closeAsync()
+                .subscribe(null,
+                    error -> logger.atVerbose()
+                        .addKeyValue(CONNECTION_ID_KEY, connection.getId())
+                        .log("Error during async connection force-close.", error));
+        }
     }
 
     /**

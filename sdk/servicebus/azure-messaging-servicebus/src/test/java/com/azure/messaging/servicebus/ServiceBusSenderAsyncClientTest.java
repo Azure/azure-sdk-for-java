@@ -6,6 +6,8 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
@@ -668,7 +670,8 @@ class ServiceBusSenderAsyncClientTest {
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class))).thenThrow(new RuntimeException("foo"));
+        when(sendLink.send(any(Message.class)))
+            .thenReturn(Mono.error(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "entity not found", null)));
 
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
