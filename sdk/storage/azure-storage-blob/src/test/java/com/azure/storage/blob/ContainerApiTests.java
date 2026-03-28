@@ -2482,4 +2482,87 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(blobName, publicItem.getName());
         assertEquals(7L, (long) publicItem.getProperties().getContentLength());
     }
+
+    @Test
+    public void listBlobsByHierarchyArrowBasic() {
+        // Upload blobs in a directory structure
+        cc.getBlobClient("dir/blob1")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        cc.getBlobClient("dir/blob2")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        List<BlobItem> items = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
+
+        // Root level: one prefix "dir/" and one blob "topblob"
+        assertEquals(2, items.size());
+
+        BlobItem prefixItem = items.stream().filter(BlobItem::isPrefix).findFirst().orElse(null);
+        BlobItem blobItem = items.stream().filter(i -> !i.isPrefix()).findFirst().orElse(null);
+
+        assertNotNull(prefixItem);
+        assertEquals("dir/", prefixItem.getName());
+        assertTrue(prefixItem.isPrefix());
+
+        assertNotNull(blobItem);
+        assertEquals("topblob", blobItem.getName());
+        assertFalse(blobItem.isPrefix());
+        assertNotNull(blobItem.getProperties());
+        assertEquals(DATA.getDefaultDataSize(), blobItem.getProperties().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, blobItem.getProperties().getBlobType());
+        assertNotNull(blobItem.getProperties().getLastModified());
+        assertNotNull(blobItem.getProperties().getETag());
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient("dir/" + blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
+                null, null, null);
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true)
+            .setPrefix("dir/")
+            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        List<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertFalse(blobs.get(0).isPrefix());
+        assertNotNull(blobs.get(0).getMetadata());
+        assertEquals("testvalue", blobs.get(0).getMetadata().get("testkey"));
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowPagination() {
+        // Upload blobs across multiple directories
+        for (int i = 0; i < 3; i++) {
+            cc.getBlobClient("dir" + i + "/blob")
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        }
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true).setMaxResultsPerPage(1);
+        List<BlobItem> allItems = new ArrayList<>();
+        for (PagedResponse<BlobItem> page : cc.listBlobsByHierarchy("/", options, null).iterableByPage()) {
+            assertTrue(page.getValue().size() <= 1);
+            allItems.addAll(page.getValue());
+        }
+
+        // 3 prefixes + 1 blob = 4 items
+        assertEquals(4, allItems.size());
+    }
 }
