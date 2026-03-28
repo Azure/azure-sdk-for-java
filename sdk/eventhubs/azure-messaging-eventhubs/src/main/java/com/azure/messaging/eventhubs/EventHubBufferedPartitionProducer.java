@@ -21,7 +21,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.time.Duration;
@@ -79,7 +78,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.publishResultSubscriber = new PublishResultSubscriber(partitionId, this.eventSink,
             options.getSendSucceededContext(), options.getSendFailedContext(), retryOptions.getTryTimeout(), logger);
 
-        this.publishSubscription = publishEvents(eventDataAggregator).publishOn(Schedulers.boundedElastic(), 1)
+        this.publishSubscription = publishEvents(eventDataAggregator).publishOn(client.getScheduler(), 1)
             .subscribeWith(publishResultSubscriber);
 
         this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName(), null);

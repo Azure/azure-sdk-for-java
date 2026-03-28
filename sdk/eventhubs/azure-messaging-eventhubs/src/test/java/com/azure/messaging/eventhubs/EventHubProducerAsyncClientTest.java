@@ -880,6 +880,32 @@ class EventHubProducerAsyncClientTest {
     }
 
     @Test
+    void sendBatchReusesCachedBatchMessages() {
+        final MessageSerializer serializer = mock(MessageSerializer.class);
+        final EventHubProducerAsyncClient asyncProducer
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions, serializer,
+                Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
+        final EventDataBatch batch
+            = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, null, DEFAULT_INSTRUMENTATION);
+        final EventData event = new EventData("payload");
+
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        Assertions.assertTrue(batch.tryAdd(event));
+        final Message expected = batch.getMessages().get(0);
+
+        StepVerifier.create(asyncProducer.send(batch)).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        verify(sendLink).send(singleMessageCaptor.capture());
+        assertSame(expected, singleMessageCaptor.getValue());
+        verify(serializer, never()).serialize(any());
+    }
+
+    @Test
     void sendEventFluxRequired() {
         // Arrange
         final Flux<EventData> event = Flux.just(new EventData("Event-data"));

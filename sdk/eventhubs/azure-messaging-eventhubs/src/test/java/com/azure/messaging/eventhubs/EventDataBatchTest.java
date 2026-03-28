@@ -6,8 +6,12 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -79,6 +86,23 @@ public class EventDataBatchTest {
         Assertions.assertTrue(maxSize > batch.getSizeInBytes());
         Assertions.assertTrue(batch.tryAdd(within));
         Assertions.assertEquals(1, batch.getCount());
+    }
+
+    @Test
+    public void cachesSerializedMessageWhenAdded() {
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY,
+            null, DEFAULT_INSTRUMENTATION);
+        final EventData event = new EventData("payload".getBytes(UTF_8));
+
+        Assertions.assertTrue(batch.tryAdd(event));
+        Assertions.assertEquals(1, batch.getMessages().size());
+
+        final Message message = batch.getMessages().get(0);
+        final Data body = (Data) message.getBody();
+        final Binary binary = body.getValue();
+
+        assertArrayEquals(event.getBody(), binary.getArray());
+        assertEquals(PARTITION_KEY, message.getMessageAnnotations().getValue().get(AmqpConstants.PARTITION_KEY));
     }
 
     /**
