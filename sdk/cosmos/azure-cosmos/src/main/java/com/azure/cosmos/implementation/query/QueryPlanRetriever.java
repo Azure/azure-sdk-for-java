@@ -8,13 +8,18 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PathsHelper;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -78,13 +83,16 @@ class QueryPlanRetriever {
                                                                                IDocumentQueryClient queryClient,
                                                                                SqlQuerySpec sqlQuerySpec,
                                                                                String resourceLink,
-                                                                               CosmosQueryRequestOptions initialQueryRequestOptions) {
+                                                                               CosmosQueryRequestOptions initialQueryRequestOptions,
+                                                                               DocumentCollection collection) {
 
         CosmosQueryRequestOptions nonNullRequestOptions = initialQueryRequestOptions != null
             ? initialQueryRequestOptions
             : new CosmosQueryRequestOptions();
 
         PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
+
+        PartitionKeyDefinition partitionKeyDefinition = collection != null ? collection.getPartitionKey() : null;
 
 
         final Map<String, String> requestHeaders = new HashMap<>();
@@ -104,7 +112,7 @@ class QueryPlanRetriever {
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);
-        queryPlanRequest.useGatewayMode = true;
+
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
@@ -130,10 +138,27 @@ class QueryPlanRetriever {
                 return BackoffRetryUtility.executeRetry(() -> {
                     retryPolicyInstance.onBeforeSendRequest(req);
                     return queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
-                        PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                            new PartitionedQueryExecutionInfo(
-                                (ObjectNode) rxDocumentServiceResponse.getResponseBody(),
-                                rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
+                        ObjectNode responseBody = (ObjectNode) rxDocumentServiceResponse.getResponseBody();
+                        RequestTimeline timeline = rxDocumentServiceResponse.getGatewayHttpRequestTimeline();
+
+                        PartitionedQueryExecutionInfo partitionedQueryExecutionInfo;
+
+                        // In thin client mode, the proxy returns queryRanges in PartitionKeyInternal
+                        // format (e.g., {"min": ["value"], "max": ["Infinity"]}). Convert to sorted
+                        // List<Range<String>> with EPK hex strings and pass directly to the DTO —
+                        // avoiding a redundant JSON round-trip.
+                        if (queryClient.useThinClient(req) && partitionKeyDefinition != null) {
+                            List<Range<String>> epkRanges = PartitionKeyInternalHelper.convertToSortedEpkRanges(
+                                PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,
+                                responseBody,
+                                partitionKeyDefinition);
+                            partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
+                                responseBody, timeline, epkRanges);
+                        } else {
+                            partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
+                                responseBody, timeline);
+                        }
+
                         return Mono.just(partitionedQueryExecutionInfo);
                     });
                 }, retryPolicyInstance);

@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
@@ -25,23 +24,24 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
     private RequestTimeline queryPlanRequestTimeline;
     private HybridSearchQueryInfo hybridSearchQueryInfo;
 
-    PartitionedQueryExecutionInfo(QueryInfo queryInfo, List<Range<String>> queryRanges) {
-        this.queryInfo = queryInfo;
-        this.queryRanges = queryRanges;
-
-        this.set(
-            PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
-            Constants.PartitionedQueryExecutionInfo.VERSION_1
-        );
-    }
-
-    public PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
+    /**
+     * Constructs from a gateway query plan response where queryRanges are already
+     * in EPK hex string format. Ranges are lazily deserialized from the ObjectNode.
+     */
+    PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
         super(content);
         this.queryPlanRequestTimeline = queryPlanRequestTimeline;
     }
 
-    public PartitionedQueryExecutionInfo(String jsonString) {
-        super(jsonString);
+    /**
+     * Constructs from a thin client query plan response where queryRanges have been
+     * pre-converted from PartitionKeyInternal format to sorted EPK hex strings.
+     * The pre-computed ranges bypass JSON deserialization entirely.
+     */
+    PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline, List<Range<String>> preComputedQueryRanges) {
+        super(content);
+        this.queryPlanRequestTimeline = queryPlanRequestTimeline;
+        this.queryRanges = preComputedQueryRanges;
     }
 
     public int getVersion() {

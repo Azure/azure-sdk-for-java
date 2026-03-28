@@ -14,12 +14,18 @@ import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -472,5 +478,120 @@ public class PartitionKeyInternalTest {
 
         PartitionKeyInternal pk = PartitionKeyInternalUtils.createPartitionKeyInternal(buffer.substring(0, length));
         assertThat(PartitionKeyInternalHelper.getEffectivePartitionKeyString(pk, pkDefinition)).isEqualTo(expectedValue);
+    }
+
+    // ==================== convertToSortedEpkRanges Unit Tests ====================
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static PartitionKeyDefinition singleHashPkDef() {
+        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+        pkDef.setPaths(ImmutableList.of("/pk"));
+        pkDef.setVersion(PartitionKeyDefinitionVersion.V2);
+        pkDef.setKind(PartitionKind.HASH);
+        return pkDef;
+    }
+
+    @Test(groups = "unit")
+    public void convertToSortedEpkRangesSingleValueRange() {
+        // Single PK value range: min=["testValue"], max=["testValue"]
+        // This is what ServiceInterop returns for WHERE pk = 'testValue'
+        ObjectNode json = MAPPER.createObjectNode();
+        ArrayNode ranges = json.putArray("queryRanges");
+        ObjectNode range = ranges.addObject();
+        range.putArray("min").add("testValue");
+        range.putArray("max").add("testValue");
+        range.put("isMinInclusive", true);
+        range.put("isMaxInclusive", true);
+
+        List<Range<String>> result = PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+
+        assertThat(result.size()).isEqualTo(1);
+        // EPK for a string value is a non-empty hex hash
+        assertThat(result.get(0).getMin()).isNotNull();
+        assertThat(result.get(0).getMin().length()).isGreaterThan(0);
+        assertThat(result.get(0).getMin()).isEqualTo(result.get(0).getMax());
+        assertThat(result.get(0).isMinInclusive()).isTrue();
+        assertThat(result.get(0).isMaxInclusive()).isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void convertToSortedEpkRangesMultipleRangesSorted() {
+        // Multiple ranges that need sorting after EPK conversion
+        ObjectNode json = MAPPER.createObjectNode();
+        ArrayNode ranges = json.putArray("queryRanges");
+
+        // Add two ranges with different PK values — EPK hash order may differ from insertion order
+        ObjectNode range1 = ranges.addObject();
+        range1.putArray("min").add("zzzValue");
+        range1.putArray("max").add("zzzValue");
+        range1.put("isMinInclusive", true);
+        range1.put("isMaxInclusive", true);
+
+        ObjectNode range2 = ranges.addObject();
+        range2.putArray("min").add("aaaValue");
+        range2.putArray("max").add("aaaValue");
+        range2.put("isMinInclusive", true);
+        range2.put("isMaxInclusive", true);
+
+        List<Range<String>> result = PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+
+        assertThat(result.size()).isEqualTo(2);
+        // Verify sorted by min EPK (ascending)
+        assertThat(result.get(0).getMin().compareTo(result.get(1).getMin())).isLessThanOrEqualTo(0);
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
+    public void convertToSortedEpkRangesMissingQueryRangesThrows() {
+        // Missing queryRanges property entirely
+        ObjectNode json = MAPPER.createObjectNode();
+        json.put("queryInfo", "someValue");
+
+        PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
+    public void convertToSortedEpkRangesNonArrayQueryRangesThrows() {
+        // queryRanges is a string instead of array
+        ObjectNode json = MAPPER.createObjectNode();
+        json.put("queryRanges", "notAnArray");
+
+        PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
+    public void convertToSortedEpkRangesNonObjectElementThrows() {
+        // queryRanges array contains a string instead of object
+        ObjectNode json = MAPPER.createObjectNode();
+        json.putArray("queryRanges").add("notAnObject");
+
+        PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
+    public void convertToSortedEpkRangesNullMinBoundaryThrows() {
+        // Range with null min boundary
+        ObjectNode json = MAPPER.createObjectNode();
+        ArrayNode ranges = json.putArray("queryRanges");
+        ObjectNode range = ranges.addObject();
+        range.putNull("min");
+        range.putArray("max").add("value");
+        range.put("isMinInclusive", true);
+        range.put("isMaxInclusive", false);
+
+        PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
+    public void convertToSortedEpkRangesMissingInclusiveFieldsThrows() {
+        // Range missing isMinInclusive and isMaxInclusive
+        ObjectNode json = MAPPER.createObjectNode();
+        ArrayNode ranges = json.putArray("queryRanges");
+        ObjectNode range = ranges.addObject();
+        range.putArray("min").add("value");
+        range.putArray("max").add("value");
+        // intentionally no isMinInclusive or isMaxInclusive
+
+        PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
     }
 }

@@ -220,6 +220,27 @@ public class JsonSerializable {
     }
 
     /**
+     * Gets a map value with empty string values converted to null.
+     * This is useful for handling JSON responses where empty strings are used instead of null.
+     *
+     * @param <T> the type of the map values.
+     * @param propertyKey the property to get.
+     * @return the map with empty string values converted to null.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Map<String, T> getMapWithEmptyStringAsNull(String propertyKey) {
+        if (this.propertyBag.has(propertyKey)) {
+            Object value = this.get(propertyKey);
+            Map<String, T> map = (Map<String, T>) OBJECT_MAPPER.convertValue(value, HashMap.class);
+            if (map != null) {
+                map.replaceAll((k, v) -> (v instanceof String && ((String) v).isEmpty()) ? null : v);
+            }
+            return map;
+        }
+        return null;
+    }
+
+    /**
      * Checks whether a property exists.
      *
      * @param propertyName the property to look up.

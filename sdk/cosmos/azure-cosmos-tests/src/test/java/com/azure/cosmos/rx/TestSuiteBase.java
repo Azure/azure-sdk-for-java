@@ -1310,6 +1310,22 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    /**
+     * Data provider for thin client tests. Returns a gateway + HTTP/2 builder.
+     * Tests using this provider should enable thin client mode in their @BeforeClass
+     * by calling {@code System.setProperty("COSMOS.THINCLIENT_ENABLED", "true")} and
+     * clean up in @AfterClass with {@code System.clearProperty("COSMOS.THINCLIENT_ENABLED")}.
+     *
+     * <p>This provider can be adopted by existing test classes (e.g., query, stored procedure tests)
+     * to gradually add thin client coverage using the same test logic.</p>
+     */
+    @DataProvider
+    public static Object[][] clientBuildersWithThinClient() {
+        return new Object[][]{
+            {createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true)},
+        };
+    }
+
     @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
