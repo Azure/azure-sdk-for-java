@@ -275,6 +275,16 @@ public final class BlobItem {
     }
 
     /**
+     * Get the metadataEncrypted property: When a blob is encrypted with a customer provided key and has application
+     * metadata, the Encrypted field will be set to true and the metadata will be null.
+     *
+     * @return the metadataEncrypted value.
+     */
+    public Boolean isMetadataEncrypted() {
+        return blobItemInternal.isMetadataEncrypted();
+    }
+
+    /**
      * Get the isPrefix property: If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
      * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      *
