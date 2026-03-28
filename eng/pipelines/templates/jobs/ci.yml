@@ -100,6 +100,14 @@ jobs:
       os: linux
 
     steps:
+      # Fail fast if this is a manual release build but no packages were selected.
+      # When manually triggering the pipeline, at least one release_* parameter must be checked.
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual'), eq(length(parameters.ReleaseArtifacts), 0)) }}:
+        - pwsh: |
+            Write-Host "##vso[task.logissue type=error]No packages selected for release. When manually queuing this pipeline, please select at least one package by checking the appropriate package-name parameter(s)."
+            exit 1
+          displayName: 'Validate: at least one package is selected for release'
+
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
