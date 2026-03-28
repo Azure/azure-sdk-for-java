@@ -34,13 +34,42 @@
 
 - [RegenerateKeys](#directline_regeneratekeys)
 
+## Email
+
+- [CreateSignInUrl](#email_createsigninurl)
+
 ## HostSettings
 
 - [Get](#hostsettings_get)
 
+## NetworkSecurityPerimeterConfigurations
+
+- [Get](#networksecurityperimeterconfigurations_get)
+- [List](#networksecurityperimeterconfigurations_list)
+- [Reconcile](#networksecurityperimeterconfigurations_reconcile)
+
+## OperationResults
+
+- [Get](#operationresults_get)
+
 ## Operations
 
 - [List](#operations_list)
+
+## PrivateEndpointConnections
+
+- [Create](#privateendpointconnections_create)
+- [Delete](#privateendpointconnections_delete)
+- [Get](#privateendpointconnections_get)
+- [List](#privateendpointconnections_list)
+
+## PrivateLinkResources
+
+- [ListByBotResource](#privatelinkresources_listbybotresource)
+
+## QnAMakerEndpointKeys
+
+- [Get](#qnamakerendpointkeys_get)
 ### BotConnection_Create
 
 ```java
@@ -53,8 +82,7 @@ import java.util.Arrays;
  */
 public final class BotConnectionCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutConnection.json
+     * x-ms-original-file: 2023-09-15-preview/PutConnection.json
      */
     /**
      * Sample code: Create Connection Setting.
@@ -64,8 +92,8 @@ public final class BotConnectionCreateSamples {
     public static void createConnectionSetting(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.botConnections()
             .define("sampleConnection")
-            .withRegion("West US")
             .withExistingBotService("OneResourceGroupName", "samplebotname")
+            .withRegion("West US")
             .withProperties(
                 new ConnectionSettingProperties().withClientId("sampleclientid")
                     .withClientSecret("fakeTokenPlaceholder")
@@ -88,8 +116,7 @@ public final class BotConnectionCreateSamples {
  */
 public final class BotConnectionDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/DeleteConnection.json
+     * x-ms-original-file: 2023-09-15-preview/DeleteConnection.json
      */
     /**
      * Sample code: Delete Connection Setting.
@@ -112,8 +139,7 @@ public final class BotConnectionDeleteSamples {
  */
 public final class BotConnectionGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetConnection.json
+     * x-ms-original-file: 2023-09-15-preview/GetConnection.json
      */
     /**
      * Sample code: Get Connection Setting.
@@ -136,8 +162,7 @@ public final class BotConnectionGetSamples {
  */
 public final class BotConnectionListByBotServiceSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * ListConnectionsByBotService.json
+     * x-ms-original-file: 2023-09-15-preview/ListConnectionsByBotService.json
      */
     /**
      * Sample code: List Connection Settings.
@@ -159,9 +184,7 @@ public final class BotConnectionListByBotServiceSamples {
  */
 public final class BotConnectionListServiceProvidersSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/ListServiceProviders.
-     * json
+     * x-ms-original-file: 2023-09-15-preview/ListServiceProviders.json
      */
     /**
      * Sample code: List Auth Service Providers.
@@ -182,8 +205,7 @@ public final class BotConnectionListServiceProvidersSamples {
  */
 public final class BotConnectionListWithSecretsSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetConnection.json
+     * x-ms-original-file: 2023-09-15-preview/GetConnectionListWithSecrets.json
      */
     /**
      * Sample code: List Connection Setting With Secrets.
@@ -212,8 +234,7 @@ import java.util.Arrays;
  */
 public final class BotConnectionUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateConnection.json
+     * x-ms-original-file: 2023-09-15-preview/UpdateConnection.json
      */
     /**
      * Sample code: Update Connection Setting.
@@ -227,7 +248,9 @@ public final class BotConnectionUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new ConnectionSettingProperties().withClientId("sampleclientid")
+                new ConnectionSettingProperties().withId("sampleId")
+                    .withName("sampleName")
+                    .withClientId("sampleclientid")
                     .withClientSecret("fakeTokenPlaceholder")
                     .withScopes("samplescope")
                     .withServiceProviderId("serviceproviderid")
@@ -246,6 +269,7 @@ public final class BotConnectionUpdateSamples {
 ```java
 import com.azure.resourcemanager.botservice.models.BotProperties;
 import com.azure.resourcemanager.botservice.models.Kind;
+import com.azure.resourcemanager.botservice.models.MsaAppType;
 import com.azure.resourcemanager.botservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.botservice.models.Sku;
 import com.azure.resourcemanager.botservice.models.SkuName;
@@ -258,8 +282,7 @@ import java.util.Map;
  */
 public final class BotsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/CreateBot.json
+     * x-ms-original-file: 2023-09-15-preview/CreateBot.json
      */
     /**
      * Sample code: Create Bot.
@@ -269,14 +292,18 @@ public final class BotsCreateSamples {
     public static void createBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.bots()
             .define("samplebotname")
-            .withRegion("West US")
             .withExistingResourceGroup("OneResourceGroupName")
+            .withRegion("West US")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withProperties(new BotProperties().withDisplayName("The Name of the bot")
                 .withDescription("The description of the bot")
                 .withIconUrl("http://myicon")
                 .withEndpoint("http://mybot.coffee")
+                .withMsaAppType(MsaAppType.USER_ASSIGNED_MSI)
                 .withMsaAppId("exampleappid")
+                .withMsaAppTenantId("exampleapptenantid")
+                .withMsaAppMSIResourceId(
+                    "/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId")
                 .withDeveloperAppInsightKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApiKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApplicationId("appinsightsappid")
@@ -285,6 +312,7 @@ public final class BotsCreateSamples {
                 .withIsCmekEnabled(true)
                 .withCmekKeyVaultUrl("fakeTokenPlaceholder")
                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(true)
                 .withSchemaTransformationVersion("1.0"))
             .withSku(new Sku().withName(SkuName.S1))
             .withKind(Kind.SDK)
@@ -314,8 +342,7 @@ public final class BotsCreateSamples {
  */
 public final class BotsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/DeleteBot.json
+     * x-ms-original-file: 2023-09-15-preview/DeleteBot.json
      */
     /**
      * Sample code: Delete Bot.
@@ -338,8 +365,7 @@ public final class BotsDeleteSamples {
  */
 public final class BotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetBot.json
+     * x-ms-original-file: 2023-09-15-preview/GetBot.json
      */
     /**
      * Sample code: Get Bot.
@@ -363,9 +389,7 @@ import com.azure.resourcemanager.botservice.models.CheckNameAvailabilityRequestB
  */
 public final class BotsGetCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/CheckNameAvailability.
-     * json
+     * x-ms-original-file: 2023-09-15-preview/CheckNameAvailability.json
      */
     /**
      * Sample code: check Name Availability.
@@ -389,9 +413,7 @@ public final class BotsGetCheckNameAvailabilitySamples {
  */
 public final class BotsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/ListBotsBySubscription.
-     * json
+     * x-ms-original-file: 2023-09-15-preview/ListBotsBySubscription.json
      */
     /**
      * Sample code: List Bots by Subscription.
@@ -412,9 +434,7 @@ public final class BotsListSamples {
  */
 public final class BotsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/ListBotsByResourceGroup
-     * .json
+     * x-ms-original-file: 2023-09-15-preview/ListBotsByResourceGroup.json
      */
     /**
      * Sample code: List Bots by Resource Group.
@@ -433,6 +453,7 @@ public final class BotsListByResourceGroupSamples {
 import com.azure.resourcemanager.botservice.models.Bot;
 import com.azure.resourcemanager.botservice.models.BotProperties;
 import com.azure.resourcemanager.botservice.models.Kind;
+import com.azure.resourcemanager.botservice.models.MsaAppType;
 import com.azure.resourcemanager.botservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.botservice.models.Sku;
 import com.azure.resourcemanager.botservice.models.SkuName;
@@ -445,8 +466,7 @@ import java.util.Map;
  */
 public final class BotsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateBot.json
+     * x-ms-original-file: 2023-09-15-preview/UpdateBot.json
      */
     /**
      * Sample code: Update Bot.
@@ -463,7 +483,11 @@ public final class BotsUpdateSamples {
                 .withDescription("The description of the bot")
                 .withIconUrl("http://myicon")
                 .withEndpoint("http://mybot.coffee")
+                .withMsaAppType(MsaAppType.USER_ASSIGNED_MSI)
                 .withMsaAppId("msaappid")
+                .withMsaAppTenantId("msaapptenantid")
+                .withMsaAppMSIResourceId(
+                    "/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId")
                 .withDeveloperAppInsightKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApiKey("fakeTokenPlaceholder")
                 .withDeveloperAppInsightsApplicationId("appinsightsappid")
@@ -472,6 +496,7 @@ public final class BotsUpdateSamples {
                 .withIsCmekEnabled(true)
                 .withCmekKeyVaultUrl("fakeTokenPlaceholder")
                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(true)
                 .withSchemaTransformationVersion("1.0"))
             .withSku(new Sku().withName(SkuName.S1))
             .withKind(Kind.SDK)
@@ -515,8 +540,7 @@ import java.util.Arrays;
  */
 public final class ChannelsCreateSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * PutDirectLineSpeechChannel.json
+     * x-ms-original-file: 2023-09-15-preview/PutDirectLineSpeechChannel.json
      */
     /**
      * Sample code: Create DirectLine Speech Channel.
@@ -526,17 +550,16 @@ public final class ChannelsCreateSamples {
     public static void createDirectLineSpeechChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.DIRECT_LINE_SPEECH_CHANNEL,
-                new BotChannelInner().withLocation("global")
-                    .withProperties(new DirectLineSpeechChannel().withProperties(
-                        new DirectLineSpeechChannelProperties().withCognitiveServiceRegion("XcognitiveServiceRegionX")
-                            .withCognitiveServiceSubscriptionKey("fakeTokenPlaceholder")
-                            .withIsEnabled(true))),
+                new BotChannelInner().withProperties(new DirectLineSpeechChannel().withProperties(
+                    new DirectLineSpeechChannelProperties().withCognitiveServiceRegion("XcognitiveServiceRegionX")
+                        .withCognitiveServiceSubscriptionKey("fakeTokenPlaceholder")
+                        .withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutEmailChannel.json
+     * x-ms-original-file: 2023-09-15-preview/PutEmailChannel.json
      */
     /**
      * Sample code: Create Email Channel.
@@ -546,18 +569,17 @@ public final class ChannelsCreateSamples {
     public static void createEmailChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
-                new BotChannelInner().withLocation("global")
-                    .withProperties(
-                        new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
-                            .withAuthMethod(EmailChannelAuthMethod.ONE)
-                            .withMagicCode("fakeTokenPlaceholder")
-                            .withIsEnabled(true))),
+                new BotChannelInner().withProperties(
+                    new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
+                        .withAuthMethod(EmailChannelAuthMethod.GRAPH)
+                        .withMagicCode("fakeTokenPlaceholder")
+                        .withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutAlexaChannel.json
+     * x-ms-original-file: 2023-09-15-preview/PutAlexaChannel.json
      */
     /**
      * Sample code: Create Alexa Channel.
@@ -567,15 +589,15 @@ public final class ChannelsCreateSamples {
     public static void createAlexaChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.ALEXA_CHANNEL,
-                new BotChannelInner().withLocation("global")
+                new BotChannelInner()
                     .withProperties(new AlexaChannel().withProperties(
-                        new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true))),
+                        new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutChannel.json
+     * x-ms-original-file: 2023-09-15-preview/PutChannel.json
      */
     /**
      * Sample code: Create Channel.
@@ -585,17 +607,16 @@ public final class ChannelsCreateSamples {
     public static void createChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
-                new BotChannelInner().withLocation("global")
-                    .withProperties(
-                        new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
-                            .withPassword("fakeTokenPlaceholder")
-                            .withIsEnabled(true))),
+                new BotChannelInner().withProperties(
+                    new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
+                        .withPassword("fakeTokenPlaceholder")
+                        .withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutLineChannel.json
+     * x-ms-original-file: 2023-09-15-preview/PutLineChannel.json
      */
     /**
      * Sample code: Create Line Channel.
@@ -605,10 +626,11 @@ public final class ChannelsCreateSamples {
     public static void createLineChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .createWithResponse("OneResourceGroupName", "samplebotname", ChannelName.LINE_CHANNEL,
-                new BotChannelInner().withLocation("global")
+                new BotChannelInner()
                     .withProperties(new LineChannel().withProperties(new LineChannelProperties().withLineRegistrations(
                         Arrays.asList(new LineRegistration().withChannelSecret("fakeTokenPlaceholder")
-                            .withChannelAccessToken("fakeTokenPlaceholder"))))),
+                            .withChannelAccessToken("fakeTokenPlaceholder")))))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -622,8 +644,7 @@ public final class ChannelsCreateSamples {
  */
 public final class ChannelsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/DeleteChannel.json
+     * x-ms-original-file: 2023-09-15-preview/DeleteChannel.json
      */
     /**
      * Sample code: Delete Channel.
@@ -637,8 +658,7 @@ public final class ChannelsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * DeleteDirectLineSpeechChannel.json
+     * x-ms-original-file: 2023-09-15-preview/DeleteDirectLineSpeechChannel.json
      */
     /**
      * Sample code: Delete DirectLine Speech Channel.
@@ -661,8 +681,7 @@ public final class ChannelsDeleteSamples {
  */
 public final class ChannelsGetSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * GetDirectLineSpeechChannel.json
+     * x-ms-original-file: 2023-09-15-preview/GetDirectLineSpeechChannel.json
      */
     /**
      * Sample code: Get DirectLine Speech Channel.
@@ -676,8 +695,7 @@ public final class ChannelsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetAlexaChannel.json
+     * x-ms-original-file: 2023-09-15-preview/GetAlexaChannel.json
      */
     /**
      * Sample code: Get Alexa Channel.
@@ -690,8 +708,7 @@ public final class ChannelsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetLineChannel.json
+     * x-ms-original-file: 2023-09-15-preview/GetLineChannel.json
      */
     /**
      * Sample code: Get Line Channel.
@@ -704,8 +721,7 @@ public final class ChannelsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetChannel.json
+     * x-ms-original-file: 2023-09-15-preview/GetChannel.json
      */
     /**
      * Sample code: Get Channel.
@@ -727,8 +743,7 @@ public final class ChannelsGetSamples {
  */
 public final class ChannelsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * ListChannelsByBotService.json
+     * x-ms-original-file: 2023-09-15-preview/ListChannelsByBotService.json
      */
     /**
      * Sample code: List Channels by Resource Group.
@@ -752,8 +767,7 @@ import com.azure.resourcemanager.botservice.models.ChannelName;
  */
 public final class ChannelsListWithKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/ListChannel.json
+     * x-ms-original-file: 2023-09-15-preview/ListChannel.json
      */
     /**
      * Sample code: List Channel.
@@ -789,8 +803,7 @@ import java.util.Arrays;
  */
 public final class ChannelsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateAlexaChannel.json
+     * x-ms-original-file: 2023-09-15-preview/UpdateAlexaChannel.json
      */
     /**
      * Sample code: Update Alexa Channel.
@@ -800,15 +813,15 @@ public final class ChannelsUpdateSamples {
     public static void updateAlexaChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.ALEXA_CHANNEL,
-                new BotChannelInner().withLocation("global")
+                new BotChannelInner()
                     .withProperties(new AlexaChannel().withProperties(
-                        new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true))),
+                        new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * UpdateDirectLineSpeechChannel.json
+     * x-ms-original-file: 2023-09-15-preview/UpdateDirectLineSpeechChannel.json
      */
     /**
      * Sample code: Update DirectLine Speech Channel.
@@ -818,17 +831,16 @@ public final class ChannelsUpdateSamples {
     public static void updateDirectLineSpeechChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.DIRECT_LINE_SPEECH_CHANNEL,
-                new BotChannelInner().withLocation("global")
-                    .withProperties(new DirectLineSpeechChannel().withProperties(
-                        new DirectLineSpeechChannelProperties().withCognitiveServiceRegion("XcognitiveServiceRegionX")
-                            .withCognitiveServiceSubscriptionKey("fakeTokenPlaceholder")
-                            .withIsEnabled(true))),
+                new BotChannelInner().withProperties(new DirectLineSpeechChannel().withProperties(
+                    new DirectLineSpeechChannelProperties().withCognitiveServiceRegion("XcognitiveServiceRegionX")
+                        .withCognitiveServiceSubscriptionKey("fakeTokenPlaceholder")
+                        .withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateLineChannel.json
+     * x-ms-original-file: 2023-09-15-preview/UpdateLineChannel.json
      */
     /**
      * Sample code: Update Line Channel.
@@ -838,16 +850,16 @@ public final class ChannelsUpdateSamples {
     public static void updateLineChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.LINE_CHANNEL,
-                new BotChannelInner().withLocation("global")
+                new BotChannelInner()
                     .withProperties(new LineChannel().withProperties(new LineChannelProperties().withLineRegistrations(
                         Arrays.asList(new LineRegistration().withChannelSecret("fakeTokenPlaceholder")
-                            .withChannelAccessToken("fakeTokenPlaceholder"))))),
+                            .withChannelAccessToken("fakeTokenPlaceholder")))))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateChannel.json
+     * x-ms-original-file: 2023-09-15-preview/UpdateChannel.json
      */
     /**
      * Sample code: Update Channel.
@@ -857,11 +869,11 @@ public final class ChannelsUpdateSamples {
     public static void updateChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.channels()
             .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
-                new BotChannelInner().withLocation("global")
-                    .withProperties(
-                        new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
-                            .withPassword("fakeTokenPlaceholder")
-                            .withIsEnabled(true))),
+                new BotChannelInner().withProperties(
+                    new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
+                        .withPassword("fakeTokenPlaceholder")
+                        .withIsEnabled(true)))
+                    .withLocation("global"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -879,8 +891,7 @@ import com.azure.resourcemanager.botservice.models.SiteInfo;
  */
 public final class DirectLineRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
-     * DirectlineRegenerateKeys.json
+     * x-ms-original-file: 2023-09-15-preview/DirectlineRegenerateKeys.json
      */
     /**
      * Sample code: Regenerate Keys for DirectLine Channel Site.
@@ -896,9 +907,7 @@ public final class DirectLineRegenerateKeysSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/WebChatRegenerateKeys.
-     * json
+     * x-ms-original-file: 2023-09-15-preview/WebChatRegenerateKeys.json
      */
     /**
      * Sample code: Regenerate Keys for WebChat Channel Site.
@@ -915,6 +924,28 @@ public final class DirectLineRegenerateKeysSamples {
 }
 ```
 
+### Email_CreateSignInUrl
+
+```java
+/**
+ * Samples for Email CreateSignInUrl.
+ */
+public final class EmailCreateSignInUrlSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/CreateEmailSignInUrl.json
+     */
+    /**
+     * Sample code: Create Url.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void createUrl(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.emails()
+            .createSignInUrlWithResponse("OneResourceGroupName", "samplebotname", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### HostSettings_Get
 
 ```java
@@ -923,8 +954,7 @@ public final class DirectLineRegenerateKeysSamples {
  */
 public final class HostSettingsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetHostSettings.json
+     * x-ms-original-file: 2023-09-15-preview/GetHostSettings.json
      */
     /**
      * Sample code: Get Bot Host Settings.
@@ -937,6 +967,97 @@ public final class HostSettingsGetSamples {
 }
 ```
 
+### NetworkSecurityPerimeterConfigurations_Get
+
+```java
+/**
+ * Samples for NetworkSecurityPerimeterConfigurations Get.
+ */
+public final class NetworkSecurityPerimeterConfigurationsGetSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/GetNetworkSecurityPerimeterConfiguration.json
+     */
+    /**
+     * Sample code: Get Network Security Perimeter Configuration.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void
+        getNetworkSecurityPerimeterConfiguration(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.networkSecurityPerimeterConfigurations()
+            .getWithResponse("rgName", "botId", "00000000-0000-0000-0000-000000000000.associationName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkSecurityPerimeterConfigurations_List
+
+```java
+/**
+ * Samples for NetworkSecurityPerimeterConfigurations List.
+ */
+public final class NetworkSecurityPerimeterConfigurationsListSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/ListNetworkSecurityPerimeterConfigurations.json
+     */
+    /**
+     * Sample code: List Network Security Perimeter Configurations.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void
+        listNetworkSecurityPerimeterConfigurations(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.networkSecurityPerimeterConfigurations().list("rgName", "botId", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkSecurityPerimeterConfigurations_Reconcile
+
+```java
+/**
+ * Samples for NetworkSecurityPerimeterConfigurations Reconcile.
+ */
+public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/ReconcileNetworkSecurityPerimeterConfiguration.json
+     */
+    /**
+     * Sample code: Reconcile Network Security Perimeter Configuration.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void
+        reconcileNetworkSecurityPerimeterConfiguration(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.networkSecurityPerimeterConfigurations()
+            .reconcile("rgName", "botId", "00000000-0000-0000-0000-000000000000.associationName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperationResults_Get
+
+```java
+/**
+ * Samples for OperationResults Get.
+ */
+public final class OperationResultsGetSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/OperationResultsGet.json
+     */
+    /**
+     * Sample code: Get operation result.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void getOperationResult(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.operationResults().get("exampleid", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -945,8 +1066,7 @@ public final class HostSettingsGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetOperations.json
+     * x-ms-original-file: 2023-09-15-preview/GetOperations.json
      */
     /**
      * Sample code: Get Operations.
@@ -955,6 +1075,151 @@ public final class OperationsListSamples {
      */
     public static void getOperations(com.azure.resourcemanager.botservice.BotServiceManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_Create
+
+```java
+import com.azure.resourcemanager.botservice.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.botservice.models.PrivateLinkServiceConnectionState;
+
+/**
+ * Samples for PrivateEndpointConnections Create.
+ */
+public final class PrivateEndpointConnectionsCreateSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/PutPrivateEndpointConnection.json
+     */
+    /**
+     * Sample code: Put Private Endpoint Connection.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void putPrivateEndpointConnection(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.privateEndpointConnections()
+            .define("{privateEndpointConnectionName}")
+            .withExistingBotService("res7687", "sto9699")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("Auto-Approved"))
+            .create();
+    }
+}
+```
+
+### PrivateEndpointConnections_Delete
+
+```java
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
+public final class PrivateEndpointConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/DeletePrivateEndpointConnection.json
+     */
+    /**
+     * Sample code: Delete Private Endpoint Connection.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void deletePrivateEndpointConnection(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.privateEndpointConnections()
+            .deleteWithResponse("res6977", "sto2527", "{privateEndpointConnectionName}",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_Get
+
+```java
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
+public final class PrivateEndpointConnectionsGetSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/GetPrivateEndpointConnection.json
+     */
+    /**
+     * Sample code: Get Private Endpoint Connection.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void getPrivateEndpointConnection(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.privateEndpointConnections()
+            .getWithResponse("res6977", "sto2527", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_List
+
+```java
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
+public final class PrivateEndpointConnectionsListSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/ListPrivateEndpointConnections.json
+     */
+    /**
+     * Sample code: List Private Endpoint Connections.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void listPrivateEndpointConnections(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.privateEndpointConnections().list("res6977", "sto2527", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_ListByBotResource
+
+```java
+/**
+ * Samples for PrivateLinkResources ListByBotResource.
+ */
+public final class PrivateLinkResourcesListByBotResourceSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/ListPrivateLinkResources.json
+     */
+    /**
+     * Sample code: List Private Link Resources.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void listPrivateLinkResources(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.privateLinkResources()
+            .listByBotResourceWithResponse("res6977", "sto2527", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### QnAMakerEndpointKeys_Get
+
+```java
+import com.azure.resourcemanager.botservice.models.QnAMakerEndpointKeysRequestBody;
+
+/**
+ * Samples for QnAMakerEndpointKeys Get.
+ */
+public final class QnAMakerEndpointKeysGetSamples {
+    /*
+     * x-ms-original-file: 2023-09-15-preview/ListQnAMakerEndpointKeys.json
+     */
+    /**
+     * Sample code: List QnAMaker Endpoint Keys.
+     * 
+     * @param manager Entry point to BotServiceManager.
+     */
+    public static void listQnAMakerEndpointKeys(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.qnAMakerEndpointKeys()
+            .getWithResponse(
+                new QnAMakerEndpointKeysRequestBody().withHostname("https://xxx.cognitiveservices.azure.com/")
+                    .withAuthkey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
