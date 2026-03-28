@@ -192,3 +192,4 @@ public class SearchIndexClientJavaDocSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String
     }
 }
+

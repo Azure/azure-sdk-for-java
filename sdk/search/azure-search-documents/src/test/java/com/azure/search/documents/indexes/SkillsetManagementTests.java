@@ -17,6 +17,8 @@ import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunki
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillExtractionOptions;
 import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount;
+import com.azure.search.documents.indexes.models.EntityCategory;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillV3;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
@@ -32,6 +34,7 @@ import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SentimentSkillV3;
+import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 import com.azure.search.documents.indexes.models.SplitSkill;
 import com.azure.search.documents.indexes.models.SplitSkillLanguage;
@@ -948,8 +951,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     @Disabled("Test proxy issues")
     public void contentUnderstandingSkillWorksWithPreviewApiVersion() {
         SearchIndexerClient indexerClient
-            = getSearchIndexerClientBuilder(true).serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
-                .buildClient();
+            = getSearchIndexerClientBuilder(true).serviceVersion(SearchServiceVersion.V2026_04_01).buildClient();
 
         SearchIndexerSkillset skillset = createTestSkillsetContentUnderstanding();
 
@@ -1134,8 +1136,11 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
         outputs = Collections.singletonList(createOutputFieldMappingEntry("namedEntities", "myEntities"));
-        skills.add(new EntityRecognitionSkillV3(inputs, outputs).setCategories(categories)
-            .setDefaultLanguageCode("en")
+        skills.add(new EntityRecognitionSkillV3(inputs, outputs)
+            .setCategories(categories == null
+                ? null
+                : categories.stream().map(EntityCategory::fromString).collect(Collectors.toList()))
+            .setDefaultLanguageCode(EntityRecognitionSkillLanguage.fromString("en"))
             .setMinimumPrecision(0.5)
             .setName("myentity")
             .setDescription("Tested Entity Recognition skill")
@@ -1160,7 +1165,8 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
         outputs = Collections.singletonList(createOutputFieldMappingEntry("confidenceScores", "mySentiment"));
-        skills.add(new SentimentSkillV3(inputs, outputs).setDefaultLanguageCode(sentimentLanguageCode)
+        skills.add(new SentimentSkillV3(inputs, outputs)
+            .setDefaultLanguageCode(SentimentSkillLanguage.fromString(sentimentLanguageCode))
             .setName("mysentiment")
             .setDescription("Tested Sentiment skill")
             .setContext(CONTEXT_VALUE));

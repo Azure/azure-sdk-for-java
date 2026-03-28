@@ -34,10 +34,9 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -389,10 +388,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
 
-        KnowledgeBaseMessageTextContent messageTextContent
-            = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
-        KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
-        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest().setMessages(message);
+        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
         KnowledgeBaseRetrievalResponse response
             = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
@@ -413,11 +410,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
                     = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
-                KnowledgeBaseMessageTextContent messageTextContent
-                    = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
-                KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
-                KnowledgeBaseRetrievalRequest retrievalRequest
-                    = new KnowledgeBaseRetrievalRequest().setMessages(message);
+                KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
                 return knowledgeBaseClient.retrieve(created.getName(), retrievalRequest);
             });
@@ -439,10 +433,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
 
-        KnowledgeBaseMessageTextContent messageTextContent
-            = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
-        KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
-        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest().setMessages(message);
+        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
         // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
         KnowledgeBaseRetrievalResponse response
@@ -464,11 +456,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
                     = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
-                KnowledgeBaseMessageTextContent messageTextContent
-                    = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
-                KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
-                KnowledgeBaseRetrievalRequest retrievalRequest
-                    = new KnowledgeBaseRetrievalRequest().setMessages(message);
+                KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
                 // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
                 return knowledgeBaseClient.retrieve(created.getName(), retrievalRequest);
@@ -483,54 +472,13 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @Test
     @Disabled("Requires further resource deployment")
     public void answerSynthesisRetrievalSync() {
-        // Test knowledge base retrieval functionality.
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase
-            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
-                .setRetrievalInstructions("Only include well reviewed hotels.");
-        searchIndexClient.createKnowledgeBase(knowledgeBase);
-
-        KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
-
-        KnowledgeBaseMessageTextContent messageTextContent
-            = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
-        KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
-        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest().setMessages(message);
-
-        KnowledgeBaseRetrievalResponse response
-            = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
-        assertNotNull(response);
-        assertNotNull(response.getResponse());
-        assertNotNull(response.getActivity());
+        // Disabled: setRetrievalInstructions was removed in the 2026-04-01 API version.
     }
 
     @Test
     @Disabled("Requires further resource deployment")
     public void answerSynthesisRetrievalAsync() {
-        // Test knowledge base retrieval functionality.
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase
-            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
-                .setRetrievalInstructions("Only include well reviewed hotels.");
-        Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
-            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
-                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
-                    = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
-
-                KnowledgeBaseMessageTextContent messageTextContent
-                    = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
-                KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
-                KnowledgeBaseRetrievalRequest retrievalRequest
-                    = new KnowledgeBaseRetrievalRequest().setMessages(message);
-
-                return knowledgeBaseClient.retrieve(created.getName(), retrievalRequest);
-            });
-
-        StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
-            assertNotNull(response);
-            assertNotNull(response.getResponse());
-            assertNotNull(response.getActivity());
-        }).verifyComplete();
+        // Disabled: setRetrievalInstructions was removed in the 2026-04-01 API version.
     }
 
     @Test

@@ -27,7 +27,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.SkillNames;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -219,8 +218,6 @@ public class SearchRequestUrlRewriterPolicyTests {
                 indexerUrl + "/search.run"),
             Arguments.of(toCallable(() -> indexerClient.getIndexerStatusWithResponse("indexer", null)),
                 indexerUrl + "/search.status"),
-            Arguments.of(toCallable(() -> indexerClient.resetDocumentsWithResponse(indexer.getName(), null)),
-                indexerUrl + "/search.resetdocs"),
             Arguments.of(toCallable(() -> indexerClient.createSkillsetWithResponse(skillset, null)), skillsetsUrl),
             Arguments.of(toCallable(() -> indexerClient.getSkillsetWithResponse("skillset", null)), skillsetUrl),
             Arguments.of(toCallable(indexerClient::listSkillsets), skillsetsUrl),
@@ -229,9 +226,6 @@ public class SearchRequestUrlRewriterPolicyTests {
                 skillsetUrl),
             Arguments.of(toCallable(() -> indexerClient.deleteSkillsetWithResponse(skillset.getName(), null)),
                 skillsetUrl),
-            Arguments.of(
-                toCallable(() -> indexerClient.resetSkillsWithResponse(skillset.getName(), new SkillNames(), null)),
-                skillsetUrl + "/search.resetskills"),
 
             Arguments.of(
                 toCallable(indexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, null)),
@@ -257,8 +251,6 @@ public class SearchRequestUrlRewriterPolicyTests {
                 indexerUrl + "/search.run"),
             Arguments.of(toCallable(indexerAsyncClient.getIndexerStatusWithResponse("indexer", null)),
                 indexerUrl + "/search.status"),
-            Arguments.of(toCallable(indexerAsyncClient.resetDocumentsWithResponse(indexer.getName(), null)),
-                indexerUrl + "/search.resetdocs"),
             Arguments.of(toCallable(indexerAsyncClient.createSkillsetWithResponse(skillset, null)), skillsetsUrl),
             Arguments.of(toCallable(indexerAsyncClient.getSkillsetWithResponse("skillset", null)), skillsetUrl),
             Arguments.of(toCallable(indexerAsyncClient.listSkillsets()), skillsetsUrl),
@@ -266,10 +258,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(indexerAsyncClient.createOrUpdateSkillsetWithResponse(skillset, null)),
                 skillsetUrl),
             Arguments.of(toCallable(indexerAsyncClient.deleteSkillsetWithResponse(skillset.getName(), null)),
-                skillsetUrl),
-            Arguments.of(
-                toCallable(indexerAsyncClient.resetSkillsWithResponse(skillset.getName(), new SkillNames(), null)),
-                skillsetUrl + "/search.resetskills"));
+                skillsetUrl));
     }
 
     private static Callable<?> toCallable(Supplier<?> apiCall) {

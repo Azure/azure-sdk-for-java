@@ -22,6 +22,7 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept48;
 import reactor.core.publisher.Mono;
 
 /**
@@ -68,36 +69,6 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      */
     public SearchServiceVersion getServiceVersion() {
         return serviceClient.getServiceVersion();
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
     }
 
     /**
@@ -158,8 +129,8 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -167,35 +138,20 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     maxOutputSizeInTokens: Integer (Optional)
      *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
      *         }
      *     ]
@@ -220,7 +176,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/modelQueryPlanning/modelAnswerSynthesis/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -243,7 +199,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -271,5 +227,33 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     Mono<Response<BinaryData>> hiddenGeneratedRetrieveWithResponse(String knowledgeBaseName,
         BinaryData retrievalRequest, RequestOptions requestOptions) {
         return this.serviceClient.retrieveWithResponseAsync(knowledgeBaseName, retrievalRequest, requestOptions);
+    }
+
+    /**
+     * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param knowledgeBaseName The name of the knowledge base.
+     * @param retrievalRequest The retrieval request to process.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
+        KnowledgeBaseRetrievalRequest retrievalRequest, CreateOrUpdateRequestAccept48 accept) {
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
     }
 }

@@ -25,12 +25,6 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
     public static final KnowledgeBaseReferenceType AZURE_BLOB = fromString("azureBlob");
 
     /**
-     * Indexed SharePoint document reference.
-     */
-    @Generated
-    public static final KnowledgeBaseReferenceType INDEXED_SHARE_POINT = fromString("indexedSharePoint");
-
-    /**
      * Indexed OneLake document reference.
      */
     @Generated
@@ -41,12 +35,6 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
      */
     @Generated
     public static final KnowledgeBaseReferenceType WEB = fromString("web");
-
-    /**
-     * Remote SharePoint document reference.
-     */
-    @Generated
-    public static final KnowledgeBaseReferenceType REMOTE_SHARE_POINT = fromString("remoteSharePoint");
 
     /**
      * Creates a new instance of KnowledgeBaseReferenceType value.

@@ -37,7 +37,8 @@ public class SearchCustomizations extends Customization {
         addSearchAudienceScopeHandling(indexes.getClass("SearchIndexerClientBuilder"), logger);
         addSearchAudienceScopeHandling(knowledge.getClass("KnowledgeBaseRetrievalClientBuilder"), logger);
 
-        includeOldApiVersions(documents.getClass("SearchServiceVersion"));
+        ClassCustomization serviceVersion = documents.getClass("SearchServiceVersion");
+        includeOldApiVersions(serviceVersion);
 
         ClassCustomization searchClient = documents.getClass("SearchClient");
         ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
@@ -111,8 +112,8 @@ public class SearchCustomizations extends Customization {
     private static void includeOldApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
-            for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
-                String enumName = "V" + version.replace("-", "_");
+            for (String version : Arrays.asList("2025-11-01-preview", "2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
+                String enumName = ("V" + version.replace("-", "_")).toUpperCase();
                 entries.add(0, new EnumConstantDeclaration(enumName)
                     .addArgument(new StringLiteralExpr(version))
                     .setJavadocComment("Enum value " + version + "."));

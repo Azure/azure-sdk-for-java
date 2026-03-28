@@ -20,12 +20,6 @@ import java.util.List;
 public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<KnowledgeBaseRetrievalRequest> {
 
     /*
-     * A list of chat message style input.
-     */
-    @Generated
-    private List<KnowledgeBaseMessage> messages;
-
-    /*
      * A list of intended queries to execute without model query planning.
      */
     @Generated
@@ -38,28 +32,10 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
     private Integer maxRuntimeInSeconds;
 
     /*
-     * Limits the maximum size of the content in the output.
-     */
-    @Generated
-    private Integer maxOutputSize;
-
-    /*
-     * The retrieval reasoning effort configuration.
-     */
-    @Generated
-    private KnowledgeRetrievalReasoningEffort retrievalReasoningEffort;
-
-    /*
      * Indicates retrieval results should include activity information.
      */
     @Generated
     private Boolean includeActivity;
-
-    /*
-     * The output configuration for this retrieval.
-     */
-    @Generated
-    private KnowledgeRetrievalOutputMode outputMode;
 
     /*
      * A list of runtime parameters for the knowledge sources.
@@ -72,39 +48,6 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
      */
     @Generated
     public KnowledgeBaseRetrievalRequest() {
-    }
-
-    /**
-     * Get the messages property: A list of chat message style input.
-     *
-     * @return the messages value.
-     */
-    @Generated
-    public List<KnowledgeBaseMessage> getMessages() {
-        return this.messages;
-    }
-
-    /**
-     * Set the messages property: A list of chat message style input.
-     *
-     * @param messages the messages value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    public KnowledgeBaseRetrievalRequest setMessages(KnowledgeBaseMessage... messages) {
-        this.messages = (messages == null) ? null : Arrays.asList(messages);
-        return this;
-    }
-
-    /**
-     * Set the messages property: A list of chat message style input.
-     *
-     * @param messages the messages value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalRequest setMessages(List<KnowledgeBaseMessage> messages) {
-        this.messages = messages;
-        return this;
     }
 
     /**
@@ -163,51 +106,6 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
     }
 
     /**
-     * Get the maxOutputSize property: Limits the maximum size of the content in the output.
-     *
-     * @return the maxOutputSize value.
-     */
-    @Generated
-    public Integer getMaxOutputSize() {
-        return this.maxOutputSize;
-    }
-
-    /**
-     * Set the maxOutputSize property: Limits the maximum size of the content in the output.
-     *
-     * @param maxOutputSize the maxOutputSize value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalRequest setMaxOutputSize(Integer maxOutputSize) {
-        this.maxOutputSize = maxOutputSize;
-        return this;
-    }
-
-    /**
-     * Get the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
-     *
-     * @return the retrievalReasoningEffort value.
-     */
-    @Generated
-    public KnowledgeRetrievalReasoningEffort getRetrievalReasoningEffort() {
-        return this.retrievalReasoningEffort;
-    }
-
-    /**
-     * Set the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
-     *
-     * @param retrievalReasoningEffort the retrievalReasoningEffort value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalRequest
-        setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffort retrievalReasoningEffort) {
-        this.retrievalReasoningEffort = retrievalReasoningEffort;
-        return this;
-    }
-
-    /**
      * Get the includeActivity property: Indicates retrieval results should include activity information.
      *
      * @return the includeActivity value.
@@ -226,28 +124,6 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
     @Generated
     public KnowledgeBaseRetrievalRequest setIncludeActivity(Boolean includeActivity) {
         this.includeActivity = includeActivity;
-        return this;
-    }
-
-    /**
-     * Get the outputMode property: The output configuration for this retrieval.
-     *
-     * @return the outputMode value.
-     */
-    @Generated
-    public KnowledgeRetrievalOutputMode getOutputMode() {
-        return this.outputMode;
-    }
-
-    /**
-     * Set the outputMode property: The output configuration for this retrieval.
-     *
-     * @param outputMode the outputMode value to set.
-     * @return the KnowledgeBaseRetrievalRequest object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalRequest setOutputMode(KnowledgeRetrievalOutputMode outputMode) {
-        this.outputMode = outputMode;
         return this;
     }
 
@@ -280,13 +156,10 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("intents", this.intents, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("maxRuntimeInSeconds", this.maxRuntimeInSeconds);
-        jsonWriter.writeNumberField("maxOutputSize", this.maxOutputSize);
-        jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
+        jsonWriter.writeNumberField("maxOutputSizeInTokens", this.maxOutputSizeInTokens);
         jsonWriter.writeBooleanField("includeActivity", this.includeActivity);
-        jsonWriter.writeStringField("outputMode", this.outputMode == null ? null : this.outputMode.toString());
         jsonWriter.writeArrayField("knowledgeSourceParams", this.knowledgeSourceParams,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -308,28 +181,19 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("messages".equals(fieldName)) {
-                    List<KnowledgeBaseMessage> messages
-                        = reader.readArray(reader1 -> KnowledgeBaseMessage.fromJson(reader1));
-                    deserializedKnowledgeBaseRetrievalRequest.messages = messages;
-                } else if ("intents".equals(fieldName)) {
+                if ("intents".equals(fieldName)) {
                     List<KnowledgeRetrievalIntent> intents
                         = reader.readArray(reader1 -> KnowledgeRetrievalIntent.fromJson(reader1));
                     deserializedKnowledgeBaseRetrievalRequest.intents = intents;
                 } else if ("maxRuntimeInSeconds".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalRequest.maxRuntimeInSeconds
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("maxOutputSize".equals(fieldName)) {
-                    deserializedKnowledgeBaseRetrievalRequest.maxOutputSize = reader.getNullable(JsonReader::getInt);
-                } else if ("retrievalReasoningEffort".equals(fieldName)) {
-                    deserializedKnowledgeBaseRetrievalRequest.retrievalReasoningEffort
-                        = KnowledgeRetrievalReasoningEffort.fromJson(reader);
+                } else if ("maxOutputSizeInTokens".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalRequest.maxOutputSizeInTokens
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("includeActivity".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalRequest.includeActivity
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("outputMode".equals(fieldName)) {
-                    deserializedKnowledgeBaseRetrievalRequest.outputMode
-                        = KnowledgeRetrievalOutputMode.fromString(reader.getString());
                 } else if ("knowledgeSourceParams".equals(fieldName)) {
                     List<KnowledgeSourceParams> knowledgeSourceParams
                         = reader.readArray(reader1 -> KnowledgeSourceParams.fromJson(reader1));
@@ -340,5 +204,33 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
             }
             return deserializedKnowledgeBaseRetrievalRequest;
         });
+    }
+
+    /*
+     * Limits the maximum size of the content in the output.
+     */
+    @Generated
+    private Integer maxOutputSizeInTokens;
+
+    /**
+     * Get the maxOutputSizeInTokens property: Limits the maximum size of the content in the output.
+     *
+     * @return the maxOutputSizeInTokens value.
+     */
+    @Generated
+    public Integer getMaxOutputSizeInTokens() {
+        return this.maxOutputSizeInTokens;
+    }
+
+    /**
+     * Set the maxOutputSizeInTokens property: Limits the maximum size of the content in the output.
+     *
+     * @param maxOutputSizeInTokens the maxOutputSizeInTokens value to set.
+     * @return the KnowledgeBaseRetrievalRequest object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalRequest setMaxOutputSizeInTokens(Integer maxOutputSizeInTokens) {
+        this.maxOutputSizeInTokens = maxOutputSizeInTokens;
+        return this;
     }
 }

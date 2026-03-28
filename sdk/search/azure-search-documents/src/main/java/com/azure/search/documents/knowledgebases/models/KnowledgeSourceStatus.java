@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import java.io.IOException;
 
@@ -169,6 +170,7 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("synchronizationStatus",
             this.synchronizationStatus == null ? null : this.synchronizationStatus.toString());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("synchronizationInterval", this.synchronizationInterval);
         jsonWriter.writeJsonField("currentSynchronizationState", this.currentSynchronizationState);
         jsonWriter.writeJsonField("lastSynchronizationState", this.lastSynchronizationState);
@@ -189,6 +191,7 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
     public static KnowledgeSourceStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeSourceSynchronizationStatus synchronizationStatus = null;
+            KnowledgeSourceKind kind = null;
             String synchronizationInterval = null;
             SynchronizationState currentSynchronizationState = null;
             CompletedSynchronizationState lastSynchronizationState = null;
@@ -198,6 +201,8 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
                 reader.nextToken();
                 if ("synchronizationStatus".equals(fieldName)) {
                     synchronizationStatus = KnowledgeSourceSynchronizationStatus.fromString(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("synchronizationInterval".equals(fieldName)) {
                     synchronizationInterval = reader.getString();
                 } else if ("currentSynchronizationState".equals(fieldName)) {
@@ -211,11 +216,40 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
                 }
             }
             KnowledgeSourceStatus deserializedKnowledgeSourceStatus = new KnowledgeSourceStatus(synchronizationStatus);
+            deserializedKnowledgeSourceStatus.kind = kind;
             deserializedKnowledgeSourceStatus.synchronizationInterval = synchronizationInterval;
             deserializedKnowledgeSourceStatus.currentSynchronizationState = currentSynchronizationState;
             deserializedKnowledgeSourceStatus.lastSynchronizationState = lastSynchronizationState;
             deserializedKnowledgeSourceStatus.statistics = statistics;
             return deserializedKnowledgeSourceStatus;
         });
+    }
+
+    /*
+     * Identifies the Knowledge Source kind directly from the Status response.
+     */
+    @Generated
+    private KnowledgeSourceKind kind;
+
+    /**
+     * Get the kind property: Identifies the Knowledge Source kind directly from the Status response.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public KnowledgeSourceKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Identifies the Knowledge Source kind directly from the Status response.
+     *
+     * @param kind the kind value to set.
+     * @return the KnowledgeSourceStatus object itself.
+     */
+    @Generated
+    public KnowledgeSourceStatus setKind(KnowledgeSourceKind kind) {
+        this.kind = kind;
+        return this;
     }
 }

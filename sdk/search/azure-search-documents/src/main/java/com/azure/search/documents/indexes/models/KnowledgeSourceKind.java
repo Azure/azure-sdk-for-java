@@ -25,12 +25,6 @@ public final class KnowledgeSourceKind extends ExpandableStringEnum<KnowledgeSou
     public static final KnowledgeSourceKind AZURE_BLOB = fromString("azureBlob");
 
     /**
-     * A knowledge source that reads data from indexed SharePoint.
-     */
-    @Generated
-    public static final KnowledgeSourceKind INDEXED_SHARE_POINT = fromString("indexedSharePoint");
-
-    /**
      * A knowledge source that reads data from indexed OneLake.
      */
     @Generated
@@ -41,12 +35,6 @@ public final class KnowledgeSourceKind extends ExpandableStringEnum<KnowledgeSou
      */
     @Generated
     public static final KnowledgeSourceKind WEB = fromString("web");
-
-    /**
-     * A knowledge source that reads data from remote SharePoint.
-     */
-    @Generated
-    public static final KnowledgeSourceKind REMOTE_SHARE_POINT = fromString("remoteSharePoint");
 
     /**
      * Creates a new instance of KnowledgeSourceKind value.

@@ -23,9 +23,12 @@ import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
+import com.azure.search.documents.implementation.models.CountRequestAccept6;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.CountRequestAccept;
+import com.azure.search.documents.models.CountRequestAccept3;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -99,6 +102,14 @@ public final class SearchAsyncClient {
 
     /**
      * Sends a batch of document write actions to the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -164,7 +175,7 @@ public final class SearchAsyncClient {
         // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Long.class));
+            .map(protocolMethodData -> Long.parseLong(protocolMethodData.toString()));
     }
 
     /**
@@ -235,49 +246,6 @@ public final class SearchAsyncClient {
             }
             return mono.map(response -> new SearchPagedResponse(response, serviceClient.getServiceVersion())).flux();
         });
-    }
-
-    /**
-     * Retrieves a document from the index.
-     *
-     * @param key The key of the document to retrieve.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param enableElevatedRead A value that enables elevated read that bypass document level permission checks for the
-     * query operation.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     * from the returned document.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LookupDocument> getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
-        List<String> selectedFields) {
-        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (enableElevatedRead != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
-                String.valueOf(enableElevatedRead));
-        }
-        if (selectedFields != null) {
-            requestOptions.addQueryParam("$select",
-                selectedFields.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
     /**
@@ -384,10 +352,8 @@ public final class SearchAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
-     * bypass document level permission checks for the query operation.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -422,8 +388,6 @@ public final class SearchAsyncClient {
      *         String (Optional)
      *     ]
      *     searchMode: String(any/all) (Optional)
-     *     queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *     speller: String(none/lexicon) (Optional)
      *     select (Optional): [
      *         String (Optional)
      *     ]
@@ -435,10 +399,6 @@ public final class SearchAsyncClient {
      *     semanticQuery: String (Optional)
      *     answers: String(none/extractive) (Optional)
      *     captions: String(none/extractive) (Optional)
-     *     queryRewrites: String(none/generative) (Optional)
-     *     semanticFields (Optional): [
-     *         String (Optional)
-     *     ]
      *     vectorQueries (Optional): [
      *          (Optional){
      *             kind: String(vector/text/imageUrl/imageBinary) (Required)
@@ -447,18 +407,9 @@ public final class SearchAsyncClient {
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
      *             weight: Float (Optional)
-     *             threshold (Optional): {
-     *                 kind: String(vectorSimilarity/searchScore) (Required)
-     *             }
-     *             filterOverride: String (Optional)
-     *             perDocumentVectorLimit: Integer (Optional)
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *     hybridSearch (Optional): {
-     *         maxTextRecallSize: Integer (Optional)
-     *         countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -474,16 +425,6 @@ public final class SearchAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
-     *                 avg: Double (Optional)
-     *                 min: Double (Optional)
-     *                 max: Double (Optional)
-     *                 sum: Double (Optional)
-     *                 cardinality: Long (Optional)
-     *                 &#64;search.facets (Optional): {
-     *                     String (Required): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -501,19 +442,6 @@ public final class SearchAsyncClient {
      *             }
      *         }
      *     ]
-     *     &#64;search.debug (Optional): {
-     *         queryRewrites (Optional): {
-     *             text (Optional): {
-     *                 inputQuery: String (Optional)
-     *                 rewrites (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *             vectors (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -542,8 +470,6 @@ public final class SearchAsyncClient {
      *             String (Optional)
      *         ]
      *         searchMode: String(any/all) (Optional)
-     *         queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *         speller: String(none/lexicon) (Optional)
      *         select (Optional): [
      *             String (Optional)
      *         ]
@@ -555,10 +481,6 @@ public final class SearchAsyncClient {
      *         semanticQuery: String (Optional)
      *         answers: String(none/extractive) (Optional)
      *         captions: String(none/extractive) (Optional)
-     *         queryRewrites: String(none/generative) (Optional)
-     *         semanticFields (Optional): [
-     *             String (Optional)
-     *         ]
      *         vectorQueries (Optional): [
      *              (Optional){
      *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
@@ -567,18 +489,9 @@ public final class SearchAsyncClient {
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
-     *                 threshold (Optional): {
-     *                     kind: String(vectorSimilarity/searchScore) (Required)
-     *                 }
-     *                 filterOverride: String (Optional)
-     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *         hybridSearch (Optional): {
-     *             maxTextRecallSize: Integer (Optional)
-     *             countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *         }
      *     }
      *     value (Required): [
      *          (Required){
@@ -600,23 +513,6 @@ public final class SearchAsyncClient {
      *                 }
      *             ]
      *             &#64;search.documentDebugInfo (Optional): {
-     *                 semantic (Optional): {
-     *                     titleField (Optional): {
-     *                         name: String (Optional)
-     *                         state: String(used/unused/partial) (Optional)
-     *                     }
-     *                     contentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     keywordFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     rerankerInput (Optional): {
-     *                         title: String (Optional)
-     *                         content: String (Optional)
-     *                         keywords: String (Optional)
-     *                     }
-     *                 }
      *                 vectors (Optional): {
      *                     subscores (Optional): {
      *                         text (Optional): {
@@ -633,18 +529,6 @@ public final class SearchAsyncClient {
      *                         documentBoost: Double (Optional)
      *                     }
      *                 }
-     *                 innerHits (Optional): {
-     *                     String (Required): [
-     *                          (Required){
-     *                             ordinal: Long (Optional)
-     *                             vectors (Optional): [
-     *                                  (Optional){
-     *                                     String (Required): (recursive schema, see String above)
-     *                                 }
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
      *             }
      *              (Optional): {
      *                 String: Object (Required)
@@ -654,7 +538,6 @@ public final class SearchAsyncClient {
      *     &#64;odata.nextLink: String (Optional)
      *     &#64;search.semanticPartialResponseReason: String(maxWaitExceeded/capacityOverloaded/transient) (Optional)
      *     &#64;search.semanticPartialResponseType: String(baseResults/rerankedResults) (Optional)
-     *     &#64;search.semanticQueryRewritesResultType: String(originalQueryOnly) (Optional)
      * }
      * }
      * </pre>
@@ -676,6 +559,14 @@ public final class SearchAsyncClient {
 
     /**
      * Suggests documents in the index that match the given partial query text.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -737,6 +628,14 @@ public final class SearchAsyncClient {
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -968,6 +867,14 @@ public final class SearchAsyncClient {
 
     /**
      * Queries the number of documents in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1004,10 +911,8 @@ public final class SearchAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
-     * bypass document level permission checks for the query operation.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -1035,5 +940,89 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> hiddenGeneratedGetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponseAsync(key, requestOptions);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a 64-bit integer on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Long> getDocumentCount(CountRequestAccept accept) {
+        // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> Long.parseLong(protocolMethodData.toString()));
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param accept The Accept header.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     * from the returned document.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LookupDocument> getDocument(String key, CountRequestAccept3 accept, List<String> selectedFields) {
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (selectedFields != null) {
+            requestOptions.addQueryParam("$select",
+                selectedFields.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the status of operations for all documents in the indexing request on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<IndexDocumentsResult> index(IndexDocumentsBatch batch, CountRequestAccept6 accept) {
+        // Generated convenience method for indexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return indexWithResponse(BinaryData.fromObject(batch), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(IndexDocumentsResult.class));
     }
 }
