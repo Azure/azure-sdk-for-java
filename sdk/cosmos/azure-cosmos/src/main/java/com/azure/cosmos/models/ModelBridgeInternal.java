@@ -136,6 +136,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setMaterializedViewDefinitionSourceCollectionRid(
+        CosmosGlobalSecondaryIndexDefinition definition, String sourceCollectionRid) {
+        definition.setSourceContainerRidInternal(sourceCollectionRid);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosContainerProperties> getCosmosContainerPropertiesFromV2Results(List<DocumentCollection> results) {
         return CosmosContainerProperties.getFromV2Results(results);
     }
@@ -451,6 +457,8 @@ public final class ModelBridgeInternal {
             ((UniqueKey) t).populatePropertyBag();
         } else if (t instanceof UniqueKeyPolicy) {
             ((UniqueKeyPolicy) t).populatePropertyBag();
+        } else if (t instanceof CosmosGlobalSecondaryIndexDefinition) {
+            ((CosmosGlobalSecondaryIndexDefinition) t).populatePropertyBag();
         } else {
             throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
@@ -488,6 +496,8 @@ public final class ModelBridgeInternal {
             return ((UniqueKey) t).getJsonSerializable();
         } else if (t instanceof UniqueKeyPolicy) {
             return ((UniqueKeyPolicy) t).getJsonSerializable();
+        } else if (t instanceof CosmosGlobalSecondaryIndexDefinition) {
+            return ((CosmosGlobalSecondaryIndexDefinition) t).getJsonSerializable();
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }

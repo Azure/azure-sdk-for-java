@@ -22,6 +22,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
@@ -1395,10 +1396,26 @@ public class CosmosAsyncDatabase {
         String spanName = "createContainer." + containerProperties.getId();
         RequestOptions nonNullRequestOptions =
             options != null ? ModelBridgeInternal.toRequestOptions(options) : new RequestOptions();
-        Mono<CosmosContainerResponse> responseMono = getDocClientWrapper()
-            .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
-                nonNullRequestOptions)
-            .map(ModelBridgeInternal::createCosmosContainerResponse).single();
+
+        CosmosGlobalSecondaryIndexDefinition gsiDefinition = containerProperties.getGlobalSecondaryIndexDefinition();
+        Mono<Void> ridResolution;
+        if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
+            ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
+                .read()
+                .flatMap(sourceContainerResponse -> {
+                    String rid = sourceContainerResponse.getProperties().getResourceId();
+                    ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(gsiDefinition, rid);
+                    return Mono.empty();
+                });
+        } else {
+            ridResolution = Mono.empty();
+        }
+
+        Mono<CosmosContainerResponse> responseMono = ridResolution
+            .then(Mono.defer(() -> getDocClientWrapper()
+                .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
+                    nonNullRequestOptions)
+                .map(ModelBridgeInternal::createCosmosContainerResponse).single()));
 
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,

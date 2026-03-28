@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -815,7 +816,8 @@ public class JsonSerializable {
             || SqlParameter.class.equals(c)
             || SqlQuerySpec.class.equals(c)
             || UniqueKey.class.equals(c)
-            || UniqueKeyPolicy.class.equals(c);
+            || UniqueKeyPolicy.class.equals(c)
+            || CosmosGlobalSecondaryIndexDefinition.class.equals(c);
     }
 
     @Override

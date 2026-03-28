@@ -156,6 +156,14 @@ public final class Constants {
         public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
         public static final String VECTOR_INDEX_SHARD_KEYS = "vectorIndexShardKeys";
 
+        // Materialized View Definition
+        public static final String MATERIALIZED_VIEW_DEFINITION = "materializedViewDefinition";
+        public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_ID = "sourceCollectionId";
+        public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_RID = "sourceCollectionRid";
+        public static final String MATERIALIZED_VIEW_QUERY_DEFINITION = "definition";
+        public static final String MATERIALIZED_VIEW_STATUS = "status";
+        public static final String MATERIALIZED_VIEWS = "materializedViews";
+
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
         public static final String UNIQUE_KEYS = "uniqueKeys";

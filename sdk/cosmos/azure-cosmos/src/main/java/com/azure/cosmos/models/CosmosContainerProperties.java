@@ -391,6 +391,51 @@ public final class CosmosContainerProperties {
         return this;
     }
 
+    /**
+     * Gets the materialized view definition for this container in the Azure Cosmos DB service.
+     * A materialized view is derived from a source container and is defined by a SQL-like query.
+     *
+     * @return the CosmosGlobalSecondaryIndexDefinition
+     */
+    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+        return this.documentCollection.getGlobalSecondaryIndexDefinition();
+    }
+
+    /**
+     * Sets the materialized view definition for this container in the Azure Cosmos DB service.
+     * A materialized view is derived from a source container and is defined by a SQL-like query.
+     * <p>
+     * Example:
+     * <pre>{@code
+     * CosmosGlobalSecondaryIndexDefinition mvDef = new CosmosGlobalSecondaryIndexDefinition()
+     *     .setSourceCollectionId("gsi-src")
+     *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+     * containerProperties.setMaterializedViewDefinition(mvDef);
+     * }</pre>
+     *
+     * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setMaterializedViewDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+        this.documentCollection.setGlobalSecondaryIndexDefinition(value);
+        return this;
+    }
+
+    /**
+     * Gets the read-only list of materialized view containers derived from this container.
+     * This property is populated only when reading a container response from the Azure Cosmos DB service.
+     * <p>
+     * Example JSON representation in the response:
+     * <pre>{@code
+     * "globalSecondaryIndexViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
+     * }</pre>
+     *
+     * @return the list of {@link CosmosGlobalSecondaryIndexView}, or an empty list if none are present.
+     */
+    public List<CosmosGlobalSecondaryIndexView> getGlobalSecondaryIndexViews() {
+        return this.documentCollection.getGlobalSecondaryIndexViews();
+    }
+
     Resource getResource() {
         return this.documentCollection;
     }
