@@ -123,6 +123,7 @@ private[spark] object CosmosConfigNames {
   val WriteBulkInitialBatchSize = "spark.cosmos.write.bulk.initialBatchSize"
   val WriteBulkTransactionalMaxOperationsConcurrency = "spark.cosmos.write.bulk.transactional.maxOperationsConcurrency"
   val WriteBulkTransactionalMaxBatchesConcurrency = "spark.cosmos.write.bulk.transactional.maxBatchesConcurrency"
+  val WriteBulkTransactionalMarkerTtlSeconds = "spark.cosmos.write.bulk.transactional.marker.ttlSeconds"
   val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
@@ -1509,7 +1510,8 @@ private case class CosmosWriteBulkExecutionConfigs(
 private case class CosmosWriteTransactionalBulkExecutionConfigs(
                                                                  maxConcurrentCosmosPartitions: Option[Int] = None,
                                                                  maxConcurrentOperations: Option[Int] = None,
-                                                                 maxConcurrentBatches: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
+                                                                 maxConcurrentBatches: Option[Int] = None,
+                                                                 markerTtlSeconds: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -1600,6 +1602,22 @@ private object CosmosWriteConfig {
     parseFromStringFunction = maxBatchesConcurrency => maxBatchesConcurrency.toInt,
     helpMessage = "Max concurrent transactional batches per Cosmos partition (1..5). Controls batch-level parallelism; default 5." +
         "Each batch may contain multiple operations; tune together with 'spark.cosmos.write.bulk.transactional.maxOperationsConcurrency' to balance throughput and throttling.")
+
+  private val bulkTransactionalMarkerTtlSeconds = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.WriteBulkTransactionalMarkerTtlSeconds,
+    defaultValue = Option.apply(86400),
+    mandatory = false,
+    parseFromStringFunction = ttlSeconds => {
+      val value = ttlSeconds.toInt
+      if (value <= 0) {
+        throw new IllegalArgumentException(
+          s"'${CosmosConfigNames.WriteBulkTransactionalMarkerTtlSeconds}' must be a positive number of seconds, but was $value.")
+      }
+      value
+    },
+    helpMessage = "TTL in seconds for batch marker documents used for retry ambiguity resolution in transactional bulk mode. " +
+      "Markers are actively deleted after each batch completes; TTL is defense-in-depth for orphan cleanup from crashed runs. " +
+      "Default: 86400 (24 hours). Set to a lower value (e.g., 3600) if container storage is constrained.")
 
   private val pointWriteConcurrency = CosmosConfigEntry[Int](key = CosmosConfigNames.WritePointMaxConcurrency,
     mandatory = false,
@@ -1844,18 +1862,17 @@ private object CosmosWriteConfig {
     if (bulkEnabledOpt.isDefined && bulkEnabledOpt.get) {
 
       if (bulkTransactionalOpt.isDefined && bulkTransactionalOpt.get) {
-        // Validate write strategy for transactional batches
-        assert(itemWriteStrategyOpt.get == ItemWriteStrategy.ItemOverwrite,
-          s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${itemWriteStrategyOpt.get}")
 
         val maxConcurrentCosmosPartitionsOpt = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions)
         val maxBulkTransactionalOpsConcurrencyOpt = CosmosConfigEntry.parse(cfg, bulkTransactionalMaxOpsConcurrency)
         val maxBulkTransactionalBatchesConcurrencyOpt = CosmosConfigEntry.parse(cfg, bulkTransactionalMaxBatchesConcurrency)
+        val markerTtlSecondsOpt = CosmosConfigEntry.parse(cfg, bulkTransactionalMarkerTtlSeconds)
 
         bulkExecutionConfigsOpt = Some(CosmosWriteTransactionalBulkExecutionConfigs(
           maxConcurrentCosmosPartitionsOpt,
           maxBulkTransactionalOpsConcurrencyOpt,
-          maxBulkTransactionalBatchesConcurrencyOpt
+          maxBulkTransactionalBatchesConcurrencyOpt,
+          markerTtlSecondsOpt
         ))
 
       } else {
