@@ -70,6 +70,7 @@
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/contentunderstanding</module>
+    <module>sdk/contosowidgetmanager</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
