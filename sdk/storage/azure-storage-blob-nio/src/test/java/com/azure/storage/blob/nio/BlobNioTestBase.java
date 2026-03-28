@@ -172,8 +172,13 @@ public class BlobNioTestBase extends TestProxyTestBase {
     }
 
     protected URI getFileSystemUri() {
+        return getFileSystemUri(null);
+    }
+
+    protected URI getFileSystemUri(String uid) {
         try {
-            return new URI("azb://?endpoint=" + ENV.getPrimaryAccount().getBlobEndpoint());
+            return new URI(
+                "azb://?endpoint=" + ENV.getPrimaryAccount().getBlobEndpoint() + (uid != null ? "&uid=" + uid : ""));
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);
         }

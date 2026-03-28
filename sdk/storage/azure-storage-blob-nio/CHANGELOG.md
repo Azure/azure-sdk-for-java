@@ -3,6 +3,7 @@
 ## 12.0.0-beta.38 (Unreleased)
 
 ### Features Added
+- Extended Azure NIO filesystem URI support to allow a unique identifier: `azb://?endpoint=<account_endpoint>&uid=<unique_id>`
 
 ### Breaking Changes
 
