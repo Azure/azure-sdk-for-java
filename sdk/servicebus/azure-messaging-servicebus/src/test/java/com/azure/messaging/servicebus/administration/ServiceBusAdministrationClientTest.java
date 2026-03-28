@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
@@ -18,7 +19,9 @@ import com.azure.messaging.servicebus.administration.implementation.ServiceBusMa
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.SubscriptionsImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
 import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryContent;
@@ -32,6 +35,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Title
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +45,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +61,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -555,5 +561,39 @@ class ServiceBusAdministrationClientTest {
 
         // Assert
         assertEquals(actual.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
+    }
+
+    /**
+     * Verifies that {@link AdministrationModelConverter#getUpdateSubscriptionBody} preserves the
+     * {@code defaultMessageTimeToLive} value instead of nullifying it. Regression test for
+     * <a href="https://github.com/Azure/azure-sdk-for-java/issues/48495">#48495</a>.
+     */
+    @Test
+    void updateSubscriptionPreservesDefaultMessageTimeToLive() {
+        // Arrange
+        final Duration expectedTtl = Duration.ofSeconds(50000);
+        final SubscriptionDescription description
+            = new SubscriptionDescription().setLockDuration(Duration.ofSeconds(30))
+                .setDefaultMessageTimeToLive(expectedTtl)
+                .setMaxDeliveryCount(10)
+                .setEnableBatchedOperations(true);
+
+        final SubscriptionProperties properties = EntityHelper.toModel(description);
+        EntityHelper.setTopicName(properties, topicName);
+        EntityHelper.setSubscriptionName(properties, subscriptionName);
+
+        final AdministrationModelConverter converter = new AdministrationModelConverter(
+            new ClientLogger(ServiceBusAdministrationClientTest.class), "endpoint.servicebus.foo");
+
+        // Act
+        final CreateSubscriptionBody body = converter.getUpdateSubscriptionBody(properties, Context.NONE);
+
+        // Assert
+        assertNotNull(body.getContent());
+        assertNotNull(body.getContent().getSubscriptionDescription());
+
+        final SubscriptionDescription result = body.getContent().getSubscriptionDescription();
+        assertEquals(expectedTtl, result.getDefaultMessageTimeToLive(),
+            "defaultMessageTimeToLive should be preserved in the update body");
     }
 }
