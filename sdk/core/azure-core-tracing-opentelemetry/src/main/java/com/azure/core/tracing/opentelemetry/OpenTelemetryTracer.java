@@ -12,6 +12,7 @@ import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.TracingLink;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
@@ -31,7 +32,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static java.util.Collections.singletonMap;
+import static com.azure.core.tracing.opentelemetry.OpenTelemetryUtils.addAttribute;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
@@ -51,6 +52,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final String SUPPRESSED_SPAN_FLAG = "suppressed-span-flag";
     private static final String CLIENT_METHOD_CALL_FLAG = "client-method-call-flag";
     private static final String AZ_TRACING_NAMESPACE_KEY = "az.namespace";
+    private static final String AZURE_RESOURCE_PROVIDER_NAMESPACE = "azure.resource_provider.namespace";
     private final Tracer tracer;
     private final boolean isEnabled;
 
@@ -142,7 +144,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             context = context.addData(CLIENT_METHOD_CALL_FLAG, true);
         }
 
-        io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(context, null);
+        io.opentelemetry.context.Context traceContext = getTraceContextOrNull(context);
 
         SpanBuilder spanBuilder = createSpanBuilder(spanName, options, traceContext);
 
@@ -152,9 +154,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         String tracingNamespace = getAzNamespace(context);
         if (tracingNamespace != null) {
-            Attributes attributes
-                = OpenTelemetryUtils.convert(singletonMap(AZ_TRACING_NAMESPACE_KEY, tracingNamespace));
-            spanBuilder.setAllAttributes(attributes);
+            AttributesBuilder builder = Attributes.builder();
+            addAttribute(builder, AZ_TRACING_NAMESPACE_KEY, tracingNamespace);
+            spanBuilder.setAllAttributes(builder.build());
         }
 
         Span span = spanBuilder.startSpan();
@@ -224,7 +226,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void injectContext(BiConsumer<String, String> headerSetter, Context context) {
-        io.opentelemetry.context.Context otelContext = getTraceContextOrDefault(context, null);
+        io.opentelemetry.context.Context otelContext = getTraceContextOrNull(context);
         if (otelContext != null) {
             TRACE_CONTEXT_FORMAT.inject(otelContext, null, (ignored, key, value) -> headerSetter.accept(key, value));
         }
@@ -246,7 +248,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.addAttribute(span, key, value);
+            addAttribute(span, key, value);
         }
     }
 
@@ -272,7 +274,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.addAttribute(span, key, value);
+            addAttribute(span, key, value);
         }
     }
 
@@ -294,7 +296,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.addAttribute(span, key, value);
+            addAttribute(span, key, value);
         }
     }
 
@@ -383,7 +385,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return NOOP_CLOSEABLE;
         }
 
-        io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(context, null);
+        io.opentelemetry.context.Context traceContext = getTraceContextOrNull(context);
         if (traceContext == null) {
             return NOOP_CLOSEABLE;
         }
@@ -447,11 +449,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
      * or default value.
      */
-    private static io.opentelemetry.context.Context getTraceContextOrDefault(Context azContext,
-        io.opentelemetry.context.Context defaultContext) {
+    private static io.opentelemetry.context.Context getTraceContextOrNull(Context azContext) {
         final Object data = azContext.getData(PARENT_TRACE_CONTEXT_KEY).orElse(null);
         if (data == null) {
-            return defaultContext;
+            return null;
         }
 
         if (data instanceof io.opentelemetry.context.Context) {
@@ -474,7 +475,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             }
         }
 
-        return defaultContext;
+        return null;
     }
 
     /**
@@ -485,7 +486,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return null;
         }
 
-        io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(azContext, null);
+        io.opentelemetry.context.Context traceContext = getTraceContextOrNull(azContext);
 
         return traceContext == null ? null : Span.fromContext(traceContext);
     }
