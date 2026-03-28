@@ -33,7 +33,7 @@ public final class DataSharesCreateSamples {
                             .withAccessPolicies(Arrays.asList(new StorageDataShareAccessPolicy()
                                 .withPrincipalId("00000000-0000-0000-0000-000000000000")
                                 .withTenantId("00000000-0000-0000-0000-000000000000")
-                                .withPermission(StorageDataShareAccessPolicyPermission.fromString("r"))))
+                                .withPermission(StorageDataShareAccessPolicyPermission.READ)))
                             .withAssets(Arrays.asList(new StorageDataShareAsset().withAssetPath("/container/folder/foo")
                                 .withDisplayName("virtualFoo")))),
                 com.azure.core.util.Context.NONE);

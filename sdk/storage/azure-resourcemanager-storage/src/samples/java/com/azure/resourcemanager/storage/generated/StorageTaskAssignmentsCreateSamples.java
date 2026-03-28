@@ -66,7 +66,7 @@ public final class StorageTaskAssignmentsCreateSamples {
                             new ExecutionTarget().withPrefix(Arrays.asList()).withExcludePrefix(Arrays.asList()))
                         .withTrigger(new ExecutionTrigger().withType(TriggerType.MOCK_RUN)
                             .withParameters(new TriggerParameters()
-                                .withStartFrom(OffsetDateTime.parse("2023-01-01T00:00:00.1234567Z")))))
+                                .withStartOn(OffsetDateTime.parse("2023-01-01T00:00:00.1234567Z")))))
                     .withReport(new StorageTaskAssignmentReport().withPrefix("reports"))),
                 com.azure.core.util.Context.NONE);
     }
