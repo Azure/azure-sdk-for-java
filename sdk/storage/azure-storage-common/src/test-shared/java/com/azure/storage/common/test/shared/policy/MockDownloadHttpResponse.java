@@ -59,7 +59,6 @@ public class MockDownloadHttpResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        // Always close the wrapped response when body consumption terminates.
         return Flux.using(() -> originalResponse, ignored -> body, HttpResponse::close);
     }
 

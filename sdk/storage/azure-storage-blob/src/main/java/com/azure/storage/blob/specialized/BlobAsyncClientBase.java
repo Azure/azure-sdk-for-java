@@ -83,7 +83,6 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -91,6 +90,8 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.policy.AggregateCrcState;
+import com.azure.storage.common.policy.DecoderState;
 import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1324,49 +1325,38 @@ public class BlobAsyncClientBase {
         StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
 
+<<<<<<< HEAD
         boolean structuredDecode
             = contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled();
+=======
+        final StorageChecksumAlgorithm algorithm
+            = responseChecksumAlgorithm != null ? responseChecksumAlgorithm : StorageChecksumAlgorithm.NONE;
+        final boolean isStructuredMessageEnabled = isStructuredMessageAlgorithm(algorithm);
+        final boolean isMd5Enabled = algorithm == StorageChecksumAlgorithm.MD5;
+>>>>>>> f96332b51d4 (code refactoring)
 
-        // Determine MD5 validation: properly consider both getRangeContentMd5 parameter and validation options
-        // MD5 validation is enabled if structured message validation is not enabled and either:
-        // 1. getRangeContentMd5 is explicitly true, OR
-        // 2. contentValidationOptions.isMd5ValidationEnabled() is true
-        final Boolean finalGetMD5;
-        if (!structuredDecode
-            && (getRangeContentMd5
-                || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled()))) {
-            finalGetMD5 = true;
-        } else {
-            finalGetMD5 = null;
-        }
+        final Boolean finalGetMD5 = (!isStructuredMessageEnabled && (getRangeContentMd5 || isMd5Enabled)) ? true : null;
 
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        // The first range should eagerly convert headers as they'll be used to create response types.
         final Context baseContext = context == null
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
-        String structuredBodyType = structuredDecode ? Constants.STRUCTURED_MESSAGE_CRC64_BODY_TYPE : null;
-        // Structured message responses are scoped to the response; each retry returns a fresh structured message.
-        final boolean responseScoped = structuredDecode;
-        final Context responseScopedContext = structuredDecode
+        String structuredBodyType = isStructuredMessageEnabled ? Constants.STRUCTURED_MESSAGE_CRC64_BODY_TYPE : null;
+        final Context responseScopedContext = isStructuredMessageEnabled
             ? baseContext.addData(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true)
             : baseContext;
-        boolean structuredRetry = structuredDecode;
 
-        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef = new AtomicReference<>();
-        StorageContentValidationDecoderPolicy.AggregateCrcState aggregateCrcState
-            = structuredDecode ? new StorageContentValidationDecoderPolicy.AggregateCrcState() : null;
+        AtomicReference<DecoderState> decoderStateRef = new AtomicReference<>();
+        AggregateCrcState aggregateCrcState = isStructuredMessageEnabled ? new AggregateCrcState() : null;
         AtomicLong responseStartOffset = new AtomicLong(0);
 
-        // Add structured message decoding context if enabled
         final Context firstRangeContext;
-        if (structuredDecode) {
+        if (isStructuredMessageEnabled) {
             firstRangeContext = responseScopedContext.addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
-                .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions)
                 .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY, decoderStateRef)
                 .addData(Constants.STRUCTURED_MESSAGE_AGGREGATE_CRC_CONTEXT_KEY, aggregateCrcState);
         } else {
@@ -1393,101 +1383,27 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
-                // The resume function takes throwable and offset at the destination.
-                // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
                     if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                         return Mono.error(throwable);
                     }
 
-                    long emittedOffset = offset;
-                    long currentResponseOffset = responseStartOffset.get();
-                    long newCount = finalCount - emittedOffset;
-                    StorageContentValidationDecoderPolicy.DecoderState decoderState = null;
-                    long retryStartOffset = -1;
-                    long bytesToSkip = 0;
-                    boolean noBytesEmitted = emittedOffset == 0;
-
-                    if (structuredRetry) {
-                        decoderState = decoderStateRef.get();
-
-                        // Prefer the retry start offset token emitted by the decoder policy when present.
-                        long parsedRetryOffset
-                            = StorageContentValidationDecoderPolicy.parseRetryStartOffset(throwable.getMessage());
-                        if (parsedRetryOffset >= 0) {
-                            retryStartOffset = currentResponseOffset + parsedRetryOffset;
-                        }
-
-                        // Compute the last validated segment boundary to align retry to a safe offset.
-                        if (decoderState != null) {
-                            long decodedBoundary = decoderState.getDecodedBytesAtLastCompleteSegment();
-                            long boundaryGlobal = currentResponseOffset + decodedBoundary;
-                            if (retryStartOffset < 0 || boundaryGlobal > retryStartOffset) {
-                                retryStartOffset = boundaryGlobal;
-                            }
-                        }
-
-                        if (retryStartOffset < 0) {
-                            // No decoder state available (likely failed before policy captured it) or no bytes emitted;
-                            // restart from response start and fast-forward using skip bytes.
-                            retryStartOffset = currentResponseOffset;
-                            decoderStateRef.set(null);
-                        }
-
-                        bytesToSkip = emittedOffset - retryStartOffset;
-                        if (bytesToSkip < 0) {
-                            // Fallback to response start if our computed boundary is ahead of emitted progress.
-                            retryStartOffset = currentResponseOffset;
-                            bytesToSkip = emittedOffset - retryStartOffset;
-                            if (bytesToSkip < 0) {
-                                bytesToSkip = 0;
-                            }
-                        }
-                    }
-
                     try {
-                        // For retry context, preserve decoder state if structured message validation is enabled
-                        Context retryContext = firstRangeContext;
-                        BlobRange retryRange;
-
-                        if (structuredRetry) {
-                            if (retryStartOffset < 0) {
-                                retryStartOffset = noBytesEmitted ? currentResponseOffset : emittedOffset;
-                                bytesToSkip = Math.max(0, emittedOffset - retryStartOffset);
-                            }
-
-                            long remainingCount = finalCount - retryStartOffset;
-                            if (remainingCount < 0) {
-                                retryStartOffset = Math.min(emittedOffset, finalCount);
-                                remainingCount = finalCount - retryStartOffset;
-                                bytesToSkip = 0;
-                            }
-
-                            if (bytesToSkip > 0) {
-                                retryContext = retryContext
-                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY, bytesToSkip);
-                            }
-
-                            responseStartOffset.set(retryStartOffset);
-                            retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
-
-                            LOGGER.info(
-                                "Structured message retry: resuming from offset {} (initial={}, decoded={}, remaining={}, skip={})",
-                                initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount,
-                                bytesToSkip);
+                        if (isStructuredMessageEnabled) {
+                            return retryStructuredDownload(throwable, offset, decoderStateRef, responseStartOffset,
+                                finalCount, initialOffset, firstRangeContext, finalRequestConditions, eTag, finalGetMD5,
+                                structuredBodyType);
                         } else {
-                            // For non-structured downloads, use smart retry from the interrupted offset
-                            retryRange = new BlobRange(initialOffset + emittedOffset, newCount);
+                            long newCount = finalCount - offset;
+                            BlobRange retryRange = new BlobRange(initialOffset + offset, newCount);
+                            return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, null,
+                                firstRangeContext);
                         }
-
-                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, structuredBodyType,
-                            retryContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
 
-                // Structured message decoding is now handled by StructuredMessageDecoderPolicy
                 return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions,
                     decoderStateRef);
             });
@@ -1507,6 +1423,81 @@ public class BlobAsyncClientBase {
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
                 context);
+    }
+
+    private Mono<StreamResponse> retryStructuredDownload(Throwable throwable, long emittedOffset,
+        AtomicReference<DecoderState> decoderStateRef, AtomicLong responseStartOffset, long finalCount,
+        long initialOffset, Context baseRetryContext, BlobRequestConditions conditions, String eTag, Boolean getMD5,
+        String structuredBodyType) {
+
+        long currentResponseOffset = responseStartOffset.get();
+        DecoderState decoderState = decoderStateRef.get();
+
+        long retryStartOffset = resolveStructuredRetryOffset(decoderState, throwable, currentResponseOffset,
+            emittedOffset == 0, emittedOffset);
+        long bytesToSkip = calculateRetryBytesToSkip(emittedOffset, retryStartOffset, currentResponseOffset);
+
+        long remainingCount = finalCount - retryStartOffset;
+        if (remainingCount < 0) {
+            retryStartOffset = Math.min(emittedOffset, finalCount);
+            remainingCount = finalCount - retryStartOffset;
+            bytesToSkip = 0;
+        }
+
+        if (decoderState == null) {
+            decoderStateRef.set(null);
+        }
+
+        Context retryContext = baseRetryContext;
+        if (bytesToSkip > 0) {
+            retryContext
+                = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY, bytesToSkip);
+        }
+
+        responseStartOffset.set(retryStartOffset);
+        BlobRange retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
+
+        LOGGER.info("Structured message retry: resuming from offset {} (initial={}, decoded={}, remaining={}, skip={})",
+            initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount, bytesToSkip);
+
+        return downloadRange(retryRange, conditions, eTag, getMD5, structuredBodyType, retryContext);
+    }
+
+    private static long resolveStructuredRetryOffset(DecoderState decoderState, Throwable throwable,
+        long currentResponseOffset, boolean noBytesEmitted, long emittedOffset) {
+
+        long offset = -1;
+
+        long parsedOffset = StorageContentValidationDecoderPolicy
+            .parseRetryStartOffset(throwable != null ? throwable.getMessage() : null);
+        if (parsedOffset >= 0) {
+            offset = currentResponseOffset + parsedOffset;
+        }
+
+        if (decoderState != null) {
+            long boundary = currentResponseOffset + decoderState.getDecodedBytesAtLastCompleteSegment();
+            if (offset < 0 || boundary > offset) {
+                offset = boundary;
+            }
+        }
+
+        if (offset < 0) {
+            offset = noBytesEmitted ? currentResponseOffset : emittedOffset;
+        }
+        return offset;
+    }
+
+    private static long calculateRetryBytesToSkip(long emittedOffset, long retryStartOffset,
+        long currentResponseOffset) {
+        long skip = emittedOffset - retryStartOffset;
+        if (skip < 0) {
+            skip = Math.max(0, emittedOffset - currentResponseOffset);
+        }
+        return skip;
+    }
+
+    private static boolean isStructuredMessageAlgorithm(StorageChecksumAlgorithm algorithm) {
+        return algorithm == StorageChecksumAlgorithm.CRC64 || algorithm == StorageChecksumAlgorithm.AUTO;
     }
 
     /**
@@ -1719,7 +1710,6 @@ public class BlobAsyncClientBase {
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
-        // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
         if (openOptions == null) {
             openOptions = DEFAULT_OPEN_OPTIONS_SET;
@@ -1761,9 +1751,16 @@ public class BlobAsyncClientBase {
         ProgressReporter progressReporter
             = progressReceiver == null ? null : ProgressReporter.withProgressListener(progressReceiver);
 
+<<<<<<< HEAD
         boolean structuredDecode
             = contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled();
         final Context downloadContext = structuredDecode
+=======
+        final boolean isStructuredMessageEnabled = isStructuredMessageAlgorithm(responseChecksumAlgorithm);
+        final boolean isMd5Enabled = responseChecksumAlgorithm == StorageChecksumAlgorithm.MD5;
+
+        final Context downloadContext = isStructuredMessageEnabled
+>>>>>>> f96332b51d4 (code refactoring)
             ? (context == null
                 ? new Context(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true)
                 : context.addData(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true))
@@ -1782,12 +1779,8 @@ public class BlobAsyncClientBase {
             = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, false,
                 null, context);
 
-        boolean checksumValidationEnabled = structuredDecode
-            || rangeGetContentMd5
-            || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled());
-        boolean md5ValidationEnabled = !structuredDecode
-            && (rangeGetContentMd5
-                || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled()));
+        boolean checksumValidationEnabled = isStructuredMessageEnabled || rangeGetContentMd5 || isMd5Enabled;
+        boolean md5ValidationEnabled = !isStructuredMessageEnabled && (rangeGetContentMd5 || isMd5Enabled);
 
         long rangeSize = blockSizeProvided
             ? Math.min(finalParallelTransferOptions.getBlockSizeLong(), BlobConstants.BLOB_MAX_DOWNLOAD_BYTES)
@@ -1811,7 +1804,7 @@ public class BlobAsyncClientBase {
         com.azure.storage.common.ParallelTransferOptions initialParallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(initialRangeSize);
 
-        boolean useMasterCrc = structuredDecode;
+        boolean useMasterCrc = isStructuredMessageEnabled;
 
         LOGGER.atVerbose()
             .addKeyValue("thread", Thread.currentThread().getName())
@@ -1853,7 +1846,6 @@ public class BlobAsyncClientBase {
 
                 long initialLength = Math.min(initialRangeSize, newCount);
                 if (initialLength == newCount) {
-                    // One-shot download path aligned with .NET: write the initial response directly and finalize.
                     LOGGER.atVerbose()
                         .addKeyValue("thread", Thread.currentThread().getName())
                         .log("BlobAsyncClientBase taking ONE-SHOT path (single chunk)");
@@ -1886,7 +1878,6 @@ public class BlobAsyncClientBase {
                     remainingRanges.add(new BlobRange(finalRange.getOffset() + offset, chunkSizeActual));
                 }
 
-                // Match .NET behavior: parallelize request issuance while serializing writes in range order.
                 int effectiveConcurrency = Math.max(1, maxConcurrency);
                 ArrayDeque<CompletableFuture<BlobDownloadAsyncResponse>> running = new ArrayDeque<>();
                 Iterator<BlobRange> remainingIterator = remainingRanges.iterator();
@@ -1963,10 +1954,6 @@ public class BlobAsyncClientBase {
             targetChannel = md5Channel;
         }
 
-        /*
-         * Use BlobDownloadAsyncResponse#writeValueToAsync to preserve the original retriable stream
-         * transfer behavior (same model used by .NET stream copy path).
-         */
         Mono<Void> write = response.writeValueToAsync(targetChannel, progressReporter)
             .doOnSuccess(v -> LOGGER.atVerbose()
                 .addKeyValue("thread", Thread.currentThread().getName())
@@ -1985,7 +1972,7 @@ public class BlobAsyncClientBase {
                 validateResponseMd5(response, finalMd5Channel);
             }
             if (useMasterCrc) {
-                StorageContentValidationDecoderPolicy.DecoderState decoderState = getStructuredDecoderState(response);
+                DecoderState decoderState = getStructuredDecoderState(response);
                 if (decoderState == null || !decoderState.isFinalized()) {
                     throw LOGGER.logExceptionAsError(new IllegalStateException(
                         "Structured message decoder state wasn't available or finalized for checksum validation."));
@@ -2005,8 +1992,7 @@ public class BlobAsyncClientBase {
         }));
     }
 
-    private static StorageContentValidationDecoderPolicy.DecoderState
-        getStructuredDecoderState(BlobDownloadAsyncResponse response) {
+    private static DecoderState getStructuredDecoderState(BlobDownloadAsyncResponse response) {
         return BlobDownloadAsyncResponseConstructorProxy.getDecoderState(response);
     }
 

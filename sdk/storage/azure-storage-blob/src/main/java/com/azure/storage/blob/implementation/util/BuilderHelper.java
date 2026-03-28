@@ -134,16 +134,11 @@ public final class BuilderHelper {
             policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
 
+        policies.add(new StorageContentValidationDecoderPolicy());
+
         policies.addAll(perRetryPolicies);
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        // Only add the structured message decoder once; allow callers to inject their own for ordering with test
-        // policies (e.g., fault injection before decoding).
-        boolean hasDecoder = policies.stream().anyMatch(p -> p instanceof StorageContentValidationDecoderPolicy);
-        if (!hasDecoder) {
-            policies.add(new StorageContentValidationDecoderPolicy());
-        }
 
         policies.add(getResponseValidationPolicy());
 

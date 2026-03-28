@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.DownloadRetryOptions;
-import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
+import com.azure.storage.common.policy.DecoderState;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -38,7 +38,7 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
          */
         BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
             BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-            AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef);
+            AtomicReference<DecoderState> decoderStateRef);
 
         /**
          * Gets the source {@link StreamResponse} from a {@link BlobDownloadAsyncResponse}.
@@ -54,7 +54,7 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
          * @param response The {@link BlobDownloadAsyncResponse}.
          * @return The current decoder state, or null if not available.
          */
-        StorageContentValidationDecoderPolicy.DecoderState getDecoderState(BlobDownloadAsyncResponse response);
+        DecoderState getDecoderState(BlobDownloadAsyncResponse response);
     }
 
     /**
@@ -76,7 +76,7 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      */
     public static BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef) {
+        AtomicReference<DecoderState> decoderStateRef) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadAsyncResponse which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
@@ -111,8 +111,7 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      * @param response The {@link BlobDownloadAsyncResponse}.
      * @return The decoder state, or null if not available.
      */
-    public static StorageContentValidationDecoderPolicy.DecoderState
-        getDecoderState(BlobDownloadAsyncResponse response) {
+    public static DecoderState getDecoderState(BlobDownloadAsyncResponse response) {
         if (accessor == null) {
             new BlobDownloadAsyncResponse(new HttpRequest(HttpMethod.GET, "http://microsoft.com"), 200,
                 new HttpHeaders(), null, null);

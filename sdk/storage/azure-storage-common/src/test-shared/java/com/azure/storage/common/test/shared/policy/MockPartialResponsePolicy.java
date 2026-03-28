@@ -26,7 +26,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     static final HttpHeaderName RANGE_HEADER = HttpHeaderName.RANGE;
     private final AtomicInteger tries;
     private final List<String> rangeHeaders = Collections.synchronizedList(new ArrayList<>());
-    private final int maxBytesPerResponse;  // Maximum bytes to return before simulating timeout
+    private final int maxBytesPerResponse;
     private final AtomicInteger hits = new AtomicInteger();
     private final String targetUrlPrefix;
 
@@ -36,7 +36,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
      * @param tries Number of times to simulate interruptions (0 = no interruptions)
      */
     public MockPartialResponsePolicy(int tries) {
-        this(tries, 200, null);  // Default: return 200 bytes for subsequent interruptions (enables 3 interrupts with 1KB data)
+        this(tries, 200, null);
     }
 
     /**
@@ -64,7 +64,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpPipelinePosition getPipelinePosition() {
-        // Apply on every retry to mirror .NET test behavior.
         return HttpPipelinePosition.PER_RETRY;
     }
 
@@ -74,7 +73,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
             HttpHeader rangeHttpHeader = response.getRequest().getHeaders().get(RANGE_HEADER);
             HttpHeader xMsRangeHttpHeader = response.getRequest().getHeaders().get(X_MS_RANGE_HEADER);
 
-            // Record every GET attempt so tests can assert retries occurred, even if no range header was present.
             if (response.getRequest().getHttpMethod() == HttpMethod.GET) {
                 String recordedRange = null;
                 if (rangeHttpHeader != null && rangeHttpHeader.getValue().startsWith("bytes=")) {
@@ -99,9 +97,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                 System.out.println("[MockPartialResponsePolicy] invoked. tries=" + remainingTries
                     + ", maxBytesPerResponse=" + maxBytesPerResponse);
 
-                // Simulate an interruption mid-stream (like FaultyStream in .NET) without mutating headers.
-                // Emit up to maxBytesPerResponse, then complete early to let the decoder detect an incomplete message
-                // and trigger smart-retry.
                 Flux<ByteBuffer> limitedBody = limitStreamToBytes(response.getBody(), maxBytesPerResponse);
                 return Mono.just(
                     new MockDownloadHttpResponse(response, response.getStatusCode(), response.getHeaders(),
@@ -110,10 +105,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
         });
     }
 
-    /**
-     * Limits a Flux of ByteBuffers to emit at most maxBytes, then completes early to simulate
-     * an abrupt connection close without surfacing an explicit error.
-     */
     private Flux<ByteBuffer> limitStreamToBytes(Flux<ByteBuffer> body, int maxBytes) {
         return Flux.defer(() -> {
             final long[] bytesEmitted = new long[] { 0 };
@@ -124,7 +115,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
 
                 long remaining = maxBytes - bytesEmitted[0];
                 if (remaining <= 0) {
-                    // Emit an error to simulate the network fault (mirrors FaultyStream in .NET).
                     return Flux.error(new IOException("Simulated timeout"));
                 }
 
@@ -132,12 +122,10 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                 if (bufferSize <= remaining) {
                     bytesEmitted[0] += bufferSize;
                     if (bytesEmitted[0] >= maxBytes) {
-                        // Emit this buffer then fail to simulate the connection drop.
                         return Flux.just(buffer).concatWith(Flux.error(new IOException("Simulated timeout")));
                     }
                     return Flux.just(buffer);
                 } else {
-                    // Buffer is larger than remaining, slice and then error.
                     int bytesToEmit = (int) remaining;
                     ByteBuffer slice = buffer.duplicate();
                     slice.limit(slice.position() + bytesToEmit);

@@ -14,7 +14,7 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResp
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
+import com.azure.storage.common.policy.DecoderState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,7 +41,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 @Override
                 public BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
                     BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-                    AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef) {
+                    AtomicReference<DecoderState> decoderStateRef) {
                     return new BlobDownloadAsyncResponse(sourceResponse, onErrorResume, retryOptions, decoderStateRef);
                 }
 
@@ -51,9 +51,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 }
 
                 @Override
-                public StorageContentValidationDecoderPolicy.DecoderState
-                    getDecoderState(BlobDownloadAsyncResponse response) {
-                    AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> ref = response.decoderStateRef;
+                public DecoderState getDecoderState(BlobDownloadAsyncResponse response) {
+                    AtomicReference<DecoderState> ref = response.decoderStateRef;
                     return ref == null ? null : ref.get();
                 }
             });
@@ -64,7 +63,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private final StreamResponse sourceResponse;
     private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
     private final DownloadRetryOptions retryOptions;
-    private final AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef;
+    private final AtomicReference<DecoderState> decoderStateRef;
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
@@ -98,14 +97,13 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
 
     BlobDownloadAsyncResponse(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef) {
+        AtomicReference<DecoderState> decoderStateRef) {
         this(sourceResponse, onErrorResume, retryOptions, decoderStateRef, extractHeaders(sourceResponse));
     }
 
     private BlobDownloadAsyncResponse(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef,
-        BlobDownloadHeaders deserializedHeaders) {
+        AtomicReference<DecoderState> decoderStateRef, BlobDownloadHeaders deserializedHeaders) {
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
             createResponseFluxWithContentCrc(sourceResponse, onErrorResume, retryOptions, decoderStateRef,
                 deserializedHeaders),
@@ -133,16 +131,15 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
 
     /**
      * Builds the response flux and populates ContentCrc64 on the deserialized headers when structured message
-     * decoding completes (mirrors .NET Details.ContentCrc populated after stream consumption).
+     * decoding completes successfully.
      */
     private static Flux<ByteBuffer> createResponseFluxWithContentCrc(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef,
-        BlobDownloadHeaders deserializedHeaders) {
+        AtomicReference<DecoderState> decoderStateRef, BlobDownloadHeaders deserializedHeaders) {
         Flux<ByteBuffer> flux = createResponseFlux(sourceResponse, onErrorResume, retryOptions);
         if (decoderStateRef != null && deserializedHeaders != null) {
             flux = flux.doOnComplete(() -> {
-                StorageContentValidationDecoderPolicy.DecoderState state = decoderStateRef.get();
+                DecoderState state = decoderStateRef.get();
                 if (state != null && state.isFinalized()) {
                     long crc = state.getComposedCrc64();
                     byte[] crcBytes = new byte[8];
