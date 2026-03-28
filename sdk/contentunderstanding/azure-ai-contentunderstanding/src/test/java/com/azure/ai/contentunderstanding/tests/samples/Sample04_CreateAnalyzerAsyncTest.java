@@ -340,7 +340,7 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
 
             // Use reactive pattern: chain operations using flatMap
             // In a real application, you would use subscribe() instead of block()
-            AnalysisResult analyzeResult = analyzeOperation.last().flatMap(pollResponse -> {
+            AnalysisResult AnalysisResult = analyzeOperation.last().flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     return pollResponse.getFinalResult();
                 } else {
@@ -351,10 +351,10 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
 
             // Extract custom fields from the result
             // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
-            if (analyzeResult.getContents() != null
-                && !analyzeResult.getContents().isEmpty()
-                && analyzeResult.getContents().get(0) instanceof DocumentContent) {
-                DocumentContent content = (DocumentContent) analyzeResult.getContents().get(0);
+            if (AnalysisResult.getContents() != null
+                && !AnalysisResult.getContents().isEmpty()
+                && AnalysisResult.getContents().get(0) instanceof DocumentContent) {
+                DocumentContent content = (DocumentContent) AnalysisResult.getContents().get(0);
 
                 // Extract field (literal text extraction)
                 ContentField companyNameField
@@ -436,15 +436,15 @@ public class Sample04_CreateAnalyzerAsyncTest extends ContentUnderstandingClient
             // BEGIN:Assertion_ContentUnderstandingUseCustomAnalyzerAsync
             assertNotNull(documentUrl, "Document URL should not be null");
             assertNotNull(analyzeOperation, "Analyze operation should not be null");
-            assertNotNull(analyzeResult, "Analyze result should not be null");
-            assertNotNull(analyzeResult.getContents(), "Result should contain contents");
-            assertTrue(analyzeResult.getContents().size() > 0, "Result should have at least one content");
-            assertEquals(1, analyzeResult.getContents().size(), "Result should have exactly one content element");
+            assertNotNull(AnalysisResult, "Analyze result should not be null");
+            assertNotNull(AnalysisResult.getContents(), "Result should contain contents");
+            assertTrue(AnalysisResult.getContents().size() > 0, "Result should have at least one content");
+            assertEquals(1, AnalysisResult.getContents().size(), "Result should have exactly one content element");
             System.out.println("Analyze operation properties verified");
-            System.out.println("Analysis result contains " + analyzeResult.getContents().size() + " content(s)");
+            System.out.println("Analysis result contains " + AnalysisResult.getContents().size() + " content(s)");
 
-            DocumentContent documentContent = analyzeResult.getContents().get(0) instanceof DocumentContent
-                ? (DocumentContent) analyzeResult.getContents().get(0)
+            DocumentContent documentContent = AnalysisResult.getContents().get(0) instanceof DocumentContent
+                ? (DocumentContent) AnalysisResult.getContents().get(0)
                 : null;
             assertNotNull(documentContent, "Content should be DocumentContent");
             assertNotNull(documentContent.getFields(), "Document content should have fields");

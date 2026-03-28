@@ -157,14 +157,14 @@ public class Sample04_CreateAnalyzer {
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOperation
             = client.beginAnalyze(analyzerId, Arrays.asList(input));
 
-        AnalysisResult analyzeResult = analyzeOperation.getFinalResult();
+        AnalysisResult AnalysisResult = analyzeOperation.getFinalResult();
 
         // Extract custom fields from the result
         // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
-        if (analyzeResult.getContents() != null
-            && !analyzeResult.getContents().isEmpty()
-            && analyzeResult.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent content = (DocumentContent) analyzeResult.getContents().get(0);
+        if (AnalysisResult.getContents() != null
+            && !AnalysisResult.getContents().isEmpty()
+            && AnalysisResult.getContents().get(0) instanceof DocumentContent) {
+            DocumentContent content = (DocumentContent) AnalysisResult.getContents().get(0);
 
             // Extract field (literal text extraction)
             ContentField companyNameField

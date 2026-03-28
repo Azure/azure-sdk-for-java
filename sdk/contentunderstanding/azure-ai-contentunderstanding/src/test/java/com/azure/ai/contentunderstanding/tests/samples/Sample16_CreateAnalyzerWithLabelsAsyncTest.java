@@ -239,7 +239,7 @@ public class Sample16_CreateAnalyzerWithLabelsAsyncTest extends ContentUnderstan
                     = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
                 // Use reactive pattern for analyze operation
-                AnalysisResult analyzeResult = analyzePoller.last().flatMap(pollResponse -> {
+                AnalysisResult AnalysisResult = analyzePoller.last().flatMap(pollResponse -> {
                     if (pollResponse.getStatus().isComplete()) {
                         return pollResponse.getFinalResult();
                     } else {
@@ -249,12 +249,12 @@ public class Sample16_CreateAnalyzerWithLabelsAsyncTest extends ContentUnderstan
                 }).block(); // block() is used here for testing; in production, use subscribe()
 
                 System.out.println("Analysis completed!");
-                assertNotNull(analyzeResult);
-                assertNotNull(analyzeResult.getContents());
-                assertTrue(analyzeResult.getContents().size() > 0);
+                assertNotNull(AnalysisResult);
+                assertNotNull(AnalysisResult.getContents());
+                assertTrue(AnalysisResult.getContents().size() > 0);
 
-                if (analyzeResult.getContents().get(0) instanceof DocumentContent) {
-                    DocumentContent docContent = (DocumentContent) analyzeResult.getContents().get(0);
+                if (AnalysisResult.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent docContent = (DocumentContent) AnalysisResult.getContents().get(0);
                     System.out.println("Extracted fields: " + docContent.getFields().size());
 
                     // Display extracted values

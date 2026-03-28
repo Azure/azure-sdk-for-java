@@ -17,17 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Sample demonstrates how to copy an analyzer within the same resource.
  * For cross-resource copying, see Sample15_GrantCopyAuth.
  */
-public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBase {
+public class Sample14_CopyAnalyzer extends ContentUnderstandingClientTestBase {
 
     /**
      * Synchronous sample for copying an analyzer.

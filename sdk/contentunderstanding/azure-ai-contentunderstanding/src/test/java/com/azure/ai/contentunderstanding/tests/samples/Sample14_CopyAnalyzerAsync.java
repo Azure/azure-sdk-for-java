@@ -6,34 +6,31 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Sample demonstrates how to copy an analyzer within the same resource.
- * For cross-resource copying, see Sample15_GrantCopyAuth.
+ * Async sample demonstrates how to copy an analyzer within the same resource.
+ * For cross-resource copying, see Sample15_GrantCopyAuthAsync.
  */
-public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBase {
+public class Sample14_CopyAnalyzerAsync extends ContentUnderstandingClientTestBase {
 
     /**
-     * Synchronous sample for copying an analyzer.
+     * Asynchronous sample for copying an analyzer.
      */
     @Test
-    public void testCopyAnalyzer() {
+    public void testCopyAnalyzerAsync() {
         System.out.println("✓ Client initialized successfully");
 
         // Generate unique analyzer IDs for this test
@@ -41,7 +38,7 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
         String targetAnalyzerId = testResourceNamer.randomName("test_analyzer_target_", 50);
 
         try {
-            // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzer
+            // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzerAsync
             // Step 1: Create the source analyzer
             ContentAnalyzerConfig sourceConfig = new ContentAnalyzerConfig();
             sourceConfig.setFormulaEnabled(false);
@@ -84,32 +81,53 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
             sourceAnalyzer.setTags(tags);
 
             // Create source analyzer
-            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = contentUnderstandingClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
-            ContentAnalyzer sourceResult = createPoller.getFinalResult();
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+                = contentUnderstandingAsyncClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
+
+            // Use reactive pattern: chain operations using flatMap
+            // In a real application, you would use subscribe() instead of block()
+            ContentAnalyzer sourceResult = createPoller.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
+
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
             // Verify source analyzer is available before copying (ensure it's fully provisioned)
-            ContentAnalyzer verifiedSource = contentUnderstandingClient.getAnalyzer(sourceAnalyzerId);
+            ContentAnalyzer verifiedSource = contentUnderstandingAsyncClient.getAnalyzer(sourceAnalyzerId).block();
             System.out.println("Source analyzer verified: " + verifiedSource.getDescription());
 
             // Step 2: Copy the source analyzer to target
             // Note: This copies within the same resource using the simplified 2-parameter method.
             ContentAnalyzer copiedAnalyzer = null;
             try {
-                SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                    = contentUnderstandingClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
-                copiedAnalyzer = copyPoller.getFinalResult();
+                PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                    = contentUnderstandingAsyncClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
+
+                // Use reactive pattern for copy operation as well
+                copiedAnalyzer = copyPoller.last().flatMap(pollResponse -> {
+                    if (pollResponse.getStatus().isComplete()) {
+                        return pollResponse.getFinalResult();
+                    } else {
+                        return Mono.error(new RuntimeException(
+                            "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                    }
+                }).block(); // block() is used here for testing; in production, use subscribe()
+
                 System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
-                // END: com.azure.ai.contentunderstanding.copyAnalyzer
+                // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
             } catch (com.azure.core.exception.ResourceNotFoundException e) {
                 // Some Content Understanding endpoints may not support same-resource copy operations
                 // This is a service-side configuration, not a SDK bug
                 System.out.println("⚠️ Copy operation not supported on this endpoint.");
                 System.out.println("   Error: " + e.getMessage());
-                System.out.println("   Note: For cross-resource copying, use Sample15_GrantCopyAuth.");
+                System.out.println("   Note: For cross-resource copying, use Sample15_GrantCopyAuthAsync.");
                 System.out.println("\n📋 CopyAnalyzer API Pattern Demonstrated:");
-                System.out.println("   contentUnderstandingClient.beginCopyAnalyzer(targetId, sourceId);");
+                System.out.println("   contentUnderstandingAsyncClient.beginCopyAnalyzer(targetId, sourceId);");
                 System.out.println(
                     "   For cross-resource: beginCopyAnalyzer(targetId, sourceId, allowReplace, sourceResourceId, sourceRegion);");
                 return; // Skip the rest of the test
@@ -219,7 +237,7 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
             System.out.println("    Models: " + sourceResult.getModels().size());
 
             // Get the source analyzer to verify retrieval
-            ContentAnalyzer sourceAnalyzerInfo = contentUnderstandingClient.getAnalyzer(sourceAnalyzerId);
+            ContentAnalyzer sourceAnalyzerInfo = contentUnderstandingAsyncClient.getAnalyzer(sourceAnalyzerId).block();
 
             System.out.println("\n📋 Source Analyzer Retrieval Verification:");
             assertNotNull(sourceAnalyzerInfo, "Source analyzer info should not be null");
@@ -320,7 +338,7 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
             }
 
             // Verify the copied analyzer via Get operation
-            ContentAnalyzer verifiedCopy = contentUnderstandingClient.getAnalyzer(targetAnalyzerId);
+            ContentAnalyzer verifiedCopy = contentUnderstandingAsyncClient.getAnalyzer(targetAnalyzerId).block();
 
             System.out.println("\n📋 Copied Analyzer Retrieval Verification:");
             assertNotNull(verifiedCopy, "Retrieved copied analyzer should not be null");
@@ -357,14 +375,14 @@ public class Sample14_CopyAnalyzerTest extends ContentUnderstandingClientTestBas
         } finally {
             // Cleanup: Delete the analyzers
             try {
-                contentUnderstandingClient.deleteAnalyzer(sourceAnalyzerId);
+                contentUnderstandingAsyncClient.deleteAnalyzer(sourceAnalyzerId).block();
                 System.out.println("\nSource analyzer deleted: " + sourceAnalyzerId);
             } catch (Exception e) {
                 System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
             }
 
             try {
-                contentUnderstandingClient.deleteAnalyzer(targetAnalyzerId);
+                contentUnderstandingAsyncClient.deleteAnalyzer(targetAnalyzerId).block();
                 System.out.println("Target analyzer deleted: " + targetAnalyzerId);
             } catch (Exception e) {
                 System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());

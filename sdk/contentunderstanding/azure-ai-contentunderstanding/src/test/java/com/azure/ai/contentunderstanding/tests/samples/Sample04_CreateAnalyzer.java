@@ -16,19 +16,16 @@ import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.ai.contentunderstanding.models.ContentNumberField;
-import com.azure.ai.contentunderstanding.models.ContentStringField;
-import com.azure.ai.contentunderstanding.models.DocumentSource;
+import com.azure.ai.contentunderstanding.models.NumberField;
+import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,7 +41,7 @@ import java.util.UUID;
  * 3. Creating a custom analyzer with configuration
  * 4. Using the custom analyzer to analyze documents
  */
-public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestBase {
+public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase {
 
     private String createdAnalyzerId;
 
@@ -333,16 +330,17 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 // Extract field (literal text extraction)
                 ContentField companyNameField
                     = content.getFields() != null ? content.getFields().get("company_name") : null;
-                if (companyNameField instanceof ContentStringField) {
-                    ContentStringField sf = (ContentStringField) companyNameField;
-                    String companyName = sf.getValue();
+                if (companyNameField instanceof StringField) {
+                    StringField sf = (StringField) companyNameField;
+                    String companyName = sf.getValueString();
                     System.out
                         .println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
                     System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
                         ? String.format("%.2f", companyNameField.getConfidence())
                         : "N/A"));
-                    System.out.println(
-                        "  Source: " + (companyNameField.getSources() != null ? companyNameField.getSources() : "N/A"));
+                    System.out.println("  Source: " + (companyNameField.getSources() != null
+                        ? ContentSource.toRawString(companyNameField.getSources())
+                        : "N/A"));
                     List<ContentSpan> spans = companyNameField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -354,16 +352,17 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 // Extract field (literal text extraction)
                 ContentField totalAmountField
                     = content.getFields() != null ? content.getFields().get("total_amount") : null;
-                if (totalAmountField instanceof ContentNumberField) {
-                    ContentNumberField nf = (ContentNumberField) totalAmountField;
-                    Double totalAmount = nf.getValue();
+                if (totalAmountField instanceof NumberField) {
+                    NumberField nf = (NumberField) totalAmountField;
+                    Double totalAmount = nf.getValueNumber();
                     System.out.println("Total Amount (extract): "
                         + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
                     System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
                         ? String.format("%.2f", totalAmountField.getConfidence())
                         : "N/A"));
-                    System.out.println(
-                        "  Source: " + (totalAmountField.getSources() != null ? totalAmountField.getSources() : "N/A"));
+                    System.out.println("  Source: " + (totalAmountField.getSources() != null
+                        ? ContentSource.toRawString(totalAmountField.getSources())
+                        : "N/A"));
                     List<ContentSpan> spans = totalAmountField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -375,25 +374,25 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 // Generate field (AI-generated value)
                 ContentField summaryField
                     = content.getFields() != null ? content.getFields().get("document_summary") : null;
-                if (summaryField instanceof ContentStringField) {
-                    ContentStringField sf = (ContentStringField) summaryField;
-                    String summary = sf.getValue();
+                if (summaryField instanceof StringField) {
+                    StringField sf = (StringField) summaryField;
+                    String summary = sf.getValueString();
                     System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
                     System.out.println("  Confidence: " + (summaryField.getConfidence() != null
                         ? String.format("%.2f", summaryField.getConfidence())
                         : "N/A"));
                     // Note: Generated fields may not have source information
                     if (summaryField.getSources() != null && !summaryField.getSources().isEmpty()) {
-                        System.out.println("  Source: " + summaryField.getSources());
+                        System.out.println("  Source: " + ContentSource.toRawString(summaryField.getSources()));
                     }
                 }
 
                 // Classify field (classification against predefined categories)
                 ContentField documentTypeField
                     = content.getFields() != null ? content.getFields().get("document_type") : null;
-                if (documentTypeField instanceof ContentStringField) {
-                    ContentStringField sf = (ContentStringField) documentTypeField;
-                    String documentType = sf.getValue();
+                if (documentTypeField instanceof StringField) {
+                    StringField sf = (StringField) documentTypeField;
+                    String documentType = sf.getValueString();
                     System.out
                         .println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
                     System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null
@@ -401,7 +400,7 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                         : "N/A"));
                     // Note: Classified fields may not have source information
                     if (documentTypeField.getSources() != null && !documentTypeField.getSources().isEmpty()) {
-                        System.out.println("  Source: " + documentTypeField.getSources());
+                        System.out.println("  Source: " + ContentSource.toRawString(documentTypeField.getSources()));
                     }
                 }
             }
@@ -431,13 +430,12 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 = documentContent.getFields() != null ? documentContent.getFields().get("company_name") : null;
             if (companyNameFieldAssert != null) {
                 System.out.println("company_name field found");
-                assertTrue(companyNameFieldAssert instanceof ContentStringField,
-                    "company_name should be a ContentStringField");
+                assertTrue(companyNameFieldAssert instanceof StringField, "company_name should be a StringField");
 
-                if (companyNameFieldAssert instanceof ContentStringField) {
-                    ContentStringField cnf = (ContentStringField) companyNameFieldAssert;
-                    if (cnf.getValue() != null && !cnf.getValue().trim().isEmpty()) {
-                        System.out.println("  Value: " + cnf.getValue());
+                if (companyNameFieldAssert instanceof StringField) {
+                    StringField cnf = (StringField) companyNameFieldAssert;
+                    if (cnf.getValueString() != null && !cnf.getValueString().trim().isEmpty()) {
+                        System.out.println("  Value: " + cnf.getValueString());
                     }
                 }
 
@@ -451,11 +449,9 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 }
 
                 if (companyNameFieldAssert.getSources() != null && !companyNameFieldAssert.getSources().isEmpty()) {
-                    assertTrue(
-                        companyNameFieldAssert.getSources() != null
-                            && companyNameFieldAssert.getSources().get(0) instanceof DocumentSource,
-                        "Source should be a DocumentSource for extracted fields");
-                    System.out.println("  Source: " + companyNameFieldAssert.getSources());
+                    assertTrue(ContentSource.toRawString(companyNameFieldAssert.getSources()).startsWith("D("),
+                        "Source should start with 'D(' for extracted fields");
+                    System.out.println("  Source: " + ContentSource.toRawString(companyNameFieldAssert.getSources()));
                 }
 
                 List<ContentSpan> spans = companyNameFieldAssert.getSpans();

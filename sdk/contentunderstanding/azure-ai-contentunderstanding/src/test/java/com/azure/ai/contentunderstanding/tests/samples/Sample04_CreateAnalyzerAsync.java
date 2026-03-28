@@ -16,35 +16,32 @@ import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.ai.contentunderstanding.models.ContentNumberField;
-import com.azure.ai.contentunderstanding.models.ContentStringField;
-import com.azure.ai.contentunderstanding.models.DocumentSource;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.ai.contentunderstanding.models.NumberField;
+import com.azure.ai.contentunderstanding.models.StringField;
+import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
- * Sample demonstrating how to create a custom analyzer with field schema.
+ * Async sample demonstrating how to create a custom analyzer with field schema.
  * This sample shows:
  * 1. Defining a field schema with custom fields
  * 2. Demonstrating three extraction methods: Extract, Generate, Classify
- * 3. Creating a custom analyzer with configuration
+ * 3. Creating a custom analyzer with configuration asynchronously
  * 4. Using the custom analyzer to analyze documents
  */
-public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestBase {
+public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTestBase {
 
     private String createdAnalyzerId;
 
@@ -52,7 +49,7 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
     public void cleanup() {
         if (createdAnalyzerId != null) {
             try {
-                contentUnderstandingClient.deleteAnalyzer(createdAnalyzerId);
+                contentUnderstandingAsyncClient.deleteAnalyzer(createdAnalyzerId).block();
                 System.out.println("Analyzer '" + createdAnalyzerId + "' deleted successfully.");
             } catch (Exception e) {
                 // Ignore cleanup errors
@@ -61,9 +58,9 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
     }
 
     @Test
-    public void testCreateAnalyzer() {
+    public void testCreateAnalyzerAsync() {
 
-        // BEGIN:ContentUnderstandingCreateAnalyzer
+        // BEGIN:ContentUnderstandingCreateAnalyzerAsync
         // Generate a unique analyzer ID
         String analyzerId = testResourceNamer.randomName("my_custom_analyzer_", 50);
 
@@ -120,10 +117,20 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
             .setModels(models);
 
         // Create the analyzer
-        SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
+        PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
+            = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
-        ContentAnalyzer result = operation.getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        ContentAnalyzer result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
+
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
         if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
             System.out.println("  Description: " + result.getDescription());
@@ -137,20 +144,18 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
             });
         }
-        // END:ContentUnderstandingCreateAnalyzer
+        // END:ContentUnderstandingCreateAnalyzerAsync
 
         createdAnalyzerId = analyzerId; // Track for cleanup
 
-        // BEGIN:Assertion_ContentUnderstandingCreateAnalyzer
+        // BEGIN:Assertion_ContentUnderstandingCreateAnalyzerAsync
         assertNotNull(analyzerId, "Analyzer ID should not be null");
         assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
         assertNotNull(fieldSchema, "Field schema should not be null");
         assertNotNull(customAnalyzer, "Custom analyzer should not be null");
         assertNotNull(operation, "Create analyzer operation should not be null");
-        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-        System.out.println("Create analyzer operation properties verified");
-
         assertNotNull(result, "Analyzer result should not be null");
+        System.out.println("Create analyzer operation properties verified");
         System.out.println("Analyzer '" + analyzerId + "' created successfully");
 
         // Verify base analyzer
@@ -249,11 +254,11 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
         }
 
         System.out.println("All analyzer creation properties validated successfully");
-        // END:Assertion_ContentUnderstandingCreateAnalyzer
+        // END:Assertion_ContentUnderstandingCreateAnalyzerAsync
     }
 
     @Test
-    public void testUseCustomAnalyzer() {
+    public void testUseCustomAnalyzerAsync() {
         // First create an analyzer
         String analyzerId = testResourceNamer.randomName("test_analyzer_", 50);
 
@@ -305,11 +310,20 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
         models.put("embedding", "text-embedding-3-large");
         customAnalyzer.setModels(models);
 
-        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer).getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer).last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         createdAnalyzerId = analyzerId; // Track for cleanup
 
         try {
-            // BEGIN:ContentUnderstandingUseCustomAnalyzer
+            // BEGIN:ContentUnderstandingUseCustomAnalyzerAsync
             // Using a publicly accessible sample file from Azure-Samples GitHub repository
             String documentUrl
                 = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -318,10 +332,19 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
             input.setUrl(documentUrl);
 
             // Analyze a document using the custom analyzer
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOperation
-                = contentUnderstandingClient.beginAnalyze(analyzerId, Arrays.asList(input));
+            PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOperation
+                = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
-            AnalysisResult AnalysisResult = analyzeOperation.getFinalResult();
+            // Use reactive pattern: chain operations using flatMap
+            // In a real application, you would use subscribe() instead of block()
+            AnalysisResult AnalysisResult = analyzeOperation.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
 
             // Extract custom fields from the result
             // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
@@ -333,16 +356,17 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 // Extract field (literal text extraction)
                 ContentField companyNameField
                     = content.getFields() != null ? content.getFields().get("company_name") : null;
-                if (companyNameField instanceof ContentStringField) {
-                    ContentStringField sf = (ContentStringField) companyNameField;
-                    String companyName = sf.getValue();
+                if (companyNameField instanceof StringField) {
+                    StringField sf = (StringField) companyNameField;
+                    String companyName = sf.getValueString();
                     System.out
                         .println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
                     System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
                         ? String.format("%.2f", companyNameField.getConfidence())
                         : "N/A"));
-                    System.out.println(
-                        "  Source: " + (companyNameField.getSources() != null ? companyNameField.getSources() : "N/A"));
+                    System.out.println("  Source: " + (companyNameField.getSources() != null
+                        ? ContentSource.toRawString(companyNameField.getSources())
+                        : "N/A"));
                     List<ContentSpan> spans = companyNameField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -354,16 +378,17 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 // Extract field (literal text extraction)
                 ContentField totalAmountField
                     = content.getFields() != null ? content.getFields().get("total_amount") : null;
-                if (totalAmountField instanceof ContentNumberField) {
-                    ContentNumberField nf = (ContentNumberField) totalAmountField;
-                    Double totalAmount = nf.getValue();
+                if (totalAmountField instanceof NumberField) {
+                    NumberField nf = (NumberField) totalAmountField;
+                    Double totalAmount = nf.getValueNumber();
                     System.out.println("Total Amount (extract): "
                         + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
                     System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
                         ? String.format("%.2f", totalAmountField.getConfidence())
                         : "N/A"));
-                    System.out.println(
-                        "  Source: " + (totalAmountField.getSources() != null ? totalAmountField.getSources() : "N/A"));
+                    System.out.println("  Source: " + (totalAmountField.getSources() != null
+                        ? ContentSource.toRawString(totalAmountField.getSources())
+                        : "N/A"));
                     List<ContentSpan> spans = totalAmountField.getSpans();
                     if (spans != null && !spans.isEmpty()) {
                         ContentSpan span = spans.get(0);
@@ -375,25 +400,25 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 // Generate field (AI-generated value)
                 ContentField summaryField
                     = content.getFields() != null ? content.getFields().get("document_summary") : null;
-                if (summaryField instanceof ContentStringField) {
-                    ContentStringField sf = (ContentStringField) summaryField;
-                    String summary = sf.getValue();
+                if (summaryField instanceof StringField) {
+                    StringField sf = (StringField) summaryField;
+                    String summary = sf.getValueString();
                     System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
                     System.out.println("  Confidence: " + (summaryField.getConfidence() != null
                         ? String.format("%.2f", summaryField.getConfidence())
                         : "N/A"));
                     // Note: Generated fields may not have source information
                     if (summaryField.getSources() != null && !summaryField.getSources().isEmpty()) {
-                        System.out.println("  Source: " + summaryField.getSources());
+                        System.out.println("  Source: " + ContentSource.toRawString(summaryField.getSources()));
                     }
                 }
 
                 // Classify field (classification against predefined categories)
                 ContentField documentTypeField
                     = content.getFields() != null ? content.getFields().get("document_type") : null;
-                if (documentTypeField instanceof ContentStringField) {
-                    ContentStringField sf = (ContentStringField) documentTypeField;
-                    String documentType = sf.getValue();
+                if (documentTypeField instanceof StringField) {
+                    StringField sf = (StringField) documentTypeField;
+                    String documentType = sf.getValueString();
                     System.out
                         .println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
                     System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null
@@ -401,22 +426,20 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                         : "N/A"));
                     // Note: Classified fields may not have source information
                     if (documentTypeField.getSources() != null && !documentTypeField.getSources().isEmpty()) {
-                        System.out.println("  Source: " + documentTypeField.getSources());
+                        System.out.println("  Source: " + ContentSource.toRawString(documentTypeField.getSources()));
                     }
                 }
             }
-            // END:ContentUnderstandingUseCustomAnalyzer
+            // END:ContentUnderstandingUseCustomAnalyzerAsync
 
-            // BEGIN:Assertion_ContentUnderstandingUseCustomAnalyzer
+            // BEGIN:Assertion_ContentUnderstandingUseCustomAnalyzerAsync
             assertNotNull(documentUrl, "Document URL should not be null");
             assertNotNull(analyzeOperation, "Analyze operation should not be null");
-            assertTrue(analyzeOperation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-            System.out.println("Analyze operation properties verified");
-
             assertNotNull(AnalysisResult, "Analyze result should not be null");
             assertNotNull(AnalysisResult.getContents(), "Result should contain contents");
             assertTrue(AnalysisResult.getContents().size() > 0, "Result should have at least one content");
             assertEquals(1, AnalysisResult.getContents().size(), "Result should have exactly one content element");
+            System.out.println("Analyze operation properties verified");
             System.out.println("Analysis result contains " + AnalysisResult.getContents().size() + " content(s)");
 
             DocumentContent documentContent = AnalysisResult.getContents().get(0) instanceof DocumentContent
@@ -431,13 +454,12 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 = documentContent.getFields() != null ? documentContent.getFields().get("company_name") : null;
             if (companyNameFieldAssert != null) {
                 System.out.println("company_name field found");
-                assertTrue(companyNameFieldAssert instanceof ContentStringField,
-                    "company_name should be a ContentStringField");
+                assertTrue(companyNameFieldAssert instanceof StringField, "company_name should be a StringField");
 
-                if (companyNameFieldAssert instanceof ContentStringField) {
-                    ContentStringField cnf = (ContentStringField) companyNameFieldAssert;
-                    if (cnf.getValue() != null && !cnf.getValue().trim().isEmpty()) {
-                        System.out.println("  Value: " + cnf.getValue());
+                if (companyNameFieldAssert instanceof StringField) {
+                    StringField cnf = (StringField) companyNameFieldAssert;
+                    if (cnf.getValueString() != null && !cnf.getValueString().trim().isEmpty()) {
+                        System.out.println("  Value: " + cnf.getValueString());
                     }
                 }
 
@@ -451,11 +473,9 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
                 }
 
                 if (companyNameFieldAssert.getSources() != null && !companyNameFieldAssert.getSources().isEmpty()) {
-                    assertTrue(
-                        companyNameFieldAssert.getSources() != null
-                            && companyNameFieldAssert.getSources().get(0) instanceof DocumentSource,
-                        "Source should be a DocumentSource for extracted fields");
-                    System.out.println("  Source: " + companyNameFieldAssert.getSources());
+                    assertTrue(ContentSource.toRawString(companyNameFieldAssert.getSources()).startsWith("D("),
+                        "Source should start with 'D(' for extracted fields");
+                    System.out.println("  Source: " + ContentSource.toRawString(companyNameFieldAssert.getSources()));
                 }
 
                 List<ContentSpan> spans = companyNameFieldAssert.getSpans();
@@ -472,7 +492,7 @@ public class Sample04_CreateAnalyzerTest extends ContentUnderstandingClientTestB
             }
 
             System.out.println("All custom analyzer usage properties validated successfully");
-            // END:Assertion_ContentUnderstandingUseCustomAnalyzer
+            // END:Assertion_ContentUnderstandingUseCustomAnalyzerAsync
         } finally {
             // Cleanup is handled by @AfterEach
         }
