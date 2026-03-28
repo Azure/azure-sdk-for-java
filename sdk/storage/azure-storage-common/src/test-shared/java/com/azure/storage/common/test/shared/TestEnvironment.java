@@ -107,8 +107,8 @@ public final class TestEnvironment {
                     + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
         }
-        String blobEndpoint = String.format(SCHEME + "://%s.blob.core.windows.net", name);
-        String blobEndpointSecondary = String.format(SCHEME + "://%s-secondary.blob.core.windows.net", name);
+        String blobEndpoint = String.format(SCHEME + "://%s." + "blob."+ "preprod." +"core.windows.net", name);
+        String blobEndpointSecondary = String.format(SCHEME + "://%s-secondary." + "preprod." +"core.windows.net", name);
         String dataLakeEndpoint = String.format(SCHEME + "://%s.dfs.core.windows.net", name);
         String queueEndpoint = String.format(SCHEME + "://%s.queue.core.windows.net", name);
         String fileEndpoint = String.format(SCHEME + "://%s.file.core.windows.net", name);

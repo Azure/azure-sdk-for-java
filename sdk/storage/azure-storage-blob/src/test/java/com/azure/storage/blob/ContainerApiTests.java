@@ -50,6 +50,10 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
+import org.apache.arrow.memory.BufferAllocator;
+import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.vector.ipc.ArrowStreamReader;
+import org.apache.arrow.vector.VectorSchemaRoot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -58,7 +62,19 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.ListBlobsIncludeItem;
+import com.azure.core.http.rest.ResponseBase;
+
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -2128,4 +2144,447 @@ public class ContainerApiTests extends BlobTestBase {
     //        then:
     //        assertThrows(BlobStorageException.class, () ->
     //    }
+
+    @Test
+    public void listBlobsArrowBasic() {
+        // Upload a test blob
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        assertNotNull(blobs.get(0).getProperties());
+        assertEquals(DATA.getDefaultDataSize(), blobs.get(0).getProperties().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, blobs.get(0).getProperties().getBlobType());
+        assertNotNull(blobs.get(0).getProperties().getLastModified());
+        assertNotNull(blobs.get(0).getProperties().getETag());
+    }
+
+    @Test
+    public void listBlobsArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
+                null, null, null);
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setUseArrow(true).setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertNotNull(blobs.get(0).getMetadata());
+        assertEquals("testvalue", blobs.get(0).getMetadata().get("testkey"));
+    }
+
+    @Test
+    public void listBlobsArrowPagination() {
+        // Upload 3 blobs
+        for (int i = 0; i < 3; i++) {
+            cc.getBlobClient("blob" + i)
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        }
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true).setMaxResultsPerPage(1);
+        List<BlobItem> allBlobs = new ArrayList<>();
+        for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage()) {
+            assertTrue(page.getValue().size() <= 1);
+            allBlobs.addAll(page.getValue());
+        }
+
+        assertEquals(3, allBlobs.size());
+    }
+
+    @Test
+    public void listBlobsArrowNullUseArrowUsesXml() {
+        // Default useArrow is null — should use XML path without error
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions();
+        assertNull(options.getUseArrow());
+
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+    }
+
+    // TODO: listBlobsArrowXmlFallback — needs a non-Photon account without the preprod endpoint hack.
+    // Currently all test accounts use preprod.blob.core.windows.net which only resolves for the Photon account.
+    // @LiveOnly
+    // @Test
+    // public void listBlobsArrowXmlFallback() {
+    //     // Use a non-Photon account — service should return XML even though Arrow was requested
+    //     String altContainerName = generateContainerName();
+    //     BlobContainerClient altCc = premiumBlobServiceClient.getBlobContainerClient(altContainerName);
+    //     altCc.create();
+    //
+    //     try {
+    //         String blobName = generateBlobName();
+    //         altCc.getBlobClient(blobName)
+    //             .getBlockBlobClient()
+    //             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+    //
+    //         ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+    //         List<BlobItem> blobs = altCc.listBlobs(options, null).stream().collect(Collectors.toList());
+    //
+    //         // Should still work via XML fallback
+    //         assertEquals(1, blobs.size());
+    //         assertEquals(blobName, blobs.get(0).getName());
+    //     } finally {
+    //         altCc.delete();
+    //     }
+    // }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowEncryptedBlob() {
+        // Upload a blob with CPK (customer-provided key)
+        String blobName = generateBlobName();
+        CustomerProvidedKey cpk = new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomKey()));
+        BlobClient cpkClient = cc.getBlobClient(blobName).getCustomerProvidedKeyClient(cpk);
+        cpkClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        // CPK blob should have server-encrypted = true
+        assertTrue(blobs.get(0).getProperties().isServerEncrypted());
+        // Metadata should be null (no metadata was set)
+        assertNull(blobs.get(0).getMetadata());
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowSchemaDiscovery() throws Exception {
+        // Upload a test blob with metadata
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        // Construct AzureBlobStorageImpl directly to call generated Arrow methods
+        HttpPipeline pipeline = cc.getHttpPipeline();
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(pipeline)
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        // Call the Arrow endpoint directly
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
+                null, com.azure.core.util.Context.NONE);
+
+        // Verify Content-Type header
+        String contentType = response.getDeserializedHeaders().getContentType();
+        System.out.println("Content-Type: " + contentType);
+        // On Photon-enabled accounts this should be arrow; on non-Photon it will be XML
+        assertNotNull(contentType);
+
+        // Read the Arrow IPC stream
+        try (InputStream inputStream = response.getValue();
+            BufferAllocator allocator = new RootAllocator();
+            ArrowStreamReader reader = new ArrowStreamReader(inputStream, allocator)) {
+
+            VectorSchemaRoot root = reader.getVectorSchemaRoot();
+
+            // Print schema fields
+            System.out.println("=== Arrow Schema Fields ===");
+            root.getSchema()
+                .getFields()
+                .forEach(field -> System.out.println("  " + field.getName() + " : " + field.getType()));
+
+            // Print custom metadata
+            System.out.println("=== Schema Custom Metadata ===");
+            Map<String, String> schemaMetadata = root.getSchema().getCustomMetadata();
+            if (schemaMetadata != null) {
+                schemaMetadata.forEach((k, v) -> System.out.println("  " + k + " = " + v));
+            }
+
+            // Read first batch and print row values
+            assertTrue(reader.loadNextBatch(), "Expected at least one batch");
+            int rowCount = root.getRowCount();
+            System.out.println("=== Row Count: " + rowCount + " ===");
+            assertTrue(rowCount >= 1, "Expected at least one row");
+
+            // Print all field values for the first row
+            System.out.println("=== First Row Values ===");
+            for (int fieldIdx = 0; fieldIdx < root.getSchema().getFields().size(); fieldIdx++) {
+                org.apache.arrow.vector.FieldVector vec = root.getVector(fieldIdx);
+                Object value = vec.isNull(0) ? null : vec.getObject(0);
+                System.out.println("  " + vec.getName() + " = " + value);
+            }
+
+            // Basic assertions on the blob we uploaded
+            org.apache.arrow.vector.FieldVector nameVec = root.getVector("Name");
+            assertNotNull(nameVec, "Expected 'Name' column in Arrow schema");
+        }
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowHierarchySchemaDiscovery() throws Exception {
+        // Upload blobs with directory structure and metadata
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient("dir/blob1")
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+        cc.getBlobClient("dir/blob2")
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        // Construct AzureBlobStorageImpl directly to call generated Arrow methods
+        HttpPipeline pipeline = cc.getHttpPipeline();
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(pipeline)
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        // Call the Arrow hierarchy endpoint directly with delimiter "/"
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobHierarchySegmentApacheArrowWithResponse(containerName, "/", null, null, null, include, null, null,
+                null, null, com.azure.core.util.Context.NONE);
+
+        // Verify Content-Type header
+        String contentType = response.getDeserializedHeaders().getContentType();
+        System.out.println("Content-Type: " + contentType);
+        assertNotNull(contentType);
+
+        // Read the Arrow IPC stream
+        try (InputStream inputStream = response.getValue();
+            BufferAllocator allocator = new RootAllocator();
+            ArrowStreamReader reader = new ArrowStreamReader(inputStream, allocator)) {
+
+            VectorSchemaRoot root = reader.getVectorSchemaRoot();
+
+            // Print schema fields
+            System.out.println("=== Arrow Hierarchy Schema Fields ===");
+            root.getSchema()
+                .getFields()
+                .forEach(field -> System.out.println("  " + field.getName() + " : " + field.getType()));
+
+            // Print custom metadata
+            System.out.println("=== Schema Custom Metadata ===");
+            Map<String, String> schemaMetadata = root.getSchema().getCustomMetadata();
+            if (schemaMetadata != null) {
+                schemaMetadata.forEach((k, v) -> System.out.println("  " + k + " = " + v));
+            }
+
+            // Read all batches and print all row values
+            while (reader.loadNextBatch()) {
+                int rowCount = root.getRowCount();
+                System.out.println("=== Batch Row Count: " + rowCount + " ===");
+                assertTrue(rowCount >= 1, "Expected at least one row");
+
+                for (int rowIdx = 0; rowIdx < rowCount; rowIdx++) {
+                    System.out.println("--- Row " + rowIdx + " ---");
+                    for (int fieldIdx = 0; fieldIdx < root.getSchema().getFields().size(); fieldIdx++) {
+                        org.apache.arrow.vector.FieldVector vec = root.getVector(fieldIdx);
+                        Object value = vec.isNull(rowIdx) ? null : vec.getObject(rowIdx);
+                        System.out.println("  " + vec.getName() + " = " + value);
+                    }
+                }
+            }
+
+            // Basic assertions — we expect at least a Name column
+            org.apache.arrow.vector.FieldVector nameVec = root.getVector("Name");
+            assertNotNull(nameVec, "Expected 'Name' column in Arrow schema");
+        }
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowDeserializer() throws Exception {
+        // Upload a test blob with metadata
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        // Construct AzureBlobStorageImpl directly
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        // Call the Arrow endpoint
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
+                null, com.azure.core.util.Context.NONE);
+
+        // Verify Content-Type is Arrow
+        String contentType = response.getDeserializedHeaders().getContentType();
+        assertTrue(contentType.contains("application/vnd.apache.arrow.stream"),
+            "Expected Arrow content type but got: " + contentType);
+
+        // Deserialize using ArrowBlobListDeserializer
+        ArrowBlobListDeserializer.ArrowListBlobsResult result
+            = ArrowBlobListDeserializer.deserialize(response.getValue());
+
+        // Verify pagination — single blob, no next page
+        assertNull(result.getNextMarker());
+
+        // Verify we got exactly one blob
+        assertEquals(1, result.getBlobItems().size());
+
+        com.azure.storage.blob.implementation.models.BlobItemInternal item = result.getBlobItems().get(0);
+
+        // Name
+        assertNotNull(item.getName());
+        assertEquals(blobName, item.getName().getContent());
+
+        // Properties
+        assertNotNull(item.getProperties());
+        assertEquals(7L, (long) item.getProperties().getContentLength());
+        assertEquals("application/octet-stream", item.getProperties().getContentType());
+        assertNotNull(item.getProperties().getETag());
+        assertNotNull(item.getProperties().getLastModified());
+        assertNotNull(item.getProperties().getCreationTime());
+        assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+        assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+        assertTrue(item.getProperties().isAccessTierInferred());
+        assertTrue(item.getProperties().isServerEncrypted());
+        assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
+        assertEquals(LeaseStatusType.UNLOCKED, item.getProperties().getLeaseStatus());
+        assertNotNull(item.getProperties().getContentMd5());
+
+        // Metadata
+        assertNotNull(item.getMetadata());
+        assertEquals("testvalue", item.getMetadata().get("testkey"));
+
+        // Verify ModelHelper can convert to public BlobItem
+        BlobItem publicItem = ModelHelper.populateBlobItem(item);
+        assertEquals(blobName, publicItem.getName());
+        assertEquals(7L, (long) publicItem.getProperties().getContentLength());
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowBasic() {
+        // Upload blobs in a directory structure
+        cc.getBlobClient("dir/blob1")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        cc.getBlobClient("dir/blob2")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        List<BlobItem> items = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
+
+        // Root level: one prefix "dir/" and one blob "topblob"
+        assertEquals(2, items.size());
+
+        BlobItem prefixItem = items.stream().filter(BlobItem::isPrefix).findFirst().orElse(null);
+        BlobItem blobItem = items.stream().filter(i -> !i.isPrefix()).findFirst().orElse(null);
+
+        assertNotNull(prefixItem);
+        assertEquals("dir/", prefixItem.getName());
+        assertTrue(prefixItem.isPrefix());
+
+        assertNotNull(blobItem);
+        assertEquals("topblob", blobItem.getName());
+        assertFalse(blobItem.isPrefix());
+        assertNotNull(blobItem.getProperties());
+        assertEquals(DATA.getDefaultDataSize(), blobItem.getProperties().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, blobItem.getProperties().getBlobType());
+        assertNotNull(blobItem.getProperties().getLastModified());
+        assertNotNull(blobItem.getProperties().getETag());
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient("dir/" + blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
+                null, null, null);
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true)
+            .setPrefix("dir/")
+            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        List<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertFalse(blobs.get(0).isPrefix());
+        assertNotNull(blobs.get(0).getMetadata());
+        assertEquals("testvalue", blobs.get(0).getMetadata().get("testkey"));
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowPagination() {
+        // Upload blobs across multiple directories
+        for (int i = 0; i < 3; i++) {
+            cc.getBlobClient("dir" + i + "/blob")
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        }
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true).setMaxResultsPerPage(1);
+        List<BlobItem> allItems = new ArrayList<>();
+        for (PagedResponse<BlobItem> page : cc.listBlobsByHierarchy("/", options, null).iterableByPage()) {
+            assertTrue(page.getValue().size() <= 1);
+            allItems.addAll(page.getValue());
+        }
+
+        // 3 prefixes + 1 blob = 4 items
+        assertEquals(4, allItems.size());
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowWithTags() {
+        // Upload a blob and set tags
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tagkey", "tagvalue");
+        cc.getBlobClient(blobName).setTags(tags);
+
+        // List with Arrow + retrieveTags
+        ListBlobsOptions options
+            = new ListBlobsOptions().setUseArrow(true).setDetails(new BlobListDetails().setRetrieveTags(true));
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        assertNotNull(blobs.get(0).getTags());
+        assertEquals("tagvalue", blobs.get(0).getTags().get("tagkey"));
+    }
 }

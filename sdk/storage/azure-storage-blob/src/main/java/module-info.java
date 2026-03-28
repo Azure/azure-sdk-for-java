@@ -5,6 +5,9 @@ module com.azure.storage.blob {
     requires transitive com.azure.storage.common;
 
     requires com.azure.storage.internal.avro;
+    requires org.apache.arrow.vector;
+    requires org.apache.arrow.memory.core;
+    requires org.apache.arrow.format;
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;

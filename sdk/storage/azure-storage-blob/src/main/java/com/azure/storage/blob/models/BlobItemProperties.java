@@ -846,6 +846,33 @@ public final class BlobItemProperties {
     }
 
     /**
+     * Get the contentCrc64 property: The Content-CRC64 property.
+     *
+     * @return the contentCrc64 value.
+     */
+    public byte[] getContentCrc64() {
+        return internalProperties.getContentCrc64();
+    }
+
+    /**
+     * Get the orsPolicySourceBlob property: The OrsPolicySourceBlob property.
+     *
+     * @return the orsPolicySourceBlob value.
+     */
+    public String getOrsPolicySourceBlob() {
+        return internalProperties.getOrsPolicySourceBlob();
+    }
+
+    /**
+     * Get the affinityId property: The AffinityId property.
+     *
+     * @return the affinityId value.
+     */
+    public String getAffinityId() {
+        return internalProperties.getAffinityId();
+    }
+
+    /**
      * Get the hasLegalHold property: The LegalHold property.
      *
      * @return the hasLegalHold value.

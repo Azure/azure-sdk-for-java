@@ -19,6 +19,8 @@ public final class ListBlobsOptions {
     private String prefix;
     private String startFrom;
     private Integer maxResultsPerPage;
+    private Boolean useArrow;
+    private String endBefore;
 
     /**
      * Constructs an unpopulated {@link ListBlobsOptions}.
@@ -74,7 +76,7 @@ public final class ListBlobsOptions {
      * This parameter is similar to the prefix filter: it allows listing blobs starting from the specified path, rather than from the beginning of the container.
      * For non-recursive lists, only one entity level is supported.
      *
-     * @return the marker indicating where to start listing blobs
+     * @return the marker indicating where to start listing blobs (inclusive)
      */
     public String getStartFrom() {
         return startFrom;
@@ -84,11 +86,52 @@ public final class ListBlobsOptions {
      * Sets an optional parameter that specifies an absolute path within the container. This parameter is similar to the prefix filter: it allows listing blobs starting from the specified path, rather than from the beginning of the container.
      * For non-recursive lists, only one entity level is supported.
      *
-     * @param startFrom The marker indicating where to start listing blobs
+     * @param startFrom The marker indicating where to start listing blobs (inclusive)
      * @return the updated ListBlobsOptions object
      */
     public ListBlobsOptions setStartFrom(String startFrom) {
         this.startFrom = startFrom;
+        return this;
+    }
+
+    /**
+     * Gets the endBefore value. Only supported with Arrow listings. The listing will end before this path (exclusive).
+     *
+     * @return the endBefore value.
+     */
+    public String getEndBefore() {
+        return endBefore;
+    }
+
+    /**
+     * Sets the endBefore value. Only supported with Arrow listings. The listing will end before this path (exclusive).
+     *
+     * @param endBefore the endBefore value to set.
+     * @return the updated ListBlobsOptions object.
+     */
+    public ListBlobsOptions setEndBefore(String endBefore) {
+        this.endBefore = endBefore;
+        return this;
+    }
+
+    /**
+     * Gets whether to use the Apache Arrow response format for listing.
+     *
+     * @return whether Arrow format is enabled.
+     */
+    public Boolean getUseArrow() {
+        return useArrow;
+    }
+
+    /**
+     * Sets whether to use the Apache Arrow response format for listing. When enabled, the service returns an Arrow IPC
+     * stream instead of XML, which can provide latency and scale improvements.
+     *
+     * @param useArrow whether to use Arrow format.
+     * @return the updated ListBlobsOptions object.
+     */
+    public ListBlobsOptions setUseArrow(Boolean useArrow) {
+        this.useArrow = useArrow;
         return this;
     }
 

@@ -273,6 +273,21 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
     private BlobImmutabilityPolicyMode immutabilityPolicyMode;
 
     /*
+     * The Content-CRC64 property.
+     */
+    private byte[] contentCrc64;
+
+    /*
+     * The OrsPolicySourceBlob property.
+     */
+    private String orsPolicySourceBlob;
+
+    /*
+     * The AffinityId property.
+     */
+    private String affinityId;
+
+    /*
      * The LegalHold property.
      */
     @Generated
@@ -1245,6 +1260,66 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
         return this;
     }
 
+    /**
+     * Get the contentCrc64 property: The Content-CRC64 property.
+     *
+     * @return the contentCrc64 value.
+     */
+    public byte[] getContentCrc64() {
+        return CoreUtils.clone(this.contentCrc64);
+    }
+
+    /**
+     * Set the contentCrc64 property: The Content-CRC64 property.
+     *
+     * @param contentCrc64 the contentCrc64 value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setContentCrc64(byte[] contentCrc64) {
+        this.contentCrc64 = CoreUtils.clone(contentCrc64);
+        return this;
+    }
+
+    /**
+     * Get the orsPolicySourceBlob property: The OrsPolicySourceBlob property.
+     *
+     * @return the orsPolicySourceBlob value.
+     */
+    public String getOrsPolicySourceBlob() {
+        return this.orsPolicySourceBlob;
+    }
+
+    /**
+     * Set the orsPolicySourceBlob property: The OrsPolicySourceBlob property.
+     *
+     * @param orsPolicySourceBlob the orsPolicySourceBlob value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setOrsPolicySourceBlob(String orsPolicySourceBlob) {
+        this.orsPolicySourceBlob = orsPolicySourceBlob;
+        return this;
+    }
+
+    /**
+     * Get the affinityId property: The AffinityId property.
+     *
+     * @return the affinityId value.
+     */
+    public String getAffinityId() {
+        return this.affinityId;
+    }
+
+    /**
+     * Set the affinityId property: The AffinityId property.
+     *
+     * @param affinityId the affinityId value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setAffinityId(String affinityId) {
+        this.affinityId = affinityId;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -1303,6 +1378,9 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
         xmlWriter.writeStringElement("ImmutabilityPolicyMode",
             this.immutabilityPolicyMode == null ? null : this.immutabilityPolicyMode.toString());
         xmlWriter.writeBooleanElement("LegalHold", this.legalHold);
+        xmlWriter.writeBinaryElement("Content-CRC64", this.contentCrc64);
+        xmlWriter.writeStringElement("OrsPolicySourceBlob", this.orsPolicySourceBlob);
+        xmlWriter.writeStringElement("AffinityId", this.affinityId);
         return xmlWriter.writeEndElement();
     }
 
@@ -1442,6 +1520,12 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
                         = BlobImmutabilityPolicyMode.fromString(reader.getStringElement());
                 } else if ("LegalHold".equals(elementName.getLocalPart())) {
                     deserializedBlobItemPropertiesInternal.legalHold = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("Content-CRC64".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemPropertiesInternal.contentCrc64 = reader.getBinaryElement();
+                } else if ("OrsPolicySourceBlob".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemPropertiesInternal.orsPolicySourceBlob = reader.getStringElement();
+                } else if ("AffinityId".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemPropertiesInternal.affinityId = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }

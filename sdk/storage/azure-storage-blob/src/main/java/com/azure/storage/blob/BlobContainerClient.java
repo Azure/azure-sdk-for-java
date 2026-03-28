@@ -25,12 +25,15 @@ import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -57,6 +60,10 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import com.azure.xml.XmlReader;
+
+import java.io.InputStream;
+import javax.xml.stream.XMLStreamException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -1029,6 +1036,10 @@ public final class BlobContainerClient {
                     .setStartFrom(options.getStartFrom())
                     .setDetails(options.getDetails());
 
+                if (Boolean.TRUE.equals(options.getUseArrow())) {
+                    finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                }
+
             }
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
@@ -1040,26 +1051,72 @@ public final class BlobContainerClient {
             ArrayList<ListBlobsIncludeItem> include
                 = finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
 
-            Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
-                = () -> this.azureBlobStorage.getContainers()
-                    .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
-                        finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
-                        Context.NONE);
+            // Using Boolean.TRUE.equals to avoid NPE because default for useArrow is null, not false. We want to treat null as false, but if user explicitly set it to true, then we use Arrow.
+            if (Boolean.TRUE.equals(finalOptions.getUseArrow())) {
+                Callable<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>> operation
+                    = () -> this.azureBlobStorage.getContainers()
+                        .listBlobFlatSegmentApacheArrowWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
+                            finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
+                            finalOptions.getEndBefore(), null, Context.NONE);
+                ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response
+                    = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
-            ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
-                = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+                String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
-            List<BlobItem> value = response.getValue().getSegment() == null
-                ? Collections.emptyList()
-                : response.getValue()
-                    .getSegment()
-                    .getBlobItems()
-                    .stream()
-                    .map(ModelHelper::populateBlobItem)
-                    .collect(Collectors.toList());
+                if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                    // Arrow response — parse with Arrow deserializer
+                    ArrowBlobListDeserializer.ArrowListBlobsResult arrowResult
+                        = ArrowBlobListDeserializer.deserialize(response.getValue());
 
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+                    List<BlobItem> value = arrowResult.getBlobItems()
+                        .stream()
+                        .map(ModelHelper::populateBlobItem)
+                        .collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), value, arrowResult.getNextMarker(), response.getDeserializedHeaders());
+                } else {
+                    // XML fallback — service returned XML instead of Arrow
+                    try {
+                        ListBlobsFlatSegmentResponse xmlResponse
+                            = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromStream(response.getValue()));
+
+                        List<BlobItem> value = xmlResponse.getSegment() == null
+                            ? Collections.emptyList()
+                            : xmlResponse.getSegment()
+                                .getBlobItems()
+                                .stream()
+                                .map(ModelHelper::populateBlobItem)
+                                .collect(Collectors.toList());
+
+                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), value, xmlResponse.getNextMarker(), null);
+                    } catch (XMLStreamException e) {
+                        throw LOGGER
+                            .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                    }
+                }
+            } else {
+                Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
+                    = () -> this.azureBlobStorage.getContainers()
+                        .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
+                            finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
+                            Context.NONE);
+                ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
+                    = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+
+                List<BlobItem> value = response.getValue().getSegment() == null
+                    ? Collections.emptyList()
+                    : response.getValue()
+                        .getSegment()
+                        .getBlobItems()
+                        .stream()
+                        .map(ModelHelper::populateBlobItem)
+                        .collect(Collectors.toList());
+
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+            }
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(continuationToken, pageSize), retriever);
@@ -1164,6 +1221,9 @@ public final class BlobContainerClient {
                     .setPrefix(options.getPrefix())
                     .setDetails(options.getDetails())
                     .setStartFrom(options.getStartFrom());
+                if (Boolean.TRUE.equals(options.getUseArrow())) {
+                    finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                }
             }
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
@@ -1186,25 +1246,71 @@ public final class BlobContainerClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        Callable<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation
-            = () -> azureBlobStorage.getContainers()
-                .listBlobHierarchySegmentWithResponse(containerName, delimiter, options.getPrefix(), marker,
-                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE);
+        if (Boolean.TRUE.equals(options.getUseArrow())) {
+            Callable<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream>> operation
+                = () -> azureBlobStorage.getContainers()
+                    .listBlobHierarchySegmentApacheArrowWithResponse(containerName, delimiter, options.getPrefix(),
+                        marker, options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
+                        options.getEndBefore(), null, Context.NONE);
+            ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream> response
+                = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
-        ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response
-            = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+            String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
-        BlobHierarchyListSegment segment = response.getValue().getSegment();
-        List<BlobItem> value = new ArrayList<>();
-        if (segment != null) {
-            segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
-            segment.getBlobPrefixes()
-                .forEach(prefix -> value
-                    .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
+            if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                ArrowBlobListDeserializer.ArrowListBlobsResult arrowResult
+                    = ArrowBlobListDeserializer.deserialize(response.getValue());
+
+                List<BlobItem> value = arrowResult.getBlobItems()
+                    .stream()
+                    .map(ModelHelper::populateBlobItem)
+                    .collect(Collectors.toList());
+
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    value, arrowResult.getNextMarker(), response.getDeserializedHeaders());
+            } else {
+                // XML fallback — service returned XML instead of Arrow
+                try {
+                    ListBlobsHierarchySegmentResponse xmlResponse
+                        = ListBlobsHierarchySegmentResponse.fromXml(XmlReader.fromStream(response.getValue()));
+
+                    BlobHierarchyListSegment segment = xmlResponse.getSegment();
+                    List<BlobItem> value = new ArrayList<>();
+                    if (segment != null) {
+                        segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                        segment.getBlobPrefixes()
+                            .forEach(prefix -> value
+                                .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
+                                    .setIsPrefix(true)));
+                    }
+
+                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), value, xmlResponse.getNextMarker(), null);
+                } catch (XMLStreamException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                }
+            }
+        } else {
+            Callable<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation
+                = () -> azureBlobStorage.getContainers()
+                    .listBlobHierarchySegmentWithResponse(containerName, delimiter, options.getPrefix(), marker,
+                        options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE);
+
+            ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response
+                = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+
+            BlobHierarchyListSegment segment = response.getValue().getSegment();
+            List<BlobItem> value = new ArrayList<>();
+            if (segment != null) {
+                segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                segment.getBlobPrefixes()
+                    .forEach(prefix -> value
+                        .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
+            }
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
         }
-
-        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), value,
-            response.getValue().getNextMarker(), response.getDeserializedHeaders());
     }
 
     /**
