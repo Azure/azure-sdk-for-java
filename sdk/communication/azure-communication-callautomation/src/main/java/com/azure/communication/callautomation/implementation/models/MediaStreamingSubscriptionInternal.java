@@ -25,7 +25,7 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
     private String id;
 
     /*
-     * Media streaming subscription state.
+     * Current state of media streaming session
      */
     @Generated
     private MediaStreamingSubscriptionStateInternal state;
@@ -66,7 +66,7 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
     }
 
     /**
-     * Get the state property: Media streaming subscription state.
+     * Get the state property: Current state of media streaming session.
      * 
      * @return the state value.
      */
@@ -76,7 +76,7 @@ public final class MediaStreamingSubscriptionInternal implements JsonSerializabl
     }
 
     /**
-     * Set the state property: Media streaming subscription state.
+     * Set the state property: Current state of media streaming session.
      * 
      * @param state the state value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.

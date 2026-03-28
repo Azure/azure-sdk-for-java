@@ -37,6 +37,18 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     @Generated
     private String message;
 
+    /*
+     * The sipDetails property.
+     */
+    @Generated
+    private SipDiagnosticInfo sipDetails;
+
+    /*
+     * The q850Details property.
+     */
+    @Generated
+    private SipDiagnosticInfo q850Details;
+
     /**
      * Creates an instance of ResultInformation class.
      */
@@ -115,6 +127,50 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
+     * Get the sipDetails property: The sipDetails property.
+     * 
+     * @return the sipDetails value.
+     */
+    @Generated
+    public SipDiagnosticInfo getSipDetails() {
+        return this.sipDetails;
+    }
+
+    /**
+     * Set the sipDetails property: The sipDetails property.
+     * 
+     * @param sipDetails the sipDetails value to set.
+     * @return the ResultInformation object itself.
+     */
+    @Generated
+    public ResultInformation setSipDetails(SipDiagnosticInfo sipDetails) {
+        this.sipDetails = sipDetails;
+        return this;
+    }
+
+    /**
+     * Get the q850Details property: The q850Details property.
+     * 
+     * @return the q850Details value.
+     */
+    @Generated
+    public SipDiagnosticInfo getQ850Details() {
+        return this.q850Details;
+    }
+
+    /**
+     * Set the q850Details property: The q850Details property.
+     * 
+     * @param q850Details the q850Details value to set.
+     * @return the ResultInformation object itself.
+     */
+    @Generated
+    public ResultInformation setQ850Details(SipDiagnosticInfo q850Details) {
+        this.q850Details = q850Details;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -124,6 +180,8 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
         jsonWriter.writeNumberField("code", this.code);
         jsonWriter.writeNumberField("subCode", this.subCode);
         jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeJsonField("sipDetails", this.sipDetails);
+        jsonWriter.writeJsonField("q850Details", this.q850Details);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +207,10 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
                     deserializedResultInformation.subCode = reader.getNullable(JsonReader::getInt);
                 } else if ("message".equals(fieldName)) {
                     deserializedResultInformation.message = reader.getString();
+                } else if ("sipDetails".equals(fieldName)) {
+                    deserializedResultInformation.sipDetails = SipDiagnosticInfo.fromJson(reader);
+                } else if ("q850Details".equals(fieldName)) {
+                    deserializedResultInformation.q850Details = SipDiagnosticInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

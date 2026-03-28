@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The format type of call recording.
+ * Defines the format type of call recording.
  */
 public final class RecordingFormatInternal extends ExpandableStringEnum<RecordingFormatInternal> {
     /**

@@ -48,7 +48,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
+     * The resultInformation property.
      */
     @Generated
     private ResultInformation resultInformation;
@@ -163,7 +163,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the resultInformation property: The resultInformation property.
      * 
      * @return the resultInformation value.
      */
@@ -173,7 +173,7 @@ public final class StartRecordingFailed implements JsonSerializable<StartRecordi
     }
 
     /**
-     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Set the resultInformation property: The resultInformation property.
      * 
      * @param resultInformation the resultInformation value to set.
      * @return the StartRecordingFailed object itself.

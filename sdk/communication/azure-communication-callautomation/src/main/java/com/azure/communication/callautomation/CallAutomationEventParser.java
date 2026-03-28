@@ -27,6 +27,8 @@ import com.azure.communication.callautomation.models.events.HoldFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
+import com.azure.communication.callautomation.models.events.MoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.MoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
@@ -40,6 +42,7 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
+import com.azure.communication.callautomation.models.events.StartRecordingFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -175,6 +178,12 @@ public final class CallAutomationEventParser {
                 ret = MediaStreamingStopped.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingFailed")) {
                 ret = MediaStreamingFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.StartRecordingFailed")) {
+                ret = StartRecordingFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MoveParticipantFailed")) {
+                ret = MoveParticipantFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MoveParticipantSucceeded")) {
+                ret = MoveParticipantSucceeded.fromJson(jsonReader);
             } else {
                 ret = null;
             }
