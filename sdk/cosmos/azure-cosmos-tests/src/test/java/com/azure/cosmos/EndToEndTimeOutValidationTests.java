@@ -6,10 +6,12 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -251,6 +253,41 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                         .verify();
         } finally {
             if (faultInjectionRule !=  null) {
+                faultInjectionRule.disable();
+            }
+
+            safeClose(cosmosClient);
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void queryChangeFeedWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        CosmosAsyncClient cosmosClient = initializeClient(endToEndOperationLatencyPolicyConfig);
+        FaultInjectionRule faultInjectionRule = null;
+        try {
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                    .build();
+
+            CosmosChangeFeedRequestOptions options =
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+
+            faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.READ_FEED_ITEM, null);
+            CosmosPagedFlux<TestObject> changeFeedPagedFlux =
+                createdContainer.queryChangeFeed(options, TestObject.class);
+
+            StepVerifier.create(changeFeedPagedFlux)
+                        .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                            && ((OperationCancelledException) throwable).getSubStatusCode()
+                            == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
+                        .verify();
+        } finally {
+            if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
             }
 

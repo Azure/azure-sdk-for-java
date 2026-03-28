@@ -53,6 +53,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
     private ReadConsistencyStrategy readConsistencyStrategy;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         if (toBeCloned.continuationState != null) {
@@ -80,6 +81,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
+        this.endToEndOperationLatencyPolicyConfig = toBeCloned.endToEndOperationLatencyPolicyConfig;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -301,8 +303,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
     @Override
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
-        // @TODO: Implement this and some of the others below
-        return null;
+        return this.endToEndOperationLatencyPolicyConfig;
+    }
+
+    public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
     }
 
     @Override

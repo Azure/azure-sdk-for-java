@@ -1578,6 +1578,50 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
     }
 
+    private static <T> Flux<FeedResponse<T>> getChangeFeedResponseFluxWithTimeout(
+        Flux<FeedResponse<T>> feedResponseFlux,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext diagnosticsClientContext) {
+
+        Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
+
+        if (endToEndTimeout.isNegative()) {
+            return feedResponseFlux
+                .timeout(endToEndTimeout)
+                .onErrorMap(throwable -> {
+                    if (throwable instanceof TimeoutException) {
+                        CosmosException cancellationException = getNegativeTimeoutException(null, endToEndTimeout);
+                        cancellationException.setStackTrace(throwable.getStackTrace());
+
+                        CosmosDiagnostics mostRecentDiagnostics = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                        if (mostRecentDiagnostics != null) {
+                            BridgeInternal.setCosmosDiagnostics(cancellationException, mostRecentDiagnostics);
+                        }
+
+                        return cancellationException;
+                    }
+                    return throwable;
+                });
+        }
+
+        return feedResponseFlux
+            .timeout(endToEndTimeout)
+            .onErrorMap(throwable -> {
+                if (throwable instanceof TimeoutException) {
+                    CosmosException exception = new OperationCancelledException();
+                    exception.setStackTrace(throwable.getStackTrace());
+
+                    CosmosDiagnostics mostRecentDiagnostics = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                    if (mostRecentDiagnostics != null) {
+                        BridgeInternal.setCosmosDiagnostics(exception, mostRecentDiagnostics);
+                    }
+
+                    return exception;
+                }
+                return throwable;
+            });
+    }
+
     private void addUserAgentSuffix(UserAgentContainer userAgentContainer, Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
 
         if (!this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
@@ -4852,7 +4896,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             diagnosticsClientContext,
             crossRegionAvailabilityContextForRequest);
 
-        return changeFeedQueryImpl.executeAsync();
+        CosmosChangeFeedRequestOptionsImpl implOptions =
+            ImplementationBridgeHelpers
+                .CosmosChangeFeedRequestOptionsHelper
+                .getCosmosChangeFeedRequestOptionsAccessor()
+                .getImpl(requestOptions);
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            this.getEffectiveEndToEndOperationLatencyPolicyConfig(
+                implOptions.getCosmosEndToEndLatencyPolicyConfig(),
+                ResourceType.Document,
+                OperationType.ReadFeed);
+
+        Flux<FeedResponse<T>> feedResponseFlux = changeFeedQueryImpl.executeAsync();
+
+        if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+            return getChangeFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, diagnosticsClientContext);
+        }
+
+        return feedResponseFlux;
     }
 
     @Override
