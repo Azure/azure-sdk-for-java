@@ -19,12 +19,14 @@ import java.util.Map;
  */
 public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     private Map<String, HttpHeader> headers;
+    private final boolean isHttp2Headers;
 
     /**
      * Create an empty HttpHeaders instance.
      */
     public HttpHeaders() {
         this.headers = new HashMap<>();
+        this.isHttp2Headers = false;
     }
 
     /**
@@ -32,6 +34,21 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      */
     public HttpHeaders(int size) {
         this.headers = new HashMap<>(size);
+        this.isHttp2Headers = false;
+    }
+
+    /**
+     * Create an HttpHeaders instance with the given size.
+     * When {@code isHttp2Headers} is true, {@link #set(String, String)} skips
+     * the {@code toLowerCase()} call on header names. This is an optimization for HTTP/2
+     * responses where header names are guaranteed to be lowercase per RFC 7540 §8.1.2.
+     *
+     * @param size the initial capacity
+     * @param isHttp2Headers true if headers originate from an HTTP/2 response (names already lowercase)
+     */
+    public HttpHeaders(int size, boolean isHttp2Headers) {
+        this.headers = new HashMap<>(size);
+        this.isHttp2Headers = isHttp2Headers;
     }
 
     /**
@@ -41,6 +58,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      */
     public HttpHeaders(Map<String, String> headers) {
         this.headers = new HashMap<>(headers.size());
+        this.isHttp2Headers = false;
         for (final Map.Entry<String, String> header : headers.entrySet()) {
             this.set(header.getKey(), header.getValue());
         }
@@ -66,7 +84,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      * @return this HttpHeaders
      */
     public HttpHeaders set(String name, String value) {
-        final String headerKey = name.toLowerCase(Locale.ROOT);
+        final String headerKey = isHttp2Headers ? name : name.toLowerCase(Locale.ROOT);
         if (value == null) {
             headers.remove(headerKey);
         } else {
