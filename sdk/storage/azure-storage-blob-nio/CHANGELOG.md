@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Reading attributes for a non-existent blob now throws java.nio.file.NoSuchFileException instead of a raw java.io.IOException.
 
 ### Other Changes
 

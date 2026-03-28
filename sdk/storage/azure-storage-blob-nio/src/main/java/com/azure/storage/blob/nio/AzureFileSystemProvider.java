@@ -870,14 +870,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Read attributes already wraps BlobStorageException in an IOException.
         try {
             readAttributes(path, BasicFileAttributes.class);
+        } catch (NoSuchFileException e) {
+            throw e;
         } catch (IOException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof BlobStorageException
-                && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) cause).getErrorCode())) {
-                throw new NoSuchFileException(path.toString());
-            } else {
-                throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, e);
-            }
+            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, e);
         }
     }
 
