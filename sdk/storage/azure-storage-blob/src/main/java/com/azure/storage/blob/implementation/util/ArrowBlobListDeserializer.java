@@ -122,13 +122,21 @@ public final class ArrowBlobListDeserializer {
 
     private static BlobItemInternal readRow(VectorSchemaRoot root, int index) {
         BlobItemInternal item = new BlobItemInternal();
-        BlobItemPropertiesInternal properties = new BlobItemPropertiesInternal();
 
         // Name
         String name = getVarChar(root, "Name", index);
         if (name != null) {
             item.setName(new BlobName().setContent(name));
         }
+
+        // ResourceType — hierarchy listings use "blobprefix" for virtual directory rows
+        String resourceType = getVarChar(root, "ResourceType", index);
+        if ("blobprefix".equals(resourceType)) {
+            item.setIsPrefix(true);
+            return item;
+        }
+
+        BlobItemPropertiesInternal properties = new BlobItemPropertiesInternal();
 
         // Deleted
         Boolean deleted = getBit(root, "Deleted", index);
