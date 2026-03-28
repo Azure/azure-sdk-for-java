@@ -81,6 +81,12 @@ public final class BlobItemInternal implements XmlSerializable<BlobItemInternal>
     private Boolean hasVersionsOnly;
 
     /*
+     * When a blob is encrypted with a customer provided key and has application metadata,
+     * the Encrypted field will be set to true and the metadata will be null.
+     */
+    private Boolean metadataEncrypted;
+
+    /*
      * The IsPrefix property.
      */
     @Generated
@@ -332,6 +338,27 @@ public final class BlobItemInternal implements XmlSerializable<BlobItemInternal>
     @Generated
     public BlobItemInternal setIsPrefix(Boolean isPrefix) {
         this.isPrefix = isPrefix;
+        return this;
+    }
+
+    /**
+     * Get the metadataEncrypted property: When a blob is encrypted with a customer provided key and has application
+     * metadata, the Encrypted field will be set to true and the metadata will be null.
+     *
+     * @return the metadataEncrypted value.
+     */
+    public Boolean isMetadataEncrypted() {
+        return this.metadataEncrypted;
+    }
+
+    /**
+     * Set the metadataEncrypted property.
+     *
+     * @param metadataEncrypted the metadataEncrypted value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setMetadataEncrypted(Boolean metadataEncrypted) {
+        this.metadataEncrypted = metadataEncrypted;
         return this;
     }
 

@@ -28,6 +28,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchyS
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -1125,9 +1126,16 @@ public final class BlobContainerAsyncClient {
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails());
+                    if (Boolean.TRUE.equals(options.getUseArrow())) {
+                        finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                    }
                 }
             } else {
                 finalOptions = options;
+            }
+
+            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.getUseArrow())) {
+                return listBlobsFlatSegmentArrow(marker, finalOptions, timeout);
             }
 
             return listBlobsFlatSegment(marker, finalOptions, timeout).map(response -> {
@@ -1175,6 +1183,62 @@ public final class BlobContainerAsyncClient {
                 .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
                     options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
+    }
+
+    private Mono<PagedResponse<BlobItem>> listBlobsFlatSegmentArrow(String marker, ListBlobsOptions options,
+        Duration timeout) {
+        options = options == null ? new ListBlobsOptions() : options;
+
+        ArrayList<ListBlobsIncludeItem> include
+            = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
+
+        ListBlobsOptions finalOptions = options;
+        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, finalOptions.getPrefix(), marker,
+                finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
+                finalOptions.getEndBefore(), null, Context.NONE),
+            timeout).flatMap(response -> {
+                String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
+
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
+                    java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes);
+
+                    if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                        ArrowBlobListDeserializer.ArrowListBlobsResult arrowResult
+                            = ArrowBlobListDeserializer.deserialize(bais);
+
+                        List<BlobItem> value = arrowResult.getBlobItems()
+                            .stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
+
+                        return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
+                            response.getDeserializedHeaders());
+                    } else {
+                        // XML fallback
+                        try {
+                            ListBlobsFlatSegmentResponse xmlResponse
+                                = ListBlobsFlatSegmentResponse.fromXml(com.azure.xml.XmlReader.fromStream(bais));
+
+                            List<BlobItem> value = xmlResponse.getSegment() == null
+                                ? Collections.emptyList()
+                                : xmlResponse.getSegment()
+                                    .getBlobItems()
+                                    .stream()
+                                    .map(ModelHelper::populateBlobItem)
+                                    .collect(Collectors.toList());
+
+                            return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                                response.getStatusCode(), response.getHeaders(), value, xmlResponse.getNextMarker(),
+                                null);
+                        } catch (javax.xml.stream.XMLStreamException e) {
+                            throw LOGGER
+                                .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                        }
+                    }
+                });
+            });
     }
 
     /**
@@ -1302,10 +1366,18 @@ public final class BlobContainerAsyncClient {
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails())
                         .setStartFrom(options.getStartFrom());
+                    if (Boolean.TRUE.equals(options.getUseArrow())) {
+                        finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                    }
                 }
             } else {
                 finalOptions = options;
             }
+
+            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.getUseArrow())) {
+                return listBlobsHierarchySegmentArrow(marker, delimiter, finalOptions, timeout);
+            }
+
             return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout).map(response -> {
                 BlobHierarchyListSegment segment = response.getValue().getSegment();
                 List<BlobItem> value;
@@ -1342,6 +1414,71 @@ public final class BlobContainerAsyncClient {
                 .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
                     options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
+    }
+
+    private Mono<PagedResponse<BlobItem>> listBlobsHierarchySegmentArrow(String marker, String delimiter,
+        ListBlobsOptions options, Duration timeout) {
+        options = options == null ? new ListBlobsOptions() : options;
+        if (options.getDetails().getRetrieveSnapshots()) {
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
+        }
+
+        ArrayList<ListBlobsIncludeItem> include
+            = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
+
+        ListBlobsOptions finalOptions = options;
+        return StorageImplUtils
+            .applyOptionalTimeout(this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentApacheArrowWithResponseAsync(containerName, delimiter,
+                    finalOptions.getPrefix(), marker, finalOptions.getMaxResultsPerPage(), include, null,
+                    finalOptions.getStartFrom(), finalOptions.getEndBefore(), null, Context.NONE),
+                timeout)
+            .flatMap(response -> {
+                String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
+
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
+                    java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes);
+
+                    if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                        ArrowBlobListDeserializer.ArrowListBlobsResult arrowResult
+                            = ArrowBlobListDeserializer.deserialize(bais);
+
+                        List<BlobItem> value = arrowResult.getBlobItems()
+                            .stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
+
+                        return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
+                            response.getDeserializedHeaders());
+                    } else {
+                        // XML fallback
+                        try {
+                            ListBlobsHierarchySegmentResponse xmlResponse
+                                = ListBlobsHierarchySegmentResponse.fromXml(com.azure.xml.XmlReader.fromStream(bais));
+
+                            BlobHierarchyListSegment segment = xmlResponse.getSegment();
+                            List<BlobItem> value = new ArrayList<>();
+                            if (segment != null) {
+                                segment.getBlobItems()
+                                    .forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                                segment.getBlobPrefixes()
+                                    .forEach(prefix -> value
+                                        .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
+                                            .setIsPrefix(true)));
+                            }
+
+                            return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                                response.getStatusCode(), response.getHeaders(), value, xmlResponse.getNextMarker(),
+                                null);
+                        } catch (javax.xml.stream.XMLStreamException e) {
+                            throw LOGGER
+                                .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                        }
+                    }
+                });
+            });
     }
 
     /**
