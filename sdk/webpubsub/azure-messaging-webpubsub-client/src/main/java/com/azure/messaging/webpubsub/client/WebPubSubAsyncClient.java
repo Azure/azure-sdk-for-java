@@ -12,9 +12,12 @@ import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubConnection;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.CancelInvocationMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.InvokeMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.InvokeResponseMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
@@ -33,6 +36,9 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
+import com.azure.messaging.webpubsub.client.models.InvocationException;
+import com.azure.messaging.webpubsub.client.models.InvokeEventOptions;
+import com.azure.messaging.webpubsub.client.models.InvokeEventResult;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
@@ -106,9 +112,14 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Sinks.Many<RejoinGroupFailedEvent> rejoinGroupFailedEventSink
         = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<InvokeResponseMessage> invokeResponseSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     // incremental ackId
     private final AtomicLong ackId = new AtomicLong(0);
+
+    // incremental invocation ID
+    private final AtomicLong invocationIdCounter = new AtomicLong(0);
 
     // connection (logic, one to one map to the connectionId)
     private WebPubSubConnection webPubSubConnection;
@@ -460,6 +471,121 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     /**
+     * Invokes an upstream event and waits for the correlated response.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataFormat the data format.
+     * @return the result.
+     */
+    public Mono<InvokeEventResult> invokeEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return invokeEvent(eventName, content, dataFormat, new InvokeEventOptions());
+    }
+
+    /**
+     * Invokes an upstream event and waits for the correlated response.
+     *
+     * @param eventName the event name.
+     * @param content the data.
+     * @param dataFormat the data format.
+     * @param options the options.
+     * @return the result.
+     */
+    public Mono<InvokeEventResult> invokeEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
+        InvokeEventOptions options) {
+        Objects.requireNonNull(eventName);
+        Objects.requireNonNull(content);
+        Objects.requireNonNull(dataFormat);
+        if (options == null) {
+            options = new InvokeEventOptions();
+        }
+
+        String invocationId = options.getInvocationId() != null ? options.getInvocationId() : nextInvocationId();
+        Duration timeout = options.getTimeout();
+
+        InvokeMessage invokeMessage = new InvokeMessage().setInvocationId(invocationId)
+            .setTarget("event")
+            .setEvent(eventName)
+            .setDataType(dataFormat.toString())
+            .setData(content);
+
+        return invokeEventAttempt(invocationId, invokeMessage, timeout).retryWhen(sendMessageRetrySpec);
+    }
+
+    private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage,
+        Duration timeout) {
+        return Mono.<InvokeResponseMessage>create(sink -> {
+            Disposable responseDisposable
+                = waitForInvokeResponse(invocationId, timeout).subscribe(sink::success, sink::error);
+            sink.onDispose(responseDisposable);
+
+            sendMessage(invokeMessage).subscribe(null, error -> sink.error(error));
+        }).map(this::mapInvokeResponse).onErrorResume(throwable -> {
+            // If InvocationException, do not retry
+            if (throwable instanceof InvocationException) {
+                return Mono.error(throwable);
+            }
+            // Attempt to send cancelInvocation on failure
+            return sendCancelInvocationBestEffort(invocationId).then(
+                Mono.error(logSendMessageFailedException("Failed to invoke event.", throwable, true, (Long) null)));
+        });
+    }
+
+    private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId, Duration timeout) {
+        Mono<InvokeResponseMessage> responseMono
+            = receiveInvokeResponses().filter(m -> invocationId.equals(m.getInvocationId())).next();
+        if (timeout != null) {
+            responseMono
+                = responseMono
+                    .timeout(timeout,
+                        Mono.defer(() -> Mono.error(new InvocationException(
+                            "Invocation timed out after " + timeout.toMillis()
+                                + "ms. No response received for invocation '" + invocationId + "'.",
+                            invocationId, null))));
+        }
+        return responseMono;
+    }
+
+    private InvokeEventResult mapInvokeResponse(InvokeResponseMessage message) {
+        if (Boolean.TRUE.equals(message.isSuccess())) {
+            return new InvokeEventResult(message.getInvocationId(), message.getDataType(), message.getData());
+        } else if (Boolean.FALSE.equals(message.isSuccess())) {
+            throw logger.logExceptionAsWarning(new InvocationException(
+                message.getError() != null ? message.getError().getMessage() : "Invocation failed.",
+                message.getInvocationId(), message.getError()));
+        } else {
+            throw logger.logExceptionAsWarning(
+                new InvocationException("Unsupported invoke response frame.", message.getInvocationId(), null));
+        }
+    }
+
+    /**
+     * Cancels a pending invocation by sending a cancel message to the server.
+     *
+     * @param invocationId the invocation ID to cancel.
+     * @return a {@link Mono} that completes when the cancel message has been sent, or errors if the
+     *     cancel message could not be sent (e.g., when disconnected).
+     * @throws NullPointerException if {@code invocationId} is null.
+     */
+    public Mono<Void> cancelInvocation(String invocationId) {
+        Objects.requireNonNull(invocationId, "'invocationId' cannot be null.");
+        CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
+        return sendMessage(cancelMessage);
+    }
+
+    private Mono<Void> sendCancelInvocationBestEffort(String invocationId) {
+        CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
+        return sendMessage(cancelMessage).onErrorResume(error -> {
+            logger.atVerbose().log("Failed to send cancelInvocation for " + invocationId, error);
+            return Mono.empty();
+        });
+    }
+
+    private Flux<InvokeResponseMessage> receiveInvokeResponses() {
+        return invokeResponseSink.asFlux();
+    }
+
+    /**
      * Receives group message events.
      *
      * @return the Publisher of group message events.
@@ -521,6 +647,16 @@ final class WebPubSubAsyncClient implements Closeable {
             }
             return value;
         });
+    }
+
+    private String nextInvocationId() {
+        return String.valueOf(invocationIdCounter.getAndUpdate(value -> {
+            // keep positive
+            if (++value < 0) {
+                value = 0;
+            }
+            return value;
+        }));
     }
 
     private Flux<AckMessage> receiveAckMessages() {
@@ -776,6 +912,8 @@ final class WebPubSubAsyncClient implements Closeable {
             }
         } else if (webPubSubMessage instanceof AckMessage) {
             tryEmitNext(ackMessageSink, (AckMessage) webPubSubMessage);
+        } else if (webPubSubMessage instanceof InvokeResponseMessage) {
+            tryEmitNext(invokeResponseSink, (InvokeResponseMessage) webPubSubMessage);
         } else if (webPubSubMessage instanceof ConnectedMessage) {
             final ConnectedMessage connectedMessage = (ConnectedMessage) webPubSubMessage;
             final String connectionId = connectedMessage.getConnectionId();
@@ -939,6 +1077,9 @@ final class WebPubSubAsyncClient implements Closeable {
 
         ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
         ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+        invokeResponseSink.emitComplete(emitFailureHandler("Unable to emit Complete to invokeResponseSink"));
+        invokeResponseSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
         updateLogger(applicationId, null);
     }
