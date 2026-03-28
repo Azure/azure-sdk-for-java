@@ -51,16 +51,19 @@ public final class ArrowBlobListDeserializer {
     public static final class ArrowListBlobsResult {
         private final List<BlobItemInternal> blobItems;
         private final String nextMarker;
+        private final Integer numberOfRecords;
 
         /**
          * Creates an ArrowListBlobsResult.
          *
          * @param blobItems the deserialized blob items
          * @param nextMarker the continuation token for the next page, or null if this is the last page
+         * @param numberOfRecords the total number of records reported by the service, or null if not present
          */
-        public ArrowListBlobsResult(List<BlobItemInternal> blobItems, String nextMarker) {
+        public ArrowListBlobsResult(List<BlobItemInternal> blobItems, String nextMarker, Integer numberOfRecords) {
             this.blobItems = blobItems;
             this.nextMarker = nextMarker;
+            this.numberOfRecords = numberOfRecords;
         }
 
         /**
@@ -75,6 +78,13 @@ public final class ArrowBlobListDeserializer {
          */
         public String getNextMarker() {
             return nextMarker;
+        }
+
+        /**
+         * @return the total number of records reported by the service, or null if not present
+         */
+        public Integer getNumberOfRecords() {
+            return numberOfRecords;
         }
     }
 
@@ -91,6 +101,7 @@ public final class ArrowBlobListDeserializer {
     public static ArrowListBlobsResult deserialize(InputStream arrowStream) {
         List<BlobItemInternal> results = new ArrayList<>();
         String nextMarker = null;
+        Integer numberOfRecords = null;
 
         try (BufferAllocator allocator = new RootAllocator();
             ArrowStreamReader reader = new ArrowStreamReader(arrowStream, allocator)) {
@@ -103,6 +114,11 @@ public final class ArrowBlobListDeserializer {
                 nextMarker = schemaMetadata.get("NextMarker");
                 if (nextMarker != null && nextMarker.isEmpty()) {
                     nextMarker = null;
+                }
+
+                String numberOfRecordsStr = schemaMetadata.get("NumberOfRecords");
+                if (numberOfRecordsStr != null && !numberOfRecordsStr.isEmpty()) {
+                    numberOfRecords = Integer.parseInt(numberOfRecordsStr);
                 }
             }
 
@@ -117,7 +133,7 @@ public final class ArrowBlobListDeserializer {
             throw new RuntimeException("Failed to deserialize Arrow IPC response", e);
         }
 
-        return new ArrowListBlobsResult(results, nextMarker);
+        return new ArrowListBlobsResult(results, nextMarker, numberOfRecords);
     }
 
     private static BlobItemInternal readRow(VectorSchemaRoot root, int index) {
@@ -168,6 +184,15 @@ public final class ArrowBlobListDeserializer {
             item.setObjectReplicationMetadata(orMetadata);
         }
 
+        // Tags
+        Map<String, String> tags = getMap(root, "Tags", index);
+        if (tags != null) {
+            item.setBlobTags(ModelHelper.toBlobTags(tags));
+        }
+
+        // Encrypted — indicates metadata is encrypted with customer-provided key
+        item.setMetadataEncrypted(getBit(root, "Encrypted", index));
+
         // --- Properties ---
 
         properties.setCreationTime(getTimestamp(root, "Creation-Time", index));
@@ -186,6 +211,12 @@ public final class ArrowBlobListDeserializer {
             properties.setContentMd5(Base64.getDecoder().decode(contentMd5));
         }
 
+        // Content-CRC64: same encoding as Content-MD5
+        String contentCrc64 = getVarChar(root, "Content-CRC64", index);
+        if (contentCrc64 != null) {
+            properties.setContentCrc64(Base64.getDecoder().decode(contentCrc64));
+        }
+
         // BlobType
         String blobType = getVarChar(root, "BlobType", index);
         if (blobType != null) {
@@ -199,6 +230,12 @@ public final class ArrowBlobListDeserializer {
         }
         properties.setAccessTierInferred(getBit(root, "AccessTierInferred", index));
         properties.setAccessTierChangeTime(getTimestamp(root, "AccessTierChangeTime", index));
+
+        // SmartAccessTier
+        String smartAccessTier = getVarChar(root, "SmartAccessTier", index);
+        if (smartAccessTier != null) {
+            properties.setSmartAccessTier(AccessTier.fromString(smartAccessTier));
+        }
 
         // Lease
         String leaseStatus = getVarChar(root, "LeaseStatus", index);
@@ -219,6 +256,12 @@ public final class ArrowBlobListDeserializer {
         properties.setCustomerProvidedKeySha256(getVarChar(root, "CustomerProvidedKeySha256", index));
         properties.setEncryptionScope(getVarChar(root, "EncryptionScope", index));
         properties.setIncrementalCopy(getBit(root, "IncrementalCopy", index));
+
+        // OrsPolicySourceBlob
+        properties.setOrsPolicySourceBlob(getVarChar(root, "OrsPolicySourceBlob", index));
+
+        // AffinityId
+        properties.setAffinityId(getVarChar(root, "AffinityId", index));
 
         // Copy fields
         properties.setCopyId(getVarChar(root, "CopyId", index));
