@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ConnectionsSample {
 
     private static ConnectionsClient connectionsClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("AZURE_AI_PROJECTS_ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildConnectionsClient();
 
@@ -27,7 +27,7 @@ public class ConnectionsSample {
         for (Connection connection : connections) {
             System.out.println("Connection name: " + connection.getName());
             System.out.println("Connection type: " + connection.getType());
-            System.out.println("Connection credential type: " + connection.getCredentials().getType());
+            System.out.println("Connection credential type: " + connection.getCredential().getType());
             System.out.println("-------------------------------------------------");
         }
         // END:com.azure.ai.projects.ConnectionsSample.listConnections
@@ -51,7 +51,7 @@ public class ConnectionsSample {
         Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
 
         System.out.printf("Connection name: %s%n", connection.getName());
-        System.out.printf("Connection credentials: %s%n", connection.getCredentials().getType());
+        System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
 
         // END:com.azure.ai.projects.ConnectionsSample.getConnectionWithCredentials
     }

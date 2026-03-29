@@ -21,7 +21,7 @@ public class JsonMergePatchHelper {
 
         boolean isJsonMergePatch(DatasetVersion datasetVersion);
 
-        void setDataUri(DatasetVersion datasetVersion, String dataUri);
+        void setDataUrl(DatasetVersion datasetVersion, String dataUrl);
 
         void setIsReference(DatasetVersion datasetVersion, Boolean isReference);
 

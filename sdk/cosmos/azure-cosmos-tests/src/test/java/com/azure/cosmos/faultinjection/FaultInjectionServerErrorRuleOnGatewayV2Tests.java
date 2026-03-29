@@ -9,10 +9,12 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.TestObject;
+import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -25,6 +27,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -41,7 +44,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.assertj.core.api.Fail;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -51,7 +54,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -68,8 +70,6 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     private List<String> preferredReadRegions;
     private Map<String, String> readRegionMap;
     private DatabaseAccount databaseAccount;
-
-    private static final String thinClientEndpointIndicator = ":10250/";
 
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT = "Hit Limit reached";
@@ -556,6 +556,79 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     }
 
     @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void faultInjectionServerErrorRuleTests_PkScopedQueryWithHedging() {
+        // Regression test for: RxDocumentServiceRequest.clone() drops partitionKeyDefinition
+        // When hedging fires for a PK-scoped query on GW V2, the cloned request NPEs in
+        // ThinClientStoreModel.wrapInHttpRequest because partitionKeyDefinition is null.
+
+        if (this.preferredReadRegions.size() < 2) {
+            throw new SkipException("Need >= 2 regions for hedging");
+        }
+
+        String firstRegion = this.preferredReadRegions.get(0);
+
+        // Inject response delay ONLY in primary region to force hedging to secondary
+        String ruleId = "pkScopedQueryHedge-" + UUID.randomUUID();
+        FaultInjectionRule responseDelayRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .connectionType(FaultInjectionConnectionType.GATEWAY)
+                        .operationType(FaultInjectionOperationType.QUERY_ITEM)
+                        .endpoints(
+                            new FaultInjectionEndpointBuilder(FeedRange.forFullRange())
+                                .replicaCount(4)
+                                .build())
+                        .region(firstRegion)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                        .times(4)
+                        .delay(Duration.ofSeconds(6))
+                        .build()
+                )
+                .duration(Duration.ofMinutes(1))
+                .build();
+
+        try {
+            TestObject createdItem = TestObject.create();
+            this.cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(responseDelayRule))
+                .block();
+
+            // PK-scoped query with availability strategy — this triggers hedging + clone()
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(createdItem.getId()));
+
+            CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(30))
+                    .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(
+                        Duration.ofMillis(500), Duration.ofMillis(500)))
+                    .build();
+            queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
+
+            // Without the clone() fix this would NPE:
+            // "partitionKeyDefinition" is null in ThinClientStoreModel.wrapInHttpRequest
+            FeedResponse<TestObject> response = this.cosmosAsyncContainer
+                .queryItems(query, queryOptions, TestObject.class)
+                .byPage()
+                .blockFirst();
+
+            AssertionsForClassTypes.assertThat(response).isNotNull();
+            AssertionsForClassTypes.assertThat(response.getResults().size()).isGreaterThanOrEqualTo(1);
+            assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+        } finally {
+            responseDelayRule.disable();
+        }
+    }
+
+    @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
         // simulate high channel acquisition/connectionTimeout
         String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
@@ -714,32 +787,6 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
             AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
         }
-    }
-
-    private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
-        AssertionsForClassTypes.assertThat(diagnostics).isNotNull();
-
-        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
-        AssertionsForClassTypes.assertThat(ctx).isNotNull();
-
-        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
-        AssertionsForClassTypes.assertThat(requests).isNotNull();
-        AssertionsForClassTypes.assertThat(requests.size()).isPositive();
-
-        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            logger.info(
-                "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
-                requestInfo.getEndpoint(),
-                requestInfo.getRequestType(),
-                requestInfo.getPartitionId(),
-                requestInfo.getPartitionKeyRangeId(),
-                requestInfo.getActivityId());
-            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
-                return;
-            }
-        }
-
-        Fail.fail("No request targeting thin client proxy endpoint.");
     }
 
     private static class AccountLevelLocationContext {

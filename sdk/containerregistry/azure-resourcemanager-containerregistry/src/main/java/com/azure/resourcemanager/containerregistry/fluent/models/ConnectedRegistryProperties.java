@@ -19,6 +19,7 @@ import com.azure.resourcemanager.containerregistry.models.LoggingProperties;
 import com.azure.resourcemanager.containerregistry.models.LoginServerProperties;
 import com.azure.resourcemanager.containerregistry.models.ParentProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
+import com.azure.resourcemanager.containerregistry.models.RegistrySyncResult;
 import com.azure.resourcemanager.containerregistry.models.StatusDetailProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -93,6 +94,11 @@ public final class ConnectedRegistryProperties implements JsonSerializable<Conne
      * The garbage collection properties of the connected registry.
      */
     private GarbageCollectionProperties garbageCollection;
+
+    /*
+     * The result of the connected registry's most recent sync with its parent.
+     */
+    private RegistrySyncResult registrySyncResult;
 
     /**
      * Creates an instance of ConnectedRegistryProperties class.
@@ -301,6 +307,26 @@ public final class ConnectedRegistryProperties implements JsonSerializable<Conne
     }
 
     /**
+     * Get the registrySyncResult property: The result of the connected registry's most recent sync with its parent.
+     * 
+     * @return the registrySyncResult value.
+     */
+    public RegistrySyncResult registrySyncResult() {
+        return this.registrySyncResult;
+    }
+
+    /**
+     * Set the registrySyncResult property: The result of the connected registry's most recent sync with its parent.
+     * 
+     * @param registrySyncResult the registrySyncResult value to set.
+     * @return the ConnectedRegistryProperties object itself.
+     */
+    public ConnectedRegistryProperties withRegistrySyncResult(RegistrySyncResult registrySyncResult) {
+        this.registrySyncResult = registrySyncResult;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -333,6 +359,9 @@ public final class ConnectedRegistryProperties implements JsonSerializable<Conne
         if (garbageCollection() != null) {
             garbageCollection().validate();
         }
+        if (registrySyncResult() != null) {
+            registrySyncResult().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectedRegistryProperties.class);
@@ -352,6 +381,7 @@ public final class ConnectedRegistryProperties implements JsonSerializable<Conne
         jsonWriter.writeArrayField("notificationsList", this.notificationsList,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("garbageCollection", this.garbageCollection);
+        jsonWriter.writeJsonField("registrySyncResult", this.registrySyncResult);
         return jsonWriter.writeEndObject();
     }
 
@@ -405,6 +435,8 @@ public final class ConnectedRegistryProperties implements JsonSerializable<Conne
                 } else if ("garbageCollection".equals(fieldName)) {
                     deserializedConnectedRegistryProperties.garbageCollection
                         = GarbageCollectionProperties.fromJson(reader);
+                } else if ("registrySyncResult".equals(fieldName)) {
+                    deserializedConnectedRegistryProperties.registrySyncResult = RegistrySyncResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

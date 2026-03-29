@@ -13,10 +13,10 @@ public final class ContainerGroupInstanceCountSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerGroupInstanceCountSummary model = BinaryData.fromString(
-            "{\"zone\":6238145769223006535,\"instanceCountsByState\":[{\"state\":\"Creating\",\"count\":3208959223974394461},{\"state\":\"Deleting\",\"count\":8436976750184221107}]}")
+            "{\"zone\":1688830942575730326,\"instanceCountsByState\":[{\"state\":\"Creating\",\"count\":8033424464657164623},{\"state\":\"Deleting\",\"count\":1772086190568718267}]}")
             .toObject(ContainerGroupInstanceCountSummary.class);
-        Assertions.assertEquals(6238145769223006535L, model.zone());
+        Assertions.assertEquals(1688830942575730326L, model.zone());
         Assertions.assertEquals(PoolContainerGroupState.CREATING, model.instanceCountsByState().get(0).state());
-        Assertions.assertEquals(3208959223974394461L, model.instanceCountsByState().get(0).count());
+        Assertions.assertEquals(8033424464657164623L, model.instanceCountsByState().get(0).count());
     }
 }

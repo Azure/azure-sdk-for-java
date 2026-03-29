@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -24,7 +25,7 @@ import java.util.Collections;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>MCP_SERVER_URL - The MCP server URL for the custom code interpreter.</li>
  *   <li>MCP_PROJECT_CONNECTION_ID - The MCP project connection ID.</li>
  * </ul>
@@ -32,7 +33,7 @@ import java.util.Collections;
 public class CustomCodeInterpreterSync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String mcpServerUrl = Configuration.getGlobalConfiguration().get("MCP_SERVER_URL");
         String connectionId = Configuration.getGlobalConfiguration().get("MCP_PROJECT_CONNECTION_ID");
 
@@ -63,8 +64,8 @@ public class CustomCodeInterpreterSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(
-                agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .input("Calculate the factorial of 10 using Python."));
 

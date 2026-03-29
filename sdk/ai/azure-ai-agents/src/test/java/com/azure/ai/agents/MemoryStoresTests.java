@@ -4,7 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.*;
-import com.azure.ai.agents.models.DeleteMemoryStoreResult;
+
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
@@ -81,9 +81,7 @@ public class MemoryStoresTests extends ClientTestBase {
         assertTrue(found, "Created memory store not found in list.");
 
         // Delete Memory Store
-        DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(updatedStore.getName());
-        assertNotNull(deleteResponse);
-        assertTrue(deleteResponse.isDeleted());
+        memoryStoreClient.deleteMemoryStore(updatedStore.getName());
 
         // Verify it was deleted
         assertThrows(ResourceNotFoundException.class, () -> memoryStoreClient.getMemoryStore(updatedStore.getName()));
@@ -154,9 +152,7 @@ public class MemoryStoresTests extends ClientTestBase {
         memoryStoreClient.deleteScope(memoryStoreName, scope);
 
         // Delete memory store
-        DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
-        assertNotNull(deleteResponse);
-        assertTrue(deleteResponse.isDeleted());
+        memoryStoreClient.deleteMemoryStore(memoryStoreName);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -260,9 +256,7 @@ public class MemoryStoresTests extends ClientTestBase {
         memoryStoreClient.deleteScope(memoryStoreName, scope);
 
         // Delete memory store
-        DeleteMemoryStoreResult deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
-        assertNotNull(deleteResponse);
-        assertTrue(deleteResponse.isDeleted());
+        memoryStoreClient.deleteMemoryStore(memoryStoreName);
     }
 
     private void cleanupBeforeTest(MemoryStoresClient memoryStoreClient, String memoryStoreName) {

@@ -105,8 +105,8 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listVersions(name, requestOptions);
+    public PagedIterable<BinaryData> listEvaluatorVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluatorVersions(name, requestOptions);
     }
 
     /**
@@ -175,8 +175,8 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatestVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestVersions(requestOptions);
+    public PagedIterable<BinaryData> listLatestEvaluatorVersions(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestEvaluatorVersions(requestOptions);
     }
 
     /**
@@ -238,8 +238,9 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getVersionWithResponse(name, version, requestOptions);
+    public Response<BinaryData> getEvaluatorVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluatorVersionWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -257,8 +258,9 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteVersionWithResponse(name, version, requestOptions);
+    public Response<Void> deleteEvaluatorVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluatorVersionWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -364,9 +366,9 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createVersionWithResponse(String name, BinaryData evaluatorVersion,
+    public Response<BinaryData> createEvaluatorVersionWithResponse(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        return this.serviceClient.createVersionWithResponse(name, evaluatorVersion, requestOptions);
+        return this.serviceClient.createEvaluatorVersionWithResponse(name, evaluatorVersion, requestOptions);
     }
 
     /**
@@ -473,9 +475,9 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateVersionWithResponse(String name, String version, BinaryData evaluatorVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateVersionWithResponse(name, version, evaluatorVersion, requestOptions);
+    public Response<BinaryData> updateEvaluatorVersionWithResponse(String name, String version,
+        BinaryData evaluatorVersion, RequestOptions requestOptions) {
+        return this.serviceClient.updateEvaluatorVersionWithResponse(name, version, evaluatorVersion, requestOptions);
     }
 
     /**
@@ -495,8 +497,9 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorVersion> listVersions(String name, ListVersionsRequestType type, Integer limit) {
-        // Generated convenience method for listVersions
+    public PagedIterable<EvaluatorVersion> listEvaluatorVersions(String name, ListVersionsRequestType type,
+        Integer limit) {
+        // Generated convenience method for listEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -504,7 +507,7 @@ public final class EvaluatorsClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        return serviceClient.listVersions(name, requestOptions)
+        return serviceClient.listEvaluatorVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorVersion.class));
     }
 
@@ -522,10 +525,10 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorVersion> listVersions(String name) {
-        // Generated convenience method for listVersions
+    public PagedIterable<EvaluatorVersion> listEvaluatorVersions(String name) {
+        // Generated convenience method for listEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listVersions(name, requestOptions)
+        return serviceClient.listEvaluatorVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorVersion.class));
     }
 
@@ -545,8 +548,8 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorVersion> listLatestVersions(ListVersionsRequestType type, Integer limit) {
-        // Generated convenience method for listLatestVersions
+    public PagedIterable<EvaluatorVersion> listLatestEvaluatorVersions(ListVersionsRequestType type, Integer limit) {
+        // Generated convenience method for listLatestEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -554,7 +557,7 @@ public final class EvaluatorsClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        return serviceClient.listLatestVersions(requestOptions)
+        return serviceClient.listLatestEvaluatorVersions(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorVersion.class));
     }
 
@@ -570,10 +573,10 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorVersion> listLatestVersions() {
-        // Generated convenience method for listLatestVersions
+    public PagedIterable<EvaluatorVersion> listLatestEvaluatorVersions() {
+        // Generated convenience method for listLatestEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatestVersions(requestOptions)
+        return serviceClient.listLatestEvaluatorVersions(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorVersion.class));
     }
 
@@ -593,10 +596,11 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorVersion getVersion(String name, String version) {
-        // Generated convenience method for getVersionWithResponse
+    public EvaluatorVersion getEvaluatorVersion(String name, String version) {
+        // Generated convenience method for getEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getVersionWithResponse(name, version, requestOptions).getValue().toObject(EvaluatorVersion.class);
+        return getEvaluatorVersionWithResponse(name, version, requestOptions).getValue()
+            .toObject(EvaluatorVersion.class);
     }
 
     /**
@@ -614,10 +618,10 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteVersion(String name, String version) {
-        // Generated convenience method for deleteVersionWithResponse
+    public void deleteEvaluatorVersion(String name, String version) {
+        // Generated convenience method for deleteEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteVersionWithResponse(name, version, requestOptions).getValue();
+        deleteEvaluatorVersionWithResponse(name, version, requestOptions).getValue();
     }
 
     /**
@@ -635,10 +639,11 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorVersion createVersion(String name, EvaluatorVersion evaluatorVersion) {
-        // Generated convenience method for createVersionWithResponse
+    public EvaluatorVersion createEvaluatorVersion(String name, EvaluatorVersion evaluatorVersion) {
+        // Generated convenience method for createEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createVersionWithResponse(name, BinaryData.fromObject(evaluatorVersion), requestOptions).getValue()
+        return createEvaluatorVersionWithResponse(name, BinaryData.fromObject(evaluatorVersion), requestOptions)
+            .getValue()
             .toObject(EvaluatorVersion.class);
     }
 
@@ -658,11 +663,10 @@ public final class EvaluatorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorVersion updateVersion(String name, String version, EvaluatorVersion evaluatorVersion) {
-        // Generated convenience method for updateVersionWithResponse
+    public EvaluatorVersion updateEvaluatorVersion(String name, String version, EvaluatorVersion evaluatorVersion) {
+        // Generated convenience method for updateEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateVersionWithResponse(name, version, BinaryData.fromObject(evaluatorVersion), requestOptions)
-            .getValue()
-            .toObject(EvaluatorVersion.class);
+        return updateEvaluatorVersionWithResponse(name, version, BinaryData.fromObject(evaluatorVersion),
+            requestOptions).getValue().toObject(EvaluatorVersion.class);
     }
 }

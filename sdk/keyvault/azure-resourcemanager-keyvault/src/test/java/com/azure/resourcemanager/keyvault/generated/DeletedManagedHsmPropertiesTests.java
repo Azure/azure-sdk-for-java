@@ -11,7 +11,7 @@ public final class DeletedManagedHsmPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedManagedHsmProperties model = BinaryData.fromString(
-            "{\"mhsmId\":\"kotl\",\"location\":\"d\",\"deletionDate\":\"2021-07-23T09:43:53Z\",\"scheduledPurgeDate\":\"2021-07-18T04:54:54Z\",\"purgeProtectionEnabled\":true,\"tags\":{\"tbnnha\":\"jlt\",\"amqgxqquezikyw\":\"oocrkvcikhnv\",\"lla\":\"gxk\",\"z\":\"melwuipiccjz\"}}")
+            "{\"mhsmId\":\"vcikhnvpamqgx\",\"location\":\"u\",\"deletionDate\":\"2021-03-05T06:14:11Z\",\"scheduledPurgeDate\":\"2020-12-24T02:26:02Z\",\"purgeProtectionEnabled\":true,\"tags\":{\"uipiccjzk\":\"kallatmel\",\"rhyrnxxmueed\":\"ivgvvcna\"}}")
             .toObject(DeletedManagedHsmProperties.class);
     }
 }

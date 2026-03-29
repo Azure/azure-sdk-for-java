@@ -61,12 +61,6 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static final ConnectionType CUSTOM = fromString("CustomKeys");
 
     /**
-     * Remote tool.
-     */
-    @Generated
-    public static final ConnectionType REMOTE_TOOL = fromString("RemoteTool_Preview");
-
-    /**
      * Creates a new instance of ConnectionType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -102,4 +96,10 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
      */
     @Generated
     public static final ConnectionType API_KEY = fromString("ApiKey");
+
+    /**
+     * Remote tool.
+     */
+    @Generated
+    public static final ConnectionType REMOTE_TOOL_PREVIEW = fromString("RemoteTool_Preview");
 }

@@ -35,7 +35,28 @@ public class AbstractTelemetryBuilderTest {
             "gen_ai.tool.call.arguments",
             "gen_ai.tool.call.result",
             "gen_ai.evaluation.explanation" })
-    public void genAiPropertyIsNotTruncated(String key) {
+    public void genAiPropertyIsTruncatedAt256KB(String key) {
+        MessageTelemetryBuilder builder = MessageTelemetryBuilder.create();
+        int size256KB = 256 * 1024;
+        String longValue = repeat("a", size256KB + 10000);
+        builder.addProperty(key, longValue);
+
+        TelemetryItem item = builder.build();
+        Map<String, String> properties = getProperties(item);
+        assertEquals(size256KB, properties.get(key).length());
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "gen_ai.input.messages",
+            "gen_ai.output.messages",
+            "gen_ai.system_instructions",
+            "gen_ai.tool.definitions",
+            "gen_ai.tool.call.arguments",
+            "gen_ai.tool.call.result",
+            "gen_ai.evaluation.explanation" })
+    public void genAiPropertyUnder256KBIsNotTruncated(String key) {
         MessageTelemetryBuilder builder = MessageTelemetryBuilder.create();
         String longValue = repeat("a", 50000);
         builder.addProperty(key, longValue);

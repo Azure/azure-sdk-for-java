@@ -532,6 +532,37 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the scope for computing BM25 statistics used by FullTextScore in hybrid search queries.
+     *
+     * @return the scope for computing BM25 statistics. Defaults to {@link CosmosFullTextScoreScope#GLOBAL}.
+     */
+    public CosmosFullTextScoreScope getFullTextScoreScope() {
+        return this.actualRequestOptions.getFullTextScoreScope();
+    }
+
+    /**
+     * Sets the scope for computing BM25 statistics used by FullTextScore in hybrid search queries.
+     *
+     * <p>
+     * When set to {@link CosmosFullTextScoreScope#GLOBAL}, BM25 statistics (term frequency, inverse document frequency,
+     * and document length) are computed across all documents in the container, including all physical and logical
+     * partitions.
+     * </p>
+     * <p>
+     * When set to {@link CosmosFullTextScoreScope#LOCAL}, statistics are computed only over the subset of documents
+     * within the partition key values specified in the query request. This is useful for multi-tenant scenarios where
+     * scoring should reflect statistics that are accurate for a specific tenant's dataset.
+     * </p>
+     *
+     * @param fullTextScoreScope the scope for computing BM25 statistics.
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptions setFullTextScoreScope(CosmosFullTextScoreScope fullTextScoreScope) {
+        this.actualRequestOptions.setFullTextScoreScope(fullTextScoreScope);
+        return this;
+    }
+
 
     /**
      * Sets the logical query name - this identifier is only used for metrics and logs

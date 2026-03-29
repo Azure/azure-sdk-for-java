@@ -19,10 +19,34 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ContainersGetAccountInfoHeaders {
     /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
      * The x-ms-version property.
      */
     @Generated
     private String xMsVersion;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-sku-name property.
+     */
+    @Generated
+    private SkuName xMsSkuName;
 
     /*
      * The x-ms-account-kind property.
@@ -36,37 +60,13 @@ public final class ContainersGetAccountInfoHeaders {
     @Generated
     private Boolean xMsIsHnsEnabled;
 
-    /*
-     * The x-ms-sku-name property.
-     */
-    @Generated
-    private SkuName xMsSkuName;
-
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
-
-    /*
-     * The x-ms-client-request-id property.
-     */
-    @Generated
-    private String xMsClientRequestId;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
-
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_SKU_NAME = HttpHeaderName.fromString("x-ms-sku-name");
 
     private static final HttpHeaderName X_MS_ACCOUNT_KIND = HttpHeaderName.fromString("x-ms-account-kind");
 
     private static final HttpHeaderName X_MS_IS_HNS_ENABLED = HttpHeaderName.fromString("x-ms-is-hns-enabled");
-
-    private static final HttpHeaderName X_MS_SKU_NAME = HttpHeaderName.fromString("x-ms-sku-name");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -75,7 +75,21 @@ public final class ContainersGetAccountInfoHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetAccountInfoHeaders(HttpHeaders rawHeaders) {
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
+        String xMsSkuName = rawHeaders.getValue(X_MS_SKU_NAME);
+        if (xMsSkuName != null) {
+            this.xMsSkuName = SkuName.fromString(xMsSkuName);
+        } else {
+            this.xMsSkuName = null;
+        }
         String xMsAccountKind = rawHeaders.getValue(X_MS_ACCOUNT_KIND);
         if (xMsAccountKind != null) {
             this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
@@ -88,20 +102,50 @@ public final class ContainersGetAccountInfoHeaders {
         } else {
             this.xMsIsHnsEnabled = null;
         }
-        String xMsSkuName = rawHeaders.getValue(X_MS_SKU_NAME);
-        if (xMsSkuName != null) {
-            this.xMsSkuName = SkuName.fromString(xMsSkuName);
-        } else {
-            this.xMsSkuName = null;
-        }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the ContainersGetAccountInfoHeaders object itself.
+     */
+    @Generated
+    public ContainersGetAccountInfoHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the ContainersGetAccountInfoHeaders object itself.
+     */
+    @Generated
+    public ContainersGetAccountInfoHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
     }
 
     /**
@@ -123,6 +167,57 @@ public final class ContainersGetAccountInfoHeaders {
     @Generated
     public ContainersGetAccountInfoHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the ContainersGetAccountInfoHeaders object itself.
+     */
+    @Generated
+    public ContainersGetAccountInfoHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsSkuName property: The x-ms-sku-name property.
+     * 
+     * @return the xMsSkuName value.
+     */
+    @Generated
+    public SkuName getXMsSkuName() {
+        return this.xMsSkuName;
+    }
+
+    /**
+     * Set the xMsSkuName property: The x-ms-sku-name property.
+     * 
+     * @param xMsSkuName the xMsSkuName value to set.
+     * @return the ContainersGetAccountInfoHeaders object itself.
+     */
+    @Generated
+    public ContainersGetAccountInfoHeaders setXMsSkuName(SkuName xMsSkuName) {
+        this.xMsSkuName = xMsSkuName;
         return this;
     }
 
@@ -167,101 +262,6 @@ public final class ContainersGetAccountInfoHeaders {
     @Generated
     public ContainersGetAccountInfoHeaders setXMsIsHnsEnabled(Boolean xMsIsHnsEnabled) {
         this.xMsIsHnsEnabled = xMsIsHnsEnabled;
-        return this;
-    }
-
-    /**
-     * Get the xMsSkuName property: The x-ms-sku-name property.
-     * 
-     * @return the xMsSkuName value.
-     */
-    @Generated
-    public SkuName getXMsSkuName() {
-        return this.xMsSkuName;
-    }
-
-    /**
-     * Set the xMsSkuName property: The x-ms-sku-name property.
-     * 
-     * @param xMsSkuName the xMsSkuName value to set.
-     * @return the ContainersGetAccountInfoHeaders object itself.
-     */
-    @Generated
-    public ContainersGetAccountInfoHeaders setXMsSkuName(SkuName xMsSkuName) {
-        this.xMsSkuName = xMsSkuName;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the ContainersGetAccountInfoHeaders object itself.
-     */
-    @Generated
-    public ContainersGetAccountInfoHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @return the xMsClientRequestId value.
-     */
-    @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
-    }
-
-    /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the ContainersGetAccountInfoHeaders object itself.
-     */
-    @Generated
-    public ContainersGetAccountInfoHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the ContainersGetAccountInfoHeaders object itself.
-     */
-    @Generated
-    public ContainersGetAccountInfoHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
         return this;
     }
 }
