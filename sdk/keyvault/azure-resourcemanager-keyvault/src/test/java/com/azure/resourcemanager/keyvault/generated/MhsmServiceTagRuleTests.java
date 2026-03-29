@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class MhsmServiceTagRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MhsmServiceTagRule model = BinaryData.fromString("{\"tag\":\"xwyjsflhhc\"}").toObject(MhsmServiceTagRule.class);
-        Assertions.assertEquals("xwyjsflhhc", model.tag());
+        MhsmServiceTagRule model = BinaryData.fromString("{\"tag\":\"oellwp\"}").toObject(MhsmServiceTagRule.class);
+        Assertions.assertEquals("oellwp", model.tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MhsmServiceTagRule model = new MhsmServiceTagRule().withTag("xwyjsflhhc");
+        MhsmServiceTagRule model = new MhsmServiceTagRule().withTag("oellwp");
         model = BinaryData.fromObject(model).toObject(MhsmServiceTagRule.class);
-        Assertions.assertEquals("xwyjsflhhc", model.tag());
+        Assertions.assertEquals("oellwp", model.tag());
     }
 }

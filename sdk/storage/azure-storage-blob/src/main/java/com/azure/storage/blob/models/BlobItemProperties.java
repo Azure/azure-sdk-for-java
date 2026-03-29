@@ -609,6 +609,26 @@ public final class BlobItemProperties {
     }
 
     /**
+     * Get the smartAccessTier property: The smartAccessTier property.
+     *
+     * @return the smartAccessTier value.
+     */
+    public AccessTier getSmartAccessTier() {
+        return internalProperties.getSmartAccessTier();
+    }
+
+    /**
+    * Set the smartAccessTier property: The smartAccessTier property.
+    *
+    * @param smartAccessTier the smartAccessTier value to set.
+    * @return the BlobItemProperties object itself.
+    */
+    public BlobItemProperties setSmartAccessTier(AccessTier smartAccessTier) {
+        internalProperties.setSmartAccessTier(smartAccessTier);
+        return this;
+    }
+
+    /**
      * Get the archiveStatus property: Possible values include: 'rehydrate-pending-to-hot',
      * 'rehydrate-pending-to-cool'.
      *

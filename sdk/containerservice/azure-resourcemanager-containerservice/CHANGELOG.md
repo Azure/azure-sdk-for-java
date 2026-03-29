@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0-beta.2 (Unreleased)
+## 2.59.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0 (2026-03-20)
+
+### Breaking Changes
+
+- Moved `ContainerServiceManager.serviceClient().getOpenShiftManagedClusters()` to `ContainerServiceManager.openShiftClient().getOpenShiftManagedClusters()`.
+- Moved `ContainerServiceManager.serviceClient().getContainerServices()` to `ContainerServiceManager.orchestratorClient().getContainerServices()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-01-01`.
 
 ## 2.57.1 (2026-01-29)
 

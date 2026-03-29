@@ -5,9 +5,9 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -26,6 +26,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -40,13 +41,13 @@ import java.util.Collections;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  * </ul>
  */
 public class FileSearchSync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
 
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -56,7 +57,7 @@ public class FileSearchSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
         OpenAIClient openAIClient = builder.buildOpenAIClient();
 
         AgentVersionDetails agent = null;
@@ -108,11 +109,13 @@ public class FileSearchSync {
                 .setVersion(agent.getVersion());
 
             // Create a conversation and ask the agent
-            conversation = conversationsClient.getConversationService().create();
+            conversation = conversationService.create();
             System.out.println("Created conversation: " + conversation.id());
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
+                    .conversation(conversation.id())
                     .input("What is the largest planet in the Solar System?"));
 
             // Process and display the response
@@ -154,7 +157,7 @@ public class FileSearchSync {
                 }
             }
             if (conversation != null) {
-                conversationsClient.getConversationService().delete(conversation.id());
+                conversationService.delete(conversation.id());
             }
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());

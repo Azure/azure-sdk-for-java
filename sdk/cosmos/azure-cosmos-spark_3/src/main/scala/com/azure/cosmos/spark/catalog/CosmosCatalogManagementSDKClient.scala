@@ -8,7 +8,7 @@ import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkM
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
-import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters, VectorEmbeddingPolicy => MgmtVectorEmbeddingPolicy, VectorIndex, VectorIndexType}
+import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, PartitionKind, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters, VectorEmbeddingPolicy => MgmtVectorEmbeddingPolicy, VectorIndex, VectorIndexType}
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -229,13 +229,42 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
         val pkVersion = CosmosContainerProperties.getPartitionKeyVersion(containerProperties)
 
-        containerPartitionKey.withPaths(util.Arrays.asList(partitionKeyPath))
-        if (pkVersion.isDefined) {
-            val partitionKeyDefinitionVersion = PartitionKeyDefinitionVersion.valueOf(pkVersion.get)
-            partitionKeyDefinitionVersion match {
-                case PartitionKeyDefinitionVersion.V1 => containerPartitionKey.withVersion(1)
-                case PartitionKeyDefinitionVersion.V2 => containerPartitionKey.withVersion(2)
-                case version: PartitionKeyDefinitionVersion => throw new IllegalStateException(s"Partition key version $version is not supported.")
+        val pathList = partitionKeyPath.split(",").toList
+        if (pathList.size >= 2) {
+            containerPartitionKey.withKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) =>
+                    if (pkKind == PartitionKind.HASH.toString) {
+                        throw new IllegalArgumentException("PartitionKind HASH is not supported for multi-hash partition key")
+                    }
+                    PartitionKind.MULTI_HASH
+                case None => PartitionKind.MULTI_HASH
+            })
+            containerPartitionKey.withVersion(pkVersion match {
+                case Some(version) =>
+                    if (version == PartitionKeyDefinitionVersion.V1.toString) {
+                        throw new IllegalArgumentException("PartitionKeyVersion V1 is not supported for multi-hash partition key")
+                    }
+                    2
+                case None => 2
+            })
+            containerPartitionKey.withPaths(pathList.map(_.trim).asJava)
+        } else {
+            containerPartitionKey.withKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) =>
+                    if (pkKind == PartitionKind.MULTI_HASH.toString) {
+                        throw new IllegalArgumentException("PartitionKind MULTI_HASH is not supported for single-hash partition key")
+                    }
+                    PartitionKind.HASH
+                case None => PartitionKind.HASH
+            })
+            containerPartitionKey.withPaths(util.Arrays.asList(partitionKeyPath))
+            if (pkVersion.isDefined) {
+                val partitionKeyDefinitionVersion = PartitionKeyDefinitionVersion.valueOf(pkVersion.get)
+                partitionKeyDefinitionVersion match {
+                    case PartitionKeyDefinitionVersion.V1 => containerPartitionKey.withVersion(1)
+                    case PartitionKeyDefinitionVersion.V2 => containerPartitionKey.withVersion(2)
+                    case version: PartitionKeyDefinitionVersion => throw new IllegalStateException(s"Partition key version $version is not supported.")
+                }
             }
         }
 

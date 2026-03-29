@@ -1079,6 +1079,52 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
+    public void appendUserAgentSuffix(String suffix) {
+        if (StringUtils.isEmpty(suffix)) {
+            return;
+        }
+
+        String trimmedSuffix = suffix.trim();
+        if (trimmedSuffix.isEmpty()) {
+            return;
+        }
+
+        // Check for duplicate using token matching to prevent unbounded growth when
+        // multiple encryption clients wrap the same CosmosAsyncClient
+        String currentSuffix = this.userAgentContainer.getSuffix();
+        if (StringUtils.isNotEmpty(currentSuffix)) {
+            for (String token : currentSuffix.split("\\s+")) {
+                if (trimmedSuffix.equals(token)) {
+                    return;
+                }
+            }
+        }
+
+        // Preserve feature flags ("|F...") which are appended to userAgent directly
+        // by setFeatureEnabledFlagsAsSuffix and would be lost when setSuffix overwrites userAgent
+        String currentUserAgent = this.userAgentContainer.getUserAgent();
+        String featureFlagsSuffix = null;
+        int featureFlagsIndex = currentUserAgent.indexOf("|F");
+        if (featureFlagsIndex >= 0) {
+            featureFlagsSuffix = currentUserAgent.substring(featureFlagsIndex);
+        }
+
+        String newSuffix;
+        if (StringUtils.isNotEmpty(currentSuffix)) {
+            newSuffix = currentSuffix + " " + trimmedSuffix;
+        } else {
+            newSuffix = trimmedSuffix;
+        }
+
+        this.userAgentContainer.setSuffix(newSuffix);
+
+        // Re-apply feature flags since setSuffix overwrites the userAgent string
+        if (StringUtils.isNotEmpty(featureFlagsSuffix)) {
+            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+        }
+    }
+
+    @Override
     public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
         return mostRecentlyCreatedDiagnostics.get();
     }
@@ -3231,12 +3277,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw new IllegalArgumentException("document");
             }
 
-            Document typedDocument = Document.fromObject(document, options.getEffectiveItemSerializer());
+            Document typedDocument;
+            boolean itemAlreadySerialized = false;
+
+            if (document instanceof Document) {
+                typedDocument = (Document) document;
+            } else if (document instanceof byte[]) {
+                typedDocument = new Document((byte[]) document);
+            } else {
+                typedDocument = Document.fromObject(document, options.getEffectiveItemSerializer());
+                itemAlreadySerialized = true;
+            }
 
             return this.replaceDocumentInternal(
                 documentLink,
                 typedDocument,
                 options,
+                itemAlreadySerialized,
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
@@ -3312,6 +3369,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 document.getSelfLink(),
                 document,
                 options,
+                false,
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
@@ -3327,6 +3385,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String documentLink,
         Document document,
         RequestOptions options,
+        boolean itemAlreadySerialized,
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
@@ -3350,7 +3409,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization, false);
+        // When the item was already serialized via Document.fromObject with the effective
+        // serializer, use DEFAULT_SERIALIZER to convert the Document's propertyBag to bytes
+        // without re-applying the custom serializer (which would double-serialize).
+        CosmosItemSerializer serializerForContent = itemAlreadySerialized
+            ? CosmosItemSerializer.DEFAULT_SERIALIZER
+            : options.getEffectiveItemSerializer();
+        ByteBuffer content = document.serializeJsonToByteBuffer(serializerForContent, onAfterSerialization, false);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(

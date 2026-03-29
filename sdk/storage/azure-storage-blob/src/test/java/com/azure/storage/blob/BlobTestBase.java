@@ -50,6 +50,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
+import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
@@ -197,7 +198,8 @@ public class BlobTestBase extends TestProxyTestBase {
                     new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED",
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
-                        TestProxySanitizerType.HEADER)));
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -285,6 +287,36 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String getBlockID() {
         return Base64.getEncoder().encodeToString(testResourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Builds a {@link BlobSasPermission} with the broadest set of blob SAS permission flags supported for the current
+     * {@link Constants#SAS_SERVICE_VERSION}. Used by directory SAS and SAS query-parameter tests so permission strings
+     * stay consistent and version-gated in one place.
+     *
+     * @return permissions appropriate for the configured SAS service version
+     */
+    protected static BlobSasPermission getAllBlobSasPermissions() {
+        BlobSasPermission allPermissions = new BlobSasPermission().setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true);
+
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
+            allPermissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setDeleteVersionPermission(true)
+                .setTagsPermission(true);
+        }
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-02-10") >= 0) {
+            allPermissions.setPermanentDeletePermission(true);
+        }
+        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-06-12") >= 0) {
+            allPermissions.setImmutabilityPolicyPermission(true);
+        }
+        return allPermissions;
     }
 
     /**

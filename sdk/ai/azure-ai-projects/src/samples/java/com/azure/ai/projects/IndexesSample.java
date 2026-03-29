@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class IndexesSample {
 
     private static IndexesClient indexesClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("AZURE_AI_PROJECTS_ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildIndexesClient();
 
@@ -30,7 +30,7 @@ public class IndexesSample {
         String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
         String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-        AIProjectIndex index = indexesClient.createOrUpdateVersion(
+        AIProjectIndex index = indexesClient.createOrUpdateIndexVersion(
             indexName,
             indexVersion,
             new AzureAISearchIndex()
@@ -44,7 +44,7 @@ public class IndexesSample {
 
     public static void listIndexes() {
         // BEGIN:com.azure.ai.projects.IndexesListSample.listIndexes
-        indexesClient.listLatest().forEach(index -> {
+        indexesClient.listLatestIndexVersions().forEach(index -> {
             System.out.println("Index name: " + index.getName());
             System.out.println("Index version: " + index.getVersion());
             System.out.println("Index description: " + index.getDescription());
@@ -58,7 +58,7 @@ public class IndexesSample {
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 
-        indexesClient.listVersions(indexName).forEach(index -> {
+        indexesClient.listIndexVersions(indexName).forEach(index -> {
             System.out.println("Index name: " + index.getName());
             System.out.println("Index version: " + index.getVersion());
             System.out.println("Index type: " + index.getType());
@@ -73,7 +73,7 @@ public class IndexesSample {
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
-        AIProjectIndex index = indexesClient.getVersion(indexName, indexVersion);
+        AIProjectIndex index = indexesClient.getIndexVersion(indexName, indexVersion);
 
         System.out.println("Retrieved index:");
         System.out.println("Name: " + index.getName());
@@ -90,7 +90,7 @@ public class IndexesSample {
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
         // Delete the index version
-        indexesClient.deleteVersion(indexName, indexVersion);
+        indexesClient.deleteIndexVersion(indexName, indexVersion);
 
         System.out.println("Deleted index: " + indexName + ", version: " + indexVersion);
 

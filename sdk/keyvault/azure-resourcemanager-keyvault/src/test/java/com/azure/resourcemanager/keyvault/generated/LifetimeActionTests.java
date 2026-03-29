@@ -15,21 +15,21 @@ public final class LifetimeActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LifetimeAction model = BinaryData.fromString(
-            "{\"trigger\":{\"timeAfterCreate\":\"w\",\"timeBeforeExpiry\":\"ggicccnxqhue\"},\"action\":{\"type\":\"notify\"}}")
+            "{\"trigger\":{\"timeAfterCreate\":\"lmkk\",\"timeBeforeExpiry\":\"vdlhewpusdsttwv\"},\"action\":{\"type\":\"notify\"}}")
             .toObject(LifetimeAction.class);
-        Assertions.assertEquals("w", model.trigger().timeAfterCreate());
-        Assertions.assertEquals("ggicccnxqhue", model.trigger().timeBeforeExpiry());
+        Assertions.assertEquals("lmkk", model.trigger().timeAfterCreate());
+        Assertions.assertEquals("vdlhewpusdsttwv", model.trigger().timeBeforeExpiry());
         Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.action().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LifetimeAction model = new LifetimeAction()
-            .withTrigger(new Trigger().withTimeAfterCreate("w").withTimeBeforeExpiry("ggicccnxqhue"))
+            .withTrigger(new Trigger().withTimeAfterCreate("lmkk").withTimeBeforeExpiry("vdlhewpusdsttwv"))
             .withAction(new Action().withType(KeyRotationPolicyActionType.NOTIFY));
         model = BinaryData.fromObject(model).toObject(LifetimeAction.class);
-        Assertions.assertEquals("w", model.trigger().timeAfterCreate());
-        Assertions.assertEquals("ggicccnxqhue", model.trigger().timeBeforeExpiry());
+        Assertions.assertEquals("lmkk", model.trigger().timeAfterCreate());
+        Assertions.assertEquals("vdlhewpusdsttwv", model.trigger().timeBeforeExpiry());
         Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.action().type());
     }
 }

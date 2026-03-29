@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,7 +44,7 @@ To interact with the Azure Agents service, you'll need to create an instance of 
 AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildClient();
+                .buildAgentsClient();
 ```
 
 Alternatively, you can create an asynchronous client using the `AgentsAsyncClient` class.
@@ -53,14 +53,15 @@ Alternatively, you can create an asynchronous client using the `AgentsAsyncClien
 AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildAsyncClient();
+                .buildAgentsAsyncClient();
 ``` 
 
 The Agents client library has 3 sub-clients which group the different operations that can be performed: 
 - `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents.
-- `ConversationsClient` / `ConversationsAsyncClient`: Handle conversation operations. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+
+Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
 To access each sub-client you need to use your `AgentsClientBuilder()`. The Agents client library takes the [Official OpenAI SDK][openai_java_sdk] as a dependency, which is used for all operations, except the ones corresponding to direct Agent management.
 
@@ -70,17 +71,17 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
                 .endpoint(endpoint);
 
 // Agents sub-clients
-AgentsClient agentsClient = builder.buildClient();
-AgentsAsyncClient agentsAsyncClient = builder.buildAsyncClient();
-// Conversations sub-clients.
-ConversationsClient conversationsClient = builder.buildConversationsClient();
-ConversationsAsyncClient conversationsAsyncClient = builder.buildConversationsAsyncClient();
+AgentsClient agentsClient = builder.buildAgentsClient();
+AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
 // Responses sub-clients.
 ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+// Memory Stores sub-clients (preview).
+MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
+MemoryStoresAsyncClient memoryStoresAsyncClient = builder.buildMemoryStoresAsyncClient();
 ```
 
-The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be accessed from either the `ResponsesClient` or the `ConversationsClient` using the `getOpenAIClient()` method. Alternatively, you can build an `OpenAIClient` or `OpenAIClientAsync` directly from the `AgentsClientBuilder`:
+The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be built directly from the `AgentsClientBuilder`. Use it to access conversation operations and other OpenAI services:
 
 ```java
 OpenAIClient openAIClient = builder.buildOpenAIClient();
@@ -122,19 +123,19 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
 
-- **`AgentDefinitionFeatureKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
+- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
 - **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
 
 > **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request.
 
 ```java
-// OpenAI SDK ResponsesService accessed from ResponsesClient
+// OpenAI SDK ResponseService accessed from ResponsesClient
 ResponsesClient responsesClient = builder.buildResponsesClient();
-ResponsesService responsesService = responsesClient.getOpenAIClient();
+ResponseService responseService = responsesClient.getResponseService();
 
-// OpenAI SDK ConversationService accessed from ConversationsClient
-ConversationsClient conversationsClient = builder.buildConversationsClient();
-ConversationService conversationService = conversationsClient.getOpenAIClient();
+// OpenAI SDK ConversationService accessed from OpenAIClient
+OpenAIClient openAIClient = builder.buildOpenAIClient();
+ConversationService conversationService = openAIClient.conversations();
 ```
 
 ### Using OpenAI's official library
@@ -173,20 +174,20 @@ PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o"
 AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
 ```
 
-This will return an `AgentVersionObject` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
+This will return an `AgentVersionDetails` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
 
 #### Create conversation
 
 First we need to create our `Conversation` object so we can attach items to it:
 
 ```java com.azure.ai.agents.create_conversation
-Conversation conversation = conversationsClient.getConversationService().create();
+Conversation conversation = conversationsClient.create();
 ```
 
 With `conversation.id()` contains the reference we will use to append messages to this `Conversation`. `Conversation` objects can be used by multiple agents and serve the purpose of being a centralized source of context. To add items:
 
 ```java com.azure.ai.agents.add_message_to_conversation
-conversationsClient.getConversationService().items().create(
+conversationsClient.items().create(
     ItemCreateParams.builder()
         .conversationId(conversation.id())
         .addItem(EasyInputMessage.builder()
@@ -207,7 +208,11 @@ And the final step that ties everything together, we pass the `AgentReference` a
 
 ```java com.azure.ai.agents.create_response
 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions().setAgentReference(agentReference),
+    ResponseCreateParams.builder().conversation(conversation.id()));
+// To extract Azure-specific response details:
+AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
 ```
 
 ### Using Agent tools
@@ -378,7 +383,7 @@ AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
 );
 ```
 
-*After calling `responsesClient.createWithAgent()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
+*After calling `responsesClient.createAzureResponse()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
 
 See the full sample in [AzureFunctionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureFunctionSync.java).
 
@@ -576,7 +581,8 @@ ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response - text is printed as it arrives
 IterableStream<ResponseStreamEvent> events =
-    responsesClient.createStreamingWithAgent(agentReference,
+    responsesClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
         ResponseCreateParams.builder()
             .input("Tell me a short story about a brave explorer."));
 
@@ -603,7 +609,8 @@ The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrati
 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response asynchronously - text is printed as each chunk arrives
-return responsesAsyncClient.createStreamingWithAgent(agentReference,
+return responsesAsyncClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
         ResponseCreateParams.builder()
             .input("Tell me a short story about a brave explorer."))
     .doOnNext(event -> {
@@ -623,6 +630,56 @@ See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azu
 
 ---
 
+### Structured inputs
+
+Structured inputs allow you to define named parameters on an agent that get substituted into its prompt template at runtime. This is useful when you want the same agent definition to handle different users or contexts by simply changing the input values.
+
+#### Define structured inputs on an agent
+
+When creating the agent, declare each structured input with a description and whether it is required. Use `{{inputName}}` placeholders in the instructions to reference them:
+
+```java com.azure.ai.agents.define_structured_inputs
+// Create an agent with structured input definitions
+Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+structuredInputDefinitions.put("userName",
+    new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+structuredInputDefinitions.put("userRole",
+    new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
+    new PromptAgentDefinition(model)
+        .setInstructions("You are a helpful assistant. "
+            + "The user's name is {{userName}} and their role is {{userRole}}. "
+            + "Greet them and confirm their details.")
+        .setStructuredInputs(structuredInputDefinitions));
+```
+
+#### Create a response with structured input values
+
+When creating a response, pass a `Map<String, BinaryData>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
+
+```java com.azure.ai.agents.create_response_with_structured_input
+// Build the structured input values that match the agent's definitions
+Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
+
+// Create a response using AzureCreateResponse, which flattens agent_reference
+// and structured_inputs as top-level properties in the request body
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions()
+        .setAgentReference(new AgentReference(agent.getName()).setVersion(agent.getVersion()))
+        .setStructuredInputs(structuredInputValues),
+    ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
+);
+```
+
+Streaming is also supported via `createStreamingAzureResponse`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+
+See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
+
+---
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
@@ -639,6 +696,31 @@ If there are significant differences, API calls may fail due to incompatibility.
 Always ensure that the chosen API version is fully supported and operational for your specific use case and that it aligns with the service's versioning policy.
 
 ## Troubleshooting
+
+### Enable client logging
+
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][logLevels].
+
+To log full HTTP request and response bodies (including headers), set:
+
+```bash
+export AZURE_LOG_LEVEL=verbose
+export AZURE_HTTP_LOG_DETAIL_LEVEL=body_and_headers
+```
+
+### Default HTTP Client
+
+All client libraries by default use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
+
+### Default SSL library
+
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 
@@ -661,3 +743,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_java_sdk]: https://github.com/openai/openai-java/
 [openai_responses_api_docs]: https://platform.openai.com/docs/api-reference/responses
 [openai_conversations_api_docs]: https://platform.openai.com/docs/api-reference/conversations
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

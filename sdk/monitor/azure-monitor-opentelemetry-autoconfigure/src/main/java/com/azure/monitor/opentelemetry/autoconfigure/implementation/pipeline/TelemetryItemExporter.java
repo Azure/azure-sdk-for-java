@@ -11,6 +11,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.Met
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import io.opentelemetry.api.common.AttributeKey;
@@ -70,6 +71,33 @@ public class TelemetryItemExporter {
         return CompletableResultCode.ofAll(resultCodeList);
     }
 
+    /**
+     * Sends telemetry items without computing customer-facing SDKStats metadata.
+     * Used for sending customer SDKStats metrics themselves to prevent recursive counting.
+     * Items sent via this method will NOT trigger CustomerSdkStatsTelemetryPipelineListener
+     * since the TelemetryPipelineRequest will have empty item count maps.
+     *
+     * <p>This intentionally bypasses {@link #internalSendByBatch} and its AKS
+     * {@code _OTELRESOURCE_} metric injection, since SDKStats metrics are not
+     * application telemetry and should not carry OTel resource attributes.</p>
+     */
+    public CompletableResultCode sendWithoutTracking(List<TelemetryItem> telemetryItems) {
+        Map<TelemetryItemBatchKey, List<TelemetryItem>> batches = splitIntoBatches(telemetryItems);
+        List<CompletableResultCode> resultCodeList = new ArrayList<>();
+        for (Map.Entry<TelemetryItemBatchKey, List<TelemetryItem>> batch : batches.entrySet()) {
+            try {
+                List<ByteBuffer> byteBuffers = serialize(batch.getValue());
+                encodeBatchOperationLogger.recordSuccess();
+                resultCodeList.add(telemetryPipeline.send(byteBuffers, batch.getKey().connectionString, listener));
+            } catch (Throwable t) {
+                encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
+                resultCodeList.add(CompletableResultCode.ofFailure());
+            }
+        }
+        maybeAddToActiveExportResults(resultCodeList);
+        return CompletableResultCode.ofAll(resultCodeList);
+    }
+
     // visible for tests
     Map<TelemetryItemBatchKey, List<TelemetryItem>> splitIntoBatches(List<TelemetryItem> telemetryItems) {
 
@@ -109,6 +137,11 @@ public class TelemetryItemExporter {
     CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
         List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
+
+        // Compute per-type item counts BEFORE injecting internal metrics (e.g. _OTELRESOURCE_)
+        // so that only customer telemetry is counted in SDKStats.
+        TelemetryBatchMetadata batchMetadata = TelemetryBatchMetadata.fromTelemetryItems(telemetryItems);
+
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
         // Don't Send _OTELRESOURCE_ when the app is running on other env other than AKS
@@ -118,6 +151,7 @@ public class TelemetryItemExporter {
             && AksResourceAttributes.isAks(telemetryItemBatchKey.resource)) {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
+
         try {
             byteBuffers = serialize(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
@@ -125,7 +159,7 @@ public class TelemetryItemExporter {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
             return CompletableResultCode.ofFailure();
         }
-        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
+        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener, batchMetadata);
     }
 
     // serialize an array of TelemetryItems to an array of byte buffers

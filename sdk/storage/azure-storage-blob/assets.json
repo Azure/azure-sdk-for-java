@@ -2,5 +2,9 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "java",
   "TagPrefix": "java/storage/azure-storage-blob",
+<<<<<<< HEAD
   "Tag": "java/storage/azure-storage-blob_82804ca00b"
+=======
+  "Tag": "java/storage/azure-storage-blob_47f4243e59"
+>>>>>>> 2f62bd8eef0b0818ed1f767929d40fdf976f88b2
 }

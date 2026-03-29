@@ -1,14 +1,10 @@
 ## Release History
 
-### 2.28.0-beta.1 (Unreleased)
+### 2.28.0 (2026-03-27)
 
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+* Added user agent tracking for the encryption SDK. The user agent string now includes `azure-cosmos-encryption/{version}` to enable telemetry tracking of encryption SDK adoption and version distribution. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
+* GA'd `deleteAllItemsByPartitionKey` and `queryChangeFeed` APIs in `CosmosEncryptionAsyncContainer` and `CosmosEncryptionContainer`. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
 
 ### 2.27.0 (2026-02-10)
 

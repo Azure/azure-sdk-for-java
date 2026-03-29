@@ -18,7 +18,7 @@ import java.nio.file.Path;
 public class DatasetsSample {
 
     private static DatasetsClient datasetsClient
-            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildDatasetsClient();
 
@@ -53,7 +53,7 @@ public class DatasetsSample {
         // BEGIN:com.azure.ai.projects.DatasetsSample.listDatasets
 
         System.out.println("Listing all datasets (latest versions):");
-        datasetsClient.listLatestVersion().forEach(dataset -> {
+        datasetsClient.listLatestDatasetVersions().forEach(dataset -> {
             System.out.println("\nDataset name: " + dataset.getName());
             System.out.println("Dataset Id: " + dataset.getId());
             System.out.println("Dataset version: " + dataset.getVersion());
@@ -72,12 +72,12 @@ public class DatasetsSample {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
 
         System.out.println("Listing all versions of dataset: " + datasetName);
-        datasetsClient.listVersions(datasetName).forEach(version -> {
+        datasetsClient.listDatasetVersions(datasetName).forEach(version -> {
             System.out.println("\nDataset name: " + version.getName());
             System.out.println("Dataset version: " + version.getVersion());
             System.out.println("Dataset type: " + version.getType());
-            if (version.getDataUri() != null) {
-                System.out.println("Data URI: " + version.getDataUri());
+            if (version.getDataUrl() != null) {
+                System.out.println("Data URI: " + version.getDataUrl());
             }
         });
 
@@ -96,8 +96,8 @@ public class DatasetsSample {
         System.out.println("Name: " + dataset.getName());
         System.out.println("Version: " + dataset.getVersion());
         System.out.println("Type: " + dataset.getType());
-        if (dataset.getDataUri() != null) {
-            System.out.println("Data URI: " + dataset.getDataUri());
+        if (dataset.getDataUrl() != null) {
+            System.out.println("Data URI: " + dataset.getDataUrl());
         }
         if (dataset.getDescription() != null) {
             System.out.println("Description: " + dataset.getDescription());
@@ -113,7 +113,7 @@ public class DatasetsSample {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Delete the specific version of the dataset
-        datasetsClient.deleteVersion(datasetName, datasetVersion);
+        datasetsClient.deleteDatasetVersion(datasetName, datasetVersion);
 
         System.out.println("Deleted dataset: " + datasetName + ", version: " + datasetVersion);
 
@@ -129,11 +129,11 @@ public class DatasetsSample {
 
         // Create a new FileDatasetVersion with provided dataUri
         FileDatasetVersion fileDataset = new FileDatasetVersion()
-            .setDataUri(dataUri)
+            .setDataUrl(dataUri)
             .setDescription("Sample dataset created via SDK");
 
         // Create or update the dataset
-        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient.createOrUpdateVersion(
+        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient.createOrUpdateDatasetVersion(
             datasetName,
             datasetVersion,
             fileDataset
@@ -142,7 +142,7 @@ public class DatasetsSample {
         System.out.println("Created/Updated dataset:");
         System.out.println("Name: " + createdDataset.getName());
         System.out.println("Version: " + createdDataset.getVersion());
-        System.out.println("Data URI: " + createdDataset.getDataUri());
+        System.out.println("Data URI: " + createdDataset.getDataUrl());
 
         // END:com.azure.ai.projects.DatasetsSample.createOrUpdateDataset
     }

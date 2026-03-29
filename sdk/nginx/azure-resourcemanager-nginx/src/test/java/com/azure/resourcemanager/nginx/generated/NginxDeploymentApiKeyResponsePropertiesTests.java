@@ -13,8 +13,8 @@ public final class NginxDeploymentApiKeyResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentApiKeyResponseProperties model
-            = BinaryData.fromString("{\"hint\":\"npqxuh\",\"endDateTime\":\"2021-07-26T12:53:27Z\"}")
+            = BinaryData.fromString("{\"hint\":\"b\",\"endDateTime\":\"2021-06-19T13:57:47Z\"}")
                 .toObject(NginxDeploymentApiKeyResponseProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T12:53:27Z"), model.endDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T13:57:47Z"), model.endDateTime());
     }
 }
