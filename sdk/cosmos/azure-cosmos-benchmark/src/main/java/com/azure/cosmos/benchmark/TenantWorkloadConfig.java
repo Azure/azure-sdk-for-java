@@ -188,6 +188,12 @@ public class TenantWorkloadConfig {
     @JsonProperty("aggressiveWarmupDuration")
     private String aggressiveWarmupDuration;
 
+    @JsonProperty("endToEndTimeoutMs")
+    private Integer endToEndTimeoutMs;
+
+    @JsonProperty("availabilityStrategyEnabled")
+    private Boolean availabilityStrategyEnabled;
+
     // ======== Connection params ========
 
     @JsonProperty("connectionMode")
@@ -313,6 +319,9 @@ public class TenantWorkloadConfig {
         if (aggressiveWarmupDuration == null) return Duration.ZERO;
         return Duration.parse(aggressiveWarmupDuration);
     }
+
+    public Integer getEndToEndTimeoutMs() { return endToEndTimeoutMs; }
+    public boolean isAvailabilityStrategyEnabled() { return availabilityStrategyEnabled != null && availabilityStrategyEnabled; }
 
     public int getNumberOfCollectionForCtl() { return numberOfCollectionForCtl != null ? numberOfCollectionForCtl : 4; }
     public String getReadWriteQueryReadManyPct() { return readWriteQueryReadManyPct != null ? readWriteQueryReadManyPct : "90,8,1,1"; }
@@ -496,6 +505,10 @@ public class TenantWorkloadConfig {
                     if (overwrite || proactiveConnectionRegionsCount == null) proactiveConnectionRegionsCount = Integer.parseInt(value); break;
                 case "aggressiveWarmupDuration":
                     if (overwrite || aggressiveWarmupDuration == null) aggressiveWarmupDuration = value; break;
+                case "endToEndTimeoutMs":
+                    if (overwrite || endToEndTimeoutMs == null) endToEndTimeoutMs = Integer.parseInt(value); break;
+                case "availabilityStrategyEnabled":
+                    if (overwrite || availabilityStrategyEnabled == null) availabilityStrategyEnabled = Boolean.parseBoolean(value); break;
                 case "connectionMode":
                     if (overwrite || connectionMode == null) connectionMode = value; break;
                 case "consistencyLevel":

@@ -10,6 +10,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -60,11 +62,24 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     final String partitionKey;
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
+    final CosmosEndToEndOperationLatencyPolicyConfig e2ePolicyConfig;
 
     AsyncBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
 
         workloadConfig = cfg;
         this.benchmarkScheduler = scheduler;
+
+        // Build E2E timeout policy if configured (applied per-request, NOT at client level)
+        if (cfg.getEndToEndTimeoutMs() != null) {
+            logger.info("E2E timeout policy: {}ms (will be set on request options, not client builder)",
+                cfg.getEndToEndTimeoutMs());
+            this.e2ePolicyConfig = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(
+                Duration.ofMillis(cfg.getEndToEndTimeoutMs()))
+                .enable(true)
+                .build();
+        } else {
+            this.e2ePolicyConfig = null;
+        }
 
         final TokenCredential credential = cfg.isManagedIdentityRequired()
             ? cfg.buildTokenCredential()

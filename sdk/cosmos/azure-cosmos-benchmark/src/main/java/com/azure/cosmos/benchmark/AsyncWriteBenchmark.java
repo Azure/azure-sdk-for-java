@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 
@@ -16,12 +17,17 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
 
     private final String uuid;
     private final String dataFieldValue;
+    private final CosmosItemRequestOptions writeOptions;
 
     AsyncWriteBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
         super(cfg, scheduler);
 
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
+        this.writeOptions = new CosmosItemRequestOptions();
+        if (e2ePolicyConfig != null) {
+            writeOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicyConfig);
+        }
     }
 
     @Override
@@ -40,7 +46,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
                 partitionKey,
                 workloadConfig.getDocumentDataFieldCount()),
                 new PartitionKey(id),
-                null);
+                writeOptions);
         }
         // Raw type cast is required because CosmosItemResponse uses wildcard generics
         // that cannot be expressed in the class type parameter without propagating
