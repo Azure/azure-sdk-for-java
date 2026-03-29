@@ -14,9 +14,7 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +22,7 @@ import java.util.Map;
  */
 public class StructuredMessageEncoder {
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageEncoder.class);
+    private static final int CRC64_SCRATCH_BUFFER_SIZE = 64 * 1024;
 
     private final int messageVersion;
     private final int contentLength;
@@ -37,6 +36,7 @@ public class StructuredMessageEncoder {
     private int currentSegmentOffset;
     private long messageCRC64;
     private final Map<Integer, Long> segmentCRC64s;
+    private final byte[] crc64ScratchBuffer;
 
     /**
      * Constructs a new StructuredMessageEncoder.
@@ -65,6 +65,7 @@ public class StructuredMessageEncoder {
         this.currentSegmentOffset = 0;
         this.messageCRC64 = 0;
         this.segmentCRC64s = new HashMap<>();
+        this.crc64ScratchBuffer = new byte[CRC64_SCRATCH_BUFFER_SIZE];
 
         if (numSegments > Short.MAX_VALUE) {
             StorageImplUtils.assertInBounds("numSegments", numSegments, 1, Short.MAX_VALUE);
@@ -130,8 +131,8 @@ public class StructuredMessageEncoder {
 
         return Flux.defer(() -> {
             if (currentContentOffset == contentLength) {
-                return Flux.error(
-                    LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded.")));
+                // Already encoded; return empty (e.g. extra aggregator from staging/flush, or retry re-subscription).
+                return Flux.empty();
             }
 
             if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
@@ -143,42 +144,44 @@ public class StructuredMessageEncoder {
                 return Flux.empty();
             }
 
-            // create a list of buffers to store the encoded message
-            List<ByteBuffer> buffers = new ArrayList<>();
-
-            // if we are at the beginning of the message, encode message header
-            if (currentContentOffset == 0) {
-                buffers.add(ByteBuffer.wrap(generateMessageHeader()));
-            }
-
-            while (unencodedBuffer.hasRemaining()) {
-                // if we are at the beginning of a segment's content, encode segment header
-                if (currentSegmentOffset == 0) {
-                    incrementCurrentSegment();
-                    buffers.add(ByteBuffer.wrap(generateSegmentHeader()));
+            // Emit buffers lazily to avoid materializing full encoded output in memory
+            return Flux.create(sink -> {
+                // if we are at the beginning of the message, encode message header and emit it
+                if (currentContentOffset == 0) {
+                    sink.next(ByteBuffer.wrap(generateMessageHeader()));
                 }
 
-                buffers.add(encodeSegmentContent(unencodedBuffer));
-
-                // if we are at the end of a segment's content, encode segment footer
-                if (currentSegmentOffset == getSegmentContentLength()) {
-                    byte[] footer = generateSegmentFooter();
-                    if (footer.length > 0) {
-                        buffers.add(ByteBuffer.wrap(footer));
+                // while there are remaining bytes in the unencoded buffer, encode the segment content
+                while (unencodedBuffer.hasRemaining()) {
+                    // if we are at the beginning of a segment's content, encode segment header and emit it
+                    if (currentSegmentOffset == 0) {
+                        incrementCurrentSegment();
+                        sink.next(ByteBuffer.wrap(generateSegmentHeader()));
                     }
-                    currentSegmentOffset = 0;
-                }
-            }
 
-            // if all content has been encoded, encode message footer
-            if (currentContentOffset == contentLength) {
-                byte[] footer = generateMessageFooter();
-                if (footer.length > 0) {
-                    buffers.add(ByteBuffer.wrap(footer));
-                }
-            }
+                    // encode the segment content and emit it
+                    sink.next(encodeSegmentContent(unencodedBuffer));
 
-            return Flux.fromIterable(buffers);
+                    // if we are at the end of a segment's content, encode segment footer
+                    if (currentSegmentOffset == getSegmentContentLength()) {
+                        byte[] footer = generateSegmentFooter();
+                        if (footer.length > 0) {
+                            sink.next(ByteBuffer.wrap(footer));
+                        }
+                        currentSegmentOffset = 0;
+                    }
+                }
+
+                // if all content has been encoded, encode message footer and emit it
+                if (currentContentOffset == contentLength) {
+                    byte[] footer = generateMessageFooter();
+                    if (footer.length > 0) {
+                        sink.next(ByteBuffer.wrap(footer));
+                    }
+                }
+
+                sink.complete();
+            });
         });
     }
 
@@ -200,20 +203,48 @@ public class StructuredMessageEncoder {
     }
 
     private ByteBuffer encodeSegmentContent(ByteBuffer unencodedBuffer) {
+        // get the number of bytes to read from the unencoded buffer based on the segment content length and the current segment offset
         int readSize = Math.min(unencodedBuffer.remaining(), getSegmentContentLength() - currentSegmentOffset);
-        byte[] content = new byte[readSize];
-        unencodedBuffer.get(content, 0, readSize);
 
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-            segmentCRC64s.put(currentSegmentNumber,
-                StorageCrc64Calculator.compute(content, segmentCRC64s.get(currentSegmentNumber)));
-            messageCRC64 = StorageCrc64Calculator.compute(content, messageCRC64);
+            if (unencodedBuffer.hasArray()) {
+                // if the unencoded buffer has an array, compute the CRC64 checksum of the segment content
+                // this is more efficient than copying the array to a new byte array and computing the checksum
+                int pos = unencodedBuffer.arrayOffset() + unencodedBuffer.position();
+                segmentCRC64s.put(currentSegmentNumber, StorageCrc64Calculator.compute(unencodedBuffer.array(), pos,
+                    readSize, segmentCRC64s.get(currentSegmentNumber)));
+                messageCRC64 = StorageCrc64Calculator.compute(unencodedBuffer.array(), pos, readSize, messageCRC64);
+            } else {
+                updateCrc64sWithoutAccessibleArray(unencodedBuffer, readSize);
+            }
         }
 
         currentContentOffset += readSize;
         currentSegmentOffset += readSize;
 
-        return ByteBuffer.wrap(content);
+        // Return a view (slice) to avoid allocating 4MB per segment; caller must consume before next segment.
+        ByteBuffer slice = unencodedBuffer.slice();
+        slice.limit(readSize);
+        unencodedBuffer.position(unencodedBuffer.position() + readSize);
+        return slice.asReadOnlyBuffer();
+    }
+
+    private void updateCrc64sWithoutAccessibleArray(ByteBuffer unencodedBuffer, int readSize) {
+        ByteBuffer duplicate = unencodedBuffer.duplicate();
+        duplicate.limit(duplicate.position() + readSize);
+
+        long segmentCrc64 = segmentCRC64s.get(currentSegmentNumber);
+        long currentMessageCrc64 = messageCRC64;
+
+        while (duplicate.hasRemaining()) {
+            int chunkSize = Math.min(duplicate.remaining(), crc64ScratchBuffer.length);
+            duplicate.get(crc64ScratchBuffer, 0, chunkSize);
+            segmentCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, segmentCrc64);
+            currentMessageCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, currentMessageCrc64);
+        }
+
+        segmentCRC64s.put(currentSegmentNumber, segmentCrc64);
+        messageCRC64 = currentMessageCrc64;
     }
 
     private int calculateMessageLength() {

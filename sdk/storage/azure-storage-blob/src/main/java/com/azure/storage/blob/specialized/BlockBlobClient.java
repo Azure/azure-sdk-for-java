@@ -38,17 +38,14 @@ import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.time.Duration;
 import java.util.List;
@@ -314,9 +311,7 @@ public final class BlockBlobClient extends BlobClientBase {
             options.getBlockSizeInBytes() != null
                 ? options.getBlockSizeInBytes().intValue()
                 : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
-                options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),
-            startingPosition);
+            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options, internalMode, null), startingPosition);
     }
 
     private BlobClientBuilder prepareBuilder() {
@@ -787,11 +782,11 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb
-            = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
-        Mono<Response<Void>> response
-            = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId, context);
+        Mono<Response<Void>> response = client.stageBlockWithResponseInternal(
+            new BlockBlobStageBlockOptions(base64BlockId, BinaryData.fromStream(data, length)).setContentMd5(contentMd5)
+                .setLeaseId(leaseId),
+            context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -827,8 +822,8 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
-            options.getContentMd5(), options.getLeaseId(), context);
+
+        Mono<Response<Void>> response = client.stageBlockWithResponseInternal(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

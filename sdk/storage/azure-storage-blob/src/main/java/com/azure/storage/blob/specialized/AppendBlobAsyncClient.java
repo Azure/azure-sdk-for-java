@@ -38,8 +38,11 @@ import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -499,9 +502,22 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
+        if (ContentValidationBehaviorUtil.hasConflictingTransactionalContentValidation(contentMd5,
+            requestChecksumAlgorithm)) {
+            return monoError(LOGGER, new IllegalArgumentException(
+                ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
+        }
+
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
         context = context == null ? Context.NONE : context;
+
+        String contentValidationBehavior
+            = ContentValidationBehaviorUtil.getBehaviorForSinglePartUpload(requestChecksumAlgorithm, length);
+        if (contentValidationBehavior != null) {
+            context = context.addData(StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY,
+                contentValidationBehavior);
+        }
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,

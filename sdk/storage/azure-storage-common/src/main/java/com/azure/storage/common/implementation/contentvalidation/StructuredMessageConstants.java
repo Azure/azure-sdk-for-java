@@ -38,7 +38,18 @@ public final class StructuredMessageConstants {
     public static final int STATIC_MAXIMUM_ENCODED_DATA_LENGTH = 4 * 1024 * 1024; // 4 MiB
 
     /**
-     * The header name for the CRC64 checksum.
+     * The maximum single part upload size to use CRC64 header.
+     */
+    public static final int MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER = 4 * 1024 * 1024; // 4 MiB
+
+    /**
+     * The structured body type header value indicating version 1 with CRC64 properties.
      */
     public static final String STRUCTURED_BODY_TYPE_VALUE = "XSM/1.0; properties=crc64";
+
+    public static final String CONTENT_VALIDATION_BEHAVIOR_KEY = "contentValidationBehavior";
+
+    public static final String USE_CRC64_CHECKSUM_HEADER_CONTEXT = "crc64ChecksumHeaderContext";
+
+    public static final String USE_STRUCTURED_MESSAGE_CONTEXT = "structuredMessageChecksumAlgorithm";
 }

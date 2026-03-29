@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -280,7 +281,9 @@ public class BlobParallelUploadOptions {
      * Gets the computeMd5 property.
      *
      * @return Whether the library should calculate the md5 and send it for the service to verify.
+     * @deprecated Use {@link #getRequestChecksumAlgorithm()} instead.
      */
+    @Deprecated
     public boolean isComputeMd5() {
         return computeMd5;
     }
@@ -291,7 +294,9 @@ public class BlobParallelUploadOptions {
      * @param computeMd5 Whether the library should calculate the md5 and send it for the service to
      * verify.
      * @return The updated options.
+     * @deprecated Use {@link #setRequestChecksumAlgorithm(StorageChecksumAlgorithm)} instead.
      */
+    @Deprecated
     public BlobParallelUploadOptions setComputeMd5(boolean computeMd5) {
         this.computeMd5 = computeMd5;
         return this;

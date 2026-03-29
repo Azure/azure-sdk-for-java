@@ -19,9 +19,10 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
