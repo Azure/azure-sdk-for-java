@@ -6,6 +6,7 @@ package com.azure.ai.voicelive;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.MockTokenCredential;
+import io.opentelemetry.api.OpenTelemetry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -202,5 +203,57 @@ class VoiceLiveClientBuilderTest {
         assertSame(clientBuilder, clientBuilder.endpoint("https://test.cognitiveservices.azure.com"));
         assertSame(clientBuilder, clientBuilder.credential(mockKeyCredential));
         assertSame(clientBuilder, clientBuilder.serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW));
+    }
+
+    @Test
+    void testBuilderWithExplicitOpenTelemetry() {
+        String endpoint = "https://test.cognitiveservices.azure.com";
+
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
+                .credential(mockKeyCredential)
+                .openTelemetry(OpenTelemetry.noop())
+                .buildAsyncClient();
+
+            assertNotNull(client);
+        });
+    }
+
+    @Test
+    void testBuilderWithNullOpenTelemetryThrows() {
+        assertThrows(NullPointerException.class, () -> clientBuilder.openTelemetry(null));
+    }
+
+    @Test
+    void testBuilderDefaultsToGlobalOpenTelemetry() {
+        // When no explicit OpenTelemetry is set, builder should use GlobalOpenTelemetry.getOrNoop()
+        String endpoint = "https://test.cognitiveservices.azure.com";
+
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client
+                = clientBuilder.endpoint(endpoint).credential(mockKeyCredential).buildAsyncClient();
+
+            assertNotNull(client);
+        });
+    }
+
+    @Test
+    void testBuilderOpenTelemetryReturnsBuilder() {
+        assertSame(clientBuilder, clientBuilder.openTelemetry(OpenTelemetry.noop()));
+    }
+
+    @Test
+    void testBuilderWithOpenTelemetryAndContentRecording() {
+        String endpoint = "https://test.cognitiveservices.azure.com";
+
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
+                .credential(mockKeyCredential)
+                .openTelemetry(OpenTelemetry.noop())
+                .enableContentRecording(true)
+                .buildAsyncClient();
+
+            assertNotNull(client);
+        });
     }
 }

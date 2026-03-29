@@ -25,6 +25,11 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import reactor.core.publisher.Mono;
 
 
@@ -84,6 +89,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * # With Token Credential:
  * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-token-credential"
+ *
+ * # With OpenTelemetry tracing enabled:
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
  * }</pre>
  */
 public final class VoiceAssistantSample {
@@ -361,10 +369,12 @@ public final class VoiceAssistantSample {
     public static void main(String[] args) {
         // Parse command line arguments
         boolean useTokenCredential = false;
+        boolean enableTracing = false;
         for (String arg : args) {
             if ("--use-token-credential".equals(arg)) {
                 useTokenCredential = true;
-                break;
+            } else if ("--enable-tracing".equals(arg)) {
+                enableTracing = true;
             }
         }
 
@@ -389,6 +399,19 @@ public final class VoiceAssistantSample {
             return;
         }
 
+        // Set up OpenTelemetry tracing if enabled
+        SdkTracerProvider tracerProvider = null;
+        OpenTelemetry otel = null;
+        if (enableTracing) {
+            tracerProvider = SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+                .build();
+            otel = OpenTelemetrySdk.builder()
+                .setTracerProvider(tracerProvider)
+                .build();
+            System.out.println("📊 OpenTelemetry tracing enabled (console exporter)");
+        }
+
         System.out.println("🎙️ Starting Voice Assistant...");
 
         try {
@@ -397,16 +420,20 @@ public final class VoiceAssistantSample {
                 System.out.println("🔑 Using Token Credential authentication (Azure CLI)");
                 System.out.println("   Make sure you have run 'az login' before running this sample");
                 TokenCredential credential = new AzureCliCredentialBuilder().build();
-                runVoiceAssistant(endpoint, credential);
+                runVoiceAssistant(endpoint, credential, otel);
             } else {
                 // Use API Key authentication
                 System.out.println("🔑 Using API Key authentication");
-                runVoiceAssistant(endpoint, new KeyCredential(apiKey));
+                runVoiceAssistant(endpoint, new KeyCredential(apiKey), otel);
             }
             System.out.println("✓ Voice Assistant completed successfully");
         } catch (Exception e) {
             System.err.println("❌ Voice Assistant failed: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            if (tracerProvider != null) {
+                tracerProvider.close();
+            }
         }
     }
 
@@ -449,6 +476,7 @@ public final class VoiceAssistantSample {
         System.err.println("  " + ENV_API_KEY + "=<your-api-key> (required if not using --use-token-credential)");
         System.err.println("\nOptional:");
         System.err.println("  Use --use-token-credential flag to authenticate with Azure CLI (requires 'az login')");
+        System.err.println("  Use --enable-tracing flag to enable OpenTelemetry tracing (console exporter)");
     }
 
     /**
@@ -456,17 +484,21 @@ public final class VoiceAssistantSample {
      *
      * @param endpoint The VoiceLive service endpoint
      * @param credential The API key credential
+     * @param otel The OpenTelemetry instance, or null to disable tracing
      */
-    private static void runVoiceAssistant(String endpoint, KeyCredential credential) {
+    private static void runVoiceAssistant(String endpoint, KeyCredential credential, OpenTelemetry otel) {
         System.out.println("🔧 Initializing VoiceLive client:");
         System.out.println("   Endpoint: " + endpoint);
 
         // Create the VoiceLive client
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+        VoiceLiveClientBuilder builder = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
-            .buildAsyncClient();
+            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01);
+        if (otel != null) {
+            builder.openTelemetry(otel);
+        }
+        VoiceLiveAsyncClient client = builder.buildAsyncClient();
 
         runVoiceAssistantWithClient(client);
     }
@@ -476,17 +508,21 @@ public final class VoiceAssistantSample {
      *
      * @param endpoint The VoiceLive service endpoint
      * @param credential The token credential
+     * @param otel The OpenTelemetry instance, or null to disable tracing
      */
-    private static void runVoiceAssistant(String endpoint, TokenCredential credential) {
+    private static void runVoiceAssistant(String endpoint, TokenCredential credential, OpenTelemetry otel) {
         System.out.println("🔧 Initializing VoiceLive client:");
         System.out.println("   Endpoint: " + endpoint);
 
         // Create the VoiceLive client
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+        VoiceLiveClientBuilder builder = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
-            .buildAsyncClient();
+            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01);
+        if (otel != null) {
+            builder.openTelemetry(otel);
+        }
+        VoiceLiveAsyncClient client = builder.buildAsyncClient();
 
         runVoiceAssistantWithClient(client);
     }

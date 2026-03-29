@@ -126,6 +126,7 @@ The following sections provide code snippets for common scenarios:
 * [Handle event types](#handle-event-types)
 * [Voice configuration](#voice-configuration)
 * [Function calling](#function-calling)
+* [Telemetry and tracing](#telemetry-and-tracing)
 * [Complete voice assistant with microphone](#complete-voice-assistant-with-microphone)
 
 ### Focused Sample Files
@@ -165,6 +166,12 @@ For easier learning, explore these focused samples in order:
    - Handle function call requests from the AI model
    - Execute functions locally and return results
    - Continue conversation with function results
+
+7. **TelemetrySample.java** - OpenTelemetry tracing integration
+   - Automatic tracing via GlobalOpenTelemetry (zero-config)
+   - Explicit OpenTelemetry instance via builder
+   - Span structure and session-level attributes
+   - Azure Monitor integration example
 
 > **Note:** To run audio samples (AudioPlaybackSample, MicrophoneInputSample, VoiceAssistantSample, FunctionCallingSample):
 > ```bash
@@ -396,6 +403,74 @@ client.startSession("gpt-4o-realtime-preview")
 * Your code executes the function and returns results
 * Results are sent back to continue the conversation
 * See `FunctionCallingSample.java` for a complete working example
+
+### Telemetry and tracing
+
+The SDK has built-in [OpenTelemetry](https://opentelemetry.io/) tracing that emits spans for every WebSocket operation. When no OpenTelemetry SDK is present, all tracing calls are automatically no-op with zero performance impact.
+
+#### Automatic tracing (recommended)
+
+If the [OpenTelemetry Java agent](https://opentelemetry.io/docs/languages/java/automatic/) is attached, or `GlobalOpenTelemetry` is configured, tracing works automatically with no code changes:
+
+```java com.azure.ai.voicelive.tracing.automatic
+// No special configuration needed — tracing is picked up from GlobalOpenTelemetry
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildAsyncClient();
+```
+
+#### Explicit OpenTelemetry instance
+
+Provide your own `OpenTelemetry` instance to control trace export:
+
+```java com.azure.ai.voicelive.tracing.explicit
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .openTelemetry(otel)
+    .buildAsyncClient();
+```
+
+#### Span structure
+
+When tracing is active, the following span hierarchy is emitted for each voice session:
+
+```
+connect gpt-4o-realtime-preview        ← session lifetime span
+├── send session.update                 ← one span per sent event
+├── send response.create
+├── recv session.created                ← one span per received event
+├── recv response.audio.delta
+├── recv response.done                  ← includes token usage attributes
+└── close
+```
+
+**Session-level attributes** (on the connect span):
+- `gen_ai.system` — `az.ai.voicelive`
+- `gen_ai.request.model` — Model name (e.g., `gpt-4o-realtime-preview`)
+- `server.address` — Service endpoint
+- `gen_ai.voice.session_id` — Voice session ID
+- `gen_ai.voice.turn_count` — Completed response turns
+- `gen_ai.voice.interruption_count` — User interruptions
+- `gen_ai.voice.audio_bytes_sent` / `gen_ai.voice.audio_bytes_received` — Audio payload bytes
+- `gen_ai.voice.first_token_latency_ms` — Time to first audio response
+
+#### Content recording
+
+By default, message payloads are not recorded in spans for privacy. Enable content recording via the builder or environment variable:
+
+```java
+// Via builder
+new VoiceLiveClientBuilder()
+    .enableContentRecording(true)
+    // ...
+
+// Or via environment variable
+// AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
+```
+
+> See `TelemetrySample.java` for complete tracing examples including Azure Monitor integration.
 
 ### Complete voice assistant with microphone
 

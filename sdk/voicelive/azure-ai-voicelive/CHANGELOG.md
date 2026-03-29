@@ -4,6 +4,15 @@
 
 ### Features Added
 
+- Added built-in OpenTelemetry tracing support for voice sessions following GenAI Semantic Conventions:
+  - `VoiceLiveClientBuilder.openTelemetry(OpenTelemetry)` method for providing a custom OpenTelemetry instance
+  - Defaults to `GlobalOpenTelemetry.getOrNoop()` for automatic Java agent detection with zero-cost no-op fallback
+  - Emits spans for `connect`, `send`, `recv`, and `close` operations with voice-specific attributes
+  - Session-level counters: turn count, interruption count, audio bytes sent/received, first token latency
+  - Per-message attributes: token usage, event types, error details
+  - Content recording controlled via `enableContentRecording(boolean)` or `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable
+- Added `TelemetrySample.java` demonstrating OpenTelemetry integration patterns
+
 ### Breaking Changes
 
 ### Bugs Fixed
