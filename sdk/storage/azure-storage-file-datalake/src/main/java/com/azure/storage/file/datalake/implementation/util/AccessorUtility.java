@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
@@ -31,7 +32,8 @@ public final class AccessorUtility {
      */
     public interface PathPropertiesAccessor {
         PathProperties setPathProperties(PathProperties properties, String encryptionScope, String encryptionContext,
-            String owner, String group, String permissions, String acl);
+            String owner, String group, String permissions, String acl, Boolean accessTierInferred,
+            AccessTier smartAccessTier);
     }
 
     /**

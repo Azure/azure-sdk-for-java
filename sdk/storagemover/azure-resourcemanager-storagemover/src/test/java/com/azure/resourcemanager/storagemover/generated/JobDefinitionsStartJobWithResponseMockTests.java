@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class JobDefinitionsStartJobWithResponseMockTests {
     @Test
     public void testStartJobWithResponse() throws Exception {
-        String responseStr = "{\"jobRunResourceId\":\"qtvcofudflvkgj\"}";
+        String responseStr = "{\"jobRunResourceId\":\"yqtfihwh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,7 @@ public final class JobDefinitionsStartJobWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobRunResourceId response = manager.jobDefinitions()
-            .startJobWithResponse("bqwcsdbnwdcf", "ucqdpfuvglsb", "jcanvxbvtvudut", "cormr",
-                com.azure.core.util.Context.NONE)
+            .startJobWithResponse("wpjgwws", "ughftqsx", "qxujxukndxd", "grjguufzd", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

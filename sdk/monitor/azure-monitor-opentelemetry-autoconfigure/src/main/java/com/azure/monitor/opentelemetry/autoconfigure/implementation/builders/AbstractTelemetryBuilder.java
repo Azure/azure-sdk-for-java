@@ -23,10 +23,11 @@ public abstract class AbstractTelemetryBuilder {
 
     private static final int MAX_PROPERTY_KEY_LENGTH = 150;
     private static final int MAX_PROPERTY_VALUE_LENGTH = 8192;
+    private static final int MAX_GENAI_PROPERTY_VALUE_LENGTH = 256 * 1024; // 256 KB
 
     // gen_ai properties can contain large payloads (e.g. full conversation messages,
-    // tool definitions) that should not be truncated
-    private static final Set<String> TRUNCATION_EXEMPT_PROPERTY_KEYS = new HashSet<>(asList("gen_ai.input.messages",
+    // tool definitions) that are truncated at a higher limit (256 KB)
+    private static final Set<String> GENAI_PROPERTY_KEYS = new HashSet<>(asList("gen_ai.input.messages",
         "gen_ai.output.messages", "gen_ai.system_instructions", "gen_ai.tool.definitions", "gen_ai.tool.call.arguments",
         "gen_ai.tool.call.result", "gen_ai.evaluation.explanation"));
 
@@ -89,8 +90,9 @@ public abstract class AbstractTelemetryBuilder {
             // TODO (trask) log
             return;
         }
-        if (TRUNCATION_EXEMPT_PROPERTY_KEYS.contains(key)) {
-            getProperties().put(key, value);
+        if (GENAI_PROPERTY_KEYS.contains(key)) {
+            getProperties().put(key,
+                TelemetryTruncation.truncatePropertyValue(value, MAX_GENAI_PROPERTY_VALUE_LENGTH, key));
         } else {
             getProperties().put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
         }

@@ -38,12 +38,8 @@ public final class BatchAccountsImpl implements BatchAccounts {
         Context context) {
         Response<BatchAccountInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BatchAccountImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BatchAccountImpl(inner.getValue(), this.manager()));
     }
 
     public BatchAccount getByResourceGroup(String resourceGroupName, String accountName) {
@@ -96,12 +92,8 @@ public final class BatchAccountsImpl implements BatchAccounts {
         BatchAccountRegenerateKeyParameters parameters, Context context) {
         Response<BatchAccountKeysInner> inner
             = this.serviceClient().regenerateKeyWithResponse(resourceGroupName, accountName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BatchAccountKeysImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BatchAccountKeysImpl(inner.getValue(), this.manager()));
     }
 
     public BatchAccountKeys regenerateKey(String resourceGroupName, String accountName,
@@ -118,12 +110,8 @@ public final class BatchAccountsImpl implements BatchAccounts {
         Context context) {
         Response<BatchAccountKeysInner> inner
             = this.serviceClient().getKeysWithResponse(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BatchAccountKeysImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BatchAccountKeysImpl(inner.getValue(), this.manager()));
     }
 
     public BatchAccountKeys getKeys(String resourceGroupName, String accountName) {
@@ -155,12 +143,8 @@ public final class BatchAccountsImpl implements BatchAccounts {
         String detectorId, Context context) {
         Response<DetectorResponseInner> inner
             = this.serviceClient().getDetectorWithResponse(resourceGroupName, accountName, detectorId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DetectorResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DetectorResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DetectorResponse getDetector(String resourceGroupName, String accountName, String detectorId) {

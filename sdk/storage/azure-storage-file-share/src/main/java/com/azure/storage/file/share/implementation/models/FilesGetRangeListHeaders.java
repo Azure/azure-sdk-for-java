@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesGetRangeListHeaders {
     /*
-     * The x-ms-version property.
+     * The Last-Modified property.
      */
     @Generated
-    private String xMsVersion;
+    private DateTimeRfc1123 lastModified;
 
     /*
      * The ETag property.
@@ -35,16 +35,16 @@ public final class FilesGetRangeListHeaders {
     private Long xMsContentLength;
 
     /*
-     * The Last-Modified property.
-     */
-    @Generated
-    private DateTimeRfc1123 lastModified;
-
-    /*
      * The x-ms-request-id property.
      */
     @Generated
     private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
 
     /*
      * The Date property.
@@ -52,9 +52,9 @@ public final class FilesGetRangeListHeaders {
     @Generated
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
     private static final HttpHeaderName X_MS_CONTENT_LENGTH = HttpHeaderName.fromString("x-ms-content-length");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -63,7 +63,12 @@ public final class FilesGetRangeListHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesGetRangeListHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
+        }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String xMsContentLength = rawHeaders.getValue(X_MS_CONTENT_LENGTH);
         if (xMsContentLength != null) {
@@ -71,13 +76,8 @@ public final class FilesGetRangeListHeaders {
         } else {
             this.xMsContentLength = null;
         }
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
-        if (lastModified != null) {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
-        }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -87,24 +87,31 @@ public final class FilesGetRangeListHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the lastModified property: The Last-Modified property.
      * 
-     * @return the xMsVersion value.
+     * @return the lastModified value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the lastModified property: The Last-Modified property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param lastModified the lastModified value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */
     @Generated
-    public FilesGetRangeListHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public FilesGetRangeListHeaders setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 
@@ -153,35 +160,6 @@ public final class FilesGetRangeListHeaders {
     }
 
     /**
-     * Get the lastModified property: The Last-Modified property.
-     * 
-     * @return the lastModified value.
-     */
-    @Generated
-    public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
-    }
-
-    /**
-     * Set the lastModified property: The Last-Modified property.
-     * 
-     * @param lastModified the lastModified value to set.
-     * @return the FilesGetRangeListHeaders object itself.
-     */
-    @Generated
-    public FilesGetRangeListHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
-        return this;
-    }
-
-    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -200,6 +178,28 @@ public final class FilesGetRangeListHeaders {
     @Generated
     public FilesGetRangeListHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the FilesGetRangeListHeaders object itself.
+     */
+    @Generated
+    public FilesGetRangeListHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.46.0-beta.1 (Unreleased)
+### 4.47.0-beta.1 (Unreleased)
 
 #### Features Added
 * Added `startTime` support for Change Feed in All Versions and Deletes Mode. - See [PR 47684](https://github.com/Azure/azure-sdk-for-java/pull/47684)
@@ -10,6 +10,11 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.46.0 (2026-03-27)
+
+#### Bugs Fixed
+* Fixed an issue where creating containers with hierarchical partition keys (multi-hash) through the Spark catalog on the AAD path would fail. - See [PR 48548](https://github.com/Azure/azure-sdk-for-java/pull/48548)
 
 ### 4.45.0 (2026-03-13)
 

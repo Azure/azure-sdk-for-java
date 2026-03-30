@@ -43,8 +43,10 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.DataLakeSetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
@@ -3993,5 +3995,287 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMapMany(dir -> setupDirectoryForListing(dir).thenMany(dir.listPaths(options)));
 
         StepVerifier.create(response.collectList()).assertNext(paths -> assertEquals(3, paths.size())).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTags() {
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = dc.setTags(tags).then(dc.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsOAuth() {
+        DataLakeDirectoryAsyncClient oauthDirClient
+            = getOAuthServiceAsyncClient().getFileSystemAsyncClient(dc.getFileSystemName())
+                .getDirectoryAsyncClient(dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = oauthDirClient.setTags(tags).then(oauthDirClient.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsLease() {
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = setupPathLeaseCondition(dc, RECEIVED_LEASE_ID).flatMap(leaseId -> {
+            DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(leaseId);
+            return dc.setTagsWithResponse(new DataLakeSetTagsOptions(tags).setRequestConditions(dac))
+                .then(dc.getTags());
+        });
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getTagsLeaseFailed() {
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
+
+        Mono<Response<Map<String, String>>> response
+            = dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(dac));
+
+        StepVerifier.create(response).verifyErrorSatisfies(r -> {
+            DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+            assertEquals(BlobErrorCode.LEASE_NOT_PRESENT_WITH_BLOB_OPERATION.toString(), e.getErrorCode());
+        });
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTagsLeaseFailed() {
+        Map<String, String> tags = getTags();
+        DataLakeRequestConditions dac = new DataLakeRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
+
+        Mono<Response<Void>> response
+            = dc.setTagsWithResponse(new DataLakeSetTagsOptions(tags).setRequestConditions(dac));
+
+        StepVerifier.create(response).verifyErrorSatisfies(r -> {
+            DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+            assertEquals(BlobErrorCode.LEASE_NOT_PRESENT_WITH_BLOB_OPERATION.toString(), e.getErrorCode());
+        });
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsDirectorySas() {
+        PathSasPermission permissions
+            = new PathSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dc.generateSas(sasValues);
+        DataLakeDirectoryAsyncClient sasClient
+            = getDirectoryAsyncClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = sasClient.setTags(tags).then(sasClient.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsFileSystemSas() {
+        FileSystemSasPermission permissions
+            = new FileSystemSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dataLakeFileSystemAsyncClient.generateSas(sasValues);
+        DataLakeDirectoryAsyncClient sasClient
+            = getDirectoryAsyncClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = sasClient.setTags(tags).then(sasClient.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsAccountSas() {
+        AccountSasService service = new AccountSasService().setBlobAccess(true);
+        AccountSasResourceType resourceType = new AccountSasResourceType().setContainer(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusHours(1), permissions, service, resourceType);
+        String sas = primaryDataLakeServiceAsyncClient.generateAccountSas(sasValues);
+        DataLakeDirectoryAsyncClient sasClient
+            = getDirectoryAsyncClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = sasClient.setTags(tags).then(sasClient.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsDirectoryIdentitySas() {
+        UserDelegationKey key
+            = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
+        key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+
+        PathSasPermission permissions
+            = new PathSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dc.generateUserDelegationSas(sasValues, key);
+        DataLakeDirectoryAsyncClient sasClient
+            = getDirectoryAsyncClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = sasClient.setTags(tags).then(sasClient.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getSetTagsFileSystemIdentitySas() {
+        UserDelegationKey key
+            = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
+        key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+
+        FileSystemSasPermission permissions
+            = new FileSystemSasPermission().setReadPermission(true).setWritePermission(true).setTagsPermission(true);
+        DataLakeServiceSasSignatureValues sasValues
+            = new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1), permissions);
+        String sas = dataLakeFileSystemAsyncClient.generateUserDelegationSas(sasValues, key);
+        DataLakeDirectoryAsyncClient sasClient
+            = getDirectoryAsyncClient(sas, dc.getDirectoryUrl(), dc.getDirectoryPath());
+        Map<String, String> tags = getTags();
+
+        Mono<Map<String, String>> response = sasClient.setTags(tags).then(sasClient.getTags());
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(tags, r)).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void getTagsError() {
+        DataLakeDirectoryAsyncClient directory
+            = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+
+        StepVerifier.create(directory.getTags()).verifyErrorSatisfies(r -> {
+            DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+            assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+        });
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTagsError() {
+        DataLakeDirectoryAsyncClient directory
+            = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        Map<String, String> tags = getTags();
+
+        StepVerifier.create(directory.setTags(tags)).verifyErrorSatisfies(r -> {
+            DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+            assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+        });
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void setTagsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> tags = getTags();
+
+        Mono<Response<Void>> response
+            = Mono
+                .zip(setupPathLeaseCondition(dc, leaseID), setupPathMatchCondition(dc, match),
+                    DataLakeTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified);
+                    return dc.setTagsWithResponse(new DataLakeSetTagsOptions(tags).setRequestConditions(drc));
+                });
+
+        assertAsyncResponseStatusCode(response, 204);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void getTagsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> tags = getTags();
+        dc.setTags(tags).block();
+
+        Mono<Response<Map<String, String>>> response
+            = Mono
+                .zip(setupPathLeaseCondition(dc, leaseID), setupPathMatchCondition(dc, match),
+                    DataLakeTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified);
+                    return dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(drc));
+                });
+
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(200, r.getStatusCode());
+            assertEquals(tags, r.getValue());
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void setTagsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> tags = getTags();
+
+        Mono<Response<Void>> response
+            = Mono
+                .zip(setupPathLeaseCondition(dc, leaseID), setupPathMatchCondition(dc, noneMatch),
+                    DataLakeTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified);
+                    return dc.setTagsWithResponse(new DataLakeSetTagsOptions(tags).setRequestConditions(drc));
+                });
+
+        StepVerifier.create(response).verifyError(DataLakeStorageException.class);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void getTagsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Mono<Response<Map<String, String>>> response
+            = Mono
+                .zip(setupPathLeaseCondition(dc, leaseID), setupPathMatchCondition(dc, noneMatch),
+                    DataLakeTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified);
+                    return dc.getTagsWithResponse(new DataLakeGetTagsOptions().setRequestConditions(drc));
+                });
+
+        StepVerifier.create(response).verifyError(DataLakeStorageException.class);
     }
 }

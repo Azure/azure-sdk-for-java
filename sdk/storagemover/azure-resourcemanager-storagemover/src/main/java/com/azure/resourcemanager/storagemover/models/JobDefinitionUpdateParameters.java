@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionUpdateProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Job Definition resource.
@@ -103,6 +104,52 @@ public final class JobDefinitionUpdateParameters implements JsonSerializable<Job
             this.innerProperties = new JobDefinitionUpdateProperties();
         }
         this.innerProperties().withAgentName(agentName);
+        return this;
+    }
+
+    /**
+     * Get the connections property: List of connections associated to this job.
+     * 
+     * @return the connections value.
+     */
+    public List<String> connections() {
+        return this.innerProperties() == null ? null : this.innerProperties().connections();
+    }
+
+    /**
+     * Set the connections property: List of connections associated to this job.
+     * 
+     * @param connections the connections value to set.
+     * @return the JobDefinitionUpdateParameters object itself.
+     */
+    public JobDefinitionUpdateParameters withConnections(List<String> connections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionUpdateProperties();
+        }
+        this.innerProperties().withConnections(connections);
+        return this;
+    }
+
+    /**
+     * Get the dataIntegrityValidation property: Data Integrity Validation mode.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    public DataIntegrityValidation dataIntegrityValidation() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataIntegrityValidation();
+    }
+
+    /**
+     * Set the dataIntegrityValidation property: Data Integrity Validation mode.
+     * 
+     * @param dataIntegrityValidation the dataIntegrityValidation value to set.
+     * @return the JobDefinitionUpdateParameters object itself.
+     */
+    public JobDefinitionUpdateParameters withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionUpdateProperties();
+        }
+        this.innerProperties().withDataIntegrityValidation(dataIntegrityValidation);
         return this;
     }
 
