@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class SharedPrivateLinkResourcesListByServiceSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ListSharedPrivateLinkResourcesByService.json
+     * x-ms-original-file: 2026-03-01-preview/ListSharedPrivateLinkResourcesByService.json
      */
     /**
      * Sample code: ListSharedPrivateLinkResourcesByService.

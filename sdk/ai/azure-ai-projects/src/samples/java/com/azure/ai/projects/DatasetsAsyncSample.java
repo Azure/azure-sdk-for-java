@@ -54,7 +54,7 @@ public class DatasetsAsyncSample {
         // BEGIN:com.azure.ai.projects.DatasetsAsyncSample.listDatasets
 
         System.out.println("Listing all datasets (latest versions):");
-        return datasetsAsyncClient.listLatestVersion()
+        return datasetsAsyncClient.listLatestDatasetVersions()
             .doOnNext(dataset -> {
                 System.out.println("\nDataset name: " + dataset.getName());
                 System.out.println("Dataset Id: " + dataset.getId());
@@ -74,13 +74,13 @@ public class DatasetsAsyncSample {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
 
         System.out.println("Listing all versions of dataset: " + datasetName);
-        return datasetsAsyncClient.listVersions(datasetName)
+        return datasetsAsyncClient.listDatasetVersions(datasetName)
             .doOnNext(version -> {
                 System.out.println("\nDataset name: " + version.getName());
                 System.out.println("Dataset version: " + version.getVersion());
                 System.out.println("Dataset type: " + version.getType());
-                if (version.getDataUri() != null) {
-                    System.out.println("Data URI: " + version.getDataUri());
+                if (version.getDataUrl() != null) {
+                    System.out.println("Data URI: " + version.getDataUrl());
                 }
             });
 
@@ -99,8 +99,8 @@ public class DatasetsAsyncSample {
                 System.out.println("Name: " + dataset.getName());
                 System.out.println("Version: " + dataset.getVersion());
                 System.out.println("Type: " + dataset.getType());
-                if (dataset.getDataUri() != null) {
-                    System.out.println("Data URI: " + dataset.getDataUri());
+                if (dataset.getDataUrl() != null) {
+                    System.out.println("Data URI: " + dataset.getDataUrl());
                 }
                 if (dataset.getDescription() != null) {
                     System.out.println("Description: " + dataset.getDescription());
@@ -117,7 +117,7 @@ public class DatasetsAsyncSample {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Delete the specific version of the dataset
-        return datasetsAsyncClient.deleteVersion(datasetName, datasetVersion)
+        return datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersion)
             .doOnSuccess(unused ->
                 System.out.println("Deleted dataset: " + datasetName + ", version: " + datasetVersion));
 
@@ -133,11 +133,11 @@ public class DatasetsAsyncSample {
 
         // Create a new FileDatasetVersion with provided dataUri
         FileDatasetVersion fileDataset = new FileDatasetVersion()
-            .setDataUri(dataUri)
+            .setDataUrl(dataUri)
             .setDescription("Sample dataset created via SDK");
 
         // Create or update the dataset
-        return datasetsAsyncClient.createOrUpdateVersion(
+        return datasetsAsyncClient.createOrUpdateDatasetVersion(
             datasetName,
             datasetVersion,
             fileDataset
@@ -146,7 +146,7 @@ public class DatasetsAsyncSample {
             System.out.println("Created/Updated dataset:");
             System.out.println("Name: " + fileDatasetVersion.getName());
             System.out.println("Version: " + fileDatasetVersion.getVersion());
-            System.out.println("Data URI: " + fileDatasetVersion.getDataUri());
+            System.out.println("Data URI: " + fileDatasetVersion.getDataUrl());
         });
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.createOrUpdateDataset

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class ServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SearchGetService.json
+     * x-ms-original-file: 2026-03-01-preview/SearchGetService.json
      */
     /**
      * Sample code: SearchGetService.

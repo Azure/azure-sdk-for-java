@@ -3277,12 +3277,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw new IllegalArgumentException("document");
             }
 
-            Document typedDocument = Document.fromObject(document, options.getEffectiveItemSerializer());
+            Document typedDocument;
+            boolean itemAlreadySerialized = false;
+
+            if (document instanceof Document) {
+                typedDocument = (Document) document;
+            } else if (document instanceof byte[]) {
+                typedDocument = new Document((byte[]) document);
+            } else {
+                typedDocument = Document.fromObject(document, options.getEffectiveItemSerializer());
+                itemAlreadySerialized = true;
+            }
 
             return this.replaceDocumentInternal(
                 documentLink,
                 typedDocument,
                 options,
+                itemAlreadySerialized,
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
@@ -3358,6 +3369,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 document.getSelfLink(),
                 document,
                 options,
+                false,
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
@@ -3373,6 +3385,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String documentLink,
         Document document,
         RequestOptions options,
+        boolean itemAlreadySerialized,
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
@@ -3396,7 +3409,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization, false);
+        // When the item was already serialized via Document.fromObject with the effective
+        // serializer, use DEFAULT_SERIALIZER to convert the Document's propertyBag to bytes
+        // without re-applying the custom serializer (which would double-serialize).
+        CosmosItemSerializer serializerForContent = itemAlreadySerialized
+            ? CosmosItemSerializer.DEFAULT_SERIALIZER
+            : options.getEffectiveItemSerializer();
+        ByteBuffer content = document.serializeJsonToByteBuffer(serializerForContent, onAfterSerialization, false);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(

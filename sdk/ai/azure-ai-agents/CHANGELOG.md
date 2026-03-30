@@ -1,13 +1,32 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0 (2026-03-27)
 
 ### Features Added
 
+- Added `beginUpdateMemories(String name, String scope)` required-params-only overload to `MemoryStoresClient` and `MemoryStoresAsyncClient`, for updating a memory store without specifying optional conversation items, previous update ID, or delay.
+
 ### Breaking Changes
 
+- The following types changed from standard Java `enum` to `ExpandableStringEnum`-based classes, allowing unknown values to be handled without throwing exceptions. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`:
+  - `ComputerEnvironment`
+  - `ContainerMemoryLimit`
+  - `GrammarSyntax`
+  - `ImageGenActionEnum`
+  - `ImageGenToolBackground`
+  - `ImageGenToolModeration`
+  - `ImageGenToolOutputFormat`
+  - `ImageGenToolQuality`
+  - `ImageGenToolSize`
+  - `InputFidelity`
+  - `McpToolConnectorId`
+  - `MemoryStoreUpdateStatus`
+  - `RankerVersionType`
+  - `SearchContextSize`
+  - `WebSearchToolSearchContextSize`
 - Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
 - Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
+- `getContainerAsAutoCodeInterpreterToolParam()` on `CodeInterpreterTool` renamed to `getContainerAsAutoCodeInterpreterToolParameter()`, and `setContainer(AutoCodeInterpreterToolParam)` now accepts `AutoCodeInterpreterToolParameter` instead.
 - Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
   - `AutoCodeInterpreterToolParam` → `AutoCodeInterpreterToolParameter`
   - `ContainerAutoParam` → `ContainerAutoParameter`
@@ -22,12 +41,14 @@
   - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
   - `LocalSkillParam` → `LocalSkillParameter`
   - `SkillReferenceParam` → `SkillReferenceParameter`
+- `deleteAgentWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteAgentVersionWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteMemoryStoreWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteScopeWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
 - `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
 - `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
 - `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
 - `ResponsesUtils` class has been removed. Use `ResponsesClient.getAzureFields(Response)` instead of `ResponsesUtils.getAzureFields(Response)` to extract Azure-specific fields from a response.
-
-### Bugs Fixed
 
 ### Other Changes
 
@@ -58,10 +79,11 @@
 ### Breaking Changes
 
 - Removed deprecated convenience methods from `ResponsesClient` and `ResponsesAsyncClient`: `createWithAgent`, `createWithAgentConversation`, `createStreamingWithAgent`, `createStreamingWithAgentConversation`, `createWithAgentStructuredInput`, and `createStreamingWithAgentStructuredInput`. Use `createAzureResponse` and `createStreamingAzureResponse` with `AzureCreateResponseOptions` instead.
-- `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`. The public protocol method `deleteAgentWithResponse` has been removed; use the convenience method instead.
+- `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`.
 - `deleteAgentVersion(String, String)` on `AgentsClient` now returns `void` instead of `DeleteAgentVersionResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentVersionResponse>`.
 - `DeleteAgentResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
 - `DeleteAgentVersionResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
+- The `updateDelay` parameter on `MemoryStoresClient.beginUpdateMemories` was renamed to `updateDelayInSeconds`.
 - `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys` changed from `ExpandableStringEnum`-based classes to standard Java `enum` types. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
 - The `timezone` property in `ApproximateLocation` and `WebSearchApproximateLocation` changed from `String` to `java.util.TimeZone`.
 - The `container` property on `CodeInterpreterTool` no longer exposes `BinaryData` getter/setter publicly. Use the new typed accessors instead (e.g., `setContainer("container-id")` or `setContainer(new AutoCodeInterpreterToolParam())`).

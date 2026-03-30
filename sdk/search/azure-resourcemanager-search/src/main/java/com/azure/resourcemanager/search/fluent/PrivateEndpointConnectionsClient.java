@@ -161,6 +161,10 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
+     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
+     * does not exist.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -178,6 +182,10 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
+     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
+     * does not exist.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -195,6 +203,10 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
+     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
+     * does not exist.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -213,6 +225,10 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
+     * Returns 200 (OK) with the deleted connection details on successful deletion, or 404 (Not Found) if the connection
+     * does not exist.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.

@@ -84,6 +84,11 @@ public final class DeletedSecret extends KeyVaultSecret {
             public void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn) {
                 deletedSecret.deletedOn = deletedOn;
             }
+
+            @Override
+            public void setPreviousVersion(DeletedSecret deletedSecret, String previousVersion) {
+                deletedSecret.properties.previousVersion = previousVersion;
+            }
         });
     }
 
@@ -173,6 +178,8 @@ public final class DeletedSecret extends KeyVaultSecret {
                     deletedSecret.properties.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kid".equals(fieldName)) {
                     deletedSecret.properties.keyId = reader.getString();
+                } else if ("previousVersion".equals(fieldName)) {
+                    deletedSecret.properties.previousVersion = reader.getString();
                 } else if ("contentType".equals(fieldName)) {
                     deletedSecret.properties.contentType = reader.getString();
                 } else if ("tags".equals(fieldName)) {

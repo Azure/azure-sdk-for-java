@@ -41,7 +41,8 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
                 datasetVersionString, null))
             .verifyComplete();
 
-        StepVerifier.create(datasetsAsyncClient.deleteVersion(datasetName, datasetVersionString)).verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersionString))
+            .verifyComplete();
     }
 
     @LiveOnly
@@ -67,7 +68,8 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
                     datasetVersionString))
                 .verifyComplete();
 
-            StepVerifier.create(datasetsAsyncClient.deleteVersion(datasetName, datasetVersionString)).verifyComplete();
+            StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersionString))
+                .verifyComplete();
         } finally {
             Files.deleteIfExists(file1);
             Files.deleteIfExists(file2);
@@ -82,7 +84,7 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
 
         List<DatasetVersion> datasetsList = new ArrayList<>();
 
-        StepVerifier.create(datasetsAsyncClient.listLatestVersion().doOnNext(datasetsList::add).then())
+        StepVerifier.create(datasetsAsyncClient.listLatestDatasetVersions().doOnNext(datasetsList::add).then())
             .verifyComplete();
 
         for (DatasetVersion dataset : datasetsList) {
@@ -110,12 +112,13 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
             .verifyComplete();
 
         List<DatasetVersion> versionsList = new ArrayList<>();
-        StepVerifier.create(datasetsAsyncClient.listVersions(datasetName).doOnNext(versionsList::add).then())
+        StepVerifier.create(datasetsAsyncClient.listDatasetVersions(datasetName).doOnNext(versionsList::add).then())
             .verifyComplete();
         boolean found = versionsList.stream().anyMatch(v -> v.getVersion().equals(datasetVersionString));
         Assertions.assertTrue(found, "Created dataset version should appear in listVersions");
 
-        StepVerifier.create(datasetsAsyncClient.deleteVersion(datasetName, datasetVersionString)).verifyComplete();
+        StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersionString))
+            .verifyComplete();
 
         StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersionString))
             .expectErrorMatches(e -> e.getMessage().contains("404")
