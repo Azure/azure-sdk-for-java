@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionsDisableSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Disable_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Disable_MaximumSet.
@@ -19,6 +19,6 @@ public final class ScheduledActionsDisableSamples {
     public static void
         scheduledActionsDisableMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .disableWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .disableWithResponse("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }

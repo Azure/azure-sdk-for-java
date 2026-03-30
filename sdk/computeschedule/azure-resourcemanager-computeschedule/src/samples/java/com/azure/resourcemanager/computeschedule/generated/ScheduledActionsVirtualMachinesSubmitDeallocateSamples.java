@@ -7,10 +7,11 @@ package com.azure.resourcemanager.computeschedule.generated;
 import com.azure.resourcemanager.computeschedule.models.DeadlineType;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -19,7 +20,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet.
@@ -29,36 +30,19 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     public static void scheduledActionsVirtualMachinesSubmitDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("ycipx", new SubmitDeallocateRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
+            .virtualMachinesSubmitDeallocateWithResponse("wtkfymadciksjsvamowmbiqdltdzw", new SubmitDeallocateContent()
+                .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withTimezone("ehbjytlhnykfkjxujca")
+                    .withTimeZone("feiohhavpmmjrf")
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesSubmitDeallocate_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesSubmitDeallocateMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("zrcmkxsbuxsxxulky", new SubmitDeallocateRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
-                    .withDeadlineType(DeadlineType.UNKNOWN))
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("rsi"), com.azure.core.util.Context.NONE);
     }
 }

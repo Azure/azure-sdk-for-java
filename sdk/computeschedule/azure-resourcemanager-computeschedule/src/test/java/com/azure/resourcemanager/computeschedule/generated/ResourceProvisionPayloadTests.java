@@ -6,6 +6,7 @@ package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computeschedule.models.ResourceProvisionPayload;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,21 +16,32 @@ public final class ResourceProvisionPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProvisionPayload model = BinaryData.fromString(
-            "{\"baseProfile\":{},\"resourceOverrides\":[{},{}],\"resourceCount\":1946901948,\"resourcePrefix\":\"iwpwcuk\"}")
+            "{\"baseProfile\":{\"qqwx\":\"\\\"dataetqgtzxdpnq\\\"\"},\"resourceOverrides\":[{\"nwsubisnj\":\"\\\"dataal\\\"\",\"hcbonqvpkvlr\":\"\\\"datampmngnzscxaqwoo\\\"\",\"y\":\"\\\"datanjeaseipheofloke\\\"\",\"jp\":\"\\\"dataenjbdlwtgrhp\\\"\"},{\"lhbxxhejjzzvdud\":\"\\\"datamasxazjpqyegu\\\"\",\"pwlbjnpg\":\"\\\"datawdslfhotwmcy\\\"\",\"nltyfsoppusuesnz\":\"\\\"datacftadeh\\\"\"},{\"avo\":\"\\\"dataej\\\"\",\"vudwx\":\"\\\"dataxzdmohctb\\\"\"}],\"resourceCount\":1222672575,\"resourcePrefix\":\"nvowgujju\"}")
             .toObject(ResourceProvisionPayload.class);
-        Assertions.assertEquals(1946901948, model.resourceCount());
-        Assertions.assertEquals("iwpwcuk", model.resourcePrefix());
+        Assertions.assertEquals(1222672575, model.resourceCount());
+        Assertions.assertEquals("nvowgujju", model.resourcePrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProvisionPayload model = new ResourceProvisionPayload().withBaseProfile(mapOf())
-            .withResourceOverrides(Arrays.asList(mapOf(), mapOf()))
-            .withResourceCount(1946901948)
-            .withResourcePrefix("iwpwcuk");
+        ResourceProvisionPayload model = new ResourceProvisionPayload()
+            .withBaseProfile(
+                mapOf("qqwx", BinaryData.fromBytes("\"dataetqgtzxdpnq\"".getBytes(StandardCharsets.UTF_8))))
+            .withResourceOverrides(Arrays.asList(
+                mapOf("nwsubisnj", BinaryData.fromBytes("\"dataal\"".getBytes(StandardCharsets.UTF_8)), "hcbonqvpkvlr",
+                    BinaryData.fromBytes("\"datampmngnzscxaqwoo\"".getBytes(StandardCharsets.UTF_8)), "y",
+                    BinaryData.fromBytes("\"datanjeaseipheofloke\"".getBytes(StandardCharsets.UTF_8)), "jp",
+                    BinaryData.fromBytes("\"dataenjbdlwtgrhp\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("lhbxxhejjzzvdud", BinaryData.fromBytes("\"datamasxazjpqyegu\"".getBytes(StandardCharsets.UTF_8)),
+                    "pwlbjnpg", BinaryData.fromBytes("\"datawdslfhotwmcy\"".getBytes(StandardCharsets.UTF_8)),
+                    "nltyfsoppusuesnz", BinaryData.fromBytes("\"datacftadeh\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("avo", BinaryData.fromBytes("\"dataej\"".getBytes(StandardCharsets.UTF_8)), "vudwx",
+                    BinaryData.fromBytes("\"dataxzdmohctb\"".getBytes(StandardCharsets.UTF_8)))))
+            .withResourceCount(1222672575)
+            .withResourcePrefix("nvowgujju");
         model = BinaryData.fromObject(model).toObject(ResourceProvisionPayload.class);
-        Assertions.assertEquals(1946901948, model.resourceCount());
-        Assertions.assertEquals("iwpwcuk", model.resourcePrefix());
+        Assertions.assertEquals(1222672575, model.resourceCount());
+        Assertions.assertEquals("nvowgujju", model.resourcePrefix());
     }
 
     // Use "Map.of" if available

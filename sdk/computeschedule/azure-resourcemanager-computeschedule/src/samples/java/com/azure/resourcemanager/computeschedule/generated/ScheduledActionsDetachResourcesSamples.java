@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsDetachResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_DetachResources_MaximumSet.
@@ -22,9 +22,9 @@ public final class ScheduledActionsDetachResourcesSamples {
     public static void scheduledActionsDetachResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .detachResourcesWithResponse("rgcomputeschedule", "myScheduledAction",
+            .detachResourcesWithResponse("rgcomputeschedule", "scheduled-action-01",
                 new ResourceDetachRequest().withResources(Arrays.asList(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }

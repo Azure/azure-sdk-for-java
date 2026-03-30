@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionExtensionListByVmsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActionExtension_ListByVms_MaximumSet.
@@ -18,19 +18,6 @@ public final class ScheduledActionExtensionListByVmsSamples {
      */
     public static void scheduledActionExtensionListByVmsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActionExtensions().listByVms("sazvpabfud", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActionExtension_ListByVms_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActionExtension_ListByVms_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionExtensionListByVmsMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActionExtensions().listByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.scheduledActionExtensions().listByVms("rgdhjh", com.azure.core.util.Context.NONE);
     }
 }

@@ -39,6 +39,7 @@
 - [Update](#scheduledactions_update)
 - [VirtualMachinesCancelOperations](#scheduledactions_virtualmachinescanceloperations)
 - [VirtualMachinesExecuteCreate](#scheduledactions_virtualmachinesexecutecreate)
+- [VirtualMachinesExecuteCreateFlex](#scheduledactions_virtualmachinesexecutecreateflex)
 - [VirtualMachinesExecuteDeallocate](#scheduledactions_virtualmachinesexecutedeallocate)
 - [VirtualMachinesExecuteDelete](#scheduledactions_virtualmachinesexecutedelete)
 - [VirtualMachinesExecuteHibernate](#scheduledactions_virtualmachinesexecutehibernate)
@@ -56,7 +57,7 @@
  */
 public final class OccurrenceExtensionListOccurrenceByVmsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: OccurrenceExtension_ListOccurrenceByVms_MaximumSet.
@@ -65,7 +66,7 @@ public final class OccurrenceExtensionListOccurrenceByVmsSamples {
      */
     public static void occurrenceExtensionListOccurrenceByVmsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.occurrenceExtensions().listOccurrenceByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.occurrenceExtensions().listOccurrenceByVms("rgdhjh", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -81,7 +82,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Cancel_MaximumSet.
@@ -91,9 +92,9 @@ public final class OccurrencesCancelSamples {
     public static void
         occurrencesCancelMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .cancelWithResponse("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .cancelWithResponse("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -111,7 +112,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesDelaySamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_Delay_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_Delay_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Delay_MaximumSet.
@@ -121,10 +122,10 @@ public final class OccurrencesDelaySamples {
     public static void
         occurrencesDelayMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .delay("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", new DelayRequest()
-                .withDelay(OffsetDateTime.parse("2025-05-22T17:00:00.000-07:00"))
-                .withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+            .delay("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
+                new DelayRequest().withDelay(OffsetDateTime.parse("2026-03-12T02:39:48.148Z"))
+                    .withResourceIds(Arrays.asList(
+                        "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -138,7 +139,7 @@ public final class OccurrencesDelaySamples {
  */
 public final class OccurrencesGetSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Get_MaximumSet.
@@ -148,7 +149,7 @@ public final class OccurrencesGetSamples {
     public static void
         occurrencesGetMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .getWithResponse("rgcomputeschedule", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45",
+            .getWithResponse("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -162,7 +163,7 @@ public final class OccurrencesGetSamples {
  */
 public final class OccurrencesListByScheduledActionSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_ListByScheduledAction_MaximumSet.
@@ -172,7 +173,7 @@ public final class OccurrencesListByScheduledActionSamples {
     public static void occurrencesListByScheduledActionMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .listByScheduledAction("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .listByScheduledAction("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -185,7 +186,7 @@ public final class OccurrencesListByScheduledActionSamples {
  */
 public final class OccurrencesListResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_ListResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_ListResources_MaximumSet.
@@ -195,7 +196,7 @@ public final class OccurrencesListResourcesSamples {
     public static void
         occurrencesListResourcesMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .listResources("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .listResources("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -209,7 +210,7 @@ public final class OccurrencesListResourcesSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet.
@@ -222,7 +223,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-15-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet.
@@ -244,7 +245,7 @@ public final class OperationsListSamples {
  */
 public final class ScheduledActionExtensionListByVmsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActionExtension_ListByVms_MaximumSet.
@@ -253,20 +254,7 @@ public final class ScheduledActionExtensionListByVmsSamples {
      */
     public static void scheduledActionExtensionListByVmsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActionExtensions().listByVms("sazvpabfud", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActionExtension_ListByVms_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActionExtension_ListByVms_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionExtensionListByVmsMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActionExtensions().listByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.scheduledActionExtensions().listByVms("rgdhjh", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -286,7 +274,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_AttachResources_MaximumSet.
@@ -296,11 +284,11 @@ public final class ScheduledActionsAttachResourcesSamples {
     public static void scheduledActionsAttachResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .attachResourcesWithResponse("rgcomputeschedule", "myScheduledAction", new ResourceAttachRequest()
+            .attachResourcesWithResponse("rgcomputeschedule", "scheduled-action-01", new ResourceAttachRequest()
                 .withResources(Arrays.asList(new ScheduledActionResourceInner().withResourceId(
                     "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")
                     .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
+                        Arrays.asList(new NotificationProperties().withDestination("zaaoabozbhyuhejwsrennfsxowp")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
                             .withDisabled(true))))),
@@ -320,7 +308,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCancelNextOccurrenceSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_CancelNextOccurrence_MaximumSet.
@@ -330,9 +318,9 @@ public final class ScheduledActionsCancelNextOccurrenceSamples {
     public static void scheduledActionsCancelNextOccurrenceMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .cancelNextOccurrenceWithResponse("rgcomputeschedule", "myScheduledAction",
+            .cancelNextOccurrenceWithResponse("rgcomputeschedule", "scheduled-action-01",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -348,6 +336,7 @@ import com.azure.resourcemanager.computeschedule.models.Month;
 import com.azure.resourcemanager.computeschedule.models.NotificationProperties;
 import com.azure.resourcemanager.computeschedule.models.NotificationType;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.ResourceType;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionProperties;
@@ -364,7 +353,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_CreateOrUpdate_MaximumSet.
@@ -374,25 +363,27 @@ public final class ScheduledActionsCreateOrUpdateSamples {
     public static void scheduledActionsCreateOrUpdateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .define("myScheduledAction")
-            .withRegion("vmuhgdgipeypkcv")
+            .define("scheduled-action-01")
+            .withRegion("hwhsvnvuwsjwu")
             .withExistingResourceGroup("rgcomputeschedule")
-            .withTags(mapOf("key2102", "fakeTokenPlaceholder"))
+            .withTags(mapOf("key1458", "fakeTokenPlaceholder"))
             .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:55.281Z"))
-                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:55.286Z"))
-                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
-                    .withTimeZone("g")
+                .withStartTime(OffsetDateTime.parse("2026-03-12T02:39:45.061Z"))
+                .withEndTime(OffsetDateTime.parse("2026-03-12T02:39:45.062Z"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("12:00:00")
+                    .withTimeZone("ywgarwvwqegtdsdvv")
                     .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
                     .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(18))
                     .withExecutionParameters(
                         new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                            .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                            .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                                .withRetryWindowInMinutes(3)
+                                .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withNotificationSettings(
-                    Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
+                    Arrays.asList(new NotificationProperties().withDestination("zaaoabozbhyuhejwsrennfsxowp")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))
@@ -422,7 +413,7 @@ public final class ScheduledActionsCreateOrUpdateSamples {
  */
 public final class ScheduledActionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Delete_MaximumSet.
@@ -431,7 +422,7 @@ public final class ScheduledActionsDeleteSamples {
      */
     public static void
         scheduledActionsDeleteMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions().delete("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+        manager.scheduledActions().delete("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -447,7 +438,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsDetachResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_DetachResources_MaximumSet.
@@ -457,9 +448,9 @@ public final class ScheduledActionsDetachResourcesSamples {
     public static void scheduledActionsDetachResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .detachResourcesWithResponse("rgcomputeschedule", "myScheduledAction",
+            .detachResourcesWithResponse("rgcomputeschedule", "scheduled-action-01",
                 new ResourceDetachRequest().withResources(Arrays.asList(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -473,7 +464,7 @@ public final class ScheduledActionsDetachResourcesSamples {
  */
 public final class ScheduledActionsDisableSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Disable_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Disable_MaximumSet.
@@ -483,7 +474,7 @@ public final class ScheduledActionsDisableSamples {
     public static void
         scheduledActionsDisableMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .disableWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .disableWithResponse("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -496,7 +487,7 @@ public final class ScheduledActionsDisableSamples {
  */
 public final class ScheduledActionsEnableSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Enable_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Enable_MaximumSet.
@@ -506,7 +497,7 @@ public final class ScheduledActionsEnableSamples {
     public static void
         scheduledActionsEnableMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .enableWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .enableWithResponse("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -519,7 +510,7 @@ public final class ScheduledActionsEnableSamples {
  */
 public final class ScheduledActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Get_MaximumSet.
@@ -529,7 +520,8 @@ public final class ScheduledActionsGetByResourceGroupSamples {
     public static void
         scheduledActionsGetMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .getByResourceGroupWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rgcomputeschedule", "scheduled-action-01",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -542,7 +534,7 @@ public final class ScheduledActionsGetByResourceGroupSamples {
  */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListBySubscription_MaximumSet.
@@ -550,19 +542,6 @@ public final class ScheduledActionsListSamples {
      * @param manager Entry point to ComputeScheduleManager.
      */
     public static void scheduledActionsListBySubscriptionMaximumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListBySubscription_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_ListBySubscription_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsListBySubscriptionMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions().list(com.azure.core.util.Context.NONE);
     }
@@ -577,7 +556,7 @@ public final class ScheduledActionsListSamples {
  */
 public final class ScheduledActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListByResourceGroup_MaximumSet.
@@ -585,19 +564,6 @@ public final class ScheduledActionsListByResourceGroupSamples {
      * @param manager Entry point to ComputeScheduleManager.
      */
     public static void scheduledActionsListByResourceGroupMaximumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions().listByResourceGroup("rgcomputeschedule", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_ListByResourceGroup_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsListByResourceGroupMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions().listByResourceGroup("rgcomputeschedule", com.azure.core.util.Context.NONE);
     }
@@ -612,7 +578,7 @@ public final class ScheduledActionsListByResourceGroupSamples {
  */
 public final class ScheduledActionsListResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListResources_MaximumSet.
@@ -622,7 +588,7 @@ public final class ScheduledActionsListResourcesSamples {
     public static void scheduledActionsListResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .listResources("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .listResources("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -642,7 +608,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_PatchResources_MaximumSet.
@@ -652,11 +618,11 @@ public final class ScheduledActionsPatchResourcesSamples {
     public static void scheduledActionsPatchResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .patchResourcesWithResponse("rgcomputeschedule", "myScheduledAction", new ResourcePatchRequest()
+            .patchResourcesWithResponse("rgcomputeschedule", "scheduled-action-01", new ResourcePatchRequest()
                 .withResources(Arrays.asList(new ScheduledActionResourceInner().withResourceId(
                     "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")
                     .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
+                        Arrays.asList(new NotificationProperties().withDestination("zaaoabozbhyuhejwsrennfsxowp")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
                             .withDisabled(true))))),
@@ -673,7 +639,7 @@ public final class ScheduledActionsPatchResourcesSamples {
  */
 public final class ScheduledActionsTriggerManualOccurrenceSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_TriggerManualOccurrence_MaximumSet.
@@ -683,7 +649,7 @@ public final class ScheduledActionsTriggerManualOccurrenceSamples {
     public static void scheduledActionsTriggerManualOccurrenceMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .triggerManualOccurrenceWithResponse("rgcomputeschedule", "myScheduledAction",
+            .triggerManualOccurrenceWithResponse("rgcomputeschedule", "scheduled-action-01",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -699,6 +665,7 @@ import com.azure.resourcemanager.computeschedule.models.Month;
 import com.azure.resourcemanager.computeschedule.models.NotificationProperties;
 import com.azure.resourcemanager.computeschedule.models.NotificationType;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.ResourceType;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.ScheduledAction;
@@ -716,7 +683,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Update_MaximumSet.
@@ -726,25 +693,28 @@ public final class ScheduledActionsUpdateSamples {
     public static void
         scheduledActionsUpdateMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         ScheduledAction resource = manager.scheduledActions()
-            .getByResourceGroupWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgcomputeschedule", "scheduled-action-01",
+                com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key9989", "fakeTokenPlaceholder"))
+            .withTags(mapOf("key100", "fakeTokenPlaceholder"))
             .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
-                    .withTimeZone("bni")
+                .withStartTime(OffsetDateTime.parse("2026-03-12T02:39:45.818Z"))
+                .withEndTime(OffsetDateTime.parse("2026-03-12T02:39:45.818Z"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("12:00:00")
+                    .withTimeZone("gythvwybzwqubqtmatezbxj")
                     .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
                     .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(18))
                     .withExecutionParameters(
                         new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                            .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                            .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                                .withRetryWindowInMinutes(3)
+                                .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withNotificationSettings(
-                    Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
+                    Arrays.asList(new NotificationProperties().withDestination("zaaoabozbhyuhejwsrennfsxowp")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))
@@ -769,7 +739,7 @@ public final class ScheduledActionsUpdateSamples {
 ### ScheduledActions_VirtualMachinesCancelOperations
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
 import java.util.Arrays;
 
 /**
@@ -777,24 +747,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesCancelOperations_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesCancelOperations_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesCancelOperationsMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesCancelOperationsWithResponse("fhdunfivmjiltaiakwhhwdgemfcld",
-                new CancelOperationsRequest().withOperationIds(Arrays.asList("b211f086-4b91-4686-a453-2f5c012e4d80"))
-                    .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesCancelOperations_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesCancelOperations_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesCancelOperations_MaximumSet.
@@ -804,9 +757,9 @@ public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
     public static void scheduledActionsVirtualMachinesCancelOperationsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesCancelOperationsWithResponse("nivsvluajruxhmsfgmxjnl",
-                new CancelOperationsRequest().withOperationIds(Arrays.asList("b211f086-4b91-4686-a453-2f5c012e4d80"))
-                    .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"),
+            .virtualMachinesCancelOperationsWithResponse("msbzqfwhqmtrxafwwh",
+                new CancelOperationsContent().withOperationIds(Arrays.asList("xgnpiititgkgsewft"))
+                    .withCorrelationid("xqlibhgsczjzsbjvc"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -815,12 +768,12 @@ public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
 ### ScheduledActions_VirtualMachinesExecuteCreate
 
 ```java
-import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
+import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.ResourceProvisionPayload;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -830,84 +783,106 @@ import java.util.Map;
  */
 public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteCreate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteCreate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteCreate_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * Sample code: ScheduledActions_VirtualMachinesExecuteCreate_MaximumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void scheduledActionsVirtualMachinesExecuteCreateMaximumSetGenGeneratedByMaximumSetRule(
+    public static void scheduledActionsVirtualMachinesExecuteCreateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteCreateWithResponse("oslhbouzgevzpeydssyelhw", new ExecuteCreateRequest()
-                .withResourceConfigParameters(new ResourceProvisionPayload().withBaseProfile(mapOf("hardwareProfile",
-                    BinaryData.fromBytes("{name=F1}".getBytes(StandardCharsets.UTF_8)), "provisioningState",
-                    BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "storageProfile",
-                    BinaryData.fromBytes("{osDisk={osType=0}}".getBytes(StandardCharsets.UTF_8)), "vmExtensions",
-                    BinaryData.fromBytes(
-                        "[{autoUpgradeMinorVersion=true, protectedSettings=SomeDecryptedSecretValue, provisioningState=0, enableAutomaticUpgrade=true, publisher=Microsoft.Azure.Monitor, type=AzureMonitorLinuxAgent, typeHandlerVersion=1.0}, {name=myExtensionName}]"
-                            .getBytes(StandardCharsets.UTF_8)),
-                    "resourcegroupName",
-                    BinaryData.fromBytes("RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B".getBytes(StandardCharsets.UTF_8)),
-                    "computeApiVersion", BinaryData.fromBytes("2024-07-01".getBytes(StandardCharsets.UTF_8))))
-                    .withResourceOverrides(Arrays.asList(mapOf("name",
-                        BinaryData.fromBytes("myFleet_523".getBytes(StandardCharsets.UTF_8)), "location",
-                        BinaryData.fromBytes("LocalDev".getBytes(StandardCharsets.UTF_8)), "properties",
-                        BinaryData.fromBytes(
-                            "{hardwareProfile={vmSize=Standard_F1s}, provisioningState=0, osProfile={computerName=myFleet000000, adminUsername=adminUser, windowsConfiguration={additionalUnattendContent=[{passName=someValue, content=}, {passName=someOtherValue, content=SomeDecryptedSecretValue}]}, adminPassword=SomeDecryptedSecretValue}, priority=0}"
-                                .getBytes(StandardCharsets.UTF_8)),
-                        "zones", BinaryData.fromBytes("[1]".getBytes(StandardCharsets.UTF_8))),
-                        mapOf("name", BinaryData.fromBytes("myFleet_524".getBytes(StandardCharsets.UTF_8)), "location",
-                            BinaryData.fromBytes("LocalDev".getBytes(StandardCharsets.UTF_8)), "properties",
-                            BinaryData.fromBytes(
-                                "{hardwareProfile={vmSize=Standard_G1s}, provisioningState=0, osProfile={computerName=myFleet000000, adminUsername=adminUser, windowsConfiguration={additionalUnattendContent=[{passName=someValue, content=}, {passName=someOtherValue, content=SomeDecryptedSecretValue}]}, adminPassword=SomeDecryptedSecretValue}, priority=0}"
-                                    .getBytes(StandardCharsets.UTF_8)),
-                            "zones", BinaryData.fromBytes("[2]".getBytes(StandardCharsets.UTF_8)))))
-                    .withResourceCount(2)
-                    .withResourcePrefix("TL1"))
-                .withExecutionParameters(new ExecutionParameters()
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(5).withRetryWindowInMinutes(40)))
-                .withCorrelationid("dfe927c5-16a6-40b7-a0f7-8524975ed642"), com.azure.core.util.Context.NONE);
+            .virtualMachinesExecuteCreateWithResponse("tcvpodlxbyg",
+                new ExecuteCreateContent()
+                    .withResourceConfigParameters(new ResourceProvisionPayload().withBaseProfile(mapOf())
+                        .withResourceOverrides(Arrays.asList(mapOf()))
+                        .withResourceCount(19)
+                        .withResourcePrefix("ilgcqhoqrpwfkprxok"))
+                    .withExecutionParameters(
+                        new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
+                            .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                                .withRetryWindowInMinutes(3)
+                                .withOnFailureAction(ResourceOperationType.UNKNOWN)))
+                    .withCorrelationid("pkm"),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ScheduledActions_VirtualMachinesExecuteCreateFlex
+
+```java
+import com.azure.resourcemanager.computeschedule.models.AllocationStrategy;
+import com.azure.resourcemanager.computeschedule.models.DistributionStrategy;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
+import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
+import com.azure.resourcemanager.computeschedule.models.FlexProperties;
+import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.OsType;
+import com.azure.resourcemanager.computeschedule.models.PriorityProfile;
+import com.azure.resourcemanager.computeschedule.models.PriorityType;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
+import com.azure.resourcemanager.computeschedule.models.ResourceProvisionFlexPayload;
+import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
+import com.azure.resourcemanager.computeschedule.models.VmSizeProfile;
+import com.azure.resourcemanager.computeschedule.models.ZoneAllocationPolicy;
+import com.azure.resourcemanager.computeschedule.models.ZonePreference;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ScheduledActions VirtualMachinesExecuteCreateFlex.
+ */
+public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteCreate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteCreateFlex_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteCreate_MinimumSet_Gen - generated by [MinimumSet] rule.
+     * Sample code: ScheduledActions_VirtualMachinesExecuteCreateFlex_MaximumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void scheduledActionsVirtualMachinesExecuteCreateMinimumSetGenGeneratedByMinimumSetRule(
+    public static void scheduledActionsVirtualMachinesExecuteCreateFlexMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteCreateWithResponse("useast", new ExecuteCreateRequest()
-                .withResourceConfigParameters(new ResourceProvisionPayload().withBaseProfile(mapOf("hardwareProfile",
-                    BinaryData.fromBytes("{name=F1}".getBytes(StandardCharsets.UTF_8)), "provisioningState",
-                    BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "storageProfile",
-                    BinaryData.fromBytes("{osDisk={osType=0}}".getBytes(StandardCharsets.UTF_8)), "vmExtensions",
-                    BinaryData.fromBytes(
-                        "[{autoUpgradeMinorVersion=true, protectedSettings=SomeDecryptedSecretValue, provisioningState=0, enableAutomaticUpgrade=true, publisher=Microsoft.Azure.Monitor, type=AzureMonitorLinuxAgent, typeHandlerVersion=1.0}, {name=myExtensionName}]"
-                            .getBytes(StandardCharsets.UTF_8)),
-                    "resourcegroupName",
-                    BinaryData.fromBytes("RG5ABF491C-3164-42A6-8CB5-BF3CB53B018B".getBytes(StandardCharsets.UTF_8)),
-                    "computeApiVersion", BinaryData.fromBytes("2024-07-01".getBytes(StandardCharsets.UTF_8))))
-                    .withResourceOverrides(Arrays.asList(mapOf("name",
-                        BinaryData.fromBytes("myFleet_523".getBytes(StandardCharsets.UTF_8)), "location",
-                        BinaryData.fromBytes("LocalDev".getBytes(StandardCharsets.UTF_8)), "properties",
-                        BinaryData.fromBytes(
-                            "{hardwareProfile={vmSize=Standard_F1s}, provisioningState=0, osProfile={computerName=myFleet000000, adminUsername=adminUser, windowsConfiguration={additionalUnattendContent=[{passName=someValue, content=}, {passName=someOtherValue, content=SomeDecryptedSecretValue}]}, adminPassword=SomeDecryptedSecretValue}, priority=0}"
-                                .getBytes(StandardCharsets.UTF_8)),
-                        "zones", BinaryData.fromBytes("[1]".getBytes(StandardCharsets.UTF_8))),
-                        mapOf("name", BinaryData.fromBytes("myFleet_524".getBytes(StandardCharsets.UTF_8)), "location",
-                            BinaryData.fromBytes("LocalDev".getBytes(StandardCharsets.UTF_8)), "properties",
-                            BinaryData.fromBytes(
-                                "{hardwareProfile={vmSize=Standard_G1s}, provisioningState=0, osProfile={computerName=myFleet000000, adminUsername=adminUser, windowsConfiguration={additionalUnattendContent=[{passName=someValue, content=}, {passName=someOtherValue, content=SomeDecryptedSecretValue}]}, adminPassword=SomeDecryptedSecretValue}, priority=0}"
-                                    .getBytes(StandardCharsets.UTF_8)),
-                            "zones", BinaryData.fromBytes("[2]".getBytes(StandardCharsets.UTF_8)))))
-                    .withResourceCount(2))
-                .withExecutionParameters(new ExecutionParameters()), com.azure.core.util.Context.NONE);
+            .virtualMachinesExecuteCreateFlexWithResponse("bnadpwmpjyfduxue",
+                new ExecuteCreateFlexContent()
+                    .withResourceConfigParameters(
+                        new ResourceProvisionFlexPayload().withBaseProfile(mapOf())
+                            .withResourceOverrides(Arrays.asList(mapOf()))
+                            .withResourceCount(24)
+                            .withResourcePrefix("irskthgchddyuddpqaxlw")
+                            .withFlexProperties(new FlexProperties()
+                                .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("bmzylbvz").withRank(24),
+                                    new VmSizeProfile().withName("bmzylbvz").withRank(24)))
+                                .withOsType(OsType.WINDOWS)
+                                .withPriorityProfile(new PriorityProfile().withType(PriorityType.REGULAR)
+                                    .withAllocationStrategy(AllocationStrategy.LOWEST_PRICE))
+                                .withZoneAllocationPolicy(new ZoneAllocationPolicy()
+                                    .withDistributionStrategy(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
+                                    .withZonePreferences(Arrays
+                                        .asList(new ZonePreference().withZone("kmcvkimwmqwrhfznrqs").withRank(21))))))
+                    .withExecutionParameters(
+                        new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
+                            .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                                .withRetryWindowInMinutes(3)
+                                .withOnFailureAction(ResourceOperationType.UNKNOWN)))
+                    .withCorrelationid("dnncbbqrhnrwcfqrathnexdpcryo"),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -927,9 +902,10 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
 ### ScheduledActions_VirtualMachinesExecuteDeallocate
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -939,25 +915,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteDeallocate_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesExecuteDeallocateMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesExecuteDeallocateWithResponse("qqfrkswrovcice", new ExecuteDeallocateRequest()
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesExecuteDeallocate_MaximumSet.
@@ -967,13 +925,15 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeallocateWithResponse("ykcaptgboliddcfyaiuimj", new ExecuteDeallocateRequest()
+            .virtualMachinesExecuteDeallocateWithResponse("tobscvse", new ExecuteDeallocateContent()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("ruwskrvse"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -981,8 +941,10 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
 ### ScheduledActions_VirtualMachinesExecuteDelete
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
+import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -992,43 +954,26 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesExecuteDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDelete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteDelete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteDelete_MinimumSet_Gen - generated by [MinimumSet] rule.
+     * Sample code: ScheduledActions_VirtualMachinesExecuteDelete_MaximumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void scheduledActionsVirtualMachinesExecuteDeleteMinimumSetGenGeneratedByMinimumSetRule(
+    public static void scheduledActionsVirtualMachinesExecuteDeleteMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeleteWithResponse("east", new ExecuteDeleteRequest()
-                .withExecutionParameters(new ExecutionParameters())
+            .virtualMachinesExecuteDeleteWithResponse("swchjs", new ExecuteDeleteContent()
+                .withExecutionParameters(
+                    new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3",
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteDelete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteDelete_MaximumSet_Gen - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesExecuteDeleteMaximumSetGenGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesExecuteDeleteWithResponse("east", new ExecuteDeleteRequest()
-                .withExecutionParameters(new ExecutionParameters()
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(2).withRetryWindowInMinutes(4)))
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3",
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("dfe927c5-16a6-40b7-a0f7-8524975ed642")
-                .withForceDeletion(false), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("upxtzubhqqzhk")
+                .withForceDeletion(true), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1036,9 +981,10 @@ public final class ScheduledActionsVirtualMachinesExecuteDeleteSamples {
 ### ScheduledActions_VirtualMachinesExecuteHibernate
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -1048,25 +994,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteHibernate_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesExecuteHibernateMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("xtmm", new ExecuteHibernateRequest()
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet.
@@ -1076,13 +1004,15 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     public static void scheduledActionsVirtualMachinesExecuteHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("gztd", new ExecuteHibernateRequest()
+            .virtualMachinesExecuteHibernateWithResponse("zydcprtgybcyilgugfwtfp", new ExecuteHibernateContent()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("miqcvaudnngdedocspkthnoo"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1090,9 +1020,10 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
 ### ScheduledActions_VirtualMachinesExecuteStart
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -1102,7 +1033,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteStart_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteStart_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesExecuteStart_MaximumSet.
@@ -1112,31 +1043,15 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
     public static void scheduledActionsVirtualMachinesExecuteStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteStartWithResponse("qk", new ExecuteStartRequest()
+            .virtualMachinesExecuteStartWithResponse("vpcshwavxibrshqepqktfyu", new ExecuteStartContent()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteStart_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteStart_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesExecuteStartMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesExecuteStartWithResponse("fbdewllahrteoavajbomjc", new ExecuteStartRequest()
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("fmjvelcuicsoqykbyercnrkda"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1144,7 +1059,7 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
 ### ScheduledActions_VirtualMachinesGetOperationErrors
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
 import java.util.Arrays;
 
 /**
@@ -1152,34 +1067,34 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * Sample code: ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void scheduledActionsVirtualMachinesGetOperationErrorsMaximumSetGenGeneratedByMaximumSetRule(
+    public static void scheduledActionsVirtualMachinesGetOperationErrorsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesGetOperationErrorsWithResponse("ennweqswbghorrgzbet",
-                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("ksufjznokhsbowdupyt")),
+            .virtualMachinesGetOperationErrorsWithResponse("hvevnodfnj",
+                new GetOperationErrorsContent().withOperationIds(Arrays.asList("enrmeatzaw")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen - generated by [MinimumSet] rule.
+     * Sample code: ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void scheduledActionsVirtualMachinesGetOperationErrorsMinimumSetGenGeneratedByMinimumSetRule(
+    public static void scheduledActionsVirtualMachinesGetOperationErrorsMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesGetOperationErrorsWithResponse("gcdqwzmxtcn",
-                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("ksufjznokhsbowdupyt")),
+            .virtualMachinesGetOperationErrorsWithResponse("vkkri",
+                new GetOperationErrorsContent().withOperationIds(Arrays.asList("enrmeatzaw")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1188,7 +1103,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
 ### ScheduledActions_VirtualMachinesGetOperationStatus
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
+import com.azure.resourcemanager.computeschedule.models.GetOperationStatusContent;
 import java.util.Arrays;
 
 /**
@@ -1196,7 +1111,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesGetOperationStatusSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesGetOperationStatus_MaximumSet.
@@ -1206,26 +1121,9 @@ public final class ScheduledActionsVirtualMachinesGetOperationStatusSamples {
     public static void scheduledActionsVirtualMachinesGetOperationStatusMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesGetOperationStatusWithResponse("ntfcikxsmthfkdhdcjpevmydzu",
-                new GetOperationStatusRequest().withOperationIds(Arrays.asList("b211f086-4b91-4686-a453-2f5c012e4d80"))
-                    .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesGetOperationStatus_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesGetOperationStatus_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesGetOperationStatusMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesGetOperationStatusWithResponse("ykvvjfoopmkwznctgaiblzvea",
-                new GetOperationStatusRequest().withOperationIds(Arrays.asList("duhqnwosjzexcfwfhryvy"))
-                    .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"),
+            .virtualMachinesGetOperationStatusWithResponse("gcbtdawfspg",
+                new GetOperationStatusContent().withOperationIds(Arrays.asList("ehesndkmbcncsvkqvxwkbmidmaxhx"))
+                    .withCorrelationid("hzpmcjplnbokebrbxrtuvxpp"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1237,10 +1135,11 @@ public final class ScheduledActionsVirtualMachinesGetOperationStatusSamples {
 import com.azure.resourcemanager.computeschedule.models.DeadlineType;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1249,7 +1148,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesSubmitDeallocate_MaximumSet.
@@ -1259,37 +1158,20 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     public static void scheduledActionsVirtualMachinesSubmitDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("ycipx", new SubmitDeallocateRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
+            .virtualMachinesSubmitDeallocateWithResponse("wtkfymadciksjsvamowmbiqdltdzw", new SubmitDeallocateContent()
+                .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withTimezone("ehbjytlhnykfkjxujca")
+                    .withTimeZone("feiohhavpmmjrf")
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitDeallocate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesSubmitDeallocate_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesSubmitDeallocateMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("zrcmkxsbuxsxxulky", new SubmitDeallocateRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
-                    .withDeadlineType(DeadlineType.UNKNOWN))
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("rsi"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1300,10 +1182,11 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
 import com.azure.resourcemanager.computeschedule.models.DeadlineType;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1312,28 +1195,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitHibernate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesSubmitHibernate_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesSubmitHibernateMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesSubmitHibernateWithResponse("zuevcqpgdohzbjodhachtr", new SubmitHibernateRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
-                    .withDeadlineType(DeadlineType.UNKNOWN))
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitHibernate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitHibernate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesSubmitHibernate_MaximumSet.
@@ -1343,16 +1205,20 @@ public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
     public static void scheduledActionsVirtualMachinesSubmitHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitHibernateWithResponse("rhadyapnyvmobwg", new SubmitHibernateRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
+            .virtualMachinesSubmitHibernateWithResponse("aoewv", new SubmitHibernateContent()
+                .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withTimezone("ehbjytlhnykfkjxujca")
+                    .withTimeZone("feiohhavpmmjrf")
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("lgpkqjojane"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1363,10 +1229,11 @@ public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
 import com.azure.resourcemanager.computeschedule.models.DeadlineType;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1375,7 +1242,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitStart_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesSubmitStart_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesSubmitStart_MaximumSet.
@@ -1385,37 +1252,20 @@ public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     public static void scheduledActionsVirtualMachinesSubmitStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("pxtvvk", new SubmitStartRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
+            .virtualMachinesSubmitStartWithResponse("cabm", new SubmitStartContent()
+                .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
+                    .withTimezone("ehbjytlhnykfkjxujca")
+                    .withTimeZone("feiohhavpmmjrf")
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitStart_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesSubmitStart_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesSubmitStartMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("ufrcsuw", new SubmitStartRequest()
-                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
-                    .withTimeZone("aigbjdnldtzkteqi")
-                    .withDeadlineType(DeadlineType.UNKNOWN))
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("ttlsvgmsykwowrajtmnztcm"), com.azure.core.util.Context.NONE);
     }
 }
 ```
