@@ -1,14 +1,1120 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.59.0-beta.1 (2026-03-30)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.NatGatewayListResult` was removed
 
-### Other Changes
+#### `models.ApplicationGatewayPrivateLinkResourceListResult` was removed
+
+#### `models.NspLoggingConfigurationListResult` was removed
+
+#### `models.ExpressRoutePortsLocationListResult` was removed
+
+#### `models.PublicIpAddressListResult` was removed
+
+#### `models.TrackedResource` was removed
+
+#### `models.NspLinkReferenceListResult` was removed
+
+#### `models.AdminRuleCollectionListResult` was removed
+
+#### `models.ListVpnConnectionsResult` was removed
+
+#### `models.GetServiceGatewayServicesResult` was removed
+
+#### `models.BastionSessionDeleteResult` was removed
+
+#### `models.BastionShareableLinkListResult` was removed
+
+#### `models.StaticCidrList` was removed
+
+#### `models.LoadBalancerOutboundRuleListResult` was removed
+
+#### `models.LoadBalancerListResult` was removed
+
+#### `models.AzureFirewallListResult` was removed
+
+#### `models.ListHubRouteTablesResult` was removed
+
+#### `models.RoutingRuleListResult` was removed
+
+#### `models.VirtualNetworkPeeringListResult` was removed
+
+#### `models.SecurityUserRuleCollectionListResult` was removed
+
+#### `models.SecurityUserRuleListResult` was removed
+
+#### `models.ListVirtualWansResult` was removed
+
+#### `models.ExpressRouteCrossConnectionListResult` was removed
+
+#### `models.AvailableDelegationsResult` was removed
+
+#### `models.UsagesListResult` was removed
+
+#### `models.ExpressRoutePortAuthorizationListResult` was removed
+
+#### `models.ExpressRouteLinkListResult` was removed
+
+#### `models.LoadBalancerProbeListResult` was removed
+
+#### `models.PacketCaptureListResult` was removed
+
+#### `models.NspProfileListResult` was removed
+
+#### `models.InboundNatRuleListResult` was removed
+
+#### `models.RouteListResult` was removed
+
+#### `models.BgpServiceCommunityListResult` was removed
+
+#### `models.PublicIpPrefixListResult` was removed
+
+#### `models.LocalNetworkGatewayListResult` was removed
+
+#### `models.VirtualRouterListResult` was removed
+
+#### `models.ExpressRouteCircuitPeeringListResult` was removed
+
+#### `models.ListVpnServerConfigurationsResult` was removed
+
+#### `models.ApplicationGatewayAvailableSslPredefinedPolicies` was removed
+
+#### `models.ListVirtualNetworkGatewayNatRulesResult` was removed
+
+#### `models.EndpointServicesListResult` was removed
+
+#### `models.ServiceTagInformationListResult` was removed
+
+#### `models.ListRouteMapsResult` was removed
+
+#### `models.VirtualNetworkApplianceListResult` was removed
+
+#### `models.BastionActiveSessionListResult` was removed
+
+#### `models.ListVpnGatewayNatRulesResult` was removed
+
+#### `models.NetworkInterfaceListResult` was removed
+
+#### `models.NetworkInterfaceIpConfigurationListResult` was removed
+
+#### `models.ConnectionMonitorListResult` was removed
+
+#### `models.FirewallPolicyRuleCollectionGroupListResult` was removed
+
+#### `models.SecurityPartnerProviderListResult` was removed
+
+#### `models.VirtualNetworkGatewayListConnectionsResult` was removed
+
+#### `models.FirewallPolicyListResult` was removed
+
+#### `models.AdminRuleListResult` was removed
+
+#### `models.NetworkInterfaceLoadBalancerListResult` was removed
+
+#### `models.LoadBalancerLoadBalancingRuleListResult` was removed
+
+#### `models.VirtualNetworkGatewayListResult` was removed
+
+#### `models.ConnectionSharedKeyResultList` was removed
+
+#### `models.NetworkWatcherListResult` was removed
+
+#### `models.ReachabilityAnalysisRunListResult` was removed
+
+#### `models.ExpressRouteServiceProviderListResult` was removed
+
+#### `models.AzureFirewallFqdnTagListResult` was removed
+
+#### `models.VirtualNetworkGatewayConnectionListResult` was removed
+
+#### `models.ListHubVirtualNetworkConnectionsResult` was removed
+
+#### `models.NspAssociationsListResult` was removed
+
+#### `models.ApplicationSecurityGroupListResult` was removed
+
+#### `models.VirtualNetworkDdosProtectionStatusResult` was removed
+
+#### `models.NetworkVirtualApplianceConnectionList` was removed
+
+#### `models.ListVpnSiteLinksResult` was removed
+
+#### `models.ListVpnSitesResult` was removed
+
+#### `models.PeerExpressRouteCircuitConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.SecurityUserConfigurationListResult` was removed
+
+#### `models.AuthorizationListResult` was removed
+
+#### `models.VirtualNetworkListUsageResult` was removed
+
+#### `models.ScopeConnectionListResult` was removed
+
+#### `models.StaticMemberListResult` was removed
+
+#### `models.PrivateEndpointListResult` was removed
+
+#### `models.IpAllocationListResult` was removed
+
+#### `models.SecurityRuleListResult` was removed
+
+#### `models.VirtualNetworkTapListResult` was removed
+
+#### `models.RouteFilterListResult` was removed
+
+#### `models.VirtualRouterPeeringListResult` was removed
+
+#### `models.ServiceGatewayListResult` was removed
+
+#### `models.VerifierWorkspaceListResult` was removed
+
+#### `models.NetworkVirtualApplianceListResult` was removed
+
+#### `models.ApplicationGatewayListResult` was removed
+
+#### `models.PerimeterAssociableResourcesListResult` was removed
+
+#### `models.ListVirtualHubIpConfigurationResults` was removed
+
+#### `models.ListVirtualHubRouteTableV2SResult` was removed
+
+#### `models.ExpressRouteCircuitListResult` was removed
+
+#### `models.ReachabilityAnalysisIntentListResult` was removed
+
+#### `models.NetworkManagerConnectionListResult` was removed
+
+#### `models.ApplicationGatewayPrivateEndpointConnectionListResult` was removed
+
+#### `models.ListRoutingIntentResult` was removed
+
+#### `models.ServiceEndpointPolicyListResult` was removed
+
+#### `models.PoolAssociationList` was removed
+
+#### `models.NetworkSecurityPerimeterListResult` was removed
+
+#### `models.ExpressRouteCrossConnectionPeeringList` was removed
+
+#### `models.PrivateLinkServiceListResult` was removed
+
+#### `models.ListVirtualHubBgpConnectionResults` was removed
+
+#### `models.NspLinkListResult` was removed
+
+#### `models.SubnetListResult` was removed
+
+#### `models.FlowLogListResult` was removed
+
+#### `models.ListVpnGatewaysResult` was removed
+
+#### `models.RoutingRuleCollectionListResult` was removed
+
+#### `models.RouteTableListResult` was removed
+
+#### `models.WebApplicationFirewallPolicyListResult` was removed
+
+#### `models.AutoApprovedPrivateLinkServicesResult` was removed
+
+#### `models.NetworkManagerRoutingConfigurationListResult` was removed
+
+#### `models.NetworkVirtualApplianceSiteListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.ExpressRouteCircuitConnectionListResult` was removed
+
+#### `models.ListVirtualHubsResult` was removed
+
+#### `models.AvailableServiceAliasesResult` was removed
+
+#### `models.LoadBalancerFrontendIpConfigurationListResult` was removed
+
+#### `models.GetServiceGatewayAddressLocationsResult` was removed
+
+#### `models.ApplicationGatewayWafDynamicManifestResultList` was removed
+
+#### `models.NetworkInterfaceTapConfigurationListResult` was removed
+
+#### `models.LoadBalancerBackendAddressPoolListResult` was removed
+
+#### `models.ListP2SVpnGatewaysResult` was removed
+
+#### `models.VirtualNetworkListResult` was removed
+
+#### `models.CustomIpPrefixListResult` was removed
+
+#### `models.SecurityAdminConfigurationListResult` was removed
+
+#### `models.BastionHostListResult` was removed
+
+#### `models.ListVpnSiteLinkConnectionsResult` was removed
+
+#### `models.NetworkProfileListResult` was removed
+
+#### `models.DdosProtectionPlanListResult` was removed
+
+#### `models.NetworkSecurityGroupListResult` was removed
+
+#### `models.NspServiceTagsListResult` was removed
+
+#### `models.AvailablePrivateEndpointTypesResult` was removed
+
+#### `models.IpGroupListResult` was removed
+
+#### `models.NetworkGroupListResult` was removed
+
+#### `models.DscpConfigurationListResult` was removed
+
+#### `models.IpamPoolList` was removed
+
+#### `models.PrivateDnsZoneGroupListResult` was removed
+
+#### `models.ExpressRoutePortListResult` was removed
+
+#### `models.ServiceEndpointPolicyDefinitionListResult` was removed
+
+#### `models.NetworkVirtualApplianceSkuListResult` was removed
+
+#### `models.ConnectivityConfigurationListResult` was removed
+
+#### `models.RouteFilterRuleListResult` was removed
+
+#### `models.NetworkManagerListResult` was removed
+
+#### `models.ListVpnServerConfigurationPolicyGroupsResult` was removed
+
+#### `models.AzureWebCategoryListResult` was removed
+
+#### `models.NspAccessRuleListResult` was removed
+
+#### `models.Error` was modified
+
+* `Error()` was changed to private access
+
+#### `models.ExpressRouteCrossConnectionRoutesTableSummary` was modified
+
+* `ExpressRouteCrossConnectionRoutesTableSummary()` was changed to private access
+* `withNeighbor(java.lang.String)` was removed
+* `withAsn(java.lang.Integer)` was removed
+* `withStateOrPrefixesReceived(java.lang.String)` was removed
+* `withUpDown(java.lang.String)` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.SecurityRuleAssociations` was modified
+
+* `SecurityRuleAssociations()` was changed to private access
+* `withNetworkInterfaceAssociation(models.NetworkInterfaceAssociation)` was removed
+* `withEffectiveSecurityRules(java.util.List)` was removed
+* `withDefaultSecurityRules(java.util.List)` was removed
+* `withSubnetAssociation(models.SubnetAssociation)` was removed
+
+#### `models.ResourceBasics` was modified
+
+* `ResourceBasics()` was changed to private access
+* `withAddressPrefixes(java.util.List)` was removed
+* `withResourceId(java.lang.String)` was removed
+
+#### `models.MatchedRule` was modified
+
+* `MatchedRule()` was changed to private access
+* `withRuleName(java.lang.String)` was removed
+* `withAction(java.lang.String)` was removed
+
+#### `models.ApplicationGatewayFirewallRule` was modified
+
+* `ApplicationGatewayFirewallRule()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withAction(models.ApplicationGatewayWafRuleActionTypes)` was removed
+* `withRuleIdString(java.lang.String)` was removed
+* `withState(models.ApplicationGatewayWafRuleStateTypes)` was removed
+* `withRuleId(int)` was removed
+* `withSensitivity(models.ApplicationGatewayWafRuleSensitivityTypes)` was removed
+
+#### `models.VpnGatewayIpConfiguration` was modified
+
+* `VpnGatewayIpConfiguration()` was changed to private access
+* `withPublicIpAddress(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withPrivateIpAddress(java.lang.String)` was removed
+
+#### `models.EffectiveRoute` was modified
+
+* `EffectiveRoute()` was changed to private access
+* `withSource(models.EffectiveRouteSource)` was removed
+* `withName(java.lang.String)` was removed
+* `withAddressPrefix(java.util.List)` was removed
+* `withDisableBgpRoutePropagation(java.lang.Boolean)` was removed
+* `withNextHopType(models.RouteNextHopType)` was removed
+* `withState(models.EffectiveRouteState)` was removed
+* `withNextHopIpAddress(java.util.List)` was removed
+
+#### `models.VirtualNetworkApplianceIpConfiguration` was modified
+
+* `VirtualNetworkApplianceIpConfiguration()` was changed to private access
+* `withPrivateIpAllocationMethod(models.IpAllocationMethod)` was removed
+* `withId(java.lang.String)` was removed
+* `withPrivateIpAddressVersion(models.IpVersion)` was removed
+* `withPrimary(java.lang.Boolean)` was removed
+* `withPrivateIpAddress(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.TunnelConnectionHealth` was modified
+
+* `TunnelConnectionHealth()` was changed to private access
+
+#### `models.DdosDetectionRule` was modified
+
+* `withId(java.lang.String)` was removed
+
+#### `models.ActiveSecurityAdminRule` was modified
+
+* `ActiveSecurityAdminRule()` was changed to private access
+* `withDestinations(java.util.List)` was removed
+* `withRuleCollectionDescription(java.lang.String)` was removed
+* `withRuleCollectionAppliesToGroups(java.util.List)` was removed
+* `withDirection(models.SecurityConfigurationRuleDirection)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withDestinationPortRanges(java.util.List)` was removed
+* `withRuleGroups(java.util.List)` was removed
+* `withId(java.lang.String)` was removed
+* `withConfigurationDescription(java.lang.String)` was removed
+* `withPriority(java.lang.Integer)` was removed
+* `withSources(java.util.List)` was removed
+* `withProtocol(models.SecurityConfigurationRuleProtocol)` was removed
+* `withCommitTime(java.time.OffsetDateTime)` was removed
+* `withAccess(models.SecurityConfigurationRuleAccess)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withSourcePortRanges(java.util.List)` was removed
+
+#### `models.ErrorAdditionalInfo` was modified
+
+* `ErrorAdditionalInfo()` was changed to private access
+
+#### `models.ContainerNetworkInterfaceIpConfiguration` was modified
+
+* `ContainerNetworkInterfaceIpConfiguration()` was changed to private access
+* `withName(java.lang.String)` was removed
+
+#### `models.ApplicationGatewayBackendHealthHttpSettings` was modified
+
+* `ApplicationGatewayBackendHealthHttpSettings()` was changed to private access
+* `withServers(java.util.List)` was removed
+* `withBackendHttpSettings(models.ApplicationGatewayBackendHttpSettings)` was removed
+
+#### `models.NetworkInterfaceAssociation` was modified
+
+* `NetworkInterfaceAssociation()` was changed to private access
+* `withSecurityRules(java.util.List)` was removed
+
+#### `models.TopologyAssociation` was modified
+
+* `TopologyAssociation()` was changed to private access
+* `withAssociationType(models.AssociationType)` was removed
+* `withName(java.lang.String)` was removed
+* `withResourceId(java.lang.String)` was removed
+
+#### `models.SecurityGroupNetworkInterface` was modified
+
+* `SecurityGroupNetworkInterface()` was changed to private access
+* `withSecurityRuleAssociations(models.SecurityRuleAssociations)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.EffectiveDefaultSecurityAdminRule` was modified
+
+* `EffectiveDefaultSecurityAdminRule()` was changed to private access
+* `withConfigurationDescription(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withRuleGroups(java.util.List)` was removed
+* `withFlag(java.lang.String)` was removed
+* `withRuleCollectionAppliesToGroups(java.util.List)` was removed
+* `withRuleCollectionDescription(java.lang.String)` was removed
+
+#### `models.Container` was modified
+
+* `Container()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.ServiceAssociationLink` was modified
+
+* `ServiceAssociationLink()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withLocations(java.util.List)` was removed
+* `withAllowDelete(java.lang.Boolean)` was removed
+* `withId(java.lang.String)` was removed
+* `withLink(java.lang.String)` was removed
+* `withLinkedResourceType(java.lang.String)` was removed
+
+#### `models.TroubleshootingRecommendedActions` was modified
+
+* `TroubleshootingRecommendedActions()` was changed to private access
+* `withActionUriText(java.lang.String)` was removed
+* `withActionId(java.lang.String)` was removed
+* `withActionUri(java.lang.String)` was removed
+* `withActionText(java.lang.String)` was removed
+
+#### `models.GatewayResiliencyRecommendation` was modified
+
+* `GatewayResiliencyRecommendation()` was changed to private access
+* `withRecommendationTitle(java.lang.String)` was removed
+* `withCallToActionLink(java.lang.String)` was removed
+* `withRecommendationText(java.lang.String)` was removed
+* `withSeverity(java.lang.String)` was removed
+* `withCallToActionText(java.lang.String)` was removed
+* `withRecommendationId(java.lang.String)` was removed
+
+#### `models.ContainerNetworkInterface` was modified
+
+* `ContainerNetworkInterface()` was changed to private access
+* `withContainer(models.Container)` was removed
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.ExpressRouteFailoverRedundantRoute` was modified
+
+* `ExpressRouteFailoverRedundantRoute()` was changed to private access
+* `withRoutes(java.util.List)` was removed
+* `withPeeringLocations(java.util.List)` was removed
+
+#### `models.AzureReachabilityReportLatencyInfo` was modified
+
+* `AzureReachabilityReportLatencyInfo()` was changed to private access
+* `withScore(java.lang.Integer)` was removed
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+
+#### `models.LoadBalancerHealthPerRulePerBackendAddress` was modified
+
+* `LoadBalancerHealthPerRulePerBackendAddress()` was changed to private access
+* `withState(java.lang.String)` was removed
+* `withReason(java.lang.String)` was removed
+* `withIpAddress(java.lang.String)` was removed
+* `withNetworkInterfaceIpConfigurationId(java.lang.String)` was removed
+
+#### `models.ConnectivityHop` was modified
+
+* `ConnectivityHop()` was changed to private access
+
+#### `models.ReachabilityAnalysisRunProperties` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.NetworkVirtualApplianceSkuInstances` was modified
+
+* `NetworkVirtualApplianceSkuInstances()` was changed to private access
+
+#### `models.EffectiveNetworkSecurityRule` was modified
+
+* `EffectiveNetworkSecurityRule()` was changed to private access
+* `withDestinationPortRanges(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withSourceAddressPrefix(java.lang.String)` was removed
+* `withDestinationPortRange(java.lang.String)` was removed
+* `withPriority(java.lang.Integer)` was removed
+* `withProtocol(models.EffectiveSecurityRuleProtocol)` was removed
+* `withSourceAddressPrefixes(java.util.List)` was removed
+* `withSourcePortRanges(java.util.List)` was removed
+* `withSourcePortRange(java.lang.String)` was removed
+* `withExpandedDestinationAddressPrefix(java.util.List)` was removed
+* `withDirection(models.SecurityRuleDirection)` was removed
+* `withExpandedSourceAddressPrefix(java.util.List)` was removed
+* `withDestinationAddressPrefixes(java.util.List)` was removed
+* `withDestinationAddressPrefix(java.lang.String)` was removed
+* `withAccess(models.SecurityRuleAccess)` was removed
+
+#### `models.EvaluatedNetworkSecurityGroup` was modified
+
+* `EvaluatedNetworkSecurityGroup()` was changed to private access
+* `withMatchedRule(models.MatchedRule)` was removed
+* `withNetworkSecurityGroupId(java.lang.String)` was removed
+* `withAppliedTo(java.lang.String)` was removed
+
+#### `models.TopologyResource` was modified
+
+* `TopologyResource()` was changed to private access
+* `withAssociations(java.util.List)` was removed
+* `withLocation(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.AzureFirewallIpGroups` was modified
+
+* `AzureFirewallIpGroups()` was changed to private access
+
+#### `models.EffectiveRouteMapRoute` was modified
+
+* `EffectiveRouteMapRoute()` was changed to private access
+* `withBgpCommunities(java.lang.String)` was removed
+* `withAsPath(java.lang.String)` was removed
+* `withPrefix(java.lang.String)` was removed
+
+#### `models.CrossTenantScopes` was modified
+
+* `CrossTenantScopes()` was changed to private access
+
+#### `models.AzureReachabilityReportItem` was modified
+
+* `AzureReachabilityReportItem()` was changed to private access
+* `withLatencies(java.util.List)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withAzureLocation(java.lang.String)` was removed
+
+#### `models.TroubleshootingDetails` was modified
+
+* `TroubleshootingDetails()` was changed to private access
+* `withSummary(java.lang.String)` was removed
+* `withRecommendedActions(java.util.List)` was removed
+* `withId(java.lang.String)` was removed
+* `withReasonType(java.lang.String)` was removed
+* `withDetail(java.lang.String)` was removed
+
+#### `models.SingleQueryResult` was modified
+
+* `SingleQueryResult()` was changed to private access
+* `withInheritedFromParentPolicy(java.lang.Boolean)` was removed
+* `withSeverity(models.FirewallPolicyIdpsSignatureSeverity)` was removed
+* `withMode(models.FirewallPolicyIdpsSignatureMode)` was removed
+* `withProtocol(java.lang.String)` was removed
+* `withDestinationPorts(java.util.List)` was removed
+* `withSignatureId(java.lang.Integer)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withSourcePorts(java.util.List)` was removed
+* `withLastUpdated(java.lang.String)` was removed
+* `withDirection(models.FirewallPolicyIdpsSignatureDirection)` was removed
+* `withGroup(java.lang.String)` was removed
+
+#### `models.NetworkSecurityRulesEvaluationResult` was modified
+
+* `NetworkSecurityRulesEvaluationResult()` was changed to private access
+* `withProtocolMatched(java.lang.Boolean)` was removed
+* `withDestinationPortMatched(java.lang.Boolean)` was removed
+* `withSourceMatched(java.lang.Boolean)` was removed
+* `withSourcePortMatched(java.lang.Boolean)` was removed
+* `withDestinationMatched(java.lang.Boolean)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.VirtualNetworkConnectionGatewayReference` was modified
+
+* `VirtualNetworkConnectionGatewayReference()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.ReachabilityAnalysisIntentProperties` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.ActiveBaseSecurityAdminRule` was modified
+
+* `models.ActiveBaseSecurityAdminRule withCommitTime(java.time.OffsetDateTime)` -> `models.ActiveBaseSecurityAdminRule withCommitTime(java.time.OffsetDateTime)`
+* `models.ActiveBaseSecurityAdminRule withConfigurationDescription(java.lang.String)` -> `models.ActiveBaseSecurityAdminRule withConfigurationDescription(java.lang.String)`
+* `models.ActiveBaseSecurityAdminRule withId(java.lang.String)` -> `models.ActiveBaseSecurityAdminRule withId(java.lang.String)`
+* `models.ActiveBaseSecurityAdminRule withRegion(java.lang.String)` -> `models.ActiveBaseSecurityAdminRule withRegion(java.lang.String)`
+* `models.ActiveBaseSecurityAdminRule withRuleCollectionDescription(java.lang.String)` -> `models.ActiveBaseSecurityAdminRule withRuleCollectionDescription(java.lang.String)`
+* `models.ActiveBaseSecurityAdminRule withRuleCollectionAppliesToGroups(java.util.List)` -> `models.ActiveBaseSecurityAdminRule withRuleCollectionAppliesToGroups(java.util.List)`
+* `models.ActiveBaseSecurityAdminRule withRuleGroups(java.util.List)` -> `models.ActiveBaseSecurityAdminRule withRuleGroups(java.util.List)`
+
+#### `models.EffectiveSecurityAdminRule` was modified
+
+* `EffectiveSecurityAdminRule()` was changed to private access
+* `withConfigurationDescription(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withProtocol(models.SecurityConfigurationRuleProtocol)` was removed
+* `withRuleCollectionAppliesToGroups(java.util.List)` was removed
+* `withRuleGroups(java.util.List)` was removed
+* `withSources(java.util.List)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withRuleCollectionDescription(java.lang.String)` was removed
+* `withDestinations(java.util.List)` was removed
+* `withDirection(models.SecurityConfigurationRuleDirection)` was removed
+* `withAccess(models.SecurityConfigurationRuleAccess)` was removed
+* `withDestinationPortRanges(java.util.List)` was removed
+* `withSourcePortRanges(java.util.List)` was removed
+* `withPriority(java.lang.Integer)` was removed
+
+#### `models.BgpPeerStatus` was modified
+
+* `BgpPeerStatus()` was changed to private access
+
+#### `models.NatRulePortMapping` was modified
+
+* `NatRulePortMapping()` was changed to private access
+* `withInboundNatRuleName(java.lang.String)` was removed
+* `withBackendPort(java.lang.Integer)` was removed
+* `withFrontendPort(java.lang.Integer)` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withAvailabilities(java.util.List)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withMetricFilterPattern(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withSourceMdmAccount(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+
+#### `models.ApplicationGatewayForContainersReferenceDefinition` was modified
+
+* `ApplicationGatewayForContainersReferenceDefinition()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.ExpressRouteServiceProviderBandwidthsOffered` was modified
+
+* `ExpressRouteServiceProviderBandwidthsOffered()` was changed to private access
+* `withValueInMbps(java.lang.Integer)` was removed
+* `withOfferName(java.lang.String)` was removed
+
+#### `models.ApplicationGatewayFirewallRuleGroup` was modified
+
+* `ApplicationGatewayFirewallRuleGroup()` was changed to private access
+* `withRules(java.util.List)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withRuleGroupName(java.lang.String)` was removed
+
+#### `models.IpamPoolProperties` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.AvailableProvidersListState` was modified
+
+* `AvailableProvidersListState()` was changed to private access
+* `withCities(java.util.List)` was removed
+* `withStateName(java.lang.String)` was removed
+* `withProviders(java.util.List)` was removed
+
+#### `models.HopLink` was modified
+
+* `HopLink()` was changed to private access
+
+#### `models.ResourceNavigationLink` was modified
+
+* `ResourceNavigationLink()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withLink(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withLinkedResourceType(java.lang.String)` was removed
+
+#### `models.BgpCommunity` was modified
+
+* `BgpCommunity()` was changed to private access
+* `withServiceGroup(java.lang.String)` was removed
+* `withCommunityPrefixes(java.util.List)` was removed
+* `withCommunityName(java.lang.String)` was removed
+* `withCommunityValue(java.lang.String)` was removed
+* `withServiceSupportedRegion(java.lang.String)` was removed
+* `withIsAuthorizedToUse(java.lang.Boolean)` was removed
+
+#### `models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties` was modified
+
+* `NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties()` was changed to private access
+
+#### `models.EffectiveNetworkSecurityGroup` was modified
+
+* `EffectiveNetworkSecurityGroup()` was changed to private access
+* `withEffectiveSecurityRules(java.util.List)` was removed
+* `java.lang.String tagMap()` -> `java.util.Map tagMap()`
+* `withNetworkSecurityGroup(com.azure.core.management.SubResource)` was removed
+* `withAssociation(models.EffectiveNetworkSecurityGroupAssociation)` was removed
+* `withTagMap(java.lang.String)` was removed
+
+#### `models.ReferencedPublicIpAddress` was modified
+
+* `ReferencedPublicIpAddress()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.PeerRoute` was modified
+
+* `PeerRoute()` was changed to private access
+
+#### `models.GatewayRouteSet` was modified
+
+* `GatewayRouteSet()` was changed to private access
+* `withLocations(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withDetails(java.util.Map)` was removed
+
+#### `models.NetworkGroupsCreateOrUpdateHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.VpnClientConnectionHealthDetail` was modified
+
+* `VpnClientConnectionHealthDetail()` was changed to private access
+
+#### `models.ServiceTagInformationPropertiesFormat` was modified
+
+* `ServiceTagInformationPropertiesFormat()` was changed to private access
+
+#### `models.ExpressRouteCircuitArpTable` was modified
+
+* `ExpressRouteCircuitArpTable()` was changed to private access
+* `withAge(java.lang.Integer)` was removed
+* `withIpAddress(java.lang.String)` was removed
+* `withInterfaceProperty(java.lang.String)` was removed
+* `withMacAddress(java.lang.String)` was removed
+
+#### `models.ActiveConnectivityConfiguration` was modified
+
+* `ActiveConnectivityConfiguration()` was changed to private access
+* `withIsGlobal(models.IsGlobal)` was removed
+* `withHubs(java.util.List)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withConnectivityTopology(models.ConnectivityTopology)` was removed
+* `withConfigurationGroups(java.util.List)` was removed
+* `withAppliesToGroups(java.util.List)` was removed
+* `withId(java.lang.String)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withDeleteExistingPeering(models.DeleteExistingPeering)` was removed
+* `withCommitTime(java.time.OffsetDateTime)` was removed
+* `withConnectivityCapabilities(models.ConnectivityConfigurationPropertiesConnectivityCapabilities)` was removed
+
+#### `models.RouteSourceDetails` was modified
+
+* `RouteSourceDetails()` was changed to private access
+* `withSec(java.lang.String)` was removed
+* `withCircuit(java.lang.String)` was removed
+* `withPri(java.lang.String)` was removed
+
+#### `models.RecordSet` was modified
+
+* `RecordSet()` was changed to private access
+* `withRecordType(java.lang.String)` was removed
+* `withIpAddresses(java.util.List)` was removed
+* `withRecordSetName(java.lang.String)` was removed
+* `withTtl(java.lang.Integer)` was removed
+* `withFqdn(java.lang.String)` was removed
+
+#### `models.ApplicationGatewayBackendHealthPool` was modified
+
+* `ApplicationGatewayBackendHealthPool()` was changed to private access
+* `withBackendHttpSettingsCollection(java.util.List)` was removed
+* `withBackendAddressPool(models.ApplicationGatewayBackendAddressPool)` was removed
+
+#### `models.AvailableProvidersListCity` was modified
+
+* `AvailableProvidersListCity()` was changed to private access
+* `withProviders(java.util.List)` was removed
+* `withCityName(java.lang.String)` was removed
+
+#### `models.ExpressRouteFailoverCircuitResourceDetails` was modified
+
+* `ExpressRouteFailoverCircuitResourceDetails()` was changed to private access
+* `withNrpResourceUri(java.lang.String)` was removed
+* `withConnectionName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ConnectivityIssue` was modified
+
+* `ConnectivityIssue()` was changed to private access
+
+#### `models.Availability` was modified
+
+* `Availability()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `withRetention(java.lang.String)` was removed
+* `withTimeGrain(java.lang.String)` was removed
+
+#### `models.VerifierWorkspaceProperties` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.OperationPropertiesFormatServiceSpecification` was modified
+
+* `OperationPropertiesFormatServiceSpecification()` was changed to private access
+* `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+
+#### `models.AvailableProvidersListCountry` was modified
+
+* `AvailableProvidersListCountry()` was changed to private access
+* `withProviders(java.util.List)` was removed
+* `withStates(java.util.List)` was removed
+* `withCountryName(java.lang.String)` was removed
+
+#### `models.VirtualNetworkUsageName` was modified
+
+* `VirtualNetworkUsageName()` was changed to private access
+
+#### `models.ApplicationGatewayFirewallRuleSet` was modified
+
+* `ApplicationGatewayFirewallRuleSet()` was changed to private access
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `withRuleSetVersion(java.lang.String)` was removed
+* `withTiers(java.util.List)` was removed
+* `withRuleSetType(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withRuleGroups(java.util.List)` was removed
+
+#### `models.ApplicationGatewayFirewallManifestRuleSet` was modified
+
+* `ApplicationGatewayFirewallManifestRuleSet()` was changed to private access
+* `withRuleSetType(java.lang.String)` was removed
+* `withRuleSetVersion(java.lang.String)` was removed
+* `withRuleGroups(java.util.List)` was removed
+* `withStatus(models.ApplicationGatewayRuleSetStatusOptions)` was removed
+* `withTiers(java.util.List)` was removed
+
+#### `models.NetworkManagerDeploymentStatus` was modified
+
+* `NetworkManagerDeploymentStatus()` was changed to private access
+* `withRegion(java.lang.String)` was removed
+* `withCommitTime(java.time.OffsetDateTime)` was removed
+* `withConfigurationIds(java.util.List)` was removed
+* `withDeploymentType(models.ConfigurationType)` was removed
+* `withErrorMessage(java.lang.String)` was removed
+* `withDeploymentStatus(models.DeploymentStatus)` was removed
+
+#### `models.CircuitMetadataMap` was modified
+
+* `CircuitMetadataMap()` was changed to private access
+* `withLink(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.ExpressRouteCircuitRoutesTableSummary` was modified
+
+* `ExpressRouteCircuitRoutesTableSummary()` was changed to private access
+* `withUpDown(java.lang.String)` was removed
+* `withAs(java.lang.Integer)` was removed
+* `withV(java.lang.Integer)` was removed
+* `withNeighbor(java.lang.String)` was removed
+* `withStatePfxRcd(java.lang.String)` was removed
+
+#### `models.ManagedRuleSetRuleGroup` was modified
+
+* `ManagedRuleSetRuleGroup()` was changed to private access
+* `withRules(java.util.List)` was removed
+* `withRuleGroupName(java.lang.String)` was removed
+
+#### `models.Dimension` was modified
+
+* `Dimension()` was changed to private access
+* `withInternalName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.NetworkSecurityGroupResult` was modified
+
+* `NetworkSecurityGroupResult()` was changed to private access
+* `withSecurityRuleAccessResult(models.SecurityRuleAccess)` was removed
+
+#### `models.ResiliencyRecommendationComponents` was modified
+
+* `ResiliencyRecommendationComponents()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withCurrentScore(java.lang.String)` was removed
+* `withRecommendations(java.util.List)` was removed
+* `withMaxScore(java.lang.String)` was removed
+
+#### `models.EffectiveBaseSecurityAdminRule` was modified
+
+* `models.EffectiveBaseSecurityAdminRule withId(java.lang.String)` -> `models.EffectiveBaseSecurityAdminRule withId(java.lang.String)`
+* `models.EffectiveBaseSecurityAdminRule withRuleGroups(java.util.List)` -> `models.EffectiveBaseSecurityAdminRule withRuleGroups(java.util.List)`
+* `models.EffectiveBaseSecurityAdminRule withRuleCollectionDescription(java.lang.String)` -> `models.EffectiveBaseSecurityAdminRule withRuleCollectionDescription(java.lang.String)`
+* `models.EffectiveBaseSecurityAdminRule withRuleCollectionAppliesToGroups(java.util.List)` -> `models.EffectiveBaseSecurityAdminRule withRuleCollectionAppliesToGroups(java.util.List)`
+* `models.EffectiveBaseSecurityAdminRule withConfigurationDescription(java.lang.String)` -> `models.EffectiveBaseSecurityAdminRule withConfigurationDescription(java.lang.String)`
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.InboundNatRulePortMapping` was modified
+
+* `InboundNatRulePortMapping()` was changed to private access
+
+#### `models.EffectiveConnectivityConfiguration` was modified
+
+* `models.EffectiveConnectivityConfiguration withConfigurationGroups(java.util.List)` -> `models.EffectiveConnectivityConfiguration withConfigurationGroups(java.util.List)`
+* `withHubs(java.util.List)` was removed
+* `models.EffectiveConnectivityConfiguration withId(java.lang.String)` -> `models.EffectiveConnectivityConfiguration withId(java.lang.String)`
+* `withIsGlobal(models.IsGlobal)` was removed
+* `withDeleteExistingPeering(models.DeleteExistingPeering)` was removed
+* `withConnectivityTopology(models.ConnectivityTopology)` was removed
+* `withAppliesToGroups(java.util.List)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withConnectivityCapabilities(models.ConnectivityConfigurationPropertiesConnectivityCapabilities)` was removed
+
+#### `models.PerimeterBasedAccessRule` was modified
+
+* `PerimeterBasedAccessRule()` was changed to private access
+
+#### `models.NetworkConfigurationDiagnosticResult` was modified
+
+* `NetworkConfigurationDiagnosticResult()` was changed to private access
+* `withProfile(models.NetworkConfigurationDiagnosticProfile)` was removed
+* `withNetworkSecurityGroupResult(models.NetworkSecurityGroupResult)` was removed
+
+#### `models.VirtualHubEffectiveRoute` was modified
+
+* `VirtualHubEffectiveRoute()` was changed to private access
+* `withAsPath(java.lang.String)` was removed
+* `withAddressPrefixes(java.util.List)` was removed
+* `withNextHops(java.util.List)` was removed
+* `withNextHopType(java.lang.String)` was removed
+* `withRouteOrigin(java.lang.String)` was removed
+
+#### `models.ExpressRoutePortsLocationBandwidths` was modified
+
+* `ExpressRoutePortsLocationBandwidths()` was changed to private access
+
+#### `models.StaticCidrProperties` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.EffectiveNetworkSecurityGroupAssociation` was modified
+
+* `EffectiveNetworkSecurityGroupAssociation()` was changed to private access
+* `withSubnet(com.azure.core.management.SubResource)` was removed
+* `withNetworkInterface(com.azure.core.management.SubResource)` was removed
+* `withNetworkManager(com.azure.core.management.SubResource)` was removed
+
+#### `models.ErrorDetail` was modified
+
+* `ErrorDetail()` was changed to private access
+
+#### `models.IntentContent` was modified
+
+* `IntentContent()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withIpTraffic(models.IpTraffic)` was removed
+* `withSourceResourceId(java.lang.String)` was removed
+* `withDestinationResourceId(java.lang.String)` was removed
+
+#### `models.ConfigurationGroup` was modified
+
+* `ConfigurationGroup()` was changed to private access
+* `withMemberType(models.GroupMemberType)` was removed
+* `withId(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.SecurityPerimeterSystemData` was modified
+
+* `SecurityPerimeterSystemData()` was changed to private access
+* `withCreatedAt(java.time.OffsetDateTime)` was removed
+* `withLastModifiedBy(java.lang.String)` was removed
+* `withCreatedByType(models.CreatedByType)` was removed
+* `withLastModifiedAt(java.time.OffsetDateTime)` was removed
+* `withCreatedBy(java.lang.String)` was removed
+* `withLastModifiedByType(models.CreatedByType)` was removed
+
+#### `models.ExpressRouteCircuitRoutesTable` was modified
+
+* `ExpressRouteCircuitRoutesTable()` was changed to private access
+* `withLocPrf(java.lang.String)` was removed
+* `withWeight(java.lang.Integer)` was removed
+* `withNetwork(java.lang.String)` was removed
+* `withPath(java.lang.String)` was removed
+* `withNextHop(java.lang.String)` was removed
+
+#### `models.SubnetAssociation` was modified
+
+* `SubnetAssociation()` was changed to private access
+* `withSecurityRules(java.util.List)` was removed
+
+#### `models.RadiusAuthServer` was modified
+
+* `RadiusAuthServer()` was changed to private access
+* `withRadiusServerAddress(java.lang.String)` was removed
+* `withRadiusServerSecret(java.lang.String)` was removed
+
+#### `models.VirtualApplianceNicProperties` was modified
+
+* `VirtualApplianceNicProperties()` was changed to private access
+
+#### `models.GatewayRoute` was modified
+
+* `GatewayRoute()` was changed to private access
+
+#### `models.VirtualWanSecurityProvider` was modified
+
+* `VirtualWanSecurityProvider()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withUrl(java.lang.String)` was removed
+
+#### `models.VpnClientConnectionHealth` was modified
+
+* `VpnClientConnectionHealth()` was changed to private access
+* `withAllocatedIpAddresses(java.util.List)` was removed
+* `withVpnClientConnectionsCount(java.lang.Integer)` was removed
+
+#### `models.ExpressRouteFailoverConnectionResourceDetails` was modified
+
+* `ExpressRouteFailoverConnectionResourceDetails()` was changed to private access
+* `withStatus(models.FailoverConnectionStatus)` was removed
+* `withLastUpdatedTime(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withNrpResourceUri(java.lang.String)` was removed
+
+#### `models.ActiveDefaultSecurityAdminRule` was modified
+
+* `ActiveDefaultSecurityAdminRule()` was changed to private access
+* `withRuleGroups(java.util.List)` was removed
+* `withRuleCollectionAppliesToGroups(java.util.List)` was removed
+* `withId(java.lang.String)` was removed
+* `withConfigurationDescription(java.lang.String)` was removed
+* `withCommitTime(java.time.OffsetDateTime)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withRuleCollectionDescription(java.lang.String)` was removed
+* `withFlag(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ReadOnlySubResourceModel` was added
+
+* `models.ProxyResourceWithSettableId` was added
+
+* `models.SubResourceModel` was added
+
+* `models.TrackedResourceWithSettableName` was added
+
+* `models.TrackedResourceWithEtag` was added
+
+* `models.SecurityPerimeterTrackedResource` was added
+
+* `models.ProxyResourceWithReadOnlyID` was added
+
+* `models.WritableResource` was added
+
+#### `models.DdosDetectionRule` was modified
+
+* `id()` was added
+
+#### `models.ResourceNavigationLink` was modified
+
+* `id()` was added
+
+#### `models.ActiveConnectivityConfiguration` was modified
+
+* `configurationGroups()` was added
+* `id()` was added
 
 ## 2.58.0 (2026-02-14)
 

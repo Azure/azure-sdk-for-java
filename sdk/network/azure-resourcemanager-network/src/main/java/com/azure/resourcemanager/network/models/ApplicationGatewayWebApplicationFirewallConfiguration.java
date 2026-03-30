@@ -67,7 +67,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration
     /*
      * The exclusion list.
      */
-    private ApplicationGatewayFirewallExclusion exclusions;
+    private List<ApplicationGatewayFirewallExclusion> exclusions;
 
     /**
      * Creates an instance of ApplicationGatewayWebApplicationFirewallConfiguration class.
@@ -263,7 +263,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration
      * 
      * @return the exclusions value.
      */
-    public ApplicationGatewayFirewallExclusion exclusions() {
+    public List<ApplicationGatewayFirewallExclusion> exclusions() {
         return this.exclusions;
     }
 
@@ -274,7 +274,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
     public ApplicationGatewayWebApplicationFirewallConfiguration
-        withExclusions(ApplicationGatewayFirewallExclusion exclusions) {
+        withExclusions(List<ApplicationGatewayFirewallExclusion> exclusions) {
         this.exclusions = exclusions;
         return this;
     }
@@ -304,7 +304,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration
             disabledRuleGroups().forEach(e -> e.validate());
         }
         if (exclusions() != null) {
-            exclusions().validate();
+            exclusions().forEach(e -> e.validate());
         }
     }
 
@@ -327,7 +327,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration
         jsonWriter.writeNumberField("maxRequestBodySize", this.maxRequestBodySize);
         jsonWriter.writeNumberField("maxRequestBodySizeInKb", this.maxRequestBodySizeInKb);
         jsonWriter.writeNumberField("fileUploadLimitInMb", this.fileUploadLimitInMb);
-        jsonWriter.writeJsonField("exclusions", this.exclusions);
+        jsonWriter.writeArrayField("exclusions", this.exclusions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -377,8 +377,9 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration
                     deserializedApplicationGatewayWebApplicationFirewallConfiguration.fileUploadLimitInMb
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("exclusions".equals(fieldName)) {
-                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.exclusions
-                        = ApplicationGatewayFirewallExclusion.fromJson(reader);
+                    List<ApplicationGatewayFirewallExclusion> exclusions
+                        = reader.readArray(reader1 -> ApplicationGatewayFirewallExclusion.fromJson(reader1));
+                    deserializedApplicationGatewayWebApplicationFirewallConfiguration.exclusions = exclusions;
                 } else {
                     reader.skipChildren();
                 }
