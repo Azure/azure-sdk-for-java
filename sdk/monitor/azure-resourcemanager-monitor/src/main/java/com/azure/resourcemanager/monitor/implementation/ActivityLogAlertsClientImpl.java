@@ -69,7 +69,7 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientActivityLogAlerts")
+    @ServiceInterface(name = "MonitorClientActivit")
     public interface ActivityLogAlertsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}")
@@ -934,8 +934,8 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of Activity Log Alert rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityLogAlertResourceInner>>
@@ -964,8 +964,8 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of Activity Log Alert rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityLogAlertResourceInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink,
@@ -991,8 +991,8 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of Activity Log Alert rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityLogAlertResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1020,8 +1020,8 @@ public final class ActivityLogAlertsClientImpl implements InnerSupportsGet<Activ
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of Activity Log Alert rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActivityLogAlertResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

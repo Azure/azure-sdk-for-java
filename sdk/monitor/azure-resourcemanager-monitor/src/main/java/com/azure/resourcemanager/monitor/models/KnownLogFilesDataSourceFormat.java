@@ -12,11 +12,6 @@ import java.util.Collection;
  */
 public final class KnownLogFilesDataSourceFormat extends ExpandableStringEnum<KnownLogFilesDataSourceFormat> {
     /**
-     * Static value json for KnownLogFilesDataSourceFormat.
-     */
-    public static final KnownLogFilesDataSourceFormat JSON = fromString("json");
-
-    /**
      * Static value text for KnownLogFilesDataSourceFormat.
      */
     public static final KnownLogFilesDataSourceFormat TEXT = fromString("text");

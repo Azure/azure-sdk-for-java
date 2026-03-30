@@ -40,11 +40,6 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     private LogFilesDataSourceSettings settings;
 
     /*
-     * The KQL query to transform the data source. This is a deprecated property and will be removed in future versions.
-     */
-    private String transformKql;
-
-    /*
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -139,28 +134,6 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     }
 
     /**
-     * Get the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
-     * be removed in future versions.
-     * 
-     * @return the transformKql value.
-     */
-    public String transformKql() {
-        return this.transformKql;
-    }
-
-    /**
-     * Set the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
-     * be removed in future versions.
-     * 
-     * @param transformKql the transformKql value to set.
-     * @return the LogFilesDataSource object itself.
-     */
-    public LogFilesDataSource withTransformKql(String transformKql) {
-        this.transformKql = transformKql;
-        return this;
-    }
-
-    /**
      * Get the name property: A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
@@ -218,7 +191,6 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
         jsonWriter.writeArrayField("filePatterns", this.filePatterns, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
         jsonWriter.writeJsonField("settings", this.settings);
-        jsonWriter.writeStringField("transformKql", this.transformKql);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -250,8 +222,6 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
                         = KnownLogFilesDataSourceFormat.fromString(reader.getString());
                 } else if ("settings".equals(fieldName)) {
                     deserializedLogFilesDataSource.settings = LogFilesDataSourceSettings.fromJson(reader);
-                } else if ("transformKql".equals(fieldName)) {
-                    deserializedLogFilesDataSource.transformKql = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedLogFilesDataSource.name = reader.getString();
                 } else {

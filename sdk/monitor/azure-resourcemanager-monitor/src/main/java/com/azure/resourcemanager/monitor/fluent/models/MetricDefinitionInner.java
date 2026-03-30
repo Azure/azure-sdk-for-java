@@ -57,7 +57,7 @@ public final class MetricDefinitionInner implements JsonSerializable<MetricDefin
     private MetricClass metricClass;
 
     /*
-     * the unit of the metric.
+     * The unit of the metric.
      */
     private Unit unit;
 
@@ -233,7 +233,7 @@ public final class MetricDefinitionInner implements JsonSerializable<MetricDefin
     }
 
     /**
-     * Get the unit property: the unit of the metric.
+     * Get the unit property: The unit of the metric.
      * 
      * @return the unit value.
      */
@@ -242,7 +242,7 @@ public final class MetricDefinitionInner implements JsonSerializable<MetricDefin
     }
 
     /**
-     * Set the unit property: the unit of the metric.
+     * Set the unit property: The unit of the metric.
      * 
      * @param unit the unit value to set.
      * @return the MetricDefinitionInner object itself.

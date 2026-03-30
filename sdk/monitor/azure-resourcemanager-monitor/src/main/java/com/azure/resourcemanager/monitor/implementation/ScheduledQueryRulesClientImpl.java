@@ -69,7 +69,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientScheduledQueryRules")
+    @ServiceInterface(name = "MonitorClientSchedul")
     public interface ScheduledQueryRulesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/scheduledQueryRules")
@@ -163,7 +163,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -193,7 +193,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -282,7 +282,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -318,7 +318,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -420,7 +420,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -457,7 +457,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -546,7 +546,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -589,7 +589,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -683,7 +683,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -726,7 +726,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, ruleName,
@@ -813,7 +813,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -849,7 +849,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-01";
+        final String apiVersion = "2022-06-15";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, ruleName,

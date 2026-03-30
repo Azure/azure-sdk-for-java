@@ -23,19 +23,18 @@ import java.util.Map;
 @Fluent
 public final class DynamicMetricCriteria extends MultiMetricCriteria {
     /*
-     * Specifies the type of threshold criteria. Previously undocumented values might be returned
+     * Specifies the type of threshold criteria
      */
     private CriterionType criterionType = CriterionType.DYNAMIC_THRESHOLD_CRITERION;
 
     /*
-     * The operator used to compare the metric value against the threshold. Previously undocumented values might be
-     * returned
+     * The operator used to compare the metric value against the threshold.
      */
     private DynamicThresholdOperator operator;
 
     /*
      * The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric
-     * series pattern. Previously undocumented values might be returned
+     * series pattern.
      */
     private DynamicThresholdSensitivity alertSensitivity;
 
@@ -57,8 +56,7 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the criterionType property: Specifies the type of threshold criteria. Previously undocumented values might be
-     * returned.
+     * Get the criterionType property: Specifies the type of threshold criteria.
      * 
      * @return the criterionType value.
      */
@@ -68,8 +66,7 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the operator property: The operator used to compare the metric value against the threshold. Previously
-     * undocumented values might be returned.
+     * Get the operator property: The operator used to compare the metric value against the threshold.
      * 
      * @return the operator value.
      */
@@ -78,8 +75,7 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set the operator property: The operator used to compare the metric value against the threshold. Previously
-     * undocumented values might be returned.
+     * Set the operator property: The operator used to compare the metric value against the threshold.
      * 
      * @param operator the operator value to set.
      * @return the DynamicMetricCriteria object itself.
@@ -91,7 +87,7 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
 
     /**
      * Get the alertSensitivity property: The extent of deviation required to trigger an alert. This will affect how
-     * tight the threshold is to the metric series pattern. Previously undocumented values might be returned.
+     * tight the threshold is to the metric series pattern.
      * 
      * @return the alertSensitivity value.
      */
@@ -101,7 +97,7 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
 
     /**
      * Set the alertSensitivity property: The extent of deviation required to trigger an alert. This will affect how
-     * tight the threshold is to the metric series pattern. Previously undocumented values might be returned.
+     * tight the threshold is to the metric series pattern.
      * 
      * @param alertSensitivity the alertSensitivity value to set.
      * @return the DynamicMetricCriteria object itself.
@@ -216,6 +212,7 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
      */
     @Override
     public void validate() {
+        super.validate();
         if (operator() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
@@ -231,23 +228,6 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
                     "Missing required property failingPeriods in model DynamicMetricCriteria"));
         } else {
             failingPeriods().validate();
-        }
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model DynamicMetricCriteria"));
-        }
-        if (metricName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property metricName in model DynamicMetricCriteria"));
-        }
-        if (timeAggregation() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property timeAggregation in model DynamicMetricCriteria"));
-        }
-        if (dimensions() != null) {
-            dimensions().forEach(e -> e.validate());
         }
     }
 

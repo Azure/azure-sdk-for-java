@@ -22,11 +22,6 @@ public final class KnownPublicNetworkAccessOptions extends ExpandableStringEnum<
     public static final KnownPublicNetworkAccessOptions DISABLED = fromString("Disabled");
 
     /**
-     * Static value SecuredByPerimeter for KnownPublicNetworkAccessOptions.
-     */
-    public static final KnownPublicNetworkAccessOptions SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
-
-    /**
      * Creates a new instance of KnownPublicNetworkAccessOptions value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

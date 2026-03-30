@@ -11,12 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistryNameStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistryNameStatusInner model = BinaryData.fromString(
-            "{\"availableLoginServerName\":\"rpmopjmc\",\"nameAvailable\":false,\"reason\":\"okth\",\"message\":\"iuaod\"}")
+        RegistryNameStatusInner model = BinaryData
+            .fromString("{\"nameAvailable\":true,\"reason\":\"unqecanoae\",\"message\":\"fhyhltrpmopjmcma\"}")
             .toObject(RegistryNameStatusInner.class);
-        Assertions.assertEquals("rpmopjmc", model.availableLoginServerName());
-        Assertions.assertFalse(model.nameAvailable());
-        Assertions.assertEquals("okth", model.reason());
-        Assertions.assertEquals("iuaod", model.message());
+        Assertions.assertTrue(model.nameAvailable());
+        Assertions.assertEquals("unqecanoae", model.reason());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.message());
     }
 }
