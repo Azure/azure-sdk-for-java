@@ -117,7 +117,7 @@ public final class BlobDownloadContentOptions {
 
     /**
      * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO},
-     * {@link StorageChecksumAlgorithm#CRC64}, or {@link StorageChecksumAlgorithm#MD5}, the SDK will validate response
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response
      * payload checksums during download. Default is {@link StorageChecksumAlgorithm#NONE}.
      *
      * @param responseChecksumAlgorithm The response checksum algorithm.

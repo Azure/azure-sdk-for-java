@@ -69,7 +69,7 @@ public final class PageBlobOutputStreamOptions {
 
     /**
      * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO},
-     * {@link StorageChecksumAlgorithm#CRC64}, or {@link StorageChecksumAlgorithm#MD5}, the SDK will compute and send
+     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send
      * checksums for upload validation. Default is {@link StorageChecksumAlgorithm#NONE}.
      *
      * @param requestChecksumAlgorithm The request checksum algorithm.

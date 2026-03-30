@@ -98,6 +98,9 @@ public class UploadUtils {
                 }
                 int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
                 return Flux.range(0, numSplits).map(i -> {
+                    // Changed from duplicate().asReadOnlyBuffer() to duplicate() during spring 2026 content validation implementation.
+                    // It is safe to remove the asReadOnlyBuffer() because downstream code does not modify the buffer.
+                    // Removing the asReadOnlyBuffer() allows us to use a faster path for crc64 computation.
                     ByteBuffer duplicate = buffer.duplicate();
                     duplicate.position(i * chunkSize);
                     duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));

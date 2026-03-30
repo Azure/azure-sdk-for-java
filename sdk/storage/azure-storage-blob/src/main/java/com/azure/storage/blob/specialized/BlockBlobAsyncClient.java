@@ -43,7 +43,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
-import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -56,7 +56,6 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -420,10 +419,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         StorageChecksumAlgorithm requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
-        if (ContentValidationBehaviorUtil.hasConflictingTransactionalContentValidation(options.getContentMd5(),
-            requestChecksumAlgorithm)) {
-            return monoError(LOGGER, new IllegalArgumentException(
-                ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
+        try {
+            ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
+                requestChecksumAlgorithm);
+        } catch (IllegalArgumentException ex) {
+            return monoError(LOGGER, ex);
         }
 
         Mono<BinaryData> dataMono;
@@ -439,15 +439,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         BlobRequestConditions requestConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        String contentValidationBehavior = ContentValidationBehaviorUtil
-            .getBehaviorForSinglePartUpload(requestChecksumAlgorithm, options.getLength());
-        if (contentValidationBehavior != null) {
-            context = context.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior);
-        }
+        context = ContentValidationModeResolver.applyContentValidationBehavior(context, requestChecksumAlgorithm,
+            options.getLength(), false);
 
         Context finalContext = context;
 
@@ -775,18 +771,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Objects.requireNonNull(options.getData(), "data must not be null");
         Objects.requireNonNull(options.getData().getLength(), "data must have defined length");
 
-        if (ContentValidationBehaviorUtil.hasConflictingTransactionalContentValidation(options.getContentMd5(),
-            options.getRequestChecksumAlgorithm())) {
-            return monoError(LOGGER, new IllegalArgumentException(
-                ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
+        try {
+            ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
+                options.getRequestChecksumAlgorithm());
+        } catch (IllegalArgumentException ex) {
+            return monoError(LOGGER, ex);
         }
 
-        context = context == null ? Context.NONE : context;
-        String contentValidationBehavior = ContentValidationBehaviorUtil
-            .getBehaviorForSinglePartUpload(options.getRequestChecksumAlgorithm(), options.getData().getLength());
-        if (contentValidationBehavior != null) {
-            context = context.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior);
-        }
+        context = ContentValidationModeResolver.applyContentValidationBehavior(context,
+            options.getRequestChecksumAlgorithm(), options.getData().getLength(), false);
 
         return this.azureBlobStorage.getBlockBlobs()
             .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
