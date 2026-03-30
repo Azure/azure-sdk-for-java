@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.compute.batch;
+package com.azure.compute.batch.implementation.pollers;
 
+import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeState;
 import com.azure.core.http.rest.RequestOptions;
@@ -16,10 +17,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginReimageNode} to implement polling logic for re-imaging a {@link BatchNode}.
- * Returns {@link BatchNode} snapshots while polling and the final {@link BatchNode} upon successful completion.
+ * Async poller class used by {@code beginRebootNode} to implement polling logic for rebooting a {@link BatchNode}.
+ * Returns {@link BatchNode} values during polling and the final {@link BatchNode} upon successful completion.
  */
-public final class NodeReimagePollerAsync {
+public final class NodeRebootPollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
     private final String poolId;
@@ -28,14 +29,14 @@ public final class NodeReimagePollerAsync {
     private final Context requestContext;
 
     /**
-     * Creates a new {@link NodeReimagePollerAsync}.
+     * Creates a new {@link NodeRebootPollerAsync}.
      *
-     * @param batchAsyncClient Client used to call the Batch service.
-     * @param poolId Pool that contains the node.
-     * @param nodeId Node to re-image.
-     * @param options Optional request options (may be {@code null}).
+     * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
+     * @param poolId The ID of the pool that contains the node.
+     * @param nodeId The ID of the node to reboot.
+     * @param options Optional request options for service calls.
      */
-    public NodeReimagePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
+    public NodeRebootPollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
         RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.poolId = poolId;
@@ -45,18 +46,18 @@ public final class NodeReimagePollerAsync {
     }
 
     /**
-     * Activation operation to start the re-image process.
+     * Activation operation to start the reboot.
      *
-     * @return A function that initiates the re-image call and returns a {@link PollResponse}
+     * @return A function that initiates the reboot call and returns a {@link PollResponse}
      *         with {@link LongRunningOperationStatus#IN_PROGRESS}.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation() {
-        return ctx -> batchAsyncClient.reimageNodeWithResponse(poolId, nodeId, options)
+        return ctx -> batchAsyncClient.rebootNodeWithResponse(poolId, nodeId, options)
             .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
     }
 
     /**
-     * Poll operation to track the node’s state.
+     * Poll operation – watches the node until it leaves {@code rebooting} and reaches {@code idle} or {@code running}.
      *
      * @return A function that polls the node and returns a {@link PollResponse}
      *         reflecting the current long-running operation status.
@@ -66,7 +67,7 @@ public final class NodeReimagePollerAsync {
             RequestOptions pollOpts = new RequestOptions().setContext(requestContext);
             return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOpts).map(resp -> {
                 BatchNode node = resp.getValue().toObject(BatchNode.class);
-                LongRunningOperationStatus status = node.getState() == BatchNodeState.REIMAGING
+                LongRunningOperationStatus status = node.getState() == BatchNodeState.REBOOTING
                     ? LongRunningOperationStatus.IN_PROGRESS
                     : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 return new PollResponse<>(status, node);
@@ -75,7 +76,7 @@ public final class NodeReimagePollerAsync {
     }
 
     /**
-     * Cancel operation – not supported for re-image.
+     * Cancel operation – not supported for reboot.
      *
      * @return A function that always returns an empty {@link Mono}, indicating cancellation is unsupported.
      */

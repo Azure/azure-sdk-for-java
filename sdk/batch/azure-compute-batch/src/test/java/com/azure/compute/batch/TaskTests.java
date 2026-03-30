@@ -7,7 +7,7 @@ import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.compute.batch.models.BatchErrorSourceCategory;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
-import com.azure.compute.batch.models.BatchPoolInfo;
+import com.azure.compute.batch.models.BatchPoolDetails;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskBulkCreateOptions;
 import com.azure.compute.batch.models.BatchTaskConstraints;
@@ -86,7 +86,7 @@ public class TaskTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-SampleJob" + testModeSuffix);
 
         //CREATE JOB
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(livePoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
@@ -144,7 +144,7 @@ public class TaskTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-testJobUser" + testModeSuffix);
         String taskId = "mytask" + testModeSuffix;
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(livePoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
@@ -200,7 +200,7 @@ public class TaskTests extends BatchClientTestBase {
         temp.deleteOnExit();
         String jobId = getStringIdWithUserNamePrefix("-canCRUDTest" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
         SyncAsyncExtension.execute(() -> batchClient.createJob(parameters),
@@ -354,7 +354,7 @@ public class TaskTests extends BatchClientTestBase {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(livePoolId);
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
         SyncAsyncExtension.execute(() -> batchClient.createJob(parameters),
@@ -442,7 +442,7 @@ public class TaskTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-sync");
         String taskId = "mytask-sync";
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(parameters);
@@ -510,7 +510,7 @@ public class TaskTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-async");
         String taskId = "mytask-async";
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
         batchAsyncClient.createJob(parameters).block();
@@ -570,7 +570,7 @@ public class TaskTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-sync");
         String taskId = "mytask-sync";
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(jobToCreate);
@@ -622,7 +622,7 @@ public class TaskTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-async");
         String taskId = "mytask-async";
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchAsyncClient.createJob(jobToCreate).block();
@@ -669,7 +669,7 @@ public class TaskTests extends BatchClientTestBase {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(livePoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
@@ -736,7 +736,7 @@ public class TaskTests extends BatchClientTestBase {
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
@@ -834,7 +834,7 @@ public class TaskTests extends BatchClientTestBase {
     public void testCreateTasks() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-testCreateTasks" + testModeSuffix);
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(livePoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),

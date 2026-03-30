@@ -15,7 +15,7 @@ import java.io.IOException;
  * Information about a Task running on a Compute Node.
  */
 @Immutable
-public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
+public final class BatchTaskDetails implements JsonSerializable<BatchTaskDetails> {
 
     /*
      * The URL of the Task.
@@ -51,15 +51,15 @@ public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
      * Information about the execution of the Task.
      */
     @Generated
-    private BatchTaskExecutionInfo executionInfo;
+    private BatchTaskExecutionDetails executionInfo;
 
     /**
-     * Creates an instance of BatchTaskInfo class.
+     * Creates an instance of BatchTaskDetails class.
      *
      * @param taskState the taskState value to set.
      */
     @Generated
-    private BatchTaskInfo(BatchTaskState taskState) {
+    private BatchTaskDetails(BatchTaskState taskState) {
         this.taskState = taskState;
     }
 
@@ -119,7 +119,7 @@ public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
      * @return the executionInfo value.
      */
     @Generated
-    public BatchTaskExecutionInfo getExecutionInfo() {
+    public BatchTaskExecutionDetails getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -140,23 +140,23 @@ public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
     }
 
     /**
-     * Reads an instance of BatchTaskInfo from the JsonReader.
+     * Reads an instance of BatchTaskDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchTaskInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of BatchTaskDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchTaskInfo.
+     * @throws IOException If an error occurs while reading the BatchTaskDetails.
      */
     @Generated
-    public static BatchTaskInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchTaskDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchTaskState taskState = null;
             String taskUrl = null;
             String jobId = null;
             String taskId = null;
             Integer subtaskId = null;
-            BatchTaskExecutionInfo executionInfo = null;
+            BatchTaskExecutionDetails executionInfo = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -171,18 +171,18 @@ public final class BatchTaskInfo implements JsonSerializable<BatchTaskInfo> {
                 } else if ("subtaskId".equals(fieldName)) {
                     subtaskId = reader.getNullable(JsonReader::getInt);
                 } else if ("executionInfo".equals(fieldName)) {
-                    executionInfo = BatchTaskExecutionInfo.fromJson(reader);
+                    executionInfo = BatchTaskExecutionDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            BatchTaskInfo deserializedBatchTaskInfo = new BatchTaskInfo(taskState);
-            deserializedBatchTaskInfo.taskUrl = taskUrl;
-            deserializedBatchTaskInfo.jobId = jobId;
-            deserializedBatchTaskInfo.taskId = taskId;
-            deserializedBatchTaskInfo.subtaskId = subtaskId;
-            deserializedBatchTaskInfo.executionInfo = executionInfo;
-            return deserializedBatchTaskInfo;
+            BatchTaskDetails deserializedBatchTaskDetails = new BatchTaskDetails(taskState);
+            deserializedBatchTaskDetails.taskUrl = taskUrl;
+            deserializedBatchTaskDetails.jobId = jobId;
+            deserializedBatchTaskDetails.taskId = taskId;
+            deserializedBatchTaskDetails.subtaskId = subtaskId;
+            deserializedBatchTaskDetails.executionInfo = executionInfo;
+            return deserializedBatchTaskDetails;
         });
     }
 }

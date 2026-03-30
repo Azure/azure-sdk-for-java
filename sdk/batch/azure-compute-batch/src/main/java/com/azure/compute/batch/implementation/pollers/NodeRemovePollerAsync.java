@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.compute.batch;
+package com.azure.compute.batch.implementation.pollers;
 
+import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.AllocationState;
+import com.azure.compute.batch.models.BatchNodeRemoveParameters;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
@@ -11,55 +13,54 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginStopPoolResize} to implement polling
- * logic for halting a pool resize.  It emits {@link BatchPool} snapshots while
- * polling and returns the final {@link BatchPool} on successful completion.
+ * Async poller used by {@code beginRemoveNodes} to drive the *remove nodes*
+ * long-running operation.
  *
- * <p><b>Completion criteria</b></p>
- * <ul>
- *   <li>The pool’s {@link AllocationState} becomes {@code STEADY}; or</li>
- *   <li>The pool is no longer found (HTTP&nbsp;404) — treated as success with a
- *       {@code null} final result.</li>
- * </ul>
+ * <p>The poller completes when the pool’s {@link AllocationState} returns to
+ * {@code steady}. A {@code 404} (pool deleted) is also treated as successful
+ * completion, returning {@code null} as the final result.</p>
  */
-public final class PoolStopResizePollerAsync {
+public final class NodeRemovePollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
     private final String poolId;
+    private final BatchNodeRemoveParameters parameters;
     private final RequestOptions options;
     private final Context requestContext;
 
     /**
-     * Creates a new {@link PoolStopResizePollerAsync}.
+     * Creates a new {@link NodeRemovePollerAsync}.
      *
-     * @param batchAsyncClient Client used for Batch service calls.
-     * @param poolId ID of the pool whose resize is being stopped.
-     * @param options Optional {@link RequestOptions}; may be {@code null}.
+     * @param client Batch async client.
+     * @param poolId ID of the pool from which nodes are being removed.
+     * @param parameters Body parameters (list of node IDs, deallocation option, …).
+     * @param options Optional request options (may be {@code null}).
      */
-    public PoolStopResizePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, RequestOptions options) {
-
-        this.batchAsyncClient = batchAsyncClient;
+    public NodeRemovePollerAsync(BatchAsyncClient client, String poolId, BatchNodeRemoveParameters parameters,
+        RequestOptions options) {
+        this.batchAsyncClient = client;
         this.poolId = poolId;
+        this.parameters = parameters;
         this.options = options;
         this.requestContext = options == null ? Context.NONE : options.getContext();
     }
 
     /**
-     * Activation operation that sends the initial <em>stop-resize</em> request.
+     * Activation operation that sends the initial <em>remove-nodes</em> request.
      *
-     * @return A function that initiates the operation and supplies a
+     * @return A function that initiates the removal and returns a
      *         {@link PollResponse} whose status is
      *         {@link LongRunningOperationStatus#IN_PROGRESS}.
      */
     public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getActivationOperation() {
-        return ctx -> batchAsyncClient
-            .stopPoolResizeWithResponse(poolId, options == null ? new RequestOptions() : options)
+        return ctx -> batchAsyncClient.removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), options)
             .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
     }
 
@@ -74,14 +75,15 @@ public final class PoolStopResizePollerAsync {
 
             return batchAsyncClient.getPoolWithResponse(poolId, pollOpts).flatMap(resp -> {
                 BatchPool pool = resp.getValue().toObject(BatchPool.class);
-                AllocationState state = pool.getAllocationState();
+                AllocationState aState = pool.getAllocationState();
 
-                LongRunningOperationStatus status = AllocationState.STEADY.equals(state)
+                LongRunningOperationStatus status = (aState == AllocationState.STEADY)
                     ? LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     : LongRunningOperationStatus.IN_PROGRESS;
 
                 return Mono.just(new PollResponse<>(status, pool));
             })
+                // Pool gone (e.g. deleted while resizing) ⇒ treat as success, no final value.
                 .onErrorResume(HttpResponseException.class,
                     ex -> ex.getResponse() != null && ex.getResponse().getStatusCode() == 404
                         ? Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null))
@@ -90,7 +92,7 @@ public final class PoolStopResizePollerAsync {
     }
 
     /**
-     * Cancellation operation — not supported for stop-resize.
+     * Cancel operation (not supported for remove-nodes).
      *
      * @return A function that always returns {@link Mono#empty()}, indicating
      *         cancellation is unsupported.
@@ -102,9 +104,8 @@ public final class PoolStopResizePollerAsync {
     /**
      * Final result fetch operation.
      *
-     * @return A function that retrieves the final {@link BatchPool} stored in
-     *         the latest poll response, or {@link Mono#empty()} if the pool
-     *         no longer exists.
+     * @return A function that returns the final {@link BatchPool} stored in the
+     *         latest poll response, or {@link Mono#empty()} if the pool no longer exists.
      */
     public Function<PollingContext<BatchPool>, Mono<BatchPool>> getFetchResultOperation() {
         return ctx -> Mono.justOrEmpty(ctx.getLatestResponse().getValue());

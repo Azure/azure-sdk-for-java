@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
  * Contains information about the execution of a Job in the Azure Batch service.
  */
 @Immutable
-public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExecutionInfo> {
+public final class BatchJobExecutionDetails implements JsonSerializable<BatchJobExecutionDetails> {
 
     /*
      * The start time of the Job. This is the time at which the Job was created.
@@ -63,12 +63,12 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
     private String terminationReason;
 
     /**
-     * Creates an instance of BatchJobExecutionInfo class.
+     * Creates an instance of BatchJobExecutionDetails class.
      *
      * @param startTime the startTime value to set.
      */
     @Generated
-    private BatchJobExecutionInfo(OffsetDateTime startTime) {
+    private BatchJobExecutionDetails(OffsetDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -153,16 +153,16 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
     }
 
     /**
-     * Reads an instance of BatchJobExecutionInfo from the JsonReader.
+     * Reads an instance of BatchJobExecutionDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchJobExecutionInfo if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of BatchJobExecutionDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchJobExecutionInfo.
+     * @throws IOException If an error occurs while reading the BatchJobExecutionDetails.
      */
     @Generated
-    public static BatchJobExecutionInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchJobExecutionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
@@ -188,12 +188,12 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
                     reader.skipChildren();
                 }
             }
-            BatchJobExecutionInfo deserializedBatchJobExecutionInfo = new BatchJobExecutionInfo(startTime);
-            deserializedBatchJobExecutionInfo.endTime = endTime;
-            deserializedBatchJobExecutionInfo.poolId = poolId;
-            deserializedBatchJobExecutionInfo.schedulingError = schedulingError;
-            deserializedBatchJobExecutionInfo.terminationReason = terminationReason;
-            return deserializedBatchJobExecutionInfo;
+            BatchJobExecutionDetails deserializedBatchJobExecutionDetails = new BatchJobExecutionDetails(startTime);
+            deserializedBatchJobExecutionDetails.endTime = endTime;
+            deserializedBatchJobExecutionDetails.poolId = poolId;
+            deserializedBatchJobExecutionDetails.schedulingError = schedulingError;
+            deserializedBatchJobExecutionDetails.terminationReason = terminationReason;
+            return deserializedBatchJobExecutionDetails;
         });
     }
 }

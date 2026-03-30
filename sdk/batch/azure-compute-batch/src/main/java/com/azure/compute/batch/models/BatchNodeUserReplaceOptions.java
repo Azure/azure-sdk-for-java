@@ -13,13 +13,6 @@ import java.time.Duration;
 @Fluent
 public final class BatchNodeUserReplaceOptions {
 
-    /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
     /**
      * Creates an instance of BatchNodeUserReplaceOptions class.
      */
@@ -27,33 +20,40 @@ public final class BatchNodeUserReplaceOptions {
     public BatchNodeUserReplaceOptions() {
     }
 
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
+    private Long timeOut;
+
+    /**
+     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeOut value.
+     */
+    @Generated
+    public Duration getTimeOut() {
+        if (this.timeOut == null) {
             return null;
         }
-        return Duration.ofSeconds(this.timeOutInSeconds);
+        return Duration.ofSeconds(this.timeOut);
     }
 
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @param timeOut the timeOut value to set.
      * @return the BatchNodeUserReplaceOptions object itself.
      */
     @Generated
-    public BatchNodeUserReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
+    public BatchNodeUserReplaceOptions setTimeOut(Duration timeOut) {
+        if (timeOut == null) {
+            this.timeOut = null;
         } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+            this.timeOut = timeOut.getSeconds();
         }
         return this;
     }

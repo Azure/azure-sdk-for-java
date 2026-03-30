@@ -1,6 +1,17 @@
 # Release History
 
-## 1.0.0 (2026-03-04)
+## 1.0.0 (2026-03-27)
+
+### Breaking Changes
+
+- Name changes for timeout methods:
+  - `getTimeOutInSeconds()` -> `getTimeOut()`
+
+- Model suffix name change:
+  - `BatchAffinityInfo` -> `BatchAffinityDetails`
+  - `BatchJobExecutionInfo` -> `BatchJobExecutionDetails`
+  - All models following the `Batch[Object]Info` pattern -> `Batch[Object]Details`
+  - `VirtualMachineInfo` -> `VirtualMachineDetails`
 
 ### Other Changes
 

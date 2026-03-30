@@ -16,7 +16,7 @@ import java.io.IOException;
  * on which to start a Task.
  */
 @Immutable
-public final class BatchAffinityInfo implements JsonSerializable<BatchAffinityInfo> {
+public final class BatchAffinityDetails implements JsonSerializable<BatchAffinityDetails> {
 
     /*
      * An opaque string representing the location of a Compute Node or a Task that has run previously. You can pass the
@@ -28,12 +28,12 @@ public final class BatchAffinityInfo implements JsonSerializable<BatchAffinityIn
     private final String affinityId;
 
     /**
-     * Creates an instance of BatchAffinityInfo class.
+     * Creates an instance of BatchAffinityDetails class.
      *
      * @param affinityId the affinityId value to set.
      */
     @Generated
-    public BatchAffinityInfo(String affinityId) {
+    public BatchAffinityDetails(String affinityId) {
         this.affinityId = affinityId;
     }
 
@@ -62,16 +62,16 @@ public final class BatchAffinityInfo implements JsonSerializable<BatchAffinityIn
     }
 
     /**
-     * Reads an instance of BatchAffinityInfo from the JsonReader.
+     * Reads an instance of BatchAffinityDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchAffinityInfo if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of BatchAffinityDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchAffinityInfo.
+     * @throws IOException If an error occurs while reading the BatchAffinityDetails.
      */
     @Generated
-    public static BatchAffinityInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchAffinityDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String affinityId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -83,7 +83,7 @@ public final class BatchAffinityInfo implements JsonSerializable<BatchAffinityIn
                     reader.skipChildren();
                 }
             }
-            return new BatchAffinityInfo(affinityId);
+            return new BatchAffinityDetails(affinityId);
         });
     }
 }

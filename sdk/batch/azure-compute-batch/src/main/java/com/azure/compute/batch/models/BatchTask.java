@@ -151,7 +151,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private BatchAffinityInfo affinityInfo;
+    private BatchAffinityDetails affinityInfo;
 
     /*
      * The execution constraints that apply to this Task.
@@ -178,13 +178,13 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * Information about the execution of the Task.
      */
     @Generated
-    private BatchTaskExecutionInfo executionInfo;
+    private BatchTaskExecutionDetails executionInfo;
 
     /*
      * Information about the Compute Node on which the Task ran.
      */
     @Generated
-    private BatchNodeInfo nodeInfo;
+    private BatchNodeDetails nodeInfo;
 
     /*
      * An object that indicates that the Task is a multi-instance Task, and contains information about how to run the
@@ -423,7 +423,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the affinityInfo value.
      */
     @Generated
-    public BatchAffinityInfo getAffinityInfo() {
+    public BatchAffinityDetails getAffinityInfo() {
         return this.affinityInfo;
     }
 
@@ -478,7 +478,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the executionInfo value.
      */
     @Generated
-    public BatchTaskExecutionInfo getExecutionInfo() {
+    public BatchTaskExecutionDetails getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -488,7 +488,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the nodeInfo value.
      */
     @Generated
-    public BatchNodeInfo getNodeInfo() {
+    public BatchNodeDetails getNodeInfo() {
         return this.nodeInfo;
     }
 
@@ -612,7 +612,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                         = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                     deserializedBatchTask.environmentSettings = environmentSettings;
                 } else if ("affinityInfo".equals(fieldName)) {
-                    deserializedBatchTask.affinityInfo = BatchAffinityInfo.fromJson(reader);
+                    deserializedBatchTask.affinityInfo = BatchAffinityDetails.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     deserializedBatchTask.constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
@@ -620,9 +620,9 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("userIdentity".equals(fieldName)) {
                     deserializedBatchTask.userIdentity = UserIdentity.fromJson(reader);
                 } else if ("executionInfo".equals(fieldName)) {
-                    deserializedBatchTask.executionInfo = BatchTaskExecutionInfo.fromJson(reader);
+                    deserializedBatchTask.executionInfo = BatchTaskExecutionDetails.fromJson(reader);
                 } else if ("nodeInfo".equals(fieldName)) {
-                    deserializedBatchTask.nodeInfo = BatchNodeInfo.fromJson(reader);
+                    deserializedBatchTask.nodeInfo = BatchNodeDetails.fromJson(reader);
                 } else if ("multiInstanceSettings".equals(fieldName)) {
                     deserializedBatchTask.multiInstanceSettings = MultiInstanceSettings.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {

@@ -15,7 +15,7 @@ import java.io.IOException;
  * Contains information about the container which a Task is executing.
  */
 @Immutable
-public final class BatchTaskContainerExecutionInfo implements JsonSerializable<BatchTaskContainerExecutionInfo> {
+public final class BatchTaskContainerExecutionDetails implements JsonSerializable<BatchTaskContainerExecutionDetails> {
 
     /*
      * The ID of the container.
@@ -38,10 +38,10 @@ public final class BatchTaskContainerExecutionInfo implements JsonSerializable<B
     private String error;
 
     /**
-     * Creates an instance of BatchTaskContainerExecutionInfo class.
+     * Creates an instance of BatchTaskContainerExecutionDetails class.
      */
     @Generated
-    private BatchTaskContainerExecutionInfo() {
+    private BatchTaskContainerExecutionDetails() {
     }
 
     /**
@@ -90,32 +90,32 @@ public final class BatchTaskContainerExecutionInfo implements JsonSerializable<B
     }
 
     /**
-     * Reads an instance of BatchTaskContainerExecutionInfo from the JsonReader.
+     * Reads an instance of BatchTaskContainerExecutionDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchTaskContainerExecutionInfo if the JsonReader was pointing to an instance of it, or
+     * @return An instance of BatchTaskContainerExecutionDetails if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BatchTaskContainerExecutionInfo.
+     * @throws IOException If an error occurs while reading the BatchTaskContainerExecutionDetails.
      */
     @Generated
-    public static BatchTaskContainerExecutionInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchTaskContainerExecutionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchTaskContainerExecutionInfo deserializedBatchTaskContainerExecutionInfo
-                = new BatchTaskContainerExecutionInfo();
+            BatchTaskContainerExecutionDetails deserializedBatchTaskContainerExecutionDetails
+                = new BatchTaskContainerExecutionDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("containerId".equals(fieldName)) {
-                    deserializedBatchTaskContainerExecutionInfo.containerId = reader.getString();
+                    deserializedBatchTaskContainerExecutionDetails.containerId = reader.getString();
                 } else if ("state".equals(fieldName)) {
-                    deserializedBatchTaskContainerExecutionInfo.state = reader.getString();
+                    deserializedBatchTaskContainerExecutionDetails.state = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedBatchTaskContainerExecutionInfo.error = reader.getString();
+                    deserializedBatchTaskContainerExecutionDetails.error = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedBatchTaskContainerExecutionInfo;
+            return deserializedBatchTaskContainerExecutionDetails;
         });
     }
 }

@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
  * Pool and provides Batch capability on the Compute Node.
  */
 @Immutable
-public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgentInfo> {
+public final class BatchNodeAgentDetails implements JsonSerializable<BatchNodeAgentDetails> {
 
     /*
      * The version of the Batch Compute Node agent running on the Compute Node. This version number can be checked
@@ -37,13 +37,13 @@ public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgent
     private final OffsetDateTime lastUpdateTime;
 
     /**
-     * Creates an instance of BatchNodeAgentInfo class.
+     * Creates an instance of BatchNodeAgentDetails class.
      *
      * @param version the version value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
      */
     @Generated
-    private BatchNodeAgentInfo(String version, OffsetDateTime lastUpdateTime) {
+    private BatchNodeAgentDetails(String version, OffsetDateTime lastUpdateTime) {
         this.version = version;
         this.lastUpdateTime = lastUpdateTime;
     }
@@ -85,16 +85,16 @@ public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgent
     }
 
     /**
-     * Reads an instance of BatchNodeAgentInfo from the JsonReader.
+     * Reads an instance of BatchNodeAgentDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchNodeAgentInfo if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of BatchNodeAgentDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchNodeAgentInfo.
+     * @throws IOException If an error occurs while reading the BatchNodeAgentDetails.
      */
     @Generated
-    public static BatchNodeAgentInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchNodeAgentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String version = null;
             OffsetDateTime lastUpdateTime = null;
@@ -110,7 +110,7 @@ public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgent
                     reader.skipChildren();
                 }
             }
-            return new BatchNodeAgentInfo(version, lastUpdateTime);
+            return new BatchNodeAgentDetails(version, lastUpdateTime);
         });
     }
 }
