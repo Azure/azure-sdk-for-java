@@ -57,18 +57,24 @@ public class ContentValidationPageBlobOutputStream extends PageBlobScenarioBase<
             int bytesRead;
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {
-                if (bytesRead < buffer.length) {
-                    bufferStream.write(buffer, 0, bytesRead);
-                    if (bufferStream.size() >= buffer.length) {
-                        byte[] toWrite = bufferStream.toByteArray();
-                        int length = toWrite.length - (toWrite.length % buffer.length);
+                // Always accumulate into bufferStream to avoid dropping or reordering bytes
+                bufferStream.write(buffer, 0, bytesRead);
+                // Flush all full 512-byte pages from the accumulator
+                if (bufferStream.size() >= buffer.length) {
+                    byte[] toWrite = bufferStream.toByteArray();
+                    int length = toWrite.length - (toWrite.length % buffer.length);
+                    if (length > 0) {
                         outputStream.write(toWrite, 0, length);
                         bufferStream.reset();
-                        bufferStream.write(toWrite, length, (toWrite.length % buffer.length));
+                        // Keep any remaining partial page bytes in the accumulator
+                        bufferStream.write(toWrite, length, toWrite.length - length);
                     }
-                } else {
-                    outputStream.write(buffer, 0, bytesRead);
                 }
+            }
+            // For page blobs, total content size must be a multiple of 512 bytes.
+            // Any remaining bytes here indicate misalignment and would result in silent truncation.
+            if (bufferStream.size() != 0) {
+                throw new IOException("Remaining bytes in buffer that do not align to 512-byte page size.");
             }
 
             outputStream.close();

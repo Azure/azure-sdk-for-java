@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
-import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 /**
- * Upload from file with {@link BlobUploadFromFileOptions#setRequestChecksumAlgorithm}. MD5 is not supported for this API.
+ * Upload from file with {@link BlobUploadFromFileOptions#setRequestChecksumAlgorithm}.
  */
 public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentValidationStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ContentValidationUploadFromFile.class);
@@ -40,10 +39,6 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
 
     public ContentValidationUploadFromFile(ContentValidationStressOptions options) {
         super(options);
-        if (options.getRequestChecksumAlgorithm() == StorageChecksumAlgorithm.MD5) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "StorageChecksumAlgorithm.MD5 is not supported for uploadFromFile. Use CRC64 or AUTO."));
-        }
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncNoFaultClient = getSyncContainerClientNoFault().getBlobClient(blobName);
@@ -57,8 +52,9 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
     @Override
     protected void runInternal(Context span) {
         Path downloadPath = getTempPath("test");
+        Path uploadFilePath = null;
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
-            Path uploadFilePath = generateFile(inputStream);
+            uploadFilePath = generateFile(inputStream);
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
             syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
                     .setParallelTransferOptions(parallelTransferOptions)
@@ -69,27 +65,35 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
             originalContent.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
+            deleteFile(uploadFilePath);
         }
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
         Path downloadPath = getTempPath("test");
+        // This is written differently than the other runInternalAsync methods because uploadFromFile requires a file
+        // path, so we need to generate the temp file.
         return Mono.using(
             () -> new CrcInputStream(originalContent.getBlobContentHead(), options.getSize()),
-            inputStream -> {
-                Path uploadFilePath = generateFile(inputStream);
-                return Mono.using(
-                    () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
-                    path -> asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
-                            .setParallelTransferOptions(parallelTransferOptions)
-                            .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
-                        .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
-                            new BlobDownloadToFileOptions(path.toString())))
-                        .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
-                    ContentValidationUploadFromFile::deleteFile);
-            },
+            inputStream -> uploadAndVerifyAsync(inputStream, downloadPath, span),
             CrcInputStream::close);
+    }
+
+    private Mono<Void> uploadAndVerifyAsync(CrcInputStream inputStream, Path downloadDir, Context span) {
+        Path uploadFilePath = generateFile(inputStream);
+        Path downloadFilePath = downloadDir.resolve(UUID.randomUUID() + ".txt");
+
+        return asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
+                .setParallelTransferOptions(parallelTransferOptions)
+                .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
+            .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(downloadFilePath.toString())))
+            .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(downloadFilePath), span))
+            .doFinally(signal -> {
+                deleteFile(uploadFilePath);
+                deleteFile(downloadFilePath);
+            });
     }
 
     @Override

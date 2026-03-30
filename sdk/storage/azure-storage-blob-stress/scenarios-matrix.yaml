@@ -327,7 +327,7 @@ matrix:
     # --- Content validation (ContentValidation*; default CRC64). Scenario keys are short: K8s label
     #     testInstance = "{Scenario}-{BaseName}-{revision}" must be <= 63 chars (see stress-test-job.yaml).
 
-    cv-apb-sm:
+    cv-appendblock-sm:
       testScenario: contentvalidationappendblock
       sync: true
       sizeBytes: 1024
@@ -335,15 +335,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-apb-async:
-      testScenario: contentvalidationappendblock
-      sync: false
-      sizeBytes: 1024
-      uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    cv-apb-lg:
+    cv-appendblock-lg:
       testScenario: contentvalidationappendblock
       sync: true
       sizeBytes: "26214400"
@@ -351,7 +343,23 @@ matrix:
       durationMin: 30
       imageBuildDir: "../../.."
 
-    cv-apbos-sm:
+    cv-appendblock-async-sm:
+      testScenario: contentvalidationappendblock
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-appendblock-async-lg:
+      testScenario: contentvalidationappendblock
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 30
+      imageBuildDir: "../../.."
+
+    cv-appendbloboutputstream-sm:
       testScenario: contentvalidationappendbloboutputstream
       sync: true
       sizeBytes: 1024
@@ -359,7 +367,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-apbos-lg:
+    cv-appendbloboutputstream-lg:
       testScenario: contentvalidationappendbloboutputstream
       sync: true
       sizeBytes: "10240"
@@ -367,7 +375,7 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-bbup-sm:
+    cv-blockblobupload-sm:
       testScenario: contentvalidationblockblobupload
       sync: true
       sizeBytes: 1024
@@ -375,7 +383,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-bbup-lg:
+    cv-blockblobupload-lg:
       testScenario: contentvalidationblockblobupload
       sync: true
       sizeBytes: "26214400"
@@ -383,7 +391,23 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-bbos-sm:
+    cv-blockbloboutputstream-async-sm:
+      testScenario: contentvalidationblockbloboutputstream
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-blockbloboutputstream-async-lg:
+      testScenario: contentvalidationblockbloboutputstream
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-blockbloboutputstream-sm:
       testScenario: contentvalidationblockbloboutputstream
       sync: true
       sizeBytes: 1024
@@ -391,7 +415,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-bbos-lg:
+    cv-blockbloboutputstream-lg:
       testScenario: contentvalidationblockbloboutputstream
       sync: true
       sizeBytes: "26214400"
@@ -399,7 +423,7 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-sbbcw-sm:
+    cv-seekablebytechannelwrite-sm:
       testScenario: contentvalidationseekablebytechannelwrite
       sync: true
       sizeBytes: 1024
@@ -407,7 +431,7 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
-    cv-sbbcw-lg:
+    cv-seekablebytechannelwrite-lg:
       testScenario: contentvalidationseekablebytechannelwrite
       sync: true
       sizeBytes: "52428800"
@@ -415,7 +439,7 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-stg-sm:
+    cv-stageblock-sm:
       testScenario: contentvalidationstageblock
       sync: true
       sizeBytes: 1024
@@ -423,7 +447,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-stg-lg:
+    cv-stageblock-lg:
       testScenario: contentvalidationstageblock
       sync: true
       sizeBytes: "26214400"
@@ -431,7 +455,23 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-pbos-sm:
+    cv-stageblock-async-sm:
+      testScenario: contentvalidationstageblock
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-stageblock-async-lg:
+      testScenario: contentvalidationstageblock
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-pagebloboutputstream-sm:
       testScenario: contentvalidationpagebloboutputstream
       sync: true
       sizeBytes: 1024
@@ -439,7 +479,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-pbos-lg:
+    cv-pagebloboutputstream-lg:
       testScenario: contentvalidationpagebloboutputstream
       sync: true
       sizeBytes: "10240"
@@ -447,7 +487,7 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-pgup-sm:
+    cv-uploadpages-sm:
       testScenario: contentvalidationuploadpages
       sync: true
       sizeBytes: 1024
@@ -455,7 +495,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-pgup-lg:
+    cv-uploadpages-lg:
       testScenario: contentvalidationuploadpages
       sync: true
       sizeBytes: "4194304"
@@ -463,7 +503,23 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-par-sm:
+    cv-uploadpages-async-sm:
+      testScenario: contentvalidationuploadpages
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-uploadpages-async-lg:
+      testScenario: contentvalidationuploadpages
+      sync: false
+      sizeBytes: "4194304"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-upload-sm:
       testScenario: contentvalidationupload
       sync: true
       sizeBytes: 1024
@@ -471,15 +527,7 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-par-async:
-      testScenario: contentvalidationupload
-      sync: false
-      sizeBytes: 1024
-      uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    cv-par-lg:
+    cv-upload-lg:
       testScenario: contentvalidationupload
       sync: true
       sizeBytes: "52428800"
@@ -487,7 +535,23 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-uff-sm:
+    cv-upload-async-sm:
+      testScenario: contentvalidationupload
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-upload-async-lg:
+      testScenario: contentvalidationupload
+      sync: false
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-uploadfromfile-sm:
       testScenario: contentvalidationuploadfromfile
       sync: true
       sizeBytes: 1024
@@ -495,9 +559,25 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    cv-uff-lg:
+    cv-uploadfromfile-lg:
       testScenario: contentvalidationuploadfromfile
       sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-uploadfromfile-async-sm:
+      testScenario: contentvalidationuploadfromfile
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-uploadfromfile-async-lg:
+      testScenario: contentvalidationuploadfromfile
+      sync: false
       sizeBytes: "52428800"
       uploadFaults: true
       durationMin: 60
