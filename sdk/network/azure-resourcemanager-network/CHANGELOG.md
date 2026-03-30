@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Return type of `EffectiveNetworkSecurityGroup.tagMap()` changed from `Map<String, String>` to `Map<String, List<String>>`.
+
 ### Bugs Fixed
 
 ### Other Changes
