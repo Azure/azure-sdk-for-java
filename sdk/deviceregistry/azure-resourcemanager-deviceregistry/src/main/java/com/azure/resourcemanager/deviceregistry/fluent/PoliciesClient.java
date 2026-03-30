@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.models.PolicyInner;
+import com.azure.resourcemanager.deviceregistry.models.ActivateBringYourOwnRootRequest;
 import com.azure.resourcemanager.deviceregistry.models.PolicyUpdate;
 
 /**
@@ -23,7 +24,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +40,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,7 +54,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,7 +70,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,7 +87,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +102,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +119,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,7 +133,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,7 +149,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -161,7 +162,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -175,7 +176,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,7 +192,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +209,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,7 +224,7 @@ public interface PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,4 +262,130 @@ public interface PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PolicyInner> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRevokeIssuer(String resourceGroupName, String namespaceName,
+        String policyName);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRevokeIssuer(String resourceGroupName, String namespaceName,
+        String policyName, Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void revokeIssuer(String resourceGroupName, String namespaceName, String policyName);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void revokeIssuer(String resourceGroupName, String namespaceName, String policyName, Context context);
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginActivateBringYourOwnRoot(String resourceGroupName, String namespaceName,
+        String policyName, ActivateBringYourOwnRootRequest body);
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginActivateBringYourOwnRoot(String resourceGroupName, String namespaceName,
+        String policyName, ActivateBringYourOwnRootRequest body, Context context);
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
+        ActivateBringYourOwnRootRequest body);
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
+        ActivateBringYourOwnRootRequest body, Context context);
 }

@@ -31,8 +31,8 @@ public final class NamespacesMigrateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.namespaces()
-            .migrate("ycilrmcaykggnox", "ztrksxwpndf", new NamespaceMigrateRequest().withScope(Scope.RESOURCES)
-                .withResourceIds(Arrays.asList("nthjtwkjaosrxuzv")), com.azure.core.util.Context.NONE);
+            .migrate("xqhndvnoamlds", "haohdjhhflzokxc", new NamespaceMigrateRequest().withScope(Scope.RESOURCES)
+                .withResourceIds(Arrays.asList("nje", "agltsxoa", "ftgz")), com.azure.core.util.Context.NONE);
 
     }
 }

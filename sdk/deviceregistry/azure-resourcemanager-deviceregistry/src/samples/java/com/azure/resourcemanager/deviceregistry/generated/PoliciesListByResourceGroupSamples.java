@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class PoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/List_Policies_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_Policies_ByResourceGroup.json
      */
     /**
      * Sample code: List_Policies_ByResourceGroup.
