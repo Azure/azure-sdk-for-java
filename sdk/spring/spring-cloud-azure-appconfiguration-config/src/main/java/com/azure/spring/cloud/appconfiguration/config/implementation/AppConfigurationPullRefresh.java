@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
