@@ -601,8 +601,10 @@ public final class RntbdConstants {
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
         PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
-        SupportedQueryFeatures((short) 0x002B, RntbdTokenType.String, false),
-        QueryVersion((short) 0x002C, RntbdTokenType.String, false);
+        // QueryPlan headers for proxy — IDs must be coordinated with server-side proxy team.
+        // See ADO PR 1982503. These IDs (0x00F0, 0x00F1) are provisional; update when server assigns final values.
+        SupportedQueryFeatures((short) 0x00F0, RntbdTokenType.String, false),
+        QueryVersion((short) 0x00F1, RntbdTokenType.String, false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,

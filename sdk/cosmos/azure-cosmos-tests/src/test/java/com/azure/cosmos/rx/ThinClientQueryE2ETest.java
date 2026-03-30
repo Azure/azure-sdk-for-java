@@ -415,6 +415,174 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE '%ook%'");
     }
 
+    // ==================== BETWEEN Keyword ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testBetween() {
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.age BETWEEN 18 AND 40");
+    }
+
+    // ==================== String Function Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringConcat() {
+        assertGatewayAndThinClientMatch("SELECT CONCAT(c.category, '-', c.status) AS label FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringEndsWith() {
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE ENDSWITH(c.category, 'ics')");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringLower() {
+        assertGatewayAndThinClientMatch("SELECT LOWER(c.category) AS lowerCat FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringUpper() {
+        assertGatewayAndThinClientMatch("SELECT UPPER(c.status) AS upperStatus FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringLength() {
+        assertGatewayAndThinClientMatch("SELECT c.category, LENGTH(c.category) AS len FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringSubstring() {
+        assertGatewayAndThinClientMatch("SELECT SUBSTRING(c.category, 0, 4) AS prefix FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringReplace() {
+        assertGatewayAndThinClientMatch("SELECT REPLACE(c.category, 'o', '0') AS replaced FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringIndexOf() {
+        assertGatewayAndThinClientMatch("SELECT INDEX_OF(c.category, 'o') AS pos FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringLeft() {
+        assertGatewayAndThinClientMatch("SELECT LEFT(c.category, 3) AS l FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringReverse() {
+        assertGatewayAndThinClientMatch("SELECT REVERSE(c.category) AS rev FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStringTrim() {
+        assertGatewayAndThinClientMatch("SELECT TRIM(c.status) AS trimmed FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testRegexMatch() {
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE RegexMatch(c.category, '^elec.*')");
+    }
+
+    // ==================== Type Checking Function Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIsArray() {
+        assertGatewayAndThinClientMatch("SELECT c.id, IS_ARRAY(c.scores) AS isArr FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIsBool() {
+        assertGatewayAndThinClientMatch("SELECT c.id, IS_BOOL(c.isActive) AS isBool FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIsNull() {
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE IS_NULL(c.nonExistentField)");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIsNumber() {
+        assertGatewayAndThinClientMatch("SELECT c.id, IS_NUMBER(c.age) AS isNum FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIsString() {
+        assertGatewayAndThinClientMatch("SELECT c.id, IS_STRING(c.category) AS isStr FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIsObject() {
+        assertGatewayAndThinClientMatch("SELECT c.id, IS_OBJECT(c.address) AS isObj FROM c");
+    }
+
+    // ==================== Math Function Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testMathAbs() {
+        assertGatewayAndThinClientMatch("SELECT ABS(c.age - 30) AS diff FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testMathCeilingFloor() {
+        assertGatewayAndThinClientMatch("SELECT CEILING(c.price) AS ceil, FLOOR(c.price) AS flr FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testMathRound() {
+        assertGatewayAndThinClientMatch("SELECT ROUND(c.price) AS rounded FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testMathPower() {
+        assertGatewayAndThinClientMatch("SELECT POWER(c.age, 2) AS ageSq FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testMathSqrt() {
+        assertGatewayAndThinClientMatch("SELECT SQRT(c.price) AS sqrtPrice FROM c");
+    }
+
+    // ==================== Array Function Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testArrayLength() {
+        assertGatewayAndThinClientMatch("SELECT c.id, ARRAY_LENGTH(c.scores) AS len FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testArraySlice() {
+        assertGatewayAndThinClientMatch("SELECT c.id, ARRAY_SLICE(c.tags, 0, 1) AS firstTag FROM c");
+    }
+
+    // ==================== Conditional Function Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testIif() {
+        assertGatewayAndThinClientMatch("SELECT c.id, IIF(c.age >= 18, 'adult', 'minor') AS ageGroup FROM c");
+    }
+
+    // ==================== Date/Time Function Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testGetCurrentDateTime() {
+        // Scalar; both paths should return a valid ISO 8601 string
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE GetCurrentDateTime()", String.class);
+    }
+
+    // ==================== SELECT VALUE / Nested Projection Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testSelectValueObject() {
+        assertGatewayAndThinClientMatch(
+            "SELECT VALUE { name: c.category, loc: c.address.city } FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testSelectValueScalar() {
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE c.category FROM c", String.class);
+    }
+
     // ==================== Cross-Partition Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
