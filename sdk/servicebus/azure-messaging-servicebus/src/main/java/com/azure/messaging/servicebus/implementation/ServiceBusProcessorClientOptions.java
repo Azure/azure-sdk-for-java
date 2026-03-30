@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 
 import java.time.Duration;
@@ -14,6 +15,7 @@ import java.time.Duration;
 @Fluent
 public final class ServiceBusProcessorClientOptions {
 
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClientOptions.class);
     private static final Duration DEFAULT_DRAIN_TIMEOUT = Duration.ofSeconds(30);
 
     private int maxConcurrentCalls = 1;
@@ -85,10 +87,10 @@ public final class ServiceBusProcessorClientOptions {
      */
     public ServiceBusProcessorClientOptions setDrainTimeout(Duration drainTimeout) {
         if (drainTimeout == null) {
-            throw new NullPointerException("'drainTimeout' cannot be null.");
+            throw LOGGER.logExceptionAsError(new NullPointerException("'drainTimeout' cannot be null."));
         }
         if (drainTimeout.isZero() || drainTimeout.isNegative()) {
-            throw new IllegalArgumentException("'drainTimeout' must be positive.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'drainTimeout' must be positive."));
         }
         this.drainTimeout = drainTimeout;
         return this;
