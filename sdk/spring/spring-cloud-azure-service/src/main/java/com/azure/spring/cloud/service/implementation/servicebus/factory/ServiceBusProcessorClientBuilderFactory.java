@@ -94,7 +94,6 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         propertyMapper.from(properties.getMaxAutoLockRenewDuration()).to(builder::maxAutoLockRenewDuration);
         propertyMapper.from(properties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
         propertyMapper.from(properties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
-        propertyMapper.from(properties.getDrainTimeout()).to(builder::drainTimeout);
 
         propertyMapper.from(this.errorHandler).to(builder::processError);
 
