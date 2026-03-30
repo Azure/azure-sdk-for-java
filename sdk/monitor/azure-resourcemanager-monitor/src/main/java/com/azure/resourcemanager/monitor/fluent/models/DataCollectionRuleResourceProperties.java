@@ -9,14 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionRule;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleAgentSettings;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDataSources;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDestinations;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleDirectDataSources;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleEndpoints;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleIngestionQuotas;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleMetadata;
-import com.azure.resourcemanager.monitor.models.DataCollectionRuleReferences;
 import com.azure.resourcemanager.monitor.models.DataFlow;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleProvisioningState;
 import com.azure.resourcemanager.monitor.models.StreamDeclaration;
@@ -25,24 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The DataCollectionRuleResourceProperties model.
+ * Resource properties.
  */
 @Fluent
 public final class DataCollectionRuleResourceProperties extends DataCollectionRule {
     /*
-     * The resource provisioning state.
+     * The immutable ID of this data collection rule. This property is READ-ONLY.
      */
-    private KnownDataCollectionRuleProvisioningState provisioningState;
-
-    /*
-     * The specification for ingestion limits
-     */
-    private DataCollectionRuleIngestionQuotas ingestionQuotas;
-
-    /*
-     * Defines the ingestion endpoints to send data to via this rule.
-     */
-    private DataCollectionRuleEndpoints endpoints;
+    private String immutableId;
 
     /*
      * Metadata about the resource
@@ -50,9 +35,9 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
     private DataCollectionRuleMetadata metadata;
 
     /*
-     * The immutable ID of this data collection rule. This property is READ-ONLY.
+     * The resource provisioning state.
      */
-    private String immutableId;
+    private KnownDataCollectionRuleProvisioningState provisioningState;
 
     /**
      * Creates an instance of DataCollectionRuleResourceProperties class.
@@ -61,33 +46,13 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
     }
 
     /**
-     * Get the provisioningState property: The resource provisioning state.
+     * Get the immutableId property: The immutable ID of this data collection rule. This property is READ-ONLY.
      * 
-     * @return the provisioningState value.
+     * @return the immutableId value.
      */
     @Override
-    public KnownDataCollectionRuleProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the ingestionQuotas property: The specification for ingestion limits.
-     * 
-     * @return the ingestionQuotas value.
-     */
-    @Override
-    public DataCollectionRuleIngestionQuotas ingestionQuotas() {
-        return this.ingestionQuotas;
-    }
-
-    /**
-     * Get the endpoints property: Defines the ingestion endpoints to send data to via this rule.
-     * 
-     * @return the endpoints value.
-     */
-    @Override
-    public DataCollectionRuleEndpoints endpoints() {
-        return this.endpoints;
+    public String immutableId() {
+        return this.immutableId;
     }
 
     /**
@@ -101,13 +66,13 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
     }
 
     /**
-     * Get the immutableId property: The immutable ID of this data collection rule. This property is READ-ONLY.
+     * Get the provisioningState property: The resource provisioning state.
      * 
-     * @return the immutableId value.
+     * @return the provisioningState value.
      */
     @Override
-    public String immutableId() {
-        return this.immutableId;
+    public KnownDataCollectionRuleProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -132,24 +97,6 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
      * {@inheritDoc}
      */
     @Override
-    public DataCollectionRuleResourceProperties withReferences(DataCollectionRuleReferences references) {
-        super.withReferences(references);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DataCollectionRuleResourceProperties withAgentSettings(DataCollectionRuleAgentSettings agentSettings) {
-        super.withAgentSettings(agentSettings);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public DataCollectionRuleResourceProperties
         withStreamDeclarations(Map<String, StreamDeclaration> streamDeclarations) {
         super.withStreamDeclarations(streamDeclarations);
@@ -162,16 +109,6 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
     @Override
     public DataCollectionRuleResourceProperties withDataSources(DataCollectionRuleDataSources dataSources) {
         super.withDataSources(dataSources);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DataCollectionRuleResourceProperties
-        withDirectDataSources(DataCollectionRuleDirectDataSources directDataSources) {
-        super.withDirectDataSources(directDataSources);
         return this;
     }
 
@@ -200,40 +137,7 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
      */
     @Override
     public void validate() {
-        if (metadata() != null) {
-            metadata().validate();
-        }
-        if (endpoints() != null) {
-            endpoints().validate();
-        }
-        if (references() != null) {
-            references().validate();
-        }
-        if (agentSettings() != null) {
-            agentSettings().validate();
-        }
-        if (streamDeclarations() != null) {
-            streamDeclarations().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-        if (dataSources() != null) {
-            dataSources().validate();
-        }
-        if (directDataSources() != null) {
-            directDataSources().validate();
-        }
-        if (destinations() != null) {
-            destinations().validate();
-        }
-        if (dataFlows() != null) {
-            dataFlows().forEach(e -> e.validate());
-        }
-        if (ingestionQuotas() != null) {
-            ingestionQuotas().validate();
-        }
+        super.validate();
     }
 
     /**
@@ -244,12 +148,9 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
         jsonWriter.writeStringField("dataCollectionEndpointId", dataCollectionEndpointId());
-        jsonWriter.writeJsonField("references", references());
-        jsonWriter.writeJsonField("agentSettings", agentSettings());
         jsonWriter.writeMapField("streamDeclarations", streamDeclarations(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("dataSources", dataSources());
-        jsonWriter.writeJsonField("directDataSources", directDataSources());
         jsonWriter.writeJsonField("destinations", destinations());
         jsonWriter.writeArrayField("dataFlows", dataFlows(), (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -280,15 +181,6 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
                 } else if ("metadata".equals(fieldName)) {
                     deserializedDataCollectionRuleResourceProperties.metadata
                         = DataCollectionRuleMetadata.fromJson(reader);
-                } else if ("endpoints".equals(fieldName)) {
-                    deserializedDataCollectionRuleResourceProperties.endpoints
-                        = DataCollectionRuleEndpoints.fromJson(reader);
-                } else if ("references".equals(fieldName)) {
-                    deserializedDataCollectionRuleResourceProperties
-                        .withReferences(DataCollectionRuleReferences.fromJson(reader));
-                } else if ("agentSettings".equals(fieldName)) {
-                    deserializedDataCollectionRuleResourceProperties
-                        .withAgentSettings(DataCollectionRuleAgentSettings.fromJson(reader));
                 } else if ("streamDeclarations".equals(fieldName)) {
                     Map<String, StreamDeclaration> streamDeclarations
                         = reader.readMap(reader1 -> StreamDeclaration.fromJson(reader1));
@@ -296,18 +188,12 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
                 } else if ("dataSources".equals(fieldName)) {
                     deserializedDataCollectionRuleResourceProperties
                         .withDataSources(DataCollectionRuleDataSources.fromJson(reader));
-                } else if ("directDataSources".equals(fieldName)) {
-                    deserializedDataCollectionRuleResourceProperties
-                        .withDirectDataSources(DataCollectionRuleDirectDataSources.fromJson(reader));
                 } else if ("destinations".equals(fieldName)) {
                     deserializedDataCollectionRuleResourceProperties
                         .withDestinations(DataCollectionRuleDestinations.fromJson(reader));
                 } else if ("dataFlows".equals(fieldName)) {
                     List<DataFlow> dataFlows = reader.readArray(reader1 -> DataFlow.fromJson(reader1));
                     deserializedDataCollectionRuleResourceProperties.withDataFlows(dataFlows);
-                } else if ("ingestionQuotas".equals(fieldName)) {
-                    deserializedDataCollectionRuleResourceProperties.ingestionQuotas
-                        = DataCollectionRuleIngestionQuotas.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataCollectionRuleResourceProperties.provisioningState
                         = KnownDataCollectionRuleProvisioningState.fromString(reader.getString());

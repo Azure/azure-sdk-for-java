@@ -69,7 +69,7 @@ public final class AlertRulesClientImpl implements InnerSupportsGet<AlertRuleRes
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientAlertRules")
+    @ServiceInterface(name = "MonitorClientAlertRu")
     public interface AlertRulesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/alertrules/{ruleName}")

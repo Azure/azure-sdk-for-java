@@ -38,6 +38,7 @@ public final class DataCollectionEndpointNetworkAcls extends NetworkRuleSet {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

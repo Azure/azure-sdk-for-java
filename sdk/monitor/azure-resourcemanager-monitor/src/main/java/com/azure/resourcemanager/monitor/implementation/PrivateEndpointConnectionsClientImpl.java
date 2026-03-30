@@ -64,7 +64,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientPrivateEndpointConnections")
+    @ServiceInterface(name = "MonitorClientPrivate")
     public interface PrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/privateEndpointConnections/{privateEndpointConnectionName}")

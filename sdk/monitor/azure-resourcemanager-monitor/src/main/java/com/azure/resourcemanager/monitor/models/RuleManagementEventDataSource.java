@@ -310,6 +310,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
      */
     @Override
     public void validate() {
+        super.validate();
         if (claims() != null) {
             claims().validate();
         }
