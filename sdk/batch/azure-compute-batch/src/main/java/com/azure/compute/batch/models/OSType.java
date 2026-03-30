@@ -10,48 +10,48 @@ import java.util.Collection;
 /**
  * OSType enums.
  */
-public final class OSType extends ExpandableStringEnum<OSType> {
+public final class OsType extends ExpandableStringEnum<OsType> {
 
     /**
      * The Linux operating system.
      */
     @Generated
-    public static final OSType LINUX = fromString("linux");
+    public static final OsType LINUX = fromString("linux");
 
     /**
      * The Windows operating system.
      */
     @Generated
-    public static final OSType WINDOWS = fromString("windows");
+    public static final OsType WINDOWS = fromString("windows");
 
     /**
-     * Creates a new instance of OSType value.
+     * Creates a new instance of OsType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public OSType() {
+    public OsType() {
     }
 
     /**
-     * Creates or finds a OSType from its string representation.
+     * Creates or finds a OsType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding OSType.
+     * @return the corresponding OsType.
      */
     @Generated
-    public static OSType fromString(String name) {
-        return fromString(name, OSType.class);
+    public static OsType fromString(String name) {
+        return fromString(name, OsType.class);
     }
 
     /**
-     * Gets known OSType values.
+     * Gets known OsType values.
      *
-     * @return known OSType values.
+     * @return known OsType values.
      */
     @Generated
-    public static Collection<OSType> values() {
-        return values(OSType.class);
+    public static Collection<OsType> values() {
+        return values(OsType.class);
     }
 }

@@ -19,8 +19,8 @@ import java.time.format.DateTimeFormatter;
  * Node.
  */
 @Immutable
-public final class BatchJobPreparationTaskExecutionInfo
-    implements JsonSerializable<BatchJobPreparationTaskExecutionInfo> {
+public final class BatchJobPreparationTaskExecutionDetails
+    implements JsonSerializable<BatchJobPreparationTaskExecutionDetails> {
 
     /*
      * The time at which the Task started running. If the Task has been restarted or retried, this is the most recent
@@ -70,14 +70,14 @@ public final class BatchJobPreparationTaskExecutionInfo
      * a container context.
      */
     @Generated
-    private BatchTaskContainerExecutionInfo containerInfo;
+    private BatchTaskContainerExecutionDetails containerInfo;
 
     /*
      * Information describing the Task failure, if any. This property is set only if the Task is in the completed state
      * and encountered a failure.
      */
     @Generated
-    private BatchTaskFailureInfo failureInfo;
+    private BatchTaskFailureDetails failureInfo;
 
     /*
      * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit
@@ -106,14 +106,14 @@ public final class BatchJobPreparationTaskExecutionInfo
     private BatchTaskExecutionResult result;
 
     /**
-     * Creates an instance of BatchJobPreparationTaskExecutionInfo class.
+     * Creates an instance of BatchJobPreparationTaskExecutionDetails class.
      *
      * @param startTime the startTime value to set.
      * @param state the state value to set.
      * @param retryCount the retryCount value to set.
      */
     @Generated
-    private BatchJobPreparationTaskExecutionInfo(OffsetDateTime startTime, BatchJobPreparationTaskState state,
+    private BatchJobPreparationTaskExecutionDetails(OffsetDateTime startTime, BatchJobPreparationTaskState state,
         int retryCount) {
         this.startTime = startTime;
         this.state = state;
@@ -195,7 +195,7 @@ public final class BatchJobPreparationTaskExecutionInfo
      * @return the containerInfo value.
      */
     @Generated
-    public BatchTaskContainerExecutionInfo getContainerInfo() {
+    public BatchTaskContainerExecutionDetails getContainerInfo() {
         return this.containerInfo;
     }
 
@@ -206,7 +206,7 @@ public final class BatchJobPreparationTaskExecutionInfo
      * @return the failureInfo value.
      */
     @Generated
-    public BatchTaskFailureInfo getFailureInfo() {
+    public BatchTaskFailureDetails getFailureInfo() {
         return this.failureInfo;
     }
 
@@ -275,16 +275,16 @@ public final class BatchJobPreparationTaskExecutionInfo
     }
 
     /**
-     * Reads an instance of BatchJobPreparationTaskExecutionInfo from the JsonReader.
+     * Reads an instance of BatchJobPreparationTaskExecutionDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchJobPreparationTaskExecutionInfo if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of BatchJobPreparationTaskExecutionDetails if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchJobPreparationTaskExecutionInfo.
+     * @throws IOException If an error occurs while reading the BatchJobPreparationTaskExecutionDetails.
      */
     @Generated
-    public static BatchJobPreparationTaskExecutionInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchJobPreparationTaskExecutionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime startTime = null;
             BatchJobPreparationTaskState state = null;
@@ -293,8 +293,8 @@ public final class BatchJobPreparationTaskExecutionInfo
             String taskRootDirectory = null;
             String taskRootDirectoryUrl = null;
             Integer exitCode = null;
-            BatchTaskContainerExecutionInfo containerInfo = null;
-            BatchTaskFailureInfo failureInfo = null;
+            BatchTaskContainerExecutionDetails containerInfo = null;
+            BatchTaskFailureDetails failureInfo = null;
             OffsetDateTime lastRetryTime = null;
             BatchTaskExecutionResult result = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -317,9 +317,9 @@ public final class BatchJobPreparationTaskExecutionInfo
                 } else if ("exitCode".equals(fieldName)) {
                     exitCode = reader.getNullable(JsonReader::getInt);
                 } else if ("containerInfo".equals(fieldName)) {
-                    containerInfo = BatchTaskContainerExecutionInfo.fromJson(reader);
+                    containerInfo = BatchTaskContainerExecutionDetails.fromJson(reader);
                 } else if ("failureInfo".equals(fieldName)) {
-                    failureInfo = BatchTaskFailureInfo.fromJson(reader);
+                    failureInfo = BatchTaskFailureDetails.fromJson(reader);
                 } else if ("lastRetryTime".equals(fieldName)) {
                     lastRetryTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -329,17 +329,17 @@ public final class BatchJobPreparationTaskExecutionInfo
                     reader.skipChildren();
                 }
             }
-            BatchJobPreparationTaskExecutionInfo deserializedBatchJobPreparationTaskExecutionInfo
-                = new BatchJobPreparationTaskExecutionInfo(startTime, state, retryCount);
-            deserializedBatchJobPreparationTaskExecutionInfo.endTime = endTime;
-            deserializedBatchJobPreparationTaskExecutionInfo.taskRootDirectory = taskRootDirectory;
-            deserializedBatchJobPreparationTaskExecutionInfo.taskRootDirectoryUrl = taskRootDirectoryUrl;
-            deserializedBatchJobPreparationTaskExecutionInfo.exitCode = exitCode;
-            deserializedBatchJobPreparationTaskExecutionInfo.containerInfo = containerInfo;
-            deserializedBatchJobPreparationTaskExecutionInfo.failureInfo = failureInfo;
-            deserializedBatchJobPreparationTaskExecutionInfo.lastRetryTime = lastRetryTime;
-            deserializedBatchJobPreparationTaskExecutionInfo.result = result;
-            return deserializedBatchJobPreparationTaskExecutionInfo;
+            BatchJobPreparationTaskExecutionDetails deserializedBatchJobPreparationTaskExecutionDetails
+                = new BatchJobPreparationTaskExecutionDetails(startTime, state, retryCount);
+            deserializedBatchJobPreparationTaskExecutionDetails.endTime = endTime;
+            deserializedBatchJobPreparationTaskExecutionDetails.taskRootDirectory = taskRootDirectory;
+            deserializedBatchJobPreparationTaskExecutionDetails.taskRootDirectoryUrl = taskRootDirectoryUrl;
+            deserializedBatchJobPreparationTaskExecutionDetails.exitCode = exitCode;
+            deserializedBatchJobPreparationTaskExecutionDetails.containerInfo = containerInfo;
+            deserializedBatchJobPreparationTaskExecutionDetails.failureInfo = failureInfo;
+            deserializedBatchJobPreparationTaskExecutionDetails.lastRetryTime = lastRetryTime;
+            deserializedBatchJobPreparationTaskExecutionDetails.result = result;
+            return deserializedBatchJobPreparationTaskExecutionDetails;
         });
     }
 }

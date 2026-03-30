@@ -14,13 +14,6 @@ import java.time.Duration;
 public final class BatchNodeFileDeleteOptions {
 
     /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
-    /*
      * Whether to delete children of a directory. If the filePath parameter represents
      * a directory instead of a file, you can set recursive to true to delete the
      * directory and all of the files and subdirectories in it. If recursive is false
@@ -34,20 +27,6 @@ public final class BatchNodeFileDeleteOptions {
      */
     @Generated
     public BatchNodeFileDeleteOptions() {
-    }
-
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
-     */
-    @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -78,19 +57,40 @@ public final class BatchNodeFileDeleteOptions {
         return this;
     }
 
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
+     */
+    @Generated
+    private Long timeOut;
+
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the timeOut value.
+     */
+    @Generated
+    public Duration getTimeOut() {
+        if (this.timeOut == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOut);
+    }
+
+    /**
+     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOut the timeOut value to set.
      * @return the BatchNodeFileDeleteOptions object itself.
      */
     @Generated
-    public BatchNodeFileDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
+    public BatchNodeFileDeleteOptions setTimeOut(Duration timeOut) {
+        if (timeOut == null) {
+            this.timeOut = null;
         } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+            this.timeOut = timeOut.getSeconds();
         }
         return this;
     }

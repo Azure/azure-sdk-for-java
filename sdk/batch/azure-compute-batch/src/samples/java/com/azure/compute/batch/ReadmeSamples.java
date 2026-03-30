@@ -55,7 +55,7 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
-import com.azure.compute.batch.models.BatchPoolInfo;
+import com.azure.compute.batch.models.BatchPoolDetails;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
 import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.BatchStartTask;
@@ -122,12 +122,12 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.create-job.creates-a-basic-job
         batchClient.createJob(
-            new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
+            new BatchJobCreateParameters("jobId", new BatchPoolDetails().setPoolId("poolId")).setPriority(0), null);
         // END: com.azure.compute.batch.create-job.creates-a-basic-job
 
         // BEGIN: com.azure.compute.batch.create-job.creates-a-basic-job-async
         batchAsyncClient.createJob(
-            new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0))
+            new BatchJobCreateParameters("jobId", new BatchPoolDetails().setPoolId("poolId")).setPriority(0))
             .subscribe(unused -> System.out.println("Job created successfully"));
         // END: com.azure.compute.batch.create-job.creates-a-basic-job-async
 
@@ -286,7 +286,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.replace-job.job-patch
         batchClient.replaceJob("jobId",
-            new BatchJob(new BatchPoolInfo().setPoolId("poolId")).setPriority(100)
+            new BatchJob(new BatchPoolDetails().setPoolId("poolId")).setPriority(100)
                 .setConstraints(
                     new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1)),
             null, null);
@@ -297,7 +297,7 @@ public final class ReadmeSamples {
             new BatchJobUpdateParameters().setPriority(100)
                 .setConstraints(
                     new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1))
-                .setPoolInfo(new BatchPoolInfo().setPoolId("poolId")),
+                .setPoolInfo(new BatchPoolDetails().setPoolId("poolId")),
             null, null);
         // END: com.azure.compute.batch.update-job.job-update
 
@@ -395,7 +395,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
         batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
             new BatchJobScheduleConfiguration().setRecurrenceInterval(Duration.parse("PT5M")),
-            new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId"))), null);
+            new BatchJobSpecification(new BatchPoolDetails().setPoolId("poolId"))), null);
         // END: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
 
         // BEGIN: com.azure.compute.batch.job-schedule.get-job-schedule
@@ -423,7 +423,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.replace-job-schedule.job-schedule-patch
         batchClient.replaceJobSchedule("jobScheduleId",
-            new BatchJobSchedule(new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId")).setPriority(0)
+            new BatchJobSchedule(new BatchJobSpecification(new BatchPoolDetails().setPoolId("poolId")).setPriority(0)
                 .setUsesTaskDependencies(false)
                 .setConstraints(
                     new BatchJobConstraints().setMaxWallClockTime(Duration.parse("P10675199DT2H48M5.4775807S"))
@@ -601,7 +601,7 @@ public final class ReadmeSamples {
             = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
 
         BatchNodeDeallocateOptions deallocateOptions
-            = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
+            = new BatchNodeDeallocateOptions().setTimeOut(Duration.ofSeconds(30))
                 .setParameters(deallocateParams);
         SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
 

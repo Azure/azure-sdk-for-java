@@ -15,32 +15,39 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Information about the execution of a Task.
+ * Information about a StartTask running on a Compute Node.
  */
 @Immutable
-public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskExecutionInfo> {
+public final class BatchStartTaskDetails implements JsonSerializable<BatchStartTaskDetails> {
 
     /*
-     * The time at which the Task started running. 'Running' corresponds to the running state, so if the Task specifies
-     * resource files or Packages, then the start time reflects the time at which the Task started downloading or
-     * deploying these. If the Task has been restarted or retried, this is the most recent time at which the Task
-     * started running. This property is present only for Tasks that are in the running or completed state.
+     * The state of the StartTask on the Compute Node.
      */
     @Generated
-    private OffsetDateTime startTime;
+    private final BatchStartTaskState state;
 
     /*
-     * The time at which the Task completed. This property is set only if the Task is in the Completed state.
+     * The time at which the StartTask started running. This value is reset every time the Task is restarted or retried
+     * (that is, this is the most recent time at which the StartTask started running).
+     */
+    @Generated
+    private final OffsetDateTime startTime;
+
+    /*
+     * The time at which the StartTask stopped running. This is the end time of the most recent run of the StartTask, if
+     * that run has completed (even if that run failed and a retry is pending). This element is not present if the
+     * StartTask is currently running.
      */
     @Generated
     private OffsetDateTime endTime;
 
     /*
-     * The exit code of the program specified on the Task command line. This property is set only if the Task is in the
-     * completed state. In general, the exit code for a process reflects the specific convention implemented by the
-     * application developer for that process. If you use the exit code value to make decisions in your code, be sure
-     * that you know the exit code convention used by the application process. However, if the Batch service terminates
-     * the Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
+     * The exit code of the program specified on the StartTask command line. This property is set only if the StartTask
+     * is in the completed state. In general, the exit code for a process reflects the specific convention implemented
+     * by the application developer for that process. If you use the exit code value to make decisions in your code, be
+     * sure that you know the exit code convention used by the application process. However, if the Batch service
+     * terminates the StartTask (due to timeout, or user termination via the API) you may see an operating
+     * system-defined exit code.
      */
     @Generated
     private Integer exitCode;
@@ -50,14 +57,14 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
      * a container context.
      */
     @Generated
-    private BatchTaskContainerExecutionInfo containerInfo;
+    private BatchTaskContainerExecutionDetails containerInfo;
 
     /*
      * Information describing the Task failure, if any. This property is set only if the Task is in the completed state
      * and encountered a failure.
      */
     @Generated
-    private BatchTaskFailureInfo failureInfo;
+    private BatchTaskFailureDetails failureInfo;
 
     /*
      * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit
@@ -77,22 +84,6 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     private OffsetDateTime lastRetryTime;
 
     /*
-     * The number of times the Task has been requeued by the Batch service as the result of a user request. When the
-     * user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or when the Job is being disabled, the
-     * user can specify that running Tasks on the Compute Nodes be requeued for execution. This count tracks how many
-     * times the Task has been requeued for these reasons.
-     */
-    @Generated
-    private final int requeueCount;
-
-    /*
-     * The most recent time at which the Task has been requeued by the Batch service as the result of a user request.
-     * This property is set only if the requeueCount is nonzero.
-     */
-    @Generated
-    private OffsetDateTime lastRequeueTime;
-
-    /*
      * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the
      * failureInfo property.
      */
@@ -100,23 +91,32 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     private BatchTaskExecutionResult result;
 
     /**
-     * Creates an instance of BatchTaskExecutionInfo class.
+     * Creates an instance of BatchStartTaskDetails class.
      *
+     * @param state the state value to set.
+     * @param startTime the startTime value to set.
      * @param retryCount the retryCount value to set.
-     * @param requeueCount the requeueCount value to set.
      */
     @Generated
-    private BatchTaskExecutionInfo(int retryCount, int requeueCount) {
+    private BatchStartTaskDetails(BatchStartTaskState state, OffsetDateTime startTime, int retryCount) {
+        this.state = state;
+        this.startTime = startTime;
         this.retryCount = retryCount;
-        this.requeueCount = requeueCount;
     }
 
     /**
-     * Get the startTime property: The time at which the Task started running. 'Running' corresponds to the running
-     * state, so if the Task specifies resource files or Packages, then the start time reflects the time at which the
-     * Task started downloading or deploying these. If the Task has been restarted or retried, this is the most recent
-     * time at which the Task started running. This property is present only for Tasks that are in the running or
-     * completed state.
+     * Get the state property: The state of the StartTask on the Compute Node.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public BatchStartTaskState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the startTime property: The time at which the StartTask started running. This value is reset every time the
+     * Task is restarted or retried (that is, this is the most recent time at which the StartTask started running).
      *
      * @return the startTime value.
      */
@@ -126,8 +126,9 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     }
 
     /**
-     * Get the endTime property: The time at which the Task completed. This property is set only if the Task is in the
-     * Completed state.
+     * Get the endTime property: The time at which the StartTask stopped running. This is the end time of the most
+     * recent run of the StartTask, if that run has completed (even if that run failed and a retry is pending). This
+     * element is not present if the StartTask is currently running.
      *
      * @return the endTime value.
      */
@@ -137,12 +138,12 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     }
 
     /**
-     * Get the exitCode property: The exit code of the program specified on the Task command line. This property is set
-     * only if the Task is in the completed state. In general, the exit code for a process reflects the specific
-     * convention implemented by the application developer for that process. If you use the exit code value to make
-     * decisions in your code, be sure that you know the exit code convention used by the application process. However,
-     * if the Batch service terminates the Task (due to timeout, or user termination via the API) you may see an
-     * operating system-defined exit code.
+     * Get the exitCode property: The exit code of the program specified on the StartTask command line. This property is
+     * set only if the StartTask is in the completed state. In general, the exit code for a process reflects the
+     * specific convention implemented by the application developer for that process. If you use the exit code value to
+     * make decisions in your code, be sure that you know the exit code convention used by the application process.
+     * However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may
+     * see an operating system-defined exit code.
      *
      * @return the exitCode value.
      */
@@ -158,7 +159,7 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
      * @return the containerInfo value.
      */
     @Generated
-    public BatchTaskContainerExecutionInfo getContainerInfo() {
+    public BatchTaskContainerExecutionDetails getContainerInfo() {
         return this.containerInfo;
     }
 
@@ -169,7 +170,7 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
      * @return the failureInfo value.
      */
     @Generated
-    public BatchTaskFailureInfo getFailureInfo() {
+    public BatchTaskFailureDetails getFailureInfo() {
         return this.failureInfo;
     }
 
@@ -199,30 +200,6 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     }
 
     /**
-     * Get the requeueCount property: The number of times the Task has been requeued by the Batch service as the result
-     * of a user request. When the user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or when the
-     * Job is being disabled, the user can specify that running Tasks on the Compute Nodes be requeued for execution.
-     * This count tracks how many times the Task has been requeued for these reasons.
-     *
-     * @return the requeueCount value.
-     */
-    @Generated
-    public int getRequeueCount() {
-        return this.requeueCount;
-    }
-
-    /**
-     * Get the lastRequeueTime property: The most recent time at which the Task has been requeued by the Batch service
-     * as the result of a user request. This property is set only if the requeueCount is nonzero.
-     *
-     * @return the lastRequeueTime value.
-     */
-    @Generated
-    public OffsetDateTime getLastRequeueTime() {
-        return this.lastRequeueTime;
-    }
-
-    /**
      * Get the result property: The result of the Task execution. If the value is 'failed', then the details of the
      * failure can be found in the failureInfo property.
      *
@@ -240,10 +217,10 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("retryCount", this.retryCount);
-        jsonWriter.writeIntField("requeueCount", this.requeueCount);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("startTime",
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeIntField("retryCount", this.retryCount);
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeNumberField("exitCode", this.exitCode);
@@ -251,58 +228,52 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
         jsonWriter.writeJsonField("failureInfo", this.failureInfo);
         jsonWriter.writeStringField("lastRetryTime",
             this.lastRetryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRetryTime));
-        jsonWriter.writeStringField("lastRequeueTime",
-            this.lastRequeueTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRequeueTime));
         jsonWriter.writeStringField("result", this.result == null ? null : this.result.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of BatchTaskExecutionInfo from the JsonReader.
+     * Reads an instance of BatchStartTaskDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchTaskExecutionInfo if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of BatchStartTaskDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchTaskExecutionInfo.
+     * @throws IOException If an error occurs while reading the BatchStartTaskDetails.
      */
     @Generated
-    public static BatchTaskExecutionInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchStartTaskDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int retryCount = 0;
-            int requeueCount = 0;
+            BatchStartTaskState state = null;
             OffsetDateTime startTime = null;
+            int retryCount = 0;
             OffsetDateTime endTime = null;
             Integer exitCode = null;
-            BatchTaskContainerExecutionInfo containerInfo = null;
-            BatchTaskFailureInfo failureInfo = null;
+            BatchTaskContainerExecutionDetails containerInfo = null;
+            BatchTaskFailureDetails failureInfo = null;
             OffsetDateTime lastRetryTime = null;
-            OffsetDateTime lastRequeueTime = null;
             BatchTaskExecutionResult result = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("retryCount".equals(fieldName)) {
-                    retryCount = reader.getInt();
-                } else if ("requeueCount".equals(fieldName)) {
-                    requeueCount = reader.getInt();
+                if ("state".equals(fieldName)) {
+                    state = BatchStartTaskState.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
                     startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("retryCount".equals(fieldName)) {
+                    retryCount = reader.getInt();
                 } else if ("endTime".equals(fieldName)) {
                     endTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("exitCode".equals(fieldName)) {
                     exitCode = reader.getNullable(JsonReader::getInt);
                 } else if ("containerInfo".equals(fieldName)) {
-                    containerInfo = BatchTaskContainerExecutionInfo.fromJson(reader);
+                    containerInfo = BatchTaskContainerExecutionDetails.fromJson(reader);
                 } else if ("failureInfo".equals(fieldName)) {
-                    failureInfo = BatchTaskFailureInfo.fromJson(reader);
+                    failureInfo = BatchTaskFailureDetails.fromJson(reader);
                 } else if ("lastRetryTime".equals(fieldName)) {
                     lastRetryTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("lastRequeueTime".equals(fieldName)) {
-                    lastRequeueTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("result".equals(fieldName)) {
                     result = BatchTaskExecutionResult.fromString(reader.getString());
@@ -310,17 +281,15 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
                     reader.skipChildren();
                 }
             }
-            BatchTaskExecutionInfo deserializedBatchTaskExecutionInfo
-                = new BatchTaskExecutionInfo(retryCount, requeueCount);
-            deserializedBatchTaskExecutionInfo.startTime = startTime;
-            deserializedBatchTaskExecutionInfo.endTime = endTime;
-            deserializedBatchTaskExecutionInfo.exitCode = exitCode;
-            deserializedBatchTaskExecutionInfo.containerInfo = containerInfo;
-            deserializedBatchTaskExecutionInfo.failureInfo = failureInfo;
-            deserializedBatchTaskExecutionInfo.lastRetryTime = lastRetryTime;
-            deserializedBatchTaskExecutionInfo.lastRequeueTime = lastRequeueTime;
-            deserializedBatchTaskExecutionInfo.result = result;
-            return deserializedBatchTaskExecutionInfo;
+            BatchStartTaskDetails deserializedBatchStartTaskDetails
+                = new BatchStartTaskDetails(state, startTime, retryCount);
+            deserializedBatchStartTaskDetails.endTime = endTime;
+            deserializedBatchStartTaskDetails.exitCode = exitCode;
+            deserializedBatchStartTaskDetails.containerInfo = containerInfo;
+            deserializedBatchStartTaskDetails.failureInfo = failureInfo;
+            deserializedBatchStartTaskDetails.lastRetryTime = lastRetryTime;
+            deserializedBatchStartTaskDetails.result = result;
+            return deserializedBatchStartTaskDetails;
         });
     }
 }

@@ -91,7 +91,7 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private BatchAffinityInfo affinityInfo;
+    private BatchAffinityDetails affinityInfo;
 
     /*
      * The execution constraints that apply to this Task. If you do not specify constraints, the maxTaskRetryCount is
@@ -361,21 +361,8 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
      * @return the affinityInfo value.
      */
     @Generated
-    public BatchAffinityInfo getAffinityInfo() {
+    public BatchAffinityDetails getAffinityInfo() {
         return this.affinityInfo;
-    }
-
-    /**
-     * Set the affinityInfo property: A locality hint that can be used by the Batch service to select a Compute Node on
-     * which to start the new Task.
-     *
-     * @param affinityInfo the affinityInfo value to set.
-     * @return the BatchTaskCreateParameters object itself.
-     */
-    @Generated
-    public BatchTaskCreateParameters setAffinityInfo(BatchAffinityInfo affinityInfo) {
-        this.affinityInfo = affinityInfo;
-        return this;
     }
 
     /**
@@ -618,7 +605,7 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
             List<ResourceFile> resourceFiles = null;
             List<OutputFile> outputFiles = null;
             List<EnvironmentSetting> environmentSettings = null;
-            BatchAffinityInfo affinityInfo = null;
+            BatchAffinityDetails affinityInfo = null;
             BatchTaskConstraints constraints = null;
             Integer requiredSlots = null;
             UserIdentity userIdentity = null;
@@ -646,7 +633,7 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
                 } else if ("environmentSettings".equals(fieldName)) {
                     environmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                 } else if ("affinityInfo".equals(fieldName)) {
-                    affinityInfo = BatchAffinityInfo.fromJson(reader);
+                    affinityInfo = BatchAffinityDetails.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
@@ -684,5 +671,18 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
             deserializedBatchTaskCreateParameters.authenticationTokenSettings = authenticationTokenSettings;
             return deserializedBatchTaskCreateParameters;
         });
+    }
+
+    /**
+     * Set the affinityInfo property: A locality hint that can be used by the Batch service to select a Compute Node on
+     * which to start the new Task.
+     *
+     * @param affinityInfo the affinityInfo value to set.
+     * @return the BatchTaskCreateParameters object itself.
+     */
+    @Generated
+    public BatchTaskCreateParameters setAffinityInfo(BatchAffinityDetails affinityInfo) {
+        this.affinityInfo = affinityInfo;
+        return this;
     }
 }

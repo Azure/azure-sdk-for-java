@@ -15,7 +15,7 @@ import java.io.IOException;
  * Information about the Compute Node on which a Task ran.
  */
 @Immutable
-public final class BatchNodeInfo implements JsonSerializable<BatchNodeInfo> {
+public final class BatchNodeDetails implements JsonSerializable<BatchNodeDetails> {
 
     /*
      * An identifier for the Node on which the Task ran, which can be passed when adding a Task to request that the Task
@@ -55,10 +55,10 @@ public final class BatchNodeInfo implements JsonSerializable<BatchNodeInfo> {
     private String taskRootDirectoryUrl;
 
     /**
-     * Creates an instance of BatchNodeInfo class.
+     * Creates an instance of BatchNodeDetails class.
      */
     @Generated
-    private BatchNodeInfo() {
+    private BatchNodeDetails() {
     }
 
     /**
@@ -139,37 +139,37 @@ public final class BatchNodeInfo implements JsonSerializable<BatchNodeInfo> {
     }
 
     /**
-     * Reads an instance of BatchNodeInfo from the JsonReader.
+     * Reads an instance of BatchNodeDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchNodeInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of BatchNodeDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BatchNodeInfo.
+     * @throws IOException If an error occurs while reading the BatchNodeDetails.
      */
     @Generated
-    public static BatchNodeInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchNodeDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchNodeInfo deserializedBatchNodeInfo = new BatchNodeInfo();
+            BatchNodeDetails deserializedBatchNodeDetails = new BatchNodeDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("affinityId".equals(fieldName)) {
-                    deserializedBatchNodeInfo.affinityId = reader.getString();
+                    deserializedBatchNodeDetails.affinityId = reader.getString();
                 } else if ("nodeUrl".equals(fieldName)) {
-                    deserializedBatchNodeInfo.nodeUrl = reader.getString();
+                    deserializedBatchNodeDetails.nodeUrl = reader.getString();
                 } else if ("poolId".equals(fieldName)) {
-                    deserializedBatchNodeInfo.poolId = reader.getString();
+                    deserializedBatchNodeDetails.poolId = reader.getString();
                 } else if ("nodeId".equals(fieldName)) {
-                    deserializedBatchNodeInfo.nodeId = reader.getString();
+                    deserializedBatchNodeDetails.nodeId = reader.getString();
                 } else if ("taskRootDirectory".equals(fieldName)) {
-                    deserializedBatchNodeInfo.taskRootDirectory = reader.getString();
+                    deserializedBatchNodeDetails.taskRootDirectory = reader.getString();
                 } else if ("taskRootDirectoryUrl".equals(fieldName)) {
-                    deserializedBatchNodeInfo.taskRootDirectoryUrl = reader.getString();
+                    deserializedBatchNodeDetails.taskRootDirectoryUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedBatchNodeInfo;
+            return deserializedBatchNodeDetails;
         });
     }
 }

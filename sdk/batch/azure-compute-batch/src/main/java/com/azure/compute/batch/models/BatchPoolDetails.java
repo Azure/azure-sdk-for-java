@@ -15,7 +15,7 @@ import java.io.IOException;
  * Specifies how a Job should be assigned to a Pool.
  */
 @Fluent
-public final class BatchPoolInfo implements JsonSerializable<BatchPoolInfo> {
+public final class BatchPoolDetails implements JsonSerializable<BatchPoolDetails> {
 
     /*
      * The ID of an existing Pool. All the Tasks of the Job will run on the specified Pool. You must ensure that the
@@ -39,10 +39,10 @@ public final class BatchPoolInfo implements JsonSerializable<BatchPoolInfo> {
     private BatchAutoPoolSpecification autoPoolSpecification;
 
     /**
-     * Creates an instance of BatchPoolInfo class.
+     * Creates an instance of BatchPoolDetails class.
      */
     @Generated
-    public BatchPoolInfo() {
+    public BatchPoolDetails() {
     }
 
     /**
@@ -67,10 +67,10 @@ public final class BatchPoolInfo implements JsonSerializable<BatchPoolInfo> {
      * specify either the Pool ID or the auto Pool specification, but not both.
      *
      * @param poolId the poolId value to set.
-     * @return the BatchPoolInfo object itself.
+     * @return the BatchPoolDetails object itself.
      */
     @Generated
-    public BatchPoolInfo setPoolId(String poolId) {
+    public BatchPoolDetails setPoolId(String poolId) {
         this.poolId = poolId;
         return this;
     }
@@ -99,10 +99,10 @@ public final class BatchPoolInfo implements JsonSerializable<BatchPoolInfo> {
      * must specify either the Pool ID or the auto Pool specification, but not both.
      *
      * @param autoPoolSpecification the autoPoolSpecification value to set.
-     * @return the BatchPoolInfo object itself.
+     * @return the BatchPoolDetails object itself.
      */
     @Generated
-    public BatchPoolInfo setAutoPoolSpecification(BatchAutoPoolSpecification autoPoolSpecification) {
+    public BatchPoolDetails setAutoPoolSpecification(BatchAutoPoolSpecification autoPoolSpecification) {
         this.autoPoolSpecification = autoPoolSpecification;
         return this;
     }
@@ -120,29 +120,29 @@ public final class BatchPoolInfo implements JsonSerializable<BatchPoolInfo> {
     }
 
     /**
-     * Reads an instance of BatchPoolInfo from the JsonReader.
+     * Reads an instance of BatchPoolDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchPoolInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of BatchPoolDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BatchPoolInfo.
+     * @throws IOException If an error occurs while reading the BatchPoolDetails.
      */
     @Generated
-    public static BatchPoolInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchPoolDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchPoolInfo deserializedBatchPoolInfo = new BatchPoolInfo();
+            BatchPoolDetails deserializedBatchPoolDetails = new BatchPoolDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("poolId".equals(fieldName)) {
-                    deserializedBatchPoolInfo.poolId = reader.getString();
+                    deserializedBatchPoolDetails.poolId = reader.getString();
                 } else if ("autoPoolSpecification".equals(fieldName)) {
-                    deserializedBatchPoolInfo.autoPoolSpecification = BatchAutoPoolSpecification.fromJson(reader);
+                    deserializedBatchPoolDetails.autoPoolSpecification = BatchAutoPoolSpecification.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedBatchPoolInfo;
+            return deserializedBatchPoolDetails;
         });
     }
 }

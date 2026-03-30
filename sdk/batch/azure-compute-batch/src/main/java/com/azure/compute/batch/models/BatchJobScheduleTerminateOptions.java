@@ -14,13 +14,6 @@ import java.time.Duration;
 public final class BatchJobScheduleTerminateOptions {
 
     /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
-    /*
      * If true, the server will terminate the JobSchedule even if the corresponding nodes have not fully processed the
      * termination. The default value is false.
      */
@@ -32,20 +25,6 @@ public final class BatchJobScheduleTerminateOptions {
      */
     @Generated
     public BatchJobScheduleTerminateOptions() {
-    }
-
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
-     */
-    @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -72,19 +51,40 @@ public final class BatchJobScheduleTerminateOptions {
         return this;
     }
 
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
+     */
+    @Generated
+    private Long timeOut;
+
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the timeOut value.
+     */
+    @Generated
+    public Duration getTimeOut() {
+        if (this.timeOut == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOut);
+    }
+
+    /**
+     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOut the timeOut value to set.
      * @return the BatchJobScheduleTerminateOptions object itself.
      */
     @Generated
-    public BatchJobScheduleTerminateOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
+    public BatchJobScheduleTerminateOptions setTimeOut(Duration timeOut) {
+        if (timeOut == null) {
+            this.timeOut = null;
         } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+            this.timeOut = timeOut.getSeconds();
         }
         return this;
     }

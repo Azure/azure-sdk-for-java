@@ -7,7 +7,7 @@ import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolInfo;
+import com.azure.compute.batch.models.BatchPoolDetails;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.FileProperties;
@@ -56,7 +56,7 @@ public class FileTests extends BatchClientTestBase {
         String taskId = "mytask";
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(poolId);
 
         // Create job
@@ -129,7 +129,7 @@ public class FileTests extends BatchClientTestBase {
         String taskId = "mytask-";
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(poolId);
 
         // Create job

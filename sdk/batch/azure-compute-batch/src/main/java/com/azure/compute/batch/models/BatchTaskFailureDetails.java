@@ -16,7 +16,7 @@ import java.util.List;
  * Information about a Task failure.
  */
 @Immutable
-public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFailureInfo> {
+public final class BatchTaskFailureDetails implements JsonSerializable<BatchTaskFailureDetails> {
 
     /*
      * The category of the Task error.
@@ -41,6 +41,16 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
      */
     @Generated
     private List<NameValuePair> details;
+
+    /**
+     * Creates an instance of BatchTaskFailureDetails class.
+     *
+     * @param category the category value to set.
+     */
+    @Generated
+    private BatchTaskFailureDetails(BatchErrorSourceCategory category) {
+        this.category = category;
+    }
 
     /**
      * Get the category property: The category of the Task error.
@@ -99,16 +109,16 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
     }
 
     /**
-     * Reads an instance of BatchTaskFailureInfo from the JsonReader.
+     * Reads an instance of BatchTaskFailureDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchTaskFailureInfo if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of BatchTaskFailureDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchTaskFailureInfo.
+     * @throws IOException If an error occurs while reading the BatchTaskFailureDetails.
      */
     @Generated
-    public static BatchTaskFailureInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchTaskFailureDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchErrorSourceCategory category = null;
             String code = null;
@@ -129,21 +139,11 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
                     reader.skipChildren();
                 }
             }
-            BatchTaskFailureInfo deserializedBatchTaskFailureInfo = new BatchTaskFailureInfo(category);
-            deserializedBatchTaskFailureInfo.code = code;
-            deserializedBatchTaskFailureInfo.message = message;
-            deserializedBatchTaskFailureInfo.details = details;
-            return deserializedBatchTaskFailureInfo;
+            BatchTaskFailureDetails deserializedBatchTaskFailureDetails = new BatchTaskFailureDetails(category);
+            deserializedBatchTaskFailureDetails.code = code;
+            deserializedBatchTaskFailureDetails.message = message;
+            deserializedBatchTaskFailureDetails.details = details;
+            return deserializedBatchTaskFailureDetails;
         });
-    }
-
-    /**
-     * Creates an instance of BatchTaskFailureInfo class.
-     *
-     * @param category the category value to set.
-     */
-    @Generated
-    private BatchTaskFailureInfo(BatchErrorSourceCategory category) {
-        this.category = category;
     }
 }
