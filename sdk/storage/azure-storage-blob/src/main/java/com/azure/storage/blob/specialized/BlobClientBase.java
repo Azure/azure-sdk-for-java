@@ -1567,7 +1567,7 @@ public class BlobClientBase {
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
         final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
-            = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+            = parallelTransferOptions == null ? null : ModelHelper.wrapBlobOptions(parallelTransferOptions);
         return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
             .setParallelTransferOptions(finalParallelTransferOptions)
             .setDownloadRetryOptions(downloadRetryOptions)
@@ -1608,8 +1608,41 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
         Context context) {
-        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(options, context);
+        Mono<Response<BlobProperties>> download
+            = client.downloadToFileWithResponse(adjustOptionsForSyncDownload(options), context);
         return blockWithOptionalTimeout(download, timeout);
+    }
+
+    private static BlobDownloadToFileOptions adjustOptionsForSyncDownload(BlobDownloadToFileOptions options) {
+        if (options == null) {
+            return null;
+        }
+
+        com.azure.storage.common.ParallelTransferOptions parallelTransferOptions = options.getParallelTransferOptions();
+        Integer maxConcurrency = parallelTransferOptions == null ? null : parallelTransferOptions.getMaxConcurrency();
+        if (maxConcurrency != null && maxConcurrency <= 1) {
+            return options;
+        }
+
+        com.azure.storage.common.ParallelTransferOptions adjustedParallelOptions;
+        if (parallelTransferOptions == null) {
+            adjustedParallelOptions = new com.azure.storage.common.ParallelTransferOptions().setMaxConcurrency(1);
+        } else {
+            adjustedParallelOptions = new com.azure.storage.common.ParallelTransferOptions()
+                .setBlockSizeLong(parallelTransferOptions.getBlockSizeLong())
+                .setInitialTransferSizeLong(parallelTransferOptions.getInitialTransferSizeLong())
+                .setMaxConcurrency(1)
+                .setProgressListener(parallelTransferOptions.getProgressListener())
+                .setMaxSingleUploadSizeLong(parallelTransferOptions.getMaxSingleUploadSizeLong());
+        }
+
+        return new BlobDownloadToFileOptions(options.getFilePath()).setRange(options.getRange())
+            .setParallelTransferOptions(adjustedParallelOptions)
+            .setDownloadRetryOptions(options.getDownloadRetryOptions())
+            .setRequestConditions(options.getRequestConditions())
+            .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5())
+            .setOpenOptions(options.getOpenOptions())
+            .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm());
     }
 
     /**

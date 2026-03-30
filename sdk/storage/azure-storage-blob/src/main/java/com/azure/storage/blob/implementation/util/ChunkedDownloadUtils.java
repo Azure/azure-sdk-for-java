@@ -34,7 +34,7 @@ public class ChunkedDownloadUtils {
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
         BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock) {
-        return downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloader, eTagLock, null);
+        return downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloader, null, eTagLock, null);
     }
 
     /*
@@ -48,6 +48,22 @@ public class ChunkedDownloadUtils {
         BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock,
         Context context) {
+        return downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloader, null, eTagLock,
+            context);
+    }
+
+    /*
+    Has a context value for additional download adjustments and an optional fallback downloader for empty blobs.
+    
+    Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
+    access conditions containing the etag to lock on, and the response from downloading the first chunk.
+     */
+    @SuppressWarnings("unchecked")
+    public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
+        BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader,
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> emptyBlobDownloader,
+        boolean eTagLock, Context context) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize
             = range.getCount() != null && range.getCount() < parallelTransferOptions.getBlockSizeLong()
@@ -69,7 +85,12 @@ public class ChunkedDownloadUtils {
                     : requestConditions;
 
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
-                long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
+                // Fall back to contentLength when contentRange isn't present (e.g., 304 responses).
+                String contentRange = response.getDeserializedHeaders().getContentRange();
+                Long contentLength = response.getDeserializedHeaders().getContentLength();
+                long totalLength = contentRange != null
+                    ? extractTotalBlobLength(contentRange)
+                    : (contentLength == null ? 0L : contentLength);
 
                 if (context != null) {
                     Optional<Object> contextAdjustment = context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY);
@@ -99,7 +120,9 @@ public class ChunkedDownloadUtils {
                     && extractTotalBlobLength(
                         blobStorageException.getResponse().getHeaders().getValue(HttpHeaderName.CONTENT_RANGE)) == 0) {
 
-                    return downloader.apply(new BlobRange(0, 0L), requestConditions)
+                    BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> fallbackDownloader
+                        = emptyBlobDownloader != null ? emptyBlobDownloader : downloader;
+                    return fallbackDownloader.apply(new BlobRange(0), requestConditions)
                         // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
                         // provided the same functionality with the added benefit that it won't infinitely create
                         // threads if needed and will instead queue.

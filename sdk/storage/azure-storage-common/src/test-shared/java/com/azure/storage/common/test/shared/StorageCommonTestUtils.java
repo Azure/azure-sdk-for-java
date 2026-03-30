@@ -69,6 +69,8 @@ public final class StorageCommonTestUtils {
         try {
             jdkHttpHttpClient = createJdkHttpClient();
         } catch (LinkageError | ReflectiveOperationException e) {
+            // LinkageError includes ExceptionInInitializerError (e.g. JDK HTTP client fails on Java 17 when
+            // SharedExecutorService needs Thread.ofVirtual() from Java 19+). Set to null so Netty/OkHttp/Vertx tests run.
             jdkHttpHttpClient = null;
         }
 
@@ -130,6 +132,11 @@ public final class StorageCommonTestUtils {
                 case VERTX:
                     return VERTX_HTTP_CLIENT;
                 case JDK_HTTP:
+                    if (JDK_HTTP_HTTP_CLIENT == null) {
+                        throw new IllegalStateException(
+                            "JDK HTTP client is not available (e.g. requires Java 19+ for virtual threads). "
+                                + "Use NETTY, OK_HTTP, or VERTX instead.");
+                    }
                     return JDK_HTTP_HTTP_CLIENT;
                 default:
                     throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());

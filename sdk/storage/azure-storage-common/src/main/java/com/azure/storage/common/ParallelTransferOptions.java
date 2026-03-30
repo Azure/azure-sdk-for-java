@@ -14,6 +14,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 @Fluent
 public final class ParallelTransferOptions {
     private Long blockSize;
+    private Long initialTransferSize;
     private Integer maxConcurrency;
     private ProgressReceiver progressReceiver;
     private Long maxSingleUploadSize;
@@ -75,6 +76,29 @@ public final class ParallelTransferOptions {
      */
     public Long getBlockSizeLong() {
         return this.blockSize;
+    }
+
+    /**
+     * Gets the size of the first range requested when downloading.
+     * @return The initial transfer size.
+     */
+    public Long getInitialTransferSizeLong() {
+        return this.initialTransferSize;
+    }
+
+    /**
+     * Sets the size of the first range requested when downloading.
+     * This value may be larger than the block size used for subsequent ranges.
+     *
+     * @param initialTransferSize The initial transfer size.
+     * @return The ParallelTransferOptions object itself.
+     */
+    public ParallelTransferOptions setInitialTransferSizeLong(Long initialTransferSize) {
+        if (initialTransferSize != null) {
+            StorageImplUtils.assertInBounds("initialTransferSize", initialTransferSize, 1, Long.MAX_VALUE);
+        }
+        this.initialTransferSize = initialTransferSize;
+        return this;
     }
 
     /**

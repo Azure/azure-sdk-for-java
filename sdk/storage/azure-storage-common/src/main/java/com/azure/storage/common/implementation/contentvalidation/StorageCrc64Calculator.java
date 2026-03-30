@@ -2560,6 +2560,388 @@ public class StorageCrc64Calculator {
     }
 
     /**
+     * Computes the CRC64 checksum for a slice of a byte array. Avoids copying when combined with
+     * {@link #compute(ByteBuffer, long)} for array-backed buffers.
+     *
+     * @param src the byte array.
+     * @param offset the starting offset in the array.
+     * @param length the number of bytes to process.
+     * @param uCrc the initial CRC value.
+     * @return the computed CRC64 checksum.
+     */
+    public static long compute(byte[] src, int offset, int length, long uCrc) {
+        int pData = 0;
+        long uSize = length;
+        long uBytes, uStop;
+
+        uCrc = ~uCrc;
+
+        uStop = uSize - (uSize % 32);
+        if (uStop >= 2 * 32) {
+            long uCrc0 = 0L;
+            long uCrc1 = 0L;
+            long uCrc2 = 0L;
+            long uCrc3 = 0L;
+
+            int pLast = pData + (int) uStop - 32;
+            uSize -= uStop;
+            uCrc0 = uCrc;
+
+            ByteBuffer buffer = ByteBuffer.wrap(src, offset, length).order(ByteOrder.LITTLE_ENDIAN);
+
+            for (; pData < pLast; pData += 32) {
+                long b0 = buffer.getLong(pData) ^ uCrc0;
+                long b1 = buffer.getLong(pData + 8) ^ uCrc1;
+                long b2 = buffer.getLong(pData + 16) ^ uCrc2;
+                long b3 = buffer.getLong(pData + 24) ^ uCrc3;
+
+                uCrc0 = M_U32[7 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 = M_U32[7 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 = M_U32[7 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 = M_U32[7 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[6 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[6 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[6 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[6 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[5 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[5 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[5 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[5 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[4 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[4 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[4 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[4 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[3 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[3 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[3 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[3 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[2 * 256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[2 * 256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[2 * 256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[2 * 256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[256 + ((int) (b0 & 0xFF))];
+                b0 >>>= 8;
+                uCrc1 ^= M_U32[256 + ((int) (b1 & 0xFF))];
+                b1 >>>= 8;
+                uCrc2 ^= M_U32[256 + ((int) (b2 & 0xFF))];
+                b2 >>>= 8;
+                uCrc3 ^= M_U32[256 + ((int) (b3 & 0xFF))];
+                b3 >>>= 8;
+
+                uCrc0 ^= M_U32[((int) (b0 & 0xFF))];
+                uCrc1 ^= M_U32[((int) (b1 & 0xFF))];
+                uCrc2 ^= M_U32[((int) (b2 & 0xFF))];
+                uCrc3 ^= M_U32[((int) (b3 & 0xFF))];
+            }
+
+            uCrc = 0;
+            uCrc ^= ByteBuffer.wrap(src, offset + pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc0;
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+
+            uCrc ^= ByteBuffer.wrap(src, offset + pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc1;
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+
+            uCrc ^= ByteBuffer.wrap(src, offset + pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc2;
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+
+            uCrc ^= ByteBuffer.wrap(src, offset + pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc3;
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+
+            pData += 32;
+        }
+
+        for (uBytes = 0; uBytes < uSize; ++uBytes, ++pData) {
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[offset + pData]) & 0xFF)];
+        }
+
+        return ~uCrc;
+    }
+
+    /**
+     * Computes the CRC64 checksum for the remaining bytes in a ByteBuffer. When the buffer has a backing array,
+     * avoids copying; otherwise copies once.
+     *
+     * @param buffer the buffer (position to limit).
+     * @param uCrc the initial CRC value.
+     * @return the computed CRC64 checksum.
+     */
+    public static long compute(ByteBuffer buffer, long uCrc) {
+        if (buffer == null || !buffer.hasRemaining()) {
+            return uCrc;
+        }
+        if (buffer.hasArray()) {
+            return compute(buffer.array(), buffer.arrayOffset() + buffer.position(), buffer.remaining(), uCrc);
+        }
+        byte[] copy = new byte[buffer.remaining()];
+        buffer.duplicate().get(copy);
+        return compute(copy, uCrc);
+    }
+
+    /**
+     * Updates both segment and message CRC64 in a single pass over the data (half the memory reads of two separate
+     * {@link #compute(byte[], long)} calls). Used by the structured message decoder for performance.
+     *
+     * @param src the byte array.
+     * @param segmentCrc the current segment CRC value.
+     * @param messageCrc the current message CRC value.
+     * @return long[0] = new segment CRC, long[1] = new message CRC.
+     */
+    public static long[] computeTwo(byte[] src, long segmentCrc, long messageCrc) {
+        segmentCrc = ~segmentCrc;
+        messageCrc = ~messageCrc;
+
+        int pData = 0;
+        long uSize = src.length;
+        long uStop = uSize - (uSize % 32);
+
+        if (uStop >= 2 * 32) {
+            long s0 = segmentCrc, s1 = 0, s2 = 0, s3 = 0;
+            long m0 = messageCrc, m1 = 0, m2 = 0, m3 = 0;
+            int pLast = (int) uStop - 32;
+            uSize -= uStop;
+            ByteBuffer buf = ByteBuffer.wrap(src).order(ByteOrder.LITTLE_ENDIAN);
+
+            for (; pData < pLast; pData += 32) {
+                long b0 = buf.getLong(pData);
+                long b1 = buf.getLong(pData + 8);
+                long b2 = buf.getLong(pData + 16);
+                long b3 = buf.getLong(pData + 24);
+
+                long bs0 = b0 ^ s0, bs1 = b1 ^ s1, bs2 = b2 ^ s2, bs3 = b3 ^ s3;
+                long bm0 = b0 ^ m0, bm1 = b1 ^ m1, bm2 = b2 ^ m2, bm3 = b3 ^ m3;
+
+                s0 = M_U32[7 * 256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 = M_U32[7 * 256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 = M_U32[7 * 256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 = M_U32[7 * 256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[6 * 256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 ^= M_U32[6 * 256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 ^= M_U32[6 * 256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 ^= M_U32[6 * 256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[5 * 256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 ^= M_U32[5 * 256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 ^= M_U32[5 * 256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 ^= M_U32[5 * 256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[4 * 256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 ^= M_U32[4 * 256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 ^= M_U32[4 * 256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 ^= M_U32[4 * 256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[3 * 256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 ^= M_U32[3 * 256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 ^= M_U32[3 * 256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 ^= M_U32[3 * 256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[2 * 256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 ^= M_U32[2 * 256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 ^= M_U32[2 * 256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 ^= M_U32[2 * 256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[256 + ((int) (bs0 & 0xFF))];
+                bs0 >>>= 8;
+                s1 ^= M_U32[256 + ((int) (bs1 & 0xFF))];
+                bs1 >>>= 8;
+                s2 ^= M_U32[256 + ((int) (bs2 & 0xFF))];
+                bs2 >>>= 8;
+                s3 ^= M_U32[256 + ((int) (bs3 & 0xFF))];
+                bs3 >>>= 8;
+                s0 ^= M_U32[((int) (bs0 & 0xFF))];
+                s1 ^= M_U32[((int) (bs1 & 0xFF))];
+                s2 ^= M_U32[((int) (bs2 & 0xFF))];
+                s3 ^= M_U32[((int) (bs3 & 0xFF))];
+
+                m0 = M_U32[7 * 256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 = M_U32[7 * 256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 = M_U32[7 * 256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 = M_U32[7 * 256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[6 * 256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 ^= M_U32[6 * 256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 ^= M_U32[6 * 256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 ^= M_U32[6 * 256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[5 * 256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 ^= M_U32[5 * 256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 ^= M_U32[5 * 256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 ^= M_U32[5 * 256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[4 * 256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 ^= M_U32[4 * 256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 ^= M_U32[4 * 256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 ^= M_U32[4 * 256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[3 * 256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 ^= M_U32[3 * 256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 ^= M_U32[3 * 256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 ^= M_U32[3 * 256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[2 * 256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 ^= M_U32[2 * 256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 ^= M_U32[2 * 256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 ^= M_U32[2 * 256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[256 + ((int) (bm0 & 0xFF))];
+                bm0 >>>= 8;
+                m1 ^= M_U32[256 + ((int) (bm1 & 0xFF))];
+                bm1 >>>= 8;
+                m2 ^= M_U32[256 + ((int) (bm2 & 0xFF))];
+                bm2 >>>= 8;
+                m3 ^= M_U32[256 + ((int) (bm3 & 0xFF))];
+                bm3 >>>= 8;
+                m0 ^= M_U32[((int) (bm0 & 0xFF))];
+                m1 ^= M_U32[((int) (bm1 & 0xFF))];
+                m2 ^= M_U32[((int) (bm2 & 0xFF))];
+                m3 ^= M_U32[((int) (bm3 & 0xFF))];
+            }
+
+            long uCrc = 0;
+            uCrc ^= ByteBuffer.wrap(src, pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ s0;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            uCrc ^= ByteBuffer.wrap(src, pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ s1;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            uCrc ^= ByteBuffer.wrap(src, pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ s2;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            uCrc ^= ByteBuffer.wrap(src, pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ s3;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            segmentCrc = uCrc; // keep internal form for tail
+
+            uCrc = 0;
+            uCrc ^= ByteBuffer.wrap(src, pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ m0;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            uCrc ^= ByteBuffer.wrap(src, pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ m1;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            uCrc ^= ByteBuffer.wrap(src, pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ m2;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            uCrc ^= ByteBuffer.wrap(src, pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ m3;
+            for (int i = 0; i < 8; i++) {
+                uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
+            }
+            messageCrc = uCrc; // keep internal form for tail
+
+            pData += 32;
+        }
+
+        for (long uBytes = 0; uBytes < uSize; ++uBytes, ++pData) {
+            long byteVal = src[pData] & 0xFF;
+            segmentCrc = (segmentCrc >>> 8) ^ M_U1[(int) ((segmentCrc ^ byteVal) & 0xFF)];
+            messageCrc = (messageCrc >>> 8) ^ M_U1[(int) ((messageCrc ^ byteVal) & 0xFF)];
+        }
+
+        return new long[] { ~segmentCrc, ~messageCrc };
+    }
+
+    /**
      * Concatenates two CRC64 values by combining their initial and final CRC values and sizes.
      * This method ensures unsigned behavior and uses the `mulX_N` method to perform necessary
      * multiplications in GF(2^64).

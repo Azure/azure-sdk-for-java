@@ -6,10 +6,10 @@ package com.azure.storage.common.test.shared.policy;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -19,14 +19,21 @@ import java.nio.charset.Charset;
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
  */
 public class MockDownloadHttpResponse extends HttpResponse {
+    private final HttpResponse originalResponse;
     private final int statusCode;
     private final HttpHeaders headers;
     private final Flux<ByteBuffer> body;
 
     public MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
+        this(response, statusCode, response.getHeaders(), body);
+    }
+
+    public MockDownloadHttpResponse(HttpResponse response, int statusCode, HttpHeaders headers,
+        Flux<ByteBuffer> body) {
         super(response.getRequest());
+        this.originalResponse = response;
         this.statusCode = statusCode;
-        this.headers = response.getHeaders();
+        this.headers = headers;
         this.body = body;
     }
 
@@ -52,21 +59,26 @@ public class MockDownloadHttpResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return body;
+        return Flux.using(() -> originalResponse, ignored -> body, HttpResponse::close);
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.error(new IOException());
+        return FluxUtil.collectBytesInByteBufferStream(getBody());
     }
 
     @Override
     public Mono<String> getBodyAsString() {
-        return Mono.error(new IOException());
+        return getBodyAsByteArray().map(bytes -> new String(bytes, Charset.defaultCharset()));
     }
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return Mono.error(new IOException());
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+    }
+
+    @Override
+    public void close() {
+        originalResponse.close();
     }
 }
