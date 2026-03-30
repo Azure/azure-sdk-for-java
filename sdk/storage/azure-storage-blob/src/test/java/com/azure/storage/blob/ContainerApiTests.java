@@ -2266,7 +2266,7 @@ public class ContainerApiTests extends BlobTestBase {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2288,8 +2288,8 @@ public class ContainerApiTests extends BlobTestBase {
             .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
                 null, null, null);
 
-        ListBlobsOptions options
-            = new ListBlobsOptions().setUseArrow(true).setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
+            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2306,7 +2306,7 @@ public class ContainerApiTests extends BlobTestBase {
                 .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         }
 
-        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true).setMaxResultsPerPage(1);
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true).setMaxResultsPerPage(1);
         List<BlobItem> allBlobs = new ArrayList<>();
         for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage()) {
             assertTrue(page.getValue().size() <= 1);
@@ -2318,12 +2318,12 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void listBlobsArrowNullUseArrowUsesXml() {
-        // Default useArrow is null - should use XML path without error
+        // Default apacheArrowEnabled is null — should use XML path without error
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         ListBlobsOptions options = new ListBlobsOptions();
-        assertNull(options.getUseArrow());
+        assertNull(options.isApacheArrowEnabled());
 
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
         assertEquals(1, blobs.size());
@@ -2346,7 +2346,7 @@ public class ContainerApiTests extends BlobTestBase {
     //             .getBlockBlobClient()
     //             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
     //
-    //         ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+    //         ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
     //         List<BlobItem> blobs = altCc.listBlobs(options, null).stream().collect(Collectors.toList());
     //
     //         // Should still work via XML fallback
@@ -2366,7 +2366,7 @@ public class ContainerApiTests extends BlobTestBase {
         BlobClient cpkClient = cc.getBlobClient(blobName).getCustomerProvidedKeyClient(cpk);
         cpkClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2582,7 +2582,7 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
         List<BlobItem> items = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
 
         // Root level: one prefix "dir/" and one blob "topblob"
@@ -2618,7 +2618,7 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true)
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
             .setPrefix("dir/")
             .setDetails(new BlobListDetails().setRetrieveMetadata(true));
         List<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
@@ -2641,7 +2641,7 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true).setMaxResultsPerPage(1);
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true).setMaxResultsPerPage(1);
         List<BlobItem> allItems = new ArrayList<>();
         for (PagedResponse<BlobItem> page : cc.listBlobsByHierarchy("/", options, null).iterableByPage()) {
             assertTrue(page.getValue().size() <= 1);
@@ -2663,8 +2663,8 @@ public class ContainerApiTests extends BlobTestBase {
         cc.getBlobClient(blobName).setTags(tags);
 
         // List with Arrow + retrieveTags
-        ListBlobsOptions options
-            = new ListBlobsOptions().setUseArrow(true).setDetails(new BlobListDetails().setRetrieveTags(true));
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
+            .setDetails(new BlobListDetails().setRetrieveTags(true));
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());

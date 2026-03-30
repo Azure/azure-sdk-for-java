@@ -19,7 +19,7 @@ public final class ListBlobsOptions {
     private String prefix;
     private String startFrom;
     private Integer maxResultsPerPage;
-    private Boolean useArrow;
+    private Boolean apacheArrowEnabled;
     private String endBefore;
 
     /**
@@ -115,23 +115,24 @@ public final class ListBlobsOptions {
     }
 
     /**
-     * Gets whether to use the Apache Arrow response format for listing.
+     * Gets whether the Apache Arrow response format is enabled for listing.
      *
-     * @return whether Arrow format is enabled.
+     * @return null by default, otherwise returns a Boolean indicating whether the Apache Arrow response format is
+     * enabled.
      */
-    public Boolean getUseArrow() {
-        return useArrow;
+    public Boolean isApacheArrowEnabled() {
+        return apacheArrowEnabled;
     }
 
     /**
      * Sets whether to use the Apache Arrow response format for listing. When enabled, the service returns an Arrow IPC
      * stream instead of XML, which can provide latency and scale improvements.
      *
-     * @param useArrow whether to use Arrow format.
+     * @param apacheArrowEnabled whether to use Arrow format.
      * @return the updated ListBlobsOptions object.
      */
-    public ListBlobsOptions setUseArrow(Boolean useArrow) {
-        this.useArrow = useArrow;
+    public ListBlobsOptions setApacheArrowEnabled(Boolean apacheArrowEnabled) {
+        this.apacheArrowEnabled = apacheArrowEnabled;
         return this;
     }
 

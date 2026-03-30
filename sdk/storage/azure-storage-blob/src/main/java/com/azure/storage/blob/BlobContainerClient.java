@@ -1039,8 +1039,8 @@ public final class BlobContainerClient {
                     .setStartFrom(options.getStartFrom())
                     .setDetails(options.getDetails());
 
-                if (Boolean.TRUE.equals(options.getUseArrow())) {
-                    finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
+                    finalOptions.setApacheArrowEnabled(true).setEndBefore(options.getEndBefore());
                 }
 
             }
@@ -1054,8 +1054,8 @@ public final class BlobContainerClient {
             ArrayList<ListBlobsIncludeItem> include
                 = finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
 
-            // Using Boolean.TRUE.equals to avoid NPE because default for useArrow is null, not false. We want to treat null as false, but if user explicitly set it to true, then we use Arrow.
-            if (Boolean.TRUE.equals(finalOptions.getUseArrow())) {
+            // Using Boolean.TRUE.equals to avoid NPE because default for apacheArrowEnabled is null, not false. We want to treat null as false, but if user explicitly set it to true, then we use Arrow.
+            if (Boolean.TRUE.equals(finalOptions.isApacheArrowEnabled())) {
                 Callable<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>> operation
                     = () -> this.azureBlobStorage.getContainers()
                         .listBlobFlatSegmentApacheArrowWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
@@ -1224,8 +1224,8 @@ public final class BlobContainerClient {
                     .setPrefix(options.getPrefix())
                     .setDetails(options.getDetails())
                     .setStartFrom(options.getStartFrom());
-                if (Boolean.TRUE.equals(options.getUseArrow())) {
-                    finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
+                    finalOptions.setApacheArrowEnabled(true).setEndBefore(options.getEndBefore());
                 }
             }
             /*
@@ -1249,7 +1249,7 @@ public final class BlobContainerClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        if (Boolean.TRUE.equals(options.getUseArrow())) {
+        if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
             Callable<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream>> operation
                 = () -> azureBlobStorage.getContainers()
                     .listBlobHierarchySegmentApacheArrowWithResponse(containerName, delimiter, options.getPrefix(),
