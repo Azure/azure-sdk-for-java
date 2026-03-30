@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionInner;
+import java.util.List;
 
 /**
  * An immutable client-side representation of JobDefinition.
@@ -157,6 +158,34 @@ public interface JobDefinition {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the connections property: List of connections associated to this job.
+     * 
+     * @return the connections value.
+     */
+    List<String> connections();
+
+    /**
+     * Gets the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    ScheduleInfo schedule();
+
+    /**
+     * Gets the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    DataIntegrityValidation dataIntegrityValidation();
+
+    /**
+     * Gets the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @return the preservePermissions value.
+     */
+    Boolean preservePermissions();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -246,9 +275,10 @@ public interface JobDefinition {
          * The stage of the JobDefinition definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDescription, DefinitionStages.WithJobType, DefinitionStages.WithSourceSubpath,
-            DefinitionStages.WithTargetSubpath, DefinitionStages.WithAgentName, DefinitionStages.WithSourceTargetMap {
+        interface WithCreate extends DefinitionStages.WithDescription, DefinitionStages.WithJobType,
+            DefinitionStages.WithSourceSubpath, DefinitionStages.WithTargetSubpath, DefinitionStages.WithAgentName,
+            DefinitionStages.WithSourceTargetMap, DefinitionStages.WithConnections, DefinitionStages.WithSchedule,
+            DefinitionStages.WithDataIntegrityValidation, DefinitionStages.WithPreservePermissions {
             /**
              * Executes the create request.
              * 
@@ -344,6 +374,58 @@ public interface JobDefinition {
              */
             WithCreate withSourceTargetMap(JobDefinitionPropertiesSourceTargetMap sourceTargetMap);
         }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify connections.
+         */
+        interface WithConnections {
+            /**
+             * Specifies the connections property: List of connections associated to this job.
+             * 
+             * @param connections List of connections associated to this job.
+             * @return the next definition stage.
+             */
+            WithCreate withConnections(List<String> connections);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify schedule.
+         */
+        interface WithSchedule {
+            /**
+             * Specifies the schedule property: Schedule information for the Job Definition..
+             * 
+             * @param schedule Schedule information for the Job Definition.
+             * @return the next definition stage.
+             */
+            WithCreate withSchedule(ScheduleInfo schedule);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify dataIntegrityValidation.
+         */
+        interface WithDataIntegrityValidation {
+            /**
+             * Specifies the dataIntegrityValidation property: The checksum validation mode for the job definition..
+             * 
+             * @param dataIntegrityValidation The checksum validation mode for the job definition.
+             * @return the next definition stage.
+             */
+            WithCreate withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify preservePermissions.
+         */
+        interface WithPreservePermissions {
+            /**
+             * Specifies the preservePermissions property: Boolean to preserve permissions or not..
+             * 
+             * @param preservePermissions Boolean to preserve permissions or not.
+             * @return the next definition stage.
+             */
+            WithCreate withPreservePermissions(Boolean preservePermissions);
+        }
     }
 
     /**
@@ -356,7 +438,8 @@ public interface JobDefinition {
     /**
      * The template for JobDefinition update.
      */
-    interface Update extends UpdateStages.WithDescription, UpdateStages.WithCopyMode, UpdateStages.WithAgentName {
+    interface Update extends UpdateStages.WithDescription, UpdateStages.WithCopyMode, UpdateStages.WithAgentName,
+        UpdateStages.WithConnections, UpdateStages.WithDataIntegrityValidation {
         /**
          * Executes the update request.
          * 
@@ -414,6 +497,32 @@ public interface JobDefinition {
              * @return the next definition stage.
              */
             Update withAgentName(String agentName);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify connections.
+         */
+        interface WithConnections {
+            /**
+             * Specifies the connections property: List of connections associated to this job.
+             * 
+             * @param connections List of connections associated to this job.
+             * @return the next definition stage.
+             */
+            Update withConnections(List<String> connections);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify dataIntegrityValidation.
+         */
+        interface WithDataIntegrityValidation {
+            /**
+             * Specifies the dataIntegrityValidation property: Data Integrity Validation mode..
+             * 
+             * @param dataIntegrityValidation Data Integrity Validation mode.
+             * @return the next definition stage.
+             */
+            Update withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation);
         }
     }
 

@@ -10,7 +10,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Job definition properties.
@@ -31,6 +33,16 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
      * Name of the Agent to assign for new Job Runs of this Job Definition.
      */
     private String agentName;
+
+    /*
+     * List of connections associated to this job
+     */
+    private List<String> connections;
+
+    /*
+     * Data Integrity Validation mode.
+     */
+    private DataIntegrityValidation dataIntegrityValidation;
 
     /**
      * Creates an instance of JobDefinitionUpdateProperties class.
@@ -99,6 +111,46 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
     }
 
     /**
+     * Get the connections property: List of connections associated to this job.
+     * 
+     * @return the connections value.
+     */
+    public List<String> connections() {
+        return this.connections;
+    }
+
+    /**
+     * Set the connections property: List of connections associated to this job.
+     * 
+     * @param connections the connections value to set.
+     * @return the JobDefinitionUpdateProperties object itself.
+     */
+    public JobDefinitionUpdateProperties withConnections(List<String> connections) {
+        this.connections = connections;
+        return this;
+    }
+
+    /**
+     * Get the dataIntegrityValidation property: Data Integrity Validation mode.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    public DataIntegrityValidation dataIntegrityValidation() {
+        return this.dataIntegrityValidation;
+    }
+
+    /**
+     * Set the dataIntegrityValidation property: Data Integrity Validation mode.
+     * 
+     * @param dataIntegrityValidation the dataIntegrityValidation value to set.
+     * @return the JobDefinitionUpdateProperties object itself.
+     */
+    public JobDefinitionUpdateProperties withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {
+        this.dataIntegrityValidation = dataIntegrityValidation;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -107,6 +159,9 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("copyMode", this.copyMode == null ? null : this.copyMode.toString());
         jsonWriter.writeStringField("agentName", this.agentName);
+        jsonWriter.writeArrayField("connections", this.connections, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("dataIntegrityValidation",
+            this.dataIntegrityValidation == null ? null : this.dataIntegrityValidation.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -132,6 +187,12 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
                     deserializedJobDefinitionUpdateProperties.copyMode = CopyMode.fromString(reader.getString());
                 } else if ("agentName".equals(fieldName)) {
                     deserializedJobDefinitionUpdateProperties.agentName = reader.getString();
+                } else if ("connections".equals(fieldName)) {
+                    List<String> connections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJobDefinitionUpdateProperties.connections = connections;
+                } else if ("dataIntegrityValidation".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.dataIntegrityValidation
+                        = DataIntegrityValidation.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
