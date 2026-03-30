@@ -139,12 +139,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
-      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.18.6</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.18.6</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -198,7 +198,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -333,10 +333,10 @@
                 <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.8.1]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.18.6]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.6]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.6]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.18.6]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[${scala-jackson.version}]</include>
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.13:[${scala-jackson.version}]</include>
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
