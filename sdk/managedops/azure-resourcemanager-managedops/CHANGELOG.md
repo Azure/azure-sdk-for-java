@@ -30,17 +30,17 @@
 
 #### `models.DesiredConfigurationUpdate` was modified
 
-* `models.DesiredConfigurationDefenderForServers defenderForServers()` -> `models.DesiredEnablementState defenderForServers()`
+* `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
 * `withDefenderCspm(models.DesiredConfigurationDefenderForServers)` was removed
 * `withDefenderForServers(models.DesiredConfigurationDefenderForServers)` was removed
-* `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
+* `models.DesiredConfigurationDefenderForServers defenderForServers()` -> `models.DesiredEnablementState defenderForServers()`
 
 #### `models.DesiredConfiguration` was modified
 
-* `withDefenderCspm(models.DesiredConfigurationDefenderForServers)` was removed
-* `models.DesiredConfigurationDefenderForServers defenderForServers()` -> `models.DesiredEnablementState defenderForServers()`
 * `withDefenderForServers(models.DesiredConfigurationDefenderForServers)` was removed
+* `models.DesiredConfigurationDefenderForServers defenderForServers()` -> `models.DesiredEnablementState defenderForServers()`
 * `models.DesiredConfigurationDefenderForServers defenderCspm()` -> `models.DesiredEnablementState defenderCspm()`
+* `withDefenderCspm(models.DesiredConfigurationDefenderForServers)` was removed
 
 #### `models.DefenderCspmInformation` was modified
 
@@ -71,8 +71,8 @@
 
 #### `models.DesiredConfiguration` was modified
 
-* `withDefenderForServers(models.DesiredEnablementState)` was added
 * `withDefenderCspm(models.DesiredEnablementState)` was added
+* `withDefenderForServers(models.DesiredEnablementState)` was added
 
 ## 1.0.0-beta.1 (2026-02-13)
 
