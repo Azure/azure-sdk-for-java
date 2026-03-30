@@ -8,6 +8,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
+import com.azure.resourcemanager.containerservice.models.AutoScaleProfile;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_EnableFIPS.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_EnableFIPS.json
      */
     /**
      * Sample code: Create Agent Pool with FIPS enabled OS.
@@ -54,7 +55,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPools_Update.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPools_Update.json
      */
     /**
      * Sample code: Update Agent Pool.
@@ -79,7 +80,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_GPUMIG.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Agent Pool with GPUMIG.
@@ -116,7 +117,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_WindowsOSSKU.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_WindowsOSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with Windows OSSKU.
@@ -137,7 +138,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_DedicatedHostGroup.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Agent Pool with Dedicated Host Group.
@@ -158,7 +159,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_Update.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Agent Pool.
@@ -184,7 +185,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
      */
     /**
      * Sample code: Create Windows Agent Pool with disabling OutboundNAT.
@@ -206,7 +207,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPools_Start.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPools_Start.json
      */
     /**
      * Sample code: Start Agent Pool.
@@ -222,7 +223,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_Spot.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_Spot.json
      */
     /**
      * Sample code: Create Spot Agent Pool.
@@ -246,7 +247,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_Ephemeral.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_Ephemeral.json
      */
     /**
      * Sample code: Create Agent Pool with Ephemeral OS Disk.
@@ -268,7 +269,28 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_EnableEncryptionAtHost.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsAssociate_CRG.json
+     */
+    /**
+     * Sample code: Associate Agent Pool with Capacity Reservation Group.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void associateAgentPoolWithCapacityReservationGroup(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getAgentPools()
+            .createOrUpdate("rg1", "clustername1", "agentpool1", new AgentPoolInner().withCount(3)
+                .withVmSize("Standard_DS2_v2")
+                .withOsType(OSType.LINUX)
+                .withOrchestratorVersion("")
+                .withCapacityReservationGroupId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Agent Pool with EncryptionAtHost enabled.
@@ -289,7 +311,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_EnableUltraSSD.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Agent Pool with UltraSSD enabled.
@@ -310,7 +332,31 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_WasmWasi.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
+     */
+    /**
+     * Sample code: Create Agent Pool with VirtualMachines pool type with autoscaling enabled.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createAgentPoolWithVirtualMachinesPoolTypeWithAutoscalingEnabled(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getAgentPools()
+            .createOrUpdate("rg1", "clustername1", "agentpool1",
+                new AgentPoolInner().withOsType(OSType.LINUX)
+                    .withTypePropertiesType(AgentPoolType.VIRTUAL_MACHINES)
+                    .withOrchestratorVersion("1.29.0")
+                    .withTags(mapOf("name1", "val1"))
+                    .withNodeLabels(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withNodeTaints(Arrays.asList("Key1=Value1:NoSchedule"))
+                    .withVirtualMachinesProfile(new VirtualMachinesProfile().withScale(new ScaleProfile().withAutoscale(
+                        new AutoScaleProfile().withSize("Standard_D2_v2").withMinCount(1).withMaxCount(5)))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_WasmWasi.json
      */
     /**
      * Sample code: Create Agent Pool with Krustlet and the WASI runtime.
@@ -333,7 +379,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_PPG.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_PPG.json
      */
     /**
      * Sample code: Create Agent Pool with PPG.
@@ -354,7 +400,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_Snapshot.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_Snapshot.json
      */
     /**
      * Sample code: Create Agent Pool using an agent pool snapshot.
@@ -376,7 +422,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_CustomNodeConfig.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_CustomNodeConfig.json
      */
     /**
      * Sample code: Create Agent Pool with KubeletConfig and LinuxOSConfig.
@@ -412,7 +458,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPools_Stop.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPools_Stop.json
      */
     /**
      * Sample code: Stop Agent Pool.
@@ -428,7 +474,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_MessageOfTheDay.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_MessageOfTheDay.json
      */
     /**
      * Sample code: Create Agent Pool with Message of the Day.
@@ -451,28 +497,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_CRG.json
-     */
-    /**
-     * Sample code: Create Agent Pool with Capacity Reservation Group.
-     * 
-     * @param manager Entry point to ContainerServiceManager.
-     */
-    public static void createAgentPoolWithCapacityReservationGroup(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
-        manager.serviceClient()
-            .getAgentPools()
-            .createOrUpdate("rg1", "clustername1", "agentpool1", new AgentPoolInner().withCount(3)
-                .withVmSize("Standard_DS2_v2")
-                .withOsType(OSType.LINUX)
-                .withOrchestratorVersion("")
-                .withCapacityReservationGroupId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_OSSKU.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_OSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with OSSKU.
@@ -509,7 +534,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsCreate_TypeVirtualMachines.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
      */
     /**
      * Sample code: Create Agent Pool with VirtualMachines pool type.

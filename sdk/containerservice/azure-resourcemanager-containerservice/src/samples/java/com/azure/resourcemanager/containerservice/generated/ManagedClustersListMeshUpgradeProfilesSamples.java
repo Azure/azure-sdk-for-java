@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListMeshUpgradeProfilesSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersList_MeshUpgradeProfiles.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersList_MeshUpgradeProfiles.json
      */
     /**
      * Sample code: Lists version compatibility and upgrade profile for all service meshes in a cluster.

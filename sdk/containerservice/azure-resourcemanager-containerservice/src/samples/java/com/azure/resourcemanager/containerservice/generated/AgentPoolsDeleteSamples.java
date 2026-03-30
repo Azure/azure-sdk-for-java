@@ -9,7 +9,22 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsDelete.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
+     */
+    /**
+     * Sample code: Delete Agent Pool by ignoring PodDisruptionBudget.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void deleteAgentPoolByIgnoringPodDisruptionBudget(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getAgentPools()
+            .delete("rg1", "clustername1", "agentpool1", null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.

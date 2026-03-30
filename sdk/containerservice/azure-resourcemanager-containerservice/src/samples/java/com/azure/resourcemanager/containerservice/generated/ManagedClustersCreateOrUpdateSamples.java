@@ -31,6 +31,7 @@ import com.azure.resourcemanager.containerservice.models.IstioServiceMesh;
 import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.LicenseType;
 import com.azure.resourcemanager.containerservice.models.LoadBalancerSku;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolchainOperatorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfileApplicationLoadBalancer;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfileWebAppRouting;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfileManagedOutboundIPs;
@@ -47,8 +49,9 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdenti
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefender;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityGating;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityMonitoring;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileWorkloadIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
@@ -67,6 +70,7 @@ import com.azure.resourcemanager.containerservice.models.ServiceMeshMode;
 import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.TransitEncryptionType;
 import com.azure.resourcemanager.containerservice.models.UpgradeOverrideSettings;
+import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.containerservice.models.WindowsGmsaProfile;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -78,101 +82,7 @@ import java.util.Map;
  */
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_CRG.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with Capacity Reservation Group.
-     * 
-     * @param manager Entry point to ContainerServiceManager.
-     */
-    public static void createManagedClusterWithCapacityReservationGroup(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
-        manager.serviceClient()
-            .getManagedClusters()
-            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
-                .withTags(mapOf("archv2", "", "tier", "production"))
-                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
-                    .withTier(ManagedClusterSkuTier.FREE))
-                .withKubernetesVersion("")
-                .withDnsPrefix("dnsprefix1")
-                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
-                    .withVmSize("Standard_DS2_v2")
-                    .withOsType(OSType.LINUX)
-                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                    .withMode(AgentPoolMode.SYSTEM)
-                    .withEnableNodePublicIp(true)
-                    .withCapacityReservationGroupId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/capacityReservationGroups/crg1")
-                    .withName("nodepool1")))
-                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
-                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
-                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
-                .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
-                    .withSecret("fakeTokenPlaceholder"))
-                .withAddonProfiles(mapOf())
-                .withEnableRbac(true)
-                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
-                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
-                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
-                    .withScaleDownDelayAfterAdd("15m"))
-                .withDiskEncryptionSetId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_CustomCATrustCertificates.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with Custom CA Trust Certificates.
-     * 
-     * @param manager Entry point to ContainerServiceManager.
-     */
-    public static void createManagedClusterWithCustomCATrustCertificates(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
-        manager.serviceClient()
-            .getManagedClusters()
-            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
-                .withTags(mapOf("archv2", "", "tier", "production"))
-                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
-                    .withTier(ManagedClusterSkuTier.FREE))
-                .withKubernetesVersion("")
-                .withDnsPrefix("dnsprefix1")
-                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
-                    .withVmSize("Standard_DS2_v2")
-                    .withOsType(OSType.LINUX)
-                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                    .withMode(AgentPoolMode.SYSTEM)
-                    .withEnableNodePublicIp(true)
-                    .withName("nodepool1")))
-                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
-                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
-                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
-                .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
-                    .withSecret("fakeTokenPlaceholder"))
-                .withAddonProfiles(mapOf())
-                .withEnableRbac(true)
-                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
-                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
-                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
-                    .withScaleDownDelayAfterAdd("15m"))
-                .withDiskEncryptionSetId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des")
-                .withSecurityProfile(new ManagedClusterSecurityProfile().withCustomCATrustCertificates(
-                    Arrays.asList("ZHVtbXlFeGFtcGxlVGVzdFZhbHVlRm9yQ2VydGlmaWNhdGVUb0JlQWRkZWQ=".getBytes()))),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_DualStackNetworking.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_DualStackNetworking.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with dual-stack networking.
@@ -230,7 +140,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_PodIdentity.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PodIdentity.json
      */
     /**
      * Sample code: Create Managed Cluster with PodIdentity enabled.
@@ -277,7 +187,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_UserAssignedNATGateway.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UserAssignedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with user-assigned NAT gateway as outbound type.
@@ -321,7 +231,43 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_Update.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_MCSnapshot.json
+     */
+    /**
+     * Sample code: Create Managed Cluster using a managed cluster snapshot.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterUsingAManagedClusterSnapshot(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withCreationData(new CreationData().withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedclustersnapshots/snapshot1"))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withEnableNodePublicIp(true)
+                    .withEnableFips(true)
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                    .withSecret("fakeTokenPlaceholder")),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_Update.json
      */
     /**
      * Sample code: Create/Update Managed Cluster.
@@ -365,7 +311,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                     .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withUpgradeSettings(new ClusterUpgradeSettings()
-                    .withOverrideSettings(new UpgradeOverrideSettings().withForceUpgrade(false)
+                    .withOverrideSettings(new UpgradeOverrideSettings().withForceUpgrade(true)
                         .withUntil(OffsetDateTime.parse("2022-11-01T13:00:00Z"))))
                 .withAutoScalerProfile(
                     new ManagedClusterPropertiesAutoScalerProfile().withBalanceSimilarNodeGroups("true")
@@ -381,7 +327,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
      */
     /**
      * Sample code: Create Managed Private Cluster with fqdn subdomain specified.
@@ -428,7 +374,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_ManagedNATGateway.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_ManagedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with AKS-managed NAT gateway as outbound type.
@@ -474,7 +420,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_Premium.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_Premium.json
      */
     /**
      * Sample code: Create Managed Cluster with LongTermSupport.
@@ -520,7 +466,149 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_NodePublicIPPrefix.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with Azure Key Vault Secrets Provider Addon.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithAzureKeyVaultSecretsProviderAddon(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1",
+                new ManagedClusterInner().withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                        .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                        .withVmSize("Standard_DS2_v2")
+                        .withOsType(OSType.LINUX)
+                        .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                        .withMode(AgentPoolMode.SYSTEM)
+                        .withEnableNodePublicIp(true)
+                        .withName("nodepool1")))
+                    .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                        .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                            Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
+                        .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                        .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(
+                        mapOf("azureKeyvaultSecretsProvider",
+                            new ManagedClusterAddonProfile().withEnabled(true)
+                                .withConfig(mapOf("enableSecretRotation", "fakeTokenPlaceholder",
+                                    "rotationPollInterval", "2m"))))
+                    .withEnableRbac(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                                new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile()
+                        .withScanInterval("20s")
+                        .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersAssociate_CRG.json
+     */
+    /**
+     * Sample code: Associate Managed Cluster with Capacity Reservation Group.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void associateManagedClusterWithCapacityReservationGroup(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withEnableNodePublicIp(true)
+                    .withCapacityReservationGroupId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/capacityReservationGroups/crg1")
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                    .withSecret("fakeTokenPlaceholder"))
+                .withAddonProfiles(mapOf())
+                .withEnableRbac(true)
+                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
+                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
+                    .withScaleDownDelayAfterAdd("15m"))
+                .withDiskEncryptionSetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_NodeAutoProvisioning.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with Node Auto Provisioning.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithNodeAutoProvisioning(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1",
+                new ManagedClusterInner().withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                        .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                        .withVmSize("Standard_DS2_v2")
+                        .withOsType(OSType.LINUX)
+                        .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                        .withMode(AgentPoolMode.SYSTEM)
+                        .withEnableNodePublicIp(true)
+                        .withName("nodepool1")))
+                    .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                        .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                            Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                    .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                        .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withNetworkProfile(new ContainerServiceNetworkProfile().withNetworkPlugin(NetworkPlugin.AZURE)
+                        .withNetworkPluginMode(NetworkPluginMode.OVERLAY)
+                        .withNetworkDataplane(NetworkDataplane.CILIUM)
+                        .withOutboundType(OutboundType.LOAD_BALANCER)
+                        .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                        .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                            new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2)))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_NodePublicIPPrefix.json
      */
     /**
      * Sample code: Create Managed Cluster with Node Public IP Prefix.
@@ -567,7 +655,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_EnableEncryptionAtHost.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Managed Cluster with EncryptionAtHost enabled.
@@ -613,7 +701,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PrivateClusterPublicFQDN.json
      */
     /**
      * Sample code: Create Managed Private Cluster with Public FQDN specified.
@@ -659,7 +747,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_HTTPProxy.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_HTTPProxy.json
      */
     /**
      * Sample code: Create Managed Cluster with HTTP proxy configured.
@@ -708,7 +796,54 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_DedicatedHostGroup.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
+     */
+    /**
+     * Sample code: Create/Update Managed Cluster with EnableNamespaceResources.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createUpdateManagedClusterWithEnableNamespaceResources(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS1_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withAvailabilityZones(Arrays.asList("1", "2", "3"))
+                    .withEnableNodePublicIp(true)
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                    .withSecret("fakeTokenPlaceholder"))
+                .withAddonProfiles(mapOf())
+                .withEnableRbac(true)
+                .withEnableNamespaceResources(true)
+                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
+                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
+                    .withScaleDownDelayAfterAdd("15m"))
+                .withDiskEncryptionSetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Managed Cluster with Dedicated Host Group.
@@ -754,7 +889,88 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_EnabledFIPS.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnableAIToolchainOperator.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with AI Toolchain Operator enabled.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithAIToolchainOperatorEnabled(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1",
+                new ManagedClusterInner().withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                        .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                        .withVmSize("Standard_DS2_v2")
+                        .withOsType(OSType.LINUX)
+                        .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                        .withMode(AgentPoolMode.SYSTEM)
+                        .withEnableNodePublicIp(true)
+                        .withName("nodepool1")))
+                    .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                        .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                            Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                    .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                        .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withNetworkProfile(new ContainerServiceNetworkProfile().withNetworkPlugin(NetworkPlugin.AZURE)
+                        .withNetworkPluginMode(NetworkPluginMode.OVERLAY)
+                        .withNetworkDataplane(NetworkDataplane.CILIUM)
+                        .withOutboundType(OutboundType.LOAD_BALANCER)
+                        .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                        .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                            new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAiToolchainOperatorProfile(new ManagedClusterAIToolchainOperatorProfile().withEnabled(true)),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_IngressProfile_ApplicationLoadBalancer.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with Application Load Balancer Profile configured.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithApplicationLoadBalancerProfileConfigured(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withEnableNodePublicIp(true)
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
+                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                .withIngressProfile(new ManagedClusterIngressProfile().withApplicationLoadBalancer(
+                    new ManagedClusterIngressProfileApplicationLoadBalancer().withEnabled(true))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnabledFIPS.json
      */
     /**
      * Sample code: Create Managed Cluster with FIPS enabled OS.
@@ -800,7 +1016,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_SecurityProfile.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_SecurityProfile.json
      */
     /**
      * Sample code: Create Managed Cluster with Security Profile configured.
@@ -835,13 +1051,20 @@ public final class ManagedClustersCreateOrUpdateSamples {
                     .withDefender(new ManagedClusterSecurityProfileDefender().withLogAnalyticsWorkspaceResourceId(
                         "/subscriptions/SUB_ID/resourceGroups/RG_NAME/providers/microsoft.operationalinsights/workspaces/WORKSPACE_NAME")
                         .withSecurityMonitoring(
-                            new ManagedClusterSecurityProfileDefenderSecurityMonitoring().withEnabled(true)))
-                    .withWorkloadIdentity(new ManagedClusterSecurityProfileWorkloadIdentity().withEnabled(true))),
+                            new ManagedClusterSecurityProfileDefenderSecurityMonitoring().withEnabled(true))
+                        .withSecurityGating(new ManagedClusterSecurityProfileDefenderSecurityGating().withEnabled(true)
+                            .withIdentities(
+                                Arrays.asList(new ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem()
+                                    .withAzureContainerRegistry("registry1")
+                                    .withIdentity(new UserAssignedIdentity().withResourceId(
+                                        "/subscriptions/SUB_ID/resourceGroups/RG_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/IDENTITY_NAME")
+                                        .withClientId("client1"))))
+                            .withAllowSecretAccess(true)))),
                 null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_PPG.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PPG.json
      */
     /**
      * Sample code: Create Managed Cluster with PPG.
@@ -888,7 +1111,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_IngressProfile_WebAppRouting.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_IngressProfile_WebAppRouting.json
      */
     /**
      * Sample code: Create Managed Cluster with Web App Routing Ingress Profile configured.
@@ -927,7 +1150,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_UpdateWithAHUB.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWithAHUB.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with EnableAHUB.
@@ -978,7 +1201,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_DisableRunCommand.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_DisableRunCommand.json
      */
     /**
      * Sample code: Create Managed Cluster with RunCommand disabled.
@@ -1023,7 +1246,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_AzureServiceMesh.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_AzureServiceMesh.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Azure Service Mesh.
@@ -1077,9 +1300,8 @@ public final class ManagedClustersCreateOrUpdateSamples {
                                 .withIngressGateways(
                                     Arrays.asList(new IstioIngressGateway().withMode(IstioIngressGatewayMode.INTERNAL)
                                         .withEnabled(true)))
-                                .withEgressGateways(Arrays.asList(new IstioEgressGateway().withEnabled(true)
-                                    .withName("test-istio-egress")
-                                    .withGatewayConfigurationName("test-gateway-configuration"))))
+                                .withEgressGateways(
+                                    Arrays.asList(new IstioEgressGateway().withEnabled(true).withName("istioegress1"))))
                             .withCertificateAuthority(new IstioCertificateAuthority()
                                 .withPlugin(new IstioPluginCertificateAuthority().withKeyVaultId("fakeTokenPlaceholder")
                                     .withCertObjectName("ca-cert")
@@ -1090,7 +1312,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_Snapshot.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_Snapshot.json
      */
     /**
      * Sample code: Create Managed Cluster using an agent pool snapshot.
@@ -1138,59 +1360,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with Azure KeyVault Secrets Provider Addon.
-     * 
-     * @param manager Entry point to ContainerServiceManager.
-     */
-    public static void createManagedClusterWithAzureKeyVaultSecretsProviderAddon(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
-        manager.serviceClient()
-            .getManagedClusters()
-            .createOrUpdate("rg1", "clustername1",
-                new ManagedClusterInner().withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
-                        .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
-                        .withVmSize("Standard_DS2_v2")
-                        .withOsType(OSType.LINUX)
-                        .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                        .withMode(AgentPoolMode.SYSTEM)
-                        .withEnableNodePublicIp(true)
-                        .withName("nodepool1")))
-                    .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
-                        .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
-                            Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
-                        .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
-                        .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(
-                        mapOf("azureKeyvaultSecretsProvider",
-                            new ManagedClusterAddonProfile().withEnabled(true)
-                                .withConfig(mapOf("enableSecretRotation", "fakeTokenPlaceholder",
-                                    "rotationPollInterval", "2m"))))
-                    .withEnableRbac(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
-                                new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile()
-                        .withScanInterval("20s")
-                        .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_OSSKU.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_OSSKU.json
      */
     /**
      * Sample code: Create Managed Cluster with OSSKU.
@@ -1240,7 +1410,48 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/AdvancedNetworkingTransitEncryption.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_VirtualMachines.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with VirtualMachines pool type.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithVirtualMachinesPoolType(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINES)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withEnableFips(true)
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                    .withSecret("fakeTokenPlaceholder"))
+                .withAddonProfiles(mapOf())
+                .withEnableRbac(true)
+                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
+                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                .withDiskEncryptionSetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/AdvancedNetworkingTransitEncryption.json
      */
     /**
      * Sample code: Create Managed Cluster with Advanced Networking Transit Encryption.
@@ -1289,7 +1500,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
      */
     /**
      * Sample code: Create/Update AAD Managed Cluster with EnableAzureRBAC.
@@ -1336,7 +1547,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_EnableUltraSSD.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Managed Cluster with UltraSSD enabled.
@@ -1382,7 +1593,54 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_UpdateWindowsGmsa.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_CustomCATrustCertificates.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with CustomCATrustCertificates populated.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithCustomCATrustCertificatesPopulated(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withEnableNodePublicIp(true)
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                    .withSecret("fakeTokenPlaceholder"))
+                .withAddonProfiles(mapOf())
+                .withEnableRbac(true)
+                .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
+                    .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
+                    .withScaleDownDelayAfterAdd("15m"))
+                .withDiskEncryptionSetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des")
+                .withSecurityProfile(new ManagedClusterSecurityProfile().withCustomCATrustCertificates(
+                    Arrays.asList("ZHVtbXlFeGFtcGxlVGVzdFZhbHVlRm9yQ2VydGlmaWNhdGVUb0JlQWRkZWQ=".getBytes()))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWindowsGmsa.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Windows gMSA enabled.
@@ -1433,7 +1691,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersCreate_GPUMIG.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Managed Cluster with GPUMIG.

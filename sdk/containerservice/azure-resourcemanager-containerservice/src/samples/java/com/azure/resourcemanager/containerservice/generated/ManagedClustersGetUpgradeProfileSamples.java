@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersGetUpgradeProfileSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersGetUpgradeProfile.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersGetUpgradeProfile.json
      */
     /**
      * Sample code: Get Upgrade Profile for Managed Cluster.

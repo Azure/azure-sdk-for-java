@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.CredentialResultsInner;
+import com.azure.resourcemanager.containerservice.fluent.models.GuardrailsAvailableVersionInner;
 import com.azure.resourcemanager.containerservice.fluent.models.KubernetesVersionListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAccessProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
@@ -22,10 +23,12 @@ import com.azure.resourcemanager.containerservice.fluent.models.MeshRevisionProf
 import com.azure.resourcemanager.containerservice.fluent.models.MeshUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResultInner;
+import com.azure.resourcemanager.containerservice.fluent.models.SafeguardsAvailableVersionInner;
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClustersGetCommandResultResponse;
+import com.azure.resourcemanager.containerservice.models.RebalanceLoadBalancersRequestBody;
 import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -387,6 +390,8 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,7 +399,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
-        String ifMatch);
+        String ifMatch, Boolean ignorePodDisruptionBudget);
 
     /**
      * Deletes a managed cluster.
@@ -402,13 +407,16 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName, String ifMatch);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName, String ifMatch,
+        Boolean ignorePodDisruptionBudget);
 
     /**
      * Deletes a managed cluster.
@@ -442,6 +450,8 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -450,7 +460,7 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String ifMatch,
-        Context context);
+        Boolean ignorePodDisruptionBudget, Context context);
 
     /**
      * Deletes a managed cluster.
@@ -458,13 +468,16 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String ifMatch);
+    Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String ifMatch,
+        Boolean ignorePodDisruptionBudget);
 
     /**
      * Deletes a managed cluster.
@@ -497,13 +510,16 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
+     * considering Pod Disruption Budget.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, String ifMatch, Context context);
+    void delete(String resourceGroupName, String resourceName, String ifMatch, Boolean ignorePodDisruptionBudget,
+        Context context);
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
@@ -1914,6 +1930,118 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
         String resourceName, Context context);
 
     /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> rebalanceLoadBalancersWithResponseAsync(String resourceGroupName,
+        String resourceName, RebalanceLoadBalancersRequestBody parameters);
+
+    /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginRebalanceLoadBalancersAsync(String resourceGroupName, String resourceName,
+        RebalanceLoadBalancersRequestBody parameters);
+
+    /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRebalanceLoadBalancers(String resourceGroupName, String resourceName,
+        RebalanceLoadBalancersRequestBody parameters);
+
+    /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRebalanceLoadBalancers(String resourceGroupName, String resourceName,
+        RebalanceLoadBalancersRequestBody parameters, Context context);
+
+    /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> rebalanceLoadBalancersAsync(String resourceGroupName, String resourceName,
+        RebalanceLoadBalancersRequestBody parameters);
+
+    /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rebalanceLoadBalancers(String resourceGroupName, String resourceName,
+        RebalanceLoadBalancersRequestBody parameters);
+
+    /**
+     * Rebalance nodes across specific load balancers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters The names of the load balancers to be rebalanced. If set to empty, all load balancers will be
+     * rebalanced.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rebalanceLoadBalancers(String resourceGroupName, String resourceName,
+        RebalanceLoadBalancersRequestBody parameters, Context context);
+
+    /**
      * Gets the upgrade profile of a managed cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1968,6 +2096,258 @@ public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedClusterUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName);
+
+    /**
+     * Gets supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<GuardrailsAvailableVersionInner>> getGuardrailsVersionsWithResponseAsync(String location,
+        String version);
+
+    /**
+     * Gets supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GuardrailsAvailableVersionInner> getGuardrailsVersionsAsync(String location, String version);
+
+    /**
+     * Gets supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GuardrailsAvailableVersionInner> getGuardrailsVersionsWithResponse(String location, String version,
+        Context context);
+
+    /**
+     * Gets supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Guardrails version in the specified subscription and location.
+     * 
+     * Contains Guardrails version along with its support info and whether it is a default version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GuardrailsAvailableVersionInner getGuardrailsVersions(String location, String version);
+
+    /**
+     * Gets a list of supported Guardrails versions in the specified subscription and location.
+     * 
+     * Contains list of Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported Guardrails versions in the specified subscription and location.
+     * 
+     * Contains list of Guardrails version along with its support info and whether it is a default version as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<GuardrailsAvailableVersionInner> listGuardrailsVersionsAsync(String location);
+
+    /**
+     * Gets a list of supported Guardrails versions in the specified subscription and location.
+     * 
+     * Contains list of Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported Guardrails versions in the specified subscription and location.
+     * 
+     * Contains list of Guardrails version along with its support info and whether it is a default version as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GuardrailsAvailableVersionInner> listGuardrailsVersions(String location);
+
+    /**
+     * Gets a list of supported Guardrails versions in the specified subscription and location.
+     * 
+     * Contains list of Guardrails version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported Guardrails versions in the specified subscription and location.
+     * 
+     * Contains list of Guardrails version along with its support info and whether it is a default version as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GuardrailsAvailableVersionInner> listGuardrailsVersions(String location, Context context);
+
+    /**
+     * Gets supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SafeguardsAvailableVersionInner>> getSafeguardsVersionsWithResponseAsync(String location,
+        String version);
+
+    /**
+     * Gets supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SafeguardsAvailableVersionInner> getSafeguardsVersionsAsync(String location, String version);
+
+    /**
+     * Gets supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SafeguardsAvailableVersionInner> getSafeguardsVersionsWithResponse(String location, String version,
+        Context context);
+
+    /**
+     * Gets supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param version Safeguards version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return supported Safeguards version in the specified subscription and location.
+     * 
+     * Contains Safeguards version along with its support info and whether it is a default version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SafeguardsAvailableVersionInner getSafeguardsVersions(String location, String version);
+
+    /**
+     * Gets a list of supported Safeguards versions in the specified subscription and location.
+     * 
+     * Contains list of Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported Safeguards versions in the specified subscription and location.
+     * 
+     * Contains list of Safeguards version along with its support info and whether it is a default version as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SafeguardsAvailableVersionInner> listSafeguardsVersionsAsync(String location);
+
+    /**
+     * Gets a list of supported Safeguards versions in the specified subscription and location.
+     * 
+     * Contains list of Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported Safeguards versions in the specified subscription and location.
+     * 
+     * Contains list of Safeguards version along with its support info and whether it is a default version as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SafeguardsAvailableVersionInner> listSafeguardsVersions(String location);
+
+    /**
+     * Gets a list of supported Safeguards versions in the specified subscription and location.
+     * 
+     * Contains list of Safeguards version along with its support info and whether it is a default version.
+     * 
+     * @param location The name of the Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported Safeguards versions in the specified subscription and location.
+     * 
+     * Contains list of Safeguards version along with its support info and whether it is a default version as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SafeguardsAvailableVersionInner> listSafeguardsVersions(String location, Context context);
 
     /**
      * Gets a mesh revision profile for a specified mesh in the specified location.

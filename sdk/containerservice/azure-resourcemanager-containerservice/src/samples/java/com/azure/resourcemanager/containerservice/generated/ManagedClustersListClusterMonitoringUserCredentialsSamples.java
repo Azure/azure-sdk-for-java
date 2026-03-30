@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListClusterMonitoringUserCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersListClusterMonitoringUserCredentials.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersListClusterCredentialResult.json
      */
     /**
      * Sample code: Get Managed Cluster.

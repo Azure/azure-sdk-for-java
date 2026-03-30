@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class AgentPoolsDeleteMachinesSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsDeleteMachines.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsDeleteMachines.json
      */
     /**
      * Sample code: Delete Specific Machines in an Agent Pool.

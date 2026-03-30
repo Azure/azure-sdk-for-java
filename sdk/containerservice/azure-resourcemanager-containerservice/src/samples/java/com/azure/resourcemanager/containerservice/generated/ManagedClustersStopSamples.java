@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersStopSamples {
     /*
-     * x-ms-original-file: 2026-01-01/ManagedClustersStop.json
+     * x-ms-original-file: 2026-01-02-preview/ManagedClustersStop.json
      */
     /**
      * Sample code: Stop Managed Cluster.

@@ -4,17 +4,18 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The properties of the machine.
  */
-@Immutable
+@Fluent
 public final class MachineProperties implements JsonSerializable<MachineProperties> {
     /*
      * network properties of the machine
@@ -26,10 +27,84 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
      */
     private String resourceId;
 
+    /*
+     * The hardware and GPU settings of the machine.
+     */
+    private MachineHardwareProfile hardware;
+
+    /*
+     * The operating system and disk used by the machine.
+     */
+    private MachineOSProfile operatingSystem;
+
+    /*
+     * The Kubernetes configurations used by the machine.
+     */
+    private MachineKubernetesProfile kubernetes;
+
+    /*
+     * Machine only allows 'System' and 'User' mode.
+     */
+    private AgentPoolMode mode;
+
+    /*
+     * The security settings of the machine.
+     */
+    private MachineSecurityProfile security;
+
+    /*
+     * The priority for the machine. If not specified, the default is 'Regular'.
+     */
+    private ScaleSetPriority priority;
+
+    /*
+     * The eviction policy for machine. This cannot be specified unless the priority is 'Spot'. If not specified, the
+     * default is 'Delete'.
+     */
+    private ScaleSetEvictionPolicy evictionPolicy;
+
+    /*
+     * The properties having to do with machine billing.
+     */
+    private MachineBillingProfile billing;
+
+    /*
+     * The version of node image.
+     */
+    private String nodeImageVersion;
+
+    /*
+     * The current deployment or provisioning state.
+     */
+    private String provisioningState;
+
+    /*
+     * The tags to be persisted on the machine.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
+     * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
+     * optimistic concurrency per the normal eTag convention.
+     */
+    private String eTag;
+
+    /*
+     * Contains read-only information about the machine.
+     */
+    private MachineStatus status;
+
+    /*
+     * Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance and
+     * reliability of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
+     */
+    private LocalDnsProfile localDNSProfile;
+
     /**
      * Creates an instance of MachineProperties class.
      */
-    private MachineProperties() {
+    public MachineProperties() {
     }
 
     /**
@@ -51,6 +126,250 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     }
 
     /**
+     * Get the hardware property: The hardware and GPU settings of the machine.
+     * 
+     * @return the hardware value.
+     */
+    public MachineHardwareProfile hardware() {
+        return this.hardware;
+    }
+
+    /**
+     * Set the hardware property: The hardware and GPU settings of the machine.
+     * 
+     * @param hardware the hardware value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withHardware(MachineHardwareProfile hardware) {
+        this.hardware = hardware;
+        return this;
+    }
+
+    /**
+     * Get the operatingSystem property: The operating system and disk used by the machine.
+     * 
+     * @return the operatingSystem value.
+     */
+    public MachineOSProfile operatingSystem() {
+        return this.operatingSystem;
+    }
+
+    /**
+     * Set the operatingSystem property: The operating system and disk used by the machine.
+     * 
+     * @param operatingSystem the operatingSystem value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withOperatingSystem(MachineOSProfile operatingSystem) {
+        this.operatingSystem = operatingSystem;
+        return this;
+    }
+
+    /**
+     * Get the kubernetes property: The Kubernetes configurations used by the machine.
+     * 
+     * @return the kubernetes value.
+     */
+    public MachineKubernetesProfile kubernetes() {
+        return this.kubernetes;
+    }
+
+    /**
+     * Set the kubernetes property: The Kubernetes configurations used by the machine.
+     * 
+     * @param kubernetes the kubernetes value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withKubernetes(MachineKubernetesProfile kubernetes) {
+        this.kubernetes = kubernetes;
+        return this;
+    }
+
+    /**
+     * Get the mode property: Machine only allows 'System' and 'User' mode.
+     * 
+     * @return the mode value.
+     */
+    public AgentPoolMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: Machine only allows 'System' and 'User' mode.
+     * 
+     * @param mode the mode value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withMode(AgentPoolMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the security property: The security settings of the machine.
+     * 
+     * @return the security value.
+     */
+    public MachineSecurityProfile security() {
+        return this.security;
+    }
+
+    /**
+     * Set the security property: The security settings of the machine.
+     * 
+     * @param security the security value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withSecurity(MachineSecurityProfile security) {
+        this.security = security;
+        return this;
+    }
+
+    /**
+     * Get the priority property: The priority for the machine. If not specified, the default is 'Regular'.
+     * 
+     * @return the priority value.
+     */
+    public ScaleSetPriority priority() {
+        return this.priority;
+    }
+
+    /**
+     * Set the priority property: The priority for the machine. If not specified, the default is 'Regular'.
+     * 
+     * @param priority the priority value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withPriority(ScaleSetPriority priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Get the evictionPolicy property: The eviction policy for machine. This cannot be specified unless the priority is
+     * 'Spot'. If not specified, the default is 'Delete'.
+     * 
+     * @return the evictionPolicy value.
+     */
+    public ScaleSetEvictionPolicy evictionPolicy() {
+        return this.evictionPolicy;
+    }
+
+    /**
+     * Set the evictionPolicy property: The eviction policy for machine. This cannot be specified unless the priority is
+     * 'Spot'. If not specified, the default is 'Delete'.
+     * 
+     * @param evictionPolicy the evictionPolicy value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withEvictionPolicy(ScaleSetEvictionPolicy evictionPolicy) {
+        this.evictionPolicy = evictionPolicy;
+        return this;
+    }
+
+    /**
+     * Get the billing property: The properties having to do with machine billing.
+     * 
+     * @return the billing value.
+     */
+    public MachineBillingProfile billing() {
+        return this.billing;
+    }
+
+    /**
+     * Set the billing property: The properties having to do with machine billing.
+     * 
+     * @param billing the billing value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withBilling(MachineBillingProfile billing) {
+        this.billing = billing;
+        return this;
+    }
+
+    /**
+     * Get the nodeImageVersion property: The version of node image.
+     * 
+     * @return the nodeImageVersion value.
+     */
+    public String nodeImageVersion() {
+        return this.nodeImageVersion;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the tags property: The tags to be persisted on the machine.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags to be persisted on the machine.
+     * 
+     * @param tags the tags value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the eTag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
+     * 
+     * @return the eTag value.
+     */
+    public String eTag() {
+        return this.eTag;
+    }
+
+    /**
+     * Get the status property: Contains read-only information about the machine.
+     * 
+     * @return the status value.
+     */
+    public MachineStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the localDNSProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @return the localDNSProfile value.
+     */
+    public LocalDnsProfile localDNSProfile() {
+        return this.localDNSProfile;
+    }
+
+    /**
+     * Set the localDNSProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @param localDNSProfile the localDNSProfile value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withLocalDNSProfile(LocalDnsProfile localDNSProfile) {
+        this.localDNSProfile = localDNSProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -58,6 +377,27 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     public void validate() {
         if (network() != null) {
             network().validate();
+        }
+        if (hardware() != null) {
+            hardware().validate();
+        }
+        if (operatingSystem() != null) {
+            operatingSystem().validate();
+        }
+        if (kubernetes() != null) {
+            kubernetes().validate();
+        }
+        if (security() != null) {
+            security().validate();
+        }
+        if (billing() != null) {
+            billing().validate();
+        }
+        if (status() != null) {
+            status().validate();
+        }
+        if (localDNSProfile() != null) {
+            localDNSProfile().validate();
         }
     }
 
@@ -67,6 +407,17 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardware", this.hardware);
+        jsonWriter.writeJsonField("operatingSystem", this.operatingSystem);
+        jsonWriter.writeJsonField("kubernetes", this.kubernetes);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeJsonField("security", this.security);
+        jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
+        jsonWriter.writeStringField("evictionPolicy",
+            this.evictionPolicy == null ? null : this.evictionPolicy.toString());
+        jsonWriter.writeJsonField("billing", this.billing);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("localDNSProfile", this.localDNSProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,6 +440,36 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
                     deserializedMachineProperties.network = MachineNetworkProperties.fromJson(reader);
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedMachineProperties.resourceId = reader.getString();
+                } else if ("hardware".equals(fieldName)) {
+                    deserializedMachineProperties.hardware = MachineHardwareProfile.fromJson(reader);
+                } else if ("operatingSystem".equals(fieldName)) {
+                    deserializedMachineProperties.operatingSystem = MachineOSProfile.fromJson(reader);
+                } else if ("kubernetes".equals(fieldName)) {
+                    deserializedMachineProperties.kubernetes = MachineKubernetesProfile.fromJson(reader);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedMachineProperties.mode = AgentPoolMode.fromString(reader.getString());
+                } else if ("security".equals(fieldName)) {
+                    deserializedMachineProperties.security = MachineSecurityProfile.fromJson(reader);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedMachineProperties.priority = ScaleSetPriority.fromString(reader.getString());
+                } else if ("evictionPolicy".equals(fieldName)) {
+                    deserializedMachineProperties.evictionPolicy
+                        = ScaleSetEvictionPolicy.fromString(reader.getString());
+                } else if ("billing".equals(fieldName)) {
+                    deserializedMachineProperties.billing = MachineBillingProfile.fromJson(reader);
+                } else if ("nodeImageVersion".equals(fieldName)) {
+                    deserializedMachineProperties.nodeImageVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMachineProperties.provisioningState = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMachineProperties.tags = tags;
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedMachineProperties.eTag = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMachineProperties.status = MachineStatus.fromJson(reader);
+                } else if ("localDNSProfile".equals(fieldName)) {
+                    deserializedMachineProperties.localDNSProfile = LocalDnsProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
