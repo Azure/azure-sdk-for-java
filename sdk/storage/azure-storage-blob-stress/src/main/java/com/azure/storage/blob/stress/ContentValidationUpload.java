@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Parallel blob upload with {@link com.azure.storage.blob.options.BlobParallelUploadOptions#setRequestChecksumAlgorithm}
- * enabled. Verifies stored data via CRC after upload (see {@code BlobContentValidationUploadTests}).
+ * enabled. Verifies the correctness of the upload request content via CRC (see {@code BlobContentValidationUploadTests}).
  */
 public class ContentValidationUpload extends BlobScenarioBase<ContentValidationStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
