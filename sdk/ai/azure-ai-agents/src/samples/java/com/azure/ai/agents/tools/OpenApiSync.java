@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
@@ -90,8 +91,9 @@ public class OpenApiSync {
             ResponseCreateParams.Builder options = ResponseCreateParams.builder()
                 .maxOutputTokens(300L);
 
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference, conversation.id(), options);
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                options.conversation(conversation.id()));
 
             String text = response.output().stream()
                 .filter(item -> item.isMessage())

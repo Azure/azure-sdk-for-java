@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AISearchIndexResource;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureAISearchQueryType;
 import com.azure.ai.agents.models.AzureAISearchTool;
@@ -73,7 +74,8 @@ public class AzureAISearchAsync {
                 AgentReference agentReference = new AgentReference(agent.getName())
                     .setVersion(agent.getVersion());
 
-                return responsesAsyncClient.createWithAgent(agentReference,
+                return responsesAsyncClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .input("Search for information about Azure AI services"));
             })

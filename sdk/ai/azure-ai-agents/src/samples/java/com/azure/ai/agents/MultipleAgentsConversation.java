@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -13,6 +14,7 @@ import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.conversations.items.ItemListPage;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
 
 /**
@@ -52,7 +54,9 @@ public class MultipleAgentsConversation {
         AgentReference agent2Reference = new AgentReference(agent2.getName()).setVersion(agent2.getVersion());
 
         // Get response from agent1
-        Response response = responsesClient.createWithAgentConversation(agent1Reference, conversation.id());
+        Response response = responsesClient.createAzureResponse(
+            new AzureCreateResponseOptions().setAgentReference(agent1Reference),
+            ResponseCreateParams.builder().conversation(conversation.id()));
         System.out.println("Agent response from: " + agent1.getName());
         System.out.println("\tResponse: " + response.output().get(0).asMessage().content().get(0).asOutputText().text());
 
@@ -62,7 +66,9 @@ public class MultipleAgentsConversation {
         printConversationItems(conversationsClient, conversation.id(), 3);
 
         // Get follow-up response from agent1
-        Response followUpResponse = responsesClient.createWithAgentConversation(agent1Reference, conversation.id());
+        Response followUpResponse = responsesClient.createAzureResponse(
+            new AzureCreateResponseOptions().setAgentReference(agent1Reference),
+            ResponseCreateParams.builder().conversation(conversation.id()));
         System.out.println("Agent response from: " + agent1.getName());
         System.out.println("\tResponse: " + followUpResponse.output().get(0).asMessage().content().get(0).asOutputText().text());
 
@@ -71,7 +77,9 @@ public class MultipleAgentsConversation {
                 "Provide suggestions opposite of what historical data indicates.", EasyInputMessage.Role.SYSTEM);
         printConversationItems(conversationsClient, conversation.id(), 4);
 
-        Response newMessageThread = responsesClient.createWithAgentConversation(agent2Reference, conversation.id());
+        Response newMessageThread = responsesClient.createAzureResponse(
+            new AzureCreateResponseOptions().setAgentReference(agent2Reference),
+            ResponseCreateParams.builder().conversation(conversation.id()));
         System.out.println("Agent response from: " + agent2.getName());
         System.out.println("\tResponse: " + newMessageThread.output().get(0).asMessage().content().get(0).asOutputText().text());
     }

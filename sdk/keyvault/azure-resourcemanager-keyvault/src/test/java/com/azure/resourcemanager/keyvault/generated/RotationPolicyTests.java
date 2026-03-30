@@ -18,34 +18,34 @@ public final class RotationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RotationPolicy model = BinaryData.fromString(
-            "{\"attributes\":{\"created\":1523837111721006893,\"updated\":3476175612376206504,\"expiryTime\":\"opbminrfdw\"},\"lifetimeActions\":[{\"trigger\":{\"timeAfterCreate\":\"ziuiefozbhdm\",\"timeBeforeExpiry\":\"l\"},\"action\":{\"type\":\"rotate\"}},{\"trigger\":{\"timeAfterCreate\":\"trmaequiahxicslf\",\"timeBeforeExpiry\":\"qzpiyyl\"},\"action\":{\"type\":\"rotate\"}},{\"trigger\":{\"timeAfterCreate\":\"hc\",\"timeBeforeExpiry\":\"ph\"},\"action\":{\"type\":\"notify\"}},{\"trigger\":{\"timeAfterCreate\":\"tqscywug\",\"timeBeforeExpiry\":\"oluhczbwemh\"},\"action\":{\"type\":\"rotate\"}}]}")
+            "{\"attributes\":{\"created\":7238747107011102365,\"updated\":6241822786363234363,\"expiryTime\":\"ciqopidoa\"},\"lifetimeActions\":[{\"trigger\":{\"timeAfterCreate\":\"hkh\",\"timeBeforeExpiry\":\"xkhnzbonlwnto\"},\"action\":{\"type\":\"notify\"}},{\"trigger\":{\"timeAfterCreate\":\"bwh\",\"timeBeforeExpiry\":\"z\"},\"action\":{\"type\":\"rotate\"}},{\"trigger\":{\"timeAfterCreate\":\"xztvbtqgsfraoyzk\",\"timeBeforeExpiry\":\"wtl\"},\"action\":{\"type\":\"rotate\"}},{\"trigger\":{\"timeAfterCreate\":\"wqaldsyu\",\"timeBeforeExpiry\":\"imerqfobwyznk\"},\"action\":{\"type\":\"rotate\"}}]}")
             .toObject(RotationPolicy.class);
-        Assertions.assertEquals("opbminrfdw", model.attributes().expiryTime());
-        Assertions.assertEquals("ziuiefozbhdm", model.lifetimeActions().get(0).trigger().timeAfterCreate());
-        Assertions.assertEquals("l", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
-        Assertions.assertEquals(KeyRotationPolicyActionType.ROTATE, model.lifetimeActions().get(0).action().type());
+        Assertions.assertEquals("ciqopidoa", model.attributes().expiryTime());
+        Assertions.assertEquals("hkh", model.lifetimeActions().get(0).trigger().timeAfterCreate());
+        Assertions.assertEquals("xkhnzbonlwnto", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
+        Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.lifetimeActions().get(0).action().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RotationPolicy model
-            = new RotationPolicy().withAttributes(new KeyRotationPolicyAttributes().withExpiryTime("opbminrfdw"))
+            = new RotationPolicy().withAttributes(new KeyRotationPolicyAttributes().withExpiryTime("ciqopidoa"))
                 .withLifetimeActions(Arrays.asList(new LifetimeAction()
-                    .withTrigger(new Trigger().withTimeAfterCreate("ziuiefozbhdm").withTimeBeforeExpiry("l"))
-                    .withAction(new Action().withType(KeyRotationPolicyActionType.ROTATE)),
+                    .withTrigger(new Trigger().withTimeAfterCreate("hkh").withTimeBeforeExpiry("xkhnzbonlwnto"))
+                    .withAction(new Action().withType(KeyRotationPolicyActionType.NOTIFY)),
+                    new LifetimeAction().withTrigger(new Trigger().withTimeAfterCreate("bwh").withTimeBeforeExpiry("z"))
+                        .withAction(new Action().withType(KeyRotationPolicyActionType.ROTATE)),
+                    new LifetimeAction()
+                        .withTrigger(new Trigger().withTimeAfterCreate("xztvbtqgsfraoyzk").withTimeBeforeExpiry("wtl"))
+                        .withAction(new Action().withType(KeyRotationPolicyActionType.ROTATE)),
                     new LifetimeAction()
                         .withTrigger(
-                            new Trigger().withTimeAfterCreate("trmaequiahxicslf").withTimeBeforeExpiry("qzpiyyl"))
-                        .withAction(new Action().withType(KeyRotationPolicyActionType.ROTATE)),
-                    new LifetimeAction().withTrigger(new Trigger().withTimeAfterCreate("hc").withTimeBeforeExpiry("ph"))
-                        .withAction(new Action().withType(KeyRotationPolicyActionType.NOTIFY)),
-                    new LifetimeAction()
-                        .withTrigger(new Trigger().withTimeAfterCreate("tqscywug").withTimeBeforeExpiry("oluhczbwemh"))
+                            new Trigger().withTimeAfterCreate("wqaldsyu").withTimeBeforeExpiry("imerqfobwyznk"))
                         .withAction(new Action().withType(KeyRotationPolicyActionType.ROTATE))));
         model = BinaryData.fromObject(model).toObject(RotationPolicy.class);
-        Assertions.assertEquals("opbminrfdw", model.attributes().expiryTime());
-        Assertions.assertEquals("ziuiefozbhdm", model.lifetimeActions().get(0).trigger().timeAfterCreate());
-        Assertions.assertEquals("l", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
-        Assertions.assertEquals(KeyRotationPolicyActionType.ROTATE, model.lifetimeActions().get(0).action().type());
+        Assertions.assertEquals("ciqopidoa", model.attributes().expiryTime());
+        Assertions.assertEquals("hkh", model.lifetimeActions().get(0).trigger().timeAfterCreate());
+        Assertions.assertEquals("xkhnzbonlwnto", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
+        Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.lifetimeActions().get(0).action().type());
     }
 }

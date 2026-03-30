@@ -33,7 +33,7 @@ public class IndexesAsyncSample {
         String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
         String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-        return indexesAsyncClient.createOrUpdateVersion(
+        return indexesAsyncClient.createOrUpdateIndexVersion(
             indexName,
             indexVersion,
             new AzureAISearchIndex()
@@ -47,7 +47,7 @@ public class IndexesAsyncSample {
     public static Flux<AIProjectIndex> listIndexes() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.listIndexes
 
-        return indexesAsyncClient.listLatest()
+        return indexesAsyncClient.listLatestIndexVersions()
             .doOnNext(index -> {
                 System.out.println("Index name: " + index.getName());
                 System.out.println("Index version: " + index.getVersion());
@@ -61,7 +61,7 @@ public class IndexesAsyncSample {
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 
-        return indexesAsyncClient.listVersions(indexName)
+        return indexesAsyncClient.listIndexVersions(indexName)
             .doOnNext(index -> {
                 System.out.println("Index name: " + index.getName());
                 System.out.println("Index version: " + index.getVersion());
@@ -77,7 +77,7 @@ public class IndexesAsyncSample {
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
-        return indexesAsyncClient.getVersion(indexName, indexVersion)
+        return indexesAsyncClient.getIndexVersion(indexName, indexVersion)
             .doOnNext(index -> {
                 System.out.println("Retrieved index:");
                 System.out.println("Name: " + index.getName());
@@ -95,7 +95,7 @@ public class IndexesAsyncSample {
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
         // Delete the index version
-        return indexesAsyncClient.deleteVersion(indexName, indexVersion)
+        return indexesAsyncClient.deleteIndexVersion(indexName, indexVersion)
             .doOnSuccess(unused ->
                 System.out.println("Deleted index: " + indexName + ", version: " + indexVersion));
 

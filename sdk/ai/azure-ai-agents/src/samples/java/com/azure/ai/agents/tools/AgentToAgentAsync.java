@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.A2APreviewTool;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -60,7 +61,8 @@ public class AgentToAgentAsync {
                 AgentReference agentReference = new AgentReference(agent.getName())
                     .setVersion(agent.getVersion());
 
-                return responsesAsyncClient.createWithAgent(agentReference,
+                return responsesAsyncClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .input("What can the secondary agent do?"));
             })

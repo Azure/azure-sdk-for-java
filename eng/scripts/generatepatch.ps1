@@ -44,7 +44,12 @@ param(
   [string[]]$ArtifactIds,
   [string]$ServiceDirectoryName,
   [string]$BranchName,
-  [string]$GroupId = 'com.azure'
+  [string]$GroupId = 'com.azure',
+  # When set, creates patch branches from the current branch instead of remote main.
+  [switch]$UseCurrentBranch,
+  # Optional map of artifactId → version for sibling artifacts being patched in the same run.
+  # Passed to GeneratePatch so changelogs show the correct version for sibling dependencies.
+  [hashtable]$PatchVersionOverrides = @{}
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -83,11 +88,24 @@ if(!$BranchName) {
 
 Write-Output "Branch Name is: $BranchName"
 
+# Normalize version_client.txt so non-patched in-group dependencies resolve to GA versions.
+$patchedArtifactNames = $ArtifactIds | ForEach-Object { "${GroupId}:$_" }
+$patchedPomPaths = @()
+if ($ServiceDirectoryName) {
+    foreach ($artifactId in $ArtifactIds) {
+        $pomPath = Join-Path $RepoRoot "sdk" $ServiceDirectoryName $artifactId "pom.xml"
+        if (Test-Path $pomPath) { $patchedPomPaths += $pomPath }
+    }
+}
+if ($patchedPomPaths.Count -gt 0) {
+    NormalizeVersionFileForPatching -PatchedArtifactNames $patchedArtifactNames -PatchedPomFilePaths $patchedPomPaths
+}
+
 foreach ($artifactId in $ArtifactIds) {
     $patchInfo = [ArtifactPatchInfo]::new()
     $patchInfo.ArtifactId = $artifactId
     $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
     #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 

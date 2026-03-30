@@ -32,12 +32,8 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
         String applicationName, String versionName, Context context) {
         Response<ApplicationPackageInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, applicationName, versionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplicationPackageImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplicationPackageImpl(inner.getValue(), this.manager()));
     }
 
     public ApplicationPackage get(String resourceGroupName, String accountName, String applicationName,
@@ -79,12 +75,8 @@ public final class ApplicationPackagesImpl implements ApplicationPackages {
         String applicationName, String versionName, ActivateApplicationPackageParameters parameters, Context context) {
         Response<ApplicationPackageInner> inner = this.serviceClient()
             .activateWithResponse(resourceGroupName, accountName, applicationName, versionName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplicationPackageImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplicationPackageImpl(inner.getValue(), this.manager()));
     }
 
     public ApplicationPackage activate(String resourceGroupName, String accountName, String applicationName,

@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingGroundingSearchConfiguration;
 import com.azure.ai.agents.models.BingGroundingSearchToolParameters;
@@ -66,8 +67,8 @@ public class BingGroundingSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(
-                agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .input("What are the latest developments in AI?"));
 

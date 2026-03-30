@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiProjectConnectionAuthDetails;
@@ -80,8 +81,8 @@ public class OpenApiWithConnectionSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(
-                agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .input("Call the API and summarize the returned URL and origin."));
 

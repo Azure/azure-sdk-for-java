@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -60,7 +61,8 @@ public class StreamingTests extends ClientTestBase {
             ResponseAccumulator accumulator = ResponseAccumulator.create();
             List<String> textDeltas = new ArrayList<>();
 
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingWithAgent(agentReference,
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("Say hello."));
 
             for (ResponseStreamEvent event : events) {
@@ -108,7 +110,8 @@ public class StreamingTests extends ClientTestBase {
             ResponseAccumulator accumulator = ResponseAccumulator.create();
             List<String> functionArgDeltas = new ArrayList<>();
 
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingWithAgent(agentReference,
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What's the weather like in Seattle?"));
 
             for (ResponseStreamEvent event : events) {
@@ -163,7 +166,8 @@ public class StreamingTests extends ClientTestBase {
             List<String> codeDeltas = new ArrayList<>();
             boolean[] codeInterpreterCompleted = { false };
 
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingWithAgent(agentReference,
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What is 42 * 37? Use code to calculate."));
 
             for (ResponseStreamEvent event : events) {
@@ -211,16 +215,17 @@ public class StreamingTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Map<String, Object> structuredInputValues = new LinkedHashMap<>();
-            structuredInputValues.put("userName", "Alice Smith");
-            structuredInputValues.put("userRole", "Senior Developer");
+            Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+            structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+            structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
 
             ResponseAccumulator accumulator = ResponseAccumulator.create();
             List<String> textDeltas = new ArrayList<>();
 
-            IterableStream<ResponseStreamEvent> events
-                = responsesClient.createStreamingWithAgentStructuredInput(agentReference, structuredInputValues,
-                    ResponseCreateParams.builder().input("Hello! Can you confirm my details?"));
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference)
+                    .setStructuredInputs(structuredInputValues),
+                ResponseCreateParams.builder().input("Hello! Can you confirm my details?"));
 
             for (ResponseStreamEvent event : events) {
                 accumulator.accumulate(event);

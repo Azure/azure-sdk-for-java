@@ -16,6 +16,7 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
 public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> voicePropertiesParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4.1", "phi4-mm-realtime" },
+        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -49,6 +50,8 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
         AtomicInteger contentPartAddedEvents = new AtomicInteger(0);
         java.util.concurrent.CountDownLatch responseLatch = new java.util.concurrent.CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             AzureStandardVoice voice = new AzureStandardVoice("en-us-emma:DragonHDLatestNeural").setTemperature(0.7)
                 .setRate("1.2")
@@ -58,11 +61,11 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
                 = new VoiceLiveSessionOptions().setVoice(BinaryData.fromObject(voice))
                     .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_CONTENT_PART_ADDED) {
@@ -98,10 +101,11 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             Assertions.assertTrue(received, "Should receive response within timeout");
             Assertions.assertTrue(contentPartAddedEvents.get() >= 1, "Should receive content part added events");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
@@ -124,17 +128,19 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
         AtomicInteger visemeEvents = new AtomicInteger(0);
         AtomicBoolean collectingEvents = new AtomicBoolean(true);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-NancyNeural")))
                 .setAnimation(new AnimationOptions().setOutputs(Arrays.asList(AnimationOutputType.VISEME_ID)))
                 .setOutputAudioTimestampTypes(Arrays.asList(AudioTimestampType.WORD));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
@@ -173,10 +179,11 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioResponseBytes.get() > 0, "Should receive audio bytes");
             Assertions.assertTrue(timestampEvents.get() > 0, "Should receive audio timestamp events");
             Assertions.assertTrue(visemeEvents.get() > 0, "Should receive viseme events");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

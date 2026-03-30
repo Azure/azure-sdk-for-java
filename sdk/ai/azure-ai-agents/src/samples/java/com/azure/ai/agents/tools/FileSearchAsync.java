@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -107,8 +108,10 @@ public class FileSearchAsync {
                         conversationIdRef.set(conversation.id());
                         System.out.println("Created conversation: " + conversation.id());
 
-                        return responsesAsyncClient.createWithAgentConversation(agentReference, conversation.id(),
+                        return responsesAsyncClient.createAzureResponse(
+                            new AzureCreateResponseOptions().setAgentReference(agentReference),
                             ResponseCreateParams.builder()
+                                .conversation(conversation.id())
                                 .input("What is the largest planet in the Solar System?"));
                     });
             })

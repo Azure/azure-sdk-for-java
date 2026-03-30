@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -66,7 +67,8 @@ public class CodeInterpreterStreamingAsync {
                 // Stream response asynchronously with Code Interpreter
                 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                return responsesAsyncClient.createStreamingWithAgent(agentReference,
+                return responsesAsyncClient.createStreamingAzureResponse(
+                        new AzureCreateResponseOptions().setAgentReference(agentReference),
                         ResponseCreateParams.builder()
                             .input("Calculate the first 10 prime numbers using Python."))
                     .doOnNext(event -> {

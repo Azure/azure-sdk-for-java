@@ -15,8 +15,6 @@ import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.DeleteAgentResponse;
-import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -32,6 +30,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.models.conversations.Conversation;
@@ -94,34 +93,6 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAgentWithResponse(String agentName, RequestOptions requestOptions) {
         return this.serviceClient.getAgentWithResponseAsync(agentName, requestOptions);
-    }
-
-    /**
-     * Deletes an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     name: String (Required)
-     *     deleted: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent Object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAgentWithResponseAsync(agentName, requestOptions);
     }
 
     /**
@@ -201,7 +172,7 @@ public final class AgentsAsyncClient {
     /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -220,13 +191,31 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent version Object along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    public Mono<Response<Void>> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteAgentVersionWithResponseAsync(agentName, agentVersion, requestOptions);
+        return internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Deletes a specific version of an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @param agentVersion The version of the agent to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the agent is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAgentVersion(String agentName, String agentVersion) {
+        return deleteAgentVersionWithResponse(agentName, agentVersion, new RequestOptions()).then();
     }
 
     /**
@@ -311,27 +300,6 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Deletes an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent Object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteAgentResponse> deleteAgent(String agentName) {
-        // Generated convenience method for deleteAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAgentWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteAgentResponse.class));
-    }
-
-    /**
      * Returns the list of all agents.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -359,28 +327,6 @@ public final class AgentsAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Deletes a specific version of an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @param agentVersion The version of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent version Object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteAgentVersionResponse> deleteAgentVersion(String agentName, String agentVersion) {
-        // Generated convenience method for deleteAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteAgentVersionResponse.class));
     }
 
     /**
@@ -1582,5 +1528,109 @@ public final class AgentsAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Deletes an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the agent is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAgent(String agentName) {
+        return deleteAgentWithResponse(agentName, new RequestOptions()).then();
+    }
+
+    /**
+     * Deletes an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return internalDeleteAgentWithResponse(agentName, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Deletes an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted agent Object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteAgentWithResponseAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Deletes a specific version of an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param agentVersion The version of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted agent version Object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteAgentVersionWithResponse(String agentName, String agentVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteAgentVersionWithResponseAsync(agentName, agentVersion, requestOptions);
     }
 }

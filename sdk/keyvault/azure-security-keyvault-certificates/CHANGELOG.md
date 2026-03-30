@@ -4,13 +4,23 @@
 
 ### Features Added
 
-### Breaking Changes
+#### `models.SubjectAlternativeNames` was modified
+
+* `setUniformResourceIdentifiers(java.util.List)` was added
+* `setIpAddresses(java.util.List)` was added
+* `getUniformResourceIdentifiers()` was added
+* `getIpAddresses()` was added
+
+#### `CertificateServiceVersion` was modified
+
+* `V2025_06_01_PREVIEW` was added
+* `V2025_07_01` was added
+
+## 4.8.6 (2026-03-23)
 
 ### Bugs Fixed
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
-
-### Other Changes
 
 ## 4.8.5 (2026-01-29)
 

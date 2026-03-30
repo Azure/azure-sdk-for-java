@@ -9,14 +9,14 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class AutoUpgradeProfileOperationsGenerateUpdateRunSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun.json
      */
     /**
-     * Sample code: AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet.
+     * Sample code: AutoUpgradeProfileOperations_GenerateUpdateRun.
      * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
-    public static void autoUpgradeProfileOperationsGenerateUpdateRunMaximumSet(
+    public static void autoUpgradeProfileOperationsGenerateUpdateRun(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.autoUpgradeProfileOperations()
             .generateUpdateRun("rgfleets", "fleet1", "aup1", com.azure.core.util.Context.NONE);
