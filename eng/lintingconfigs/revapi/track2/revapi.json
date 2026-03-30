@@ -1334,7 +1334,7 @@
           "code": "java.class.removed",
           "old" : {
             "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(CreatedByType|ErrorAdditionalInfo|ErrorDetail|SecurityPerimeter(ProxyResource|Resource|SystemData)|TrackedResource)"
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.TrackedResource"
           },
           "justification": "Common types now sourced from azure-core or ARM common types."
         },
