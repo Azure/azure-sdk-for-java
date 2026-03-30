@@ -9,6 +9,13 @@
 - [List](#agents_list)
 - [Update](#agents_update)
 
+## Connections
+
+- [CreateOrUpdate](#connections_createorupdate)
+- [Delete](#connections_delete)
+- [Get](#connections_get)
+- [List](#connections_list)
+
 ## Endpoints
 
 - [CreateOrUpdate](#endpoints_createorupdate)
@@ -67,7 +74,7 @@ import java.util.Arrays;
  */
 public final class AgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_CreateOrUpdate_MaximumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_CreateOrUpdate_MaximumSet.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate_MaximumSet.
@@ -92,7 +99,7 @@ public final class AgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
+     * x-ms-original-file: 2025-12-01/Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate_WithOvernightUploadLimitSchedule.
@@ -122,7 +129,7 @@ public final class AgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_CreateOrUpdate_MinimumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_CreateOrUpdate_MinimumSet.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate_MinimumSet.
@@ -150,7 +157,7 @@ public final class AgentsCreateOrUpdateSamples {
  */
 public final class AgentsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_Delete.json
+     * x-ms-original-file: 2025-12-01/Agents_Delete.json
      */
     /**
      * Sample code: Agents_Delete.
@@ -172,7 +179,7 @@ public final class AgentsDeleteSamples {
  */
 public final class AgentsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_Get_MaximumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_Get_MaximumSet.json
      */
     /**
      * Sample code: Agents_Get_MaximumSet.
@@ -186,7 +193,7 @@ public final class AgentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_Get_MinimumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_Get_MinimumSet.json
      */
     /**
      * Sample code: Agents_Get_MinimumSet.
@@ -209,7 +216,7 @@ public final class AgentsGetSamples {
  */
 public final class AgentsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_List_MaximumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_List_MaximumSet.json
      */
     /**
      * Sample code: Agents_List_MaximumSet.
@@ -221,7 +228,7 @@ public final class AgentsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_List_MinimumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_List_MinimumSet.json
      */
     /**
      * Sample code: Agents_List_MinimumSet.
@@ -250,7 +257,7 @@ import java.util.Arrays;
  */
 public final class AgentsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_Update.json
+     * x-ms-original-file: 2025-12-01/Agents_Update.json
      */
     /**
      * Sample code: Agents_Update.
@@ -274,6 +281,101 @@ public final class AgentsUpdateSamples {
 }
 ```
 
+### Connections_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.storagemover.models.ConnectionProperties;
+
+/**
+ * Samples for Connections CreateOrUpdate.
+ */
+public final class ConnectionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-12-01/Connections_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Connections_CreateOrUpdate.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void connectionsCreateOrUpdate(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.connections()
+            .define("example-connection")
+            .withExistingStorageMover("examples-rg", "examples-storageMoverName")
+            .withProperties(new ConnectionProperties().withDescription("Example Connection Description")
+                .withPrivateLinkServiceId(
+                    "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.Network/privateLinkServices/example-pls"))
+            .create();
+    }
+}
+```
+
+### Connections_Delete
+
+```java
+/**
+ * Samples for Connections Delete.
+ */
+public final class ConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-12-01/Connections_Delete.json
+     */
+    /**
+     * Sample code: Connections_Delete.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void connectionsDelete(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.connections()
+            .delete("examples-rg", "examples-storageMoverName", "example-connection", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connections_Get
+
+```java
+/**
+ * Samples for Connections Get.
+ */
+public final class ConnectionsGetSamples {
+    /*
+     * x-ms-original-file: 2025-12-01/Connections_Get.json
+     */
+    /**
+     * Sample code: Connections_Get.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void connectionsGet(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.connections()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "example-connection",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connections_List
+
+```java
+/**
+ * Samples for Connections List.
+ */
+public final class ConnectionsListSamples {
+    /*
+     * x-ms-original-file: 2025-12-01/Connections_List.json
+     */
+    /**
+     * Sample code: Connections_List.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void connectionsList(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.connections().list("examples-rg", "examples-storageMoverName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Endpoints_CreateOrUpdate
 
 ```java
@@ -284,7 +386,7 @@ import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
  */
 public final class EndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureStorageNfsFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureStorageNfsFileShare.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageNfsFileShare.
@@ -301,7 +403,24 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureMultiCloudConnector.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_S3WithHMAC.json
+     */
+    /**
+     * Sample code: Endpoints_CreateOrUpdate_S3WithHmac.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void
+        endpointsCreateOrUpdateS3WithHmac(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.endpoints()
+            .define("examples-endpointName")
+            .withExistingStorageMover("examples-rg", "examples-storageMoverName")
+            .withProperties((EndpointBaseProperties) null)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureMultiCloudConnector.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureMultiCloudConnector.
@@ -318,7 +437,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageBlobContainer.
@@ -335,7 +454,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_NfsMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_NfsMount.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_NfsMount.
@@ -352,7 +471,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.
@@ -369,7 +488,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_SmbMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_SmbMount.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_SmbMount.
@@ -395,7 +514,7 @@ public final class EndpointsCreateOrUpdateSamples {
  */
 public final class EndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Delete.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Delete.json
      */
     /**
      * Sample code: Endpoints_Delete.
@@ -418,7 +537,7 @@ public final class EndpointsDeleteSamples {
  */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Get_AzureStorageNfsFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_AzureStorageNfsFileShare.json
      */
     /**
      * Sample code: Endpoints_Get_AzureStorageNfsFileShare.
@@ -433,7 +552,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Get_SmbMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_SmbMount.json
      */
     /**
      * Sample code: Endpoints_Get_SmbMount.
@@ -447,7 +566,21 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Get_AzureStorageBlobContainer.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_S3WithHMAC.json
+     */
+    /**
+     * Sample code: Endpoints_Get_S3WithHmac.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void endpointsGetS3WithHmac(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.endpoints()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-endpointName",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_Get_AzureStorageBlobContainer.
@@ -462,7 +595,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Get_NfsMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_NfsMount.json
      */
     /**
      * Sample code: Endpoints_Get_NfsMount.
@@ -476,7 +609,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Get_AzureStorageSmbFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_Get_AzureStorageSmbFileShare.
@@ -491,7 +624,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Get_AzureMultiCloudConnector.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Get_AzureMultiCloudConnector.json
      */
     /**
      * Sample code: Endpoints_Get_AzureMultiCloudConnector.
@@ -515,7 +648,7 @@ public final class EndpointsGetSamples {
  */
 public final class EndpointsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_List.json
+     * x-ms-original-file: 2025-12-01/Endpoints_List.json
      */
     /**
      * Sample code: Endpoints_List.
@@ -538,7 +671,7 @@ import com.azure.resourcemanager.storagemover.models.Endpoint;
  */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureMultiCloudConnector.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureMultiCloudConnector.json
      */
     /**
      * Sample code: Endpoints_Update_AzureMultiCloudConnector.
@@ -555,7 +688,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureStorageNfsFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureStorageNfsFileShare.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageNfsFileShare.
@@ -572,7 +705,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_NfsMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_NfsMount.json
      */
     /**
      * Sample code: Endpoints_Update_NfsMount.
@@ -588,7 +721,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureStorageSmbFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageSmbFileShare.
@@ -605,7 +738,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureStorageBlobContainer.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageBlobContainer.
@@ -622,7 +755,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_SmbMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_SmbMount.json
      */
     /**
      * Sample code: Endpoints_Update_SmbMount.
@@ -636,6 +769,22 @@ public final class EndpointsUpdateSamples {
             .getValue();
         resource.update().apply();
     }
+
+    /*
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_S3WithHMAC.json
+     */
+    /**
+     * Sample code: Endpoints_Update_S3WithHmac.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void endpointsUpdateS3WithHmac(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        Endpoint resource = manager.endpoints()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-endpointName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
 }
 ```
 
@@ -643,14 +792,52 @@ public final class EndpointsUpdateSamples {
 
 ```java
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.Frequency;
 import com.azure.resourcemanager.storagemover.models.JobType;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
+import com.azure.resourcemanager.storagemover.models.Time;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * Samples for JobDefinitions CreateOrUpdate.
  */
 public final class JobDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_CreateOrUpdate_CloudToCloud.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_CreateOrUpdate_With_Schedule.json
+     */
+    /**
+     * Sample code: JobDefinitions_CreateOrUpdate_With_Schedule.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void
+        jobDefinitionsCreateOrUpdateWithSchedule(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.jobDefinitions()
+            .define("examples-jobDefinitionName")
+            .withExistingProject("examples-rg", "examples-storageMoverName", "examples-projectName")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withSourceName("examples-sourceEndpointName")
+            .withTargetName("examples-targetEndpointName")
+            .withDescription("Example Job Definition Description")
+            .withJobType(JobType.CLOUD_TO_CLOUD)
+            .withSourceSubpath("/")
+            .withTargetSubpath("/")
+            .withAgentName("dummy-agent")
+            .withConnections(Arrays.asList(
+                "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
+            .withSchedule(new ScheduleInfo().withFrequency(Frequency.WEEKLY)
+                .withIsActive(true)
+                .withExecutionTime(new Time().withHour(9).withMinute(Minute.ZERO))
+                .withStartDate(OffsetDateTime.parse("2025-12-01T00:00:00Z"))
+                .withDaysOfWeek(Arrays.asList("Monday", "Wednesday", "Friday"))
+                .withEndDate(OffsetDateTime.parse("2025-12-31T12:00:00Z")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/JobDefinitions_CreateOrUpdate_CloudToCloud.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate_CloudToCloud.
@@ -670,11 +857,13 @@ public final class JobDefinitionsCreateOrUpdateSamples {
             .withSourceSubpath("/")
             .withTargetSubpath("/")
             .withAgentName("dummy-agent")
+            .withConnections(Arrays.asList(
+                "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate.
@@ -694,6 +883,8 @@ public final class JobDefinitionsCreateOrUpdateSamples {
             .withSourceSubpath("/")
             .withTargetSubpath("/")
             .withAgentName("migration-agent")
+            .withConnections(Arrays.asList(
+                "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
             .create();
     }
 }
@@ -707,7 +898,7 @@ public final class JobDefinitionsCreateOrUpdateSamples {
  */
 public final class JobDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_Delete.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_Delete.json
      */
     /**
      * Sample code: Projects_Delete.
@@ -730,7 +921,7 @@ public final class JobDefinitionsDeleteSamples {
  */
 public final class JobDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_Get.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_Get.json
      */
     /**
      * Sample code: JobDefinitions_Get.
@@ -738,6 +929,21 @@ public final class JobDefinitionsGetSamples {
      * @param manager Entry point to StorageMoverManager.
      */
     public static void jobDefinitionsGet(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.jobDefinitions()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-projectName",
+                "examples-jobDefinitionName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/JobDefinitions_Get_With_Schedule.json
+     */
+    /**
+     * Sample code: JobDefinitions_Get_With_Schedule.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void
+        jobDefinitionsGetWithSchedule(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
         manager.jobDefinitions()
             .getWithResponse("examples-rg", "examples-storageMoverName", "examples-projectName",
                 "examples-jobDefinitionName", com.azure.core.util.Context.NONE);
@@ -753,7 +959,7 @@ public final class JobDefinitionsGetSamples {
  */
 public final class JobDefinitionsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_List.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_List.json
      */
     /**
      * Sample code: JobDefinitions_List.
@@ -775,7 +981,7 @@ public final class JobDefinitionsListSamples {
  */
 public final class JobDefinitionsStartJobSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_StartJob.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_StartJob.json
      */
     /**
      * Sample code: JobDefinitions_StartJob.
@@ -798,7 +1004,7 @@ public final class JobDefinitionsStartJobSamples {
  */
 public final class JobDefinitionsStopJobSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_StopJob.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_StopJob.json
      */
     /**
      * Sample code: JobDefinitions_StopJob.
@@ -817,13 +1023,14 @@ public final class JobDefinitionsStopJobSamples {
 
 ```java
 import com.azure.resourcemanager.storagemover.models.JobDefinition;
+import java.util.Arrays;
 
 /**
  * Samples for JobDefinitions Update.
  */
 public final class JobDefinitionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobDefinitions_Update.json
+     * x-ms-original-file: 2025-12-01/JobDefinitions_Update.json
      */
     /**
      * Sample code: JobDefinitions_Update.
@@ -838,6 +1045,8 @@ public final class JobDefinitionsUpdateSamples {
         resource.update()
             .withDescription("Updated Job Definition Description")
             .withAgentName("updatedAgentName")
+            .withConnections(Arrays.asList(
+                "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
             .apply();
     }
 }
@@ -851,7 +1060,21 @@ public final class JobDefinitionsUpdateSamples {
  */
 public final class JobRunsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobRuns_Get.json
+     * x-ms-original-file: 2025-12-01/JobRuns_Get_With_Schedule.json
+     */
+    /**
+     * Sample code: JobRuns_Get_With_Schedule.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void jobRunsGetWithSchedule(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.jobRuns()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-projectName",
+                "examples-jobDefinitionName", "examples-jobRunName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/JobRuns_Get.json
      */
     /**
      * Sample code: JobRuns_Get.
@@ -874,7 +1097,7 @@ public final class JobRunsGetSamples {
  */
 public final class JobRunsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobRuns_List.json
+     * x-ms-original-file: 2025-12-01/JobRuns_List.json
      */
     /**
      * Sample code: JobRuns_List.
@@ -897,7 +1120,7 @@ public final class JobRunsListSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Operations_List.json
+     * x-ms-original-file: 2025-12-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -918,7 +1141,7 @@ public final class OperationsListSamples {
  */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01/Projects_CreateOrUpdate.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.
@@ -943,7 +1166,7 @@ public final class ProjectsCreateOrUpdateSamples {
  */
 public final class ProjectsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_Delete.json
+     * x-ms-original-file: 2025-12-01/Projects_Delete.json
      */
     /**
      * Sample code: Projects_Delete.
@@ -966,7 +1189,7 @@ public final class ProjectsDeleteSamples {
  */
 public final class ProjectsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_Get.json
+     * x-ms-original-file: 2025-12-01/Projects_Get.json
      */
     /**
      * Sample code: Projects_Get.
@@ -989,7 +1212,7 @@ public final class ProjectsGetSamples {
  */
 public final class ProjectsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_List.json
+     * x-ms-original-file: 2025-12-01/Projects_List.json
      */
     /**
      * Sample code: Projects_List.
@@ -1012,7 +1235,7 @@ import com.azure.resourcemanager.storagemover.models.Project;
  */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_Update.json
+     * x-ms-original-file: 2025-12-01/Projects_Update.json
      */
     /**
      * Sample code: Projects_Update.
@@ -1040,7 +1263,7 @@ import java.util.Map;
  */
 public final class StorageMoversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageMovers_CreateOrUpdate.
@@ -1079,7 +1302,7 @@ public final class StorageMoversCreateOrUpdateSamples {
  */
 public final class StorageMoversDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_Delete.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_Delete.json
      */
     /**
      * Sample code: StorageMovers_Delete.
@@ -1100,7 +1323,7 @@ public final class StorageMoversDeleteSamples {
  */
 public final class StorageMoversGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_Get.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_Get.json
      */
     /**
      * Sample code: StorageMovers_Get.
@@ -1123,7 +1346,7 @@ public final class StorageMoversGetByResourceGroupSamples {
  */
 public final class StorageMoversListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_ListBySubscription.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_ListBySubscription.json
      */
     /**
      * Sample code: StorageMovers_List.
@@ -1144,7 +1367,7 @@ public final class StorageMoversListSamples {
  */
 public final class StorageMoversListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_List.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_List.json
      */
     /**
      * Sample code: StorageMovers_List.
@@ -1167,7 +1390,7 @@ import com.azure.resourcemanager.storagemover.models.StorageMover;
  */
 public final class StorageMoversUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_Update.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_Update.json
      */
     /**
      * Sample code: StorageMovers_Update.

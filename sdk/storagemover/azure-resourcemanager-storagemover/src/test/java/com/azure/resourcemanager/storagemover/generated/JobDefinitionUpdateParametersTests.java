@@ -6,29 +6,36 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionUpdateParameters;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class JobDefinitionUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionUpdateParameters model = BinaryData
-            .fromString(
-                "{\"properties\":{\"description\":\"zpfzabglc\",\"copyMode\":\"Mirror\",\"agentName\":\"tcty\"}}")
+        JobDefinitionUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"txhp\",\"copyMode\":\"Additive\",\"agentName\":\"pfza\",\"connections\":[\"cuh\",\"wtctyqi\",\"lbbovplw\",\"bhvgy\"],\"dataIntegrityValidation\":\"SaveVerifyFileMD5\"}}")
             .toObject(JobDefinitionUpdateParameters.class);
-        Assertions.assertEquals("zpfzabglc", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("tcty", model.agentName());
+        Assertions.assertEquals("txhp", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("pfza", model.agentName());
+        Assertions.assertEquals("cuh", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5, model.dataIntegrityValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionUpdateParameters model = new JobDefinitionUpdateParameters().withDescription("zpfzabglc")
-            .withCopyMode(CopyMode.MIRROR)
-            .withAgentName("tcty");
+        JobDefinitionUpdateParameters model = new JobDefinitionUpdateParameters().withDescription("txhp")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withAgentName("pfza")
+            .withConnections(Arrays.asList("cuh", "wtctyqi", "lbbovplw", "bhvgy"))
+            .withDataIntegrityValidation(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5);
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateParameters.class);
-        Assertions.assertEquals("zpfzabglc", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("tcty", model.agentName());
+        Assertions.assertEquals("txhp", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("pfza", model.agentName());
+        Assertions.assertEquals("cuh", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5, model.dataIntegrityValidation());
     }
 }

@@ -12,16 +12,16 @@ public final class AzureStorageNfsFileShareEndpointUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageNfsFileShareEndpointUpdateProperties model
-            = BinaryData.fromString("{\"endpointType\":\"AzureStorageNfsFileShare\",\"description\":\"t\"}")
+            = BinaryData.fromString("{\"endpointType\":\"AzureStorageNfsFileShare\",\"description\":\"thz\"}")
                 .toObject(AzureStorageNfsFileShareEndpointUpdateProperties.class);
-        Assertions.assertEquals("t", model.description());
+        Assertions.assertEquals("thz", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageNfsFileShareEndpointUpdateProperties model
-            = new AzureStorageNfsFileShareEndpointUpdateProperties().withDescription("t");
+            = new AzureStorageNfsFileShareEndpointUpdateProperties().withDescription("thz");
         model = BinaryData.fromObject(model).toObject(AzureStorageNfsFileShareEndpointUpdateProperties.class);
-        Assertions.assertEquals("t", model.description());
+        Assertions.assertEquals("thz", model.description());
     }
 }

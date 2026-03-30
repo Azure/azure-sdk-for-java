@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class ProjectsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_Delete.json
+     * x-ms-original-file: 2025-12-01/Projects_Delete.json
      */
     /**
      * Sample code: Projects_Delete.

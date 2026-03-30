@@ -12,15 +12,15 @@ public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"kktwhrdxw\",\"provisioningState\":\"Canceled\"},\"id\":\"sm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"}")
+            "{\"properties\":{\"description\":\"ochcbonqvpkvl\",\"provisioningState\":\"Deleting\"},\"id\":\"ea\",\"name\":\"eipheoflokeyy\",\"type\":\"enjbdlwtgrhp\"}")
             .toObject(ProjectInner.class);
-        Assertions.assertEquals("kktwhrdxw", model.description());
+        Assertions.assertEquals("ochcbonqvpkvl", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectInner model = new ProjectInner().withDescription("kktwhrdxw");
+        ProjectInner model = new ProjectInner().withDescription("ochcbonqvpkvl");
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("kktwhrdxw", model.description());
+        Assertions.assertEquals("ochcbonqvpkvl", model.description());
     }
 }

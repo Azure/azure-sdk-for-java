@@ -11,6 +11,6 @@ public final class JobRunResourceIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobRunResourceIdInner model
-            = BinaryData.fromString("{\"jobRunResourceId\":\"liourqhak\"}").toObject(JobRunResourceIdInner.class);
+            = BinaryData.fromString("{\"jobRunResourceId\":\"wjvzunluthnn\"}").toObject(JobRunResourceIdInner.class);
     }
 }

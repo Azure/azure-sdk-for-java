@@ -28,7 +28,8 @@ public final class JobDefinitionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.jobDefinitions()
-            .delete("nwxuqlcvydyp", "tdooaoj", "niodkooeb", "nuj", com.azure.core.util.Context.NONE);
+            .delete("ystawfsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo", "zhjjklffhmouwq",
+                com.azure.core.util.Context.NONE);
 
     }
 }

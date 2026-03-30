@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class EndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Delete.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Delete.json
      */
     /**
      * Sample code: Endpoints_Delete.

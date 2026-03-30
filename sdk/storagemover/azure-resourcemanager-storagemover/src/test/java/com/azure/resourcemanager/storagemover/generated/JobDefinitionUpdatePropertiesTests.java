@@ -7,27 +7,35 @@ package com.azure.resourcemanager.storagemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionUpdateProperties;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class JobDefinitionUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionUpdateProperties model
-            = BinaryData.fromString("{\"description\":\"klbb\",\"copyMode\":\"Mirror\",\"agentName\":\"wzbhvgyugu\"}")
-                .toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("klbb", model.description());
+        JobDefinitionUpdateProperties model = BinaryData.fromString(
+            "{\"description\":\"svmkfssxquk\",\"copyMode\":\"Mirror\",\"agentName\":\"gmgsxnkjzkde\",\"connections\":[\"vlopwiyighx\",\"kdwzbaiuebbaumny\",\"upedeojnabckhs\",\"txp\"],\"dataIntegrityValidation\":\"None\"}")
+            .toObject(JobDefinitionUpdateProperties.class);
+        Assertions.assertEquals("svmkfssxquk", model.description());
         Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("wzbhvgyugu", model.agentName());
+        Assertions.assertEquals("gmgsxnkjzkde", model.agentName());
+        Assertions.assertEquals("vlopwiyighx", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.NONE, model.dataIntegrityValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionUpdateProperties model = new JobDefinitionUpdateProperties().withDescription("klbb")
+        JobDefinitionUpdateProperties model = new JobDefinitionUpdateProperties().withDescription("svmkfssxquk")
             .withCopyMode(CopyMode.MIRROR)
-            .withAgentName("wzbhvgyugu");
+            .withAgentName("gmgsxnkjzkde")
+            .withConnections(Arrays.asList("vlopwiyighx", "kdwzbaiuebbaumny", "upedeojnabckhs", "txp"))
+            .withDataIntegrityValidation(DataIntegrityValidation.NONE);
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("klbb", model.description());
+        Assertions.assertEquals("svmkfssxquk", model.description());
         Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("wzbhvgyugu", model.agentName());
+        Assertions.assertEquals("gmgsxnkjzkde", model.agentName());
+        Assertions.assertEquals("vlopwiyighx", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.NONE, model.dataIntegrityValidation());
     }
 }

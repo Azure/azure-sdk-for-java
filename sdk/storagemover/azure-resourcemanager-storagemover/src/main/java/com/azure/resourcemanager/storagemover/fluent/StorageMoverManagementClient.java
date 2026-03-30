@@ -89,6 +89,13 @@ public interface StorageMoverManagementClient {
     JobDefinitionsClient getJobDefinitions();
 
     /**
+     * Gets the ConnectionsClient object to access its operations.
+     * 
+     * @return the ConnectionsClient object.
+     */
+    ConnectionsClient getConnections();
+
+    /**
      * Gets the JobRunsClient object to access its operations.
      * 
      * @return the JobRunsClient object.

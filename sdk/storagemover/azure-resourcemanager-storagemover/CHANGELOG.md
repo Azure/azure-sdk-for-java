@@ -1,14 +1,119 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (2026-03-17)
+
+- Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.S3WithHmacEndpointProperties` was added
 
-### Bugs Fixed
+* `models.Connection$UpdateStages` was added
 
-### Other Changes
+* `models.Connection$DefinitionStages` was added
+
+* `models.Connection$Update` was added
+
+* `models.TriggerType` was added
+
+* `models.Connection` was added
+
+* `models.AzureKeyVaultS3WithHmacCredentials` was added
+
+* `models.S3WithHmacEndpointUpdateProperties` was added
+
+* `models.Frequency` was added
+
+* `models.S3WithHmacSourceType` was added
+
+* `models.ConnectionProperties` was added
+
+* `models.EndpointKind` was added
+
+* `models.ScheduleInfo` was added
+
+* `models.ConnectionStatus` was added
+
+* `models.JobRunWarning` was added
+
+* `models.Connection$Definition` was added
+
+* `models.Connections` was added
+
+* `models.DataIntegrityValidation` was added
+
+#### `StorageMoverManager` was modified
+
+* `connections()` was added
+
+#### `models.SmbMountEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.EndpointBaseProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+* `endpointKind()` was added
+
+#### `models.AzureStorageNfsFileShareEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.AzureMultiCloudConnectorEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.AzureStorageSmbFileShareEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.JobDefinitionUpdateParameters` was modified
+
+* `dataIntegrityValidation()` was added
+* `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
+* `connections()` was added
+* `withConnections(java.util.List)` was added
+
+#### `models.AzureStorageBlobContainerEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.JobDefinition` was modified
+
+* `connections()` was added
+* `dataIntegrityValidation()` was added
+* `schedule()` was added
+* `preservePermissions()` was added
+
+#### `models.JobDefinition$Update` was modified
+
+* `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
+* `withConnections(java.util.List)` was added
+
+#### `models.JobRun` was modified
+
+* `warnings()` was added
+* `scheduledExecutionTime()` was added
+* `triggerType()` was added
+
+#### `models.JobDefinition$Definition` was modified
+
+* `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
+* `withPreservePermissions(java.lang.Boolean)` was added
+* `withConnections(java.util.List)` was added
+* `withSchedule(models.ScheduleInfo)` was added
+
+#### `models.EndpointType` was modified
+
+* `S3WITH_HMAC` was added
+
+#### `models.CredentialType` was modified
+
+* `AZURE_KEY_VAULT_S3WITH_HMAC` was added
+
+#### `models.NfsMountEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
 
 ## 1.4.0 (2025-08-29)
 

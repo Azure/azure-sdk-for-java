@@ -10,8 +10,12 @@ import com.azure.resourcemanager.storagemover.models.JobRun;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
 import com.azure.resourcemanager.storagemover.models.JobRunScanStatus;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
+import com.azure.resourcemanager.storagemover.models.JobRunWarning;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.TriggerType;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public final class JobRunImpl implements JobRun {
     private JobRunInner innerObject;
@@ -61,6 +65,14 @@ public final class JobRunImpl implements JobRun {
 
     public OffsetDateTime executionEndTime() {
         return this.innerModel().executionEndTime();
+    }
+
+    public TriggerType triggerType() {
+        return this.innerModel().triggerType();
+    }
+
+    public OffsetDateTime scheduledExecutionTime() {
+        return this.innerModel().scheduledExecutionTime();
     }
 
     public OffsetDateTime lastStatusUpdate() {
@@ -145,6 +157,15 @@ public final class JobRunImpl implements JobRun {
 
     public JobRunError error() {
         return this.innerModel().error();
+    }
+
+    public List<JobRunWarning> warnings() {
+        List<JobRunWarning> inner = this.innerModel().warnings();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public ProvisioningState provisioningState() {

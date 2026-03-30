@@ -12,6 +12,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
 import com.azure.resourcemanager.storagemover.models.Endpoint;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import com.azure.resourcemanager.storagemover.models.ManagedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +24,7 @@ public final class EndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"washr\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"nqxwbp\",\"tenantId\":\"ulpiuj\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"bdbutauvf\":{\"principalId\":\"pqiiobyuqe\",\"clientId\":\"qlpqwcciuq\"},\"koymkcd\":{\"principalId\":\"kuwhh\",\"clientId\":\"ykojoxafnndlpic\"}}},\"id\":\"bpkkpwdre\",\"name\":\"novvqfovljxy\",\"type\":\"suwsyrsnds\"}]}";
+            = "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"iilivpdtiirqtd\",\"endpointKind\":\"Target\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"zfgs\",\"tenantId\":\"yfxrx\",\"type\":\"None\",\"userAssignedIdentities\":{\"atdooaojkniod\":{\"principalId\":\"ramxjezwlwnw\",\"clientId\":\"qlcvydy\"},\"infwjlfltkacjve\":{\"principalId\":\"oebwnujhemms\",\"clientId\":\"dkcrodt\"}}},\"id\":\"dlfoakggkfp\",\"name\":\"gaowpulpqblylsyx\",\"type\":\"qjnsjervtia\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +34,10 @@ public final class EndpointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Endpoint> response
-            = manager.endpoints().list("piexpbtgiw", "wo", com.azure.core.util.Context.NONE);
+            = manager.endpoints().list("thzvaytdwkqbrqu", "paxh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("washr", response.iterator().next().properties().description());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals("iilivpdtiirqtd", response.iterator().next().properties().description());
+        Assertions.assertEquals(EndpointKind.TARGET, response.iterator().next().properties().endpointKind());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }
