@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -119,21 +120,39 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * </p>
      */
     public KeyVaultKeyStore() {
+        this(getSystemProperties());
+    }
+
+    /**
+     * Constructor.
+     *
+     * <p>
+     * The constructor uses custom properties for
+     * <code>azure.keyvault.uri</code>,
+     * <code>azure.keyvault.tenantId</code>,
+     * <code>azure.keyvault.clientId</code>,
+     * <code>azure.keyvault.clientSecret</code> and
+     * <code>azure.keyvault.managedIdentity</code> to initialize the
+     * Key Vault client.
+     * </p>
+     * @param properties The properties to use
+     */
+    public KeyVaultKeyStore(Properties properties) {
         LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
 
         creationDate = new Date();
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        String accessToken = System.getProperty("azure.keyvault.access-token");
+        String keyVaultUri = properties.getProperty("azure.keyvault.uri");
+        String tenantId = properties.getProperty("azure.keyvault.tenant-id");
+        String clientId = properties.getProperty("azure.keyvault.client-id");
+        String clientSecret = properties.getProperty("azure.keyvault.client-secret");
+        String managedIdentity = properties.getProperty("azure.keyvault.managed-identity");
+        String accessToken = properties.getProperty("azure.keyvault.access-token");
         boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+            = Boolean.parseBoolean(properties.getProperty("azure.keyvault.disable-challenge-resource-verification"));
         long refreshInterval = getRefreshInterval();
         refreshCertificatesWhenHaveUnTrustCertificate
             = Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
-                .map(System::getProperty)
+                .map(properties::getProperty)
                 .map(Boolean::parseBoolean)
                 .orElse(false);
 
@@ -155,6 +174,42 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates,
             classpathCertificates);
+    }
+
+    private static Properties getSystemProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("azure.keyvault.uri",
+            System.getProperty("azure.keyvault.uri") == null ? "" : System.getProperty("azure.keyvault.uri"));
+        properties.setProperty("azure.keyvault.tenant-id",
+            System.getProperty("azure.keyvault.tenant-id") == null
+                ? ""
+                : System.getProperty("azure.keyvault.tenant-id"));
+        properties.setProperty("azure.keyvault.client-id",
+            System.getProperty("azure.keyvault.client-id") == null
+                ? ""
+                : System.getProperty("azure.keyvault.client-id"));
+        properties.setProperty("azure.keyvault.client-secret",
+            System.getProperty("azure.keyvault.client-secret") == null
+                ? ""
+                : System.getProperty("azure.keyvault.client-secret"));
+        properties.setProperty("azure.keyvault.managed-identity",
+            System.getProperty("azure.keyvault.managed-identity") == null
+                ? ""
+                : System.getProperty("azure.keyvault.managed-identity"));
+        properties.setProperty("azure.keyvault.access-token",
+            System.getProperty("azure.keyvault.access-token") == null
+                ? ""
+                : System.getProperty("azure.keyvault.access-token"));
+        properties.setProperty("azure.keyvault.disable-challenge-resource-verification",
+            System.getProperty("azure.keyvault.disable-challenge-resource-verification") == null
+                ? ""
+                : System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+        properties.setProperty("azure.keyvault.refresh-certificates-when-have-un-trust-certificate",
+            System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate") == null
+                ? ""
+                : System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate"));
+
+        return properties;
     }
 
     Long getRefreshInterval() {
@@ -190,6 +245,37 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     .setAccessToken(System.getProperty("azure.keyvault.access-token"));
 
         if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
+            keyVaultLoadStoreParameter.disableChallengeResourceVerification();
+        }
+
+        keyStore.load(keyVaultLoadStoreParameter);
+
+        return keyStore;
+    }
+
+    /**
+     * get key vault key store by custom properties
+     *
+     * @param properties The properties to use
+     * @return KeyVault key store
+     * @throws CertificateException if any of the certificates in the
+     *          keystore could not be loaded
+     * @throws NoSuchAlgorithmException when algorithm is unavailable.
+     * @throws KeyStoreException when no Provider supports a KeyStoreSpi implementation for the specified type
+     * @throws IOException when an I/O error occurs.
+     */
+    public static KeyStore getKeyVaultKeyStoreByCustomProperties(Properties properties)
+        throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+
+        KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
+        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter
+            = new KeyVaultLoadStoreParameter(properties.getProperty("azure.keyvault.uri"),
+                properties.getProperty("azure.keyvault.tenant-id"), System.getProperty("azure.keyvault.client-id"),
+                properties.getProperty("azure.keyvault.client-secret"),
+                properties.getProperty("azure.keyvault.managed-identity"))
+                    .setAccessToken(properties.getProperty("azure.keyvault.access-token"));
+
+        if (Boolean.parseBoolean(properties.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
             keyVaultLoadStoreParameter.disableChallengeResourceVerification();
         }
 
