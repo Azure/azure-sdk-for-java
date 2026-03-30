@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
+import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
@@ -61,7 +61,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     /**
      * State holder for managing configuration and feature flag states.
      */
-    private StateHolder storeState = new StateHolder();
+    private StateHolder storeState;
 
     /**
      * Client for handling feature flag operations.
@@ -105,6 +105,9 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     public ConfigData load(ConfigDataLoaderContext context, AzureAppConfigDataResource resource)
         throws IOException, ConfigDataResourceNotFoundException {
         this.resource = resource;
+
+        // Get StateHolder from BootstrapContext (registered by AzureAppConfigBootstrapRegistrar)
+        storeState = context.getBootstrapContext().get(StateHolder.class);
         storeState.setNextForcedRefresh(resource.getRefreshInterval());
         if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
             featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
@@ -145,7 +148,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
                 if (reloadFailed
                     && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
-                        replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext)) {
+                        replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext,
+                        storeState)) {
                     // This store doesn't have any changes where to refresh store did. Skipping to next client.
                     client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
                     continue;
@@ -164,7 +168,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
                     if (monitoring.isEnabled()) {
                         // Check if refreshAll is enabled - if so, use watched configuration settings
-                        if (monitoring.getTriggers().size() == 0) {
+                        if (monitoring.getTriggers().isEmpty()) {
                             // Use watched configuration settings for refresh
                             List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(
                                 currentClient);
@@ -216,8 +220,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             }
         }
 
-        StateHolder.updateState(storeState);
-        if (featureFlagClient.getFeatureFlags().size() > 0) {
+        if (!featureFlagClient.getFeatureFlags().isEmpty()) {
             // Don't add feature flags if there are none, otherwise the local file can't load them.
             sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
         }
@@ -251,7 +254,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         List<String> profiles = resource.getProfiles().getActive();
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationPropertySource propertySource = null;
+            AppConfigurationPropertySource propertySource;
 
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(
