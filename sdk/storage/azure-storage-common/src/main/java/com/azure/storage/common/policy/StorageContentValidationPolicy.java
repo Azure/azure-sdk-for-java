@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Optional;
 
-import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_MODE_KEY;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
@@ -56,7 +56,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      * @return a {@link Mono} that completes when content validation has been applied to the request body.
      */
     private Mono<Void> applyContentValidation(HttpPipelineCallContext context) {
-        Optional<Object> behaviorOptional = context.getContext().getData(CONTENT_VALIDATION_BEHAVIOR_KEY);
+        Optional<Object> behaviorOptional = context.getContext().getData(CONTENT_VALIDATION_MODE_KEY);
         if (!behaviorOptional.isPresent()) {
             return Mono.empty();
         }

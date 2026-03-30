@@ -699,20 +699,23 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 ? new BlobImmutabilityPolicy()
                 : options.getImmutabilityPolicy();
             final Boolean legalHold = options.isLegalHold();
-            final StorageChecksumAlgorithm requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
+            final StorageChecksumAlgorithm transferValidationChecksumAlgorithm
+                = options.getTransferValidationChecksumAlgorithm();
 
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(computeMd5, requestChecksumAlgorithm);
+            ContentValidationModeResolver.validateTransactionalChecksumOptions(computeMd5,
+                transferValidationChecksumAlgorithm);
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction
                 = (stream) -> uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata,
-                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold, requestChecksumAlgorithm);
+                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold,
+                    transferValidationChecksumAlgorithm);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction
                 = (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
                     headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold,
-                    requestChecksumAlgorithm);
+                    transferValidationChecksumAlgorithm);
 
             Flux<ByteBuffer> data = options.getDataFlux();
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
@@ -729,7 +732,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold, StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        Boolean legalHold, StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
 
         /*
          * Note that there is no need to buffer here as the flux returned by the size gate in this case is created
@@ -746,9 +749,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .setImmutabilityPolicy(immutabilityPolicy)
                     .setLegalHold(legalHold))
             .flatMap(options -> {
-                Mono<Response<BlockBlobItem>> responseMono
-                    = ContentValidationModeResolver.applyContentValidationBehavior(
-                        blockBlobAsyncClient.uploadWithResponse(options), requestChecksumAlgorithm, length, false);
+                Mono<Response<BlockBlobItem>> responseMono = ContentValidationModeResolver.addContentValidationMode(
+                    blockBlobAsyncClient.uploadWithResponse(options), transferValidationChecksumAlgorithm,
+                    length, false);
                 if (parallelTransferOptions.getProgressListener() != null) {
                     ProgressReporter progressReporter
                         = ProgressReporter.withProgressListener(parallelTransferOptions.getProgressListener());
@@ -763,7 +766,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold, StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        Boolean legalHold, StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
         // TODO: Sample/api reference
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
@@ -789,10 +792,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
                 String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER).flatMap(fluxMd5Wrapper -> {
-                    Mono<Response<Void>> responseMono = ContentValidationModeResolver.applyContentValidationBehavior(
+                    Mono<Response<Void>> responseMono = ContentValidationModeResolver.addContentValidationMode(
                         blockBlobAsyncClient.stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(),
                             bufferAggregator.length(), fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId()),
-                        requestChecksumAlgorithm, 0, true);
+                        transferValidationChecksumAlgorithm, 0, true);
                     if (progressReporter != null) {
                         responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(Contexts.empty()
                             .setHttpRequestProgressReporter(progressReporter.createChild())
@@ -978,7 +981,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             : options.getParallelTransferOptions().getBlockSizeLong();
         final ParallelTransferOptions finalParallelTransferOptions
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
-        final StorageChecksumAlgorithm requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
+        final StorageChecksumAlgorithm transferValidationChecksumAlgorithm
+            = options.getTransferValidationChecksumAlgorithm();
 
         try {
             Path filePath = Paths.get(options.getFilePath());
@@ -992,18 +996,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             if (fileSize > finalParallelTransferOptions.getMaxSingleUploadSizeLong()) {
                 return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize, options.getHeaders(),
                     options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
-                    filePath, blockBlobAsyncClient, requestChecksumAlgorithm);
+                    filePath, blockBlobAsyncClient, transferValidationChecksumAlgorithm);
             } else {
                 // Otherwise, we know it can be sent in a single request reducing network overhead.
-                Mono<Response<BlockBlobItem>> responseMono
-                    = ContentValidationModeResolver.applyContentValidationBehavior(
-                        blockBlobAsyncClient.uploadWithResponse(
-                            new BlockBlobSimpleUploadOptions(fullFileData).setHeaders(options.getHeaders())
-                                .setMetadata(options.getMetadata())
-                                .setTags(options.getTags())
-                                .setTier(options.getTier())
-                                .setRequestConditions(options.getRequestConditions())),
-                        requestChecksumAlgorithm, fileSize, false);
+                Mono<Response<BlockBlobItem>> responseMono = ContentValidationModeResolver.addContentValidationMode(
+                    blockBlobAsyncClient.uploadWithResponse(
+                        new BlockBlobSimpleUploadOptions(fullFileData).setHeaders(options.getHeaders())
+                            .setMetadata(options.getMetadata())
+                            .setTags(options.getTags())
+                            .setTier(options.getTier())
+                            .setRequestConditions(options.getRequestConditions())),
+                    transferValidationChecksumAlgorithm, fileSize, false);
                 if (finalParallelTransferOptions.getProgressListener() != null) {
                     ProgressReporter progressReporter
                         = ProgressReporter.withProgressListener(finalParallelTransferOptions.getProgressListener());
@@ -1021,7 +1024,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         ParallelTransferOptions parallelTransferOptions, Long originalBlockSize, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, Path filePath, BlockBlobAsyncClient client,
-        StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
         final BlobRequestConditions finalRequestConditions
             = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
         // parallelTransferOptions are finalized in the calling method.
@@ -1039,10 +1042,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 BinaryData data
                     = BinaryData.fromFile(filePath, chunk.getOffset(), chunk.getCount(), DEFAULT_FILE_READ_CHUNK_SIZE);
 
-                Mono<Response<Void>> responseMono = ContentValidationModeResolver.applyContentValidationBehavior(
+                Mono<Response<Void>> responseMono = ContentValidationModeResolver.addContentValidationMode(
                     client.stageBlockWithResponse(
                         new BlockBlobStageBlockOptions(blockId, data).setLeaseId(finalRequestConditions.getLeaseId())),
-                    requestChecksumAlgorithm, 0, true);
+                    transferValidationChecksumAlgorithm, 0, true);
                 if (progressReporter != null) {
                     responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
                         Contexts.empty().setHttpRequestProgressReporter(progressReporter.createChild()).getContext()));

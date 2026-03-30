@@ -16,7 +16,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 public final class PageBlobOutputStreamOptions {
     private final PageRange pageRange;
     private BlobRequestConditions requestConditions;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link PageBlobOutputStreamOptions}.
@@ -59,24 +59,25 @@ public final class PageBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the request. See {@link StorageChecksumAlgorithm}
+     * for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO},
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send
-     * checksums for upload validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the request. See {@link StorageChecksumAlgorithm}
+     * for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public PageBlobOutputStreamOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+    public PageBlobOutputStreamOptions
+        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

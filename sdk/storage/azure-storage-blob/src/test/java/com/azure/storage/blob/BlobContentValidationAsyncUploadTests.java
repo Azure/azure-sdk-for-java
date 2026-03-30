@@ -76,7 +76,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -99,7 +99,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -125,7 +125,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -144,7 +144,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -153,7 +153,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     /**
-     * Blob parallel upload rejects using both computeMd5 (SDK-computed MD5) and CRC64 (requestChecksumAlgorithm) at once.
+     * Blob parallel upload rejects using both computeMd5 (SDK-computed MD5) and CRC64 (transfer validation checksum algorithm) at once.
      */
     @SuppressWarnings("deprecation")
     @Test
@@ -167,7 +167,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
             .setComputeMd5(true)
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadWithResponse(options))
             .verifyErrorMatches(throwable -> throwable instanceof IllegalArgumentException
@@ -189,7 +189,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(algorithm);
+            = new BlockBlobSimpleUploadOptions(data).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -208,7 +208,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(algorithm);
+            = new BlockBlobSimpleUploadOptions(data).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -225,8 +225,8 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
-        BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+        BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data)
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -235,7 +235,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     /**
-     * Block blob simple upload rejects using both MD5 (contentMd5) and CRC64 (requestChecksumAlgorithm) at once.
+     * Block blob simple upload rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
      */
     @Test
     public void blockBlobSimpleUploadWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
@@ -247,7 +247,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data).setContentMd5(md5)
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadWithResponse(options))
             .verifyErrorMatches(throwable -> throwable instanceof IllegalArgumentException
@@ -269,7 +269,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options
-            = new BlockBlobStageBlockOptions(getBlockID(), data).setRequestChecksumAlgorithm(algorithm);
+            = new BlockBlobStageBlockOptions(getBlockID(), data).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
             assertTrue(hasOnlyCrc64Headers(recorded));
@@ -287,7 +287,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options
-            = new BlockBlobStageBlockOptions(getBlockID(), data).setRequestChecksumAlgorithm(algorithm);
+            = new BlockBlobStageBlockOptions(getBlockID(), data).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -304,7 +304,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
         StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
             assertTrue(hasNoContentValidationHeaders(recorded));
@@ -312,7 +312,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     /**
-     * Stage block rejects using both MD5 (contentMd5) and CRC64 (requestChecksumAlgorithm) at once.
+     * Stage block rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
      */
     @Test
     public void stageBlockWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
@@ -324,7 +324,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data).setContentMd5(md5)
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.stageBlockWithResponse(options))
             .verifyErrorMatches(throwable -> throwable instanceof IllegalArgumentException
@@ -347,7 +347,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setRequestChecksumAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -367,7 +367,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, TEN_MB).setRequestChecksumAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions(data, TEN_MB).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -385,8 +385,8 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, TEN_MB).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
         StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -395,7 +395,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     /**
-     * Append block rejects using both MD5 (contentMd5) and CRC64 (requestChecksumAlgorithm) at once.
+     * Append block rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
      */
     @Test
     public void appendBlockWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
@@ -408,7 +408,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setContentMd5(md5)
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.appendBlockWithResponse(options))
             .verifyErrorMatches(throwable -> throwable instanceof IllegalArgumentException
@@ -436,7 +436,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
-                .setRequestChecksumAlgorithm(algorithm);
+                .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -457,7 +457,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setRequestChecksumAlgorithm(algorithm);
+                .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -477,7 +477,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
         StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -486,7 +486,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     /**
-     * Upload pages rejects using both MD5 (contentMd5) and CRC64 (requestChecksumAlgorithm) at once.
+     * Upload pages rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
      */
     @Test
     public void uploadPagesWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
@@ -501,7 +501,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
                 .setContentMd5(md5)
-                .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadPagesWithResponse(options))
             .verifyErrorMatches(throwable -> throwable instanceof IllegalArgumentException
@@ -522,7 +522,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -540,7 +540,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -561,7 +561,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -578,7 +578,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
         StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -607,7 +607,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) EXACTLY_4MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(algorithm);
+            .setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -626,7 +626,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(algorithm);
+            = new BlockBlobSimpleUploadOptions(data).setTransferValidationChecksumAlgorithm(algorithm);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -656,7 +656,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
                 .setProgressListener(progressReported::set))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -680,7 +680,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                 .setMaxSingleUploadSizeLong(blockSize)
                 .setProgressListener(progressReported::set))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -699,7 +699,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
                 .setProgressListener(progressReported::set))
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -721,7 +721,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
                 .setMaxSingleUploadSizeLong(blockSize)
                 .setProgressListener(progressReported::set))
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
@@ -748,7 +748,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         client.uploadWithResponse(options).block();
 
@@ -766,7 +766,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         client.uploadWithResponse(options).block();
 
@@ -787,7 +787,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
             .setRequestConditions(new BlobRequestConditions())
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         client.uploadWithResponse(options).block();
 
@@ -804,8 +804,8 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
-        BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+        BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data)
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         client.uploadWithResponse(options).block();
 
@@ -824,7 +824,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         client.appendBlockWithResponse(options).block();
 
@@ -843,7 +843,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
         client.uploadPagesWithResponse(options).block();
 

@@ -55,8 +55,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
         final AppendBlobRequestConditions appendBlobRequestConditions,
-        final StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        return new AppendBlobOutputStream(client, appendBlobRequestConditions, requestChecksumAlgorithm);
+        final StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
+        return new AppendBlobOutputStream(client, appendBlobRequestConditions,
+            transferValidationChecksumAlgorithm);
     }
 
     /**
@@ -114,7 +115,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         options = options == null ? new BlockBlobOutputStreamOptions() : options;
         return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
             options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
-            options.getRequestChecksumAlgorithm(), context);
+            options.getTransferValidationChecksumAlgorithm(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -123,8 +124,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
-        final BlobRequestConditions requestConditions, final StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        return new PageBlobOutputStream(client, pageRange, requestConditions, requestChecksumAlgorithm);
+        final BlobRequestConditions requestConditions,
+        final StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
+        return new PageBlobOutputStream(client, pageRange, requestConditions,
+            transferValidationChecksumAlgorithm);
     }
 
     abstract void commit();
@@ -172,11 +175,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private final AppendBlobRequestConditions appendBlobRequestConditions;
         private final AppendBlobAsyncClient client;
-        private final StorageChecksumAlgorithm requestChecksumAlgorithm;
+        private final StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
             final AppendBlobRequestConditions appendBlobRequestConditions,
-            final StorageChecksumAlgorithm requestChecksumAlgorithm) {
+            final StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
             // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
             // versions support up to 4MB
             super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
@@ -187,7 +190,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
                 ? new AppendBlobRequestConditions()
                 : appendBlobRequestConditions;
-            this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+            this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
 
             if (this.appendBlobRequestConditions.getAppendPosition() == null) {
                 this.appendBlobRequestConditions.setAppendPosition(client.getProperties().block().getBlobSize());
@@ -198,7 +201,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
             AppendBlobAppendBlockOptions opts = new AppendBlobAppendBlockOptions(blockData, writeLength)
                 .setRequestConditions(appendBlobRequestConditions)
-                .setRequestChecksumAlgorithm(requestChecksumAlgorithm);
+                .setTransferValidationChecksumAlgorithm(transferValidationChecksumAlgorithm);
             return client.appendBlockWithResponse(opts)
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
@@ -244,8 +247,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
-            final BlobRequestConditions requestConditions, final StorageChecksumAlgorithm requestChecksumAlgorithm,
-            Context context) {
+            final BlobRequestConditions requestConditions,
+            final StorageChecksumAlgorithm transferValidationChecksumAlgorithm, Context context) {
             super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
             // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
             context = context == null || context.equals(Context.NONE) ? null : context;
@@ -264,7 +267,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                         .setTags(tags)
                         .setTier(tier)
                         .setRequestConditions(requestConditions)
-                        .setRequestChecksumAlgorithm(requestChecksumAlgorithm))
+                        .setTransferValidationChecksumAlgorithm(transferValidationChecksumAlgorithm))
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(e -> {
                     if (e instanceof IOException) {
@@ -342,15 +345,15 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private final PageBlobAsyncClient client;
         private final PageBlobRequestConditions pageBlobRequestConditions;
         private final PageRange pageRange;
-        private final StorageChecksumAlgorithm requestChecksumAlgorithm;
+        private final StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
         private PageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
             final BlobRequestConditions blobRequestConditions,
-            final StorageChecksumAlgorithm requestChecksumAlgorithm) {
+            final StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
             super(PageBlobClient.MAX_PUT_PAGES_BYTES);
             this.client = client;
             this.pageRange = pageRange;
-            this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+            this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
 
             if (blobRequestConditions != null) {
                 this.pageBlobRequestConditions
@@ -367,7 +370,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
             return client
                 .uploadPagesWithResponseInternal(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData,
-                    null, pageBlobRequestConditions, requestChecksumAlgorithm, com.azure.core.util.Context.NONE)
+                    null, pageBlobRequestConditions, transferValidationChecksumAlgorithm,
+                    com.azure.core.util.Context.NONE)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

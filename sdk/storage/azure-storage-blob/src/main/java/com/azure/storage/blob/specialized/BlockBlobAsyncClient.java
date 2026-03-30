@@ -418,10 +418,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
 
-        StorageChecksumAlgorithm requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
+        StorageChecksumAlgorithm transferValidationChecksumAlgorithm
+            = options.getTransferValidationChecksumAlgorithm();
         try {
             ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
-                requestChecksumAlgorithm);
+                transferValidationChecksumAlgorithm);
         } catch (IllegalArgumentException ex) {
             return monoError(LOGGER, ex);
         }
@@ -442,8 +443,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        context = ContentValidationModeResolver.applyContentValidationBehavior(context, requestChecksumAlgorithm,
-            options.getLength(), false);
+        context = ContentValidationModeResolver.addContentValidationMode(context,
+            transferValidationChecksumAlgorithm, options.getLength(), false);
 
         Context finalContext = context;
 
@@ -773,13 +774,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
         try {
             ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
-                options.getRequestChecksumAlgorithm());
+                options.getTransferValidationChecksumAlgorithm());
         } catch (IllegalArgumentException ex) {
             return monoError(LOGGER, ex);
         }
 
-        context = ContentValidationModeResolver.applyContentValidationBehavior(context,
-            options.getRequestChecksumAlgorithm(), options.getData().getLength(), false);
+        context = ContentValidationModeResolver.addContentValidationMode(context,
+            options.getTransferValidationChecksumAlgorithm(), options.getData().getLength(), false);
 
         return this.azureBlobStorage.getBlockBlobs()
             .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),

@@ -222,7 +222,7 @@ public final class PageBlobClient extends BlobClientBase {
             throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
         }
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, options.getPageRange(),
-            options.getRequestConditions(), options.getRequestChecksumAlgorithm());
+            options.getRequestConditions(), options.getTransferValidationChecksumAlgorithm());
     }
 
     /**
@@ -581,7 +581,7 @@ public final class PageBlobClient extends BlobClientBase {
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), length, PAGE_BYTES, true);
         Mono<Response<PageBlobItem>> response
             = pageBlobAsyncClient.uploadPagesWithResponseInternal(options.getPageRange(), fbb, options.getContentMd5(),
-                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context);
+                options.getRequestConditions(), options.getTransferValidationChecksumAlgorithm(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

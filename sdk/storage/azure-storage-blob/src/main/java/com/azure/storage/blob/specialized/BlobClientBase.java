@@ -504,7 +504,8 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
-        final StorageChecksumAlgorithm responseChecksumAlgorithm = options.getResponseChecksumAlgorithm();
+        final StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm
+            = options.getTransferValidationChecksumAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
             : options.getConsistentReadControl();
@@ -518,7 +519,7 @@ public class BlobClientBase {
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
             = (chunkRange, conditions) -> client.downloadStreamWithResponseInternal(chunkRange, null, conditions, false,
-                responseChecksumAlgorithm, contextFinal);
+                responseTransferValidationChecksumAlgorithm, contextFinal);
         return ChunkedDownloadUtils
             .downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
@@ -598,7 +599,7 @@ public class BlobClientBase {
                     .setRange(new BlobRange(initialPosition, (long) initialRange.remaining()))
                     .setRequestConditions(options.getRequestConditions())
                     .setRetrieveContentRangeMd5(false)
-                    .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()),
+                    .setTransferValidationChecksumAlgorithm(options.getTransferValidationChecksumAlgorithm()),
                 null, context);
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
@@ -1302,7 +1303,7 @@ public class BlobClientBase {
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
-                options.getResponseChecksumAlgorithm(), context)
+                options.getTransferValidationChecksumAlgorithm(), context)
             .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
                 .thenReturn(new BlobDownloadResponse(response)));
 
@@ -1407,7 +1408,7 @@ public class BlobClientBase {
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
-                options.getResponseChecksumAlgorithm(), context)
+                options.getTransferValidationChecksumAlgorithm(), context)
             .flatMap(r -> BinaryData.fromFlux(r.getValue())
                 .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
                     data, r.getDeserializedHeaders())))

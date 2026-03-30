@@ -19,7 +19,8 @@ public enum StorageChecksumAlgorithm {
 
     /**
      * Allow the SDK to choose the validation algorithm. Currently resolves to CRC64 where supported. Different
-     * library versions may make different choices.
+     * library versions may make different choices. The resolution may change in the future. Please set an
+     * explicit algorithm if you need a specific behavior.
      */
     AUTO,
 

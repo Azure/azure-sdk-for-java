@@ -18,7 +18,7 @@ public final class BlobDownloadContentOptions {
     private DownloadRetryOptions downloadRetryOptions;
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
-    private StorageChecksumAlgorithm responseChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobDownloadContentOptions}.
@@ -107,24 +107,23 @@ public final class BlobDownloadContentOptions {
     }
 
     /**
-     * Gets the algorithm to use for response content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation. See {@link StorageChecksumAlgorithm} for more details.
      *
-     * @return The response checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getResponseChecksumAlgorithm() {
-        return responseChecksumAlgorithm;
+    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO},
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response
-     * payload checksums during download. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation. See {@link StorageChecksumAlgorithm} for more details.
      *
-     * @param responseChecksumAlgorithm The response checksum algorithm.
+     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlobDownloadContentOptions setResponseChecksumAlgorithm(StorageChecksumAlgorithm responseChecksumAlgorithm) {
-        this.responseChecksumAlgorithm = responseChecksumAlgorithm;
+    public BlobDownloadContentOptions
+        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

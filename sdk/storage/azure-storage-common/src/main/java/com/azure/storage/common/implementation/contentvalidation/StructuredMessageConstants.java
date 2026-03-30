@@ -47,7 +47,7 @@ public final class StructuredMessageConstants {
      */
     public static final String STRUCTURED_BODY_TYPE_VALUE = "XSM/1.0; properties=crc64";
 
-    public static final String CONTENT_VALIDATION_BEHAVIOR_KEY = "contentValidationBehavior";
+    public static final String CONTENT_VALIDATION_MODE_KEY = "contentValidationMode";
 
     public static final String USE_CRC64_CHECKSUM_HEADER_CONTEXT = "crc64ChecksumHeaderContext";
 

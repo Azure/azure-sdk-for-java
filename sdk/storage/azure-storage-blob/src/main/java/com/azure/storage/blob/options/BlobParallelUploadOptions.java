@@ -40,7 +40,7 @@ public class BlobParallelUploadOptions {
     private Duration timeout;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
@@ -281,7 +281,7 @@ public class BlobParallelUploadOptions {
      * Gets the computeMd5 property.
      *
      * @return Whether the library should calculate the md5 and send it for the service to verify.
-     * @deprecated Use {@link #getRequestChecksumAlgorithm()} instead.
+     * @deprecated Use {@link #getTransferValidationChecksumAlgorithm()} instead.
      */
     @Deprecated
     public boolean isComputeMd5() {
@@ -294,7 +294,7 @@ public class BlobParallelUploadOptions {
      * @param computeMd5 Whether the library should calculate the md5 and send it for the service to
      * verify.
      * @return The updated options.
-     * @deprecated Use {@link #setRequestChecksumAlgorithm(StorageChecksumAlgorithm)} instead.
+     * @deprecated Use {@link #setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm)} instead.
      */
     @Deprecated
     public BlobParallelUploadOptions setComputeMd5(boolean computeMd5) {
@@ -375,24 +375,25 @@ public class BlobParallelUploadOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the request. See {@link StorageChecksumAlgorithm}
+     * for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
-     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the request. See {@link StorageChecksumAlgorithm}
+     * for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlobParallelUploadOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+    public BlobParallelUploadOptions
+        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

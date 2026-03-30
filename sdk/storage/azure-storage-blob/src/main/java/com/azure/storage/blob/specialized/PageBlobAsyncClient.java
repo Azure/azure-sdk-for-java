@@ -520,8 +520,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         try {
             return withContext(context -> uploadPagesWithResponseInternal(options.getPageRange(), options.getBodyFlux(),
-                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(),
-                context));
+                options.getContentMd5(), options.getRequestConditions(),
+                options.getTransferValidationChecksumAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -535,7 +535,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions,
-        StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
+        StorageChecksumAlgorithm transferValidationChecksumAlgorithm, Context context) {
         pageBlobRequestConditions
             = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
 
@@ -546,15 +546,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         try {
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5, requestChecksumAlgorithm);
+            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5,
+                transferValidationChecksumAlgorithm);
         } catch (IllegalArgumentException ex) {
             return monoError(LOGGER, ex);
         }
 
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        context = ContentValidationModeResolver.applyContentValidationBehavior(context, requestChecksumAlgorithm,
-            length, false);
+        context = ContentValidationModeResolver.addContentValidationMode(context,
+            transferValidationChecksumAlgorithm, length, false);
 
         return this.azureBlobStorage.getPageBlobs()
             .uploadPagesWithResponseAsync(containerName, blobName, length, body, contentMd5, null, null, pageRangeStr,

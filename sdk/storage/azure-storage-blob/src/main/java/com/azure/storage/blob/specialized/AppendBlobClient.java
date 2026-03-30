@@ -228,7 +228,7 @@ public final class AppendBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(AppendBlobOutputStreamOptions options) {
         options = options == null ? new AppendBlobOutputStreamOptions() : options;
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options.getRequestConditions(),
-            options.getRequestChecksumAlgorithm());
+            options.getTransferValidationChecksumAlgorithm());
     }
 
     /**
@@ -548,7 +548,7 @@ public final class AppendBlobClient extends BlobClientBase {
 
         Mono<Response<AppendBlobItem>> response
             = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, options.getLength(), options.getContentMd5(),
-                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context);
+                options.getRequestConditions(), options.getTransferValidationChecksumAlgorithm(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

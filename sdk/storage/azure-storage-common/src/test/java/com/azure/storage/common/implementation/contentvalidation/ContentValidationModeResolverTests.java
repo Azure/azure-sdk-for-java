@@ -34,39 +34,39 @@ public class ContentValidationModeResolverTests {
     @ParameterizedTest
     @MethodSource("singlePartReturnsNullSupplier")
     public void singlePartReturnsNullForNonCrc64Algorithms(StorageChecksumAlgorithm algorithm, long length) {
-        assertNull(ContentValidationModeResolver.getBehaviorForSinglePartUpload(algorithm, length));
+        assertNull(ContentValidationModeResolver.getModeForSinglePartUpload(algorithm, length));
     }
 
     @Test
     public void singlePartSmallUploadUsesCrc64Header() {
         long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
-        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT, ContentValidationModeResolver
-            .getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.CRC64, underThreshold));
+        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
+            ContentValidationModeResolver.getModeForSinglePartUpload(StorageChecksumAlgorithm.CRC64, underThreshold));
     }
 
     @Test
     public void singlePartAtExact4MBBoundaryUsesStructuredMessage() {
-        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver.getBehaviorForSinglePartUpload(
+        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver.getModeForSinglePartUpload(
             StorageChecksumAlgorithm.CRC64, MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER));
     }
 
     @Test
     public void singlePartLargeUploadUsesStructuredMessage() {
         long overThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
-        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver
-            .getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.CRC64, overThreshold));
+        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
+            ContentValidationModeResolver.getModeForSinglePartUpload(StorageChecksumAlgorithm.CRC64, overThreshold));
     }
 
     @Test
     public void singlePartAutoSmallUploadUsesCrc64Header() {
         long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
-        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT, ContentValidationModeResolver
-            .getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.AUTO, underThreshold));
+        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
+            ContentValidationModeResolver.getModeForSinglePartUpload(StorageChecksumAlgorithm.AUTO, underThreshold));
     }
 
     @Test
     public void singlePartAutoAtExact4MBBoundaryUsesStructuredMessage() {
-        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver.getBehaviorForSinglePartUpload(
+        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver.getModeForSinglePartUpload(
             StorageChecksumAlgorithm.AUTO, MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER));
     }
 
@@ -74,7 +74,7 @@ public class ContentValidationModeResolverTests {
     public void singlePartAutoLargeUploadUsesStructuredMessage() {
         long overThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
-            ContentValidationModeResolver.getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.AUTO, overThreshold));
+            ContentValidationModeResolver.getModeForSinglePartUpload(StorageChecksumAlgorithm.AUTO, overThreshold));
     }
 
     // ===========================================================================================
@@ -88,19 +88,19 @@ public class ContentValidationModeResolverTests {
     @ParameterizedTest
     @MethodSource("chunkedReturnsNullSupplier")
     public void chunkedReturnsNullForNonCrc64Algorithms(StorageChecksumAlgorithm algorithm) {
-        assertNull(ContentValidationModeResolver.getBehaviorForChunkedUpload(algorithm));
+        assertNull(ContentValidationModeResolver.getModeForChunkedUpload(algorithm));
     }
 
     @Test
     public void chunkedCrc64AlwaysUsesStructuredMessage() {
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
-            ContentValidationModeResolver.getBehaviorForChunkedUpload(StorageChecksumAlgorithm.CRC64));
+            ContentValidationModeResolver.getModeForChunkedUpload(StorageChecksumAlgorithm.CRC64));
     }
 
     @Test
     public void chunkedAutoAlwaysUsesStructuredMessage() {
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
-            ContentValidationModeResolver.getBehaviorForChunkedUpload(StorageChecksumAlgorithm.AUTO));
+            ContentValidationModeResolver.getModeForChunkedUpload(StorageChecksumAlgorithm.AUTO));
     }
 
     // ===========================================================================================
