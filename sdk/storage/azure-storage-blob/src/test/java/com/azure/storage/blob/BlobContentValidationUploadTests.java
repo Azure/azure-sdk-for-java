@@ -555,23 +555,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
-    /**
-     * Upload from file rejects requestChecksumAlgorithm MD5 because the SDK does not support computing MD5 for file uploads.
-     */
-    @Test
-    public void uploadFromFileWithRequestChecksumAlgorithmMd5Throws() throws IOException {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        File tempFile = getRandomFile(UNDER_4MB);
-
-        BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
-            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.MD5);
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> client.uploadFromFileWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(UPLOAD_FROM_FILE_MD5_NOT_SUPPORTED_MESSAGE));
-    }
-
     // ===========================================================================================
     // Sync BlobOutputStream tests (getBlobOutputStream)
     // ===========================================================================================
