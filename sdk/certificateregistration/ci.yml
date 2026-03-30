@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/certificateregistration/ci.yml
+      - sdk/certificateregistration/azure-resourcemanager-certificateregistration/
+    exclude:
+      - sdk/certificateregistration/pom.xml
+      - sdk/certificateregistration/azure-resourcemanager-certificateregistration/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/certificateregistration/ci.yml
+      - sdk/certificateregistration/azure-resourcemanager-certificateregistration/
+    exclude:
+      - sdk/certificateregistration/pom.xml
+      - sdk/certificateregistration/azure-resourcemanager-certificateregistration/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercertificateregistration
+    displayName: azure-resourcemanager-certificateregistration
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: certificateregistration
+    Artifacts:
+      - name: azure-resourcemanager-certificateregistration
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercertificateregistration
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercertificateregistration }}
