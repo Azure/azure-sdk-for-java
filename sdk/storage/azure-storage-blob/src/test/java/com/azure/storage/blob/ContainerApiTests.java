@@ -2377,7 +2377,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertNull(blobs.get(0).getMetadata());
     }
 
-    @LiveOnly
     @Test
     public void listBlobsArrowSchemaDiscovery() throws Exception {
         // Upload a test blob with metadata
@@ -2424,7 +2423,6 @@ public class ContainerApiTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
     @Test
     public void listBlobsArrowHierarchySchemaDiscovery() throws Exception {
         // Upload blobs with directory structure and metadata
@@ -2502,7 +2500,6 @@ public class ContainerApiTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
     @Test
     public void listBlobsArrowDeserializer() throws Exception {
         // Upload a test blob with metadata
@@ -2655,7 +2652,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(4, allItems.size());
     }
 
-    @LiveOnly
     @Test
     public void listBlobsArrowWithTags() {
         // Upload a blob and set tags
