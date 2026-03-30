@@ -1,9 +1,5 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Other Changes
-
 ## 2.53.6 (2026-01-29)
 
 ### Other Changes
@@ -12,13 +8,15 @@
 
 - Upgraded core dependencies.
 
+
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.53.4 (2025-10-27)
 
@@ -26,7 +24,8 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.3 (2025-09-24)
 
