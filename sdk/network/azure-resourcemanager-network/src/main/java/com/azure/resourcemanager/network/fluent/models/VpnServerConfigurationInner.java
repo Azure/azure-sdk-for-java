@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AadAuthenticationParameters;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.RadiusServer;
-import com.azure.resourcemanager.network.models.TrackedResourceWithSettableName;
 import com.azure.resourcemanager.network.models.VpnAuthenticationType;
 import com.azure.resourcemanager.network.models.VpnGatewayTunnelingProtocol;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootCertificate;
@@ -26,7 +26,7 @@ import java.util.Map;
  * VpnServerConfiguration Resource.
  */
 @Fluent
-public final class VpnServerConfigurationInner extends TrackedResourceWithSettableName {
+public final class VpnServerConfigurationInner extends Resource {
     /*
      * Properties of the P2SVpnServer configuration.
      */
@@ -38,7 +38,17 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
     private String etag;
 
     /*
-     * Resource type.
+     * Resource ID.
+     */
+    private String id;
+
+    /*
+     * Resource name.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
      */
     private String type;
 
@@ -67,31 +77,53 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the id property: Resource ID.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource ID.
+     * 
+     * @param id the id value to set.
+     * @return the VpnServerConfigurationInner object itself.
+     */
+    public VpnServerConfigurationInner withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Resource name.
+     * 
+     * @param name the name value to set.
+     * @return the VpnServerConfigurationInner object itself.
+     */
+    public VpnServerConfigurationInner withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VpnServerConfigurationInner withId(String id) {
-        super.withId(id);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VpnServerConfigurationInner withName(String name) {
-        super.withName(name);
-        return this;
     }
 
     /**
@@ -458,7 +490,6 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -471,11 +502,11 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id());
-        jsonWriter.writeStringField("name", name());
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
 
@@ -485,6 +516,7 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
      * @param jsonReader The JsonReader being read.
      * @return An instance of VpnServerConfigurationInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VpnServerConfigurationInner.
      */
     public static VpnServerConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
@@ -494,11 +526,7 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedVpnServerConfigurationInner.withId(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    deserializedVpnServerConfigurationInner.withName(reader.getString());
-                } else if ("type".equals(fieldName)) {
+                if ("type".equals(fieldName)) {
                     deserializedVpnServerConfigurationInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
                     deserializedVpnServerConfigurationInner.withLocation(reader.getString());
@@ -510,6 +538,10 @@ public final class VpnServerConfigurationInner extends TrackedResourceWithSettab
                         = VpnServerConfigurationProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedVpnServerConfigurationInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

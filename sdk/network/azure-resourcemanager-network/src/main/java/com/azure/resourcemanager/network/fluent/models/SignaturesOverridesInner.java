@@ -5,22 +5,37 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
-import com.azure.resourcemanager.network.models.WritableResource;
 import java.io.IOException;
 
 /**
  * Contains all specific policy signatures overrides for the IDPS.
  */
 @Fluent
-public final class SignaturesOverridesInner extends WritableResource {
+public final class SignaturesOverridesInner extends ProxyResource {
     /*
      * Will contain the properties of the resource (the actual signature overrides)
      */
     private SignaturesOverridesProperties properties;
+
+    /*
+     * Resource ID.
+     */
+    private String id;
+
+    /*
+     * Resource name.
+     */
+    private String name;
+
+    /*
+     * Resource type.
+     */
+    private String type;
 
     /**
      * Creates an instance of SignaturesOverridesInner class.
@@ -49,29 +64,62 @@ public final class SignaturesOverridesInner extends WritableResource {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the id property: Resource ID.
+     * 
+     * @return the id value.
      */
-    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource ID.
+     * 
+     * @param id the id value to set.
+     * @return the SignaturesOverridesInner object itself.
+     */
     public SignaturesOverridesInner withId(String id) {
-        super.withId(id);
+        this.id = id;
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
      */
-    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Resource name.
+     * 
+     * @param name the name value to set.
+     * @return the SignaturesOverridesInner object itself.
+     */
     public SignaturesOverridesInner withName(String name) {
-        super.withName(name);
+        this.name = name;
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the type property: Resource type.
+     * 
+     * @return the type value.
      */
-    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Resource type.
+     * 
+     * @param type the type value to set.
+     * @return the SignaturesOverridesInner object itself.
+     */
     public SignaturesOverridesInner withType(String type) {
-        super.withType(type);
+        this.type = type;
         return this;
     }
 
@@ -80,7 +128,6 @@ public final class SignaturesOverridesInner extends WritableResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (properties() != null) {
             properties().validate();
@@ -93,10 +140,10 @@ public final class SignaturesOverridesInner extends WritableResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id());
-        jsonWriter.writeStringField("name", name());
-        jsonWriter.writeStringField("type", type());
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,14 +162,14 @@ public final class SignaturesOverridesInner extends WritableResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedSignaturesOverridesInner.withId(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    deserializedSignaturesOverridesInner.withName(reader.getString());
-                } else if ("type".equals(fieldName)) {
-                    deserializedSignaturesOverridesInner.withType(reader.getString());
-                } else if ("properties".equals(fieldName)) {
+                if ("properties".equals(fieldName)) {
                     deserializedSignaturesOverridesInner.properties = SignaturesOverridesProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

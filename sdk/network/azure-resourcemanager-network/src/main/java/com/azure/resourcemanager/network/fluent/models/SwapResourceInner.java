@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.ProxyResourceWithReadOnlyID;
 import com.azure.resourcemanager.network.models.SwapResourceProperties;
 import java.io.IOException;
 
@@ -16,24 +16,24 @@ import java.io.IOException;
  * SwapResource to represent slot type on the specified cloud service.
  */
 @Fluent
-public final class SwapResourceInner extends ProxyResourceWithReadOnlyID {
+public final class SwapResourceInner extends ProxyResource {
     /*
      * Swap resource properties
      */
     private SwapResourceProperties properties;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Resource ID.
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -64,7 +64,7 @@ public final class SwapResourceInner extends ProxyResourceWithReadOnlyID {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -74,7 +74,7 @@ public final class SwapResourceInner extends ProxyResourceWithReadOnlyID {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -84,7 +84,7 @@ public final class SwapResourceInner extends ProxyResourceWithReadOnlyID {
     }
 
     /**
-     * Get the id property: Resource ID.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -98,7 +98,6 @@ public final class SwapResourceInner extends ProxyResourceWithReadOnlyID {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (properties() != null) {
             properties().validate();
@@ -121,6 +120,7 @@ public final class SwapResourceInner extends ProxyResourceWithReadOnlyID {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SwapResourceInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SwapResourceInner.
      */
     public static SwapResourceInner fromJson(JsonReader jsonReader) throws IOException {

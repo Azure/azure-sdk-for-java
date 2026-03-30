@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallManifestRuleSet;
-import com.azure.resourcemanager.network.models.ProxyResourceWithSettableId;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,26 +17,26 @@ import java.util.List;
  * Response for ApplicationGatewayWafDynamicManifest API service call.
  */
 @Immutable
-public final class ApplicationGatewayWafDynamicManifestResultInner extends ProxyResourceWithSettableId {
+public final class ApplicationGatewayWafDynamicManifestResultInner extends ProxyResource {
     /*
      * Properties of the ApplicationGatewayWafDynamicManifest .
      */
     private ApplicationGatewayWafDynamicManifestPropertiesResult innerProperties;
 
     /*
-     * Resource type.
+     * Resource ID.
+     */
+    private String id;
+
+    /*
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of ApplicationGatewayWafDynamicManifestResultInner class.
@@ -54,7 +54,16 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends Proxy
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the id property: Resource ID.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -64,23 +73,13 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends Proxy
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
     @Override
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -115,7 +114,6 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends Proxy
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -128,8 +126,8 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends Proxy
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -139,6 +137,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends Proxy
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApplicationGatewayWafDynamicManifestResultInner if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApplicationGatewayWafDynamicManifestResultInner.
      */
     public static ApplicationGatewayWafDynamicManifestResultInner fromJson(JsonReader jsonReader) throws IOException {
@@ -149,15 +148,15 @@ public final class ApplicationGatewayWafDynamicManifestResultInner extends Proxy
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedApplicationGatewayWafDynamicManifestResultInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedApplicationGatewayWafDynamicManifestResultInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedApplicationGatewayWafDynamicManifestResultInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationGatewayWafDynamicManifestResultInner.innerProperties
                         = ApplicationGatewayWafDynamicManifestPropertiesResult.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayWafDynamicManifestResultInner.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

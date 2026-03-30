@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -16,7 +17,6 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfigurati
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrackedResourceWithEtag;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.Map;
  * Information about the connection monitor.
  */
 @Fluent
-public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag {
+public final class ConnectionMonitorResultInner extends Resource {
     /*
      * Properties of the connection monitor result.
      */
@@ -38,17 +38,17 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
     private String etag;
 
     /*
-     * Connection monitor type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Name of the connection monitor.
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * ID of the connection monitor.
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -72,13 +72,12 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
      * 
      * @return the etag value.
      */
-    @Override
     public String etag() {
         return this.etag;
     }
 
     /**
-     * Get the type property: Connection monitor type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -88,7 +87,7 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
     }
 
     /**
-     * Get the name property: Name of the connection monitor.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -98,7 +97,7 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
     }
 
     /**
-     * Get the id property: ID of the connection monitor.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -374,7 +373,6 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -399,6 +397,7 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConnectionMonitorResultInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConnectionMonitorResultInner.
      */
     public static ConnectionMonitorResultInner fromJson(JsonReader jsonReader) throws IOException {
@@ -414,8 +413,6 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
                     deserializedConnectionMonitorResultInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedConnectionMonitorResultInner.type = reader.getString();
-                } else if ("etag".equals(fieldName)) {
-                    deserializedConnectionMonitorResultInner.etag = reader.getString();
                 } else if ("location".equals(fieldName)) {
                     deserializedConnectionMonitorResultInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
@@ -424,6 +421,8 @@ public final class ConnectionMonitorResultInner extends TrackedResourceWithEtag 
                 } else if ("properties".equals(fieldName)) {
                     deserializedConnectionMonitorResultInner.innerProperties
                         = ConnectionMonitorResultProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedConnectionMonitorResultInner.etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

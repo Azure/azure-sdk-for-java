@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ReadOnlySubResourceModel;
 import com.azure.resourcemanager.network.models.RouteMapRule;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  * The RouteMap child resource of a Virtual hub.
  */
 @Fluent
-public final class RouteMapInner extends ReadOnlySubResourceModel {
+public final class RouteMapInner extends ProxyResource {
     /*
      * Properties of the RouteMap resource.
      */
@@ -30,17 +30,17 @@ public final class RouteMapInner extends ReadOnlySubResourceModel {
     private String etag;
 
     /*
-     * Type of the resource.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Name of the resource.
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Resource ID.
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -69,7 +69,7 @@ public final class RouteMapInner extends ReadOnlySubResourceModel {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -79,7 +79,7 @@ public final class RouteMapInner extends ReadOnlySubResourceModel {
     }
 
     /**
-     * Get the name property: Name of the resource.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -89,7 +89,7 @@ public final class RouteMapInner extends ReadOnlySubResourceModel {
     }
 
     /**
-     * Get the id property: Resource ID.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -185,7 +185,6 @@ public final class RouteMapInner extends ReadOnlySubResourceModel {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -208,6 +207,7 @@ public final class RouteMapInner extends ReadOnlySubResourceModel {
      * @param jsonReader The JsonReader being read.
      * @return An instance of RouteMapInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RouteMapInner.
      */
     public static RouteMapInner fromJson(JsonReader jsonReader) throws IOException {
