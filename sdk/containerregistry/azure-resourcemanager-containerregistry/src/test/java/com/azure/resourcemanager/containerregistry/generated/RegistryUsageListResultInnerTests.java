@@ -13,11 +13,11 @@ public final class RegistryUsageListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryUsageListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"ndnvo\",\"limit\":4292877192766299113,\"currentValue\":3293446474919179561,\"unit\":\"Count\"}]}")
+            "{\"value\":[{\"name\":\"bonqvpkvlrxnjeas\",\"limit\":2687249492266688034,\"currentValue\":8008413633793129277,\"unit\":\"Bytes\"},{\"name\":\"eyy\",\"limit\":1523460255580500378,\"currentValue\":1246859219124083387,\"unit\":\"Bytes\"},{\"name\":\"rhpdjpjumas\",\"limit\":1164635978047948118,\"currentValue\":4118233747929526801,\"unit\":\"Count\"}]}")
             .toObject(RegistryUsageListResultInner.class);
-        Assertions.assertEquals("ndnvo", model.value().get(0).name());
-        Assertions.assertEquals(4292877192766299113L, model.value().get(0).limit());
-        Assertions.assertEquals(3293446474919179561L, model.value().get(0).currentValue());
-        Assertions.assertEquals(RegistryUsageUnit.COUNT, model.value().get(0).unit());
+        Assertions.assertEquals("bonqvpkvlrxnjeas", model.value().get(0).name());
+        Assertions.assertEquals(2687249492266688034L, model.value().get(0).limit());
+        Assertions.assertEquals(8008413633793129277L, model.value().get(0).currentValue());
+        Assertions.assertEquals(RegistryUsageUnit.BYTES, model.value().get(0).unit());
     }
 }
