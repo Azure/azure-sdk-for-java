@@ -22,7 +22,7 @@ public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResource
     @Test
     public void testListByStandbyVirtualMachinePoolResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"rbu\",\"provisioningState\":\"Deleting\"},\"id\":\"pnazzm\",\"name\":\"jrunmpxtt\",\"type\":\"bh\"}]}";
+            = "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"erfuwuttt\",\"provisioningState\":\"Deleting\"},\"id\":\"rbirphxe\",\"name\":\"c\",\"type\":\"vahfn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResource
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StandbyVirtualMachineResource> response = manager.standbyVirtualMachines()
-            .listByStandbyVirtualMachinePoolResource("buynhijggm", "bfs", com.azure.core.util.Context.NONE);
+            .listByStandbyVirtualMachinePoolResource("vf", "nkymuctqhjfbebrj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rbu", response.iterator().next().properties().virtualMachineResourceId());
+        Assertions.assertEquals("erfuwuttt", response.iterator().next().properties().virtualMachineResourceId());
     }
 }

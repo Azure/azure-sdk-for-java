@@ -1,5 +1,25 @@
 ## Release History
 
+### 4.47.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.46.0 (2026-03-27)
+
+#### Bugs Fixed
+* Fixed an issue where creating containers with hierarchical partition keys (multi-hash) through the Spark catalog on the AAD path would fail. - See [PR 48548](https://github.com/Azure/azure-sdk-for-java/pull/48548)
+
+### 4.45.0 (2026-03-13)
+
+#### Features Added
+* Added `vectorEmbeddingPolicy` support in Spark catalog `TBLPROPERTIES` for creating vector-search-enabled containers. - See [PR 48349](https://github.com/Azure/azure-sdk-for-java/pull/48349)
+
 ### 4.44.2 (2026-03-05)
 
 #### Other Changes

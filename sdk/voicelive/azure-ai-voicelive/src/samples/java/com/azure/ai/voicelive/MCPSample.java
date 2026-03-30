@@ -42,6 +42,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -137,6 +138,7 @@ public final class MCPSample {
         AtomicReference<String> activeMCPCallId = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         // Create VoiceLive client
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
@@ -149,6 +151,7 @@ public final class MCPSample {
         client.startSession(DEFAULT_MODEL)
             .flatMap(session -> {
                 System.out.println("✓ Session started successfully");
+                sessionRef.set(session);
 
                 // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
@@ -199,12 +202,31 @@ public final class MCPSample {
                     if (processor != null) {
                         processor.cleanup();
                     }
+                    try {
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown
+                    }
                 }));
 
                 // Keep the reactive chain alive
                 return Mono.never();
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
+            .doFinally(signalType -> {
+                AudioProcessor processor = audioProcessorRef.get();
+                if (processor != null) {
+                    processor.cleanup();
+                }
+                VoiceLiveSessionAsyncClient s = sessionRef.get();
+                if (s != null) {
+                    try {
+                        s.close();
+                    } catch (Exception e) {
+                        // Suppress errors during cleanup
+                    }
+                }
+            })
             .block();
     }
 

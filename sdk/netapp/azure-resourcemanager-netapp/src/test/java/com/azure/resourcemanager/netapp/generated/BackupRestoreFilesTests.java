@@ -13,22 +13,22 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"tqzfavyv\",\"qqybarye\",\"ayjkqa\"],\"restoreFilePath\":\"gzslesjcbhernnti\",\"destinationVolumeId\":\"w\"}")
+            "{\"fileList\":[\"qyybxubmdnafcbq\",\"remj\",\"laqacigele\"],\"restoreFilePath\":\"d\",\"destinationVolumeId\":\"vqvwzkjopwbe\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("tqzfavyv", model.fileList().get(0));
-        Assertions.assertEquals("gzslesjcbhernnti", model.restoreFilePath());
-        Assertions.assertEquals("w", model.destinationVolumeId());
+        Assertions.assertEquals("qyybxubmdnafcbq", model.fileList().get(0));
+        Assertions.assertEquals("d", model.restoreFilePath());
+        Assertions.assertEquals("vqvwzkjopwbe", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupRestoreFiles model
-            = new BackupRestoreFiles().withFileList(Arrays.asList("tqzfavyv", "qqybarye", "ayjkqa"))
-                .withRestoreFilePath("gzslesjcbhernnti")
-                .withDestinationVolumeId("w");
+            = new BackupRestoreFiles().withFileList(Arrays.asList("qyybxubmdnafcbq", "remj", "laqacigele"))
+                .withRestoreFilePath("d")
+                .withDestinationVolumeId("vqvwzkjopwbe");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("tqzfavyv", model.fileList().get(0));
-        Assertions.assertEquals("gzslesjcbhernnti", model.restoreFilePath());
-        Assertions.assertEquals("w", model.destinationVolumeId());
+        Assertions.assertEquals("qyybxubmdnafcbq", model.fileList().get(0));
+        Assertions.assertEquals("d", model.restoreFilePath());
+        Assertions.assertEquals("vqvwzkjopwbe", model.destinationVolumeId());
     }
 }

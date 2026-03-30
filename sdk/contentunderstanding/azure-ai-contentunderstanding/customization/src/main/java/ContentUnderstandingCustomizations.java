@@ -166,7 +166,8 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Strip trailing numeric suffixes from emitter-generated parameter names
         // e.g., analyzeRequest1 -> analyzeRequest, grantCopyAuthorizationRequest1 -> grantCopyAuthorizationRequest
-        renameRequestParameters(customization, logger);
+        // This should no longer needed, after the fixes in emitter dependency lib.
+        // renameRequestParameters(customization, logger);
 
         // Default LRO polling interval to 3 seconds for Content Understanding operations
         customizePollingInterval(customization, logger);
@@ -416,7 +417,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                                 && ("String".equals(p.getType().asString()) || "java.lang.String".equals(p.getType().asString())));
 
                         if ("beginAnalyze".equals(name)) {
-                            // Hide useless 1-param overload beginAnalyze(String analyzerId) that creates empty AnalyzeRequest1
+                            // Hide useless 1-param overload beginAnalyze(String analyzerId) that creates empty AnalyzeRequest
                             if (method.getParameters().size() == 1) {
                                 String paramType = method.getParameters().get(0).getType().asString();
                                 String paramName = method.getParameters().get(0).getNameAsString();
@@ -787,7 +788,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
+            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.time.Duration");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
@@ -829,9 +830,9 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
-                        + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                        + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions)"
+                        + "AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);"
+                        + "BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);"
+                        + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest, requestOptions)"
                         + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
@@ -880,9 +881,9 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
-                        + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                        + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions)"
+                        + "AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);"
+                        + "BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);"
+                        + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions)"
                         + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });

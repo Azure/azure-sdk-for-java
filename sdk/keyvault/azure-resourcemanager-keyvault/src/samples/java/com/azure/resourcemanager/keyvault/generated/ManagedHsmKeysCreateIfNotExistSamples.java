@@ -13,7 +13,7 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmKeyCreateParameters;
  */
 public final class ManagedHsmKeysCreateIfNotExistSamples {
     /*
-     * x-ms-original-file: 2025-05-01/managedHsmCreateKey.json
+     * x-ms-original-file: 2026-02-01/managedHsmCreateKey.json
      */
     /**
      * Sample code: Create a key.

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ScopeMapsCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/ScopeMapCreate.json
+     * x-ms-original-file: 2026-01-01-preview/ScopeMapCreate.json
      */
     /**
      * Sample code: ScopeMapCreate.

@@ -5,7 +5,9 @@ param(
     # $(Build.SourcesDirectory) - root of the repository
     [Parameter(Mandatory = $true)][string]$SourcesDirectory,
     # The yml file whose artifacts and additionalModules lists will be updated
-    [Parameter(Mandatory = $true)][string]$PackagesYmlPath
+    [Parameter(Mandatory = $true)][string]$PackagesYmlPath,
+    # When set, creates patch branches from the current branch instead of remote main.
+    [switch]$UseCurrentBranch
 )
 
 $StartTime = $( get-date )
@@ -26,10 +28,11 @@ try {
     Write-Host "git fetch --all --prune"
     git fetch --all --prune
 
-    # Checkout a branch to work on based off of main in upstream.
+    # Checkout a branch to work on based off of main (or current branch if -UseCurrentBranch).
     if ($currentBranchName -ne $branchName) {
-        Write-Host "git checkout -b $branchName $remoteName/main"
-        git checkout -b $branchName $remoteName/main
+        $base = if ($UseCurrentBranch) { "HEAD" } else { "$remoteName/main" }
+        Write-Host "git checkout -b $branchName $base"
+        git checkout -b $branchName $base
 
         if ($LASTEXITCODE -ne 0) {
             LogError "Could not checkout branch $branchName, please check if it already exists and delete as necessary. Exiting..."
@@ -52,9 +55,36 @@ try {
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
     $libraryList = $null
 
+    # Build the list of artifacts being patched and normalize version_client.txt
+    # so non-patched in-group dependencies resolve to GA versions.
+    $patchedArtifactNames = @()
+    $patchedPomPaths = @()
+    foreach ($packageData in $packagesData) {
+        $patchedArtifactNames += $packageData["groupId"] + ":" + $packageData["name"]
+        $patchedPomPaths += Join-Path $SourcesDirectory "sdk" $packageData["ServiceDirectory"] $packageData["name"] "pom.xml"
+    }
+    NormalizeVersionFileForPatching -PatchedArtifactNames $patchedArtifactNames -PatchedPomFilePaths $patchedPomPaths
+
+    # Build PatchVersionOverrides: map of "${groupId}:${artifactId}" → patch version for all
+    # artifacts being patched. This is passed to generatepatch.ps1 so changelogs show the
+    # correct version when a sibling dependency is also being patched in the same run.
+    $PatchVersionOverrides = @{}
+    foreach ($packageData in $packagesData) {
+        $pkgArtifactId = $packageData["name"]
+        $pkgGroupId = $packageData["groupId"]
+        $pkgKey = "${pkgGroupId}:${pkgArtifactId}"
+        try {
+            $mavenInfo = GetVersionInfoForAnArtifactId -GroupId $pkgGroupId -ArtifactId $pkgArtifactId
+            $patchVersion = GetPatchVersion -ReleaseVersion $mavenInfo.LatestGAOrPatchVersion
+            $PatchVersionOverrides[$pkgKey] = $patchVersion
+        } catch {
+            Write-Warning "Could not determine patch version for ${pkgArtifactId}: $_"
+        }
+    }
+
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"]
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 
