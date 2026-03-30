@@ -11,12 +11,12 @@ package com.azure.resourcemanager.search.models;
  */
 public enum HostingMode {
     /**
-     * The limit on number of indexes is determined by the default limits for the SKU.
+     * The maximum limit of indexes is determined by the SKU or pricing tier.
      */
     DEFAULT("Default"),
 
     /**
-     * Only application for standard3 SKU, where the search service can have up to 1000 indexes.
+     * Only applies to the Standard3 (S3) SKU, where the search services can have up to 1,000 indexes.
      */
     HIGH_DENSITY("HighDensity");
 

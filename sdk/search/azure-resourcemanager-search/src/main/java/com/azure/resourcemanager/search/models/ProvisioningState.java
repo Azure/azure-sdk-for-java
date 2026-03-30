@@ -19,7 +19,7 @@ public enum ProvisioningState {
     SUCCEEDED("succeeded"),
 
     /**
-     * The search service is being provisioned or scaled up or down.
+     * The search service is being provisioned or scaled up or down. For dedicated search services only.
      */
     PROVISIONING("provisioning"),
 

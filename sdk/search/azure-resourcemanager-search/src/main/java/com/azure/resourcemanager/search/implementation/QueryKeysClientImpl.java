@@ -390,6 +390,10 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     /**
      * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
      * a query key is to delete and then recreate it.
+     * Returns 200 (OK) on successful deletion, 204 (No Content) if the service exists but the query keys not found, or
+     * 404 (Not Found) if the service is not found.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -430,6 +434,10 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     /**
      * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
      * a query key is to delete and then recreate it.
+     * Returns 200 (OK) on successful deletion, 204 (No Content) if the service exists but the query keys not found, or
+     * 404 (Not Found) if the service is not found.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -470,6 +478,10 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     /**
      * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
      * a query key is to delete and then recreate it.
+     * Returns 200 (OK) on successful deletion, 204 (No Content) if the service exists but the query keys not found, or
+     * 404 (Not Found) if the service is not found.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -487,6 +499,10 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     /**
      * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
      * a query key is to delete and then recreate it.
+     * Returns 200 (OK) on successful deletion, 204 (No Content) if the service exists but the query keys not found, or
+     * 404 (Not Found) if the service is not found.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -506,6 +522,10 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     /**
      * Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
      * a query key is to delete and then recreate it.
+     * Returns 200 (OK) on successful deletion, 204 (No Content) if the service exists but the query keys not found, or
+     * 404 (Not Found) if the service is not found.
+     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
+     * future versions and avoid new dependencies on the 404 response.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.

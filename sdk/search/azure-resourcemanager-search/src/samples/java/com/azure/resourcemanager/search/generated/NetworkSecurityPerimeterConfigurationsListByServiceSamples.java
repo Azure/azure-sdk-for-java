@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsListByServiceSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityPerimeterConfigurationsListByService.json
+     * x-ms-original-file: 2026-03-01-preview/NetworkSecurityPerimeterConfigurationsListByService.json
      */
     /**
      * Sample code: List NSP configs by search service.

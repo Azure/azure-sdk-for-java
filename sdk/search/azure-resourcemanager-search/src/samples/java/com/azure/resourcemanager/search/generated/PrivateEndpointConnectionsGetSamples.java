@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/GetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-03-01-preview/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnectionGet.

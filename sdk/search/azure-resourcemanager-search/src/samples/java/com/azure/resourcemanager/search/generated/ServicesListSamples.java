@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class ServicesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SearchListServicesBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/SearchListServicesBySubscription.json
      */
     /**
      * Sample code: SearchListServicesBySubscription.
