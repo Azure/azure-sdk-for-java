@@ -361,6 +361,12 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * should avoid invoking {@code close()} on latency-sensitive threads. If the drain timeout expires, the
      * processor proceeds with shutdown regardless.</p>
      *
+     * <p>When {@code close()} is invoked from within a {@code processMessage} callback, the drain
+     * logic waits only for other concurrent message handlers to complete. The calling handler is not included
+     * in the in-flight drain threshold to avoid self-deadlock, so shutdown may proceed (including cancelling
+     * subscriptions and closing the underlying client) while that callback is still executing or settling its
+     * message. The configured drain timeout continues to apply to the handlers that are being awaited.</p>
+     *
      * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">Issue #45716</a>
      */
     @Override
