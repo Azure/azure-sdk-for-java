@@ -1126,15 +1126,15 @@ public final class BlobContainerAsyncClient {
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails());
-                    if (Boolean.TRUE.equals(options.getUseArrow())) {
-                        finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                    if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
+                        finalOptions.setApacheArrowEnabled(true).setEndBefore(options.getEndBefore());
                     }
                 }
             } else {
                 finalOptions = options;
             }
 
-            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.getUseArrow())) {
+            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.isApacheArrowEnabled())) {
                 return listBlobsFlatSegmentArrow(marker, finalOptions, timeout);
             }
 
@@ -1366,15 +1366,15 @@ public final class BlobContainerAsyncClient {
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails())
                         .setStartFrom(options.getStartFrom());
-                    if (Boolean.TRUE.equals(options.getUseArrow())) {
-                        finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                    if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
+                        finalOptions.setApacheArrowEnabled(true).setEndBefore(options.getEndBefore());
                     }
                 }
             } else {
                 finalOptions = options;
             }
 
-            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.getUseArrow())) {
+            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.isApacheArrowEnabled())) {
                 return listBlobsHierarchySegmentArrow(marker, delimiter, finalOptions, timeout);
             }
 
