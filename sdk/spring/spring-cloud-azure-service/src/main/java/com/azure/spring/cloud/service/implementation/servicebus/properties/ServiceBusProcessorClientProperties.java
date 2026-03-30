@@ -16,4 +16,6 @@ public interface ServiceBusProcessorClientProperties extends ServiceBusReceiverC
 
     Duration getSessionIdleTimeout();
 
+    Duration getDrainTimeout();
+
 }

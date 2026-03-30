@@ -92,6 +92,7 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
         propertyMapper.from(properties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
         propertyMapper.from(properties.getMaxConcurrentSessions()).to(builder::maxConcurrentSessions);
         propertyMapper.from(properties.getSessionIdleTimeout()).to(builder::sessionIdleTimeout);
+        propertyMapper.from(properties.getDrainTimeout()).to(builder::drainTimeout);
 
         propertyMapper.from(this.errorHandler).to(builder::processError);
 
