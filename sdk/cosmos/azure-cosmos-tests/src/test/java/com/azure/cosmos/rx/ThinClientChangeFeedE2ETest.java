@@ -61,4 +61,60 @@ public class ThinClientChangeFeedE2ETest extends ThinClientTestBase {
             assertThinClientEndpointUsed(d);
         }
     }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testThinClientChangeFeedFullRange() {
+        // Insert docs across two different partition keys so the full-range feed spans multiple partitions.
+        String pk1 = "cfFullRange1_" + UUID.randomUUID().toString().substring(0, 8);
+        String pk2 = "cfFullRange2_" + UUID.randomUUID().toString().substring(0, 8);
+        container.createItem(createTestDocument(UUID.randomUUID().toString(), pk1)).block();
+        container.createItem(createTestDocument(UUID.randomUUID().toString(), pk2)).block();
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forFullRange());
+
+        List<ObjectNode> changeFeedResults = new ArrayList<>();
+        List<CosmosDiagnostics> allDiag = new ArrayList<>();
+        for (FeedResponse<ObjectNode> page : container.queryChangeFeed(options, ObjectNode.class).byPage().toIterable()) {
+            changeFeedResults.addAll(page.getResults());
+            allDiag.add(page.getCosmosDiagnostics());
+            if (page.getResults().isEmpty()) {
+                break;
+            }
+        }
+
+        assertThat(changeFeedResults.size()).isGreaterThanOrEqualTo(2);
+        for (CosmosDiagnostics d : allDiag) {
+            assertThinClientEndpointUsed(d);
+        }
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testThinClientChangeFeedPartitionKey() {
+        String pkValue = "cfPk_" + UUID.randomUUID().toString().substring(0, 8);
+        container.createItem(createTestDocument(UUID.randomUUID().toString(), pkValue)).block();
+        container.createItem(createTestDocument(UUID.randomUUID().toString(), pkValue)).block();
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(pkValue)));
+
+        List<ObjectNode> changeFeedResults = new ArrayList<>();
+        List<CosmosDiagnostics> allDiag = new ArrayList<>();
+        for (FeedResponse<ObjectNode> page : container.queryChangeFeed(options, ObjectNode.class).byPage().toIterable()) {
+            changeFeedResults.addAll(page.getResults());
+            allDiag.add(page.getCosmosDiagnostics());
+            if (page.getResults().isEmpty()) {
+                break;
+            }
+        }
+
+        // Should only see the 2 docs from this partition key
+        assertThat(changeFeedResults.size()).isEqualTo(2);
+        for (ObjectNode result : changeFeedResults) {
+            assertThat(result.get(PARTITION_KEY_FIELD).asText()).isEqualTo(pkValue);
+        }
+        for (CosmosDiagnostics d : allDiag) {
+            assertThinClientEndpointUsed(d);
+        }
+    }
 }
