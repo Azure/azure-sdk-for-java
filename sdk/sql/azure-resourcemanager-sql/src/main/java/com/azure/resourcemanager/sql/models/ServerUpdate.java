@@ -214,7 +214,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
      * 
      * @return the publicNetworkAccess value.
      */
-    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
+    public ServerNetworkAccessFlag publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
@@ -225,7 +225,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdate object itself.
      */
-    public ServerUpdate withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
+    public ServerUpdate withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }

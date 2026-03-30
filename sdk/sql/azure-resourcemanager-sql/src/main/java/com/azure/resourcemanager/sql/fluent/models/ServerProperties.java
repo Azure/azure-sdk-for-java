@@ -15,7 +15,6 @@ import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
-import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import java.io.IOException;
 import java.util.List;
@@ -64,7 +63,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be
      * 'Enabled' or 'Disabled' or 'SecuredByPerimeter'
      */
-    private ServerPublicNetworkAccessFlag publicNetworkAccess;
+    private ServerNetworkAccessFlag publicNetworkAccess;
 
     /*
      * Whether or not existing server has a workspace created and if it allows connection from workspace
@@ -239,7 +238,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * 
      * @return the publicNetworkAccess value.
      */
-    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
+    public ServerNetworkAccessFlag publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
 
@@ -250,7 +249,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
+    public ServerProperties withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
@@ -516,7 +515,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                     deserializedServerProperties.minimalTlsVersion = MinimalTlsVersion.fromString(reader.getString());
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedServerProperties.publicNetworkAccess
-                        = ServerPublicNetworkAccessFlag.fromString(reader.getString());
+                        = ServerNetworkAccessFlag.fromString(reader.getString());
                 } else if ("workspaceFeature".equals(fieldName)) {
                     deserializedServerProperties.workspaceFeature
                         = ServerWorkspaceFeature.fromString(reader.getString());

@@ -9,7 +9,6 @@ import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
-import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 
 /**
  * Samples for Servers CreateOrUpdate.
@@ -30,7 +29,7 @@ public final class ServersCreateOrUpdateSamples {
                 new ServerInner().withLocation("Japan East")
                     .withAdministratorLogin("dummylogin")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withPublicNetworkAccess(ServerPublicNetworkAccessFlag.ENABLED)
+                    .withPublicNetworkAccess(ServerNetworkAccessFlag.ENABLED)
                     .withAdministrators(new ServerExternalAdministrator().withPrincipalType(PrincipalType.USER)
                         .withLogin("bob@contoso.com")
                         .withSid("00000011-1111-2222-2222-123456789111")

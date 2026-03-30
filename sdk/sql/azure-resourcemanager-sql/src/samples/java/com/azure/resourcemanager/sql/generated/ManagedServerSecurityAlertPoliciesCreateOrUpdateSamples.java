@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.fluent.models.ManagedServerSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
-import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import java.util.Arrays;
 
 /**
@@ -26,7 +26,7 @@ public final class ManagedServerSecurityAlertPoliciesCreateOrUpdateSamples {
         manager.serviceClient()
             .getManagedServerSecurityAlertPolicies()
             .createOrUpdate("securityalert-4799", "securityalert-6440", SecurityAlertPolicyName.DEFAULT,
-                new ManagedServerSecurityAlertPolicyInner().withState(SecurityAlertsPolicyState.ENABLED),
+                new ManagedServerSecurityAlertPolicyInner().withState(SecurityAlertPolicyState.ENABLED),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -43,7 +43,7 @@ public final class ManagedServerSecurityAlertPoliciesCreateOrUpdateSamples {
         manager.serviceClient()
             .getManagedServerSecurityAlertPolicies()
             .createOrUpdate("securityalert-4799", "securityalert-6440", SecurityAlertPolicyName.DEFAULT,
-                new ManagedServerSecurityAlertPolicyInner().withState(SecurityAlertsPolicyState.ENABLED)
+                new ManagedServerSecurityAlertPolicyInner().withState(SecurityAlertPolicyState.ENABLED)
                     .withDisabledAlerts(Arrays.asList("Access_Anomaly", "Usage_Anomaly"))
                     .withEmailAddresses(Arrays.asList("testSecurityAlert@microsoft.com"))
                     .withEmailAccountAdmins(true)

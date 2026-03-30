@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -105,7 +105,7 @@ public final class ManagedServerSecurityAlertPolicyInner extends ProxyResource {
      * 
      * @return the state value.
      */
-    public SecurityAlertsPolicyState state() {
+    public SecurityAlertPolicyState state() {
         return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
@@ -116,7 +116,7 @@ public final class ManagedServerSecurityAlertPolicyInner extends ProxyResource {
      * @param state the state value to set.
      * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ManagedServerSecurityAlertPolicyInner withState(SecurityAlertsPolicyState state) {
+    public ManagedServerSecurityAlertPolicyInner withState(SecurityAlertPolicyState state) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SecurityAlertsPolicyProperties();
         }

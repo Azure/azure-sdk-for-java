@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
-import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerUpdate;
 
 /**
@@ -26,7 +25,7 @@ public final class ServersUpdateSamples {
             .update("sqlcrudtest-7398", "sqlcrudtest-4645",
                 new ServerUpdate().withAdministratorLogin("dummylogin")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withPublicNetworkAccess(ServerPublicNetworkAccessFlag.DISABLED)
+                    .withPublicNetworkAccess(ServerNetworkAccessFlag.DISABLED)
                     .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED)
                     .withIsIPv6Enabled(ServerNetworkAccessFlag.ENABLED)
                     .withRetentionDays(7),

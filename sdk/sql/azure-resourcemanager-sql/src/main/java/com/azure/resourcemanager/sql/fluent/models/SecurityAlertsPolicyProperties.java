@@ -11,7 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,7 +25,7 @@ public final class SecurityAlertsPolicyProperties implements JsonSerializable<Se
      * Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the
      * specific database.
      */
-    private SecurityAlertsPolicyState state;
+    private SecurityAlertPolicyState state;
 
     /*
      * Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability,
@@ -76,7 +76,7 @@ public final class SecurityAlertsPolicyProperties implements JsonSerializable<Se
      * 
      * @return the state value.
      */
-    public SecurityAlertsPolicyState state() {
+    public SecurityAlertPolicyState state() {
         return this.state;
     }
 
@@ -87,7 +87,7 @@ public final class SecurityAlertsPolicyProperties implements JsonSerializable<Se
      * @param state the state value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
-    public SecurityAlertsPolicyProperties withState(SecurityAlertsPolicyState state) {
+    public SecurityAlertsPolicyProperties withState(SecurityAlertPolicyState state) {
         this.state = state;
         return this;
     }
@@ -279,7 +279,7 @@ public final class SecurityAlertsPolicyProperties implements JsonSerializable<Se
 
                 if ("state".equals(fieldName)) {
                     deserializedSecurityAlertsPolicyProperties.state
-                        = SecurityAlertsPolicyState.fromString(reader.getString());
+                        = SecurityAlertPolicyState.fromString(reader.getString());
                 } else if ("disabledAlerts".equals(fieldName)) {
                     List<String> disabledAlerts = reader.readArray(reader1 -> reader1.getString());
                     deserializedSecurityAlertsPolicyProperties.disabledAlerts = disabledAlerts;

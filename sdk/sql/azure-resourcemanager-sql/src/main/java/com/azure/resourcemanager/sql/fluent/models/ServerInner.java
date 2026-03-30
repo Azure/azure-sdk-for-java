@@ -17,7 +17,6 @@ import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
-import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import java.io.IOException;
 import java.util.List;
@@ -289,7 +288,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the publicNetworkAccess value.
      */
-    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
+    public ServerNetworkAccessFlag publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
@@ -300,7 +299,7 @@ public final class ServerInner extends Resource {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
+    public ServerInner withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
