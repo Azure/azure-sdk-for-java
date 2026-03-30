@@ -1326,7 +1326,7 @@
           "code": "java.class.removed",
           "old" : {
             "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\..*ListResult"
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(.*(Result|List)(s)?|ApplicationGatewayAvailableSslPredefinedPolicies)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
@@ -1334,31 +1334,7 @@
           "code": "java.class.removed",
           "old" : {
             "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.List(HubRouteTables|HubVirtualNetworkConnections|P2SVpnGateways|RouteMaps|RoutingIntent|VirtualHub(BgpConnection|IpConfiguration|RouteTableV2S|s)|VirtualNetworkGatewayNatRules|VirtualWans|VpnConnections|VpnGatewayNatRules|VpnGateways|VpnServerConfigurationPolicyGroups|VpnServerConfigurations|VpnSiteLinkConnections|VpnSiteLinks|VpnSites)Result(s)?"
-          },
-          "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AutoApprovedPrivateLinkServicesResult|AvailableDelegationsResult|AvailablePrivateEndpointTypesResult|AvailableServiceAliasesResult|BastionSessionDeleteResult|GetServiceGatewayAddressLocationsResult|GetServiceGatewayServicesResult|VirtualNetworkDdosProtectionStatusResult|VirtualNetworkGatewayListConnectionsResult|VirtualNetworkListUsageResult|ApplicationGatewayAvailableSslPredefinedPolicies)"
-          },
-          "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(ApplicationGatewayWafDynamicManifestResultList|ConnectionSharedKeyResultList|ExpressRouteCrossConnectionPeeringList|IpamPoolList|NetworkVirtualApplianceConnectionList|PoolAssociationList|StaticCidrList)"
-          },
-          "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(CreatedByType|ErrorAdditionalInfo|ErrorDetail|TrackedResource|SecurityPerimeterProxyResource|SecurityPerimeterResource|SecurityPerimeterSystemData)"
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(CreatedByType|ErrorAdditionalInfo|ErrorDetail|SecurityPerimeter(ProxyResource|Resource|SystemData)|TrackedResource)"
           },
           "justification": "Common types now sourced from azure-core or ARM common types."
         },
@@ -1366,7 +1342,7 @@
           "code": "java.missing.oldSuperType",
           "old" : {
             "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AdminRule|ChildResource|CommonProxyResource|CommonResource|CommonTrackedResource|DefaultAdminRule|SecurityPerimeterProxyResource|SecurityPerimeterResource)"
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AdminRule|ChildResource|Common(ProxyResource|Resource|TrackedResource)|DefaultAdminRule|SecurityPerimeter(ProxyResource|Resource))"
           },
           "justification": "Base class ProxyResource not in old API archive. Revapi analysis artifact."
         },
