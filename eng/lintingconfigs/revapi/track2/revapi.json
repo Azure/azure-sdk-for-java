@@ -1297,6 +1297,86 @@
             "match": "class com\\.azure\\.resourcemanager\\.containerinstance\\.models\\.(CachedImagesListResult|CapabilitiesListResult|ContainerGroupListResult|OperationListResult|UsageListResult)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.List(HubRouteTables|HubVirtualNetworkConnections|P2SVpnGateways|RouteMaps|RoutingIntent|VirtualHub(BgpConnection|IpConfiguration|RouteTableV2S|s)|VirtualNetworkGatewayNatRules|VirtualWans|VpnConnections|VpnGatewayNatRules|VpnGateways|VpnServerConfigurationPolicyGroups|VpnServerConfigurations|VpnSiteLinkConnections|VpnSiteLinks|VpnSites)Result(s)?"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AutoApprovedPrivateLinkServicesResult|AvailableDelegationsResult|AvailablePrivateEndpointTypesResult|AvailableServiceAliasesResult|BastionSessionDeleteResult|GetServiceGatewayAddressLocationsResult|GetServiceGatewayServicesResult|VirtualNetworkDdosProtectionStatusResult|VirtualNetworkGatewayListConnectionsResult|VirtualNetworkListUsageResult|ApplicationGatewayAvailableSslPredefinedPolicies)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(ApplicationGatewayWafDynamicManifestResultList|ConnectionSharedKeyResultList|ExpressRouteCrossConnectionPeeringList|IpamPoolList|NetworkVirtualApplianceConnectionList|PoolAssociationList|StaticCidrList)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(CreatedByType|ErrorAdditionalInfo|ErrorDetail|TrackedResource|SecurityPerimeterProxyResource|SecurityPerimeterResource|SecurityPerimeterSystemData)"
+          },
+          "justification": "Common types now sourced from azure-core or ARM common types."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AdminRule|ChildResource|CommonProxyResource|CommonResource|CommonTrackedResource|DefaultAdminRule|SecurityPerimeterProxyResource|SecurityPerimeterResource)"
+          },
+          "justification": "Base class ProxyResource not in old API archive. Revapi analysis artifact."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\.EffectiveNetworkSecurityGroup\\:\\:tagMap\\(\\)"
+          },
+          "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
         }
       ]
     }
