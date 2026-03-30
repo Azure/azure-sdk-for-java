@@ -418,8 +418,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
 
-        StorageChecksumAlgorithm transferValidationChecksumAlgorithm
-            = options.getTransferValidationChecksumAlgorithm();
+        StorageChecksumAlgorithm transferValidationChecksumAlgorithm = options.getTransferValidationChecksumAlgorithm();
         try {
             ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
                 transferValidationChecksumAlgorithm);
@@ -443,8 +442,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        context = ContentValidationModeResolver.addContentValidationMode(context,
-            transferValidationChecksumAlgorithm, options.getLength(), false);
+        context = ContentValidationModeResolver.addContentValidationMode(context, transferValidationChecksumAlgorithm,
+            options.getLength(), false);
 
         Context finalContext = context;
 

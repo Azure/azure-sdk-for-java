@@ -18,7 +18,7 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
-    private StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobInputStreamOptions}.
@@ -121,7 +121,7 @@ public class BlobInputStreamOptions {
      * @return The transfer validation checksum algorithm.
      */
     public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return responseTransferValidationChecksumAlgorithm;
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
@@ -133,7 +133,7 @@ public class BlobInputStreamOptions {
      */
     public BlobInputStreamOptions
         setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.responseTransferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

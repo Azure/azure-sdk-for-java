@@ -26,7 +26,7 @@ public class BlobDownloadToFileOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
-    private StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -175,7 +175,7 @@ public class BlobDownloadToFileOptions {
      * @return The transfer validation checksum algorithm.
      */
     public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return responseTransferValidationChecksumAlgorithm;
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
@@ -187,7 +187,7 @@ public class BlobDownloadToFileOptions {
      */
     public BlobDownloadToFileOptions
         setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.responseTransferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

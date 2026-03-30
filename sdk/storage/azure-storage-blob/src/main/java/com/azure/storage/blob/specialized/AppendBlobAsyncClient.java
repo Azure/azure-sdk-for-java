@@ -510,8 +510,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
-        context = ContentValidationModeResolver.addContentValidationMode(context,
-            transferValidationChecksumAlgorithm, length, false);
+        context = ContentValidationModeResolver.addContentValidationMode(context, transferValidationChecksumAlgorithm,
+            length, false);
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,

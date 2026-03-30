@@ -750,8 +750,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .setLegalHold(legalHold))
             .flatMap(options -> {
                 Mono<Response<BlockBlobItem>> responseMono = ContentValidationModeResolver.addContentValidationMode(
-                    blockBlobAsyncClient.uploadWithResponse(options), transferValidationChecksumAlgorithm,
-                    length, false);
+                    blockBlobAsyncClient.uploadWithResponse(options), transferValidationChecksumAlgorithm, length,
+                    false);
                 if (parallelTransferOptions.getProgressListener() != null) {
                     ProgressReporter progressReporter
                         = ProgressReporter.withProgressListener(parallelTransferOptions.getProgressListener());

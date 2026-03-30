@@ -18,7 +18,7 @@ public final class BlobDownloadStreamOptions {
     private DownloadRetryOptions downloadRetryOptions;
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
-    private StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobDownloadStreamOptions}.
@@ -113,7 +113,7 @@ public final class BlobDownloadStreamOptions {
      * @return The transfer validation checksum algorithm.
      */
     public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return responseTransferValidationChecksumAlgorithm;
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
@@ -125,7 +125,7 @@ public final class BlobDownloadStreamOptions {
      */
     public BlobDownloadStreamOptions
         setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.responseTransferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

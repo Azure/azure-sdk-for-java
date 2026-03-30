@@ -554,8 +554,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        context = ContentValidationModeResolver.addContentValidationMode(context,
-            transferValidationChecksumAlgorithm, length, false);
+        context = ContentValidationModeResolver.addContentValidationMode(context, transferValidationChecksumAlgorithm,
+            length, false);
 
         return this.azureBlobStorage.getPageBlobs()
             .uploadPagesWithResponseAsync(containerName, blobName, length, body, contentMd5, null, null, pageRangeStr,

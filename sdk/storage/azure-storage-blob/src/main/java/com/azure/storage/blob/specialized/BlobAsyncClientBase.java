@@ -1260,7 +1260,7 @@ public class BlobAsyncClientBase {
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm, Context context) {
+        StorageChecksumAlgorithm transferValidationChecksumAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         BlobRequestConditions finalRequestConditions
@@ -1564,7 +1564,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm, Context context) {
+        StorageChecksumAlgorithm transferValidationChecksumAlgorithm, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1575,7 +1575,7 @@ public class BlobAsyncClientBase {
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
             = (range, conditions) -> this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, responseTransferValidationChecksumAlgorithm, context);
+                rangeGetContentMd5, transferValidationChecksumAlgorithm, context);
 
         return ChunkedDownloadUtils
             .downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions, downloadFunc, true,

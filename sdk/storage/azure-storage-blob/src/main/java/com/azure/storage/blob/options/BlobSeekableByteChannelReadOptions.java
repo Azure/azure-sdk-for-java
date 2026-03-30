@@ -19,7 +19,7 @@ public final class BlobSeekableByteChannelReadOptions {
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
-    private StorageChecksumAlgorithm responseTransferValidationChecksumAlgorithm;
+    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
@@ -118,7 +118,7 @@ public final class BlobSeekableByteChannelReadOptions {
      * @return The transfer validation checksum algorithm.
      */
     public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return responseTransferValidationChecksumAlgorithm;
+        return transferValidationChecksumAlgorithm;
     }
 
     /**
@@ -130,7 +130,7 @@ public final class BlobSeekableByteChannelReadOptions {
      */
     public BlobSeekableByteChannelReadOptions
         setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.responseTransferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
         return this;
     }
 }

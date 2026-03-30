@@ -56,8 +56,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
         final AppendBlobRequestConditions appendBlobRequestConditions,
         final StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        return new AppendBlobOutputStream(client, appendBlobRequestConditions,
-            transferValidationChecksumAlgorithm);
+        return new AppendBlobOutputStream(client, appendBlobRequestConditions, transferValidationChecksumAlgorithm);
     }
 
     /**
@@ -126,8 +125,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
         final BlobRequestConditions requestConditions,
         final StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        return new PageBlobOutputStream(client, pageRange, requestConditions,
-            transferValidationChecksumAlgorithm);
+        return new PageBlobOutputStream(client, pageRange, requestConditions, transferValidationChecksumAlgorithm);
     }
 
     abstract void commit();
