@@ -149,6 +149,7 @@ final class SessionsMessagePump {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final Runnable onTerminate;
+    private final Duration drainTimeout;
     private final AtomicReference<List<RollingSessionReceiver>> rollingReceiversRef = new AtomicReference<>(EMPTY);
     private final SessionReceiversTracker receiversTracker;
     private final Mono<ServiceBusSessionAcquirer.Session> nextSession;
@@ -159,7 +160,7 @@ final class SessionsMessagePump {
         int maxConcurrentSessions, int concurrencyPerSession, int prefetch, boolean enableAutoDisposition,
         MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-        Runnable onTerminate) {
+        Runnable onTerminate, Duration drainTimeout) {
         this.pumpId = COUNTER.incrementAndGet();
         final Map<String, Object> loggingContext = new HashMap<>(3);
         loggingContext.put(PUMP_ID_KEY, pumpId);
@@ -185,6 +186,7 @@ final class SessionsMessagePump {
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null.");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null.");
         this.onTerminate = Objects.requireNonNull(onTerminate, "'onTerminate' cannot be null.");
+        this.drainTimeout = Objects.requireNonNull(drainTimeout, "'drainTimeout' cannot be null.");
         this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fullyQualifiedNamespace,
             entityPath, receiveMode, instrumentation);
         this.nextSession = new NextSession(pumpId, fullyQualifiedNamespace, entityPath, sessionAcquirer).mono();
@@ -273,10 +275,10 @@ final class SessionsMessagePump {
     private List<RollingSessionReceiver> createRollingSessionReceivers() {
         final ArrayList<RollingSessionReceiver> rollingReceivers = new ArrayList<>(maxConcurrentSessions);
         for (int rollerId = 1; rollerId <= maxConcurrentSessions; rollerId++) {
-            final RollingSessionReceiver rollingReceiver
-                = new RollingSessionReceiver(pumpId, rollerId, instrumentation, fullyQualifiedNamespace, entityPath,
-                    nextSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession, prefetch,
-                    enableAutoDisposition, serializer, retryPolicy, processMessage, processError, receiversTracker);
+            final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(pumpId, rollerId, instrumentation,
+                fullyQualifiedNamespace, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout,
+                concurrencyPerSession, prefetch, enableAutoDisposition, serializer, retryPolicy, processMessage,
+                processError, receiversTracker, drainTimeout);
             rollingReceivers.add(rollingReceiver);
         }
         return rollingReceivers;
@@ -363,7 +365,6 @@ final class SessionsMessagePump {
         private static final String ROLLER_ID_KEY = "roller-id";
         private static final State<ServiceBusSessionReactorReceiver> INIT = State.init();
         private static final State<ServiceBusSessionReactorReceiver> TERMINATED = State.terminated();
-        private static final Duration DRAIN_TIMEOUT = Duration.ofSeconds(30);
         private final ClientLogger logger;
         private final long pumpId;
         private final int rollerId;
@@ -379,6 +380,7 @@ final class SessionsMessagePump {
         private final boolean enableAutoDisposition;
         private final Duration maxSessionLockRenew;
         private final Duration sessionIdleTimeout;
+        private final Duration drainTimeout;
         private final MessageSerializer serializer;
         private final ServiceBusReceiverInstrumentation instrumentation;
         private final ServiceBusTracer tracer;
@@ -391,7 +393,7 @@ final class SessionsMessagePump {
             Duration maxSessionLockRenew, Duration sessionIdleTimeout, int concurrency, int prefetch,
             boolean enableAutoDisposition, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            SessionReceiversTracker receiversTracker) {
+            SessionReceiversTracker receiversTracker, Duration drainTimeout) {
             super(INIT);
             this.pumpId = pumpId;
             final Map<String, Object> loggingContext = new HashMap<>(3);
@@ -412,6 +414,7 @@ final class SessionsMessagePump {
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
             this.receiversTracker = receiversTracker;
+            this.drainTimeout = drainTimeout;
             this.nextSessionStream
                 = new NextSessionStream(pumpId, rollerId, fullyQualifiedNamespace, entityPath, nextSession);
             final Flux<ServiceBusSessionReactorReceiver> nextSessionReceiverStream
@@ -456,7 +459,7 @@ final class SessionsMessagePump {
             // Disposing the scheduler interrupts handler threads (via ScheduledExecutorService.shutdownNow()).
             // Draining first ensures handlers can complete message settlement before threads are interrupted.
             // See https://github.com/Azure/azure-sdk-for-java/issues/45716
-            drainHandlers(DRAIN_TIMEOUT);
+            drainHandlers(drainTimeout);
             workerScheduler.dispose();
             return Mono.empty();
         }

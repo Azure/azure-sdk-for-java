@@ -145,7 +145,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         };
 
         final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> {
-        }, 1, true);
+        }, 1, true, Duration.ofSeconds(30));
 
         // Start the pump.
         pump.begin();

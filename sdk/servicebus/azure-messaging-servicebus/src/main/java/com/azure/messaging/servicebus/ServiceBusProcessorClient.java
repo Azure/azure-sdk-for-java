@@ -188,7 +188,6 @@ import java.util.function.Consumer;
 public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
-    private static final Duration V1_DRAIN_TIMEOUT = Duration.ofSeconds(30);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClient.class);
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
@@ -239,8 +238,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.subscriptionName = subscriptionName;
         if (processorOptions.isV2()) {
             final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
-            this.processorV2
-                = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
+            this.processorV2 = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError,
+                concurrencyPerSession, processorOptions.getDrainTimeout());
             this.tracer = null;
         } else {
             this.processorV2 = null;
@@ -277,7 +276,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             final int concurrency = this.processorOptions.getMaxConcurrentCalls();
             final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
             this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency,
-                enableAutoDisposition);
+                enableAutoDisposition, processorOptions.getDrainTimeout());
             this.tracer = null;
         } else {
             this.processorV2 = null;
@@ -356,10 +355,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * Stops message processing and closes the processor. The receiving links and sessions are closed and calling
      * {@link #start()} will create a new processing cycle with new links and new sessions.
      *
-     * <p>This method blocks while waiting for in-flight message handlers to complete (up to 30 seconds) before
-     * cancelling subscriptions and closing the underlying client. This ensures handlers can finish message
-     * settlement without encountering a disposed receiver. Callers should avoid invoking {@code close()} on
-     * latency-sensitive threads. If the drain timeout expires, the processor proceeds with shutdown regardless.</p>
+     * <p>This method blocks while waiting for in-flight message handlers to complete (up to the configured
+     * drain timeout, default 30 seconds) before cancelling subscriptions and closing the underlying client.
+     * This ensures handlers can finish message settlement without encountering a disposed receiver. Callers
+     * should avoid invoking {@code close()} on latency-sensitive threads. If the drain timeout expires, the
+     * processor proceeds with shutdown regardless.</p>
      *
      * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">Issue #45716</a>
      */
@@ -375,7 +375,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         // handler threads. Draining first ensures handlers can complete message settlement
         // before the underlying client is closed.
         // See https://github.com/Azure/azure-sdk-for-java/issues/45716
-        drainV1Handlers(V1_DRAIN_TIMEOUT);
+        drainV1Handlers(processorOptions.getDrainTimeout());
         receiverSubscriptions.keySet().forEach(Subscription::cancel);
         receiverSubscriptions.clear();
         if (monitorDisposable != null) {
