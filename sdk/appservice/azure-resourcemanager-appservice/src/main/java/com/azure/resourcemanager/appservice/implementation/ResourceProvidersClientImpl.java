@@ -121,7 +121,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/aseRegions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AseRegionCollection>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<AseRegionCollection>> listAseRegions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -129,7 +129,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<BillingMeterCollection>> listBillingMeters(@HostParam("endpoint") String endpoint,
+        Mono<Response<BillingMeterCollection>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("billingLocation") String billingLocation, @QueryParam("osType") String osType,
             @HeaderParam("Accept") String accept, Context context);
@@ -166,7 +166,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostName(
+        Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostname(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") NameIdentifier nameIdentifier, Context context);
@@ -264,9 +264,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<BillingMeterCollection>> listBillingMetersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<BillingMeterCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -288,7 +287,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostNameNext(
+        Mono<Response<IdentifierCollection>> listSiteIdentifiersAssignedToHostnameNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -702,7 +701,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AseRegionInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<AseRegionInner>> listAseRegionsSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -713,7 +712,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listAseRegions(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<AseRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -735,7 +734,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AseRegionInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<AseRegionInner>> listAseRegionsSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -747,8 +746,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
+            .listAseRegions(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -766,8 +765,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AseRegionInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAseRegionsNextSinglePageAsync(nextLink));
+    public PagedFlux<AseRegionInner> listAseRegionsAsync() {
+        return new PagedFlux<>(() -> listAseRegionsSinglePageAsync(),
+            nextLink -> listAseRegionsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -785,8 +785,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AseRegionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
+    private PagedFlux<AseRegionInner> listAseRegionsAsync(Context context) {
+        return new PagedFlux<>(() -> listAseRegionsSinglePageAsync(context),
             nextLink -> listAseRegionsNextSinglePageAsync(nextLink, context));
     }
 
@@ -803,8 +803,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AseRegionInner> list() {
-        return new PagedIterable<>(listAsync());
+    public PagedIterable<AseRegionInner> listAseRegions() {
+        return new PagedIterable<>(listAseRegionsAsync());
     }
 
     /**
@@ -822,8 +822,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AseRegionInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    public PagedIterable<AseRegionInner> listAseRegions(Context context) {
+        return new PagedIterable<>(listAseRegionsAsync(context));
     }
 
     /**
@@ -842,8 +842,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BillingMeterInner>> listBillingMetersSinglePageAsync(String billingLocation,
-        String osType) {
+    private Mono<PagedResponse<BillingMeterInner>> listSinglePageAsync(String billingLocation, String osType) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -854,7 +853,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBillingMeters(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), billingLocation, osType, accept, context))
             .<PagedResponse<BillingMeterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -878,8 +877,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BillingMeterInner>> listBillingMetersSinglePageAsync(String billingLocation,
-        String osType, Context context) {
+    private Mono<PagedResponse<BillingMeterInner>> listSinglePageAsync(String billingLocation, String osType,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -891,7 +890,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBillingMeters(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 billingLocation, osType, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -912,9 +911,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BillingMeterInner> listBillingMetersAsync(String billingLocation, String osType) {
-        return new PagedFlux<>(() -> listBillingMetersSinglePageAsync(billingLocation, osType),
-            nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
+    public PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingLocation, osType),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -929,11 +928,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BillingMeterInner> listBillingMetersAsync() {
+    public PagedFlux<BillingMeterInner> listAsync() {
         final String billingLocation = null;
         final String osType = null;
-        return new PagedFlux<>(() -> listBillingMetersSinglePageAsync(billingLocation, osType),
-            nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(billingLocation, osType),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -952,10 +951,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BillingMeterInner> listBillingMetersAsync(String billingLocation, String osType,
-        Context context) {
-        return new PagedFlux<>(() -> listBillingMetersSinglePageAsync(billingLocation, osType, context),
-            nextLink -> listBillingMetersNextSinglePageAsync(nextLink, context));
+    private PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingLocation, osType, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -970,10 +968,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BillingMeterInner> listBillingMeters() {
+    public PagedIterable<BillingMeterInner> list() {
         final String billingLocation = null;
         final String osType = null;
-        return new PagedIterable<>(listBillingMetersAsync(billingLocation, osType));
+        return new PagedIterable<>(listAsync(billingLocation, osType));
     }
 
     /**
@@ -992,8 +990,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BillingMeterInner> listBillingMeters(String billingLocation, String osType, Context context) {
-        return new PagedIterable<>(listBillingMetersAsync(billingLocation, osType, context));
+    public PagedIterable<BillingMeterInner> list(String billingLocation, String osType, Context context) {
+        return new PagedIterable<>(listAsync(billingLocation, osType, context));
     }
 
     /**
@@ -1490,7 +1488,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>>
-        listSiteIdentifiersAssignedToHostNameSinglePageAsync(NameIdentifier nameIdentifier) {
+        listSiteIdentifiersAssignedToHostnameSinglePageAsync(NameIdentifier nameIdentifier) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1506,7 +1504,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteIdentifiersAssignedToHostName(this.client.getEndpoint(),
+            .withContext(context -> service.listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), accept, nameIdentifier, context))
             .<PagedResponse<IdentifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1527,7 +1525,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>>
-        listSiteIdentifiersAssignedToHostNameSinglePageAsync(NameIdentifier nameIdentifier, Context context) {
+        listSiteIdentifiersAssignedToHostnameSinglePageAsync(NameIdentifier nameIdentifier, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1544,7 +1542,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSiteIdentifiersAssignedToHostName(this.client.getEndpoint(), this.client.getApiVersion(),
+            .listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, nameIdentifier, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1562,9 +1560,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostNameAsync(NameIdentifier nameIdentifier) {
-        return new PagedFlux<>(() -> listSiteIdentifiersAssignedToHostNameSinglePageAsync(nameIdentifier),
-            nextLink -> listSiteIdentifiersAssignedToHostNameNextSinglePageAsync(nextLink));
+    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifier nameIdentifier) {
+        return new PagedFlux<>(() -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(nameIdentifier),
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1580,10 +1578,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostNameAsync(NameIdentifier nameIdentifier,
+    private PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifier nameIdentifier,
         Context context) {
-        return new PagedFlux<>(() -> listSiteIdentifiersAssignedToHostNameSinglePageAsync(nameIdentifier, context),
-            nextLink -> listSiteIdentifiersAssignedToHostNameNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(nameIdentifier, context),
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1598,8 +1596,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostName(NameIdentifier nameIdentifier) {
-        return new PagedIterable<>(listSiteIdentifiersAssignedToHostNameAsync(nameIdentifier));
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier) {
+        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier));
     }
 
     /**
@@ -1615,9 +1613,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostName(NameIdentifier nameIdentifier,
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier,
         Context context) {
-        return new PagedIterable<>(listSiteIdentifiersAssignedToHostNameAsync(nameIdentifier, context));
+        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier, context));
     }
 
     /**
@@ -2890,7 +2888,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BillingMeterInner>> listBillingMetersNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BillingMeterInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2899,8 +2897,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listBillingMetersNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<BillingMeterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2922,8 +2919,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BillingMeterInner>> listBillingMetersNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<BillingMeterInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2933,7 +2929,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listBillingMetersNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3073,7 +3069,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>>
-        listSiteIdentifiersAssignedToHostNameNextSinglePageAsync(String nextLink) {
+        listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3083,7 +3079,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSiteIdentifiersAssignedToHostNameNext(nextLink,
+            .withContext(context -> service.listSiteIdentifiersAssignedToHostnameNext(nextLink,
                 this.client.getEndpoint(), accept, context))
             .<PagedResponse<IdentifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -3104,7 +3100,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>>
-        listSiteIdentifiersAssignedToHostNameNextSinglePageAsync(String nextLink, Context context) {
+        listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3114,7 +3110,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSiteIdentifiersAssignedToHostNameNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listSiteIdentifiersAssignedToHostnameNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
