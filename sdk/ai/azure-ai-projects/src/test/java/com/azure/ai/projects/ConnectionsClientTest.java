@@ -76,7 +76,7 @@ public class ConnectionsClientTest extends ClientTestBase {
 
         // Verify the connection properties
         assertValidConnection(connection, connectionName, null, null);
-        Assertions.assertNotNull(connection.getCredentials().getType());
+        Assertions.assertNotNull(connection.getCredential().getType());
 
         System.out.println("Connection retrieved successfully: " + connection.getName());
     }
@@ -99,10 +99,10 @@ public class ConnectionsClientTest extends ClientTestBase {
 
         // Verify the connection properties
         assertValidConnection(connection, connectionName, null, null);
-        Assertions.assertNotNull(connection.getCredentials().getType());
+        Assertions.assertNotNull(connection.getCredential().getType());
 
         System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
-        System.out.println("Credential type: " + connection.getCredentials().getType());
+        System.out.println("Credential type: " + connection.getCredential().getType());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -113,7 +113,7 @@ public class ConnectionsClientTest extends ClientTestBase {
         Connection connection = connectionsClient.getDefaultConnection(ConnectionType.AZURE_OPEN_AI, false);
 
         assertValidConnection(connection, null, ConnectionType.AZURE_OPEN_AI, null);
-        Assertions.assertNotNull(connection.getCredentials().getType());
+        Assertions.assertNotNull(connection.getCredential().getType());
 
         System.out.println("Default connection retrieved: " + connection.getName());
     }

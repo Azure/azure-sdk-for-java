@@ -198,7 +198,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteAgent(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalDeleteAgent(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -208,7 +208,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteAgentSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> internalDeleteAgentSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -308,7 +308,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteAgentVersion(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalDeleteAgentVersion(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -319,7 +319,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteAgentVersionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> internalDeleteAgentVersionSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1080,9 +1080,10 @@ public final class AgentsImpl {
      * @return a deleted agent Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> internalDeleteAgentWithResponseAsync(String agentName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAgent(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.internalDeleteAgent(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -1109,9 +1110,9 @@ public final class AgentsImpl {
      * @return a deleted agent Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+    public Response<BinaryData> internalDeleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAgentSync(this.client.getEndpoint(), agentName,
+        return service.internalDeleteAgentSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1786,10 +1787,10 @@ public final class AgentsImpl {
      * @return a deleted agent version Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentVersionWithResponseAsync(String agentName, String agentVersion,
+    public Mono<Response<BinaryData>> internalDeleteAgentVersionWithResponseAsync(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAgentVersion(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.internalDeleteAgentVersion(this.client.getEndpoint(), agentName,
             agentVersion, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -1818,10 +1819,10 @@ public final class AgentsImpl {
      * @return a deleted agent version Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    public Response<BinaryData> internalDeleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAgentVersionSync(this.client.getEndpoint(), agentName, agentVersion,
+        return service.internalDeleteAgentVersionSync(this.client.getEndpoint(), agentName, agentVersion,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

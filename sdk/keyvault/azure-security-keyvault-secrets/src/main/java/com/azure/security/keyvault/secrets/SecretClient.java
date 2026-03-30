@@ -402,6 +402,82 @@ public final class SecretClient {
     }
 
     /**
+     * Gets the specified secret with specified version from the key vault, optionally converting the secret content
+     * to the specified format. This operation requires the {@code secrets/get} permission.
+     *
+     * <p>The {@code outContentType} parameter is used to request conversion of the secret content. Currently, only
+     * PFX to PEM conversion is supported for certificate-backed secrets. Allowed values are
+     * {@code "application/x-pkcs12"} and {@code "application/x-pem-file"}.</p>
+     *
+     * @param name The name of the secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, this call retrieves
+     * the latest version.
+     * @param outContentType The desired content type for the secret. If {@code null}, the secret is returned in its
+     * original format. Allowed values: {@code "application/x-pkcs12"}, {@code "application/x-pem-file"}.
+     * @return The requested {@link KeyVaultSecret secret}.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultSecret getSecret(String name, String version, String outContentType) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
+        RequestOptions requestOptions = new RequestOptions();
+
+        if (!CoreUtils.isNullOrEmpty(outContentType)) {
+            requestOptions.addQueryParam("outContentType", outContentType);
+        }
+
+        return callWithMappedException(() -> createKeyVaultSecret(
+            implClient.getSecretWithResponse(name, version, requestOptions).getValue().toObject(SecretBundle.class)),
+            SecretAsyncClient::mapGetSecretException);
+    }
+
+    /**
+     * Gets the specified secret with specified version from the key vault, optionally converting the secret content
+     * to the specified format. This operation requires the {@code secrets/get} permission.
+     *
+     * <p>The {@code outContentType} parameter is used to request conversion of the secret content. Currently, only
+     * PFX to PEM conversion is supported for certificate-backed secrets. Allowed values are
+     * {@code "application/x-pkcs12"} and {@code "application/x-pem-file"}.</p>
+     *
+     * @param name The name of the secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, this call retrieves
+     * the latest version.
+     * @param outContentType The desired content type for the secret. If {@code null}, the secret is returned in its
+     * original format. Allowed values: {@code "application/x-pkcs12"}, {@code "application/x-pem-file"}.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultSecret}.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, String outContentType,
+        Context context) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
+        return callWithMappedException(() -> {
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+
+            if (!CoreUtils.isNullOrEmpty(outContentType)) {
+                requestOptions.addQueryParam("outContentType", outContentType);
+            }
+
+            Response<BinaryData> response = implClient.getSecretWithResponse(name, version, requestOptions);
+
+            return new SimpleResponse<>(response,
+                createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
+        }, SecretAsyncClient::mapGetSecretException);
+    }
+
+    /**
      * Updates the attributes associated with the secret. The value of the secret in the key vault cannot be changed.
      * Only attributes populated in {@code secretProperties} are changed. Attributes not specified in the request are
      * not changed. This operation requires the {@code secrets/set} permission.

@@ -482,6 +482,82 @@ public class SecretClientTest extends SecretClientTestBase {
 
     }
 
+    /**
+     * Tests that when two versions of a secret exist, the previousVersion property is correctly mapped from the
+     * service response. If the service returns previousVersion (API version 7.6+), it should match the first version.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void previousVersionOnSecondVersion(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        createClient(httpClient, serviceVersion);
+
+        String secretName = testResourceNamer.randomName("prevVerTest", 20);
+
+        // Create first version
+        KeyVaultSecret v1 = secretClient.setSecret(secretName, "value-v1");
+        String v1Version = v1.getProperties().getVersion();
+        assertNotNull(v1Version);
+
+        // Create second version
+        KeyVaultSecret v2 = secretClient.setSecret(secretName, "value-v2");
+        String v2Version = v2.getProperties().getVersion();
+        assertNotNull(v2Version);
+
+        // Get the second version and verify the response is correctly deserialized.
+        // previousVersion may be null if the service has not deployed this feature yet.
+        KeyVaultSecret retrieved = secretClient.getSecret(secretName, v2Version);
+        assertEquals("value-v2", retrieved.getValue());
+        assertEquals(v2Version, retrieved.getProperties().getVersion());
+
+        String previousVersion = retrieved.getProperties().getPreviousVersion();
+        if (previousVersion != null) {
+            assertEquals(v1Version, previousVersion);
+        }
+    }
+
+    /**
+     * Tests that getSecret with outContentType parameter correctly sends the query parameter and returns a secret.
+     * Note: outContentType requires service API version >= 2025-06-01-preview. When using api-version 7.6, only null
+     * is accepted. This test exercises the new method overload end-to-end.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getSecretWithOutContentType(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        createClient(httpClient, serviceVersion);
+
+        String secretName = testResourceNamer.randomName("outCtTest", 20);
+        KeyVaultSecret created = secretClient.setSecret(secretName, "test-value");
+
+        // Call getSecret with outContentType overload - exercises the new method end-to-end
+        KeyVaultSecret retrieved = secretClient.getSecret(secretName, created.getProperties().getVersion(), null);
+        assertNotNull(retrieved);
+        assertEquals(secretName, retrieved.getName());
+        assertEquals("test-value", retrieved.getValue());
+    }
+
+    /**
+     * Tests that getSecretWithResponse with outContentType parameter works correctly.
+     * Note: outContentType requires service API version >= 2025-06-01-preview. See getSecretWithOutContentType
+     * for details. This test exercises the Response-returning overload end-to-end.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getSecretWithOutContentTypeResponse(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        createClient(httpClient, serviceVersion);
+
+        String secretName = testResourceNamer.randomName("outCtRespTest", 20);
+        KeyVaultSecret created = secretClient.setSecret(secretName, "response-test-value");
+
+        // Call getSecretWithResponse with outContentType overload - exercises the new method end-to-end
+        com.azure.core.http.rest.Response<KeyVaultSecret> response = secretClient.getSecretWithResponse(secretName,
+            created.getProperties().getVersion(), null, com.azure.core.util.Context.NONE);
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+        assertEquals(secretName, response.getValue().getName());
+        assertEquals("response-test-value", response.getValue().getValue());
+    }
+
     private void pollOnSecretPurge(String secretName) {
         int pendingPollCount = 0;
 

@@ -26,7 +26,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         // Collect indexes into a list for verification
         List<AIProjectIndex> indexList = new ArrayList<>();
 
-        StepVerifier.create(indexesAsyncClient.listLatest().doOnNext(indexList::add))
+        StepVerifier.create(indexesAsyncClient.listLatestIndexVersions().doOnNext(indexList::add))
             .thenConsumeWhile(index -> true)
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -42,7 +42,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         // Use an index name that we know exists from the list
-        String indexName = indexesAsyncClient.listLatest()
+        String indexName = indexesAsyncClient.listLatestIndexVersions()
             .filter(index -> index.getName() != null)
             .next()
             .map(AIProjectIndex::getName)
@@ -55,7 +55,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
 
         List<AIProjectIndex> versionList = new ArrayList<>();
 
-        StepVerifier.create(indexesAsyncClient.listVersions(indexName).doOnNext(versionList::add))
+        StepVerifier.create(indexesAsyncClient.listIndexVersions(indexName).doOnNext(versionList::add))
             .thenConsumeWhile(index -> true)
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -71,7 +71,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         // Use an index we know exists from the list
-        AIProjectIndex existingIndex = indexesAsyncClient.listLatest()
+        AIProjectIndex existingIndex = indexesAsyncClient.listLatestIndexVersions()
             .filter(index -> index.getName() != null && index.getVersion() != null)
             .next()
             .block(Duration.ofSeconds(20));
@@ -84,7 +84,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         String indexName = existingIndex.getName();
         String indexVersion = existingIndex.getVersion();
 
-        StepVerifier.create(indexesAsyncClient.getVersion(indexName, indexVersion)).assertNext(index -> {
+        StepVerifier.create(indexesAsyncClient.getIndexVersion(indexName, indexVersion)).assertNext(index -> {
             assertValidIndex(index, indexName, indexVersion);
             System.out
                 .println("Index retrieved successfully: " + index.getName() + " (version " + index.getVersion() + ")");
@@ -105,7 +105,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         AzureAISearchIndex searchIndex
             = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
-        StepVerifier.create(indexesAsyncClient.createOrUpdateVersion(indexName, indexVersion, searchIndex))
+        StepVerifier.create(indexesAsyncClient.createOrUpdateIndexVersion(indexName, indexVersion, searchIndex))
             .assertNext(createdIndex -> {
                 assertValidIndex(createdIndex, indexName, indexVersion);
                 Assertions.assertInstanceOf(AzureAISearchIndex.class, createdIndex);
@@ -117,6 +117,6 @@ public class IndexesAsyncClientTest extends ClientTestBase {
             .verify(Duration.ofSeconds(20));
 
         // Clean up
-        indexesAsyncClient.deleteVersion(indexName, indexVersion).block(Duration.ofSeconds(20));
+        indexesAsyncClient.deleteIndexVersion(indexName, indexVersion).block(Duration.ofSeconds(20));
     }
 }

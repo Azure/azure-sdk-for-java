@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.0.0 (2026-03-27)
 
 ### Features Added
 
@@ -9,12 +9,26 @@
 
 ### Breaking Changes
 
+- Methods across sub-clients were renamed to include the resource name for disambiguation (continuing the pattern from `2.0.0-beta.1`):
+  - `DatasetsClient`: `listLatestVersion()` → `listLatestDatasetVersions()`, `listVersions()` → `listDatasetVersions()`, `deleteVersion()` → `deleteDatasetVersion()`, `createOrUpdateVersion()` → `createOrUpdateDatasetVersion()`
+  - `IndexesClient`: `listLatest()` → `listLatestIndexVersions()`, `listVersions()` → `listIndexVersions()`, `getVersion()` → `getIndexVersion()`, `createOrUpdateVersion()` → `createOrUpdateIndexVersion()`, `deleteVersion()` → `deleteIndexVersion()`
+  - `EvaluatorsClient`: `createVersion()` → `createEvaluatorVersion()`, `getVersion()` → `getEvaluatorVersion()`, `updateVersion()` → `updateEvaluatorVersion()`, `deleteVersion()` → `deleteEvaluatorVersion()`, `listVersions()` → `listEvaluatorVersions()`, `listLatestVersions()` → `listLatestEvaluatorVersions()`
+  - Same renames apply to the corresponding async clients.
+- `Connection.getCredentials()` renamed to `Connection.getCredential()` (singular).
+- `ConnectionType.REMOTE_TOOL` renamed to `ConnectionType.REMOTE_TOOL_PREVIEW`.
+- `EvaluatorMetric.setIsPrimary()` renamed to `EvaluatorMetric.setPrimary()`.
+- `BlobReferenceSasCredential.getType()` now returns `CredentialType` instead of `String`.
+- `DatasetVersion.getDataUri()` / `setDataUri()` renamed to `getDataUrl()` / `setDataUrl()` (also on `FileDatasetVersion` and `FolderDatasetVersion`).
+- `DatasetsClient.createDatasetWithFolder()` no longer throws checked `IOException`; it now throws `UncheckedIOException` instead.
+
 ### Bugs Fixed
 
 - Fixed `createDatasetWithFolder` producing an invalid `dataUri` that caused a 400 error when registering the dataset.
 - Fixed `createDatasetWithFile` using the dataset name as the blob name instead of the actual file name.
 
 ### Other Changes
+
+- Regenerated from updated API spec.
 
 ## 2.0.0-beta.3 (2026-03-19)
 
@@ -58,7 +72,7 @@
 - Updated service version from `2025-11-15-preview` to `v1`
 - Renamed `AgenticIdentityCredentials` to `AgenticIdentityPreviewCredentials`
 - Renamed `AgentClusterInsightsRequest` to `AgentClusterInsightRequest`
-- `ConnectionType.REMOTE_TOOL` value changed to `RemoteTool_Preview`
+- `ConnectionType.REMOTE_TOOL` renamed to `REMOTE_TOOL_PREVIEW` (value `RemoteTool_Preview`)
 - `CredentialType.AGENTIC_IDENTITY` renamed to `AGENTIC_IDENTITY_PREVIEW`
 - `ConnectionType.APIKEY` renamed to `API_KEY`
 - `EvaluationsClient.getOpenAIClient()` renamed to `getEvalService()`

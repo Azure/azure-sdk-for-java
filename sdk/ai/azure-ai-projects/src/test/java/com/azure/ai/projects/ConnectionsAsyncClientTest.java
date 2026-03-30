@@ -71,7 +71,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         StepVerifier.create(connectionsAsyncClient.getConnection(connectionName)).assertNext(connection -> {
             assertValidConnection(connection, connectionName, null, null);
-            Assertions.assertNotNull(connection.getCredentials().getType());
+            Assertions.assertNotNull(connection.getCredential().getType());
             System.out.println("Connection retrieved successfully: " + connection.getName());
         }).verifyComplete();
     }
@@ -89,9 +89,9 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         StepVerifier.create(connectionsAsyncClient.getConnectionWithCredentials(connectionName))
             .assertNext(connection -> {
                 assertValidConnection(connection, connectionName, null, null);
-                Assertions.assertNotNull(connection.getCredentials().getType());
+                Assertions.assertNotNull(connection.getCredential().getType());
                 System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
-                System.out.println("Credential type: " + connection.getCredentials().getType());
+                System.out.println("Credential type: " + connection.getCredential().getType());
             })
             .verifyComplete();
     }
@@ -104,7 +104,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.AZURE_OPEN_AI, false))
             .assertNext(connection -> {
                 assertValidConnection(connection, null, ConnectionType.AZURE_OPEN_AI, null);
-                Assertions.assertNotNull(connection.getCredentials().getType());
+                Assertions.assertNotNull(connection.getCredential().getType());
                 System.out.println("Default connection retrieved: " + connection.getName());
             })
             .verifyComplete();

@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,7 +44,7 @@ To interact with the Azure Agents service, you'll need to create an instance of 
 AgentsClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildClient();
+                .buildAgentsClient();
 ```
 
 Alternatively, you can create an asynchronous client using the `AgentsAsyncClient` class.
@@ -53,14 +53,15 @@ Alternatively, you can create an asynchronous client using the `AgentsAsyncClien
 AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildAsyncClient();
+                .buildAgentsAsyncClient();
 ``` 
 
 The Agents client library has 3 sub-clients which group the different operations that can be performed: 
 - `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents.
-- `ConversationsClient` / `ConversationsAsyncClient`: Handle conversation operations. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+
+Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
 To access each sub-client you need to use your `AgentsClientBuilder()`. The Agents client library takes the [Official OpenAI SDK][openai_java_sdk] as a dependency, which is used for all operations, except the ones corresponding to direct Agent management.
 
@@ -70,17 +71,17 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
                 .endpoint(endpoint);
 
 // Agents sub-clients
-AgentsClient agentsClient = builder.buildClient();
-AgentsAsyncClient agentsAsyncClient = builder.buildAsyncClient();
-// Conversations sub-clients.
-ConversationsClient conversationsClient = builder.buildConversationsClient();
-ConversationsAsyncClient conversationsAsyncClient = builder.buildConversationsAsyncClient();
+AgentsClient agentsClient = builder.buildAgentsClient();
+AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
 // Responses sub-clients.
 ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+// Memory Stores sub-clients (preview).
+MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
+MemoryStoresAsyncClient memoryStoresAsyncClient = builder.buildMemoryStoresAsyncClient();
 ```
 
-The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be accessed from either the `ResponsesClient` or the `ConversationsClient` using the `getOpenAIClient()` method. Alternatively, you can build an `OpenAIClient` or `OpenAIClientAsync` directly from the `AgentsClientBuilder`:
+The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be built directly from the `AgentsClientBuilder`. Use it to access conversation operations and other OpenAI services:
 
 ```java
 OpenAIClient openAIClient = builder.buildOpenAIClient();
@@ -122,19 +123,19 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
 
-- **`AgentDefinitionFeatureKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
+- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
 - **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
 
 > **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request.
 
 ```java
-// OpenAI SDK ResponsesService accessed from ResponsesClient
+// OpenAI SDK ResponseService accessed from ResponsesClient
 ResponsesClient responsesClient = builder.buildResponsesClient();
-ResponsesService responsesService = responsesClient.getOpenAIClient();
+ResponseService responseService = responsesClient.getResponseService();
 
-// OpenAI SDK ConversationService accessed from ConversationsClient
-ConversationsClient conversationsClient = builder.buildConversationsClient();
-ConversationService conversationService = conversationsClient.getOpenAIClient();
+// OpenAI SDK ConversationService accessed from OpenAIClient
+OpenAIClient openAIClient = builder.buildOpenAIClient();
+ConversationService conversationService = openAIClient.conversations();
 ```
 
 ### Using OpenAI's official library
@@ -173,7 +174,7 @@ PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o"
 AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
 ```
 
-This will return an `AgentVersionObject` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
+This will return an `AgentVersionDetails` which contains the information necessary to create an `AgentReference`. But first it's necessary to setup the `Conversation` and its messages to be able to obtain `Response`s with a centralized context.
 
 #### Create conversation
 

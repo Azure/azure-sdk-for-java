@@ -86,7 +86,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listVersions(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listEvaluatorVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -97,7 +97,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listVersionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listEvaluatorVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -108,7 +108,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listLatestVersions(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listLatestEvaluatorVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -118,7 +118,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listLatestVersionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listLatestEvaluatorVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -128,7 +128,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getVersion(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -139,7 +139,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getVersionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -150,7 +150,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteVersion(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             RequestOptions requestOptions, Context context);
@@ -161,7 +161,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteVersionSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             RequestOptions requestOptions, Context context);
@@ -172,7 +172,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createVersion(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
@@ -184,7 +184,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createVersionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
@@ -196,7 +196,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateVersion(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> updateEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -208,7 +208,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateVersionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> updateEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -220,27 +220,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listLatestVersionsNext(
+        Mono<Response<BinaryData>> listEvaluatorVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -251,9 +231,32 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listLatestVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> listEvaluatorVersionsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listLatestEvaluatorVersionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listLatestEvaluatorVersionsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -323,11 +326,12 @@ public final class EvaluatorsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(String name, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listEvaluatorVersionsSinglePageAsync(String name,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVersions(this.client.getEndpoint(),
+            .withContext(context -> service.listEvaluatorVersions(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -399,12 +403,12 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersionsAsync(String name, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listEvaluatorVersionsAsync(String name, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listVersionsSinglePageAsync(name, requestOptions),
-            nextLink -> listVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listEvaluatorVersionsSinglePageAsync(name, requestOptions),
+            nextLink -> listEvaluatorVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -473,10 +477,10 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listVersionsSinglePage(String name, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listEvaluatorVersionsSinglePage(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listVersionsSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listEvaluatorVersionsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -548,12 +552,12 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listEvaluatorVersions(String name, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listVersionsSinglePage(name, requestOptions),
-            nextLink -> listVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listEvaluatorVersionsSinglePage(name, requestOptions),
+            nextLink -> listEvaluatorVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -622,11 +626,11 @@ public final class EvaluatorsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listLatestVersionsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listLatestEvaluatorVersionsSinglePageAsync(RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLatestVersions(this.client.getEndpoint(),
+            .withContext(context -> service.listLatestEvaluatorVersions(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -697,12 +701,12 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatestVersionsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listLatestEvaluatorVersionsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listLatestVersionsSinglePageAsync(requestOptions),
-            nextLink -> listLatestVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listLatestEvaluatorVersionsSinglePageAsync(requestOptions),
+            nextLink -> listLatestEvaluatorVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -770,10 +774,10 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listLatestVersionsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listLatestEvaluatorVersionsSinglePage(RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listLatestVersionsSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listLatestEvaluatorVersionsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -844,12 +848,12 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatestVersions(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listLatestEvaluatorVersions(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listLatestVersionsSinglePage(requestOptions),
-            nextLink -> listLatestVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listLatestEvaluatorVersionsSinglePage(requestOptions),
+            nextLink -> listLatestEvaluatorVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -911,13 +915,13 @@ public final class EvaluatorsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getVersionWithResponseAsync(String name, String version,
+    public Mono<Response<BinaryData>> getEvaluatorVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-                foundryFeatures, version, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getEvaluatorVersion(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, accept, requestOptions,
+            context));
     }
 
     /**
@@ -978,11 +982,12 @@ public final class EvaluatorsImpl {
      * @return the specific version of the EvaluatorVersion along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+    public Response<BinaryData> getEvaluatorVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        return service.getVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryFeatures, version, accept, requestOptions, Context.NONE);
+        return service.getEvaluatorVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            name, foundryFeatures, version, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -999,10 +1004,10 @@ public final class EvaluatorsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteVersionWithResponseAsync(String name, String version,
+    public Mono<Response<Void>> deleteEvaluatorVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
-        return FluxUtil.withContext(context -> service.deleteVersion(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteEvaluatorVersion(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, context));
     }
 
@@ -1020,10 +1025,11 @@ public final class EvaluatorsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+    public Response<Void> deleteEvaluatorVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
-        return service.deleteVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryFeatures, version, requestOptions, Context.NONE);
+        return service.deleteEvaluatorVersionSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, Context.NONE);
     }
 
     /**
@@ -1128,14 +1134,14 @@ public final class EvaluatorsImpl {
      * @return evaluator Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createVersionWithResponseAsync(String name, BinaryData evaluatorVersion,
+    public Mono<Response<BinaryData>> createEvaluatorVersionWithResponseAsync(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, foundryFeatures, contentType, accept, evaluatorVersion, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createEvaluatorVersion(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, contentType, accept, evaluatorVersion,
+            requestOptions, context));
     }
 
     /**
@@ -1240,13 +1246,14 @@ public final class EvaluatorsImpl {
      * @return evaluator Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createVersionWithResponse(String name, BinaryData evaluatorVersion,
+    public Response<BinaryData> createEvaluatorVersionWithResponse(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryFeatures, contentType, accept, evaluatorVersion, requestOptions, Context.NONE);
+        return service.createEvaluatorVersionSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, contentType, accept, evaluatorVersion,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1352,14 +1359,14 @@ public final class EvaluatorsImpl {
      * @return evaluator Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateVersionWithResponseAsync(String name, String version,
+    public Mono<Response<BinaryData>> updateEvaluatorVersionWithResponseAsync(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, foundryFeatures, version, contentType, accept, evaluatorVersion, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateEvaluatorVersion(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
+            evaluatorVersion, requestOptions, context));
     }
 
     /**
@@ -1465,13 +1472,14 @@ public final class EvaluatorsImpl {
      * @return evaluator Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateVersionWithResponse(String name, String version, BinaryData evaluatorVersion,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateEvaluatorVersionWithResponse(String name, String version,
+        BinaryData evaluatorVersion, RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryFeatures, version, contentType, accept, evaluatorVersion, requestOptions, Context.NONE);
+        return service.updateEvaluatorVersionSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
+            evaluatorVersion, requestOptions, Context.NONE);
     }
 
     /**
@@ -1531,13 +1539,13 @@ public final class EvaluatorsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listEvaluatorVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVersionsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
-                accept, requestOptions, context))
+            .withContext(context -> service.listEvaluatorVersionsNext(nextLink, this.client.getEndpoint(),
+                foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1598,11 +1606,12 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listEvaluatorVersionsNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(),
+            foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1664,13 +1673,13 @@ public final class EvaluatorsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listLatestVersionsNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listLatestEvaluatorVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLatestVersionsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
-                accept, requestOptions, context))
+            .withContext(context -> service.listLatestEvaluatorVersionsNext(nextLink, this.client.getEndpoint(),
+                foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1731,10 +1740,11 @@ public final class EvaluatorsImpl {
      * @return paged collection of EvaluatorVersion items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listLatestVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listLatestEvaluatorVersionsNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listLatestVersionsNextSync(nextLink, this.client.getEndpoint(),
+        Response<BinaryData> res = service.listLatestEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(),
             foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
