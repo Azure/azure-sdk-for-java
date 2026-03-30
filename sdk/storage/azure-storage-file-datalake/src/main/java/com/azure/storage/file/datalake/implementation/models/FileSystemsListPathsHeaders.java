@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FileSystemsListPathsHeaders {
     /*
-     * The Date property.
+     * The x-ms-version property.
      */
     @Generated
-    private DateTimeRfc1123 date;
+    private String xMsVersion;
 
     /*
      * The ETag property.
@@ -41,16 +41,16 @@ public final class FileSystemsListPathsHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The x-ms-continuation property.
      */
     @Generated
     private String xMsContinuation;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -63,12 +63,7 @@ public final class FileSystemsListPathsHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FileSystemsListPathsHeaders(HttpHeaders rawHeaders) {
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -77,36 +72,34 @@ public final class FileSystemsListPathsHeaders {
             this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
     }
 
     /**
-     * Get the date property: The Date property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the date value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the date property: The Date property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param date the date value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the FileSystemsListPathsHeaders object itself.
      */
     @Generated
-    public FileSystemsListPathsHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
+    public FileSystemsListPathsHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -184,28 +177,6 @@ public final class FileSystemsListPathsHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the FileSystemsListPathsHeaders object itself.
-     */
-    @Generated
-    public FileSystemsListPathsHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
      * Get the xMsContinuation property: The x-ms-continuation property.
      * 
      * @return the xMsContinuation value.
@@ -224,6 +195,35 @@ public final class FileSystemsListPathsHeaders {
     @Generated
     public FileSystemsListPathsHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the FileSystemsListPathsHeaders object itself.
+     */
+    @Generated
+    public FileSystemsListPathsHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
         return this;
     }
 }

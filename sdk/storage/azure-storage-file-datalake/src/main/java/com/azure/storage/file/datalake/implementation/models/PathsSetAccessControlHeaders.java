@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PathsSetAccessControlHeaders {
     /*
-     * The Date property.
+     * The x-ms-version property.
      */
     @Generated
-    private DateTimeRfc1123 date;
+    private String xMsVersion;
 
     /*
      * The ETag property.
@@ -35,22 +35,22 @@ public final class PathsSetAccessControlHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-client-request-id property.
-     */
-    @Generated
-    private String xMsClientRequestId;
-
-    /*
      * The x-ms-request-id property.
      */
     @Generated
     private String xMsRequestId;
 
     /*
-     * The x-ms-version property.
+     * The Date property.
      */
     @Generated
-    private String xMsVersion;
+    private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -61,12 +61,7 @@ public final class PathsSetAccessControlHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsSetAccessControlHeaders(HttpHeaders rawHeaders) {
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -74,37 +69,35 @@ public final class PathsSetAccessControlHeaders {
         } else {
             this.lastModified = null;
         }
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
     }
 
     /**
-     * Get the date property: The Date property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the date value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the date property: The Date property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param date the date value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
     @Generated
-    public PathsSetAccessControlHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
+    public PathsSetAccessControlHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -160,28 +153,6 @@ public final class PathsSetAccessControlHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @return the xMsClientRequestId value.
-     */
-    @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
-    }
-
-    /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the PathsSetAccessControlHeaders object itself.
-     */
-    @Generated
-    public PathsSetAccessControlHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
-        return this;
-    }
-
-    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -204,24 +175,53 @@ public final class PathsSetAccessControlHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the date property: The Date property.
      * 
-     * @return the xMsVersion value.
+     * @return the date value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the date property: The Date property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param date the date value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
     @Generated
-    public PathsSetAccessControlHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public PathsSetAccessControlHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the PathsSetAccessControlHeaders object itself.
+     */
+    @Generated
+    public PathsSetAccessControlHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 }
