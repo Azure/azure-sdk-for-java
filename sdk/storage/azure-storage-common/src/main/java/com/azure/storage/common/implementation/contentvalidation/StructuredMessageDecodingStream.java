@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation.structuredmessage;
+package com.azure.storage.common.implementation.contentvalidation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
+
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -24,13 +25,13 @@ public final class StructuredMessageDecodingStream {
      *
      * @param originalStream The original download stream.
      * @param contentLength The expected content length.
-     * @param validationOptions The content validation options.
+     * @param responseChecksumAlgorithm The response checksum algorithm.
      * @return A Flux that decodes structured messages if validation is enabled, otherwise returns the original stream.
      */
     public static Flux<ByteBuffer> wrapStreamIfNeeded(Flux<ByteBuffer> originalStream, Long contentLength,
-        DownloadContentValidationOptions validationOptions) {
+        StorageChecksumAlgorithm responseChecksumAlgorithm) {
 
-        if (validationOptions == null || !validationOptions.isStructuredMessageValidationEnabled()) {
+        if (responseChecksumAlgorithm == null || responseChecksumAlgorithm != StorageChecksumAlgorithm.CRC64) {
             return originalStream;
         }
 

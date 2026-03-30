@@ -416,4 +416,3 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
 }
-

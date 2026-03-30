@@ -87,7 +87,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.StorageCrc64Calculator;
+import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.policy.AggregateCrcState;
@@ -1213,52 +1213,6 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Reads a range of bytes from a blob with content validation options. Uploading data must be done from the {@link BlockBlobClient}, {@link
-     * PageBlobClient}, or {@link AppendBlobClient}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <pre>{@code
-     * BlobRange range = new BlobRange(1024, 2048L);
-     * DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
-     * DownloadContentValidationOptions validationOptions = new DownloadContentValidationOptions()
-     *     .setStructuredMessageValidationEnabled(true);
-     *
-     * client.downloadStreamWithResponse(range, options, null, false, validationOptions).subscribe(response -> {
-     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-     *     response.getValue().subscribe(piece -> {
-     *         try {
-     *             downloadData.write(piece.array());
-     *         } catch (IOException ex) {
-     *             throw new UncheckedIOException(ex);
-     *         }
-     *     });
-     * });
-     * }</pre>
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * @param range {@link BlobRange}
-     * @param options {@link DownloadRetryOptions}
-     * @param requestConditions {@link BlobRequestConditions}
-     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
-     * @param contentValidationOptions {@link DownloadContentValidationOptions} options for content validation
-     * @return A reactive response containing the blob data.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        DownloadContentValidationOptions contentValidationOptions) {
-        try {
-            return withContext(context -> downloadStreamWithResponse(range, options, requestConditions,
-                getRangeContentMd5, contentValidationOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
      * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
      * PageBlobClient}, or {@link AppendBlobClient}.
      *
@@ -1315,7 +1269,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context){
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         // Prevents revapi visibility increased error
         return downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context);
     }
@@ -1325,15 +1279,10 @@ public class BlobAsyncClientBase {
         StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
 
-<<<<<<< HEAD
-        boolean structuredDecode
-            = contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled();
-=======
         final StorageChecksumAlgorithm algorithm
             = responseChecksumAlgorithm != null ? responseChecksumAlgorithm : StorageChecksumAlgorithm.NONE;
         final boolean isStructuredMessageEnabled = isStructuredMessageAlgorithm(algorithm);
         final boolean isMd5Enabled = algorithm == StorageChecksumAlgorithm.MD5;
->>>>>>> f96332b51d4 (code refactoring)
 
         final Boolean finalGetMD5 = (!isStructuredMessageEnabled && (getRangeContentMd5 || isMd5Enabled)) ? true : null;
 
@@ -1408,11 +1357,6 @@ public class BlobAsyncClientBase {
                     decoderStateRef);
             });
 
-    }
-
-    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
-        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, null, context);
     }
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
@@ -1706,7 +1650,6 @@ public class BlobAsyncClientBase {
             = originalParallelTransferOptions != null && originalParallelTransferOptions.getMaxConcurrency() != null;
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
             = ModelHelper.populateAndApplyDefaults(originalParallelTransferOptions);
-        DownloadContentValidationOptions contentValidationOptions = options.getContentValidationOptions();
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
@@ -1719,14 +1662,10 @@ public class BlobAsyncClientBase {
         // Run download on boundedElastic to avoid blocking the reactor thread when async file I/O
         // completion is delivered (matches .NET behavior where DownloadTo runs off the sync context).
         return Mono.just(channel)
-            .flatMap(c -> this
-                .downloadToFileImpl(c, finalRange, finalParallelTransferOptions, blockSizeProvided,
-                    maxConcurrencyProvided, options.getDownloadRetryOptions(), finalConditions,
-                    options.isRetrieveContentRangeMd5(), contentValidationOptions, context)
-                .subscribeOn(Schedulers.boundedElastic()))
-            .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
-                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
-                options.getResponseChecksumAlgorithm(), context))
+            .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions, blockSizeProvided,
+                maxConcurrencyProvided, options.getDownloadRetryOptions(), finalConditions,
+                options.isRetrieveContentRangeMd5(), options.getResponseChecksumAlgorithm(), context))
+            .subscribeOn(Schedulers.boundedElastic())
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1739,45 +1678,34 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
-        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
-        DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, boolean blockSizeProvided,
         boolean maxConcurrencyProvided, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        DownloadContentValidationOptions contentValidationOptions, Context context) {
+        StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
             = progressReceiver == null ? null : ProgressReporter.withProgressListener(progressReceiver);
 
-<<<<<<< HEAD
-        boolean structuredDecode
-            = contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled();
-        final Context downloadContext = structuredDecode
-=======
         final boolean isStructuredMessageEnabled = isStructuredMessageAlgorithm(responseChecksumAlgorithm);
         final boolean isMd5Enabled = responseChecksumAlgorithm == StorageChecksumAlgorithm.MD5;
 
         final Context downloadContext = isStructuredMessageEnabled
->>>>>>> f96332b51d4 (code refactoring)
             ? (context == null
                 ? new Context(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true)
                 : context.addData(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true))
             : context;
-
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
-            = (range, conditions) -> structuredDecode
-                ? this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, rangeGetContentMd5,
-                    contentValidationOptions, downloadContext)
+            = (range, conditions) -> isStructuredMessageEnabled
+                ? this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions, rangeGetContentMd5,
+                    responseChecksumAlgorithm, downloadContext)
                 : this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, rangeGetContentMd5,
                     downloadContext);
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> emptyBlobDownloadFunc
-            = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, false,
-                null, context);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> emptyBlobDownloadFunc = (range,
+            conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, false, context);
 
         boolean checksumValidationEnabled = isStructuredMessageEnabled || rangeGetContentMd5 || isMd5Enabled;
         boolean md5ValidationEnabled = !isStructuredMessageEnabled && (rangeGetContentMd5 || isMd5Enabled);
@@ -1798,8 +1726,6 @@ public class BlobAsyncClientBase {
         int maxConcurrency = maxConcurrencyProvided
             ? finalParallelTransferOptions.getMaxConcurrency()
             : getDefaultDownloadConcurrency();
-            = (range, conditions) -> this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, responseChecksumAlgorithm, context);
 
         com.azure.storage.common.ParallelTransferOptions initialParallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(initialRangeSize);

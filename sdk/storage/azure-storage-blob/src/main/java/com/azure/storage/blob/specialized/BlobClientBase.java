@@ -1642,7 +1642,7 @@ public class BlobClientBase {
             .setRequestConditions(options.getRequestConditions())
             .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5())
             .setOpenOptions(options.getOpenOptions())
-            .setContentValidationOptions(options.getContentValidationOptions());
+            .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm());
     }
 
     /**

@@ -8,7 +8,9 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.common.DownloadContentValidationOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;

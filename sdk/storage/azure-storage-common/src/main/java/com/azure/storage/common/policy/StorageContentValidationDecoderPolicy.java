@@ -11,12 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-<<<<<<< HEAD
-import com.azure.storage.common.implementation.StorageCrc64Calculator;
-import com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecoder;
-=======
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageDecoder;
->>>>>>> f96332b51d4 (code refactoring)
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
