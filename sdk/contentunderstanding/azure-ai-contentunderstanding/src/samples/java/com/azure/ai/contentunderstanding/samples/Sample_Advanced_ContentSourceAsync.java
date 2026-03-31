@@ -3,33 +3,33 @@
 
 package com.azure.ai.contentunderstanding.samples;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
-import com.azure.ai.contentunderstanding.models.AudioVisualSource;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.PointF;
-import com.azure.ai.contentunderstanding.models.Rectangle;
 import com.azure.ai.contentunderstanding.models.RectangleF;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * Demonstrates how to access and use {@link ContentSource} grounding references
- * from analysis results. Content sources identify the exact location in the original
- * content where a field value was extracted from.
+ * Async version of {@link Sample_Advanced_ContentSource}. Demonstrates how to access
+ * and use {@link ContentSource} grounding references from analysis results using the
+ * async client.
  *
  * <p>For document/image content, sources are {@link DocumentSource} instances
  * with page number, polygon coordinates, and a computed bounding box.</p>
@@ -37,19 +37,19 @@ import java.util.stream.Collectors;
  * <p>For audio/video content, sources are {@link AudioVisualSource} instances
  * with a timestamp and an optional bounding box.</p>
  */
-public class Sample_Advanced_ContentSource {
+public class Sample_Advanced_ContentSourceAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
-        ContentUnderstandingClient client;
+        ContentUnderstandingAsyncClient client;
         if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
         } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
         }
 
         // Analyze an invoice once — reuse the result for all demonstrations.
@@ -59,28 +59,40 @@ public class Sample_Advanced_ContentSource {
         AnalysisInput input = new AnalysisInput();
         input.setUrl(invoiceUrl);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
-        AnalysisResult result = operation.getFinalResult();
-        DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
+        CountDownLatch latch = new CountDownLatch(1);
 
-        // =====================================================================
-        // Part 1: Document ContentSource from analysis
-        // =====================================================================
-        documentContentSourceFromAnalysis(documentContent);
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
 
-        // =====================================================================
-        // Part 2: ContentSource.parseAll() round-trip and multi-segment parsing
-        // =====================================================================
-        contentSourceParseRoundTrip(documentContent);
+                // Part 1: Document ContentSource from analysis
+                documentContentSourceFromAnalysis(documentContent);
+
+                // Part 2: ContentSource.parseAll() round-trip and multi-segment parsing
+                contentSourceParseRoundTrip(documentContent);
+            })
+            .doFinally(signal -> latch.countDown())
+            .subscribe();
+
+        latch.await(5, TimeUnit.MINUTES);
     }
 
     /**
-     * Analyzes an invoice and iterates over field grounding sources,
+     * Analyzes an invoice asynchronously and iterates over field grounding sources,
      * casting each to {@link DocumentSource} to access page, polygon, and bounding box.
      */
-    // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.fromanalysis
+    // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.fromanalysis.async
     private static void documentContentSourceFromAnalysis(DocumentContent documentContent) {
         // Iterate over all fields and access their grounding sources.
         for (Map.Entry<String, ContentField> entry : documentContent.getFields().entrySet()) {
@@ -89,8 +101,6 @@ public class Sample_Advanced_ContentSource {
 
             System.out.println("Field: " + fieldName + " = " + field.getValue());
 
-            // Sources identify where the field value appears in the original content.
-            // For documents, each source is a DocumentSource with page number and polygon.
             List<ContentSource> sources = field.getSources();
             if (sources != null) {
                 for (ContentSource source : sources) {
@@ -98,15 +108,12 @@ public class Sample_Advanced_ContentSource {
                         DocumentSource docSource = (DocumentSource) source;
                         System.out.println("  Source: page " + docSource.getPageNumber());
 
-                        // Polygon: the precise region (rotated quadrilateral) around the text.
                         List<PointF> polygon = docSource.getPolygon();
                         String coords = polygon.stream()
                             .map(p -> String.format("(%.4f,%.4f)", p.getX(), p.getY()))
                             .collect(Collectors.joining(", "));
                         System.out.println("  Polygon: [" + coords + "]");
 
-                        // BoundingBox: axis-aligned rectangle computed from the polygon —
-                        // convenient for drawing highlight overlays.
                         RectangleF bbox = docSource.getBoundingBox();
                         System.out.printf("  BoundingBox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
                             bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
@@ -115,7 +122,7 @@ public class Sample_Advanced_ContentSource {
             }
         }
     }
-    // END: com.azure.ai.contentunderstanding.advanced.contentsource.fromanalysis
+    // END: com.azure.ai.contentunderstanding.advanced.contentsource.fromanalysis.async
 
     /**
      * Demonstrates the two public parse methods and {@link ContentSource#toRawString(List)}:
@@ -124,7 +131,7 @@ public class Sample_Advanced_ContentSource {
      *   <li>{@link DocumentSource#parse(String)} — typed method, returns {@code List<DocumentSource>}</li>
      * </ul>
      */
-    // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.parse
+    // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.parse.async
     private static void contentSourceParseRoundTrip(DocumentContent documentContent) {
         // --- toRawString + ContentSource.parseAll() round-trip ---
         // ContentSource.parseAll() is the base-class method that handles both D() and AV() formats.
@@ -172,7 +179,7 @@ public class Sample_Advanced_ContentSource {
             + ", polygon=" + pageOnlyDoc.getPolygon()
             + ", boundingBox=" + pageOnlyDoc.getBoundingBox());
     }
-    // END: com.azure.ai.contentunderstanding.advanced.contentsource.parse
+    // END: com.azure.ai.contentunderstanding.advanced.contentsource.parse.async
 
     // TODO: AudioVisualContentSource — demonstrate real AudioVisualSource grounding
     // from audio/video analysis. The CU service does not currently return AudioVisualSource
@@ -182,19 +189,4 @@ public class Sample_Advanced_ContentSource {
     //   2. Iterates over fields and casts getSources() elements to AudioVisualSource
     //   3. Shows AudioVisualSource.getTime() (Duration) and AudioVisualSource.getBoundingBox() (optional Rectangle)
     //   4. Demonstrates ContentSource.parseAll() with AV(...) format strings
-    //
-    // Example of AudioVisualSource parsing (SDK-side API works, just no live source data yet):
-    //
-    //   List<AudioVisualSource> avSources = AudioVisualSource.parse("AV(1500);AV(3200)");
-    //   for (AudioVisualSource avSource : avSources) {
-    //       Duration time = avSource.getTime();              // e.g., PT1.5S (1500 ms)
-    //       Rectangle box = avSource.getBoundingBox();        // null for audio-only
-    //       System.out.println("Timestamp: " + time.toMillis() + " ms, BoundingBox: " + (box != null ? box : "none"));
-    //   }
-    //
-    //   // With bounding box (e.g., face detection in video):
-    //   List<AudioVisualSource> avWithBox = AudioVisualSource.parse("AV(5000,100,200,50,60)");
-    //   Rectangle bbox = avWithBox.get(0).getBoundingBox();   // Rectangle(x=100, y=200, w=50, h=60)
-    //
-    // See AudioVisualSource and ContentSource.parseAll() for the SDK-side API.
 }
