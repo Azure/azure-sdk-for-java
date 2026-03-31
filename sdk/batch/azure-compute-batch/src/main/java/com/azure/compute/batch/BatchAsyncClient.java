@@ -2157,7 +2157,8 @@ public final class BatchAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.resizePoolWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2368,7 +2369,8 @@ public final class BatchAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.removeNodesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -3954,7 +3956,8 @@ public final class BatchAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.disableJobWithResponseAsync(jobId, parameters, requestOptions);
     }
 
@@ -10167,7 +10170,8 @@ public final class BatchAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deallocateNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
