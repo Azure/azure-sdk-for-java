@@ -630,21 +630,17 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
      */
     private void runMultiRangeTest(String[] pkValues, String queryTemplate, int expectedCount) {
         String containerId = "multiRange_" + UUID.randomUUID().toString().substring(0, 8);
-        CosmosAsyncDatabase gwDb = directClient.getDatabase(directContainer.getDatabase().getId());
-        CosmosAsyncContainer gwContainer = null;
-        CosmosAsyncContainer tcContainer = null;
-        List<ObjectNode> createdDocs = new ArrayList<>();
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+        CosmosAsyncContainer directTestContainer = db.getContainer(containerId);
 
         try {
-            // Create 24K RU container — yields ~3 physical partitions
             PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
             pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
             CosmosContainerProperties props = new CosmosContainerProperties(containerId, pkDef);
-            gwDb.createContainer(props, ThroughputProperties.createManualThroughput(24000)).block();
-            gwContainer = gwDb.getContainer(containerId);
-            tcContainer = thinClient.getDatabase(gwDb.getId()).getContainer(containerId);
+            db.createContainer(props, ThroughputProperties.createManualThroughput(24000)).block();
 
-            // Insert docs across different PKs
+            CosmosAsyncContainer tcContainer = thinClient.getDatabase(db.getId()).getContainer(containerId);
+
             for (int i = 0; i < pkValues.length; i++) {
                 String docId = "mr-" + i + "-" + UUID.randomUUID().toString().substring(0, 8);
                 ObjectNode doc = OBJECT_MAPPER.createObjectNode();
@@ -652,39 +648,25 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 doc.put(PK_FIELD, pkValues[i]);
                 doc.put("idx", i);
                 doc.put("val", i * 100);
-                gwContainer.createItem(doc, new PartitionKey(pkValues[i]), null).block();
-                createdDocs.add(doc);
+                directTestContainer.createItem(doc, new PartitionKey(pkValues[i]), null).block();
             }
 
-            // Build query from template (replace %s with constructed IN list if needed)
             String query = queryTemplate;
 
-            // Gateway vs thin client comparison
-            List<ObjectNode> gwResults = new ArrayList<>();
-            for (FeedResponse<ObjectNode> page : gwContainer.queryItems(query, new CosmosQueryRequestOptions(), ObjectNode.class).byPage().toIterable()) {
-                gwResults.addAll(page.getResults());
-            }
+            QueryResult<ObjectNode> directResult = drainQuery(directTestContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> tcResult = drainQuery(tcContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
 
-            List<ObjectNode> tcResults = new ArrayList<>();
-            List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-            for (FeedResponse<ObjectNode> page : tcContainer.queryItems(query, new CosmosQueryRequestOptions(), ObjectNode.class).byPage().toIterable()) {
-                tcResults.addAll(page.getResults());
-                tcDiag.add(page.getCosmosDiagnostics());
-            }
-            for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
+            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
-            assertThat(tcResults.size()).as("Multi-range count mismatch for: " + query).isEqualTo(gwResults.size());
-            assertThat(tcResults.size()).isEqualTo(expectedCount);
+            assertThat(tcResult.results.size()).as("Multi-range count mismatch for: " + query).isEqualTo(directResult.results.size());
+            assertThat(tcResult.results.size()).isEqualTo(expectedCount);
 
-            // Compare as sets (cross-partition queries may return in different order)
-            List<String> gwIds = gwResults.stream().map(d -> d.get(ID_FIELD).asText()).sorted().collect(Collectors.toList());
-            List<String> tcIds = tcResults.stream().map(d -> d.get(ID_FIELD).asText()).sorted().collect(Collectors.toList());
-            assertThat(tcIds).isEqualTo(gwIds);
+            List<String> directIds = directResult.results.stream().map(d -> d.get(ID_FIELD).asText()).sorted().collect(Collectors.toList());
+            List<String> tcIds = tcResult.results.stream().map(d -> d.get(ID_FIELD).asText()).sorted().collect(Collectors.toList());
+            assertThat(tcIds).isEqualTo(directIds);
 
         } finally {
-            if (gwContainer != null) {
-                try { gwContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-            }
+            safeDeleteContainer(directTestContainer);
         }
     }
 
@@ -789,12 +771,10 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
     public void testVectorSearchGatewayVsThinClient() {
         String vectorContainerId = "vecCompare_" + UUID.randomUUID().toString().substring(0, 8);
-        CosmosAsyncDatabase gwDb = directClient.getDatabase(directContainer.getDatabase().getId());
-        CosmosAsyncContainer gwVectorContainer = null;
-        CosmosAsyncContainer tcVectorContainer = null;
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+        CosmosAsyncContainer directVecContainer = db.getContainer(vectorContainerId);
 
         try {
-            // 1. Create vector-enabled container
             PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
             pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
 
@@ -819,17 +799,12 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             idxPolicy.setVectorIndexes(Collections.singletonList(vecIdx));
             props.setIndexingPolicy(idxPolicy);
 
-            gwDb.createContainer(props).block();
-            gwVectorContainer = gwDb.getContainer(vectorContainerId);
-            tcVectorContainer = thinClient.getDatabase(gwDb.getId()).getContainer(vectorContainerId);
+            db.createContainer(props).block();
+            CosmosAsyncContainer tcVecContainer = thinClient.getDatabase(db.getId()).getContainer(vectorContainerId);
 
-            // 2. Insert docs with 3D embeddings
             double[][] embeddings = {
-                {1.0, 0.0, 0.0},   // doc0 - unit x
-                {0.0, 1.0, 0.0},   // doc1 - unit y
-                {0.0, 0.0, 1.0},   // doc2 - unit z
-                {1.0, 1.0, 0.0},   // doc3 - x+y diagonal
-                {0.9, 0.1, 0.0},   // doc4 - close to doc0
+                {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0},
+                {1.0, 1.0, 0.0}, {0.9, 0.1, 0.0},
             };
 
             String vecPk = UUID.randomUUID().toString();
@@ -843,45 +818,29 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 doc.put("text", "document " + i);
                 ArrayNode arr = doc.putArray("embedding");
                 for (double v : embeddings[i]) { arr.add(v); }
-                gwVectorContainer.createItem(doc, new PartitionKey(vecPk), null).block();
+                directVecContainer.createItem(doc, new PartitionKey(vecPk), null).block();
             }
 
-            // 3. Run VectorDistance query through both paths
             String query = "SELECT TOP 5 c.id, c.text, VectorDistance(c.embedding, [1.0, 0.0, 0.0]) AS score "
                 + "FROM c ORDER BY VectorDistance(c.embedding, [1.0, 0.0, 0.0])";
 
-            List<ObjectNode> gwResults = new ArrayList<>();
-            for (FeedResponse<ObjectNode> page : gwVectorContainer.queryItems(query, new CosmosQueryRequestOptions(), ObjectNode.class).byPage().toIterable()) {
-                gwResults.addAll(page.getResults());
+            QueryResult<ObjectNode> directResult = drainQuery(directVecContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> tcResult = drainQuery(tcVecContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+
+            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+            assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
+            assertThat(tcResult.results.size()).isEqualTo(5);
+
+            for (int i = 0; i < directResult.results.size(); i++) {
+                assertThat(tcResult.results.get(i).get("id").asText()).isEqualTo(directResult.results.get(i).get("id").asText());
             }
 
-            List<ObjectNode> tcResults = new ArrayList<>();
-            List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-            for (FeedResponse<ObjectNode> page : tcVectorContainer.queryItems(query, new CosmosQueryRequestOptions(), ObjectNode.class).byPage().toIterable()) {
-                tcResults.addAll(page.getResults());
-                tcDiag.add(page.getCosmosDiagnostics());
-            }
-
-            // 4. Assert thin client endpoint used
-            for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
-
-            // 5. Compare results
-            assertThat(tcResults.size()).isEqualTo(gwResults.size());
-            assertThat(tcResults.size()).isEqualTo(5);
-
-            // Same document order
-            for (int i = 0; i < gwResults.size(); i++) {
-                assertThat(tcResults.get(i).get("id").asText()).isEqualTo(gwResults.get(i).get("id").asText());
-            }
-
-            // Most similar to [1,0,0] should be doc0
-            assertThat(tcResults.get(0).get("id").asText()).isEqualTo(docIds.get(0));
-            assertThat(tcResults.get(0).get("score").asDouble()).isGreaterThan(0.99);
+            assertThat(tcResult.results.get(0).get("id").asText()).isEqualTo(docIds.get(0));
+            assertThat(tcResult.results.get(0).get("score").asDouble()).isGreaterThan(0.99);
 
         } finally {
-            if (gwVectorContainer != null) {
-                try { gwVectorContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-            }
+            safeDeleteContainer(directVecContainer);
         }
     }
 
@@ -893,11 +852,10 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
     public void testFullTextSearchGatewayVsThinClient() {
         String containerId = "ftsCompare_" + UUID.randomUUID().toString().substring(0, 8);
-        CosmosAsyncDatabase gwDb = directClient.getDatabase(directContainer.getDatabase().getId());
-        CosmosAsyncContainer gwFtsContainer = null;
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+        CosmosAsyncContainer directFtsContainer = db.getContainer(containerId);
 
         try {
-            // 1. Create container with full-text policy and full-text index
             PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
             pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
 
@@ -920,11 +878,9 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             idxPolicy.setCosmosFullTextIndexes(Collections.singletonList(ftIndex));
             props.setIndexingPolicy(idxPolicy);
 
-            gwDb.createContainer(props).block();
-            gwFtsContainer = gwDb.getContainer(containerId);
-            CosmosAsyncContainer tcFtsContainer = thinClient.getDatabase(gwDb.getId()).getContainer(containerId);
+            db.createContainer(props).block();
+            CosmosAsyncContainer tcFtsContainer = thinClient.getDatabase(db.getId()).getContainer(containerId);
 
-            // 2. Insert docs with text content
             String ftsPk = UUID.randomUUID().toString();
             String[] texts = {
                 "The quick brown fox jumps over the lazy dog",
@@ -938,23 +894,20 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 doc.put(ID_FIELD, "fts_" + i + "_" + UUID.randomUUID().toString().substring(0, 8));
                 doc.put(PK_FIELD, ftsPk);
                 doc.put("text", texts[i]);
-                gwFtsContainer.createItem(doc, new PartitionKey(ftsPk), null).block();
+                directFtsContainer.createItem(doc, new PartitionKey(ftsPk), null).block();
             }
 
-            // 3. Run FullTextContains query through both paths
             String query = "SELECT TOP 10 * FROM c WHERE FullTextContains(c.text, 'mountain')";
 
-            QueryResult<ObjectNode> gwResult = drainQuery(gwFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> directResult = drainQuery(directFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
             QueryResult<ObjectNode> tcResult = drainQuery(tcFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
 
             for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
-            assertThat(gwResult.results.size()).as("Full-text query should return results (docs contain 'mountain')").isPositive();
-            assertThat(tcResult.results.size()).isEqualTo(gwResult.results.size());
+            assertThat(directResult.results.size()).as("Full-text query should return results").isPositive();
+            assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
 
         } finally {
-            if (gwFtsContainer != null) {
-                try { gwFtsContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-            }
+            safeDeleteContainer(directFtsContainer);
         }
     }
 
@@ -966,17 +919,15 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
     public void testHybridSearchGatewayVsThinClient() {
         String containerId = "hybridCompare_" + UUID.randomUUID().toString().substring(0, 8);
-        CosmosAsyncDatabase gwDb = directClient.getDatabase(directContainer.getDatabase().getId());
-        CosmosAsyncContainer gwHybridContainer = null;
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+        CosmosAsyncContainer directHybridContainer = db.getContainer(containerId);
 
         try {
-            // 1. Create container with both vector and full-text policies
             PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
             pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
 
             CosmosContainerProperties props = new CosmosContainerProperties(containerId, pkDef);
 
-            // Vector policy
             CosmosVectorEmbeddingPolicy vecPolicy = new CosmosVectorEmbeddingPolicy();
             CosmosVectorEmbedding emb = new CosmosVectorEmbedding();
             emb.setPath("/vector");
@@ -986,7 +937,6 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             vecPolicy.setCosmosVectorEmbeddings(Collections.singletonList(emb));
             props.setVectorEmbeddingPolicy(vecPolicy);
 
-            // Full-text policy
             CosmosFullTextPath ftPath = new CosmosFullTextPath();
             ftPath.setPath("/text");
             ftPath.setLanguage("en-US");
@@ -995,7 +945,6 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             ftPolicy.setPaths(Collections.singletonList(ftPath));
             props.setFullTextPolicy(ftPolicy);
 
-            // Indexing policy with vector + full-text indexes
             IndexingPolicy idxPolicy = new IndexingPolicy();
             idxPolicy.setIndexingMode(IndexingMode.CONSISTENT);
             idxPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
@@ -1009,11 +958,9 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             idxPolicy.setCosmosFullTextIndexes(Collections.singletonList(ftIndex));
             props.setIndexingPolicy(idxPolicy);
 
-            gwDb.createContainer(props).block();
-            gwHybridContainer = gwDb.getContainer(containerId);
-            CosmosAsyncContainer tcHybridContainer = thinClient.getDatabase(gwDb.getId()).getContainer(containerId);
+            db.createContainer(props).block();
+            CosmosAsyncContainer tcHybridContainer = thinClient.getDatabase(db.getId()).getContainer(containerId);
 
-            // 2. Insert docs with both text and vector
             String hybridPk = UUID.randomUUID().toString();
             String[] texts = {
                 "Red bicycle on the mountain trail",
@@ -1021,9 +968,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 "Green bicycle near the lake"
             };
             double[][] vectors = {
-                {1.0, 0.0, 0.0},
-                {0.0, 1.0, 0.0},
-                {0.0, 0.0, 1.0}
+                {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}
             };
             for (int i = 0; i < texts.length; i++) {
                 ObjectNode doc = OBJECT_MAPPER.createObjectNode();
@@ -1032,27 +977,30 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 doc.put("text", texts[i]);
                 ArrayNode arr = doc.putArray("vector");
                 for (double v : vectors[i]) { arr.add(v); }
-                gwHybridContainer.createItem(doc, new PartitionKey(hybridPk), null).block();
+                directHybridContainer.createItem(doc, new PartitionKey(hybridPk), null).block();
             }
 
-            // 3. Run hybrid RRF query combining VectorDistance + FullTextScore
             String query = "SELECT TOP 3 * FROM c "
                 + "ORDER BY RANK RRF(VectorDistance(c.vector, [1.0, 0.0, 0.0]), FullTextScore(c.text, 'bicycle'))";
 
-            QueryResult<ObjectNode> gwResult = drainQuery(gwHybridContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> directResult = drainQuery(directHybridContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
             QueryResult<ObjectNode> tcResult = drainQuery(tcHybridContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
 
             for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
-            assertThat(tcResult.results.size()).isEqualTo(gwResult.results.size());
+            assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
 
         } finally {
-            if (gwHybridContainer != null) {
-                try { gwHybridContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-            }
+            safeDeleteContainer(directHybridContainer);
         }
     }
 
     // ==================== Assertion & Drain Helpers ====================
+
+    private static void safeDeleteContainer(CosmosAsyncContainer container) {
+        if (container != null) {
+            try { container.delete().block(); } catch (Exception e) { logger.warn("Container cleanup failed: {}", e.getMessage()); }
+        }
+    }
 
     /** Holds query results and per-page diagnostics from a fully drained query. */
     private static class QueryResult<T> {

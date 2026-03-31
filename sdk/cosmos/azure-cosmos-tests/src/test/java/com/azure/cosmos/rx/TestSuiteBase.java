@@ -1815,11 +1815,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled,
                                                                       boolean retryOnThrottledRequests) {
-        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .credential(credential)
-                                                               .directMode(DirectConnectionConfig.getDefaultConfig())
-                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                                               .consistencyLevel(consistencyLevel);
+        CosmosClientBuilder builder = applyCredential(
+            new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .directMode(DirectConnectionConfig.getDefaultConfig())
+                .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .consistencyLevel(consistencyLevel));
 
         if (preferredRegions != null) {
             builder.preferredRegions(preferredRegions);
