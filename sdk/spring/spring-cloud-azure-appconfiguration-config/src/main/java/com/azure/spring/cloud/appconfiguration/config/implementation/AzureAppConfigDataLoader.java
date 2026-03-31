@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ import org.springframework.util.StringUtils;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -83,13 +84,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     private static final Integer PREKILL_TIME = 5;
 
     /**
-     * Fixed backoff intervals for startup retries: (elapsed_time_threshold_seconds, backoff_duration_seconds).
-     * Defines fixed backoff durations based on how long startup has been attempting.
+     * Fixed backoff intervals for startup retries: (elapsed_time_threshold_seconds, backoff_duration_seconds). Defines
+     * fixed backoff durations based on how long startup has been attempting.
      */
     private static final int[][] STARTUP_BACKOFF_INTERVALS = {
-        {100, 5},   // 0-100 seconds elapsed: 5 second backoff
-        {200, 10},  // 100-200 seconds elapsed: 10 second backoff
-        {600, 30}   // 200-600 seconds elapsed: 30 second backoff
+        { 100, 5 }, // 0-100 seconds elapsed: 5 second backoff
+        { 200, 10 }, // 100-200 seconds elapsed: 10 second backoff
+        { 600, 30 } // 200-600 seconds elapsed: 30 second backoff
     };
 
     /**
@@ -146,7 +147,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             }
         }
 
-        StateHolder.updateState(storeState);
         if (!featureFlagClient.getFeatureFlags().isEmpty()) {
             sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
         }
@@ -166,14 +166,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             || (notification.getSecondaryToken() != null
                 && StringUtils.hasText(notification.getSecondaryToken().getName()));
 
-        // During refresh, only attempt once since failures are non-fatal
+        requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH, pushRefresh);
+
+        // During refresh, attempt once without retry
         if (resource.isRefresh()) {
-            requestContext = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
             replicaClientFactory.findActiveClients(resource.getEndpoint());
             return attemptLoadFromClients(sourceList);
         }
-
-        requestContext = new Context("refresh", false).addData(PUSH_REFRESH, pushRefresh);
 
         // During startup, retry with backoff until deadline
         Instant startTime = Instant.now();
@@ -181,52 +180,56 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         Exception lastException = null;
         int postFixedWindowAttempts = 0;
 
-                if (reloadFailed
-                    && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
-                        replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext,
-                        storeState)) {
-                    // This store doesn't have any changes where to refresh store did. Skipping to next client.
-                    client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
-                    continue;
+        while (Instant.now().isBefore(deadline)) {
+            replicaClientFactory.findActiveClients(resource.getEndpoint());
+            lastException = attemptLoadFromClients(sourceList);
+
+            if (lastException == null) {
+                return null; // Success
+            }
+
+            // All clients failed, use fixed backoff based on elapsed time
+            if (Instant.now().isBefore(deadline)) {
+                long elapsedSeconds = Instant.now().getEpochSecond() - startTime.getEpochSecond();
+                Long backoffSeconds = getBackoffDuration(elapsedSeconds);
+
+                // If backoff is null, elapsed time exceeds fixed intervals - use exponential backoff
+                if (backoffSeconds == null) {
+                    postFixedWindowAttempts++;
+                    // Convert nanoseconds to seconds
+                    backoffSeconds = BackoffTimeCalculator.calculateBackoff(postFixedWindowAttempts) / 1_000_000_000L;
                 }
 
-                // Reverse in order to add Profile specific properties earlier, and last profile comes first
-                try {
-                    sourceList.addAll(createSettings(currentClient));
-                    List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
+                // Don't wait longer than remaining time until deadline
+                long remainingSeconds = deadline.getEpochSecond() - Instant.now().getEpochSecond();
+                long waitSeconds = Math.min(backoffSeconds, remainingSeconds);
 
-                    logger.debug("PropertySource context.");
-                    AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
-
-                    storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
-                        monitoring.getFeatureFlagRefreshInterval());
-
-                    if (monitoring.isEnabled()) {
-                        // Check if refreshAll is enabled - if so, use watched configuration settings
-                        if (monitoring.getTriggers().isEmpty()) {
-                            // Use watched configuration settings for refresh
-                            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(
-                                currentClient);
-                            storeState.setState(resource.getEndpoint(), Collections.emptyList(),
-                                watchedConfigurationSettingsList, monitoring.getRefreshInterval());
-                        } else {
-                            // Use traditional watch key monitoring
-                            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                                .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
-                                    requestContext))
-                                .toList();
-
-                            storeState.setState(resource.getEndpoint(), watchKeysSettings,
-                                monitoring.getRefreshInterval());
-                        }
+                if (waitSeconds > 0) {
+                    logger.debug("All replicas in backoff for store: " + resource.getEndpoint()
+                        + ". Waiting " + waitSeconds + "s before retry (elapsed: " + elapsedSeconds + "s).");
+                    try {
+                        Thread.sleep(waitSeconds * 1000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return lastException;
                     }
                 }
             }
         }
+        return lastException;
+    }
 
-        if (!featureFlagClient.getFeatureFlags().isEmpty()) {
-            // Don't add feature flags if there are none, otherwise the local file can't load them.
-            sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
+    /**
+     * Gets the backoff duration based on elapsed time since startup began.
+     *
+     * @param elapsedSeconds the number of seconds elapsed since startup began
+     * @return the backoff duration in seconds, or null if elapsed time exceeds all thresholds
+     */
+    private Long getBackoffDuration(long elapsedSeconds) {
+        for (int[] interval : STARTUP_BACKOFF_INTERVALS) {
+            if (elapsedSeconds < interval[0]) {
+                return (long) interval[1];
+            }
         }
         // Return null when elapsed time exceeds all defined thresholds
         return null;
@@ -247,7 +250,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             final AppConfigurationReplicaClient currentClient = client;
 
             if (reloadFailed && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
-                replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext)) {
+                replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext, storeState)) {
                 client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
                 continue;
             }
@@ -318,13 +321,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         replicaClientFactory.backoffClient(resource.getEndpoint(), client.getEndpoint());
         AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
             false);
-        
+
         String scenario = resource.isRefresh() ? "refresh" : "startup";
         String nextAction = nextClient != null ? "Trying next replica." : "No more replicas available.";
         logger.warn("Azure App Configuration replica " + client.getEndpoint()
             + " failed during " + scenario + " with " + exceptionType + ". "
             + nextAction + " Store: " + resource.getEndpoint(), exception);
-        
+
         return nextClient;
     }
 

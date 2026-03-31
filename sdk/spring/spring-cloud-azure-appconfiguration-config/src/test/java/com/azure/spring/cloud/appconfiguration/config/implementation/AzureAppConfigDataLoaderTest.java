@@ -59,6 +59,9 @@ public class AzureAppConfigDataLoaderTest {
     @Mock
     private DeferredLogFactory logFactoryMock;
 
+    @Mock
+    private StateHolder stateHolderMock;
+
     private AzureAppConfigDataResource resource;
 
     private AzureAppConfigDataResource refreshResource;
@@ -103,6 +106,7 @@ public class AzureAppConfigDataLoaderTest {
             .thenReturn(replicaClientFactoryMock);
         lenient().when(bootstrapContextMock.get(AppConfigurationKeyVaultClientFactory.class))
             .thenReturn(keyVaultClientFactoryMock);
+        lenient().when(bootstrapContextMock.get(StateHolder.class)).thenReturn(stateHolderMock);
         lenient().when(logFactoryMock.getLog(any(Class.class))).thenReturn(new DeferredLog());
     }
 
@@ -261,10 +265,10 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks - client fails
-        when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(true))).thenReturn(clientMock);
-        when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(false))).thenReturn(null);
-        when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
-        when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
+        lenient().when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(true))).thenReturn(clientMock);
+        lenient().when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(false))).thenReturn(null);
+        lenient().when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
+        lenient().when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
 
         // Test with refresh resource (isRefresh = true) - should NOT throw, just warn
         AzureAppConfigDataLoader loader = new AzureAppConfigDataLoader(logFactoryMock);
