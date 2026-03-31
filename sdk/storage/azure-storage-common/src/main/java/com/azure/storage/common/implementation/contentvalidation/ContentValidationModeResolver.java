@@ -120,7 +120,7 @@ public final class ContentValidationModeResolver {
     }
 
     /**
-     * Whether SDK-computed MD5 ({@code computeMd5}) conflicts with a non-none request checksum algorithm.
+     * Whether SDK-computed MD5 ({@code computeMd5}) conflicts with a non-null transfer validation checksum algorithm.
      *
      * @param computeMd5 Whether the SDK will compute and send transactional MD5.
      * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm from options.
@@ -128,13 +128,11 @@ public final class ContentValidationModeResolver {
      */
     public static boolean hasConflictingTransactionalContentValidation(boolean computeMd5,
         StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        return computeMd5
-            && transferValidationChecksumAlgorithm != null
-            && transferValidationChecksumAlgorithm != StorageChecksumAlgorithm.NONE;
+        return computeMd5 && transferValidationChecksumAlgorithm != null;
     }
 
     /**
-     * Validates transactional checksum options. Throws if {@code contentMd5} and a non-none
+     * Validates transactional checksum options. Throws if {@code contentMd5} and a non-null
      * {@code transferValidationChecksumAlgorithm} are both set.
      * <p>
      * Async clients typically wrap the call in {@code try}/{@code catch} and return
