@@ -6,12 +6,13 @@
 
 ### Breaking Changes
 
-- Migrated SDK code generation from Swagger (AutoRest) to TypeSpec.
-- Output-only models' constructors are now private.
-- Output-only models' setters are removed or have reduced visibility.
-- Pageable list result models (e.g., `VirtualMachineListResult`, `DiskList`, `SnapshotList`) have been moved to the implementation package.
-- CloudService-related models (e.g., `CloudServiceProperties`, `CloudServiceRoleProfile`) have been moved to the implementation package.
-- Several internal models (e.g., `Extension`, `InstanceSku`, `LoadBalancerConfiguration`) have been moved to the implementation package.
+#### Changes to `ComputeManagementClient` Class
+
+- Moved `ComputeManager.serviceClient().getCloudServiceRoleInstances()` to `ComputeManager.getCloudServiceClient().getCloudServiceRoleInstances()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceRoles()` to `ComputeManager.getCloudServiceClient().getCloudServiceRoles()`.
+- Moved `ComputeManager.serviceClient().getCloudServices()` to `ComputeManager.getCloudServiceClient().getCloudServices()`.
+- Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.getCloudServiceClient().getCloudServicesUpdateDomains()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.getCloudServiceClient().getCloudServiceOperatingSystems()`.
 
 ### Bugs Fixed
 
