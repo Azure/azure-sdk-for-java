@@ -108,7 +108,8 @@ public final class DocumentSource extends ContentSource {
 
     /**
      * Gets the axis-aligned bounding rectangle computed from the polygon coordinates,
-     * or {@code null} when no polygon is available.
+     * or {@code null} when only a page number is available.
+     * Useful for drawing highlight rectangles over extracted fields.
      *
      * @return The bounding box, or {@code null} for page-only sources.
      */
@@ -119,7 +120,7 @@ public final class DocumentSource extends ContentSource {
     /**
      * Parses a single document source segment.
      *
-     * @param source The source string in the format {@code D(page,x1,y1,...,xN,yN)} or {@code D(page)}.
+     * @param source The source string in the format {@code D(page)} or {@code D(page,x1,y1,...,xN,yN)}.
      * @return A new {@link DocumentSource}.
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if the source string is not in the expected format.
