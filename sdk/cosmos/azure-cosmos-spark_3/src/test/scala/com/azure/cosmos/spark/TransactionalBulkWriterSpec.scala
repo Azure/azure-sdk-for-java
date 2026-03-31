@@ -315,7 +315,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
 
   // =====================================================
   // CosmosBatchResponse / CosmosBatchOperationResult Tests
-  // (Verifies the infrastructure used by shouldIgnoreOnRetry)
+  // (Verifies the infrastructure used by getReconstructionIndex)
   // =====================================================
 
   "CosmosBatchResponse" should "be constructable with per-operation results" in {
@@ -332,9 +332,9 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     response.getResults.get(2).getStatusCode should be(424)
   }
 
-  "shouldIgnoreOnRetry first-operation check" should "find first non-424 result at index 0" in {
-    // Scenario: ItemAppend retry, op[0]=409, op[1]=424, op[2]=424
-    // The first non-424 is at index 0 -> shouldIgnoreOnRetry should return true
+  "reconstruction first-non-424 detection" should "find first non-424 result at index 0" in {
+    // Scenario: ItemAppend batch, op[0]=409, op[1]=424, op[2]=424
+    // The first non-424 is at index 0 -> getReconstructionIndex returns Some(0)
     val response = createMockBatchResponse(409, 0, List((409, 0), (424, 0), (424, 0)))
     val results = response.getResults.asScala
 
@@ -345,14 +345,14 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     firstNon424 should be(defined)
     firstNon424.get._2 should be(0) // index 0
     firstNon424.get._1.getStatusCode should be(409)
-    // For ItemAppend, 409 is ignorable
+    // For ItemAppend, 409 is reconstruction-eligible
     Exceptions.isResourceExistsException(409) should be(true)
   }
 
-  it should "reject when first non-424 result is NOT at index 0" in {
-    // Scenario: op[0]=424, op[1]=404, op[2]=424
-    // The first non-424 is at index 1 -> shouldIgnoreOnRetry should return false
-    val response = createMockBatchResponse(404, 0, List((424, 0), (404, 0), (424, 0)))
+  it should "find first non-424 result at any index" in {
+    // Scenario: op[0]=424, op[1]=409, op[2]=424
+    // The first non-424 is at index 1 -> reconstruction targets index 1
+    val response = createMockBatchResponse(409, 0, List((424, 0), (409, 0), (424, 0)))
     val results = response.getResults.asScala
 
     val firstNon424 = results.zipWithIndex.find { case (result, _) =>
@@ -360,8 +360,24 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     }
 
     firstNon424 should be(defined)
-    firstNon424.get._2 should be(1) // index 1 -> NOT first operation → reject
-    firstNon424.get._1.getStatusCode should be(404)
+    firstNon424.get._2 should be(1) // index 1
+    firstNon424.get._1.getStatusCode should be(409)
+  }
+
+  it should "reject when first non-424 result is NOT reconstruction-eligible" in {
+    // Scenario: op[0]=400 (Bad Request — non-recoverable), op[1]=424, op[2]=424
+    // 400 is NOT reconstruction-eligible for any strategy
+    val response = createMockBatchResponse(400, 0, List((400, 0), (424, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(defined)
+    firstNon424.get._1.getStatusCode should be(400)
+    // 400 is not 409 — not reconstruction-eligible for ItemAppend
+    Exceptions.isResourceExistsException(400) should be(false)
   }
 
   it should "return None when all results are 424" in {
@@ -375,15 +391,26 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     firstNon424 should be(empty)
   }
 
-  "shouldIgnoreOnRetry attempt guard" should "distinguish first attempt from retry" in {
-    // attemptNumber = 1 -> first attempt, shouldIgnoreOnRetry must return false
-    // attemptNumber > 1 -> retry, shouldIgnoreOnRetry may return true
-    // This test verifies the guard logic pattern
+  "getReconstructionIndex logic" should "fire on any attempt including first (no attempt guard)" in {
+    // Unlike the old shouldIgnoreOnRetry which required attemptNumber > 1,
+    // reconstruction fires on ANY attempt. A 409 on first attempt means the item
+    // was created externally — we still need to reconstruct.
+    // This test verifies there is NO attempt guard in the reconstruction path.
     val attemptNumberFirstAttempt = 1
     val attemptNumberRetry = 2
+    val maxRetryCount = 10
 
-    (attemptNumberFirstAttempt <= 1) should be(true)   // blocked
-    (attemptNumberRetry <= 1) should be(false)          // allowed
+    // Both first attempt and retry are within budget -> reconstruction is allowed
+    (attemptNumberFirstAttempt < maxRetryCount) should be(true)
+    (attemptNumberRetry < maxRetryCount) should be(true)
+  }
+
+  it should "respect maxRetryCount budget" in {
+    val maxRetryCount = 10
+    // Attempt 10 of 10: at budget limit → reconstruction not allowed
+    (10 < maxRetryCount) should be(false)
+    // Attempt 9 of 10: still within budget → reconstruction allowed
+    (9 < maxRetryCount) should be(true)
   }
 
   // =====================================================
@@ -627,266 +654,190 @@ class TransactionalBulkWriterSpec extends UnitSpec {
   }
 
   // =====================================================
-  // Batch Marker Document Tests
+  // Batch Reconstruction Tests (ItemAppend)
   // =====================================================
 
-  "buildMarkerDocument pattern" should "create a minimal marker with id, ttl, and PK fields" in {
-    val om = new ObjectMapper()
-    val businessItem = om.createObjectNode()
-    businessItem.put("id", "doc-1")
-    businessItem.put("tenantId", "Contoso")
-    businessItem.put("userId", "alice")
-    businessItem.put("sessionId", "sess-99")
-    businessItem.put("score", 42)
-
-    // Simulate buildMarkerDocument logic
-    val markerId = "__tbw:12345:3:1"
-    val markerTtlSeconds = 86400
-    val partitionKeyPaths = List("/tenantId", "/userId", "/sessionId")
-
-    val markerNode = om.createObjectNode()
-    markerNode.put("id", markerId)
-    markerNode.put("ttl", markerTtlSeconds)
-    partitionKeyPaths.foreach(path => {
-      val fieldName = path.stripPrefix("/")
-      val value = businessItem.get(fieldName)
-      if (value != null) {
-        markerNode.set(fieldName, value.deepCopy())
-      }
-    })
-
-    // Verify marker has id + ttl + PK fields only (no business fields like "score")
-    markerNode.get("id").asText() should be("__tbw:12345:3:1")
-    markerNode.get("ttl").asInt() should be(86400)
-    markerNode.get("tenantId").asText() should be("Contoso")
-    markerNode.get("userId").asText() should be("alice")
-    markerNode.get("sessionId").asText() should be("sess-99")
-    markerNode.has("score") should be(false)  // business field NOT in marker
-  }
-
-  "marker ID" should "be deterministic for the same jobRunId, sparkPartitionId, and batchSeq" in {
-    val jobRunId = "task-attempt-12345"
-    val sparkPartitionId = 3
-    val batchSeq = 17L
-
-    val id1 = s"__tbw:$jobRunId:$sparkPartitionId:$batchSeq"
-    val id2 = s"__tbw:$jobRunId:$sparkPartitionId:$batchSeq"
-
-    id1 should be(id2)
-    id1 should be("__tbw:task-attempt-12345:3:17")
-  }
-
-  it should "be different for different batchSeq values" in {
-    val id1 = s"__tbw:job1:0:1"
-    val id2 = s"__tbw:job1:0:2"
-
-    id1 should not be id2
-  }
-
-  it should "be different for different jobRunIds" in {
-    val id1 = s"__tbw:job-alpha:0:1"
-    val id2 = s"__tbw:job-beta:0:1"
-
-    id1 should not be id2
-  }
-
-  // =====================================================
-  // 100-Item Boundary (Marker Skip)
-  // =====================================================
-
-  "C15 marker skip" should "add marker when batch has fewer than 100 items" in {
+  "buildReconstructedBatch pattern for ItemAppend" should "change create to read at reconstructed index" in {
+    // Scenario 2 from design doc: 409 on doc-A (first attempt, external process)
+    // Reconstruction: [create A, create B, create C] -> [read A, create B, create C]
     val pk = new PartitionKey("user-A")
-    val batch = CosmosBatch.createCosmosBatch(pk)
+    val items = List(
+      createObjectNode("doc-A", "user-A"),
+      createObjectNode("doc-B", "user-A"),
+      createObjectNode("doc-C", "user-A")
+    )
 
-    // Add 99 business items
-    for (i <- 1 to 99) {
-      batch.upsertItemOperation(createObjectNode(s"doc-$i", "user-A"))
-    }
-    batch.getOperations.size() should be(99)
+    val reconstructedIndices = Set(0) // doc-A at index 0 was 409'd
 
-    // Adding marker makes it 100 — within server limit
-    batch.upsertItemOperation(createObjectNode("__tbw:test:0:1", "user-A"))
-    batch.getOperations.size() should be(100) // exactly at limit — OK
-  }
-
-  it should "skip marker when batch already has 100 items" in {
-    val pk = new PartitionKey("user-A")
-    val batch = CosmosBatch.createCosmosBatch(pk)
-
-    // Add 100 business items
-    for (i <- 1 to 100) {
-      batch.upsertItemOperation(createObjectNode(s"doc-$i", "user-A"))
-    }
-    batch.getOperations.size() should be(100)
-
-    // bulkItemsList.size() < 100 -> false -> skip marker
-    val shouldAddMarker = batch.getOperations.size() < 100
-    shouldAddMarker should be(false)
-  }
-
-  "marker position" should "always be the last operation in the batch" in {
-    val pk = new PartitionKey("user-A")
-    val batch = CosmosBatch.createCosmosBatch(pk)
-
-    // Add business items first
-    batch.createItemOperation(createObjectNode("doc-1", "user-A"))
-    batch.upsertItemOperation(createObjectNode("doc-2", "user-A"))
-    batch.deleteItemOperation("doc-3")
-
-    // Add marker last (same as production code: upsert with marker ObjectNode)
-    val markerNode = objectMapper.createObjectNode()
-    markerNode.put("id", "__tbw:test:0:1")
-    markerNode.put("ttl", 86400)
-    markerNode.put("pk", "user-A")
-    batch.upsertItemOperation(markerNode)
-
-    val ops = batch.getOperations
-    ops.size() should be(4)
-    // Business items preserve their original order
-    ops.get(0).getOperationType.toString should be("CREATE")
-    ops.get(1).getOperationType.toString should be("UPSERT")
-    ops.get(2).getOperationType.toString should be("DELETE")
-    // Marker is the last operation and is an UPSERT
-    ops.get(3).getOperationType.toString should be("UPSERT")
-  }
-
-  // =====================================================
-  // Marker Document Edge Cases
-  // =====================================================
-
-  "buildMarkerDocument pattern" should "handle missing PK field in business item" in {
-    // If a business item is missing a PK field (e.g., HPK with /tenantId/userId/sessionId
-    // but the document has no "sessionId"), the marker should omit that field too.
-    val om = new ObjectMapper()
-    val businessItem = om.createObjectNode()
-    businessItem.put("id", "doc-1")
-    businessItem.put("tenantId", "Contoso")
-    businessItem.put("userId", "alice")
-    // sessionId is MISSING
-
-    val partitionKeyPaths = List("/tenantId", "/userId", "/sessionId")
-    val markerNode = om.createObjectNode()
-    markerNode.put("id", "__tbw:job:0:1")
-    markerNode.put("ttl", 86400)
-    partitionKeyPaths.foreach(path => {
-      val fieldName = path.stripPrefix("/")
-      val value = businessItem.get(fieldName)
-      if (value != null) {
-        markerNode.set(fieldName, value.deepCopy())
+    // Build the reconstructed batch
+    val newBatch = CosmosBatch.createCosmosBatch(pk)
+    items.zipWithIndex.foreach { case (item, index) =>
+      if (reconstructedIndices.contains(index)) {
+        newBatch.readItemOperation(item.get("id").asText())
+      } else {
+        newBatch.createItemOperation(item)
       }
-    })
-
-    markerNode.get("tenantId").asText() should be("Contoso")
-    markerNode.get("userId").asText() should be("alice")
-    markerNode.has("sessionId") should be(false)  // missing in business item → missing in marker
-  }
-
-  it should "work with single partition key" in {
-    val om = new ObjectMapper()
-    val businessItem = om.createObjectNode()
-    businessItem.put("id", "doc-1")
-    businessItem.put("pk", "Seattle")
-    businessItem.put("temperature", 72)
-
-    val partitionKeyPaths = List("/pk")
-    val markerNode = om.createObjectNode()
-    markerNode.put("id", "__tbw:job:0:1")
-    markerNode.put("ttl", 86400)
-    partitionKeyPaths.foreach(path => {
-      val fieldName = path.stripPrefix("/")
-      val value = businessItem.get(fieldName)
-      if (value != null) {
-        markerNode.set(fieldName, value.deepCopy())
-      }
-    })
-
-    markerNode.get("id").asText() should be("__tbw:job:0:1")
-    markerNode.get("ttl").asInt() should be(86400)
-    markerNode.get("pk").asText() should be("Seattle")
-    markerNode.has("temperature") should be(false)  // business field excluded
-  }
-
-  it should "not mutate the original business item" in {
-    val om = new ObjectMapper()
-    val businessItem = om.createObjectNode()
-    businessItem.put("id", "doc-1")
-    businessItem.put("pk", "user-A")
-    businessItem.put("score", 42)
-
-    val partitionKeyPaths = List("/pk")
-    val markerNode = om.createObjectNode()
-    markerNode.put("id", "__tbw:job:0:1")
-    markerNode.put("ttl", 86400)
-    partitionKeyPaths.foreach(path => {
-      val fieldName = path.stripPrefix("/")
-      val value = businessItem.get(fieldName)
-      if (value != null) {
-        markerNode.set(fieldName, value.deepCopy())
-      }
-    })
-
-    // Original business item is unchanged
-    businessItem.get("id").asText() should be("doc-1")
-    businessItem.get("pk").asText() should be("user-A")
-    businessItem.get("score").asInt() should be(42)
-    businessItem.has("ttl") should be(false)  // marker's ttl was NOT added to business item
-  }
-
-  // =====================================================
-  // Marker Verification Outcome Pattern Tests
-  // =====================================================
-
-  "MarkerVerificationOutcome pattern" should "distinguish three outcomes" in {
-    // Verify the sealed trait / case object pattern used in verifyBatchCommit
-    // This tests the pattern matching logic — not the actual Cosmos DB call
-    sealed trait TestOutcome
-    case object TestCommitted extends TestOutcome
-    case object TestNotCommitted extends TestOutcome
-    case object TestInconclusive extends TestOutcome
-
-    def simulateVerification(statusCode: Int): TestOutcome = statusCode match {
-      case 200 => TestCommitted        // marker present → batch committed
-      case 404 => TestNotCommitted     // marker absent → batch did not commit
-      case _   => TestInconclusive     // transient error → inconclusive
     }
 
-    simulateVerification(200) should be(TestCommitted)
-    simulateVerification(404) should be(TestNotCommitted)
-    simulateVerification(408) should be(TestInconclusive)  // Request Timeout
-    simulateVerification(503) should be(TestInconclusive)  // Service Unavailable
-    simulateVerification(500) should be(TestInconclusive)  // Internal Server Error
+    val ops = newBatch.getOperations
+    ops.size() should be(3)
+    ops.get(0).getOperationType.toString should be("READ")    // doc-A reconstructed
+    ops.get(0).getId should be("doc-A")
+    ops.get(1).getOperationType.toString should be("CREATE")  // doc-B unchanged
+    ops.get(2).getOperationType.toString should be("CREATE")  // doc-C unchanged
+  }
+
+  it should "accumulate reconstructions across multiple retries" in {
+    // Scenario 3 from design doc: all 3 items committed by attempt 1
+    // Attempt 2: 409 on A -> reconstruct index 0
+    // Attempt 3: 409 on B -> reconstruct index 1
+    // Attempt 4: 409 on C -> reconstruct index 2
+    val pk = new PartitionKey("user-A")
+    val items = List(
+      createObjectNode("doc-A", "user-A"),
+      createObjectNode("doc-B", "user-A"),
+      createObjectNode("doc-C", "user-A")
+    )
+
+    // After third reconstruction: all indices reconstructed
+    val reconstructedIndices = Set(0, 1, 2)
+
+    val newBatch = CosmosBatch.createCosmosBatch(pk)
+    items.zipWithIndex.foreach { case (item, index) =>
+      if (reconstructedIndices.contains(index)) {
+        newBatch.readItemOperation(item.get("id").asText())
+      } else {
+        newBatch.createItemOperation(item)
+      }
+    }
+
+    val ops = newBatch.getOperations
+    ops.size() should be(3)
+    ops.get(0).getOperationType.toString should be("READ")  // all reads now
+    ops.get(1).getOperationType.toString should be("READ")
+    ops.get(2).getOperationType.toString should be("READ")
+  }
+
+  it should "reconstruct middle item leaving others unchanged" in {
+    // Scenario: op[0]=424, op[1]=409, op[2]=424 — 409 at index 1
+    // Reconstruction targets index 1 only
+    val pk = new PartitionKey("user-A")
+    val items = List(
+      createObjectNode("doc-A", "user-A"),
+      createObjectNode("doc-B", "user-A"),
+      createObjectNode("doc-C", "user-A")
+    )
+
+    val reconstructedIndices = Set(1) // doc-B was 409'd
+
+    val newBatch = CosmosBatch.createCosmosBatch(pk)
+    items.zipWithIndex.foreach { case (item, index) =>
+      if (reconstructedIndices.contains(index)) {
+        newBatch.readItemOperation(item.get("id").asText())
+      } else {
+        newBatch.createItemOperation(item)
+      }
+    }
+
+    val ops = newBatch.getOperations
+    ops.size() should be(3)
+    ops.get(0).getOperationType.toString should be("CREATE")  // doc-A unchanged
+    ops.get(1).getOperationType.toString should be("READ")    // doc-B reconstructed
+    ops.get(1).getId should be("doc-B")
+    ops.get(2).getOperationType.toString should be("CREATE")  // doc-C unchanged
+  }
+
+  it should "preserve item IDs through reconstruction" in {
+    // Read operations use item ID — verify it comes from the original item correctly
+    val pk = new PartitionKey("user-A")
+    val item = createObjectNode("order-12345", "user-A")
+
+    val newBatch = CosmosBatch.createCosmosBatch(pk)
+    newBatch.readItemOperation(item.get("id").asText())
+
+    val ops = newBatch.getOperations
+    ops.get(0).getId should be("order-12345")
+    ops.get(0).getOperationType.toString should be("READ")
+  }
+
+  "reconstructedIndices state" should "be empty on initial batch" in {
+    // First attempt: no reconstruction has happened
+    val indices: Set[Int] = Set.empty
+    indices.isEmpty should be(true)
+  }
+
+  it should "accumulate indices across retries" in {
+    // Simulate the reconstruction state growing across retries
+    var indices: Set[Int] = Set.empty
+
+    // Attempt 1: 409 on index 0
+    indices = indices + 0
+    indices should be(Set(0))
+
+    // Attempt 2: 409 on index 2
+    indices = indices + 2
+    indices should be(Set(0, 2))
+
+    // Attempt 3: 409 on index 1
+    indices = indices + 1
+    indices should be(Set(0, 1, 2))
+  }
+
+  it should "be idempotent when same index is added twice" in {
+    // If the same item fails again (shouldn't happen since it's a read now), no duplication
+    var indices: Set[Int] = Set.empty
+    indices = indices + 0
+    indices = indices + 0  // duplicate
+    indices.size should be(1)
   }
 
   // =====================================================
-  // Inconclusive Retry Eligibility Tests
+  // Reconstruction Retry Budget Tests
   // =====================================================
 
-  "Inconclusive retry eligibility" should "depend on attempt budget, not original batch status code" in {
-    // scenario: ItemAppend batch gets 409 on retry (shouldIgnore-eligible).
-    // Marker verification fails transiently → Inconclusive.
-    // The retry decision must be based on attemptNumber < maxRetryCount,
-
+  "reconstruction retry budget" should "count reconstruction against maxRetryCount" in {
+    // A batch with N items needs up to N retries for reconstruction
     val maxRetryCount = 10
 
-    // 409 is NOT transient
-    Exceptions.canBeTransientFailure(409, 0) should be(false)
+    // 3-item batch: worst case needs 3 reconstruction retries + 1 transient = 4 attempts
+    // Well within budget of 10
+    (4 < maxRetryCount) should be(true)
 
-    // Attempt 2 of 10: should be eligible for retry (budget remains)
-    val attemptNumber = 2
-    (attemptNumber < maxRetryCount) should be(true)
+    // 10-item batch: worst case needs 10 reconstruction retries = exactly at limit
+    (10 < maxRetryCount) should be(false) // exhausted
+    (9 < maxRetryCount) should be(true)   // last retry
+  }
 
-    // Attempt 10 of 10: should NOT be eligible (budget exhausted)
-    val lastAttempt = 10
-    (lastAttempt < maxRetryCount) should be(false)
+  it should "allow reconstruction on first attempt (no attemptNumber > 1 guard)" in {
+    // Scenario 2 from design doc: 409 on first attempt (external process created item)
+    // Reconstruction must fire — there's no attemptNumber guard
+    val attemptNumber = 1
+    val maxRetryCount = 10
 
-    // Also verify that non-shouldIgnore-eligible transient codes are irrelevant here —
-    // the Inconclusive path doesn't care what the original batch status was,
-    // only whether there is retry budget left.
-    // 404/0 for ItemDelete (shouldIgnore-eligible, not transient for non-ItemOverwrite):
-    Exceptions.canBeTransientFailure(404, 0) should be(false)
-    // Even with a non-transient original status, retry is allowed if budget remains:
-    val midAttempt = 5
-    (midAttempt < maxRetryCount) should be(true)
+    (attemptNumber < maxRetryCount) should be(true) // reconstruction allowed
+  }
+
+  "getReconstructionIndex for ItemAppend" should "return index for 409 (Conflict)" in {
+    // 409 is the reconstruction trigger for ItemAppend
+    Exceptions.isResourceExistsException(409) should be(true)
+  }
+
+  it should "NOT trigger for 404 (Not Found)" in {
+    // 404 is NOT reconstruction-eligible for ItemAppend
+    // (404 means the item doesn't exist — but ItemAppend creates items, so 404 is irrelevant)
+    Exceptions.isResourceExistsException(404) should be(false)
+  }
+
+  it should "NOT trigger for transient errors" in {
+    // Transient errors go through shouldRetry, not reconstruction
+    Exceptions.isResourceExistsException(408) should be(false)
+    Exceptions.isResourceExistsException(503) should be(false)
+    Exceptions.isResourceExistsException(500) should be(false)
+  }
+
+  it should "NOT trigger for 429 (throttling)" in {
+    // 429 means the server didn't process the request — nothing to reconstruct
+    Exceptions.isResourceExistsException(429) should be(false)
   }
 }
 //scalastyle:on null

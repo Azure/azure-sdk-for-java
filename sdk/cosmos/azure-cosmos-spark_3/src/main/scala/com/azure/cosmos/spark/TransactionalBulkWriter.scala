@@ -353,7 +353,8 @@ private class TransactionalBulkWriter
                     None,
                     isGettingRetried,
                     Some(cosmosException),
-                    batchOperation.originalItems)
+                    batchOperation.originalItems,
+                    batchOperation.reconstructedIndices)
                 case _ =>
                   log.logWarning(
                     s"unexpected failure: partitionKeyValue=[" +
@@ -370,7 +371,8 @@ private class TransactionalBulkWriter
                 Some(resp.getResponse),
                 isGettingRetried,
                 None,
-                batchOperation.originalItems)
+                batchOperation.originalItems,
+                batchOperation.reconstructedIndices)
             } else {
               // Happy path: batch succeeded
               outputMetricsPublisher.trackWriteOperation(batchOperation.originalItems.size, None)
@@ -504,7 +506,8 @@ private class TransactionalBulkWriter
     cosmosBatchResponse: Option[CosmosBatchResponse],
     isGettingRetried: AtomicBoolean,
     responseException: Option[CosmosException],
-    originalItems: List[TransactionalBulkItem]
+    originalItems: List[TransactionalBulkItem],
+    reconstructedIndices: Set[Int] = Set.empty
   ) : Unit = {
 
     val exceptionMessage = cosmosBatchResponse match {
@@ -535,12 +538,51 @@ private class TransactionalBulkWriter
       s"$effectiveStatusCode:$effectiveSubStatusCode, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
 
-    // TODO: Implement reconstruction-based retry here.
-    // When a semantic error (409/404) is detected on retry (or first attempt for reconstruction-eligible errors),
-    // reconstruct the batch by modifying the conflicting operation (e.g., create→read for 409, remove for 404)
-    // and retry the modified batch. See design doc: transactional-bulk-writer-design.md
-    if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
-      // requeue
+    // Reconstruction: check if the semantic error can be resolved by modifying the batch.
+    // For ItemAppend: 409 (Conflict) on a create → change to read, retry the modified batch.
+    // Fires on any attempt (including first) — a 409 on first attempt means the item
+    // was created by an external process, and we still need to reconstruct so that the
+    // remaining items in the batch can be created.
+    // See design doc: transactional-bulk-writer-design.md § ItemAppend (Create) — Complete Analysis
+    val reconstructionIndexOpt = getReconstructionIndex(cosmosBatchResponse)
+    if (reconstructionIndexOpt.isDefined && operationContext.attemptNumber < writeConfig.maxRetryCount) {
+      val failedIndex = reconstructionIndexOpt.get
+      val newReconstructedIndices = reconstructedIndices + failedIndex
+
+      log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+        s"reconstructing batch: operation at index $failedIndex hit semantic error " +
+        s"($effectiveStatusCode:$effectiveSubStatusCode), changing to read. " +
+        s"reconstructedIndices=$newReconstructedIndices, " +
+        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=$exceptionMessage, " +
+        s"Context: {${operationContext.toString}} $getThreadInfo")
+
+      val reconstructedBatchOp = buildReconstructedBatch(
+        originalItems,
+        operationContext.partitionKeyValueInput,
+        newReconstructedIndices)
+
+      val batchOperationRetry = CosmosBatchOperation(
+        reconstructedBatchOp,
+        new OperationContext(
+          operationContext.partitionKeyValueInput,
+          operationContext.attemptNumber + 1,
+          operationContext.sequenceNumber,
+          operationContext.isIdempotent),
+        originalItems,
+        newReconstructedIndices
+      )
+
+      this.scheduleRetry(
+        trackPendingRetryAction = () => pendingBatchRetries.put(reconstructedBatchOp.getPartitionKeyValue, batchOperationRetry).isEmpty,
+        clearPendingRetryAction = () => pendingBatchRetries.remove(reconstructedBatchOp.getPartitionKeyValue).isDefined,
+        batchOperationRetry,
+        effectiveStatusCode)
+      isGettingRetried.set(true)
+
+    } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
+      // Transient error: requeue the same batch (possibly already reconstructed from a prior retry).
+      // The reconstructedIndices state is preserved so that if a subsequent retry hits another
+      // semantic error, reconstruction continues from where it left off.
       log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', will retry! " +
         s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
@@ -553,7 +595,8 @@ private class TransactionalBulkWriter
           operationContext.attemptNumber + 1,
           operationContext.sequenceNumber,
           operationContext.isIdempotent),
-        originalItems
+        originalItems,
+        reconstructedIndices // preserve existing reconstruction state
       )
 
       this.scheduleRetry(
@@ -920,66 +963,85 @@ private class TransactionalBulkWriter
   }
 
 
-  // Restricted subset of BulkWriter's shouldIgnore — excludes 412 (Precondition Failed)
-  // because 412 is ambiguous on retry for batch operations.
-  private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
-    writeConfig.itemWriteStrategy match {
-      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
-      case ItemWriteStrategy.ItemPatchIfExists => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-      // 412 is excluded — ambiguous on retry for batch operations
-      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
-        Exceptions.isResourceExistsException(statusCode) ||
-          Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-      case _ => false
-    }
-  }
-
-  // Batch-level shouldIgnore with retry + first-operation guards.
-  // Only infers SUCCESS when:
-  //   1. This is a retry (attemptNumber > 1)
-  //   2. We have per-operation results
-  //   3. The first non-424 result is on the FIRST operation (index 0)
-  //   4. shouldIgnore returns true for that operation's status code
-  //   5. Strategy is NOT ItemBulkUpdate (retries rebuild the batch)
-  private def shouldIgnoreOnRetry(
-    operationContext: OperationContext,
+  // Returns the index of the first operation that failed with a reconstruction-eligible
+  // semantic error, or None if no reconstruction is possible.
+  //
+  // Reconstruction-eligible errors by strategy (only ItemAppend implemented so far):
+  //   ItemAppend: 409 (Conflict) → item already exists → change create to read
+  //
+  // The batch response contains one real error code on the first failing operation;
+  // all other operations show 424 (Failed Dependency). This method finds that
+  // first non-424 result and checks if it's eligible for reconstruction.
+  private def getReconstructionIndex(
     cosmosBatchResponse: Option[CosmosBatchResponse]
-  ): Boolean = {
-    // Condition 0: Must NOT be ItemBulkUpdate — retries rebuild the batch with fresh ETags,
-    // so the retry batch is different from the original. shouldIgnore inference is invalid.
-    if (writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemBulkUpdate) return false
-
-    // Condition 1: Must be a retry (not first attempt)
-    if (operationContext.attemptNumber <= 1) return false
-
-    // Condition 2: Must have per-operation results
-    val response = cosmosBatchResponse.getOrElse(return false)
+  ): Option[Int] = {
+    val response = cosmosBatchResponse.getOrElse(return None)
     val results = response.getResults.asScala
 
-    // Condition 3: Find the first non-424 result (424 = Failed Dependency = rolled back)
+    // Find the first non-424 result — this is the operation with the real error code
     val firstNon424 = results.zipWithIndex.find { case (result, _) =>
       result.getStatusCode != 424
     }
 
-    firstNon424 match {
-      case Some((result, index)) =>
-        // Condition 4: Must be the FIRST operation in the batch (index 0)
-        if (index != 0) return false
-
-        // Condition 5: Check shouldIgnore for the strategy
-        val returnValue = shouldIgnore(result.getStatusCode, result.getSubStatusCode)
-        if (returnValue) {
-          log.logDebug(s"shouldIgnoreOnRetry: true for statusCode " +
-            s"'${result.getStatusCode}:${result.getSubStatusCode}' on first operation, " +
-            s"attemptNumber=${operationContext.attemptNumber}, " +
-            s"Context: ${operationContext.toString} $getThreadInfo")
-        }
-        returnValue
-
-      case None => false // All results are 424 — shouldn't happen
+    firstNon424.flatMap { case (result, index) =>
+      writeConfig.itemWriteStrategy match {
+        case ItemWriteStrategy.ItemAppend =>
+          if (Exceptions.isResourceExistsException(result.getStatusCode)) Some(index)
+          else None
+        // Other strategies will be added as their analysis is complete
+        // (ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatchIfExists)
+        case _ => None
+      }
     }
+  }
+
+  // Builds a new CosmosBatch from originalItems, applying reconstruction rules
+  // to items at reconstructedIndices.
+  //
+  // For ItemAppend: reconstructed items change from createItemOperation to readItemOperation.
+  // Non-reconstructed items retain their original operation type.
+  //
+  // This creates a brand-new CosmosBatch and CosmosBatchBulkOperation — the original
+  // batch is not modified (CosmosBatch.getOperations() returns an UnmodifiableList).
+  private def buildReconstructedBatch(
+    originalItems: List[TransactionalBulkItem],
+    partitionKey: PartitionKey,
+    reconstructedIndices: Set[Int]
+  ): CosmosBatchBulkOperation = {
+
+    val newBatch = CosmosBatch.createCosmosBatch(partitionKey)
+
+    originalItems.zipWithIndex.foreach { case (item, index) =>
+      if (reconstructedIndices.contains(index)) {
+        // Reconstructed operation: the original create at this index hit a semantic error
+        // (e.g., 409 for ItemAppend). Replace with a read to confirm the item exists
+        // without causing a conflict — the batch can then proceed for the remaining items.
+        writeConfig.itemWriteStrategy match {
+          case ItemWriteStrategy.ItemAppend =>
+            newBatch.readItemOperation(item.itemId)
+          // Other strategies will add their reconstruction here:
+          //   ItemDelete/ItemDeleteIfNotModified: skip (remove from batch)
+          //   ItemOverwriteIfNotModified (409 path): change create to read
+          //   ItemPatchIfExists: skip (remove from batch)
+          case _ =>
+            throw new IllegalStateException(
+              s"Reconstruction not yet implemented for strategy ${writeConfig.itemWriteStrategy} " +
+                s"at index $index")
+        }
+      } else {
+        // Non-reconstructed: add the original operation based on strategy
+        writeConfig.itemWriteStrategy match {
+          case ItemWriteStrategy.ItemAppend =>
+            newBatch.createItemOperation(item.objectNode)
+          // Other strategies will be added here as reconstruction support is implemented
+          case _ =>
+            throw new IllegalStateException(
+              s"Reconstruction not yet implemented for strategy ${writeConfig.itemWriteStrategy}")
+        }
+      }
+    }
+
+    new CosmosBatchBulkOperation(newBatch)
   }
 
   private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
@@ -1042,7 +1104,8 @@ private class TransactionalBulkWriter
   private case class CosmosBatchOperation(
     cosmosBatchBulkOperation: CosmosBatchBulkOperation,
     operationContext: OperationContext,
-    originalItems: List[TransactionalBulkItem])
+    originalItems: List[TransactionalBulkItem],
+    reconstructedIndices: Set[Int] = Set.empty)
   private case class TransactionalBulkItem(
     partitionKey: PartitionKey,
     objectNode: ObjectNode,
