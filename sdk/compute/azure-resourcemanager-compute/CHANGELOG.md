@@ -14,23 +14,13 @@
 
 #### `models.SnapshotList` was removed
 
-#### `models.CloudServiceProperties` was removed
-
 #### `models.GalleryList` was removed
 
 #### `models.CapacityReservationGroupListResult` was removed
 
-#### `models.CloudServiceVaultCertificate` was removed
-
-#### `models.CloudServiceUpdate` was removed
-
-#### `models.CloudServiceExtensionProfile` was removed
-
 #### `models.RestorePointCollectionListResult` was removed
 
 #### `models.SharedGalleryImageVersionList` was removed
-
-#### `models.CloudServiceListResult` was removed
 
 #### `models.VirtualMachineScaleSetListResult` was removed
 
@@ -44,23 +34,11 @@
 
 #### `models.GalleryImageList` was removed
 
-#### `models.ResourceInstanceViewStatus` was removed
-
 #### `models.RunCommandListResult` was removed
 
 #### `models.ListUsagesResult` was removed
 
-#### `models.LoadBalancerConfigurationProperties` was removed
-
-#### `models.InstanceViewStatusesSummary` was removed
-
-#### `models.CloudServiceSlotType` was removed
-
-#### `models.OSVersionProperties` was removed
-
 #### `models.GalleryImageVersionList` was removed
-
-#### `models.RoleInstanceListResult` was removed
 
 #### `models.GalleryScriptList` was removed
 
@@ -68,39 +46,23 @@
 
 #### `models.DedicatedHostListResult` was removed
 
-#### `models.LoadBalancerConfiguration` was removed
-
-#### `models.CloudServiceRoleProperties` was removed
-
 #### `models.DedicatedHostGroupListResult` was removed
 
 #### `models.OperationListResult` was removed
 
 #### `models.GallerySoftDeletedResourceList` was removed
 
-#### `models.CloudServiceRoleProfile` was removed
-
 #### `models.VirtualMachineScaleSetListSkusResult` was removed
 
 #### `models.GalleryApplicationVersionList` was removed
 
-#### `models.CloudServiceUpgradeMode` was removed
-
 #### `models.PrivateEndpointConnectionListResult` was removed
-
-#### `models.CloudServiceRoleListResult` was removed
 
 #### `models.DedicatedHostSizeListResult` was removed
 
 #### `models.VirtualMachineSizeListResult` was removed
 
-#### `models.RoleInstances` was removed
-
 #### `models.VirtualMachineRunCommandsListResult` was removed
-
-#### `models.CloudServiceRoleProfileProperties` was removed
-
-#### `models.OSFamilyListResult` was removed
 
 #### `models.VirtualMachineScaleSetListWithLinkResult` was removed
 
@@ -112,17 +74,9 @@
 
 #### `models.GalleryInVMAccessControlProfileVersionList` was removed
 
-#### `models.CloudServiceNetworkProfile` was removed
-
-#### `models.LoadBalancerFrontendIpConfigurationProperties` was removed
-
 #### `models.ImageListResult` was removed
 
 #### `models.ResourceSkusResult` was removed
-
-#### `models.RoleInstanceNetworkProfile` was removed
-
-#### `models.CloudServiceVaultSecretGroup` was removed
 
 #### `models.GalleryInVMAccessControlProfileList` was removed
 
@@ -130,37 +84,13 @@
 
 #### `models.VirtualMachineScaleSetListOSUpgradeHistory` was removed
 
-#### `models.InstanceSku` was removed
-
-#### `models.Extension` was removed
-
-#### `models.CloudServiceOsProfile` was removed
-
-#### `models.OSFamilyProperties` was removed
-
 #### `models.SharedGalleryImageList` was removed
 
 #### `models.DiskAccessList` was removed
 
-#### `models.CloudServiceExtensionProperties` was removed
-
 #### `models.ResourceUriList` was removed
 
-#### `models.StatusCodeCount` was removed
-
-#### `models.CloudServiceVaultAndSecretReference` was removed
-
-#### `models.LoadBalancerFrontendIpConfiguration` was removed
-
-#### `models.UpdateDomainListResult` was removed
-
-#### `models.CloudServiceRoleSku` was removed
-
-#### `models.OSVersionListResult` was removed
-
 #### `models.ProximityPlacementGroupListResult` was removed
-
-#### `models.OSVersionPropertiesBase` was removed
 
 #### `models.SharedGalleryList` was removed
 
@@ -176,13 +106,13 @@
 #### `models.VirtualMachineRunCommandInstanceView` was modified
 
 * `VirtualMachineRunCommandInstanceView()` was changed to private access
-* `withExecutionMessage(java.lang.String)` was removed
-* `withEndTime(java.time.OffsetDateTime)` was removed
 * `withExecutionState(models.ExecutionState)` was removed
-* `withOutput(java.lang.String)` was removed
 * `withError(java.lang.String)` was removed
+* `withEndTime(java.time.OffsetDateTime)` was removed
+* `withExecutionMessage(java.lang.String)` was removed
 * `withExitCode(java.lang.Integer)` was removed
 * `withStartTime(java.time.OffsetDateTime)` was removed
+* `withOutput(java.lang.String)` was removed
 * `withStatuses(java.util.List)` was removed
 
 #### `models.SharingStatus` was modified
@@ -193,8 +123,8 @@
 #### `models.InnerError` was modified
 
 * `InnerError()` was changed to private access
-* `withErrordetail(java.lang.String)` was removed
 * `withExceptiontype(java.lang.String)` was removed
+* `withErrordetail(java.lang.String)` was removed
 
 #### `models.ResourceSkuRestrictions` was modified
 
@@ -203,11 +133,11 @@
 #### `models.CommunityGalleryMetadata` was modified
 
 * `CommunityGalleryMetadata()` was changed to private access
-* `withPublicNames(java.util.List)` was removed
 * `withPublisherContact(java.lang.String)` was removed
-* `withEula(java.lang.String)` was removed
 * `withPublisherUri(java.lang.String)` was removed
+* `withEula(java.lang.String)` was removed
 * `withPrivacyStatementUri(java.lang.String)` was removed
+* `withPublicNames(java.util.List)` was removed
 
 #### `models.SharedGalleryDataDiskImage` was modified
 
@@ -230,8 +160,8 @@
 #### `models.PolicyViolation` was modified
 
 * `PolicyViolation()` was changed to private access
-* `withCategory(models.PolicyViolationCategory)` was removed
 * `withDetails(java.lang.String)` was removed
+* `withCategory(models.PolicyViolationCategory)` was removed
 
 #### `models.ApiError` was modified
 
@@ -302,15 +232,15 @@
 #### `models.CapacityReservationInstanceViewWithName` was modified
 
 * `CapacityReservationInstanceViewWithName()` was changed to private access
-* `withStatuses(java.util.List)` was removed
 * `withUtilizationInfo(models.CapacityReservationUtilization)` was removed
+* `withStatuses(java.util.List)` was removed
 
 #### `models.RunCommandParameterDefinition` was modified
 
 * `RunCommandParameterDefinition()` was changed to private access
 * `withRequired(java.lang.Boolean)` was removed
-* `withDefaultValue(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDefaultValue(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
 
 #### `models.SharedGalleryDiskImage` was modified
@@ -341,9 +271,9 @@
 #### `models.ValidationsProfile` was modified
 
 * `ValidationsProfile()` was changed to private access
-* `withPlatformAttributes(java.util.List)` was removed
-* `withExecutedValidations(java.util.List)` was removed
 * `withValidationEtag(java.lang.String)` was removed
+* `withExecutedValidations(java.util.List)` was removed
+* `withPlatformAttributes(java.util.List)` was removed
 
 #### `models.DataDiskImage` was modified
 
@@ -366,8 +296,8 @@
 
 * `ExecutedValidation()` was changed to private access
 * `withExecutionTime(java.time.OffsetDateTime)` was removed
-* `withVersion(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
 
 #### `models.CapacityReservationInstanceView` was modified
 
@@ -387,8 +317,8 @@
 
 * `ImageDeprecationStatus()` was changed to private access
 * `withAlternativeOption(models.AlternativeOption)` was removed
-* `withImageState(models.ImageState)` was removed
 * `withScheduledDeprecationTime(java.time.OffsetDateTime)` was removed
+* `withImageState(models.ImageState)` was removed
 
 #### `models.OperationDisplay` was modified
 
@@ -470,8 +400,8 @@
 #### `models.AlternativeOption` was modified
 
 * `AlternativeOption()` was changed to private access
-* `withValue(java.lang.String)` was removed
 * `withType(models.AlternativeType)` was removed
+* `withValue(java.lang.String)` was removed
 
 #### `models.VirtualMachineStatusCodeCount` was modified
 
@@ -480,8 +410,8 @@
 #### `models.DedicatedHostInstanceViewWithName` was modified
 
 * `DedicatedHostInstanceViewWithName()` was changed to private access
-* `withStatuses(java.util.List)` was removed
 * `withAvailableCapacity(models.DedicatedHostAvailableCapacity)` was removed
+* `withStatuses(java.util.List)` was removed
 
 #### `models.UsageName` was modified
 
@@ -498,8 +428,8 @@
 #### `models.DiskRestorePointInstanceView` was modified
 
 * `DiskRestorePointInstanceView()` was changed to private access
-* `withReplicationStatus(models.DiskRestorePointReplicationStatus)` was removed
 * `withId(java.lang.String)` was removed
+* `withReplicationStatus(models.DiskRestorePointReplicationStatus)` was removed
 * `withSnapshotAccessState(models.SnapshotAccessState)` was removed
 
 #### `models.ResourceSkuRestrictionInfo` was modified
@@ -535,8 +465,8 @@
 
 #### `models.DedicatedHostInstanceViewWithName` was modified
 
-* `statuses()` was added
 * `availableCapacity()` was added
+* `statuses()` was added
 
 ## 2.56.2 (2026-02-26)
 
