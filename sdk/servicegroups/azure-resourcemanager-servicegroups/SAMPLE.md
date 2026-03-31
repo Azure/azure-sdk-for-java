@@ -23,9 +23,7 @@ import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
  */
 public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/management/resource-manager/Microsoft.Management/ServiceGroups/preview/2024-02-01-preview/examples/
-     * ServiceGroup_Put.json
+     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Put.json
      */
     /**
      * Sample code: PutServiceGroup.
@@ -52,9 +50,7 @@ public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
  */
 public final class ResourceProviderDeleteServiceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/management/resource-manager/Microsoft.Management/ServiceGroups/preview/2024-02-01-preview/examples/
-     * ServiceGroup_Delete.json
+     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Delete.json
      */
     /**
      * Sample code: DeleteServiceGroup.
@@ -81,9 +77,7 @@ import java.util.Map;
  */
 public final class ResourceProviderUpdateServiceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/management/resource-manager/Microsoft.Management/ServiceGroups/preview/2024-02-01-preview/examples/
-     * ServiceGroup_Patch.json
+     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Patch.json
      */
     /**
      * Sample code: PatchServiceGroup.
@@ -93,8 +87,9 @@ public final class ResourceProviderUpdateServiceGroupSamples {
     public static void patchServiceGroup(com.azure.resourcemanager.servicegroups.ServiceGroupsManager manager) {
         manager.resourceProviders()
             .updateServiceGroup("ServiceGroup1",
-                new ServiceGroupInner().withTags(mapOf("tag1", "value1", "tag2", "value2"))
-                    .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name")),
+                new ServiceGroupInner()
+                    .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name"))
+                    .withTags(mapOf("tag1", "value1", "tag2", "value2")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -120,9 +115,7 @@ public final class ResourceProviderUpdateServiceGroupSamples {
  */
 public final class ServiceGroupsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/management/resource-manager/Microsoft.Management/ServiceGroups/preview/2024-02-01-preview/examples/
-     * ServiceGroup_Get.json
+     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Get.json
      */
     /**
      * Sample code: GetServiceGroup.
@@ -144,9 +137,7 @@ public final class ServiceGroupsGetSamples {
  */
 public final class ServiceGroupsListAncestorsSamples {
     /*
-     * x-ms-original-file:
-     * specification/management/resource-manager/Microsoft.Management/ServiceGroups/preview/2024-02-01-preview/examples/
-     * ServiceGroup_ListAncestors.json
+     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_ListAncestors.json
      */
     /**
      * Sample code: ListServiceGroupAncestors.
