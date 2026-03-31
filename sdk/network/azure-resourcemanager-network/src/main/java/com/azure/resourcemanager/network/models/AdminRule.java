@@ -387,6 +387,7 @@ public final class AdminRule extends BaseAdminRuleInner {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AdminRule if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AdminRule.
      */
     public static AdminRule fromJson(JsonReader jsonReader) throws IOException {

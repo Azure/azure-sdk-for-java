@@ -140,6 +140,7 @@ public final class StaticCidrInner extends CommonProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of StaticCidrInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StaticCidrInner.
      */
     public static StaticCidrInner fromJson(JsonReader jsonReader) throws IOException {

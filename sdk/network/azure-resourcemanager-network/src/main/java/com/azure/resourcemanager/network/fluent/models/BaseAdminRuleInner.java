@@ -150,6 +150,7 @@ public class BaseAdminRuleInner extends ChildResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BaseAdminRuleInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BaseAdminRuleInner.
      */
     public static BaseAdminRuleInner fromJson(JsonReader jsonReader) throws IOException {

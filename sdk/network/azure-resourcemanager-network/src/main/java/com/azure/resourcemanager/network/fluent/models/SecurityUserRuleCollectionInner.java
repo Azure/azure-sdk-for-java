@@ -206,6 +206,7 @@ public final class SecurityUserRuleCollectionInner extends ChildResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecurityUserRuleCollectionInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SecurityUserRuleCollectionInner.
      */
     public static SecurityUserRuleCollectionInner fromJson(JsonReader jsonReader) throws IOException {

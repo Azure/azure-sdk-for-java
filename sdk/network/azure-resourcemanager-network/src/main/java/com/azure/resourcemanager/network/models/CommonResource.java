@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.io.IOException;
  * Common fields that are returned in the response for all Azure Resource Manager resources.
  */
 @Immutable
-public class CommonResource implements JsonSerializable<CommonResource> {
+public class CommonResource extends ProxyResource {
     /*
      * Fully qualified resource ID for the resource. E.g.
      * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -52,20 +52,9 @@ public class CommonResource implements JsonSerializable<CommonResource> {
      * 
      * @return the id value.
      */
+    @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
-     * 
-     * @param id the id value to set.
-     * @return the CommonResource object itself.
-     */
-    CommonResource withId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -73,19 +62,9 @@ public class CommonResource implements JsonSerializable<CommonResource> {
      * 
      * @return the name value.
      */
+    @Override
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the resource.
-     * 
-     * @param name the name value to set.
-     * @return the CommonResource object itself.
-     */
-    CommonResource withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -94,20 +73,9 @@ public class CommonResource implements JsonSerializable<CommonResource> {
      * 
      * @return the type value.
      */
+    @Override
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
-     * 
-     * @param type the type value to set.
-     * @return the CommonResource object itself.
-     */
-    CommonResource withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

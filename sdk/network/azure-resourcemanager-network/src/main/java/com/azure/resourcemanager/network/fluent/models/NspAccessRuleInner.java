@@ -321,6 +321,7 @@ public final class NspAccessRuleInner extends SecurityPerimeterProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of NspAccessRuleInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NspAccessRuleInner.
      */
     public static NspAccessRuleInner fromJson(JsonReader jsonReader) throws IOException {
