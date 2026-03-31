@@ -109,32 +109,33 @@ public interface HttpClient {
                     return true;
                 }
 
-                // NOTE: No PING-based eviction. Http2PingHealthHandler sends PING frames as
-                // keepalive (prevents NAT/firewall idle reaping) but does NOT trigger eviction
-                // on stale ACKs. Degraded connections are handled by the response timeout retry
-                // path (6s/6s/10s escalation → cross-region failover).
+                // NOTE: PING keepalive is handled natively by reactor-netty's
+                // pingAckTimeout/pingAckDropThreshold in http2Settings. Connections with
+                // consecutive unanswered PINGs are closed by the framework. Degraded but
+                // responsive connections are handled by the response timeout retry path
+                // (6s/6s/10s escalation → cross-region failover).
 
                 // Phase 2: Per-connection max lifetime with jitter — two-phase eviction.
                 // CONNECTION_EXPIRY_NANOS is stamped once per connection in doOnConnected
-                // (via Http2PingHealthHandler.stampConnectionExpiry) with baseMaxLifetime + random jitter.
+                // (via HttpConnectionLifecycleUtil.stampConnectionExpiry) with baseMaxLifetime - random jitter.
                 //
                 // Two-phase: instead of evicting immediately (which RST_STREAMs active H2 streams),
                 // mark the connection as pending eviction. On subsequent sweeps, evict when idle
                 // or after the drain grace period expires.
                 if (maxLifetimeSeconds > 0) {
                     Channel parentChannel = connection.channel();
-                    Long expiryNanos = parentChannel.hasAttr(Http2PingHealthHandler.CONNECTION_EXPIRY_NANOS)
-                        ? parentChannel.attr(Http2PingHealthHandler.CONNECTION_EXPIRY_NANOS).get()
+                    Long expiryNanos = parentChannel.hasAttr(HttpConnectionLifecycleUtil.CONNECTION_EXPIRY_NANOS)
+                        ? parentChannel.attr(HttpConnectionLifecycleUtil.CONNECTION_EXPIRY_NANOS).get()
                         : null;
                     if (expiryNanos != null && now > expiryNanos) {
                         // Check if already marked for pending eviction
-                        Long pendingSince = parentChannel.hasAttr(Http2PingHealthHandler.PENDING_EVICTION_NANOS)
-                            ? parentChannel.attr(Http2PingHealthHandler.PENDING_EVICTION_NANOS).get()
+                        Long pendingSince = parentChannel.hasAttr(HttpConnectionLifecycleUtil.PENDING_EVICTION_NANOS)
+                            ? parentChannel.attr(HttpConnectionLifecycleUtil.PENDING_EVICTION_NANOS).get()
                             : null;
 
                         if (pendingSince == null) {
                             // First detection — mark as pending, don't evict yet
-                            parentChannel.attr(Http2PingHealthHandler.PENDING_EVICTION_NANOS).set(now);
+                            parentChannel.attr(HttpConnectionLifecycleUtil.PENDING_EVICTION_NANOS).set(now);
                             return false;
                         }
 

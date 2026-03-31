@@ -21,10 +21,13 @@
 
 ## Non-Goals
 
-- **PING-based eviction** — Client-driven connection closure will only be driven by idle
-  timeout and max life of connection. We do not evict connections based on stale PING ACKs.
-  Degraded connections are handled by the existing response timeout retry path (6s/6s/10s
-  escalation → cross-region failover). PING serves only as keepalive.
+- **PING-based eviction (custom)** — Client-driven connection closure will only be driven
+  by idle timeout and max life of connection. We do not implement custom PING-based eviction
+  in the eviction predicate. However, reactor-netty's native `pingAckDropThreshold` closes
+  connections after consecutive unanswered PINGs — this detects half-open TCP connections
+  and is handled by the framework, not our eviction logic. Degraded but responsive connections
+  are handled by the existing response timeout retry path (6s/6s/10s escalation → cross-region
+  failover).
 
 ## Protocol Split (Production Evidence)
 
@@ -68,32 +71,43 @@ infrastructure where TCP keepalive alone is insufficient.
    `CONNECTION_EXPIRY_NANOS` attribute apply to all connections in the pool. This ensures
    DNS re-resolution for all operation types, including ChangeFeed (HTTP/1.1).
 
-3. **PING keepalive is HTTP/2 only** — PING is an HTTP/2 protocol frame — it cannot be
-   sent on HTTP/1.1 connections. The handler is installed only when H2 is enabled
-   (`isH2Enabled && PING_HEALTH_ENABLED`). HTTP/1.1 keepalive is a separate future concern
-   (see Future Work).
+3. **PING keepalive is HTTP/2 only (native)** — Uses reactor-netty's built-in PING support
+   (`pingAckTimeout` + `pingAckDropThreshold`, available since 1.2.12) configured in
+   `http2Settings`. Native support handles both keepalive (prevents L7 idle reaping) and
+   dead connection detection (closes after consecutive unanswered PINGs). No custom
+   `ChannelHandler` needed. HTTP/1.1 keepalive is a separate future concern (see Future Work).
 
-4. **Max lifetime and PING keepalive are independent features** — Separate install paths
-   in `doOnConnected`: `stampConnectionExpiry()` for lifetime (all connections),
-   `installOnParentIfAbsent()` for PING (H2 only). Disabling one does not affect the other.
+4. **Max lifetime and PING keepalive are independent features** — Max lifetime is stamped in
+   `doOnConnected` via `HttpConnectionLifecycleUtil.stampConnectionExpiry()` for all connections.
+   PING keepalive is configured in `http2Settings` (H2 only). Disabling one does not affect
+   the other.
 
-5. **Per-connection jitter** — Each connection gets a deterministic expiry stamped once at
-   creation (`CONNECTION_EXPIRY_NANOS` channel attribute). Avoids .NET's per-pool sync-lock
-   (all connections expire together) and the non-determinism of re-rolling jitter each sweep.
-   Matches reactor-netty 1.3.4's `maxLifeTimeVariance` semantics for easy migration.
+5. **Per-connection jitter (subtractive)** — Each connection gets a deterministic expiry
+   stamped once at creation (`CONNECTION_EXPIRY_NANOS` channel attribute). Jitter is
+   **subtracted** from the base lifetime: effective range `[base - jitter, base]`.
+   This ensures the configured max lifetime is the upper bound, not exceeded.
+   Avoids .NET's per-pool sync-lock (all connections expire together) and the
+   non-determinism of re-rolling jitter each sweep. Matches reactor-netty 1.3.4's
+   `maxLifeTimeVariance` semantics for easy migration.
 
 6. **Two-phase eviction for lifetime** — Instead of immediately closing a connection past
    its lifetime (which RST_STREAMs active H2 streams), mark as `PENDING_EVICTION_NANOS` on
    first detection, then evict when idle or after a 10s drain grace period.
 
-7. **Eviction rate limiter** — At most 1 connection evicted per sweep cycle (dead channels
-   exempt). Prevents cliff eviction when multiple connections expire in the same window.
+7. **Eviction rate limiter (defense-in-depth with jitter)** — At most 1 connection evicted
+   per sweep cycle (dead channels exempt). Jitter already staggers expiry times across
+   connections, so rate limiting is rarely triggered in practice. It exists as a safety net
+   for edge cases: burst connection creation (many connections stamped within the same jitter
+   window) or config changes that compress the effective range. Cost is negligible — one
+   extra atomic read per sweep — so we keep it as defense-in-depth. Can be removed after
+   production validation confirms jitter alone is sufficient.
 
 8. **Derived sweep interval** — `clamp(min(idleTimeout, baseMaxLifetime) / 2, 1s, 5s)`.
    Always faster than the smallest eviction threshold.
 
 9. **30-minute default (defensive)** — .NET uses 5 minutes. We start at 30 minutes with
-   `[30:01, 30:30]` effective range. Can be tuned down after production validation.
+   `[29:30, 30:00]` effective range (base minus jitter). Can be tuned down after production
+   validation.
 
 ---
 
@@ -118,23 +132,20 @@ ConnectionProvider (reactor-netty 1.2.13)
 │
 ├─ doOnConnected (shared — ALL connections):
 │  │
-│  ├─ If max lifetime enabled:
-│  │    stampConnectionExpiry(channel, base + jitter)
-│  │    → stamps CONNECTION_EXPIRY_NANOS attribute
-│  │
-│  └─ If PING keepalive enabled AND H2 enabled:
-│       installOnParentIfAbsent(channel, interval)
-│       → installs Http2PingHealthHandler (H2 only — PING is an HTTP/2 frame)
-│       → sends PING frames every 10s (keepalive, not eviction)
+│  └─ If max lifetime enabled:
+│       HttpConnectionLifecycleUtil.stampConnectionExpiry(channel, base - jitter)
+│       → stamps CONNECTION_EXPIRY_NANOS attribute
+│
+├─ http2Settings (H2 only):
+│    .pingAckTimeout(10s)         ← native PING keepalive + dead conn detection
+│    .pingAckDropThreshold(2)     ← close after 2 consecutive unanswered PINGs
 │
 ├─ doOnConnected (H2 only — if H2 enabled):
 │    Http2ResponseHeaderCleanerHandler installation
 │
 └─ Channel Attributes (per connection):
-     CONNECTION_EXPIRY_NANOS    (stamped by stampConnectionExpiry)
+     CONNECTION_EXPIRY_NANOS    (stamped by HttpConnectionLifecycleUtil)
      PENDING_EVICTION_NANOS    (stamped by eviction predicate)
-     LAST_PING_ACK_NANOS       (stamped by PING handler, for future use)
-     HANDLER_INSTALLED          (one-time PING install guard)
 ```
 
 ---
@@ -147,9 +158,10 @@ All internal — not exposed as public API. System property pattern.
 |--------|----------------|---------|---------|
 | Max lifetime enabled | `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_ENABLED` | `true` | Master toggle |
 | Max lifetime | `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS` | `1800` (30 min) | Base lifetime |
-| Jitter range | Compile-time constant | `30s` | Per-connection offset `[1s, 30s]` |
+| Jitter range | Compile-time constant | `30s` | Per-connection offset subtracted: `[0s, 30s]` |
 | PING keepalive enabled | `COSMOS.HTTP2_PING_HEALTH_ENABLED` | `true` | Master toggle |
-| PING interval | `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `10s` | Keepalive frequency |
+| PING ACK timeout | `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `10s` | `pingAckTimeout` in `http2Settings` |
+| PING ACK drop threshold | Hard-coded | `2` | Close after 2 consecutive unanswered PINGs |
 | Eviction sweep | Derived | `5s` | `clamp(min(thresholds) / 2, 1s, 5s)` |
 | Max evictions/cycle | Hard-coded | `1` | Rate limit (dead channels exempt) |
 
@@ -163,9 +175,9 @@ All internal — not exposed as public API. System property pattern.
 | Aspect | .NET | Java |
 |--------|------|------|
 | Base lifetime | 5 min | 30 min (defensive) |
-| Jitter | Per-pool `[0s, 30s)` | Per-connection `[1s, 30s]` |
-| PING keepalive | No | Yes |
-| PING-based eviction | No | No |
+| Jitter | Per-pool `[0s, 30s)` | Per-connection `[0s, 30s]` (subtractive) |
+| PING keepalive | No | Yes (native `pingAckTimeout`) |
+| PING-based eviction | No | Yes (native `pingAckDropThreshold` for dead connections) |
 
 ---
 
@@ -213,9 +225,10 @@ cycle proves the behavior is repeatable under a running workload.
 
 - **reactor-netty 1.3.4**: Replace custom lifetime logic with native `maxLifeTime()` +
   `maxLifeTimeVariance()`. Spring Boot 4 track has 1.3.3 — track 1.3.4+ with Central team.
-- **PING-based eviction**: Currently scoped to keepalive only. If production data shows
-  value in evicting on stale ACKs, the `LAST_PING_ACK_NANOS` attribute is already tracked —
-  adding an eviction phase is a predicate-only change.
+  Native PING support is already in use (since 1.2.12) and will carry forward.
+- **PING tuning**: Current settings (`pingAckTimeout=10s`, `pingAckDropThreshold=2`) are
+  conservative. If production data shows false positives (connections closed prematurely
+  due to transient network hiccups), increase the drop threshold or timeout.
 - **HTTP/1.1 application-layer keepalive**: HTTP/1.1 has no PING equivalent. HTTP/2 PING
   frames keep connections alive through L7 middleboxes, but HTTP/1.1 connections rely solely
   on TCP keepalive — invisible to L7 proxies/load balancers. Explore sending periodic

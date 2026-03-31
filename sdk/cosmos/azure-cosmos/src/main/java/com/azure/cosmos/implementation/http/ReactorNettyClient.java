@@ -147,9 +147,9 @@ public class ReactorNettyClient implements HttpClient {
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
 
-        // Max lifetime + PING keepalive: installed via doOnConnected.
-        // Max lifetime applies to ALL connections (H1.1 and H2) for DNS re-resolution.
-        // PING keepalive applies to H2 only (H1.1 is connection-per-request, short-lived).
+        // Max lifetime: installed via doOnConnected.
+        // Applies to ALL connections (H1.1 and H2) for DNS re-resolution.
+        // PING keepalive is handled natively via http2Settings (pingAckTimeout/pingAckDropThreshold).
         boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
         this.httpClient = this.httpClient.doOnConnected(connection -> {
             // Stamp per-connection expiry for ALL connections (H1.1 and H2).
@@ -158,21 +158,10 @@ public class ReactorNettyClient implements HttpClient {
                 int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
                 if (maxLifetimeSeconds > 0) {
                     int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
-                    Http2PingHealthHandler.stampConnectionExpiry(
+                    HttpConnectionLifecycleUtil.stampConnectionExpiry(
                         connection.channel(),
                         maxLifetimeSeconds * 1000L,
                         jitterRangeSeconds * 1000L);
-                }
-            }
-
-            // Install PING keepalive handler — H2 only.
-            // HTTP/2 PING frames keep connections alive through L7 middleboxes.
-            // H1.1 connections are short-lived and don't need keepalive.
-            if (isH2Enabled && Configs.isHttp2PingHealthEnabled()) {
-                int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                if (pingIntervalSeconds > 0) {
-                    Http2PingHealthHandler.installOnParentIfAbsent(
-                        connection.channel(), pingIntervalSeconds * 1000L);
                 }
             }
         });
@@ -186,11 +175,25 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-                .http2Settings(settings -> settings
-                    .initialWindowSize(1024 * 1024) // 1MB initial window size
-                    .maxFrameSize(64 * 1024)        // 64KB max frame size
-                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
-                )
+                .http2Settings(settings -> {
+                    settings
+                        .initialWindowSize(1024 * 1024) // 1MB initial window size
+                        .maxFrameSize(64 * 1024)        // 64KB max frame size
+                        .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg));  // Increased from default 30
+
+                    // Native HTTP/2 PING keepalive — prevents L7 middleboxes (NAT, firewalls, LBs)
+                    // from silently reaping idle connections. Also detects half-open TCP connections
+                    // by closing the connection after consecutive unanswered PINGs.
+                    // Uses reactor-netty's built-in PING support (available since 1.2.12).
+                    if (Configs.isHttp2PingHealthEnabled()) {
+                        int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                        if (pingIntervalSeconds > 0) {
+                            settings
+                                .pingAckTimeout(Duration.ofSeconds(pingIntervalSeconds))
+                                .pingAckDropThreshold(2); // close after 2 consecutive unanswered PINGs
+                        }
+                    }
+                })
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
