@@ -147,6 +147,12 @@ class QueryPlanRetriever {
                         // format (e.g., {"min": ["value"], "max": ["Infinity"]}). Convert to sorted
                         // List<Range<String>> with EPK hex strings and pass directly to the DTO —
                         // avoiding a redundant JSON round-trip.
+                        if (queryClient.useThinClient(req) && partitionKeyDefinition == null) {
+                            throw new IllegalStateException(
+                                "PartitionKeyDefinition must not be null in thin client mode. "
+                                + "Ensure DocumentCollection is resolved before calling getQueryPlanThroughGatewayAsync.");
+                        }
+
                         if (queryClient.useThinClient(req) && partitionKeyDefinition != null) {
                             List<Range<String>> epkRanges = PartitionKeyInternalHelper.convertToSortedEpkRanges(
                                 PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,

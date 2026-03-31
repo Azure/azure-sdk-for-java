@@ -38,7 +38,6 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
     @BeforeClass(groups = {"thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_ThinClientTest() {
         assertThat(this.client).isNull();
-        // If running locally, uncomment these lines
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);

@@ -764,10 +764,8 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 .byPage().blockFirst();
             fail("Expected exception for invalid query");
         } catch (CosmosException e) {
-            // Gateway returns 400; thin client proxy may return 400 or surface the error
-            // with a different status code. The key assertion is that the query fails.
             assertThat(e.getStatusCode() == 400 || e.getStatusCode() == 0)
-                .as("Invalid query should fail with 400 or proxy error, got: " + e.getStatusCode())
+                .as("Invalid query should return 400 (gateway) or 0 (transport-level rejection), got " + e.getStatusCode())
                 .isTrue();
             logger.info("Expected error for invalid query: {} (status {})", e.getMessage(), e.getStatusCode());
         }

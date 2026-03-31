@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class PartitionKeyInternalHelper {
 
@@ -334,7 +337,9 @@ public class PartitionKeyInternalHelper {
                 + "Expected: JSON array of {min, max, isMinInclusive, isMaxInclusive} range objects. "
                 + "Actual node type: " + actualType + ". "
                 + "Raw value: " + rawValue + ". "
-                + "Response keys: " + queryPlanJson.fieldNames() + ". "
+                + "Response keys: " + StreamSupport.stream(
+                    Spliterators.spliteratorUnknownSize(queryPlanJson.fieldNames(), 0), false)
+                    .collect(Collectors.joining(", ")) + ". "
                 + "This indicates a protocol mismatch between the SDK and the thin client proxy.");
         }
 

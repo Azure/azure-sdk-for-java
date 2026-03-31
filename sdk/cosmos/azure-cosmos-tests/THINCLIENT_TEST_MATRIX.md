@@ -2,7 +2,7 @@
 
 **Branch**: `AzCosmos_GatewayV2_QueryPlanSupport`  
 **PR**: [#47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)  
-**Test methodology**: Every query runs through both a **Gateway HTTP/1 client** (Compute Gateway, server-side EPK) and a **Thin Client HTTP/2 client** (Proxy, client-side EPK conversion). Tests assert: (1) thin client endpoint used, (2) result counts match, (3) document contents/order match.
+**Test methodology**: Every query runs through both a **Direct TCP client** (baseline, backend partition replicas) and a **Gateway V2 thin client** (system under test, proxy :10250, client-side EPK conversion). Tests assert: (1) thin client endpoint used, (2) result counts match, (3) document contents/order match.
 
 ---
 
@@ -95,7 +95,7 @@
 | `testLikeSuffix` | `SELECT * FROM c WHERE c.category LIKE '%ing'` | LIKE suffix |
 | `testLikeContains` | `SELECT * FROM c WHERE c.category LIKE '%ook%'` | LIKE contains |
 
-### String Functions ([docs](https://learn.microsoft.com/en-us/cosmos-db/query/functions))
+### String Functions
 | Test | SQL | Function |
 |------|-----|----------|
 | `testStringConcat` | `SELECT CONCAT(c.category, '-', c.status) AS label FROM c` | CONCAT |
@@ -212,7 +212,7 @@
 
 - **Test data**: 10 diverse documents seeded per partition (categories, prices, ages, nested objects, arrays, tags, booleans)
 - **Shared container**: `/mypk` partition key, reused across query tests
-- **Comparison method**: Gateway (HTTP/1 → Compute Gateway) vs Thin Client (HTTP/2 → Proxy), assert identical results
+- **Comparison method**: Direct TCP vs Thin Client (HTTP/2 → Proxy), assert identical results
 - **Endpoint validation**: Every test asserts thin client used `:10250` endpoint, gateway used `:443`
 
 ## Known Blockers (Account-side)
