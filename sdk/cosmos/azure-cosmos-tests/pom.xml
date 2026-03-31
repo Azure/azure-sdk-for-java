@@ -848,7 +848,6 @@ Licensed under the MIT License.
               </suiteXmlFiles>
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
-                <COSMOS.REUSE_DATABASE_ID>${cosmos.reuse.database.id}</COSMOS.REUSE_DATABASE_ID>
                 <COSMOS.USE_AAD_AUTH>${cosmos.use.aad.auth}</COSMOS.USE_AAD_AUTH>
                 <COSMOS.THINCLIENT_ENABLED>true</COSMOS.THINCLIENT_ENABLED>
                 <COSMOS.HTTP2_ENABLED>true</COSMOS.HTTP2_ENABLED>

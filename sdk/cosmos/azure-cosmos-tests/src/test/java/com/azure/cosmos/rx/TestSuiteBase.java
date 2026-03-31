@@ -317,13 +317,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("beforeSuite Started");
 
-        String reuseDatabaseId = System.getProperty("COSMOS.REUSE_DATABASE_ID");
-        if (reuseDatabaseId != null && !reuseDatabaseId.isEmpty()) {
-            logger.info("Reusing pre-existing database: {}", reuseDatabaseId);
-            beforeSuiteReuse(reuseDatabaseId);
-            return;
-        }
-
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
             SHARED_DATABASE = dbForTest.createdDatabase;
@@ -351,75 +344,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    private void beforeSuiteReuse(String databaseId) {
-        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
-            SHARED_DATABASE = houseKeepingClient.getDatabase(databaseId);
-
-            // Filter to only containers we can actually read (skip partially-created/broken ones)
-            List<CosmosContainerProperties> containers = new ArrayList<>();
-            for (CosmosContainerProperties cp : SHARED_DATABASE.readAllContainers().collectList().block()) {
-                try {
-                    SHARED_DATABASE.getContainer(cp.getId()).read()
-                        .timeout(Duration.ofSeconds(5))
-                        .block();
-                    containers.add(cp);
-                    logger.info("beforeSuiteReuse: container '{}' (pk={}) is healthy", cp.getId(),
-                        cp.getPartitionKeyDefinition().getPaths());
-                } catch (Exception e) {
-                    logger.warn("beforeSuiteReuse: skipping unhealthy container '{}': {}", cp.getId(),
-                        e.getMessage() != null ? e.getMessage().substring(0, Math.min(e.getMessage().length(), 100)) : "null");
-                }
-            }
-
-            if (containers.isEmpty()) {
-                throw new IllegalStateException(
-                    "No healthy containers found in database '" + databaseId + "'");
-            }
-
-            // Assign containers by partition key path, falling back to first available
-            CosmosAsyncContainer mypkFirst = null, mypkSecond = null, idContainer = null, pkContainer = null;
-            CosmosAsyncContainer fallback = SHARED_DATABASE.getContainer(containers.get(0).getId());
-            for (CosmosContainerProperties cp : containers) {
-                String pkPath = cp.getPartitionKeyDefinition().getPaths().get(0);
-                if ("/id".equals(pkPath)) {
-                    idContainer = SHARED_DATABASE.getContainer(cp.getId());
-                } else if ("/pk".equals(pkPath) || "/mypk".equals(pkPath)) {
-                    if ("/pk".equals(pkPath)) {
-                        pkContainer = SHARED_DATABASE.getContainer(cp.getId());
-                    }
-                    if ("/mypk".equals(pkPath)) {
-                        if (mypkFirst == null) {
-                            mypkFirst = SHARED_DATABASE.getContainer(cp.getId());
-                        } else {
-                            mypkSecond = SHARED_DATABASE.getContainer(cp.getId());
-                        }
-                    }
-                }
-            }
-
-            // Use whatever is available, with fallbacks
-            SHARED_MULTI_PARTITION_COLLECTION = mypkFirst != null ? mypkFirst : fallback;
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY = idContainer != null ? idContainer : fallback;
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = pkContainer != null ? pkContainer : fallback;
-            SHARED_SINGLE_PARTITION_COLLECTION = mypkSecond != null ? mypkSecond : SHARED_MULTI_PARTITION_COLLECTION;
-
-            String databaseResourceId = SHARED_DATABASE.read().block().getProperties().getResourceId();
-
-            SHARED_DATABASE_INTERNAL = new Database();
-            SHARED_DATABASE_INTERNAL.setId(databaseId);
-            SHARED_DATABASE_INTERNAL.setResourceId(databaseResourceId);
-            SHARED_DATABASE_INTERNAL.setSelfLink(String.format("dbs/%s", databaseId));
-            SHARED_DATABASE_INTERNAL.setAltLink(String.format("dbs/%s", databaseId));
-
-            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_MULTI_PARTITION_COLLECTION, databaseId);
-            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_SINGLE_PARTITION_COLLECTION, databaseId);
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL =
-                getInternalDocumentCollection(SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES, databaseId);
-
-            logger.info("beforeSuiteReuse complete — reused {} healthy containers from '{}'", containers.size(), databaseId);
-        }
-    }
-
     /**
      * Creates a DocumentCollection with all required properties set for internal API tests.
      * Sets: id, resourceId, selfLink, altLink, and partitionKey.
@@ -443,12 +367,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     public void afterSuite() {
 
         logger.info("afterSuite Started");
-
-        String reuseDatabaseId = System.getProperty("COSMOS.REUSE_DATABASE_ID");
-        if (reuseDatabaseId != null && !reuseDatabaseId.isEmpty()) {
-            logger.info("Skipping database cleanup — reuse mode with database '{}'", reuseDatabaseId);
-            return;
-        }
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             safeDeleteDatabase(SHARED_DATABASE);

@@ -33,6 +33,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 public class PartitionKeyInternalTest {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     /**
      * Tests serialization of empty partition key.
      */
@@ -481,8 +483,6 @@ public class PartitionKeyInternalTest {
     }
 
     // ==================== convertToSortedEpkRanges Unit Tests ====================
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static PartitionKeyDefinition singleHashPkDef() {
         PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
