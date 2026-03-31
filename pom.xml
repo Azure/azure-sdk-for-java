@@ -30,6 +30,7 @@
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/authorization</module>
+    <module>sdk/authorizationauthorization</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
     <module>sdk/avs</module>

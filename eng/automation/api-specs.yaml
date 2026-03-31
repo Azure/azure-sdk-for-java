@@ -11,6 +11,8 @@ appplatform:
   suffix: generated
 authorization:
   suffix: generated
+authorization/Microsoft.Authorization/Authorization:
+  service: authorizationauthorization
 azure-kusto:
   service: kusto
 azurelargeinstance:
