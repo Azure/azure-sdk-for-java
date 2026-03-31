@@ -71,7 +71,7 @@ public class Sample_Advanced_ContentSource {
         documentContentSourceFromAnalysis(documentContent);
 
         // =====================================================================
-        // Part 2: ContentSource.parseAll() round-trip and multi-segment parsing
+        // Part 2: DocumentSource.parse() and ContentSource.parseAll() round-trip
         // =====================================================================
         contentSourceParseRoundTrip(documentContent);
     }
@@ -120,12 +120,29 @@ public class Sample_Advanced_ContentSource {
     /**
      * Demonstrates the two public parse methods and {@link ContentSource#toRawString(List)}:
      * <ul>
-     *   <li>{@link ContentSource#parseAll(String)} — base-class method, returns {@code List<ContentSource>}</li>
      *   <li>{@link DocumentSource#parse(String)} — typed method, returns {@code List<DocumentSource>}</li>
+     *   <li>{@link ContentSource#parseAll(String)} — base-class method, returns {@code List<ContentSource>}</li>
      * </ul>
      */
     // BEGIN: com.azure.ai.contentunderstanding.advanced.contentsource.parse
     private static void contentSourceParseRoundTrip(DocumentContent documentContent) {
+        // --- DocumentSource.parse() — typed method ---
+        // DocumentSource.parse() is the typed convenience method. It returns List<DocumentSource>
+        // directly — no casting needed. Use this when you know the source string contains only D() segments.
+        ContentField multiSourceField = documentContent.getFields().values().stream()
+            .filter(f -> f.getSources() != null && f.getSources().size() > 1)
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("No field with multiple sources found"));
+        String multiWireFormat = ContentSource.toRawString(multiSourceField.getSources());
+        System.out.println("Multi-segment wire format: " + multiWireFormat);
+
+        List<DocumentSource> docSources = DocumentSource.parse(multiWireFormat);
+        for (DocumentSource ds : docSources) {
+            RectangleF bbox = ds.getBoundingBox();
+            System.out.printf("  parse -> page %d, bbox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
+                ds.getPageNumber(), bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
+        }
+
         // --- toRawString + ContentSource.parseAll() round-trip ---
         // ContentSource.parseAll() is the base-class method that handles both D() and AV() formats.
         // It returns List<ContentSource>, so you cast each element to the appropriate subclass.
@@ -145,23 +162,6 @@ public class Sample_Advanced_ContentSource {
                     + ", polygon points: " + (ds.getPolygon() != null ? ds.getPolygon().size() : 0));
             }
             // AudioVisualSource would be handled here once the service returns AV sources.
-        }
-
-        // --- DocumentSource.parse() — typed method ---
-        // DocumentSource.parse() is the typed convenience method. It returns List<DocumentSource>
-        // directly — no casting needed. Use this when you know the source string contains only D() segments.
-        ContentField multiSourceField = documentContent.getFields().values().stream()
-            .filter(f -> f.getSources() != null && f.getSources().size() > 1)
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("No field with multiple sources found"));
-        String multiWireFormat = ContentSource.toRawString(multiSourceField.getSources());
-        System.out.println("Multi-segment wire format: " + multiWireFormat);
-
-        List<DocumentSource> docSources = DocumentSource.parse(multiWireFormat);
-        for (DocumentSource ds : docSources) {
-            RectangleF bbox = ds.getBoundingBox();
-            System.out.printf("  parse -> page %d, bbox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
-                ds.getPageNumber(), bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
         }
 
         // --- Page-only format: D(page) ---

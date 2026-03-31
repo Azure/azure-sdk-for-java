@@ -108,6 +108,29 @@ public class Sample_Advanced_ContentSourceTest extends ContentUnderstandingClien
         AnalysisResult result = operation.getFinalResult();
         DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
 
+        // --- DocumentSource.parse() — typed method for multi-segment ---
+        ContentField multiSourceField = documentContent.getFields()
+            .values()
+            .stream()
+            .filter(f -> f.getSources() != null && f.getSources().size() > 1)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("No field with multiple sources found"));
+        String multiWireFormat = ContentSource.toRawString(multiSourceField.getSources());
+        System.out.println("Multi-segment wire format: " + multiWireFormat);
+
+        List<DocumentSource> docSources = DocumentSource.parse(multiWireFormat);
+        assertEquals(multiSourceField.getSources().size(), docSources.size(),
+            "DocumentSource.parse() count should match original source count");
+        for (DocumentSource ds : docSources) {
+            assertTrue(ds.getPageNumber() >= 1, "Page number should be >= 1");
+            RectangleF bbox = ds.getBoundingBox();
+            assertNotNull(bbox, "BoundingBox should not be null");
+            assertTrue(bbox.getWidth() > 0, "BoundingBox width should be > 0");
+            assertTrue(bbox.getHeight() > 0, "BoundingBox height should be > 0");
+            System.out.printf("  parse -> page %d, bbox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n", ds.getPageNumber(),
+                bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
+        }
+
         // --- ContentSource.parseAll() round-trip ---
         ContentField fieldWithSource = documentContent.getFields()
             .values()
@@ -134,29 +157,6 @@ public class Sample_Advanced_ContentSourceTest extends ContentUnderstandingClien
                 "Polygon should have at least 3 points, got " + ds.getPolygon().size());
             System.out
                 .println("  parseAll -> page " + ds.getPageNumber() + ", polygon points: " + ds.getPolygon().size());
-        }
-
-        // --- DocumentSource.parse() — typed method for multi-segment ---
-        ContentField multiSourceField = documentContent.getFields()
-            .values()
-            .stream()
-            .filter(f -> f.getSources() != null && f.getSources().size() > 1)
-            .findFirst()
-            .orElseThrow(() -> new AssertionError("No field with multiple sources found"));
-        String multiWireFormat = ContentSource.toRawString(multiSourceField.getSources());
-        System.out.println("Multi-segment wire format: " + multiWireFormat);
-
-        List<DocumentSource> docSources = DocumentSource.parse(multiWireFormat);
-        assertEquals(multiSourceField.getSources().size(), docSources.size(),
-            "DocumentSource.parse() count should match original source count");
-        for (DocumentSource ds : docSources) {
-            assertTrue(ds.getPageNumber() >= 1, "Page number should be >= 1");
-            RectangleF bbox = ds.getBoundingBox();
-            assertNotNull(bbox, "BoundingBox should not be null");
-            assertTrue(bbox.getWidth() > 0, "BoundingBox width should be > 0");
-            assertTrue(bbox.getHeight() > 0, "BoundingBox height should be > 0");
-            System.out.printf("  parse -> page %d, bbox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n", ds.getPageNumber(),
-                bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
         }
 
         // --- Page-only format: D(page) via DocumentSource.parse() ---
