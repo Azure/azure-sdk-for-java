@@ -2,13 +2,19 @@
 
 ## 2.57.0-beta.1 (Unreleased)
 
+### Features Added
+
 ### Breaking Changes
 
-- Migrated from Swagger to TypeSpec for code generation.
-- Removed `ListResult` and `List` paged response wrapper classes from `models` package.
-- Removed constructors and setters from read-only models (e.g., `ApiError`, `InnerError`, `ResourceSkuCapacity`).
-- Removed `CloudServiceExtensionProfile`, `CloudServiceNetworkProfile`, `CloudServiceOsProfile`, `CloudServiceProperties`, `CloudServiceRoleProfile`, and related CloudService models from `models` package.
-- Removed `Extension`, `InstanceSku`, `InstanceViewStatusesSummary`, `LoadBalancerConfiguration`, and related models from `models` package.
+#### Changes to `ComputeManagementClient` Class
+
+- Moved `ComputeManager.serviceClient().getCloudServiceRoleInstances()` to `ComputeManager.getCloudServiceClient().getCloudServiceRoleInstances()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceRoles()` to `ComputeManager.getCloudServiceClient().getCloudServiceRoles()`.
+- Moved `ComputeManager.serviceClient().getCloudServices()` to `ComputeManager.getCloudServiceClient().getCloudServices()`.
+- Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.getCloudServiceClient().getCloudServicesUpdateDomains()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.getCloudServiceClient().getCloudServiceOperatingSystems()`.
+
+### Bugs Fixed
 
 ### Other Changes
 
