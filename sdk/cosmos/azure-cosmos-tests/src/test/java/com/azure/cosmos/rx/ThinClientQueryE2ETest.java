@@ -850,6 +850,24 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             assertThat(tcResult.results.get(0).get("id").asText()).isEqualTo(docIds.get(0));
             assertThat(tcResult.results.get(0).get("score").asDouble()).isGreaterThan(0.99);
 
+            // Euclidean variant — validates ORDER BY score semantics with a different distance function
+            String euclideanQuery = "SELECT TOP 5 c.id, VectorDistance(c.embedding, [1.0, 0.0, 0.0], false, {'distanceFunction':'euclidean'}) AS score "
+                + "FROM c ORDER BY VectorDistance(c.embedding, [1.0, 0.0, 0.0], false, {'distanceFunction':'euclidean'})";
+
+            QueryResult<ObjectNode> directEuclidean = drainQuery(directVecContainer, euclideanQuery, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> tcEuclidean = drainQuery(tcVecContainer, euclideanQuery, new CosmosQueryRequestOptions(), ObjectNode.class);
+
+            for (CosmosDiagnostics d : tcEuclidean.diagnostics) { assertThinClientEndpointUsed(d); }
+
+            assertThat(tcEuclidean.results.size()).isEqualTo(directEuclidean.results.size());
+            assertThat(tcEuclidean.results.size()).isEqualTo(5);
+
+            for (int i = 0; i < directEuclidean.results.size(); i++) {
+                assertThat(tcEuclidean.results.get(i).get("id").asText())
+                    .as("Euclidean vector search result mismatch at position " + i)
+                    .isEqualTo(directEuclidean.results.get(i).get("id").asText());
+            }
+
         } finally {
             safeDeleteContainer(directVecContainer);
         }
@@ -916,6 +934,82 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
             assertThat(directResult.results.size()).as("Full-text query should return results").isPositive();
             assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
+
+            List<String> directIds = directResult.results.stream().map(d -> d.get("id").asText()).sorted().collect(Collectors.toList());
+            List<String> tcIds = tcResult.results.stream().map(d -> d.get("id").asText()).sorted().collect(Collectors.toList());
+            assertThat(tcIds).isEqualTo(directIds);
+
+        } finally {
+            safeDeleteContainer(directFtsContainer);
+        }
+    }
+
+    /**
+     * Creates a container with full-text policy and index, runs ORDER BY RANK FullTextScore query.
+     * Compares exact ordering between Direct and thin client.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
+    public void testFullTextScoreRanking() {
+        String containerId = "ftsRank_" + UUID.randomUUID().toString().substring(0, 8);
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+        CosmosAsyncContainer directFtsContainer = db.getContainer(containerId);
+
+        try {
+            PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+            pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
+
+            CosmosContainerProperties props = new CosmosContainerProperties(containerId, pkDef);
+
+            CosmosFullTextPath ftPath = new CosmosFullTextPath();
+            ftPath.setPath("/text");
+            ftPath.setLanguage("en-US");
+            CosmosFullTextPolicy ftPolicy = new CosmosFullTextPolicy();
+            ftPolicy.setDefaultLanguage("en-US");
+            ftPolicy.setPaths(Collections.singletonList(ftPath));
+            props.setFullTextPolicy(ftPolicy);
+
+            IndexingPolicy idxPolicy = new IndexingPolicy();
+            idxPolicy.setIndexingMode(IndexingMode.CONSISTENT);
+            idxPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
+            idxPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/\"_etag\"/?")));
+            CosmosFullTextIndex ftIndex = new CosmosFullTextIndex();
+            ftIndex.setPath("/text");
+            idxPolicy.setCosmosFullTextIndexes(Collections.singletonList(ftIndex));
+            props.setIndexingPolicy(idxPolicy);
+
+            db.createContainer(props).block();
+            CosmosAsyncContainer tcFtsContainer = thinClient.getDatabase(db.getId()).getContainer(containerId);
+
+            String ftsPk = UUID.randomUUID().toString();
+            String[] texts = {
+                "The quick brown fox jumps over the lazy dog",
+                "A red bicycle parked near the mountain trail",
+                "Electronic devices on sale at the downtown store",
+                "Mountain biking trails with scenic views",
+                "The lazy cat sleeps on the warm brown couch"
+            };
+            for (int i = 0; i < texts.length; i++) {
+                ObjectNode doc = OBJECT_MAPPER.createObjectNode();
+                doc.put(ID_FIELD, "ftsRank_" + i + "_" + UUID.randomUUID().toString().substring(0, 8));
+                doc.put(PK_FIELD, ftsPk);
+                doc.put("text", texts[i]);
+                directFtsContainer.createItem(doc, new PartitionKey(ftsPk), null).block();
+            }
+
+            String query = "SELECT TOP 5 * FROM c ORDER BY RANK FullTextScore(c.text, 'mountain')";
+
+            QueryResult<ObjectNode> directResult = drainQuery(directFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> tcResult = drainQuery(tcFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+
+            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+            assertThat(directResult.results.size()).as("FullTextScore ranking query should return results").isPositive();
+            assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
+
+            for (int i = 0; i < directResult.results.size(); i++) {
+                assertThat(tcResult.results.get(i).get("id").asText())
+                    .as("FullTextScore ranking result mismatch at position " + i)
+                    .isEqualTo(directResult.results.get(i).get("id").asText());
+            }
 
         } finally {
             safeDeleteContainer(directFtsContainer);
@@ -999,6 +1093,12 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
             for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
             assertThat(tcResult.results.size()).isEqualTo(directResult.results.size());
+
+            for (int i = 0; i < directResult.results.size(); i++) {
+                assertThat(tcResult.results.get(i).get("id").asText())
+                    .as("Hybrid search result mismatch at position " + i)
+                    .isEqualTo(directResult.results.get(i).get("id").asText());
+            }
 
         } finally {
             safeDeleteContainer(directHybridContainer);
