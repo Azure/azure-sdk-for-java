@@ -328,15 +328,11 @@ public class PartitionKeyInternalHelper {
         JsonNode queryRangesNode = queryPlanJson.get(queryRangesProperty);
         if (queryRangesNode == null || !queryRangesNode.isArray()) {
             String actualType = queryRangesNode == null ? "null (property absent)" : queryRangesNode.getNodeType().name();
-            String rawValue = queryRangesNode == null ? "N/A" : queryRangesNode.toString();
-            if (rawValue.length() > 500) {
-                rawValue = rawValue.substring(0, 500) + "...(truncated)";
-            }
             throw new IllegalStateException(
                 "Thin client proxy query plan response has missing or invalid '" + queryRangesProperty + "' property. "
                 + "Expected: JSON array of {min, max, isMinInclusive, isMaxInclusive} range objects. "
                 + "Actual node type: " + actualType + ". "
-                + "Raw value: " + rawValue + ". "
+                + "Raw value type: " + (queryRangesNode != null ? queryRangesNode.getNodeType() : "null") + ". "
                 + "Response keys: " + StreamSupport.stream(
                     Spliterators.spliteratorUnknownSize(queryPlanJson.fieldNames(), 0), false)
                     .collect(Collectors.joining(", ")) + ". "

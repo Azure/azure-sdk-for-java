@@ -1,9 +1,5 @@
 # Thin Client E2E Test Matrix — Gateway V2 QueryPlan Support
 
-**Branch**: `AzCosmos_GatewayV2_QueryPlanSupport`  
-**PR**: [#47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)  
-**Test methodology**: Every query runs through both a **Direct TCP client** (baseline, backend partition replicas) and a **Gateway V2 thin client** (system under test, proxy :10250, client-side EPK conversion). Tests assert: (1) thin client endpoint used, (2) result counts match, (3) document contents/order match.
-
 ---
 
 ## 1. Query Tests (`ThinClientQueryE2ETest`) — 80 tests
@@ -214,11 +210,3 @@
 - **Shared container**: `/mypk` partition key, reused across query tests
 - **Comparison method**: Direct TCP vs Thin Client (HTTP/2 → Proxy), assert identical results
 - **Endpoint validation**: Every test asserts thin client used `:10250` endpoint, gateway used `:443`
-
-## Known Blockers (Account-side)
-
-| Blocker | Tests Affected |
-|---------|---------------|
-| Container creation 408 timeout on INT account | Multi-range tests (3), FullTextSearch (1) |
-| `EnableNoSQLVectorSearch` not enabled | VectorSearch (1), HybridSearch (1) |
-| `queryplandotnet` account unreachable | Diagnostic test (1) |

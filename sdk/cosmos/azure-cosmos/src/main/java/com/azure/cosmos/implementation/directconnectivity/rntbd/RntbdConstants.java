@@ -350,6 +350,8 @@ public final class RntbdConstants {
                     return RntbdOperationType.MigratePartition;
                 case 0x0025:
                     return RntbdOperationType.Batch;
+                case 0x0042:
+                    return RntbdOperationType.QueryPlan;
                 default:
                     throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdOperationType.class.getSimpleName(),
@@ -427,6 +429,8 @@ public final class RntbdConstants {
                     return RntbdOperationType.AddComputeGatewayRequestCharges;
                 case Batch:
                     return RntbdOperationType.Batch;
+                case QueryPlan:
+                    return RntbdOperationType.QueryPlan;
                 default:
                     throw new IllegalArgumentException(String.format("unrecognized operation type: %s", type));
             }

@@ -42,6 +42,11 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         super(content);
         this.queryPlanRequestTimeline = queryPlanRequestTimeline;
         this.queryRanges = preComputedQueryRanges;
+        // Remove stale PK-internal-format queryRanges from backing ObjectNode
+        // to prevent inconsistency — the EPK-converted ranges are in this.queryRanges
+        if (content.has("queryRanges")) {
+            content.remove("queryRanges");
+        }
     }
 
     public int getVersion() {
