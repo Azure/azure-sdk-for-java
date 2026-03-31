@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a parsed document grounding source in the format {@code D(page,x1,y1,...,xN,yN)} or {@code D(page)}.
+ * Represents a parsed document grounding source in the format {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}.
  *
- * <p>The page number is 1-based. The polygon defines a region with three or more points
- * in the document's coordinate space. When only a page number is provided (no coordinates),
- * {@link #getPolygon()} and {@link #getBoundingBox()} return {@code null}.</p>
+ * <p>The page number is 1-based. The polygon is a quadrilateral defined by four points
+ * with coordinates in the document's coordinate space.</p>
  *
  * @see ContentSource
  */
@@ -23,6 +22,7 @@ import java.util.Objects;
 public final class DocumentSource extends ContentSource {
     private static final ClientLogger LOGGER = new ClientLogger(DocumentSource.class);
     private static final String PREFIX = "D(";
+    private static final int EXPECTED_PARAM_COUNT = 9;
 
     private final int pageNumber;
     private final List<PointF> polygon;
@@ -36,6 +36,11 @@ public final class DocumentSource extends ContentSource {
         }
         String inner = source.substring(PREFIX.length(), source.length() - 1);
         String[] parts = inner.split(",");
+        if (parts.length != EXPECTED_PARAM_COUNT) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Document source expected " + EXPECTED_PARAM_COUNT
+                    + " parameters (page + 8 coordinates), got " + parts.length + ": '" + source + "'."));
+        }
         try {
             this.pageNumber = Integer.parseInt(parts[0].trim());
         } catch (NumberFormatException e) {
@@ -46,23 +51,10 @@ public final class DocumentSource extends ContentSource {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Page number must be >= 1, got " + this.pageNumber + "."));
         }
-        if (parts.length == 1) {
-            // Page-only: D(page)
-            this.polygon = null;
-            this.boundingBox = null;
-            return;
-        }
-        int coordCount = parts.length - 1;
-        if (coordCount < 6 || coordCount % 2 != 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Document source expected page-only (1 param) or page + at least 3 coordinate pairs (7+ params), got "
-                    + parts.length + ": '" + source + "'."));
-        }
-        int pointCount = coordCount / 2;
-        List<PointF> points = new ArrayList<>(pointCount);
+        List<PointF> points = new ArrayList<>(4);
         float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
         float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
-        for (int i = 0; i < pointCount; i++) {
+        for (int i = 0; i < 4; i++) {
             int xIndex = 1 + (i * 2);
             int yIndex = 2 + (i * 2);
             float x, y;
@@ -98,20 +90,19 @@ public final class DocumentSource extends ContentSource {
     }
 
     /**
-     * Gets the polygon coordinates defining the region, or {@code null} when only a page number is available.
+     * Gets the polygon coordinates as four points defining a quadrilateral region.
      *
-     * @return An unmodifiable list of {@link PointF} values, or {@code null} for page-only sources.
+     * @return An unmodifiable list of four {@link PointF} values.
      */
     public List<PointF> getPolygon() {
         return polygon;
     }
 
     /**
-     * Gets the axis-aligned bounding rectangle computed from the polygon coordinates,
-     * or {@code null} when only a page number is available.
+     * Gets the axis-aligned bounding rectangle computed from the polygon coordinates.
      * Useful for drawing highlight rectangles over extracted fields.
      *
-     * @return The bounding box, or {@code null} for page-only sources.
+     * @return The bounding box.
      */
     public RectangleF getBoundingBox() {
         return boundingBox;
@@ -120,7 +111,7 @@ public final class DocumentSource extends ContentSource {
     /**
      * Parses a single document source segment.
      *
-     * @param source The source string in the format {@code D(page)} or {@code D(page,x1,y1,...,xN,yN)}.
+     * @param source The source string in the format {@code D(page,x1,y1,...,x4,y4)}.
      * @return A new {@link DocumentSource}.
      * @throws NullPointerException if {@code source} is null.
      * @throws IllegalArgumentException if the source string is not in the expected format.

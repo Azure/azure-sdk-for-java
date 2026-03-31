@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -173,16 +172,5 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
             System.out
                 .println("  parseAll -> page " + ds.getPageNumber() + ", polygon points: " + ds.getPolygon().size());
         }
-
-        // --- Page-only format: D(page) via DocumentSource.parse() ---
-        List<DocumentSource> pageOnly = DocumentSource.parse("D(1)");
-        assertEquals(1, pageOnly.size(), "Page-only should parse to 1 source");
-        DocumentSource pageOnlyDoc = pageOnly.get(0);
-        assertEquals(1, pageOnlyDoc.getPageNumber(), "Page-only page number should be 1");
-        assertNull(pageOnlyDoc.getPolygon(), "Page-only polygon should be null");
-        assertNull(pageOnlyDoc.getBoundingBox(), "Page-only boundingBox should be null");
-        assertEquals("D(1)", pageOnlyDoc.getRawValue(), "Page-only round-trip should match");
-        System.out.println("Page-only: D(1) -> page=" + pageOnlyDoc.getPageNumber() + ", polygon="
-            + pageOnlyDoc.getPolygon() + ", boundingBox=" + pageOnlyDoc.getBoundingBox());
     }
 }

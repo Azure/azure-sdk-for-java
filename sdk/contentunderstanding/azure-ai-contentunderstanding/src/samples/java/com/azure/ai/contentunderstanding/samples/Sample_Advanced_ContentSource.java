@@ -163,14 +163,6 @@ public class Sample_Advanced_ContentSource {
             }
             // AudioVisualSource would be handled here once the service returns AV sources.
         }
-
-        // --- Page-only format: D(page) ---
-        // Both parseAll() and parse() support the page-only format with no coordinates.
-        List<DocumentSource> pageOnly = DocumentSource.parse("D(1)");
-        DocumentSource pageOnlyDoc = pageOnly.get(0);
-        System.out.println("Page-only: page=" + pageOnlyDoc.getPageNumber()
-            + ", polygon=" + pageOnlyDoc.getPolygon()
-            + ", boundingBox=" + pageOnlyDoc.getBoundingBox());
     }
     // END: com.azure.ai.contentunderstanding.advanced.contentsource.parse
 
