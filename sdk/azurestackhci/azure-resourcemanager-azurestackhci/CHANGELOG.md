@@ -57,10 +57,10 @@
 #### `models.ClusterNode` was modified
 
 * `ClusterNode()` was changed to private access
-* `java.lang.Float coreCount()` -> `java.lang.Double coreCount()`
 * `validate()` was removed
 * `java.lang.Float memoryInGiB()` -> `java.lang.Double memoryInGiB()`
 * `java.lang.Float id()` -> `java.lang.Double id()`
+* `java.lang.Float coreCount()` -> `java.lang.Double coreCount()`
 
 #### `models.SwitchDetail` was modified
 
@@ -99,15 +99,15 @@
 #### `models.Operation` was modified
 
 * `Operation()` was removed
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `withDisplay(models.OperationDisplay)` was removed
-* `models.ActionType actionType()` -> `models.ActionType actionType()`
-* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
-* `models.Origin origin()` -> `models.Origin origin()`
-* `toJson(com.azure.json.JsonWriter)` was removed
-* `java.lang.Boolean isDataAction()` -> `java.lang.Boolean isDataAction()`
-* `java.lang.String name()` -> `java.lang.String name()`
 * `validate()` was removed
+* `models.ActionType actionType()` -> `models.ActionType actionType()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `models.Origin origin()` -> `models.Origin origin()`
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.String name()` -> `java.lang.String name()`
+* `java.lang.Boolean isDataAction()` -> `java.lang.Boolean isDataAction()`
+* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
+* `withDisplay(models.OperationDisplay)` was removed
 
 #### `models.ClusterDesiredProperties` was modified
 
@@ -129,8 +129,8 @@
 #### `models.ClusterReportedProperties` was modified
 
 * `ClusterReportedProperties()` was changed to private access
-* `validate()` was removed
 * `withDiagnosticLevel(models.DiagnosticLevel)` was removed
+* `validate()` was removed
 
 #### `models.PhysicalNodes` was modified
 
@@ -176,9 +176,9 @@
 
 #### `models.Cluster` was modified
 
-* `java.lang.Float trialDaysRemaining()` -> `java.lang.Double trialDaysRemaining()`
-* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.lang.Float trialDaysRemaining()` -> `java.lang.Double trialDaysRemaining()`
 
 #### `models.UploadCertificateRequest` was modified
 
@@ -223,10 +223,10 @@
 #### `models.SkuMappings` was modified
 
 * `SkuMappings()` was changed to private access
-* `withMarketplaceSkuVersions(java.util.List)` was removed
-* `withMarketplaceSkuId(java.lang.String)` was removed
-* `validate()` was removed
 * `withCatalogPlanId(java.lang.String)` was removed
+* `withMarketplaceSkuId(java.lang.String)` was removed
+* `withMarketplaceSkuVersions(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.ValidateRequest` was modified
 
@@ -262,12 +262,12 @@
 #### `models.ExtensionInstanceViewStatus` was modified
 
 * `ExtensionInstanceViewStatus()` was changed to private access
-* `validate()` was removed
 * `withLevel(models.StatusLevelTypes)` was removed
-* `withCode(java.lang.String)` was removed
-* `withMessage(java.lang.String)` was removed
-* `withTime(java.time.OffsetDateTime)` was removed
 * `withDisplayStatus(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
+* `withTime(java.time.OffsetDateTime)` was removed
+* `withCode(java.lang.String)` was removed
 
 #### `models.NetworkController` was modified
 
@@ -402,19 +402,19 @@
 
 #### `models.ClusterPatch` was modified
 
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
-* `validate()` was removed
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.HciUpdate$Definition` was modified
 
-* `withProgressPercentage(java.lang.Float)` was removed
 * `withPackageSizeInMb(java.lang.Float)` was removed
+* `withProgressPercentage(java.lang.Float)` was removed
 
 #### `models.HciUpdate` was modified
 
-* `java.lang.Float progressPercentage()` -> `java.lang.Double progressPercentage()`
 * `java.lang.Float packageSizeInMb()` -> `java.lang.Double packageSizeInMb()`
+* `java.lang.Float progressPercentage()` -> `java.lang.Double progressPercentage()`
 
 #### `models.ArcSetting$Update` was modified
 
@@ -422,8 +422,8 @@
 
 #### `models.UserAssignedIdentity` was modified
 
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 
 #### `models.Operations` was modified
@@ -484,9 +484,9 @@
 
 #### `models.ArcSettingsPatch` was modified
 
-* `withConnectivityProperties(java.lang.Object)` was removed
-* `validate()` was removed
 * `java.lang.Object connectivityProperties()` -> `models.ArcConnectivityProperties connectivityProperties()`
+* `validate()` was removed
+* `withConnectivityProperties(java.lang.Object)` was removed
 
 #### `models.PerNodeExtensionState` was modified
 
@@ -496,11 +496,11 @@
 #### `models.ExtensionInstanceView` was modified
 
 * `ExtensionInstanceView()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withTypeHandlerVersion(java.lang.String)` was removed
 * `validate()` was removed
-* `withStatus(models.ExtensionInstanceViewStatus)` was removed
 * `withType(java.lang.String)` was removed
+* `withTypeHandlerVersion(java.lang.String)` was removed
+* `withStatus(models.ExtensionInstanceViewStatus)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.PackageVersionInfo` was modified
 
@@ -608,19 +608,19 @@
 
 #### `models.DeploymentData` was modified
 
-* `withIsManagementCluster(java.lang.Boolean)` was added
 * `withIdentityProvider(models.IdentityProvider)` was added
-* `localAvailabilityZones()` was added
-* `identityProvider()` was added
-* `isManagementCluster()` was added
-* `assemblyInfo()` was added
 * `withLocalAvailabilityZones(java.util.List)` was added
+* `assemblyInfo()` was added
+* `identityProvider()` was added
+* `localAvailabilityZones()` was added
+* `isManagementCluster()` was added
 * `withAssemblyInfo(models.AssemblyInfo)` was added
+* `withIsManagementCluster(java.lang.Boolean)` was added
 
 #### `models.HciReportedProperties` was modified
 
-* `hardwareProfile()` was added
 * `storageProfile()` was added
+* `hardwareProfile()` was added
 
 #### `models.Operation` was modified
 
@@ -632,8 +632,8 @@
 
 #### `models.Clusters` was modified
 
-* `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
 * `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest)` was added
+* `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
 
 #### `models.ClusterReportedProperties` was modified
 
@@ -642,31 +642,31 @@
 
 #### `models.DeploymentCluster` was modified
 
-* `clusterPattern()` was added
-* `hardwareClass()` was added
 * `withClusterPattern(models.ClusterPattern)` was added
+* `hardwareClass()` was added
+* `clusterPattern()` was added
 
 #### `models.Cluster` was modified
 
-* `updateSecretsLocations(models.SecretsLocationsChangeRequest)` was added
-* `localAvailabilityZones()` was added
-* `updateSecretsLocations(models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
-* `identityProvider()` was added
 * `isManagementCluster()` was added
-* `clusterPattern()` was added
+* `updateSecretsLocations(models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
+* `updateSecretsLocations(models.SecretsLocationsChangeRequest)` was added
 * `secretsLocations()` was added
+* `identityProvider()` was added
+* `localAvailabilityZones()` was added
+* `clusterPattern()` was added
 
 #### `models.InfrastructureNetwork` was modified
 
-* `withDnsZones(java.util.List)` was added
-* `dnsZones()` was added
 * `withDnsServerConfig(models.DnsServerConfig)` was added
+* `dnsZones()` was added
 * `dnsServerConfig()` was added
+* `withDnsZones(java.util.List)` was added
 
 #### `models.ArcSettings` was modified
 
-* `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest)` was added
 * `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
+* `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest)` was added
 
 #### `models.HciNicDetail` was modified
 
@@ -679,13 +679,13 @@
 
 #### `models.ArcSetting` was modified
 
-* `reconcile(models.ReconcileArcSettingsRequest)` was added
 * `reconcile(models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
+* `reconcile(models.ReconcileArcSettingsRequest)` was added
 
 #### `models.HciUpdate$Definition` was modified
 
-* `withPackageSizeInMb(java.lang.Double)` was added
 * `withProgressPercentage(java.lang.Double)` was added
+* `withPackageSizeInMb(java.lang.Double)` was added
 
 #### `models.ArcSetting$Update` was modified
 
@@ -697,13 +697,13 @@
 
 #### `models.Cluster$Definition` was modified
 
-* `withLocalAvailabilityZones(java.util.List)` was added
 * `withSecretsLocations(java.util.List)` was added
+* `withLocalAvailabilityZones(java.util.List)` was added
 
 #### `AzureStackHciManager` was modified
 
-* `edgeDeviceJobs()` was added
 * `validatedSolutionRecipes()` was added
+* `edgeDeviceJobs()` was added
 
 #### `models.ArcSettingsPatch` was modified
 
