@@ -169,7 +169,7 @@ class ConnectionManager {
             if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
                 availableClients.add(clients.get(0));
             }
-        } else if (clients.size() > 0 && !configStore.isLoadBalancingEnabled()) {
+        } else if (!clients.isEmpty() && !configStore.isLoadBalancingEnabled()) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
@@ -184,10 +184,10 @@ class ConnectionManager {
             }
         }
 
-        if (availableClients.size() == 0 || configStore.isLoadBalancingEnabled()) {
+        if (availableClients.isEmpty() || configStore.isLoadBalancingEnabled()) {
             List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
 
-            if (autoFailoverEndpoints.size() > 0) {
+            if (!autoFailoverEndpoints.isEmpty()) {
                 for (String failoverEndpoint : autoFailoverEndpoints) {
                     AppConfigurationReplicaClient client = autoFailoverClients.get(failoverEndpoint);
                     if (client == null) {
@@ -201,9 +201,9 @@ class ConnectionManager {
                 }
             }
         }
-        if (clients.size() > 0 && availableClients.size() == 0) {
+        if (!clients.isEmpty() && availableClients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.DOWN;
-        } else if (clients.size() > 0) {
+        } else if (!clients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.UP;
         }
 
