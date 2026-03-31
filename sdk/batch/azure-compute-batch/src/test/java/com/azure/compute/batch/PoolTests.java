@@ -460,8 +460,7 @@ public class PoolTests extends BatchClientTestBase {
             = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
 
         BatchNodeDeallocateOptions deallocateOptions
-            = new BatchNodeDeallocateOptions().setTimeOut(Duration.ofSeconds(30))
-                .setParameters(deallocateParams);
+            = new BatchNodeDeallocateOptions().setTimeOut(Duration.ofSeconds(30)).setParameters(deallocateParams);
 
         SyncPoller<BatchNode, BatchNode> deallocatePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension
             .execute(() -> batchClient.beginDeallocateNode(poolId, nodeId, deallocateOptions), () -> Mono.fromCallable(
