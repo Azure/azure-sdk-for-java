@@ -26,6 +26,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagemover.fluent.StorageMoverManagementClient;
 import com.azure.resourcemanager.storagemover.implementation.AgentsImpl;
+import com.azure.resourcemanager.storagemover.implementation.ConnectionsImpl;
 import com.azure.resourcemanager.storagemover.implementation.EndpointsImpl;
 import com.azure.resourcemanager.storagemover.implementation.JobDefinitionsImpl;
 import com.azure.resourcemanager.storagemover.implementation.JobRunsImpl;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.storagemover.implementation.ProjectsImpl;
 import com.azure.resourcemanager.storagemover.implementation.StorageMoverManagementClientBuilder;
 import com.azure.resourcemanager.storagemover.implementation.StorageMoversImpl;
 import com.azure.resourcemanager.storagemover.models.Agents;
+import com.azure.resourcemanager.storagemover.models.Connections;
 import com.azure.resourcemanager.storagemover.models.Endpoints;
 import com.azure.resourcemanager.storagemover.models.JobDefinitions;
 import com.azure.resourcemanager.storagemover.models.JobRuns;
@@ -64,6 +66,8 @@ public final class StorageMoverManager {
     private Projects projects;
 
     private JobDefinitions jobDefinitions;
+
+    private Connections connections;
 
     private JobRuns jobRuns;
 
@@ -352,6 +356,18 @@ public final class StorageMoverManager {
             this.jobDefinitions = new JobDefinitionsImpl(clientObject.getJobDefinitions(), this);
         }
         return jobDefinitions;
+    }
+
+    /**
+     * Gets the resource collection API of Connections. It manages Connection.
+     * 
+     * @return Resource collection API of Connections.
+     */
+    public Connections connections() {
+        if (this.connections == null) {
+            this.connections = new ConnectionsImpl(clientObject.getConnections(), this);
+        }
+        return connections;
     }
 
     /**

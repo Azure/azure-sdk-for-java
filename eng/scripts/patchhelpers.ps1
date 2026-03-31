@@ -101,70 +101,34 @@ function UpdateCIInformation($ArtifactInfos) {
     }
 }
 
-# Create the forward looking graph for once the artifacts have been patched.
-function CreateForwardLookingVersions($ArtifactInfos) {
-    $allDependenciesWithVersion = @{}
+# Find all the artifacts that will need to be patched based on dependency analysis.
+# Iterates until no more patches are found (fixed-point), so the result is correct
+# regardless of artifact ordering in patch_release_client.txt.
+# Only dependencies that are themselves in the patch list are checked — external
+# dependencies (reactor-core, jackson, etc.) are ignored.
+function FindArtifactsThatNeedPatching($ArtifactInfos) {
+    $latestVersions = @{}
     foreach ($arId in $ArtifactInfos.Keys) {
-        foreach ($depId in $ArtifactInfos[$arId].Dependencies.Keys) {
-            $depVersion = $ArtifactInfos[$arId].Dependencies[$depId]
-            $currentVersion = $allDependenciesWithVersion[$depId]
-            if ($null -eq $currentVersion) {
-                $latestVersion = $depVersion
-            }
-            else {
-                $orderedVersions = @($depVersion, $currentVersion) | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
-                $sortedVersions = [AzureEngSemanticVersion]::SortVersions($orderedVersions)
-                if($null -eq $sortedVersions) {
-                    # We currently have a bug where semantic version may have 4 values just like jackson-databind.
-                    $latestVersion = $depVersion
-                } else {
-                    $latestVersion = $sortedVersions[0].RawVersion
+        $latestVersions[$arId] = $ArtifactInfos[$arId].LatestGAOrPatchVersion
+    }
+
+    do {
+        $changed = $false
+        foreach ($arId in $ArtifactInfos.Keys) {
+            $arInfo = $ArtifactInfos[$arId]
+            if ($arInfo.FutureReleasePatchVersion) { continue }
+            foreach ($depId in $arInfo.Dependencies.Keys) {
+                if (-not $latestVersions.ContainsKey($depId)) { continue }
+                if ($arInfo.Dependencies[$depId] -ne $latestVersions[$depId]) {
+                    $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion
+                    $arInfo.FutureReleasePatchVersion = $patchVersion
+                    $latestVersions[$arId] = $patchVersion
+                    $changed = $true
+                    break
                 }
             }
-
-            $allDependenciesWithVersion[$depId] = $latestVersion
         }
-    }
-
-    return $allDependenciesWithVersion
-}
-
-# Find all the artifacts that will need to be patched based on the dependency analysis.
-# Artifacts will be processed in the same order as defined in patch_release_client.txt (libraries that depend on other
-# libraries will appear later in the file).
-# This guarantees that if dependency libraries are going to be patched, dependent ones will be included as well.
-function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVersion) {
-    foreach($arId in $ArtifactInfos.Keys) {
-        $arInfo = $ArtifactInfos[$arId]
-
-        foreach($depId in $arInfo.Dependencies.Keys) {
-            $depVersion = $arInfo.Dependencies[$depId]
-
-            if($depVersion -ne $AllDependenciesWithVersion[$depId]) {
-                $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
-                $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
-                $arInfo.FutureReleasePatchVersion = $newPatchVersion
-                $AllDependenciesWithVersion[$arId] = $newPatchVersion
-            }
-        }
-    }
-}
-
-# Helper class that analyzes all the artifacts that need to be patched if a given artifact is patched.
-function ArtifactsToPatchUtil([String] $DependencyId, [hashtable]$ArtifactInfos, $AllDependenciesWithVersion) {
-    $arInfo = $ArtifactInfos[$DependencyId]
-    $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
-    $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
-    $arInfo.FutureReleasePatchVersion = $newPatchVersion
-    $AllDependenciesWithVersion[$depId] = $newPatchVersion
-
-    foreach($arId in $ArtifactInfos.Keys) {
-        $arInfo = $ArtifactInfos[$arId]
-        $depVersion = $arInfo.Dependencies[$DependencyId]
-        if($depVersion -and $depVersion -ne $newPatchVersion) {
-            ArtifactsToPatchUtil -DependencyId $DependencyId -ArtifactInfos $ArtifactInfos -AllDependenciesWithVersion $AllDependenciesWithVersion
-        }
-    }
+    } while ($changed)
 }
 
 # Update dependencies in the version client file.
@@ -273,7 +237,7 @@ function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
 }
 
 # Generate BOM file for the given artifacts.
-function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
+function GenerateBOMFile($ArtifactInfos, $BomFileBranchName, [bool]$UseCurrentBranch = $false) {
     $gaArtifacts = @()
 
     foreach ($artifact in $ArtifactInfos.Values) {
@@ -310,8 +274,9 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        Write-Host "git checkout -b $BomFileBranchName $remoteName/main"
-        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main
+        $base = if ($UseCurrentBranch) { "HEAD" } else { "$remoteName/main" }
+        Write-Host "git checkout -b $BomFileBranchName $base"
+        $cmdOutput = git checkout -b $BomFileBranchName $base
         $bomFileContent.Save($BomFilePath)
         Write-Host "git add $BomFilePath"
         git add $BomFilePath

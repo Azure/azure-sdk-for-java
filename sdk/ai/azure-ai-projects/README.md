@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,7 +51,6 @@ ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-EvaluationsClient evaluationsClient = builder.buildEvaluationsClient();
 EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
 EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
@@ -60,10 +59,11 @@ RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
 ```
 
-In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
+In the particular case of the `Evals` feature, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
 
-```java com.azure.ai.projects.evaluationsClientInit
-EvalService evalService = evaluationsClient.getEvalService();
+```java com.azure.ai.projects.evalsServices
+EvalService evalService = builder.buildOpenAIClient().evals();
+EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
 ```
 
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
@@ -72,7 +72,6 @@ For the Agents operation, you can use the `azure-ai-agents` package which is ava
 AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
 AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
 MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
 ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
 ```
@@ -92,13 +91,12 @@ Several operation groups in the AI Projects client library are in **preview** an
 |---|---|
 | `EvaluatorsClient` | `Evaluations=V1Preview` |
 | `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
-| `InsightsClient` | `Insights=V1Preview` |
 | `RedTeamsClient` | `RedTeams=V1Preview` |
 | `SchedulesClient` | `Schedules=V1Preview` |
 
-The `EvaluationRulesClient` also supports the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling `createOrUpdateEvaluationRule()`.
+The `EvaluationRulesClient` and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling their methods (e.g., `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
 
-The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
 
 ## Examples
 
@@ -111,7 +109,7 @@ PagedIterable<Connection> connections = connectionsClient.listConnections();
 for (Connection connection : connections) {
     System.out.println("Connection name: " + connection.getName());
     System.out.println("Connection type: " + connection.getType());
-    System.out.println("Connection credential type: " + connection.getCredentials().getType());
+    System.out.println("Connection credential type: " + connection.getCredential().getType());
     System.out.println("-------------------------------------------------");
 }
 ```
@@ -121,7 +119,7 @@ for (Connection connection : connections) {
 The code below shows some Indexes operations to list and create indexes. For more samples see the [package samples][package_samples].
 
 ```java com.azure.ai.projects.IndexesListSample.listIndexes
-indexesClient.listLatest().forEach(index -> {
+indexesClient.listLatestIndexVersions().forEach(index -> {
     System.out.println("Index name: " + index.getName());
     System.out.println("Index version: " + index.getVersion());
     System.out.println("Index description: " + index.getDescription());
@@ -135,7 +133,7 @@ String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION"
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
 String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-AIProjectIndex index = indexesClient.createOrUpdateVersion(
+AIProjectIndex index = indexesClient.createOrUpdateIndexVersion(
     indexName,
     indexVersion,
     new AzureAISearchIndex()
@@ -163,6 +161,31 @@ Always ensure that the chosen API version is fully supported and operational for
 
 ## Troubleshooting
 
+### Enable client logging
+
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][logLevels].
+
+To log full HTTP request and response bodies (including headers), set:
+
+```bash
+export AZURE_LOG_LEVEL=verbose
+export AZURE_HTTP_LOG_DETAIL_LEVEL=body_and_headers
+```
+
+### Default HTTP Client
+
+All client libraries by default use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
+
+### Default SSL library
+
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 
 ## Contributing
@@ -184,3 +207,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [package_samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects
 [openai_java_sdk]: https://github.com/openai/openai-java
 [openai_api_docs]: https://platform.openai.com/docs/overview
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

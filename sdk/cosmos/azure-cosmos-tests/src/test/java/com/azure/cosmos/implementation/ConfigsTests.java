@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import org.testng.annotations.Test;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.EnumSet;
 
 import static com.azure.cosmos.implementation.Configs.isThinClientEnabled;
@@ -182,42 +183,58 @@ public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void thinClientConnectionTimeoutDefaultTest() {
-        // Default thin client connection timeout should be 5 seconds
-        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        // Default thin client connection timeout should be 5000 milliseconds
+        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
         try {
-            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+            assertThat(Configs.getThinClientConnectionTimeoutInMs()).isEqualTo(5_000);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
         }
     }
 
     @Test(groups = { "unit" })
     public void thinClientConnectionTimeoutOverrideTest() {
-        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
-        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "3");
+        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS", "3000");
         try {
-            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(3);
+            assertThat(Configs.getThinClientConnectionTimeoutInMs()).isEqualTo(3_000);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
         }
     }
 
     @Test(groups = { "unit" })
-    public void thinClientConnectionTimeoutRejectsZeroAndNegative() {
-        // Zero should fall back to default (5s)
-        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "0");
+    public void thinClientConnectionTimeoutRejectsInvalidValues() {
+        // Zero should fall back to default (5000ms)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS", "0");
         try {
-            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+            assertThat(Configs.getThinClientConnectionTimeoutInMs()).isEqualTo(5_000);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
         }
 
-        // Negative should fall back to default (5s)
-        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "-1");
+        // Negative should fall back to default (5000ms)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS", "-1");
         try {
-            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+            assertThat(Configs.getThinClientConnectionTimeoutInMs()).isEqualTo(5_000);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
+        }
+
+        // Below 500ms should fall back to default (5000ms)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS", "499");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInMs()).isEqualTo(5_000);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
+        }
+
+        // Exactly 500ms should be accepted
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS", "500");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInMs()).isEqualTo(500);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS");
         }
     }
 
@@ -257,6 +274,74 @@ public class ConfigsTests {
             assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutDefaultTest() {
+        // Default connection acquire timeout should be 45000 milliseconds
+        System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofMillis(45_000));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutOverrideTest() {
+        System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS", "30000");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofMillis(30_000));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutRejectsInvalidValues() {
+        // Zero should fall back to default (45000ms)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS", "0");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofMillis(45_000));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        }
+
+        // Negative should fall back to default (45000ms)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS", "-1");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofMillis(45_000));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        }
+
+        // Below 500ms should fall back to default (45000ms)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS", "499");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofMillis(45_000));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        }
+
+        // Exactly 500ms should be accepted
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS", "500");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofMillis(500));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutRejectsNonNumericValue() {
+        // Non-numeric value should fall back to default (45s)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS", "abc");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(45));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
         }
     }
 }

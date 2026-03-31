@@ -157,7 +157,7 @@ public final class PlanetaryComputerMgmtClientImpl implements PlanetaryComputerM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-02-11-preview";
+        this.apiVersion = "2026-04-15";
         this.geoCatalogs = new GeoCatalogsClientImpl(this);
     }
 

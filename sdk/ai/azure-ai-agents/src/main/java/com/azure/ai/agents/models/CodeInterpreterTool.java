@@ -144,10 +144,10 @@ public final class CodeInterpreterTool extends Tool {
      * optional `memory_limit` setting.
      * If not provided, the service assumes auto.
      *
-     * @param container the {@link AutoCodeInterpreterToolParam} to set.
+     * @param container the {@link AutoCodeInterpreterToolParameter} to set.
      * @return the CodeInterpreterTool object itself.
      */
-    public CodeInterpreterTool setContainer(AutoCodeInterpreterToolParam container) {
+    public CodeInterpreterTool setContainer(AutoCodeInterpreterToolParameter container) {
         // AI Tooling: union type
         this.container = BinaryData.fromObject(container);
         return this;
@@ -175,13 +175,13 @@ public final class CodeInterpreterTool extends Tool {
      * optional `memory_limit` setting.
      * If not provided, the service assumes auto.
      *
-     * @return the container value as an {@link AutoCodeInterpreterToolParam}.
+     * @return the container value as an {@link AutoCodeInterpreterToolParameter}.
      */
-    public AutoCodeInterpreterToolParam getContainerAsAutoCodeInterpreterToolParam() {
+    public AutoCodeInterpreterToolParameter getContainerAsAutoCodeInterpreterToolParameter() {
         // AI Tooling: union type
         if (this.container == null) {
             return null;
         }
-        return this.container.toObject(AutoCodeInterpreterToolParam.class);
+        return this.container.toObject(AutoCodeInterpreterToolParameter.class);
     }
 }

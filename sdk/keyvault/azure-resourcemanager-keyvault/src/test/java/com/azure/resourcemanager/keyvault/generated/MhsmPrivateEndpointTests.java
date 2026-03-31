@@ -10,8 +10,7 @@ import com.azure.resourcemanager.keyvault.models.MhsmPrivateEndpoint;
 public final class MhsmPrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MhsmPrivateEndpoint model
-            = BinaryData.fromString("{\"id\":\"trmgucnapkte\"}").toObject(MhsmPrivateEndpoint.class);
+        MhsmPrivateEndpoint model = BinaryData.fromString("{\"id\":\"xivetvt\"}").toObject(MhsmPrivateEndpoint.class);
     }
 
     @org.junit.jupiter.api.Test

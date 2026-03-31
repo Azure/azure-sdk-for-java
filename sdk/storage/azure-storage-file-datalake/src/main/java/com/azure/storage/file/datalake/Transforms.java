@@ -353,10 +353,12 @@ class Transforms {
                 String group = r.getHeaders().getValue(X_MS_GROUP);
                 String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
                 String acl = r.getHeaders().getValue(X_MS_ACL);
+                Boolean accessTierInferred = properties.isAccessTierInferred();
+                AccessTier smartAccessTier = Transforms.toDataLakeAccessTier(properties.getSmartAccessTier());
 
                 return AccessorUtility.getPathPropertiesAccessor()
                     .setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext, owner, group,
-                        permissions, acl);
+                        permissions, acl, accessTierInferred, smartAccessTier);
             }
         }
     }

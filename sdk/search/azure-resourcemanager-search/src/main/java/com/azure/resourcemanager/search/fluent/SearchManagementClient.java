@@ -53,6 +53,13 @@ public interface SearchManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the OfferingsClient object to access its operations.
+     * 
+     * @return the OfferingsClient object.
+     */
+    OfferingsClient getOfferings();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.

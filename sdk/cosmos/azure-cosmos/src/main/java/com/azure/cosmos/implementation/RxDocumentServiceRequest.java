@@ -1064,6 +1064,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.resourceId = this.resourceId;
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
+        rxDocumentServiceRequest.partitionKeyDefinition = this.partitionKeyDefinition;
         return rxDocumentServiceRequest;
     }
 

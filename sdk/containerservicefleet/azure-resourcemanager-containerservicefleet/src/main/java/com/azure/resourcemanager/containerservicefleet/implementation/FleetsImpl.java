@@ -68,8 +68,8 @@ public final class FleetsImpl implements Fleets {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Fleet> list(Context context) {
-        PagedIterable<FleetInner> inner = this.serviceClient().list(context);
+    public PagedIterable<Fleet> list(Integer top, String skipToken, Context context) {
+        PagedIterable<FleetInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
     }
 

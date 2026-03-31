@@ -81,6 +81,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.EventHubsExporterIntegrationTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.LiveMetrics.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.ReadmeSamples.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.SimpleWebAppSample.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AiSemanticAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider.java" checks="IllegalImportCheck" />
@@ -130,6 +131,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.UrlIncubatingAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureStatsbeat.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeat.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomerSdkStatsTelemetryPipelineListener.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatTelemetryPipelineListener.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributesTest.java" checks="IllegalImportCheck" />

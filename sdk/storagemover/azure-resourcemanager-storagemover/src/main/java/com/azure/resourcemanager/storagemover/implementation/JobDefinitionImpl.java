@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionInner;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import com.azure.resourcemanager.storagemover.models.JobDefinition;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionPropertiesSourceTargetMap;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionUpdateParameters;
@@ -16,6 +17,9 @@ import com.azure.resourcemanager.storagemover.models.JobRunResourceId;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
+import java.util.Collections;
+import java.util.List;
 
 public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Definition, JobDefinition.Update {
     private JobDefinitionInner innerObject;
@@ -100,6 +104,27 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public List<String> connections() {
+        List<String> inner = this.innerModel().connections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ScheduleInfo schedule() {
+        return this.innerModel().schedule();
+    }
+
+    public DataIntegrityValidation dataIntegrityValidation() {
+        return this.innerModel().dataIntegrityValidation();
+    }
+
+    public Boolean preservePermissions() {
+        return this.innerModel().preservePermissions();
     }
 
     public String resourceGroupName() {
@@ -282,6 +307,36 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
 
     public JobDefinitionImpl withSourceTargetMap(JobDefinitionPropertiesSourceTargetMap sourceTargetMap) {
         this.innerModel().withSourceTargetMap(sourceTargetMap);
+        return this;
+    }
+
+    public JobDefinitionImpl withConnections(List<String> connections) {
+        if (isInCreateMode()) {
+            this.innerModel().withConnections(connections);
+            return this;
+        } else {
+            this.updateJobDefinition.withConnections(connections);
+            return this;
+        }
+    }
+
+    public JobDefinitionImpl withSchedule(ScheduleInfo schedule) {
+        this.innerModel().withSchedule(schedule);
+        return this;
+    }
+
+    public JobDefinitionImpl withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {
+        if (isInCreateMode()) {
+            this.innerModel().withDataIntegrityValidation(dataIntegrityValidation);
+            return this;
+        } else {
+            this.updateJobDefinition.withDataIntegrityValidation(dataIntegrityValidation);
+            return this;
+        }
+    }
+
+    public JobDefinitionImpl withPreservePermissions(Boolean preservePermissions) {
+        this.innerModel().withPreservePermissions(preservePermissions);
         return this;
     }
 
