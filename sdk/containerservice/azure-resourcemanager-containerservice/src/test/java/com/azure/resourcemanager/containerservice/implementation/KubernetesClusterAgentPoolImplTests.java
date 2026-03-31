@@ -59,7 +59,7 @@ public class KubernetesClusterAgentPoolImplTests {
         AgentPoolInner agentPoolInner = impl.getAgentPoolInner();
         for (Method method : agentPoolInner.getClass().getDeclaredMethods()) {
             String name = method.getName();
-            if (name.equals("upgradeStrategy")) {
+            if ("upgradeStrategy".equals(name)) {
                 // skip the property only exists in preview
                 continue;
             }
