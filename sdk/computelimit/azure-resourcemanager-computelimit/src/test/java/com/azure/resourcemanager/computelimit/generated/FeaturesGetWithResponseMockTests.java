@@ -6,22 +6,23 @@ package com.azure.resourcemanager.computelimit.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.computelimit.ComputeLimitManager;
-import com.azure.resourcemanager.computelimit.models.Operation;
+import com.azure.resourcemanager.computelimit.models.Feature;
+import com.azure.resourcemanager.computelimit.models.FeatureState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class OperationsListMockTests {
+public final class FeaturesGetWithResponseMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"awxklr\",\"isDataAction\":true,\"display\":{\"provider\":\"kbasyypn\",\"resource\":\"hsgcbacphejkot\",\"operation\":\"qgoulznd\",\"description\":\"kwy\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            = "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Canceled\"},\"id\":\"mvdjwzrlovmc\",\"name\":\"whijcoejctbza\",\"type\":\"s\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +31,9 @@ public final class OperationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        Feature response
+            = manager.features().getWithResponse("ajionpimexgstxg", "po", com.azure.core.util.Context.NONE).getValue();
 
+        Assertions.assertEquals(FeatureState.ENABLED, response.properties().state());
     }
 }

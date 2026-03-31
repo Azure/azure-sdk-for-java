@@ -11,17 +11,19 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.computelimit.ComputeLimitManager;
-import com.azure.resourcemanager.computelimit.models.Operation;
+import com.azure.resourcemanager.computelimit.models.Feature;
+import com.azure.resourcemanager.computelimit.models.FeatureState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class OperationsListMockTests {
+public final class FeaturesListBySubscriptionLocationResourceMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"awxklr\",\"isDataAction\":true,\"display\":{\"provider\":\"kbasyypn\",\"resource\":\"hsgcbacphejkot\",\"operation\":\"qgoulznd\",\"description\":\"kwy\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Failed\"},\"id\":\"xppofmxaxcfjp\",\"name\":\"ddtocjjxhvp\",\"type\":\"o\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +32,9 @@ public final class OperationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        PagedIterable<Feature> response
+            = manager.features().listBySubscriptionLocationResource("sycbkbfk", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals(FeatureState.DISABLED, response.iterator().next().properties().state());
     }
 }

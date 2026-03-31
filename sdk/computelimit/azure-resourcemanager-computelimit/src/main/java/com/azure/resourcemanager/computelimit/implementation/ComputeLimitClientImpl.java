@@ -27,6 +27,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.computelimit.fluent.ComputeLimitClient;
+import com.azure.resourcemanager.computelimit.fluent.FeaturesClient;
 import com.azure.resourcemanager.computelimit.fluent.GuestSubscriptionsClient;
 import com.azure.resourcemanager.computelimit.fluent.OperationsClient;
 import com.azure.resourcemanager.computelimit.fluent.SharedLimitsClient;
@@ -171,6 +172,20 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
     }
 
     /**
+     * The FeaturesClient object to access its operations.
+     */
+    private final FeaturesClient features;
+
+    /**
+     * Gets the FeaturesClient object to access its operations.
+     * 
+     * @return the FeaturesClient object.
+     */
+    public FeaturesClient getFeatures() {
+        return this.features;
+    }
+
+    /**
      * Initializes an instance of ComputeLimitClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -187,10 +202,11 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-15";
+        this.apiVersion = "2026-03-20";
         this.operations = new OperationsClientImpl(this);
         this.guestSubscriptions = new GuestSubscriptionsClientImpl(this);
         this.sharedLimits = new SharedLimitsClientImpl(this);
+        this.features = new FeaturesClientImpl(this);
     }
 
     /**
