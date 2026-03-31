@@ -6,6 +6,7 @@ import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -51,6 +52,17 @@ class AzureAppConfigurationBootstrapRegistrar {
             InstanceSupplier.from(() -> keyVaultClientFactory));
         context.getBootstrapContext().registerIfAbsent(AppConfigurationReplicaClientFactory.class,
             InstanceSupplier.from(() -> buildClientFactory(replicaClientsBuilder, properties, replicaLookup)));
+
+        // Register StateHolder and promote it to ApplicationContext on close
+        context.getBootstrapContext().registerIfAbsent(StateHolder.class,
+            InstanceSupplier.from(StateHolder::new));
+        context.getBootstrapContext().addCloseListener(event -> {
+            StateHolder stateHolder = event.getBootstrapContext().get(StateHolder.class);
+            ConfigurableApplicationContext applicationContext = event.getApplicationContext();
+            if (!applicationContext.getBeanFactory().containsBean("appConfigurationStateHolder")) {
+                applicationContext.getBeanFactory().registerSingleton("appConfigurationStateHolder", stateHolder);
+            }
+        });
     }
 
     private static AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(
