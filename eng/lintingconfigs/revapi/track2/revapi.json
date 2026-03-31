@@ -1337,28 +1337,6 @@
             "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(CommunityGalleryImageList|CommunityGalleryImageVersionList|DiskAccessList|DiskEncryptionSetList|DiskList|DiskRestorePointList|GalleryApplicationList|GalleryApplicationVersionList|GalleryImageList|GalleryImageVersionList|GalleryInVMAccessControlProfileList|GalleryInVMAccessControlProfileVersionList|GalleryList|GalleryScriptList|GalleryScriptVersionList|GallerySoftDeletedResourceList|ResourceUriList|SharedGalleryImageList|SharedGalleryImageVersionList|SharedGalleryList|SnapshotList)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(CloudServiceExtensionProfile|CloudServiceExtensionProperties|CloudServiceNetworkProfile|CloudServiceOsProfile|CloudServiceProperties|CloudServiceRoleProfile|CloudServiceRoleProfileProperties|CloudServiceRoleProperties|CloudServiceRoleSku|CloudServiceSlotType|CloudServiceUpdate|CloudServiceUpgradeMode|CloudServiceVaultAndSecretReference|CloudServiceVaultCertificate|CloudServiceVaultSecretGroup)"
-          },
-          "justification": "CloudService models moved to implementation package."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(Extension|InstanceSku|InstanceViewStatusesSummary|LoadBalancerConfiguration|LoadBalancerConfigurationProperties|LoadBalancerFrontendIpConfiguration|LoadBalancerFrontendIpConfigurationProperties|OSFamilyProperties|OSVersionProperties|OSVersionPropertiesBase|ResourceInstanceViewStatus|RoleInstanceNetworkProfile|RoleInstances|StatusCodeCount|VirtualMachineScaleSetListOSUpgradeHistory)"
-          },
-          "justification": "Models moved to implementation package or removed in TypeSpec migration."
-        },
-        {
-          "regex": true,
-          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
-          "old" : "class com\\.azure\\.resourcemanager\\.compute\\.models\\..*",
-          "justification": "TypeSpec fix for base resource class."
         }
       ]
     }
