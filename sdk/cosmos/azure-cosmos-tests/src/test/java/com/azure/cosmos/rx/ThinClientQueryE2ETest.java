@@ -9,10 +9,12 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosVectorDataType;
 import com.azure.cosmos.models.CosmosVectorDistanceFunction;
@@ -38,6 +40,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,9 +172,16 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        for (ObjectNode doc : seededDocs) {
-            try { directContainer.deleteItem(doc.get(ID_FIELD).asText(), new PartitionKey(commonPk)).block(); }
-            catch (Exception e) { /* ignore */ }
+        if (directContainer != null && !seededDocs.isEmpty()) {
+            try {
+                List<CosmosItemOperation> deleteOps = seededDocs.stream()
+                    .map(doc -> CosmosBulkOperations.getDeleteItemOperation(
+                        doc.get(ID_FIELD).asText(), new PartitionKey(commonPk)))
+                    .collect(Collectors.toList());
+                directContainer.executeBulkOperations(Flux.fromIterable(deleteOps)).blockLast();
+            } catch (Exception e) {
+                logger.warn("Bulk delete of seeded docs failed: {}", e.getMessage());
+            }
         }
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         if (this.thinClient != null) { this.thinClient.close(); }
