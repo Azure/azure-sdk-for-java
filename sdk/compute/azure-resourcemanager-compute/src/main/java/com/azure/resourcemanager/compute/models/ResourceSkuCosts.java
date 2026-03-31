@@ -19,7 +19,7 @@ public final class ResourceSkuCosts implements JsonSerializable<ResourceSkuCosts
     /*
      * Used for querying price from commerce.
      */
-    private String meterID;
+    private String meterId;
 
     /*
      * The multiplier is needed to extend the base metered cost.
@@ -38,12 +38,12 @@ public final class ResourceSkuCosts implements JsonSerializable<ResourceSkuCosts
     }
 
     /**
-     * Get the meterID property: Used for querying price from commerce.
+     * Get the meterId property: Used for querying price from commerce.
      * 
-     * @return the meterID value.
+     * @return the meterId value.
      */
-    public String meterID() {
-        return this.meterID;
+    public String meterId() {
+        return this.meterId;
     }
 
     /**
@@ -97,7 +97,7 @@ public final class ResourceSkuCosts implements JsonSerializable<ResourceSkuCosts
                 reader.nextToken();
 
                 if ("meterID".equals(fieldName)) {
-                    deserializedResourceSkuCosts.meterID = reader.getString();
+                    deserializedResourceSkuCosts.meterId = reader.getString();
                 } else if ("quantity".equals(fieldName)) {
                     deserializedResourceSkuCosts.quantity = reader.getNullable(JsonReader::getLong);
                 } else if ("extendedUnit".equals(fieldName)) {

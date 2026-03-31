@@ -5,14 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
 
 /**
  * Input for InstallPatches as directly received by the API.
@@ -24,7 +22,7 @@ public final class VirtualMachineInstallPatchesParameters
      * Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration
      * string such as PT4H (4 hours)
      */
-    private Duration maximumDuration;
+    private String maximumDuration;
 
     /*
      * Defines when it is acceptable to reboot a VM during a software update operation.
@@ -53,7 +51,7 @@ public final class VirtualMachineInstallPatchesParameters
      * 
      * @return the maximumDuration value.
      */
-    public Duration maximumDuration() {
+    public String maximumDuration() {
         return this.maximumDuration;
     }
 
@@ -64,7 +62,7 @@ public final class VirtualMachineInstallPatchesParameters
      * @param maximumDuration the maximumDuration value to set.
      * @return the VirtualMachineInstallPatchesParameters object itself.
      */
-    public VirtualMachineInstallPatchesParameters withMaximumDuration(Duration maximumDuration) {
+    public VirtualMachineInstallPatchesParameters withMaximumDuration(String maximumDuration) {
         this.maximumDuration = maximumDuration;
         return this;
     }
@@ -157,7 +155,7 @@ public final class VirtualMachineInstallPatchesParameters
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("rebootSetting", this.rebootSetting == null ? null : this.rebootSetting.toString());
-        jsonWriter.writeStringField("maximumDuration", CoreUtils.durationToStringWithDays(this.maximumDuration));
+        jsonWriter.writeStringField("maximumDuration", this.maximumDuration);
         jsonWriter.writeJsonField("windowsParameters", this.windowsParameters);
         jsonWriter.writeJsonField("linuxParameters", this.linuxParameters);
         return jsonWriter.writeEndObject();
@@ -184,8 +182,7 @@ public final class VirtualMachineInstallPatchesParameters
                     deserializedVirtualMachineInstallPatchesParameters.rebootSetting
                         = VMGuestPatchRebootSetting.fromString(reader.getString());
                 } else if ("maximumDuration".equals(fieldName)) {
-                    deserializedVirtualMachineInstallPatchesParameters.maximumDuration
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                    deserializedVirtualMachineInstallPatchesParameters.maximumDuration = reader.getString();
                 } else if ("windowsParameters".equals(fieldName)) {
                     deserializedVirtualMachineInstallPatchesParameters.windowsParameters
                         = WindowsParameters.fromJson(reader);

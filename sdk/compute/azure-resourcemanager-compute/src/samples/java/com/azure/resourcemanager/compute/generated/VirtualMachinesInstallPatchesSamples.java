@@ -8,7 +8,6 @@ import com.azure.resourcemanager.compute.models.VMGuestPatchClassificationWindow
 import com.azure.resourcemanager.compute.models.VMGuestPatchRebootSetting;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstallPatchesParameters;
 import com.azure.resourcemanager.compute.models.WindowsParameters;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -28,7 +27,7 @@ public final class VirtualMachinesInstallPatchesSamples {
         manager.serviceClient()
             .getVirtualMachines()
             .installPatches("myResourceGroupName", "myVMName",
-                new VirtualMachineInstallPatchesParameters().withMaximumDuration(Duration.parse("PT4H"))
+                new VirtualMachineInstallPatchesParameters().withMaximumDuration("PT4H")
                     .withRebootSetting(VMGuestPatchRebootSetting.IF_REQUIRED)
                     .withWindowsParameters(new WindowsParameters()
                         .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.CRITICAL,

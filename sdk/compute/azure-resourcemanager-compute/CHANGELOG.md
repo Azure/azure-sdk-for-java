@@ -176,14 +176,14 @@
 #### `models.VirtualMachineRunCommandInstanceView` was modified
 
 * `VirtualMachineRunCommandInstanceView()` was changed to private access
-* `withError(java.lang.String)` was removed
 * `withExecutionMessage(java.lang.String)` was removed
-* `withStatuses(java.util.List)` was removed
 * `withEndTime(java.time.OffsetDateTime)` was removed
 * `withExecutionState(models.ExecutionState)` was removed
 * `withOutput(java.lang.String)` was removed
+* `withError(java.lang.String)` was removed
 * `withExitCode(java.lang.Integer)` was removed
 * `withStartTime(java.time.OffsetDateTime)` was removed
+* `withStatuses(java.util.List)` was removed
 
 #### `models.SharingStatus` was modified
 
@@ -193,8 +193,8 @@
 #### `models.InnerError` was modified
 
 * `InnerError()` was changed to private access
-* `withExceptiontype(java.lang.String)` was removed
 * `withErrordetail(java.lang.String)` was removed
+* `withExceptiontype(java.lang.String)` was removed
 
 #### `models.ResourceSkuRestrictions` was modified
 
@@ -203,17 +203,17 @@
 #### `models.CommunityGalleryMetadata` was modified
 
 * `CommunityGalleryMetadata()` was changed to private access
-* `withEula(java.lang.String)` was removed
-* `withPrivacyStatementUri(java.lang.String)` was removed
 * `withPublicNames(java.util.List)` was removed
 * `withPublisherContact(java.lang.String)` was removed
+* `withEula(java.lang.String)` was removed
 * `withPublisherUri(java.lang.String)` was removed
+* `withPrivacyStatementUri(java.lang.String)` was removed
 
 #### `models.SharedGalleryDataDiskImage` was modified
 
 * `SharedGalleryDataDiskImage()` was changed to private access
-* `withLun(int)` was removed
 * `withHostCaching(models.SharedGalleryHostCaching)` was removed
+* `withLun(int)` was removed
 
 #### `models.VirtualMachineScaleSetInstanceViewStatusesSummary` was modified
 
@@ -230,8 +230,8 @@
 #### `models.PolicyViolation` was modified
 
 * `PolicyViolation()` was changed to private access
-* `withDetails(java.lang.String)` was removed
 * `withCategory(models.PolicyViolationCategory)` was removed
+* `withDetails(java.lang.String)` was removed
 
 #### `models.ApiError` was modified
 
@@ -248,8 +248,8 @@
 #### `models.DiskRestorePointReplicationStatus` was modified
 
 * `DiskRestorePointReplicationStatus()` was changed to private access
-* `withCompletionPercent(java.lang.Integer)` was removed
 * `withStatus(models.InstanceViewStatus)` was removed
+* `withCompletionPercent(java.lang.Integer)` was removed
 
 #### `models.PatchInstallationDetail` was modified
 
@@ -279,9 +279,9 @@
 #### `models.PurchasePlan` was modified
 
 * `PurchasePlan()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withProduct(java.lang.String)` was removed
 * `withPublisher(java.lang.String)` was removed
+* `withProduct(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.DedicatedHostGroupInstanceView` was modified
 
@@ -290,14 +290,14 @@
 
 #### `models.DedicatedHostInstanceView` was modified
 
-* `models.DedicatedHostInstanceView withAvailableCapacity(models.DedicatedHostAvailableCapacity)` -> `models.DedicatedHostInstanceView withAvailableCapacity(models.DedicatedHostAvailableCapacity)`
 * `models.DedicatedHostInstanceView withStatuses(java.util.List)` -> `models.DedicatedHostInstanceView withStatuses(java.util.List)`
+* `models.DedicatedHostInstanceView withAvailableCapacity(models.DedicatedHostAvailableCapacity)` -> `models.DedicatedHostInstanceView withAvailableCapacity(models.DedicatedHostAvailableCapacity)`
 
 #### `models.SharedGalleryImageVersionStorageProfile` was modified
 
 * `SharedGalleryImageVersionStorageProfile()` was changed to private access
-* `withOsDiskImage(models.SharedGalleryOSDiskImage)` was removed
 * `withDataDiskImages(java.util.List)` was removed
+* `withOsDiskImage(models.SharedGalleryOSDiskImage)` was removed
 
 #### `models.CapacityReservationInstanceViewWithName` was modified
 
@@ -308,10 +308,10 @@
 #### `models.RunCommandParameterDefinition` was modified
 
 * `RunCommandParameterDefinition()` was changed to private access
-* `withType(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
-* `withDefaultValue(java.lang.String)` was removed
 * `withRequired(java.lang.Boolean)` was removed
+* `withDefaultValue(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
 
 #### `models.SharedGalleryDiskImage` was modified
 
@@ -330,8 +330,8 @@
 #### `models.CommunityGalleryImageIdentifier` was modified
 
 * `CommunityGalleryImageIdentifier()` was changed to private access
-* `withPublisher(java.lang.String)` was removed
 * `withOffer(java.lang.String)` was removed
+* `withPublisher(java.lang.String)` was removed
 * `withSku(java.lang.String)` was removed
 
 #### `models.VirtualMachineHealthStatus` was modified
@@ -341,9 +341,9 @@
 #### `models.ValidationsProfile` was modified
 
 * `ValidationsProfile()` was changed to private access
-* `withValidationEtag(java.lang.String)` was removed
-* `withExecutedValidations(java.util.List)` was removed
 * `withPlatformAttributes(java.util.List)` was removed
+* `withExecutedValidations(java.util.List)` was removed
+* `withValidationEtag(java.lang.String)` was removed
 
 #### `models.DataDiskImage` was modified
 
@@ -365,14 +365,14 @@
 #### `models.ExecutedValidation` was modified
 
 * `ExecutedValidation()` was changed to private access
-* `withVersion(java.lang.String)` was removed
 * `withExecutionTime(java.time.OffsetDateTime)` was removed
+* `withVersion(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
 
 #### `models.CapacityReservationInstanceView` was modified
 
-* `models.CapacityReservationInstanceView withUtilizationInfo(models.CapacityReservationUtilization)` -> `models.CapacityReservationInstanceView withUtilizationInfo(models.CapacityReservationUtilization)`
 * `models.CapacityReservationInstanceView withStatuses(java.util.List)` -> `models.CapacityReservationInstanceView withStatuses(java.util.List)`
+* `models.CapacityReservationInstanceView withUtilizationInfo(models.CapacityReservationUtilization)` -> `models.CapacityReservationInstanceView withUtilizationInfo(models.CapacityReservationUtilization)`
 
 #### `models.PropertyUpdatesInProgress` was modified
 
@@ -383,17 +383,12 @@
 
 * `RollingUpgradeRunningStatus()` was changed to private access
 
-#### `models.AccessControlRulesIdentity` was modified
-
-* `username()` was removed
-* `withUsername(java.lang.String)` was removed
-
 #### `models.ImageDeprecationStatus` was modified
 
 * `ImageDeprecationStatus()` was changed to private access
-* `withScheduledDeprecationTime(java.time.OffsetDateTime)` was removed
 * `withAlternativeOption(models.AlternativeOption)` was removed
 * `withImageState(models.ImageState)` was removed
+* `withScheduledDeprecationTime(java.time.OffsetDateTime)` was removed
 
 #### `models.OperationDisplay` was modified
 
@@ -402,11 +397,6 @@
 #### `models.VirtualMachineScaleSetMigrationInfo` was modified
 
 * `VirtualMachineScaleSetMigrationInfo()` was changed to private access
-
-#### `models.VirtualMachineInstallPatchesParameters` was modified
-
-* `withMaximumDuration(java.lang.String)` was removed
-* `java.lang.String maximumDuration()` -> `java.time.Duration maximumDuration()`
 
 #### `models.PrivateLinkResource` was modified
 
@@ -428,13 +418,12 @@
 #### `models.ResourceSkuCosts` was modified
 
 * `ResourceSkuCosts()` was changed to private access
-* `meterId()` was removed
 
 #### `models.RestorePointInstanceView` was modified
 
 * `RestorePointInstanceView()` was changed to private access
-* `withDiskRestorePoints(java.util.List)` was removed
 * `withStatuses(java.util.List)` was removed
+* `withDiskRestorePoints(java.util.List)` was removed
 
 #### `models.VirtualMachineSoftwarePatchProperties` was modified
 
@@ -462,8 +451,8 @@
 #### `models.SubResourceWithColocationStatus` was modified
 
 * `SubResourceWithColocationStatus()` was changed to private access
-* `withColocationStatus(models.InstanceViewStatus)` was removed
 * `withId(java.lang.String)` was removed
+* `withColocationStatus(models.InstanceViewStatus)` was removed
 
 #### `models.DisallowedConfiguration` was modified
 
@@ -481,8 +470,8 @@
 #### `models.AlternativeOption` was modified
 
 * `AlternativeOption()` was changed to private access
-* `withType(models.AlternativeType)` was removed
 * `withValue(java.lang.String)` was removed
+* `withType(models.AlternativeType)` was removed
 
 #### `models.VirtualMachineStatusCodeCount` was modified
 
@@ -503,8 +492,8 @@
 #### `models.DedicatedHostAllocatableVM` was modified
 
 * `DedicatedHostAllocatableVM()` was changed to private access
-* `withVmSize(java.lang.String)` was removed
 * `withCount(java.lang.Double)` was removed
+* `withVmSize(java.lang.String)` was removed
 
 #### `models.DiskRestorePointInstanceView` was modified
 
@@ -537,30 +526,17 @@
 
 #### `models.CapacityReservationInstanceViewWithName` was modified
 
-* `statuses()` was added
 * `utilizationInfo()` was added
+* `statuses()` was added
 
 #### `models.SharedGalleryOSDiskImage` was modified
 
 * `hostCaching()` was added
 
-#### `models.AccessControlRulesIdentity` was modified
-
-* `userName()` was added
-* `withUserName(java.lang.String)` was added
-
-#### `models.VirtualMachineInstallPatchesParameters` was modified
-
-* `withMaximumDuration(java.time.Duration)` was added
-
-#### `models.ResourceSkuCosts` was modified
-
-* `meterID()` was added
-
 #### `models.DedicatedHostInstanceViewWithName` was modified
 
-* `availableCapacity()` was added
 * `statuses()` was added
+* `availableCapacity()` was added
 
 ## 2.56.2 (2026-02-26)
 

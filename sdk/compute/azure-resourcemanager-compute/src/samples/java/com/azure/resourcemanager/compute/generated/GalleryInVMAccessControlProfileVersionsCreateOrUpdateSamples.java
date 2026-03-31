@@ -44,7 +44,7 @@ public final class GalleryInVMAccessControlProfileVersionsCreateOrUpdateSamples 
                         .withRoles(Arrays.asList(new AccessControlRulesRole().withName("Provisioning")
                             .withPrivileges(Arrays.asList("GoalState"))))
                         .withIdentities(Arrays.asList(new AccessControlRulesIdentity().withName("WinPA")
-                            .withUserName("SYSTEM")
+                            .withUsername("SYSTEM")
                             .withGroupName("Administrators")
                             .withExePath("C:\\Windows\\System32\\cscript.exe")
                             .withProcessName("cscript")))

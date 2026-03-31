@@ -25,7 +25,7 @@ public final class AccessControlRulesIdentity implements JsonSerializable<Access
     /*
      * The username corresponding to this identity.
      */
-    private String userName;
+    private String username;
 
     /*
      * The groupName corresponding to this identity.
@@ -69,22 +69,22 @@ public final class AccessControlRulesIdentity implements JsonSerializable<Access
     }
 
     /**
-     * Get the userName property: The username corresponding to this identity.
+     * Get the username property: The username corresponding to this identity.
      * 
-     * @return the userName value.
+     * @return the username value.
      */
-    public String userName() {
-        return this.userName;
+    public String username() {
+        return this.username;
     }
 
     /**
-     * Set the userName property: The username corresponding to this identity.
+     * Set the username property: The username corresponding to this identity.
      * 
-     * @param userName the userName value to set.
+     * @param username the username value to set.
      * @return the AccessControlRulesIdentity object itself.
      */
-    public AccessControlRulesIdentity withUserName(String userName) {
-        this.userName = userName;
+    public AccessControlRulesIdentity withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -170,7 +170,7 @@ public final class AccessControlRulesIdentity implements JsonSerializable<Access
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("userName", this.userName);
+        jsonWriter.writeStringField("userName", this.username);
         jsonWriter.writeStringField("groupName", this.groupName);
         jsonWriter.writeStringField("exePath", this.exePath);
         jsonWriter.writeStringField("processName", this.processName);
@@ -196,7 +196,7 @@ public final class AccessControlRulesIdentity implements JsonSerializable<Access
                 if ("name".equals(fieldName)) {
                     deserializedAccessControlRulesIdentity.name = reader.getString();
                 } else if ("userName".equals(fieldName)) {
-                    deserializedAccessControlRulesIdentity.userName = reader.getString();
+                    deserializedAccessControlRulesIdentity.username = reader.getString();
                 } else if ("groupName".equals(fieldName)) {
                     deserializedAccessControlRulesIdentity.groupName = reader.getString();
                 } else if ("exePath".equals(fieldName)) {
