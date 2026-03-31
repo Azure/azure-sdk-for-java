@@ -302,9 +302,9 @@ public final class DatabaseAccount extends Resource {
 
     /**
      * Returns true if the account supports N region synchronous commit,
-     * false if enableNRegionSynchronousCommit evaluates to null or false.
+     * false otherwise
      * <p>
-     * If enableNRegionSynchronousCommit property does not exist in account metadata JSON payload, null is returned.
+     * If enableNRegionSynchronousCommit property does not exist in account metadata JSON payload, false is returned
      *
      * @return true if the account supports N region synchronous commit, false otherwise.
      */
