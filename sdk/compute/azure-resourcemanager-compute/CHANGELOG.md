@@ -2,11 +2,13 @@
 
 ## 2.57.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Migrated from Swagger to TypeSpec for code generation.
+- Removed `ListResult` and `List` paged response wrapper classes from `models` package.
+- Removed constructors and setters from read-only models (e.g., `ApiError`, `InnerError`, `ResourceSkuCapacity`).
+- Removed `CloudServiceExtensionProfile`, `CloudServiceNetworkProfile`, `CloudServiceOsProfile`, `CloudServiceProperties`, `CloudServiceRoleProfile`, and related CloudService models from `models` package.
+- Removed `Extension`, `InstanceSku`, `InstanceViewStatusesSummary`, `LoadBalancerConfiguration`, and related models from `models` package.
 
 ### Other Changes
 
