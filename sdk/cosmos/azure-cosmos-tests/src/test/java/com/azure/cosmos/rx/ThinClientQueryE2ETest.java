@@ -566,8 +566,17 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testGetCurrentDateTime() {
-        // Scalar; both paths should return a valid ISO 8601 string
-        assertScalarGatewayAndThinClientMatch("SELECT VALUE GetCurrentDateTime()", String.class);
+        // Only assert both paths return a non-empty ISO 8601 string — exact values
+        // will differ because gateway and proxy execute at slightly different times.
+        QueryResult<String> gwResult = drainQuery(gatewayContainer,
+            "SELECT VALUE GetCurrentDateTime()", partitionedOptions(), String.class);
+        QueryResult<String> tcResult = drainQuery(thinClientContainer,
+            "SELECT VALUE GetCurrentDateTime()", partitionedOptions(), String.class);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+        assertThat(gwResult.results.size()).isEqualTo(1);
+        assertThat(tcResult.results.size()).isEqualTo(1);
+        assertThat(gwResult.results.get(0)).matches("\\d{4}-\\d{2}-\\d{2}T.*Z");
+        assertThat(tcResult.results.get(0)).matches("\\d{4}-\\d{2}-\\d{2}T.*Z");
     }
 
     // ==================== SELECT VALUE / Nested Projection Tests ====================
