@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed DNS resolution failures (`UnknownHostException`) on networks with limited IPv6 support by switching the WebSocket client from Netty's async DNS resolver to the JDK's native DNS resolver (`DefaultAddressResolverGroup`).
+- Removed unnecessary `subscribeOn(Schedulers.boundedElastic())` from event parsing pipeline to avoid per-event thread pool scheduling overhead.
 
 ### Other Changes
 

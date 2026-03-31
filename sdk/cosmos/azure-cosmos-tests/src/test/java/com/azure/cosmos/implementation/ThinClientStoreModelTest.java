@@ -2,14 +2,18 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.netty.channel.ConnectTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
 public class ThinClientStoreModelTest {
@@ -57,5 +61,31 @@ public class ThinClientStoreModelTest {
         } catch (Exception e) {
             //no-op
         }
+    }
+
+    @Test(groups = "unit")
+    public void cloneShouldPreservePartitionKeyDefinition() {
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+        Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Query,
+            "/dbs/db1/colls/c1",
+            ResourceType.Document);
+
+        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+        pkDef.setPaths(Collections.singletonList("/partitionKey"));
+
+        request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(Collections.singletonList("testPk"), true));
+        request.setPartitionKeyDefinition(pkDef);
+
+        RxDocumentServiceRequest cloned = request.clone();
+
+        assertThat(cloned.getPartitionKeyInternal()).isNotNull();
+        assertThat(cloned.getPartitionKeyDefinition())
+            .as("clone() must preserve partitionKeyDefinition for GW V2 EPK computation")
+            .isNotNull();
+        assertThat(cloned.getPartitionKeyDefinition().getPaths()).containsExactly("/partitionKey");
     }
 }

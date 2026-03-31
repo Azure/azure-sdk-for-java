@@ -22,20 +22,14 @@ public final class OpenApiTool extends Tool {
     @Generated
     private ToolType type = ToolType.OPENAPI;
 
-    /*
-     * The openapi function definition.
-     */
-    @Generated
-    private final OpenApiFunctionDefinition openapi;
-
     /**
      * Creates an instance of OpenApiTool class.
      *
-     * @param openapi the openapi value to set.
+     * @param openApi the openApi value to set.
      */
     @Generated
-    public OpenApiTool(OpenApiFunctionDefinition openapi) {
-        this.openapi = openapi;
+    public OpenApiTool(OpenApiFunctionDefinition openApi) {
+        this.openApi = openApi;
     }
 
     /**
@@ -50,23 +44,13 @@ public final class OpenApiTool extends Tool {
     }
 
     /**
-     * Get the openapi property: The openapi function definition.
-     *
-     * @return the openapi value.
-     */
-    @Generated
-    public OpenApiFunctionDefinition getOpenapi() {
-        return this.openapi;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("openapi", this.openapi);
+        jsonWriter.writeJsonField("openapi", this.openApi);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -83,22 +67,38 @@ public final class OpenApiTool extends Tool {
     @Generated
     public static OpenApiTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OpenApiFunctionDefinition openapi = null;
+            OpenApiFunctionDefinition openApi = null;
             ToolType type = ToolType.OPENAPI;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("openapi".equals(fieldName)) {
-                    openapi = OpenApiFunctionDefinition.fromJson(reader);
+                    openApi = OpenApiFunctionDefinition.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            OpenApiTool deserializedOpenApiTool = new OpenApiTool(openapi);
+            OpenApiTool deserializedOpenApiTool = new OpenApiTool(openApi);
             deserializedOpenApiTool.type = type;
             return deserializedOpenApiTool;
         });
+    }
+
+    /*
+     * The openapi function definition.
+     */
+    @Generated
+    private final OpenApiFunctionDefinition openApi;
+
+    /**
+     * Get the openApi property: The openapi function definition.
+     *
+     * @return the openApi value.
+     */
+    @Generated
+    public OpenApiFunctionDefinition getOpenApi() {
+        return this.openApi;
     }
 }

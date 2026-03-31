@@ -78,9 +78,9 @@ public class ContainerSkill implements JsonSerializable<ContainerSkill> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("skill_reference".equals(discriminatorValue)) {
-                    return SkillReferenceParam.fromJson(readerToUse.reset());
+                    return SkillReferenceParameter.fromJson(readerToUse.reset());
                 } else if ("inline".equals(discriminatorValue)) {
-                    return InlineSkillParam.fromJson(readerToUse.reset());
+                    return InlineSkillParameter.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -26,7 +26,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +36,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     private static final Logger logger = LoggerFactory.getLogger(CosmosNotFoundTests.class);
 
-    private static final String thinClientEndpointIndicator = ":10250/";
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor accessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
@@ -601,31 +599,5 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Uncomment if running locally
             // System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
-    }
-
-    private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
-        AssertionsForClassTypes.assertThat(diagnostics).isNotNull();
-
-        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
-        AssertionsForClassTypes.assertThat(ctx).isNotNull();
-
-        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
-        AssertionsForClassTypes.assertThat(requests).isNotNull();
-        AssertionsForClassTypes.assertThat(requests.size()).isPositive();
-
-        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            logger.info(
-                "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
-                requestInfo.getEndpoint(),
-                requestInfo.getRequestType(),
-                requestInfo.getPartitionId(),
-                requestInfo.getPartitionKeyRangeId(),
-                requestInfo.getActivityId());
-            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
-                return;
-            }
-        }
-
-        fail("No request targeting thin client proxy endpoint.");
     }
 }

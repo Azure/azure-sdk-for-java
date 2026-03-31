@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ServicesListFileSystemsHeaders {
     /*
-     * The x-ms-version property.
+     * The Date property.
      */
     @Generated
-    private String xMsVersion;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-request-id property.
@@ -29,16 +29,16 @@ public final class ServicesListFileSystemsHeaders {
     private String xMsRequestId;
 
     /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The x-ms-continuation property.
      */
     @Generated
     private String xMsContinuation;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
 
     /*
      * The Content-Type property.
@@ -57,82 +57,16 @@ public final class ServicesListFileSystemsHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ServicesListFileSystemsHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the ServicesListFileSystemsHeaders object itself.
-     */
-    @Generated
-    public ServicesListFileSystemsHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the ServicesListFileSystemsHeaders object itself.
-     */
-    @Generated
-    public ServicesListFileSystemsHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsContinuation property: The x-ms-continuation property.
-     * 
-     * @return the xMsContinuation value.
-     */
-    @Generated
-    public String getXMsContinuation() {
-        return this.xMsContinuation;
-    }
-
-    /**
-     * Set the xMsContinuation property: The x-ms-continuation property.
-     * 
-     * @param xMsContinuation the xMsContinuation value to set.
-     * @return the ServicesListFileSystemsHeaders object itself.
-     */
-    @Generated
-    public ServicesListFileSystemsHeaders setXMsContinuation(String xMsContinuation) {
-        this.xMsContinuation = xMsContinuation;
-        return this;
     }
 
     /**
@@ -161,6 +95,72 @@ public final class ServicesListFileSystemsHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the ServicesListFileSystemsHeaders object itself.
+     */
+    @Generated
+    public ServicesListFileSystemsHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the ServicesListFileSystemsHeaders object itself.
+     */
+    @Generated
+    public ServicesListFileSystemsHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsContinuation property: The x-ms-continuation property.
+     * 
+     * @return the xMsContinuation value.
+     */
+    @Generated
+    public String getXMsContinuation() {
+        return this.xMsContinuation;
+    }
+
+    /**
+     * Set the xMsContinuation property: The x-ms-continuation property.
+     * 
+     * @param xMsContinuation the xMsContinuation value to set.
+     * @return the ServicesListFileSystemsHeaders object itself.
+     */
+    @Generated
+    public ServicesListFileSystemsHeaders setXMsContinuation(String xMsContinuation) {
+        this.xMsContinuation = xMsContinuation;
         return this;
     }
 

@@ -73,7 +73,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     @BeforeClass(groups = {TEST_GROUP}, timeOut = TIMEOUT)
     public void beforeClass() {
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        // Use the default THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS (5s) — no override.
+        // Use the default THINCLIENT_CONNECTION_TIMEOUT_IN_MS (5000ms) — no override.
         // Tests are designed around the 5s default to match production behavior.
 
         this.client = getClientBuilder().buildAsyncClient();
@@ -394,7 +394,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     /**
      * Measures the precise connect timeout boundary.
      *
-     * With THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=5 (default), a single TCP connect attempt
+     * With THINCLIENT_CONNECTION_TIMEOUT_IN_MS=5000 (default), a single TCP connect attempt
      * to a blackholed port 10250 should fail in ~5s. We measure multiple individual
      * attempts by using an e2e timeout of 12s (enough for 2 connect attempts at 5s each).
      *
