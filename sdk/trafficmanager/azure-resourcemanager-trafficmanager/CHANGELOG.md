@@ -2,12 +2,6 @@
 
 ## 2.54.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 ## 2.53.6 (2026-01-29)

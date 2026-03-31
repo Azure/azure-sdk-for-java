@@ -73,7 +73,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     public void before_UserDefinedFunctionUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

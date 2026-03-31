@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ActiveDirectoryConfigsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ActiveDirectoryConfigs_ListBySubscription.json
+     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_ListBySubscription.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_ListBySubscription.

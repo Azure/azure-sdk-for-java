@@ -52,9 +52,8 @@ public class SearchIndexerClientJavaDocSnippets {
     public static void listIndexers() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers
-        searchIndexerClient.listIndexers().forEach(indexer ->
-            System.out.printf("Retrieved indexer name: %s%n", indexer.getName())
-        );
+        searchIndexerClient.listIndexers().getIndexers()
+            .forEach(indexer -> System.out.printf("Retrieved indexer name: %s%n", indexer.getName()));
         // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers
     }
 
@@ -74,13 +73,13 @@ public class SearchIndexerClientJavaDocSnippets {
      */
     public static void updateIndexer() {
         searchIndexerClient = createSearchIndexerClient();
-        // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateIndexer#SearchIndexer
+        // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createOrUpdateIndexer#SearchIndexer
         SearchIndexer indexer = searchIndexerClient.getIndexer("example-indexer");
         indexer.setDescription("This is a new description for this indexer");
         SearchIndexer updatedIndexer = searchIndexerClient.createOrUpdateIndexer(indexer);
         System.out.printf("Updated indexer name: %s, description: %s%n", updatedIndexer.getName(),
             updatedIndexer.getDescription());
-        // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateIndexer#SearchIndexer
+        // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createOrUpdateIndexer#SearchIndexer
     }
 
     /**
@@ -144,13 +143,13 @@ public class SearchIndexerClientJavaDocSnippets {
         SearchIndexerSkillset skillset = new SearchIndexerSkillset("skillsetName", skills)
             .setDescription("Extracts text (plain and structured) from image.");
 
-        System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
+        System.out.printf("Creating OCR skillset '%s'%n", skillset.getName());
 
         SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created OCR skillset");
-        System.out.println(String.format("Name: %s", createdSkillset.getName()));
-        System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
+        System.out.printf("Name: %s%n", createdSkillset.getName());
+        System.out.printf("ETag: %s%n", createdSkillset.getETag());
 
         // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset
     }
@@ -161,9 +160,8 @@ public class SearchIndexerClientJavaDocSnippets {
     public static void listSkillsets() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listSkillsets
-        searchIndexerClient.listSkillsets().forEach(skillset ->
-            System.out.printf("Retrieved skillset name: %s%n", skillset.getName())
-        );
+        searchIndexerClient.listSkillsets().getSkillsets()
+            .forEach(skillset -> System.out.printf("Retrieved skillset name: %s%n", skillset.getName()));
         // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listSkillsets
     }
 
@@ -183,13 +181,13 @@ public class SearchIndexerClientJavaDocSnippets {
      */
     public static void updateSkillset() {
         searchIndexerClient = createSearchIndexerClient();
-        // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
+        // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createOrUpdateSkillset#SearchIndexerSkillset
         SearchIndexerSkillset skillset = searchIndexerClient.getSkillset("example-skillset");
         skillset.setDescription("This is a new description for this skillset");
         SearchIndexerSkillset updatedSkillset = searchIndexerClient.createOrUpdateSkillset(skillset);
         System.out.printf("Updated skillset name: %s, description: %s%n", updatedSkillset.getName(),
             updatedSkillset.getDescription());
-        // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
+        // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createOrUpdateSkillset#SearchIndexerSkillset
     }
 
     /**

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ElasticAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticAccounts_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticAccounts_CreateOrUpdate.

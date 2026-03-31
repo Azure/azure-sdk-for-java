@@ -70,6 +70,8 @@ public final class BatchNodeRemoteLoginSettings implements JsonSerializable<Batc
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("remoteLoginIPAddress", this.remoteLoginIpAddress);
         jsonWriter.writeIntField("remoteLoginPort", this.remoteLoginPort);
+        jsonWriter.writeStringField("ipv6RemoteLoginIPAddress", this.ipv6RemoteLoginIpAddress);
+        jsonWriter.writeNumberField("ipv6RemoteLoginPort", this.ipv6RemoteLoginPort);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +89,8 @@ public final class BatchNodeRemoteLoginSettings implements JsonSerializable<Batc
         return jsonReader.readObject(reader -> {
             String remoteLoginIpAddress = null;
             int remoteLoginPort = 0;
+            String ipv6RemoteLoginIpAddress = null;
+            Integer ipv6RemoteLoginPort = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -94,11 +98,51 @@ public final class BatchNodeRemoteLoginSettings implements JsonSerializable<Batc
                     remoteLoginIpAddress = reader.getString();
                 } else if ("remoteLoginPort".equals(fieldName)) {
                     remoteLoginPort = reader.getInt();
+                } else if ("ipv6RemoteLoginIPAddress".equals(fieldName)) {
+                    ipv6RemoteLoginIpAddress = reader.getString();
+                } else if ("ipv6RemoteLoginPort".equals(fieldName)) {
+                    ipv6RemoteLoginPort = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new BatchNodeRemoteLoginSettings(remoteLoginIpAddress, remoteLoginPort);
+            BatchNodeRemoteLoginSettings deserializedBatchNodeRemoteLoginSettings
+                = new BatchNodeRemoteLoginSettings(remoteLoginIpAddress, remoteLoginPort);
+            deserializedBatchNodeRemoteLoginSettings.ipv6RemoteLoginIpAddress = ipv6RemoteLoginIpAddress;
+            deserializedBatchNodeRemoteLoginSettings.ipv6RemoteLoginPort = ipv6RemoteLoginPort;
+            return deserializedBatchNodeRemoteLoginSettings;
         });
+    }
+
+    /*
+     * The IPv6 address used for remote login to the Compute Node.
+     */
+    @Generated
+    private String ipv6RemoteLoginIpAddress;
+
+    /*
+     * The port used for remote login to the Compute Node.
+     */
+    @Generated
+    private Integer ipv6RemoteLoginPort;
+
+    /**
+     * Get the ipv6RemoteLoginIpAddress property: The IPv6 address used for remote login to the Compute Node.
+     *
+     * @return the ipv6RemoteLoginIpAddress value.
+     */
+    @Generated
+    public String getIpv6RemoteLoginIpAddress() {
+        return this.ipv6RemoteLoginIpAddress;
+    }
+
+    /**
+     * Get the ipv6RemoteLoginPort property: The port used for remote login to the Compute Node.
+     *
+     * @return the ipv6RemoteLoginPort value.
+     */
+    @Generated
+    public Integer getIpv6RemoteLoginPort() {
+        return this.ipv6RemoteLoginPort;
     }
 }

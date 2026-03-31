@@ -15,10 +15,12 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
@@ -1056,7 +1058,10 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     false,
                     collectionLink,
                     new SerializationDiagnosticsContext()),
-                new AvailabilityStrategyContext(false, false)));
+                new AvailabilityStrategyContext(false, false),
+                new AtomicBoolean(false),
+                new PerPartitionCircuitBreakerInfoHolder(),
+                new PerPartitionAutomaticFailoverInfoHolder()));
 
         return request;
     }

@@ -3,8 +3,8 @@
 
 package com.azure.search.perf.core;
 
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
+import com.azure.search.documents.indexes.ComplexField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -17,68 +17,69 @@ public class Hotel {
      * Hotel ID
      */
     @JsonProperty("HotelId")
-    @SimpleField(isKey = true)
+    @BasicField(name = "HotelId")
     public String hotelId;
 
     /**
      * Hotel name
      */
     @JsonProperty("HotelName")
-    @SearchableField(isSortable = true)
+    @BasicField(name = "HotelName")
     public String hotelName;
 
     /**
      * Description
      */
     @JsonProperty("Description")
-    @SearchableField(analyzerName = "en.microsoft")
+    @BasicField(name = "Description")
     public String description;
 
     /**
      * French description
      */
     @JsonProperty("DescriptionFr")
-    @SearchableField(analyzerName = "fr.lucene")
+    @BasicField(name = "DescriptionFr")
     public String descriptionFr;
 
     /**
      * Category
      */
     @JsonProperty("Category")
-    @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
+    @BasicField(name = "Category")
     public String category;
 
     /**
      * Tags
      */
     @JsonProperty("Tags")
-    @SearchableField(isFilterable = true, isFacetable = true)
+    @BasicField(name = "Tags")
     public String[] tags;
 
     /**
      * Whether parking is included
      */
     @JsonProperty("ParkingIncluded")
-    @SimpleField(isFilterable = true, isSortable = true, isFacetable = true)
+    @BasicField(name = "ParkingIncluded")
     public Boolean parkingIncluded;
 
     /**
      * Last renovation time
      */
     @JsonProperty("LastRenovationDate")
-    @SimpleField(isFilterable = true, isSortable = true, isFacetable = true)
+    @BasicField(name = "LastRenovationDate")
     public OffsetDateTime lastRenovationDate;
 
     /**
      * Rating
      */
     @JsonProperty("Rating")
-    @SimpleField(isFilterable = true, isSortable = true, isFacetable = true)
+    @BasicField(name = "Rating")
     public Double rating;
 
     /**
      * Address
      */
     @JsonProperty("Address")
+    @ComplexField(name = "Address")
     public Address address;
 }

@@ -2,15 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Hotel {
+public class Hotel implements JsonSerializable<Hotel> {
     private String hotelId;
     private List<String> tags;
 
@@ -19,7 +21,7 @@ public class Hotel {
     }
 
     @JsonProperty(value = "HotelId")
-    @SimpleField(isKey = true)
+    @BasicField(name = "HotelId", isKey = BasicField.BooleanHelper.TRUE)
     public String getHotelId() {
         return this.hotelId;
     }
@@ -30,7 +32,11 @@ public class Hotel {
     }
 
     @JsonProperty(value = "Tags")
-    @SearchableField(isFilterable = true, analyzerName = "en.lucene")
+    @BasicField(
+        name = "Tags",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        isFilterable = BasicField.BooleanHelper.TRUE,
+        analyzerName = "en.lucene")
     public List<String> getTags() {
         return this.tags;
     }
@@ -55,5 +61,13 @@ public class Hotel {
     @Override
     public int hashCode() {
         return Objects.hash(hotelId, tags);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("HotelId", hotelId)
+            .writeArrayField("Tags", tags, JsonWriter::writeString)
+            .writeEndObject();
     }
 }

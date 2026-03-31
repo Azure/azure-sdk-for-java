@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.fluent.models.AccountProperties;
+import com.azure.resourcemanager.netapp.fluent.models.AccountPropertiesPatch;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
     /*
      * NetApp Account properties
      */
-    private AccountProperties innerProperties;
+    private AccountPropertiesPatch innerProperties;
 
     /*
      * The identity used for the resource.
@@ -132,7 +132,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * 
      * @return the innerProperties value.
      */
-    private AccountProperties innerProperties() {
+    private AccountPropertiesPatch innerProperties() {
         return this.innerProperties;
     }
 
@@ -157,15 +157,6 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
     }
 
     /**
-     * Get the provisioningState property: Azure lifecycle management.
-     * 
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Get the activeDirectories property: Active Directories.
      * 
      * @return the activeDirectories value.
@@ -182,9 +173,32 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      */
     public NetAppAccountPatch withActiveDirectories(List<ActiveDirectory> activeDirectories) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AccountProperties();
+            this.innerProperties = new AccountPropertiesPatch();
         }
         this.innerProperties().withActiveDirectories(activeDirectories);
+        return this;
+    }
+
+    /**
+     * Get the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @return the entraIdConfig value.
+     */
+    public EntraIdConfigPatch entraIdConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().entraIdConfig();
+    }
+
+    /**
+     * Set the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @param entraIdConfig the entraIdConfig value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountPropertiesPatch();
+        }
+        this.innerProperties().withEntraIdConfig(entraIdConfig);
         return this;
     }
 
@@ -205,20 +219,10 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      */
     public NetAppAccountPatch withEncryption(AccountEncryption encryption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AccountProperties();
+            this.innerProperties = new AccountPropertiesPatch();
         }
         this.innerProperties().withEncryption(encryption);
         return this;
-    }
-
-    /**
-     * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
-     * null equals false.
-     * 
-     * @return the disableShowmount value.
-     */
-    public Boolean disableShowmount() {
-        return this.innerProperties() == null ? null : this.innerProperties().disableShowmount();
     }
 
     /**
@@ -240,7 +244,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      */
     public NetAppAccountPatch withNfsV4IdDomain(String nfsV4IdDomain) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AccountProperties();
+            this.innerProperties = new AccountPropertiesPatch();
         }
         this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
         return this;
@@ -256,11 +260,25 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
     }
 
     /**
+     * Set the multiAdStatus property: MultiAD Status for the account.
+     * 
+     * @param multiAdStatus the multiAdStatus value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withMultiAdStatus(MultiAdStatus multiAdStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountPropertiesPatch();
+        }
+        this.innerProperties().withMultiAdStatus(multiAdStatus);
+        return this;
+    }
+
+    /**
      * Get the ldapConfiguration property: LDAP Configuration for the account.
      * 
      * @return the ldapConfiguration value.
      */
-    public LdapConfiguration ldapConfiguration() {
+    public LdapConfigurationPatch ldapConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().ldapConfiguration();
     }
 
@@ -270,9 +288,9 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * @param ldapConfiguration the ldapConfiguration value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+    public NetAppAccountPatch withLdapConfiguration(LdapConfigurationPatch ldapConfiguration) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AccountProperties();
+            this.innerProperties = new AccountPropertiesPatch();
         }
         this.innerProperties().withLdapConfiguration(ldapConfiguration);
         return this;
@@ -332,7 +350,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNetAppAccountPatch.tags = tags;
                 } else if ("properties".equals(fieldName)) {
-                    deserializedNetAppAccountPatch.innerProperties = AccountProperties.fromJson(reader);
+                    deserializedNetAppAccountPatch.innerProperties = AccountPropertiesPatch.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedNetAppAccountPatch.identity = ManagedServiceIdentity.fromJson(reader);
                 } else {

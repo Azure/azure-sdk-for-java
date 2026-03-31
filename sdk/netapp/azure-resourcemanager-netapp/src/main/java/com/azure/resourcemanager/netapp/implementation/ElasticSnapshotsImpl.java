@@ -31,12 +31,8 @@ public final class ElasticSnapshotsImpl implements ElasticSnapshots {
         String volumeName, String snapshotName, Context context) {
         Response<ElasticSnapshotInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticSnapshotImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticSnapshotImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticSnapshot get(String resourceGroupName, String accountName, String poolName, String volumeName,

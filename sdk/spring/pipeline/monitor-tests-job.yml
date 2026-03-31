@@ -24,6 +24,9 @@ jobs:
           Paths:
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/spring'
+            - 'sdk/tools/linting-extensions'
+            - '.vscode'
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
       - script: |
           python -m pip install termcolor
         displayName: 'Python module install'
@@ -40,4 +43,3 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean verify -Pmonitor'
-

@@ -495,9 +495,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         this.safeCloseCosmosClient();
 
         assertThat(builder).isNotNull();
-        this.client = builder.buildClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        return this.client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        final CosmosContainer[] result = new CosmosContainer[1];
+        executeWithRetry(() -> {
+            this.safeCloseCosmosClient();
+            this.client = builder.buildClient();
+            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+            result[0] = this.client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        }, 3, "CosmosDiagnosticsE2ETest getContainer");
+        return result[0];
     }
 
     private CosmosDiagnostics executeDocumentOperation(

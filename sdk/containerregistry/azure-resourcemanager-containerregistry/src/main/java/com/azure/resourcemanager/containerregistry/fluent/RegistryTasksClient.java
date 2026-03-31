@@ -19,7 +19,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in RegistryTasksClient.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
  */
+@Deprecated
 public interface RegistryTasksClient {
     /**
      * Schedules a new run based on the request parameters and add it to the run queue.

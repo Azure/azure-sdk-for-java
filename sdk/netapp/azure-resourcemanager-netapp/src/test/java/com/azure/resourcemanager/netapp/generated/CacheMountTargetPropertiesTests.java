@@ -11,7 +11,8 @@ public final class CacheMountTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheMountTargetProperties model = BinaryData
-            .fromString("{\"mountTargetId\":\"q\",\"ipAddress\":\"rnxrxcpj\",\"smbServerFqdn\":\"savokqdzf\"}")
+            .fromString(
+                "{\"mountTargetId\":\"ogtqxepnylbf\",\"ipAddress\":\"jlyjtlvofq\",\"smbServerFqdn\":\"vfcibyfmowux\"}")
             .toObject(CacheMountTargetProperties.class);
     }
 }

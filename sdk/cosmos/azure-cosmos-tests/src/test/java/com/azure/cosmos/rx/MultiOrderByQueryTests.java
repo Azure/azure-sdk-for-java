@@ -120,7 +120,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         documents = new ArrayList<>();
         client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
-        truncateCollection(documentCollection);
+        cleanUpContainer(documentCollection);
 
         expectCount(documentCollection, 0);
         int numberOfDocuments = 4;
@@ -161,7 +161,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
             }
         }
 
-        voidBulkInsertBlocking(documentCollection, documents);
+        voidInsertAllItemsBlocking(documentCollection, documents, true);
         expectCount(documentCollection, documents.size());
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());

@@ -140,7 +140,9 @@ public class ProxyHostTest extends TestSuiteBase {
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() throws Exception {
         safeClose(client);
-        httpProxyServer.shutDown();
+        if (httpProxyServer != null) {
+            httpProxyServer.shutDown();
+        }
         // wait for getProxy server to be shutdown
         TimeUnit.SECONDS.sleep(1);
 

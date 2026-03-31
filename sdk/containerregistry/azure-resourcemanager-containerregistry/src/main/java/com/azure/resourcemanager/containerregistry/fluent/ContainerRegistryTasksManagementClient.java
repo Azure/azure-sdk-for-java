@@ -7,8 +7,10 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for ContainerRegistryTasksManagementClient class.
+ * An instance of this class provides access to all the operations defined in ContainerRegistryTasksManagementClient.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
  */
+@Deprecated
 public interface ContainerRegistryTasksManagementClient {
     /**
      * Gets The Microsoft Azure subscription ID.

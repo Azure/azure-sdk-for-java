@@ -328,6 +328,29 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
+     * Get the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @return the serviceGateway value.
+     */
+    public SubResource serviceGateway() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceGateway();
+    }
+
+    /**
+     * Set the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @param serviceGateway the serviceGateway value to set.
+     * @return the NatGatewayInner object itself.
+     */
+    public NatGatewayInner withServiceGateway(SubResource serviceGateway) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NatGatewayPropertiesFormat();
+        }
+        this.innerProperties().withServiceGateway(serviceGateway);
+        return this;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the NAT gateway resource.
      * 
      * @return the resourceGuid value.

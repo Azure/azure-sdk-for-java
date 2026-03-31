@@ -1086,6 +1086,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
     }
 
+    @Disabled("CDN deprecated all Microsoft based Sku. Now it uses Azure Front Door in Sku")
     @Test
     public void testCdnManager() throws Exception {
         new TestCdn().runTest(azureResourceManager.cdnProfiles(), azureResourceManager.resourceGroups());
@@ -1237,6 +1238,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertFalse(containerGroupOperations.isEmpty());
     }
 
+    @Disabled("Diff on 'Accept' header. Live test is good, re-enable the test after publish new container registry lib.")
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(),

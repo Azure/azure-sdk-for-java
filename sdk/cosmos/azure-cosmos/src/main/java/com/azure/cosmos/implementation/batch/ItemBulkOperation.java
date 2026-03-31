@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
+
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -30,6 +31,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
+    private final BulkOperationStatusTracker bulkOperationStatusTracker;
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
     private CosmosItemSerializer effectiveItemSerializerForResult;
@@ -50,6 +52,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         this.item = item;
         this.context = context;
         this.requestOptions = requestOptions;
+        this.bulkOperationStatusTracker = new BulkOperationStatusTracker();
     }
 
     @Override
@@ -191,4 +194,9 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     void setRetryPolicy(BulkOperationRetryPolicy bulkOperationRetryPolicy) {
         this.bulkOperationRetryPolicy = bulkOperationRetryPolicy;
     }
+
+    public BulkOperationStatusTracker getStatusTracker() {
+        return this.bulkOperationStatusTracker;
+    }
+
 }

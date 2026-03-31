@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -51,6 +52,7 @@ class ChangeFeedQueryImpl<T> {
     private final OperationContextAndListenerTuple operationContextAndListener;
     private final CosmosItemSerializer itemSerializer;
     private final DiagnosticsClientContext diagnosticsClientContext;
+    private final CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -59,7 +61,8 @@ class ChangeFeedQueryImpl<T> {
         String collectionLink,
         String collectionRid,
         CosmosChangeFeedRequestOptions requestOptions,
-        DiagnosticsClientContext diagnosticsClientContext) {
+        DiagnosticsClientContext diagnosticsClientContext, CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext) {
+        this.crossRegionAvailabilityContext = crossRegionAvailabilityContext;
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
@@ -181,11 +184,7 @@ class ChangeFeedQueryImpl<T> {
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
-            request.requestContext.setCrossRegionAvailabilityContext(
-                new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
-                    new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink),
-                    null,
-                    new AvailabilityStrategyContext(false, false)));
+            request.requestContext.setCrossRegionAvailabilityContext(this.crossRegionAvailabilityContext);
         }
 
         return request;

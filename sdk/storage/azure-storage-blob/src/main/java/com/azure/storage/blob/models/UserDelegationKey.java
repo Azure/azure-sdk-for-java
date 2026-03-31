@@ -58,6 +58,12 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     private String signedVersion;
 
     /*
+     * The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
+     */
+    @Generated
+    private String signedDelegatedUserTenantId;
+
+    /*
      * The key as a base64 string
      */
     @Generated
@@ -203,6 +209,30 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
+     * Get the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD. Return if
+     * DelegatedUserTid is specified.
+     * 
+     * @return the signedDelegatedUserTenantId value.
+     */
+    @Generated
+    public String getSignedDelegatedUserTenantId() {
+        return this.signedDelegatedUserTenantId;
+    }
+
+    /**
+     * Set the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD. Return if
+     * DelegatedUserTid is specified.
+     * 
+     * @param signedDelegatedUserTenantId the signedDelegatedUserTenantId value to set.
+     * @return the UserDelegationKey object itself.
+     */
+    @Generated
+    public UserDelegationKey setSignedDelegatedUserTenantId(String signedDelegatedUserTenantId) {
+        this.signedDelegatedUserTenantId = signedDelegatedUserTenantId;
+        return this;
+    }
+
+    /**
      * Get the value property: The key as a base64 string.
      * 
      * @return the value value.
@@ -243,6 +273,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
             this.signedExpiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.signedExpiry));
         xmlWriter.writeStringElement("SignedService", this.signedService);
         xmlWriter.writeStringElement("SignedVersion", this.signedVersion);
+        xmlWriter.writeStringElement("SignedDelegatedUserTid", this.signedDelegatedUserTenantId);
         xmlWriter.writeStringElement("Value", this.value);
         return xmlWriter.writeEndElement();
     }
@@ -293,6 +324,8 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
                     deserializedUserDelegationKey.signedService = reader.getStringElement();
                 } else if ("SignedVersion".equals(elementName.getLocalPart())) {
                     deserializedUserDelegationKey.signedVersion = reader.getStringElement();
+                } else if ("SignedDelegatedUserTid".equals(elementName.getLocalPart())) {
+                    deserializedUserDelegationKey.signedDelegatedUserTenantId = reader.getStringElement();
                 } else if ("Value".equals(elementName.getLocalPart())) {
                     deserializedUserDelegationKey.value = reader.getStringElement();
                 } else {

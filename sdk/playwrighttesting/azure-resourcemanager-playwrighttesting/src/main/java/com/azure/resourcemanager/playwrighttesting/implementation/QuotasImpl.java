@@ -30,12 +30,8 @@ public final class QuotasImpl implements Quotas {
 
     public Response<Quota> getWithResponse(String location, QuotaNames quotaName, Context context) {
         Response<QuotaInner> inner = this.serviceClient().getWithResponse(location, quotaName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new QuotaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new QuotaImpl(inner.getValue(), this.manager()));
     }
 
     public Quota get(String location, QuotaNames quotaName) {

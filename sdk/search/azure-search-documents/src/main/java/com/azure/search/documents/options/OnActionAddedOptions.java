@@ -11,18 +11,16 @@ import java.util.function.Consumer;
 /**
  * Options passed when {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder#onActionAdded(Consumer)} is
  * called.
- *
- * @param <T> Type of the document in the action.
  */
-public final class OnActionAddedOptions<T> {
-    private final IndexAction<T> action;
+public final class OnActionAddedOptions {
+    private final IndexAction action;
 
     /**
      * Creates a new OnActionAddedOptions object.
      *
      * @param action Action being added.
      */
-    public OnActionAddedOptions(IndexAction<T> action) {
+    public OnActionAddedOptions(IndexAction action) {
         this.action = action;
     }
 
@@ -31,7 +29,7 @@ public final class OnActionAddedOptions<T> {
      *
      * @return The action.
      */
-    public IndexAction<T> getAction() {
+    public IndexAction getAction() {
         return action;
     }
 }

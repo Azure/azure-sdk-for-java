@@ -12,18 +12,18 @@ public final class MhsmGeoReplicatedRegionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmGeoReplicatedRegionInner model = BinaryData
-            .fromString("{\"name\":\"xisxyawjoyaqcsl\",\"provisioningState\":\"Provisioning\",\"isPrimary\":true}")
+            .fromString("{\"name\":\"rhhuaopppcqeqx\",\"provisioningState\":\"Provisioning\",\"isPrimary\":true}")
             .toObject(MhsmGeoReplicatedRegionInner.class);
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.name());
+        Assertions.assertEquals("rhhuaopppcqeqx", model.name());
         Assertions.assertTrue(model.isPrimary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MhsmGeoReplicatedRegionInner model
-            = new MhsmGeoReplicatedRegionInner().withName("xisxyawjoyaqcsl").withIsPrimary(true);
+            = new MhsmGeoReplicatedRegionInner().withName("rhhuaopppcqeqx").withIsPrimary(true);
         model = BinaryData.fromObject(model).toObject(MhsmGeoReplicatedRegionInner.class);
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.name());
+        Assertions.assertEquals("rhhuaopppcqeqx", model.name());
         Assertions.assertTrue(model.isPrimary());
     }
 }

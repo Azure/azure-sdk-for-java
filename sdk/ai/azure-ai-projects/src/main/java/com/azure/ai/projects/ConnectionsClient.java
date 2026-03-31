@@ -18,12 +18,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class ConnectionsClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionsClient.class);
 
     @Generated
     private final ConnectionsImpl serviceClient;
@@ -47,11 +50,11 @@ public final class ConnectionsClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -83,11 +86,11 @@ public final class ConnectionsClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -118,7 +121,7 @@ public final class ConnectionsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
      * connections</td></tr>
      * </table>
@@ -130,11 +133,11 @@ public final class ConnectionsClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -263,5 +266,31 @@ public final class ConnectionsClient {
         } else {
             return getConnection(name);
         }
+    }
+
+    /**
+     * Get the default connection for a given connection type.
+     *
+     * @param connectionType The type of the connection. Required.
+     * @param includeCredentials Whether to include credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default connection for the given type.
+     * @throws IllegalStateException if no default connection is found for the given type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Connection getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
+        if (connectionType == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("connectionType cannot be null."));
+        }
+        for (Connection connection : listConnections(connectionType, true)) {
+            return getConnection(connection.getName(), includeCredentials);
+        }
+        throw LOGGER
+            .logExceptionAsError(new IllegalStateException("No default connection found for type: " + connectionType));
     }
 }

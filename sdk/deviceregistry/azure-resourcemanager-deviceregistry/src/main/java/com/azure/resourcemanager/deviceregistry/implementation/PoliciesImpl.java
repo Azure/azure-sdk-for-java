@@ -31,12 +31,8 @@ public final class PoliciesImpl implements Policies {
         Context context) {
         Response<PolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, policyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PolicyImpl(inner.getValue(), this.manager()));
     }
 
     public Policy get(String resourceGroupName, String namespaceName, String policyName) {

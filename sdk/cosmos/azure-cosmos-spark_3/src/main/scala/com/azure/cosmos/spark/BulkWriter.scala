@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
-import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, ImplementationBridgeHelpers, UUIDs}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
@@ -888,7 +888,7 @@ private class BulkWriter
 
       val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
         s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
-        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}]"
+        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], attemptNumber=${context.attemptNumber}"
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
@@ -929,6 +929,11 @@ private class BulkWriter
         sb.append("->")
         val ctx = itemOperation.getContext[OperationContext]
         sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
+        itemOperation match {
+          case op: ItemBulkOperation[_, _] =>
+            sb.append(s", statusHistory=${op.getStatusTracker.toString}")
+          case _ =>
+        }
       })
 
     // add readMany snapshot logs

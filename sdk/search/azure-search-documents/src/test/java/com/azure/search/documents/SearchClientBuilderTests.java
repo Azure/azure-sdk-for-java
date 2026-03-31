@@ -39,7 +39,7 @@ public class SearchClientBuilderTests {
     private static final MockTokenCredential SEARCH_CREDENTIAL = new MockTokenCredential();
     private static final String SEARCH_ENDPOINT = "https://test.search.windows.net";
     private static final String INDEX_NAME = "myindex";
-    private static final SearchServiceVersion API_VERSION = SearchServiceVersion.V2020_06_30;
+    private static final SearchServiceVersion API_VERSION = SearchServiceVersion.getLatest();
 
     @Test
     public void buildSyncClientTest() {
@@ -113,18 +113,8 @@ public class SearchClientBuilderTests {
     }
 
     @Test
-    public void emptyEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().endpoint(""));
-    }
-
-    @Test
     public void nullIndexNameThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().indexName(null));
-    }
-
-    @Test
-    public void emptyIndexNameThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().indexName(""));
+        assertThrows(NullPointerException.class, () -> new SearchClientBuilder().indexName(null).buildClient());
     }
 
     @Test

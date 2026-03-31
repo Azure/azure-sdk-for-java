@@ -6,9 +6,11 @@ package com.azure.search.documents;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -17,7 +19,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
@@ -26,10 +27,13 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.test.environment.models.NonNullableModel;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,7 +44,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -49,15 +52,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class contains helper methods for running Azure AI Search tests.
@@ -72,7 +76,6 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
-    public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
@@ -156,31 +159,6 @@ public final class TestHelpers {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
-    }
-
-    /**
-     * Determines if two lists of documents are equal by comparing their keys.
-     *
-     * @param group1 The first list of documents.
-     * @param group2 The second list documents.
-     * @return True of false if the documents are equal or not equal, respectively.
-     */
-    public static boolean equalDocumentSets(List<NonNullableModel> group1, List<NonNullableModel> group2) {
-        List<String> group1Keys = produceKeyList(group1, TestHelpers::extractKeyFromDocument);
-        List<String> group2Keys = produceKeyList(group2, TestHelpers::extractKeyFromDocument);
-        return group1Keys.containsAll(group2Keys);
-    }
-
-    private static <T> List<String> produceKeyList(List<T> objList, Function<T, String> extractKeyFunc) {
-        List<String> keyList = new ArrayList<>();
-        for (T obj : objList) {
-            keyList.add(extractKeyFunc.apply(obj));
-        }
-        return keyList;
-    }
-
-    private static String extractKeyFromDocument(NonNullableModel document) {
-        return document.key();
     }
 
     /**
@@ -277,24 +255,22 @@ public final class TestHelpers {
         return false;
     }
 
-    public static void assertHttpResponseException(Runnable exceptionThrower, int statusCode, String expectedMessage) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Throwable ex) {
-            verifyHttpResponseError(ex, statusCode, expectedMessage);
-        }
+    public static void assertHttpResponseException(Runnable exceptionThrower, int statusCode) {
+        assertHttpResponseException(exceptionThrower, statusCode, null);
     }
 
-    public static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
-        if (ex instanceof HttpResponseException) {
-            assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
+    public static void assertHttpResponseException(Runnable exceptionThrower, int statusCode, String expectedMessage) {
+        Throwable ex = assertThrows(Throwable.class, exceptionThrower::run);
+        verifyHttpResponseError(ex, statusCode, expectedMessage);
+    }
 
-            if (expectedMessage != null) {
-                assertTrue(ex.getMessage().contains(expectedMessage));
-            }
-        } else {
-            fail("Expected exception to be instanceof HttpResponseException", ex);
+    public static void verifyHttpResponseError(Throwable throwable, int statusCode, String expectedMessage) {
+        HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable,
+            "Expected exception to be instanceof HttpResponseException");
+        assertEquals(statusCode, ex.getResponse().getStatusCode());
+
+        if (expectedMessage != null) {
+            assertTrue(throwable.getMessage().contains(expectedMessage));
         }
     }
 
@@ -324,36 +300,86 @@ public final class TestHelpers {
         }
     }
 
-    public static <T> void uploadDocuments(SearchClient client, List<T> uploadDoc) {
-        client.uploadDocuments(uploadDoc);
+    public static void uploadDocuments(SearchClient client, List<JsonSerializable<?>> uploadDoc) {
+        uploadDocumentsRaw(client,
+            uploadDoc.stream().map(TestHelpers::convertToMapStringObject).collect(Collectors.toList()));
         waitForIndexing();
     }
 
-    public static <T> void uploadDocuments(SearchAsyncClient client, List<T> uploadDoc) {
-        client.uploadDocuments(uploadDoc).block();
+    public static void uploadDocuments(SearchAsyncClient client, List<JsonSerializable<?>> uploadDoc) {
+        uploadDocumentsRaw(client,
+            uploadDoc.stream().map(TestHelpers::convertToMapStringObject).collect(Collectors.toList()));
         waitForIndexing();
     }
 
-    public static <T> void uploadDocument(SearchClient client, T uploadDoc) {
-        client.uploadDocuments(Collections.singletonList(uploadDoc));
+    public static void uploadDocument(SearchClient client, JsonSerializable<?> uploadDoc) {
+        uploadDocumentRaw(client, convertToMapStringObject(uploadDoc));
         waitForIndexing();
     }
 
-    public static <T> void uploadDocument(SearchAsyncClient client, T uploadDoc) {
-        client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
+    public static void uploadDocument(SearchAsyncClient client, JsonSerializable<?> uploadDoc) {
+        uploadDocumentRaw(client, convertToMapStringObject(uploadDoc));
         waitForIndexing();
+    }
+
+    public static void uploadDocumentRaw(SearchClient client, Map<String, Object> document) {
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)));
+        waitForIndexing();
+    }
+
+    public static void uploadDocumentRaw(SearchAsyncClient client, Map<String, Object> document) {
+        client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document))).block();
+        waitForIndexing();
+    }
+
+    public static void uploadDocumentsRaw(SearchClient client, List<Map<String, Object>> documents) {
+        client.indexDocuments(new IndexDocumentsBatch(documents.stream()
+            .map(doc -> createIndexAction(IndexActionType.UPLOAD, doc))
+            .collect(Collectors.toList())));
+        waitForIndexing();
+    }
+
+    public static void uploadDocumentsRaw(SearchAsyncClient client, List<Map<String, Object>> documents) {
+        client.indexDocuments(new IndexDocumentsBatch(
+            documents.stream().map(doc -> createIndexAction(IndexActionType.UPLOAD, doc)).collect(Collectors.toList())))
+            .block();
+        waitForIndexing();
+    }
+
+    public static Map<String, Object> convertToMapStringObject(JsonSerializable<?> pojo) {
+        try (JsonReader jsonReader = JsonProviders.createReader(pojo.toJsonBytes())) {
+            return jsonReader.readMap(JsonReader::readUntyped);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    public static <T> T convertFromMapStringObject(Map<String, Object> additionalProperties,
+        ReadValueCallback<JsonReader, T> converter) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeMap(additionalProperties, JsonWriter::writeUntyped);
+            }
+
+            try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
+                return converter.read(jsonReader);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     public static List<Map<String, Object>> uploadDocumentsJson(SearchClient client, String dataJson) {
         List<Map<String, Object>> documents = readJsonFileToList(dataJson);
-        uploadDocuments(client, documents);
+        uploadDocumentsRaw(client, documents);
 
         return documents;
     }
 
     public static List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
         List<Map<String, Object>> documents = readJsonFileToList(dataJson);
-        uploadDocuments(client, documents);
+        uploadDocumentsRaw(client, documents);
 
         return documents;
     }
@@ -374,18 +400,6 @@ public final class TestHelpers {
         }
     }
 
-    public static Map<String, Object> convertStreamToMap(byte[] source) {
-        try (JsonReader jsonReader = JsonProviders.createReader(source)) {
-            return jsonReader.readMap(JsonReader::readUntyped);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
-    }
-
-    public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
-        return SERIALIZER.deserializeFromBytes(SERIALIZER.serializeToBytes(value), TypeReference.createInstance(clazz));
-    }
-
     public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(indexDefinition))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
@@ -396,7 +410,7 @@ public final class TestHelpers {
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
-            searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
+            searchIndexClient.createIndex(createTestIndex(indexName, baseIndex));
 
             if (indexData != null) {
                 uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
@@ -456,8 +470,7 @@ public final class TestHelpers {
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
-        return new SearchIndex(testIndexName).setFields(baseIndex.getFields())
-            .setScoringProfiles(baseIndex.getScoringProfiles())
+        return new SearchIndex(testIndexName, baseIndex.getFields()).setScoringProfiles(baseIndex.getScoringProfiles())
             .setDefaultScoringProfile(baseIndex.getDefaultScoringProfile())
             .setCorsOptions(baseIndex.getCorsOptions())
             .setSuggesters(baseIndex.getSuggesters())
@@ -472,7 +485,7 @@ public final class TestHelpers {
     }
 
     public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).skipRequest((httpRequest, context) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((ignoredRequest, ignoredContext) -> false)
             .assertSync()
             .build();
     }
@@ -485,28 +498,10 @@ public final class TestHelpers {
             .buildClient();
     }
 
-    public static String createGeographyPolygon(String... coordinates) {
-        if (coordinates.length % 2 != 0) {
-            throw new RuntimeException("'coordinates' must contain pairs of two.");
-        }
-
-        StringBuilder builder = new StringBuilder("geography'POLYGON((");
-
-        for (int i = 0; i < coordinates.length; i += 2) {
-            if (i != 0) {
-                builder.append(',');
-            }
-
-            builder.append(coordinates[i]).append(' ').append(coordinates[i + 1]);
-        }
-
-        return builder.append("))'").toString();
-    }
-
     static byte[] loadResource(String fileName) {
         return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
             try {
-                URI fileUri = AutocompleteTests.class.getClassLoader().getResource(fileName).toURI();
+                URI fileUri = AutocompleteTests.class.getClassLoader().getResource(fName).toURI();
 
                 return Files.readAllBytes(Paths.get(fileUri));
             } catch (Exception ex) {
@@ -514,4 +509,17 @@ public final class TestHelpers {
             }
         });
     }
+
+    public static IndexAction createIndexAction(IndexActionType actionType, Map<String, Object> additionalProperties) {
+        return new IndexAction().setActionType(actionType).setAdditionalProperties(additionalProperties);
+    }
+
+    public static IndexAction convertToIndexAction(JsonSerializable<?> pojo, IndexActionType actionType) {
+        return new IndexAction().setActionType(actionType).setAdditionalProperties(convertToMapStringObject(pojo));
+    }
+
+    public static RequestOptions ifMatch(String eTag) {
+        return new RequestOptions().setHeader(HttpHeaderName.IF_MATCH, eTag);
+    }
+
 }

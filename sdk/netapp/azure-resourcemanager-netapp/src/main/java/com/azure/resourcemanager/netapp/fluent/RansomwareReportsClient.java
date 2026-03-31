@@ -112,7 +112,7 @@ public interface RansomwareReportsClient {
         String volumeName, Context context);
 
     /**
-     * "Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
+     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
      * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
      * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
      * of these ARP snapshots or another snapshot of your volume to restore data",.
@@ -133,7 +133,7 @@ public interface RansomwareReportsClient {
         String volumeName, String ransomwareReportName, RansomwareSuspectsClearRequest body);
 
     /**
-     * "Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
+     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
      * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
      * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
      * of these ARP snapshots or another snapshot of your volume to restore data",.
@@ -155,7 +155,7 @@ public interface RansomwareReportsClient {
         String volumeName, String ransomwareReportName, RansomwareSuspectsClearRequest body, Context context);
 
     /**
-     * "Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
+     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
      * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
      * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
      * of these ARP snapshots or another snapshot of your volume to restore data",.
@@ -175,7 +175,7 @@ public interface RansomwareReportsClient {
         String ransomwareReportName, RansomwareSuspectsClearRequest body);
 
     /**
-     * "Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
+     * Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the report to
      * determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
      * ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one
      * of these ARP snapshots or another snapshot of your volume to restore data",.

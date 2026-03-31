@@ -33,6 +33,7 @@ class AzureEventHubsProducerClientConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub"
             )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
@@ -43,6 +44,7 @@ class AzureEventHubsProducerClientConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.producer.event-hub-name=test-eventhub"
             )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
@@ -65,6 +67,7 @@ class AzureEventHubsProducerClientConfigurationTests {
                 "spring.cloud.azure.eventhubs.namespace=" + namespace,
                 "spring.cloud.azure.eventhubs.event-hub-name=" + eventHubName
             )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(EventHubClientBuilder.class, () -> clientBuilder)
             .run(
                 context -> {

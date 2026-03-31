@@ -33,12 +33,8 @@ public final class ElasticSnapshotPoliciesImpl implements ElasticSnapshotPolicie
         String snapshotPolicyName, Context context) {
         Response<ElasticSnapshotPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, snapshotPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticSnapshotPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticSnapshotPolicyImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticSnapshotPolicy get(String resourceGroupName, String accountName, String snapshotPolicyName) {

@@ -57,7 +57,6 @@ public class RetryPolicy implements IRetryPolicyFactory {
             this.globalEndpointManager,
             this.enableEndpointDiscovery,
             this.throttlingRetryOptions,
-            this.rxCollectionCache,
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             disableRetryForThrottledBatchRequest);

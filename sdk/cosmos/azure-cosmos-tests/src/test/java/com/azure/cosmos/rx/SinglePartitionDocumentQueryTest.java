@@ -312,7 +312,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     public void before_SinglePartitionDocumentQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         for(int i = 0; i < 5; i++) {
             createdDocuments.add(createDocument(createdCollection, i));

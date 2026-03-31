@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storagemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.fluent.models.EndpointInner;
 import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import com.azure.resourcemanager.storagemover.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.storagemover.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.storagemover.models.UserAssignedIdentity;
@@ -18,23 +19,26 @@ public final class EndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"b\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"tduqktapspwgcuer\",\"tenantId\":\"mkdo\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ppbhtqqrolfp\":{\"principalId\":\"bmdg\",\"clientId\":\"jfddgmbmbe\"},\"jgzjaoyfhrtx\":{\"principalId\":\"s\",\"clientId\":\"gbquxigj\"}}},\"id\":\"n\",\"name\":\"rkujy\",\"type\":\"vlejuvfqa\"}")
+            "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"b\",\"endpointKind\":\"Source\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"uqktap\",\"tenantId\":\"wgcu\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"mbmbexppbh\":{\"principalId\":\"kdosvqw\",\"clientId\":\"mdgbbjfdd\"},\"jaoyfhrtx\":{\"principalId\":\"qrolfpf\",\"clientId\":\"algbquxigjyjg\"},\"wrlyxwjkcprb\":{\"principalId\":\"n\",\"clientId\":\"kujysvlejuvfq\"},\"dnrujqguhmuouqfp\":{\"principalId\":\"b\",\"clientId\":\"jvtbvpyss\"}}},\"id\":\"zw\",\"name\":\"nguitnwuizgazxu\",\"type\":\"izuckyfihrfidfvz\"}")
             .toObject(EndpointInner.class);
         Assertions.assertEquals("b", model.properties().description());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(EndpointKind.SOURCE, model.properties().endpointKind());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointInner model
-            = new EndpointInner().withProperties(new EndpointBaseProperties().withDescription("b"))
-                .withIdentity(new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("ppbhtqqrolfp", new UserAssignedIdentity(), "jgzjaoyfhrtx", new UserAssignedIdentity())));
+            = new EndpointInner()
+                .withProperties(new EndpointBaseProperties().withDescription("b").withEndpointKind(EndpointKind.SOURCE))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("mbmbexppbh", new UserAssignedIdentity(), "jaoyfhrtx",
+                        new UserAssignedIdentity(), "wrlyxwjkcprb", new UserAssignedIdentity(), "dnrujqguhmuouqfp",
+                        new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(EndpointInner.class);
         Assertions.assertEquals("b", model.properties().description());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(EndpointKind.SOURCE, model.properties().endpointKind());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

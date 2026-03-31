@@ -73,14 +73,11 @@ public final class TransactionalBulkExecutor implements Disposable {
     private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor =
         ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
 
-    private static final ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor cosmosBatchAccessor =
-        ImplementationBridgeHelpers.CosmosBatchHelper.getCosmosBatchAccessor();
-
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
     private final String operationContextText;
     private final OperationContextAndListenerTuple operationListener;
-    private final Flux<CosmosBatch> inputBatches;
+    private final Flux<CosmosBatchBulkOperation> inputBatches;
 
     private final CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkExecutionOptionsImpl;
 
@@ -100,15 +97,15 @@ public final class TransactionalBulkExecutor implements Disposable {
 
     private final static Sinks.EmitFailureHandler serializedEmitFailureHandler = new SerializedEmitFailureHandler();
     private final static Sinks.EmitFailureHandler serializedCompleteEmitFailureHandler = new SerializedCompleteEmitFailureHandler();
-    private final Sinks.Many<CosmosBatch> mainSink;
-    private final List<Sinks.Many<CosmosBatch>> groupSinks;
+    private final Sinks.Many<CosmosBatchBulkOperation> mainSink;
+    private final List<Sinks.Many<CosmosBatchBulkOperation>> groupSinks;
     private final List<Sinks.Many<Integer>> flushSignalGroupSinks;
     private final AtomicReference<Disposable> scheduledFutureForFlush;
 
     @SuppressWarnings({"unchecked"})
     public TransactionalBulkExecutor(
         CosmosAsyncContainer container,
-        Flux<CosmosBatch> inputBatches,
+        Flux<CosmosBatchBulkOperation> inputBatches,
         CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkOptions) {
 
         checkNotNull(container, "expected non-null container");
@@ -311,19 +308,19 @@ public final class TransactionalBulkExecutor implements Disposable {
                                 throwable);
                             return throwable;
                         })
-                        .doOnNext(cosmosBatch -> {
+                        .doOnNext(cosmosBatchBulkOperation -> {
                             totalCount.incrementAndGet();
 
                             setRetryPolicyForTransactionalBatch(
                                 docClientWrapper,
                                 this.container,
-                                cosmosBatch,
+                                cosmosBatchBulkOperation,
                                 this.throttlingRetryOptions
                             );
 
                             logger.trace(
                                 "SetRetryPolicy for cosmos batch, PkValue: {}, TotalCount: {}, Context: {}, {}",
-                                cosmosBatch.getPartitionKeyValue(),
+                                cosmosBatchBulkOperation.getPartitionKeyValue(),
                                 totalCount.get(),
                                 this.operationContextText,
                                 getThreadInfo()
@@ -351,15 +348,15 @@ public final class TransactionalBulkExecutor implements Disposable {
                         })
                         .mergeWith(mainSink.asFlux())
                         .subscribeOn(this.executionScheduler)
-                        .flatMap(cosmosBatch -> {
+                        .flatMap(cosmosBatchBulkOperation -> {
                             logger.trace("Before Resolve PkRangeId, PkValue: {}, OpCount: {}, Context: {} {}",
-                                cosmosBatch.getPartitionKeyValue(),
-                                cosmosBatch.getOperations().size(),
+                                cosmosBatchBulkOperation.getPartitionKeyValue(),
+                                cosmosBatchBulkOperation.getOperationSize(),
                                 this.operationContextText,
                                 getThreadInfo());
 
                             // resolve partition key range id and attach PartitionScopeThresholds
-                            return resolvePartitionKeyRangeIdForBatch(cosmosBatch)
+                            return resolvePartitionKeyRangeIdForBatch(cosmosBatchBulkOperation)
                                 .map(pkRangeId -> {
                                     PartitionScopeThresholds thresholds =
                                         this.partitionScopeThresholds.computeIfAbsent(
@@ -368,12 +365,12 @@ public final class TransactionalBulkExecutor implements Disposable {
 
                                     logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
                                         pkRangeId,
-                                        cosmosBatch.getPartitionKeyValue(),
-                                        cosmosBatch.getOperations().size(),
+                                        cosmosBatchBulkOperation.getPartitionKeyValue(),
+                                        cosmosBatchBulkOperation.getOperationSize(),
                                         this.operationContextText,
                                         getThreadInfo());
 
-                                    return Pair.of(thresholds, cosmosBatch);
+                                    return Pair.of(thresholds, cosmosBatchBulkOperation);
                                 });
                         })
                         .groupBy(Pair::getKey, Pair::getValue)
@@ -432,12 +429,12 @@ public final class TransactionalBulkExecutor implements Disposable {
     }
 
     private Flux<CosmosBulkTransactionalBatchResponse> executePartitionedGroupTransactional(
-        GroupedFlux<PartitionScopeThresholds, CosmosBatch> partitionedGroupFluxOfBatches) {
+        GroupedFlux<PartitionScopeThresholds, CosmosBatchBulkOperation> partitionedGroupFluxOfBatches) {
 
         final PartitionScopeThresholds thresholds = partitionedGroupFluxOfBatches.key();
 
-        final Sinks.Many<CosmosBatch> groupSink = Sinks.many().unicast().onBackpressureBuffer();
-        final Flux<CosmosBatch> groupFlux = groupSink.asFlux();
+        final Sinks.Many<CosmosBatchBulkOperation> groupSink = Sinks.many().unicast().onBackpressureBuffer();
+        final Flux<CosmosBatchBulkOperation> groupFlux = groupSink.asFlux();
         groupSinks.add(groupSink);
 
         Sinks.Many<Integer> flushSignalGroupSink = Sinks.many().multicast().directBestEffort();
@@ -450,7 +447,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         return partitionedGroupFluxOfBatches
             .mergeWith(groupFlux)
             .publishOn(this.executionScheduler)
-            .concatMap(cosmosBatch -> {
+            .concatMap(cosmosBatchBulkOperation -> {
                 // using concatMap here for a sequential processing
                 // this part is to decide whether the cosmos batch can be flushed to downstream for processing
                 // based on the per-partition threshold and concurrency config
@@ -459,9 +456,9 @@ public final class TransactionalBulkExecutor implements Disposable {
                         totalOperationsInFlight,
                         totalBatchesInFlight,
                         thresholds,
-                        cosmosBatch)) {
+                        cosmosBatchBulkOperation)) {
 
-                        return Mono.just(cosmosBatch);
+                        return Mono.just(cosmosBatchBulkOperation);
                     }
 
                     // there is no capacity for new cosmos batch to be executed currently
@@ -473,29 +470,29 @@ public final class TransactionalBulkExecutor implements Disposable {
                                 totalOperationsInFlight,
                                 totalBatchesInFlight,
                                 thresholds,
-                                cosmosBatch))
+                                cosmosBatchBulkOperation))
                         .next()
                         .then();
                 })
                 .then(Mono.defer(() -> {
-                    totalOperationsInFlight.addAndGet(cosmosBatch.getOperations().size());
+                    totalOperationsInFlight.addAndGet(cosmosBatchBulkOperation.getOperationSize());
                     totalBatchesInFlight.incrementAndGet();
                     logTraceOrWarning(
                         "Flush cosmos batch, PKRangeId: {}, PkValue: {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, Context: {} {}",
                         thresholds.getPartitionKeyRangeId(),
-                        cosmosBatch.getPartitionKeyValue(),
+                        cosmosBatchBulkOperation.getPartitionKeyValue(),
                         totalOperationsInFlight.get(),
                         totalBatchesInFlight.get(),
-                        cosmosBatch.getOperations().size(),
+                        cosmosBatchBulkOperation.getOperationSize(),
                         this.operationContextText,
                         getThreadInfo());
 
-                    return Mono.just(cosmosBatch);
+                    return Mono.just(cosmosBatchBulkOperation);
                 }));
             })
-            .flatMap(cosmosBatch ->
+            .flatMap(cosmosBatchBulkOperation ->
                 this.executeTransactionalBatchWithThresholds(
-                    cosmosBatch,
+                    cosmosBatchBulkOperation,
                     thresholds,
                     groupSink,
                     flushSignalGroupSink,
@@ -507,23 +504,23 @@ public final class TransactionalBulkExecutor implements Disposable {
         AtomicInteger totalOperationsInFlight,
         AtomicInteger totalConcurrentBatchesInFlight,
         PartitionScopeThresholds partitionScopeThresholds,
-        CosmosBatch cosmosBatch) {
+        CosmosBatchBulkOperation cosmosBatchBulkOperation) {
 
         int targetBatchSizeSnapshot = partitionScopeThresholds.getTargetMicroBatchSizeSnapshot();
         int totalOpsInFlightSnapshot = totalOperationsInFlight.get();
         int totalBatchesInFlightSnapshot = totalConcurrentBatchesInFlight.get();
 
-        boolean canFlush = (cosmosBatch.getOperations().size() + totalOpsInFlightSnapshot <= targetBatchSizeSnapshot)
+        boolean canFlush = (cosmosBatchBulkOperation.getOperationSize() + totalOpsInFlightSnapshot <= targetBatchSizeSnapshot)
             || (totalBatchesInFlightSnapshot <= 0);
 
         logTraceOrWarning(
             "canFlushCosmosBatch - PkRangeId: {}, PkValue: {}, TargetBatchSize {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, CanFlush {}, Context: {} {}",
             partitionScopeThresholds.getPartitionKeyRangeId(),
-            cosmosBatch.getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             targetBatchSizeSnapshot,
             totalOpsInFlightSnapshot,
             totalBatchesInFlightSnapshot,
-            cosmosBatch.getOperations().size(),
+            cosmosBatchBulkOperation.getOperationSize(),
             canFlush,
             this.operationContextText,
             getThreadInfo());
@@ -534,7 +531,7 @@ public final class TransactionalBulkExecutor implements Disposable {
     private void setRetryPolicyForTransactionalBatch(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
-        CosmosBatch cosmosBatch,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
         ThrottlingRetryOptions throttlingRetryOptions) {
 
         ResourceThrottleRetryPolicy resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
@@ -548,35 +545,35 @@ public final class TransactionalBulkExecutor implements Disposable {
             BridgeInternal.getLink(container),
             resourceThrottleRetryPolicy);
 
-        cosmosBatchAccessor.setRetryPolicy(cosmosBatch, retryPolicy);
+        cosmosBatchBulkOperation.setRetryPolicy(retryPolicy);
     }
 
     private Mono<CosmosBulkTransactionalBatchResponse> enqueueForRetry(
         Duration backOffTime,
-        Sinks.Many<CosmosBatch> groupSink,
-        CosmosBatch cosmosBatch,
+        Sinks.Many<CosmosBatchBulkOperation> groupSink,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
         PartitionScopeThresholds thresholds,
         String batchTrackingId) {
 
         // Record an enqueued retry for threshold adjustments
-        this.recordResponseForRetryInThreshold(cosmosBatch, thresholds);
+        this.recordResponseForRetryInThreshold(cosmosBatchBulkOperation, thresholds);
 
         if (backOffTime == null || backOffTime.isZero()) {
             logDebugOrWarning(
                 "enqueueForRetry - Retry in group sink for PkRangeId: {}, PkValue: {}, Batch trackingId: {}, Context: {} {}",
                 thresholds.getPartitionKeyRangeId(),
-                cosmosBatch.getPartitionKeyValue(),
+                cosmosBatchBulkOperation.getPartitionKeyValue(),
                 batchTrackingId,
                 this.operationContextText,
                 getThreadInfo());
 
-            groupSink.emitNext(cosmosBatch, serializedEmitFailureHandler);
+            groupSink.emitNext(cosmosBatchBulkOperation, serializedEmitFailureHandler);
             return Mono.empty();
         } else {
             logDebugOrWarning(
                 "enqueueForRetry - Retry in group sink for PkRangeId: {}, PkValue: {}, BackoffTime: {}, Batch trackingId: {}, Context: {} {}",
                 thresholds.getPartitionKeyRangeId(),
-                cosmosBatch.getPartitionKeyValue(),
+                cosmosBatchBulkOperation.getPartitionKeyValue(),
                 backOffTime,
                 batchTrackingId,
                 this.operationContextText,
@@ -585,16 +582,16 @@ public final class TransactionalBulkExecutor implements Disposable {
             return Mono
                 .delay(backOffTime)
                 .flatMap((dummy) -> {
-                    groupSink.emitNext(cosmosBatch, serializedCompleteEmitFailureHandler);
+                    groupSink.emitNext(cosmosBatchBulkOperation, serializedCompleteEmitFailureHandler);
                     return Mono.empty();
                 });
         }
     }
 
     private Mono<CosmosBulkTransactionalBatchResponse> executeTransactionalBatchWithThresholds(
-        CosmosBatch cosmosBatch,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
         PartitionScopeThresholds thresholds,
-        Sinks.Many<CosmosBatch> groupSink,
+        Sinks.Many<CosmosBatchBulkOperation> groupSink,
         Sinks.Many<Integer> flushSignalGroupSink,
         AtomicInteger totalBatchesInFlight,
         AtomicInteger totalOperationsInFlight) {
@@ -604,8 +601,8 @@ public final class TransactionalBulkExecutor implements Disposable {
         logTraceOrWarning(
             "executeTransactionalBatchWithThresholds - PkRangeId: {}, PkValue: {}, BatchOpCount:{}, TrackingId: {}, Context: {} {}",
             thresholds.getPartitionKeyRangeId(),
-            cosmosBatch.getPartitionKeyValue(),
-            cosmosBatch.getOperations().size(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getOperationSize(),
             batchTrackingId,
             this.operationContextText,
             getThreadInfo());
@@ -613,14 +610,14 @@ public final class TransactionalBulkExecutor implements Disposable {
         CosmosBatchRequestOptions batchRequestOptions = getBatchRequestOptions();
 
         return this.container
-            .executeCosmosBatch(cosmosBatch, batchRequestOptions)
+            .executeCosmosBatch(cosmosBatchBulkOperation.getCosmosBatch(), batchRequestOptions)
             .publishOn(this.executionScheduler)
             .flatMap(response -> {
                 logTraceOrWarning(
                     "Response for transactional batch - PkRangeId: {}, PkValue: {}, BatchOpCount: {}, ResponseOpCount: {}, StatusCode: {}, SubStatusCode: {}, ActivityId: {}, Batch trackingId {}, Context: {} {}",
                     thresholds.getPartitionKeyRangeId(),
-                    cosmosBatch.getPartitionKeyValue(),
-                    cosmosBatch.getOperations().size(),
+                    cosmosBatchBulkOperation.getPartitionKeyValue(),
+                    cosmosBatchBulkOperation.getOperationSize(),
                     response.getResults().size(),
                     response.getStatusCode(),
                     response.getSubStatusCode(),
@@ -634,16 +631,20 @@ public final class TransactionalBulkExecutor implements Disposable {
                 }
 
                 if (response.isSuccessStatusCode()) {
-                    recordSuccessfulResponseInThreshold(cosmosBatch, thresholds);
+                    cosmosBatchBulkOperation.getStatusTracker().recordStatusCode(
+                        response.getStatusCode(),
+                        response.getSubStatusCode());
+
+                    recordSuccessfulResponseInThreshold(cosmosBatchBulkOperation, thresholds);
                     return Mono.just(
                         new CosmosBulkTransactionalBatchResponse(
-                            cosmosBatch,
+                            cosmosBatchBulkOperation,
                             response,
                             null)
                     );
                 }
 
-                return handleUnsuccessfulResponse(thresholds, batchTrackingId, cosmosBatch, response, groupSink);
+                return handleUnsuccessfulResponse(thresholds, batchTrackingId, cosmosBatchBulkOperation, response, groupSink);
             })
             .onErrorResume(throwable -> {
                 if (!(throwable instanceof Exception)) {
@@ -652,22 +653,22 @@ public final class TransactionalBulkExecutor implements Disposable {
 
                 Exception exception = (Exception) throwable;
                 return this.handleTransactionalBatchExecutionException(
-                    cosmosBatch,
+                    cosmosBatchBulkOperation,
                     exception,
                     groupSink,
                     thresholds,
                     batchTrackingId);
             })
             .doFinally(signalType -> {
-                int totalOpsInFlightSnapshot = totalOperationsInFlight.addAndGet(-cosmosBatch.getOperations().size());
+                int totalOpsInFlightSnapshot = totalOperationsInFlight.addAndGet(-cosmosBatchBulkOperation.getOperationSize());
                 int totalBatchesInFlightSnapshot = totalBatchesInFlight.decrementAndGet();
                 flushSignalGroupSink.emitNext(1, serializedEmitFailureHandler);
                 logTraceOrWarning(
                     "CosmosBatch completed, emit flush signal - SignalType: {}, PkRangeId: {}, PkValue: {}, BatchOpCount: {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, Context: {} {}",
                     signalType,
                     thresholds.getPartitionKeyRangeId(),
-                    cosmosBatch.getPartitionKeyValue(),
-                    cosmosBatch.getOperations().size(),
+                    cosmosBatchBulkOperation.getPartitionKeyValue(),
+                    cosmosBatchBulkOperation.getOperationSize(),
                     totalOpsInFlightSnapshot,
                     totalBatchesInFlightSnapshot,
                     this.operationContextText,
@@ -676,14 +677,14 @@ public final class TransactionalBulkExecutor implements Disposable {
             .subscribeOn(this.executionScheduler);
     }
 
-    private void recordSuccessfulResponseInThreshold(CosmosBatch cosmosBatch, PartitionScopeThresholds thresholds) {
-        for (int i = 0; i < cosmosBatch.getOperations().size(); i++) {
+    private void recordSuccessfulResponseInThreshold(CosmosBatchBulkOperation cosmosBatchBulkOperation, PartitionScopeThresholds thresholds) {
+        for (int i = 0; i < cosmosBatchBulkOperation.getOperationSize(); i++) {
             thresholds.recordSuccessfulOperation();
         }
     }
 
-    private void recordResponseForRetryInThreshold(CosmosBatch cosmosBatch, PartitionScopeThresholds thresholds) {
-        for (int i = 0; i < cosmosBatch.getOperations().size(); i++) {
+    private void recordResponseForRetryInThreshold(CosmosBatchBulkOperation cosmosBatchBulkOperation, PartitionScopeThresholds thresholds) {
+        for (int i = 0; i < cosmosBatchBulkOperation.getOperationSize(); i++) {
             thresholds.recordEnqueuedRetry();
         }
     }
@@ -691,15 +692,15 @@ public final class TransactionalBulkExecutor implements Disposable {
     private Mono<CosmosBulkTransactionalBatchResponse> handleUnsuccessfulResponse(
         PartitionScopeThresholds thresholds,
         String batchTrackingId,
-        CosmosBatch cosmosBatch,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
         CosmosBatchResponse response,
-        Sinks.Many<CosmosBatch> groupSink) {
+        Sinks.Many<CosmosBatchBulkOperation> groupSink) {
 
         logDebugOrWarning(
             "handleUnsuccessfulResponse - PkRangeId: {}, PkValue: {}, BatchOpCount: {}, StatusCode {}, SubStatusCode {}, Batch trackingId {}, Context: {} {}",
             thresholds.getPartitionKeyRangeId(),
-            cosmosBatch.getPartitionKeyValue(),
-            cosmosBatch.getOperations().size(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getOperationSize(),
             response.getStatusCode(),
             response.getSubStatusCode(),
             batchTrackingId,
@@ -714,12 +715,12 @@ public final class TransactionalBulkExecutor implements Disposable {
             BulkExecutorUtil.getResponseHeadersFromBatchOperationResult(response));
         BridgeInternal.setSubStatusCode(exception, response.getSubStatusCode());
 
-        return this.handleTransactionalBatchExecutionException(cosmosBatch, exception, groupSink, thresholds, batchTrackingId)
+        return this.handleTransactionalBatchExecutionException(cosmosBatchBulkOperation, exception, groupSink, thresholds, batchTrackingId)
             .onErrorResume(throwable -> {
                 logDebugOrWarning(
                     "handleUnsuccessfulResponse - Can not be retried. PkRangeId: {}, PkValue: {}, Batch trackingId {}, Context: {} {}",
                     thresholds.getPartitionKeyRangeId(),
-                    cosmosBatch.getPartitionKeyValue(),
+                    cosmosBatchBulkOperation.getPartitionKeyValue(),
                     batchTrackingId,
                     this.operationContextText,
                     getThreadInfo(),
@@ -727,7 +728,7 @@ public final class TransactionalBulkExecutor implements Disposable {
 
                 return Mono.just(
                     new CosmosBulkTransactionalBatchResponse(
-                        cosmosBatch,
+                        cosmosBatchBulkOperation,
                         response,
                         null
                     )
@@ -736,16 +737,16 @@ public final class TransactionalBulkExecutor implements Disposable {
     }
 
     private Mono<CosmosBulkTransactionalBatchResponse> handleTransactionalBatchExecutionException(
-        CosmosBatch cosmosBatch,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
         Exception exception,
-        Sinks.Many<CosmosBatch> groupSink,
+        Sinks.Many<CosmosBatchBulkOperation> groupSink,
         PartitionScopeThresholds thresholds,
         String batchTrackingId) {
 
         logDebugOrWarning(
             "HandleTransactionalBatchExecutionException - PkRangeId: {}, PkRangeValue: {}, Exception {}, Batch TrackingId {}, Context: {} {}",
-            cosmosBatch.getPartitionKeyValue(),
             thresholds.getPartitionKeyRangeId(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             exception,
             batchTrackingId,
             this.operationContextText,
@@ -754,28 +755,32 @@ public final class TransactionalBulkExecutor implements Disposable {
         if (exception instanceof CosmosException) {
             CosmosException cosmosException = (CosmosException) exception;
 
-            return cosmosBatchAccessor
-                .getRetryPolicy(cosmosBatch)
+            cosmosBatchBulkOperation.getStatusTracker().recordStatusCode(
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode());
+
+            return cosmosBatchBulkOperation
+                .getRetryPolicy()
                 .shouldRetryInMainSink(cosmosException)
                 .flatMap(shouldRetryInMainSink -> {
                     if (shouldRetryInMainSink) {
                         logDebugOrWarning(
                             "HandleTransactionalBatchExecutionException - Retry in main sink for PkRangeId: {}, PkValue: {}, Error {}, Batch TrackingId {}, Context: {} {}",
                             thresholds.getPartitionKeyRangeId(),
-                            cosmosBatch.getPartitionKeyValue(),
+                            cosmosBatchBulkOperation.getPartitionKeyValue(),
                             exception,
                             batchTrackingId,
                             this.operationContextText,
                             getThreadInfo());
 
                         // retry - but don't mark as enqueued for retry in thresholds
-                        mainSink.emitNext(cosmosBatch, serializedEmitFailureHandler); //TODO: validate booking marking for concurrent ops in flight
+                        mainSink.emitNext(cosmosBatchBulkOperation, serializedEmitFailureHandler);
                         return Mono.empty();
                     } else {
                         return retryOtherExceptions(
-                            cosmosBatch,
+                            cosmosBatchBulkOperation,
                             groupSink,
-                            cosmosBatchAccessor.getRetryPolicy(cosmosBatch),
+                            cosmosBatchBulkOperation.getRetryPolicy(),
                             cosmosException,
                             thresholds,
                             batchTrackingId);
@@ -783,14 +788,19 @@ public final class TransactionalBulkExecutor implements Disposable {
                 });
         }
 
+        // track for non-cosmos exception
+        cosmosBatchBulkOperation
+            .getStatusTracker()
+            .recordStatusCode(-1, -1);
+
         return Mono.just(
-            new CosmosBulkTransactionalBatchResponse(cosmosBatch, null, exception)
+            new CosmosBulkTransactionalBatchResponse(cosmosBatchBulkOperation, null, exception)
         );
     }
 
     private Mono<CosmosBulkTransactionalBatchResponse> retryOtherExceptions(
-        CosmosBatch cosmosBatch,
-        Sinks.Many<CosmosBatch> groupSink,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
+        Sinks.Many<CosmosBatchBulkOperation> groupSink,
         TransactionalBatchRetryPolicy retryPolicy,
         CosmosException cosmosException,
         PartitionScopeThresholds thresholds,
@@ -798,11 +808,11 @@ public final class TransactionalBulkExecutor implements Disposable {
 
         return retryPolicy.shouldRetry(cosmosException).flatMap(result -> {
             if (result.shouldRetry) {
-                return this.enqueueForRetry(result.backOffTime, groupSink, cosmosBatch, thresholds, batchTrackingId);
+                return this.enqueueForRetry(result.backOffTime, groupSink, cosmosBatchBulkOperation, thresholds, batchTrackingId);
             } else {
                 return Mono.just(
                     new CosmosBulkTransactionalBatchResponse(
-                        cosmosBatch,
+                        cosmosBatchBulkOperation,
                         null,
                         cosmosException
                     )
@@ -811,13 +821,13 @@ public final class TransactionalBulkExecutor implements Disposable {
         });
     }
 
-    private Mono<String> resolvePartitionKeyRangeIdForBatch(CosmosBatch batch) {
-        checkNotNull(batch, "expected non-null batch");
+    private Mono<String> resolvePartitionKeyRangeIdForBatch(CosmosBatchBulkOperation cosmosBatchBulkOperation) {
+        checkNotNull(cosmosBatchBulkOperation, "expected non-null cosmosBatchBulkOperation");
 
         return BulkExecutorUtil.resolvePartitionKeyRangeId(
             docClientWrapper,
             container,
-            batch.getPartitionKeyValue(),
+            cosmosBatchBulkOperation.getPartitionKeyValue(),
             null);
     }
 

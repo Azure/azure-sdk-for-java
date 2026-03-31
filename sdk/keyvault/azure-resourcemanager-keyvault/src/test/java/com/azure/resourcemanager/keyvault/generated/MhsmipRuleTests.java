@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class MhsmipRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MhsmipRule model = BinaryData.fromString("{\"value\":\"smv\"}").toObject(MhsmipRule.class);
-        Assertions.assertEquals("smv", model.value());
+        MhsmipRule model = BinaryData.fromString("{\"value\":\"t\"}").toObject(MhsmipRule.class);
+        Assertions.assertEquals("t", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MhsmipRule model = new MhsmipRule().withValue("smv");
+        MhsmipRule model = new MhsmipRule().withValue("t");
         model = BinaryData.fromObject(model).toObject(MhsmipRule.class);
-        Assertions.assertEquals("smv", model.value());
+        Assertions.assertEquals("t", model.value());
     }
 }

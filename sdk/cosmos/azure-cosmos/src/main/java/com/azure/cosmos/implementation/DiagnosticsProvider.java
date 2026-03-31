@@ -1764,6 +1764,10 @@ public final class DiagnosticsProvider {
                     attributes.put("rntbd.gclsn", Long.toString(storeResultDiagnostics.getGlobalCommittedLSN()));
                 }
 
+                if (storeResultDiagnostics.getGlobalNRegionCommittedLSN() > 0) {
+                    attributes.put("rntbd.nglsn", Long.toString(storeResultDiagnostics.getGlobalNRegionCommittedLSN()));
+                }
+
                 String responseSessionToken = responseStatistics.getRequestSessionToken();
                 if (responseSessionToken != null && !responseSessionToken.isEmpty()) {
                     attributes.put("rntbd.session_token", responseSessionToken);

@@ -60,7 +60,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     /**
      * State holder for managing configuration and feature flag states.
      */
-    private final StateHolder storeState = new StateHolder();
+    private StateHolder storeState;
 
     /**
      * Client for handling feature flag operations.
@@ -114,6 +114,9 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     public ConfigData load(ConfigDataLoaderContext context, AzureAppConfigDataResource resource)
         throws IOException, ConfigDataResourceNotFoundException {
         this.resource = resource;
+
+        // Get StateHolder from BootstrapContext (registered by AzureAppConfigBootstrapRegistrar)
+        storeState = context.getBootstrapContext().get(StateHolder.class);
         storeState.setNextForcedRefresh(resource.getRefreshInterval());
 
         if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
@@ -178,59 +181,52 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         Exception lastException = null;
         int postFixedWindowAttempts = 0;
 
-        while (Instant.now().isBefore(deadline)) {
-            // Ensure we do not retain partial results from previous failed attempts
-            sourceList.clear();
-            replicaClientFactory.findActiveClients(resource.getEndpoint());
-            lastException = attemptLoadFromClients(sourceList);
-
-            if (lastException == null) {
-                return null; // Success
-            }
-
-            // All clients failed, use fixed backoff based on elapsed time
-            if (Instant.now().isBefore(deadline)) {
-                long elapsedSeconds = Instant.now().getEpochSecond() - startTime.getEpochSecond();
-                Long backoffSeconds = getBackoffDuration(elapsedSeconds);
-                
-                // If backoff is null, elapsed time exceeds fixed intervals - use exponential backoff
-                if (backoffSeconds == null) {
-                    postFixedWindowAttempts++;
-                    // Convert nanoseconds to seconds
-                    backoffSeconds = BackoffTimeCalculator.calculateBackoff(postFixedWindowAttempts) / 1_000_000_000L;
+                if (reloadFailed
+                    && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
+                        replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext,
+                        storeState)) {
+                    // This store doesn't have any changes where to refresh store did. Skipping to next client.
+                    client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
+                    continue;
                 }
-                
-                // Don't wait longer than remaining time until deadline
-                long remainingSeconds = deadline.getEpochSecond() - Instant.now().getEpochSecond();
-                long waitSeconds = Math.min(backoffSeconds, remainingSeconds);
 
-                if (waitSeconds > 0) {
-                    logger.debug("All replicas in backoff for store: " + resource.getEndpoint() 
-                        + ". Waiting " + waitSeconds + "s before retry (elapsed: " + elapsedSeconds + "s).");
-                    try {
-                        Thread.sleep(waitSeconds * 1000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        return lastException;
+                // Reverse in order to add Profile specific properties earlier, and last profile comes first
+                try {
+                    sourceList.addAll(createSettings(currentClient));
+                    List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
+
+                    logger.debug("PropertySource context.");
+                    AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
+
+                    storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
+                        monitoring.getFeatureFlagRefreshInterval());
+
+                    if (monitoring.isEnabled()) {
+                        // Check if refreshAll is enabled - if so, use watched configuration settings
+                        if (monitoring.getTriggers().isEmpty()) {
+                            // Use watched configuration settings for refresh
+                            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(
+                                currentClient);
+                            storeState.setState(resource.getEndpoint(), Collections.emptyList(),
+                                watchedConfigurationSettingsList, monitoring.getRefreshInterval());
+                        } else {
+                            // Use traditional watch key monitoring
+                            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+                                .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
+                                    requestContext))
+                                .toList();
+
+                            storeState.setState(resource.getEndpoint(), watchKeysSettings,
+                                monitoring.getRefreshInterval());
+                        }
                     }
                 }
             }
         }
 
-        return lastException;
-    }
-
-    /**
-     * Gets the backoff duration based on elapsed time since startup began.
-     *
-     * @param elapsedSeconds the number of seconds elapsed since startup began
-     * @return the backoff duration in seconds, or null if elapsed time exceeds all thresholds
-     */
-    private Long getBackoffDuration(long elapsedSeconds) {
-        for (int[] interval : STARTUP_BACKOFF_INTERVALS) {
-            if (elapsedSeconds < interval[0]) {
-                return (long) interval[1];
-            }
+        if (!featureFlagClient.getFeatureFlags().isEmpty()) {
+            // Don't add feature flags if there are none, otherwise the local file can't load them.
+            sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
         }
         // Return null when elapsed time exceeds all defined thresholds
         return null;
@@ -368,7 +364,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             } else {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                    selectedKeys.getTagsFilter());
             }
             propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
             sourceList.add(propertySource);
@@ -390,7 +387,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
             List<WatchedConfigurationSettings> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
-                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), requestContext);
+                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                selectedKeys.getTagsFilter(), requestContext);
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }
 
@@ -422,6 +420,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 SettingSelector settingSelector = new SettingSelector()
                     .setKeyFilter(selectedKeys.getKeyFilter() + "*")
                     .setLabelFilter(label);
+
+                if (selectedKeys.getTagsFilter() != null && !selectedKeys.getTagsFilter().isEmpty()) {
+                    settingSelector.setTagsFilter(selectedKeys.getTagsFilter());
+                }
 
                 WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector,
                     requestContext);

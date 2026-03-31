@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
@@ -15,6 +15,8 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchServiceTests extends SearchTestBase {
+    private static final HttpHeaderName REQUEST_ID = HttpHeaderName.fromString("request-id");
+    private static final HttpHeaderName CLIENT_REQUEST_ID = HttpHeaderName.fromString("client-request-id");
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionSync() {
@@ -35,13 +37,14 @@ public class SearchServiceTests extends SearchTestBase {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         SearchServiceStatistics searchServiceStatistics
-            = serviceClient.getServiceStatisticsWithResponse(Context.NONE).getValue();
+            = serviceClient.getServiceStatisticsWithResponse(null).getValue();
         validateServiceStatistics(searchServiceStatistics);
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponseAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
+        StepVerifier
+            .create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
             .assertNext(response -> validateServiceStatistics(response.getValue()))
             .verifyComplete();
     }
@@ -51,7 +54,7 @@ public class SearchServiceTests extends SearchTestBase {
     public void getServiceStatsReturnsRequestIdSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
-        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
+        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(null);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if
@@ -59,8 +62,8 @@ public class SearchServiceTests extends SearchTestBase {
          * have the same value. This test validates that client-request-id is returned and that request-id is equal to
          * it.
          */
-        String actualRequestId = response.getHeaders().getValue("request-id");
-        String actualClientRequestId = response.getHeaders().getValue("client-request-id");
+        String actualRequestId = response.getHeaders().getValue(REQUEST_ID);
+        String actualClientRequestId = response.getHeaders().getValue(CLIENT_REQUEST_ID);
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
@@ -70,7 +73,8 @@ public class SearchServiceTests extends SearchTestBase {
     @Test
     @LiveOnly
     public void getServiceStatsReturnsRequestIdAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
+        StepVerifier
+            .create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
             .assertNext(response -> {
                 /*
                  * The service will always return a request-id and will conditionally return client-request-id if
@@ -78,8 +82,8 @@ public class SearchServiceTests extends SearchTestBase {
                  * will have the same value. This test validates that client-request-id is returned and that request-id
                  * is equal to it.
                  */
-                String actualRequestId = response.getHeaders().getValue("request-id");
-                String actualClientRequestId = response.getHeaders().getValue("client-request-id");
+                String actualRequestId = response.getHeaders().getValue(REQUEST_ID);
+                String actualClientRequestId = response.getHeaders().getValue(CLIENT_REQUEST_ID);
 
                 Assertions.assertNotNull(actualClientRequestId);
                 Assertions.assertEquals(actualClientRequestId, actualRequestId);

@@ -17,15 +17,14 @@ import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.query.queryadvisor.QueryAdvice;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -458,6 +457,28 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public Map<String, String> getResponseHeaders() {
         return header;
+    }
+
+    /**
+     * Gets the query advice returned by the Cosmos DB query advisor, or {@code null} if the
+     * request was not made with {@code populateQueryAdvice} enabled or no advice is available.
+     *
+     * <p>The returned string contains one advice recommendation per line. Each line has the form:
+     * {@code <RuleId>: <message> For more information, please visit <url>}</p>
+     *
+     * @return human-readable query advice string, or {@code null} if none is available.
+     */
+    public String getQueryAdvice() {
+        String rawHeader = getValueOrNull(this.header, HttpConstants.HttpHeaders.QUERY_ADVICE);
+        if (rawHeader == null) {
+            return null;
+        }
+        QueryAdvice queryAdvice = QueryAdvice.tryCreateFromString(rawHeader);
+        if (queryAdvice == null) {
+            return null;
+        }
+        String result = queryAdvice.toString();
+        return result.isEmpty() ? null : result;
     }
 
     private String getQueryMetricsString() {

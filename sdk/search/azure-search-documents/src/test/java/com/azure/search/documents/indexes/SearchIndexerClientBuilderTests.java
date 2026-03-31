@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchIndexerClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2025_11_01_PREVIEW;
 
     @Test
     public void buildSyncClientTest() {
@@ -116,11 +116,6 @@ public class SearchIndexerClientBuilderTests {
                 .buildAsyncClient();
 
         assertEquals(searchEndpoint, asyncClient.getEndpoint());
-    }
-
-    @Test
-    public void emptyEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder().endpoint(""));
     }
 
     @Test

@@ -8,6 +8,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -255,5 +257,60 @@ public class AppConfigurationKeyValueSelectorTest {
         
         // Original list should remain unchanged
         assertEquals(profilesCopy, originalProfiles);
+    }
+
+    @Test
+    public void getTagsFilterDefaultTest() {
+        // When no tags filter is set, should return null
+        assertNull(selector.getTagsFilter());
+    }
+
+    @Test
+    public void getTagsFilterCustomTest() {
+        // When custom tags filter is set
+        List<String> tags = Arrays.asList("env=prod", "team=backend");
+        selector.setTagsFilter(tags);
+        List<String> result = selector.getTagsFilter();
+        assertEquals(2, result.size());
+        assertEquals("env=prod", result.get(0));
+        assertEquals("team=backend", result.get(1));
+    }
+
+    @Test
+    public void setTagsFilterReturnsSelectorTest() {
+        // Test fluent API returns the selector
+        AppConfigurationKeyValueSelector returned = selector.setTagsFilter(Arrays.asList("env=dev"));
+        assertSame(selector, returned);
+    }
+
+    @Test
+    public void validateAndInitSnapshotWithTagsFilterTest() {
+        // Test snapshot with tags filter (should fail)
+        selector.setTagsFilter(Arrays.asList("env=prod"));
+        selector.setSnapshotName("test-snapshot");
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            selector.validateAndInit();
+        });
+    }
+
+    @Test
+    public void validateAndInitValidWithTagsFilterTest() {
+        // Test valid configuration with tags filter
+        selector.setKeyFilter("/valid/");
+        selector.setTagsFilter(Arrays.asList("env=prod", "team=backend"));
+        
+        // Should not throw any exception
+        selector.validateAndInit();
+    }
+
+    @Test
+    public void validateAndInitEmptyTagsFilterWithSnapshotTest() {
+        // Test snapshot with empty tags filter list (should not fail)
+        selector.setTagsFilter(new ArrayList<>());
+        selector.setSnapshotName("test-snapshot");
+        
+        // Should not throw any exception
+        selector.validateAndInit();
     }
 }

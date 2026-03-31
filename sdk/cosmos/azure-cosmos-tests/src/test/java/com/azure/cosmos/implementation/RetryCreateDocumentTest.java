@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
@@ -30,7 +31,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     private Database database;
     private DocumentCollection collection;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public RetryCreateDocumentTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -104,7 +105,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
         // validate
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
-        validateFailure(createObservable, validator, TIMEOUT);
+        validateResourceResponseFailure(createObservable, validator, TIMEOUT);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -137,7 +138,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         // validate
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
-        validateFailure(createObservable.timeout(Duration.ofMillis(100)), validator);
+        validateResourceResponseFailure(createObservable.timeout(Duration.ofMillis(100)), validator);
     }
 
     @BeforeMethod(groups = { "fast" })
@@ -150,8 +151,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         // set up the client
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
 
-        database = SHARED_DATABASE;
-        collection = SHARED_SINGLE_PARTITION_COLLECTION;
+        database = SHARED_DATABASE_INTERNAL;
+        collection = SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
     }
 
     private Document getDocumentDefinition() {

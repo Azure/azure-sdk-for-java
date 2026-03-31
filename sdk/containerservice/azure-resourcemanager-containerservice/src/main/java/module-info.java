@@ -13,4 +13,5 @@ module com.azure.resourcemanager.containerservice {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.containerservice.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.containerservice.models to com.azure.core;
+    opens com.azure.resourcemanager.containerservice.implementation.models to com.azure.core;
 }

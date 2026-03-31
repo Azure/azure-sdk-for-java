@@ -53,8 +53,14 @@ public final class ApiManagementCircuitBreakerProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("rules", this.rules, (writer, element) -> writer.writeMap(element,
-            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
+        jsonWriter.writeMapField("rules", this.rules,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         return jsonWriter.writeEndObject();
     }
 

@@ -42,6 +42,9 @@ import reactor.core.publisher.Mono;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,6 +57,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 public class TaskTests extends BatchClientTestBase {
     private static String livePoolId;
     private static String liveIaasPoolId;
@@ -79,58 +84,57 @@ public class TaskTests extends BatchClientTestBase {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String taskId = "task-canPut" + testModeSuffix;
         String jobId = getStringIdWithUserNamePrefix("-SampleJob" + testModeSuffix);
+
+        //CREATE JOB
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setPoolId(livePoolId);
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
+            () -> batchAsyncClient.createJob(jobToCreate));
+
+        //CREATE TASK
+        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+            () -> batchAsyncClient.createTask(jobId, taskToCreate));
+
+        // GET
+        BatchTask taskBeforeUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+            () -> batchAsyncClient.getTask(jobId, taskId));
+
+        //UPDATE
+        Integer maxRetrycount = 5;
+        Duration retentionPeriod = Duration.ofDays(5);
+        taskBeforeUpdate.setConstraints(
+            new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
+
+        SyncAsyncExtension.execute(() -> batchClient.replaceTask(jobId, taskId, taskBeforeUpdate),
+            () -> batchAsyncClient.replaceTask(jobId, taskId, taskBeforeUpdate));
+
+        //GET After UPDATE
+        BatchTask taskAfterUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+            () -> batchAsyncClient.getTask(jobId, taskId));
+
+        Assertions.assertEquals(maxRetrycount, taskAfterUpdate.getConstraints().getMaxTaskRetryCount());
+        Assertions.assertEquals(retentionPeriod, taskAfterUpdate.getConstraints().getRetentionTime());
+
         try {
-            //CREATE JOB
-            BatchPoolInfo poolInfo = new BatchPoolInfo();
-            poolInfo.setPoolId(livePoolId);
-            BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
-            SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
-                () -> batchAsyncClient.createJob(jobToCreate));
+            SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
+                () -> batchAsyncClient.deleteTask(jobId, taskId));
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for task: " + taskId);
+            e.printStackTrace();
+        }
 
-            //CREATE TASK
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
-                () -> batchAsyncClient.createTask(jobId, taskToCreate));
+        // DELETE
+        try {
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
-            // GET
-            BatchTask taskBeforeUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                () -> batchAsyncClient.getTask(jobId, taskId));
-
-            //UPDATE
-            Integer maxRetrycount = 5;
-            Duration retentionPeriod = Duration.ofDays(5);
-            taskBeforeUpdate.setConstraints(
-                new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
-
-            SyncAsyncExtension.execute(() -> batchClient.replaceTask(jobId, taskId, taskBeforeUpdate),
-                () -> batchAsyncClient.replaceTask(jobId, taskId, taskBeforeUpdate));
-
-            //GET After UPDATE
-            BatchTask taskAfterUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                () -> batchAsyncClient.getTask(jobId, taskId));
-
-            Assertions.assertEquals(maxRetrycount, taskAfterUpdate.getConstraints().getMaxTaskRetryCount());
-            Assertions.assertEquals(retentionPeriod, taskAfterUpdate.getConstraints().getRetentionTime());
-        } finally {
-            try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
-                    () -> batchAsyncClient.deleteTask(jobId, taskId));
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for task: " + taskId);
-                e.printStackTrace();
-            }
-
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -147,41 +151,38 @@ public class TaskTests extends BatchClientTestBase {
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
             () -> batchAsyncClient.createJob(jobToCreate));
 
+        // CREATE
+        List<BatchApplicationPackageReference> apps = new ArrayList<>();
+        apps.add(new BatchApplicationPackageReference("MSMPI"));
+        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello\"")
+            .setUserIdentity(new UserIdentity().setUsername("test-user"))
+            .setApplicationPackageReferences(apps);
+
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+            () -> batchAsyncClient.createTask(jobId, taskToCreate));
+
+        // GET
+        BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+            () -> batchAsyncClient.getTask(jobId, taskId));
+        Assertions.assertNotNull(task);
+        Assertions.assertEquals(taskId, task.getId());
+        Assertions.assertEquals("test-user", task.getUserIdentity().getUsername());
+
+        //Recording file automatically sanitizes Application Id - Only verify App Id in Record Mode
+        if (getTestMode() == TestMode.RECORD) {
+            Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
+        }
+
+        // DELETE
         try {
-            // CREATE
-            List<BatchApplicationPackageReference> apps = new ArrayList<>();
-            apps.add(new BatchApplicationPackageReference("MSMPI"));
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello\"")
-                .setUserIdentity(new UserIdentity().setUsername("test-user"))
-                .setApplicationPackageReferences(apps);
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
-                () -> batchAsyncClient.createTask(jobId, taskToCreate));
-
-            // GET
-            BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                () -> batchAsyncClient.getTask(jobId, taskId));
-            Assertions.assertNotNull(task);
-            Assertions.assertEquals(taskId, task.getId());
-            Assertions.assertEquals("test-user", task.getUserIdentity().getUsername());
-
-            //Recording file automatically sanitizes Application Id - Only verify App Id in Record Mode
-            if (getTestMode() == TestMode.RECORD) {
-                Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
-            }
-
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -209,145 +210,142 @@ public class TaskTests extends BatchClientTestBase {
         String storageAccountKey = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_KEY");
         BlobContainerClient container = null;
 
-        try {
-            String sas = "";
+        String sas = "";
+
+        //The Storage operations run only in Record mode.
+        // Playback mode is configured to test Batch operations only.
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // Create storage container
+            String containerName = "testingtaskcreate" + testModeSuffix;
+            container = createBlobContainer(storageAccountName, storageAccountKey, containerName);
+            sas = uploadFileToCloud(container, blobFileName, temp.getAbsolutePath());
+        } else {
+            sas = redacted;
+        }
+
+        // Associate resource file with task
+        ResourceFile file = new ResourceFile();
+        file.setFilePath(blobFileName);
+        file.setHttpUrl(sas);
+        List<ResourceFile> files = new ArrayList<>();
+        files.add(file);
+
+        // CREATE
+        BatchTaskCreateParameters taskToCreate
+            = new BatchTaskCreateParameters(taskId, String.format("cmd /c type %s", blobFileName))
+                .setResourceFiles(files);
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+            () -> batchAsyncClient.createTask(jobId, taskToCreate));
+
+        // GET
+        BatchTask taskBeforeUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+            () -> batchAsyncClient.getTask(jobId, taskId));
+        Assertions.assertNotNull(taskBeforeUpdate);
+        Assertions.assertEquals(taskId, taskBeforeUpdate.getId());
+
+        // Verify default retention time
+        Assertions.assertEquals(Duration.ofDays(7), taskBeforeUpdate.getConstraints().getRetentionTime());
+
+        // UPDATE
+        taskBeforeUpdate.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(5));
+        SyncAsyncExtension.execute(() -> batchClient.replaceTask(jobId, taskId, taskBeforeUpdate),
+            () -> batchAsyncClient.replaceTask(jobId, taskId, taskBeforeUpdate));
+
+        BatchTask taskAfterUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+            () -> batchAsyncClient.getTask(jobId, taskId));
+
+        Assertions.assertEquals((Integer) 5, taskAfterUpdate.getConstraints().getMaxTaskRetryCount());
+
+        // LIST
+        Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
+            () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
+        Assertions.assertNotNull(tasks);
+
+        boolean found = false;
+        for (BatchTask t : tasks) {
+            if (t.getId().equals(taskId)) {
+                found = true;
+                break;
+            }
+        }
+
+        Assertions.assertTrue(found);
+
+        boolean completed = SyncAsyncExtension
+            .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
+                .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
+
+        if (completed) {
+            // Get the task command output file
+            BatchTask taskAfterUpdate2 = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
+
+            BinaryData binaryData = SyncAsyncExtension.execute(
+                () -> batchClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename),
+                () -> batchAsyncClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename));
+
+            String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
+            Assertions.assertEquals("This is an example", fileContent);
+
+            String outputSas = "";
 
             //The Storage operations run only in Record mode.
             // Playback mode is configured to test Batch operations only.
             if (getTestMode() != TestMode.PLAYBACK) {
-                // Create storage container
-                String containerName = "testingtaskcreate" + testModeSuffix;
-                container = createBlobContainer(storageAccountName, storageAccountKey, containerName);
-                sas = uploadFileToCloud(container, blobFileName, temp.getAbsolutePath());
+                outputSas = generateContainerSasToken(container);
             } else {
-                sas = redacted;
+                outputSas = redacted;
             }
+            // UPLOAD LOG
+            UploadBatchServiceLogsParameters logsParameters
+                = new UploadBatchServiceLogsParameters(outputSas, OffsetDateTime.now().minusMinutes(10));
+            UploadBatchServiceLogsResult uploadBatchServiceLogsResult = SyncAsyncExtension.execute(
+                () -> batchClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
+                    logsParameters),
+                () -> batchAsyncClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
+                    logsParameters));
 
-            // Associate resource file with task
-            ResourceFile file = new ResourceFile();
-            file.setFilePath(blobFileName);
-            file.setHttpUrl(sas);
-            List<ResourceFile> files = new ArrayList<>();
-            files.add(file);
+            Assertions.assertNotNull(uploadBatchServiceLogsResult);
+            Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
+            Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName()
+                .toLowerCase()
+                .contains(liveIaasPoolId.toLowerCase()));
+        }
 
-            // CREATE
-            BatchTaskCreateParameters taskToCreate
-                = new BatchTaskCreateParameters(taskId, String.format("type %s", blobFileName)).setResourceFiles(files);
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
-                () -> batchAsyncClient.createTask(jobId, taskToCreate));
-
-            // GET
-            BatchTask taskBeforeUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+        // DELETE
+        SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
+            () -> batchAsyncClient.deleteTask(jobId, taskId));
+        try {
+            SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
                 () -> batchAsyncClient.getTask(jobId, taskId));
-            Assertions.assertNotNull(taskBeforeUpdate);
-            Assertions.assertEquals(taskId, taskBeforeUpdate.getId());
-
-            // Verify default retention time
-            Assertions.assertEquals(Duration.ofDays(7), taskBeforeUpdate.getConstraints().getRetentionTime());
-
-            // UPDATE
-            taskBeforeUpdate.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(5));
-            SyncAsyncExtension.execute(() -> batchClient.replaceTask(jobId, taskId, taskBeforeUpdate),
-                () -> batchAsyncClient.replaceTask(jobId, taskId, taskBeforeUpdate));
-
-            BatchTask taskAfterUpdate = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                () -> batchAsyncClient.getTask(jobId, taskId));
-
-            Assertions.assertEquals((Integer) 5, taskAfterUpdate.getConstraints().getMaxTaskRetryCount());
-
-            // LIST
-            Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
-                () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
-            Assertions.assertNotNull(tasks);
-
-            boolean found = false;
-            for (BatchTask t : tasks) {
-                if (t.getId().equals(taskId)) {
-                    found = true;
-                    break;
-                }
-            }
-
-            Assertions.assertTrue(found);
-
-            boolean completed = SyncAsyncExtension
-                .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
-                    .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
-
-            if (completed) {
-                // Get the task command output file
-                BatchTask taskAfterUpdate2 = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                    () -> batchAsyncClient.getTask(jobId, taskId));
-
-                BinaryData binaryData = SyncAsyncExtension.execute(
-                    () -> batchClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename),
-                    () -> batchAsyncClient.getTaskFile(jobId, taskId, standardConsoleOutputFilename));
-
-                String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
-                Assertions.assertEquals("This is an example", fileContent);
-
-                String outputSas = "";
-
-                //The Storage operations run only in Record mode.
-                // Playback mode is configured to test Batch operations only.
-                if (getTestMode() != TestMode.PLAYBACK) {
-                    outputSas = generateContainerSasToken(container);
-                } else {
-                    outputSas = redacted;
-                }
-                // UPLOAD LOG
-                UploadBatchServiceLogsParameters logsParameters
-                    = new UploadBatchServiceLogsParameters(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = SyncAsyncExtension.execute(
-                    () -> batchClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
-                        logsParameters),
-                    () -> batchAsyncClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
-                        logsParameters));
-
-                Assertions.assertNotNull(uploadBatchServiceLogsResult);
-                Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
-                Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName()
-                    .toLowerCase()
-                    .contains(liveIaasPoolId.toLowerCase()));
-            }
-
-            // DELETE
-            SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
-                () -> batchAsyncClient.deleteTask(jobId, taskId));
-            try {
-                SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                    () -> batchAsyncClient.getTask(jobId, taskId));
-                Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
-            } catch (Exception e) {
-                if (!e.getMessage().contains("Status code 404")) {
-                    throw e;
-                }
-            }
+            Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
         } catch (Exception e) {
-            throw e;
-        } finally {
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+            if (!e.getMessage().contains("Status code 404")) {
+                throw e;
+            }
+        }
 
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
-            try {
-                container.deleteIfExists();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                SyncAsyncExtension.execute(() -> batchClient.deletePool(liveIaasPoolId),
-                    () -> batchAsyncClient.deletePool(liveIaasPoolId));
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for pool: " + liveIaasPoolId);
-                e.printStackTrace();
-            }
+        try {
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
+        }
+        try {
+            container.deleteIfExists();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            SyncAsyncExtension.execute(() -> batchClient.deletePool(liveIaasPoolId),
+                () -> batchAsyncClient.deletePool(liveIaasPoolId));
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for pool: " + liveIaasPoolId);
+            e.printStackTrace();
         }
     }
 
@@ -364,42 +362,40 @@ public class TaskTests extends BatchClientTestBase {
 
         int taskCount = 1000;
 
+        // CREATE
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+        for (int i = 0; i < taskCount; i++) {
+            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                String.format("mytask%d", i) + testModeSuffix, String.format("echo hello %d", i));
+            tasksToAdd.add(taskCreateParameters);
+        }
+        BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
+        option.setMaxConcurrency(10);
+        SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
+            () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
+
+        // Wait to ensure all tasks are visible in listTasks()
+        sleepIfRunningAgainstService(15000);
+
+        // LIST
+        Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
+            () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
+        Assertions.assertNotNull(tasks);
+        int taskListCount = 0;
+        for (BatchTask task : tasks) {
+            ++taskListCount;
+        }
+        Assertions.assertEquals(taskListCount, taskCount);
+
         try {
-            // CREATE
-            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
-            for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
-                    String.format("mytask%d", i) + testModeSuffix, String.format("echo hello %d", i));
-                tasksToAdd.add(taskCreateParameters);
-            }
-            BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
-            option.setMaxConcurrency(10);
-            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
-                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
-            // Wait to ensure all tasks are visible in listTasks()
-            sleepIfRunningAgainstService(15000);
-
-            // LIST
-            Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
-                () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
-            Assertions.assertNotNull(tasks);
-            int taskListCount = 0;
-            for (BatchTask task : tasks) {
-                ++taskListCount;
-            }
-            Assertions.assertEquals(taskListCount, taskCount);
-        } finally {
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -681,55 +677,52 @@ public class TaskTests extends BatchClientTestBase {
 
         int taskCount = 1000;
 
+        // Test Job count
+        BatchTaskCountsResult countResult = SyncAsyncExtension.execute(() -> batchClient.getJobTaskCounts(jobId),
+            () -> batchAsyncClient.getJobTaskCounts(jobId));
+
+        BatchTaskCounts counts = countResult.getTaskCounts();
+        int all = counts.getActive() + counts.getCompleted() + counts.getRunning();
+        Assertions.assertEquals(0, all);
+
+        BatchTaskSlotCounts slotCounts = countResult.getTaskSlotCounts();
+        int allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
+        Assertions.assertEquals(0, allSlots);
+
+        // CREATE
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+        for (int i = 0; i < taskCount; i++) {
+            BatchTaskCreateParameters taskCreateParameters
+                = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("echo hello %d", i));
+            tasksToAdd.add(taskCreateParameters);
+        }
+        BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
+        option.setMaxConcurrency(10);
+        SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
+            () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
+
+        //The Waiting period is only needed in record mode.
+        sleepIfRunningAgainstService(30 * 1000);
+
+        // Test Job count
+        countResult = SyncAsyncExtension.execute(() -> batchClient.getJobTaskCounts(jobId),
+            () -> batchAsyncClient.getJobTaskCounts(jobId));
+        counts = countResult.getTaskCounts();
+        all = counts.getActive() + counts.getCompleted() + counts.getRunning();
+        Assertions.assertEquals(taskCount, all);
+
+        slotCounts = countResult.getTaskSlotCounts();
+        allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
+        // One slot per task
+        Assertions.assertEquals(taskCount, allSlots);
         try {
-            // Test Job count
-            BatchTaskCountsResult countResult = SyncAsyncExtension.execute(() -> batchClient.getJobTaskCounts(jobId),
-                () -> batchAsyncClient.getJobTaskCounts(jobId));
-
-            BatchTaskCounts counts = countResult.getTaskCounts();
-            int all = counts.getActive() + counts.getCompleted() + counts.getRunning();
-            Assertions.assertEquals(0, all);
-
-            BatchTaskSlotCounts slotCounts = countResult.getTaskSlotCounts();
-            int allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
-            Assertions.assertEquals(0, allSlots);
-
-            // CREATE
-            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
-            for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateParameters taskCreateParameters
-                    = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("echo hello %d", i));
-                tasksToAdd.add(taskCreateParameters);
-            }
-            BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
-            option.setMaxConcurrency(10);
-            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
-                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
-
-            //The Waiting period is only needed in record mode.
-            sleepIfRunningAgainstService(30 * 1000);
-
-            // Test Job count
-            countResult = SyncAsyncExtension.execute(() -> batchClient.getJobTaskCounts(jobId),
-                () -> batchAsyncClient.getJobTaskCounts(jobId));
-            counts = countResult.getTaskCounts();
-            all = counts.getActive() + counts.getCompleted() + counts.getRunning();
-            Assertions.assertEquals(taskCount, all);
-
-            slotCounts = countResult.getTaskSlotCounts();
-            allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
-            // One slot per task
-            Assertions.assertEquals(taskCount, allSlots);
-        } finally {
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -758,85 +751,82 @@ public class TaskTests extends BatchClientTestBase {
             containerUrl = generateContainerSasToken(containerClient);
         }
 
-        try {
-            // CREATE
-            List<OutputFile> outputs = new ArrayList<>();
-            OutputFileBlobContainerDestination fileBlobContainerDestination
-                = new OutputFileBlobContainerDestination(containerUrl);
-            fileBlobContainerDestination.setPath("taskLogs/output.txt");
+        // CREATE
+        List<OutputFile> outputs = new ArrayList<>();
+        OutputFileBlobContainerDestination fileBlobContainerDestination
+            = new OutputFileBlobContainerDestination(containerUrl);
+        fileBlobContainerDestination.setPath("taskLogs/output.txt");
 
-            OutputFileDestination fileDestination = new OutputFileDestination();
-            fileDestination.setContainer(fileBlobContainerDestination);
+        OutputFileDestination fileDestination = new OutputFileDestination();
+        fileDestination.setContainer(fileBlobContainerDestination);
 
-            outputs.add(new OutputFile("../stdout.txt", fileDestination,
-                new OutputFileUploadConfig(OutputFileUploadCondition.TASK_COMPLETION)));
+        outputs.add(new OutputFile("../stdout.txt", fileDestination,
+            new OutputFileUploadConfig(OutputFileUploadCondition.TASK_COMPLETION)));
 
-            OutputFileBlobContainerDestination fileBlobErrContainerDestination
-                = new OutputFileBlobContainerDestination(containerUrl);
-            fileBlobErrContainerDestination.setPath("taskLogs/err.txt");
+        OutputFileBlobContainerDestination fileBlobErrContainerDestination
+            = new OutputFileBlobContainerDestination(containerUrl);
+        fileBlobErrContainerDestination.setPath("taskLogs/err.txt");
 
-            outputs.add(new OutputFile("../stderr.txt",
-                new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
+        outputs.add(
+            new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
                 new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
 
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello");
-            taskToCreate.setOutputFiles(outputs);
+        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
+        taskToCreate.setOutputFiles(outputs);
 
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
-                () -> batchAsyncClient.createTask(jobId, taskToCreate));
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+            () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
-            if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
-                BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                    () -> batchAsyncClient.getTask(jobId, taskId));
-                Assertions.assertNotNull(task);
-                Assertions.assertEquals(BatchTaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
-                Assertions.assertNull(task.getExecutionInfo().getFailureInfo());
+        if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
+            BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
+            Assertions.assertNotNull(task);
+            Assertions.assertEquals(BatchTaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
+            Assertions.assertNull(task.getExecutionInfo().getFailureInfo());
 
-                if (getTestMode() == TestMode.RECORD) {
-                    // Get the task command output file
-                    String result = getContentFromContainer(containerClient, "taskLogs/output.txt");
-                    Assertions.assertEquals("hello", result.trim());
-                }
+            if (getTestMode() == TestMode.RECORD) {
+                // Get the task command output file
+                String result = getContentFromContainer(containerClient, "taskLogs/output.txt");
+                Assertions.assertEquals("hello", result.trim());
             }
+        }
 
-            BatchTaskCreateParameters badTask
-                = new BatchTaskCreateParameters(badTaskId, "badcommand").setOutputFiles(outputs);
+        BatchTaskCreateParameters badTask
+            = new BatchTaskCreateParameters(badTaskId, "badcommand").setOutputFiles(outputs);
 
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, badTask),
-                () -> batchAsyncClient.createTask(jobId, badTask));
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, badTask),
+            () -> batchAsyncClient.createTask(jobId, badTask));
 
-            if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
-                BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, badTaskId),
-                    () -> batchAsyncClient.getTask(jobId, badTaskId));
-                Assertions.assertNotNull(task);
-                Assertions.assertEquals(BatchTaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
-                Assertions.assertNotNull(task.getExecutionInfo().getFailureInfo());
-                Assertions.assertEquals(BatchErrorSourceCategory.USER_ERROR.toString().toLowerCase(),
-                    task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
-                Assertions.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
+        if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
+            BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, badTaskId),
+                () -> batchAsyncClient.getTask(jobId, badTaskId));
+            Assertions.assertNotNull(task);
+            Assertions.assertEquals(BatchTaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
+            Assertions.assertNotNull(task.getExecutionInfo().getFailureInfo());
+            Assertions.assertEquals(BatchErrorSourceCategory.USER_ERROR.toString().toLowerCase(),
+                task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
+            Assertions.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
 
-                //The Storage operations run only in Record mode.
-                // Playback mode is configured to test Batch operations only.
-                if (getTestMode() == TestMode.RECORD) {
-                    // Get the task command output file
-                    String result = getContentFromContainer(containerClient, "taskLogs/err.txt");
-                    Assertions.assertTrue(result.toLowerCase().contains("not recognized"));
-                }
+            //The Storage operations run only in Record mode.
+            // Playback mode is configured to test Batch operations only.
+            if (getTestMode() == TestMode.RECORD) {
+                // Get the task command output file
+                String result = getContentFromContainer(containerClient, "taskLogs/err.txt");
+                Assertions.assertTrue(result.toLowerCase().contains("not recognized"));
             }
+        }
 
-        } finally {
-            try {
-                if (getTestMode() == TestMode.RECORD) {
-                    containerClient.deleteIfExists();
-                }
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
+        try {
+            if (getTestMode() == TestMode.RECORD) {
+                containerClient.deleteIfExists();
             }
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -850,44 +840,41 @@ public class TaskTests extends BatchClientTestBase {
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
             () -> batchAsyncClient.createJob(jobToCreate));
 
+        // Prepare tasks to add
+        int taskCount = 10; // Adjust the number of tasks as needed
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+        for (int i = 0; i < taskCount; i++) {
+            String taskId = "task" + i;
+            String commandLine = String.format("echo Task %d", i);
+            tasksToAdd.add(new BatchTaskCreateParameters(taskId, commandLine));
+        }
+
+        // Call createTasks method
+        SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd),
+            () -> batchAsyncClient.createTasks(jobId, tasksToAdd));
+
+        // Wait to ensure all tasks are visible in listTasks()
+        sleepIfRunningAgainstService(15000);
+
+        // Verify tasks are created
+        Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
+            () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
+        int createdTaskCount = 0;
+        for (BatchTask task : tasks) {
+            createdTaskCount++;
+        }
+        Assertions.assertEquals(taskCount, createdTaskCount);
+
+        // Clean up
         try {
-            // Prepare tasks to add
-            int taskCount = 10; // Adjust the number of tasks as needed
-            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
-            for (int i = 0; i < taskCount; i++) {
-                String taskId = "task" + i;
-                String commandLine = String.format("echo Task %d", i);
-                tasksToAdd.add(new BatchTaskCreateParameters(taskId, commandLine));
-            }
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
-            // Call createTasks method
-            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd),
-                () -> batchAsyncClient.createTasks(jobId, tasksToAdd));
-
-            // Wait to ensure all tasks are visible in listTasks()
-            sleepIfRunningAgainstService(15000);
-
-            // Verify tasks are created
-            Iterable<BatchTask> tasks = SyncAsyncExtension.execute(() -> batchClient.listTasks(jobId),
-                () -> Mono.fromCallable(() -> batchAsyncClient.listTasks(jobId).toIterable()));
-            int createdTaskCount = 0;
-            for (BatchTask task : tasks) {
-                createdTaskCount++;
-            }
-            Assertions.assertEquals(taskCount, createdTaskCount);
-
-        } finally {
-            // Clean up
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 

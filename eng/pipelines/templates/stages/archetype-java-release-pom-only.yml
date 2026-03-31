@@ -14,7 +14,7 @@ stages:
       - template: /eng/pipelines/templates/variables/image.yml
     jobs:
       - job: SignPackage
-        timeoutInMinutes: 20
+        timeoutInMinutes: 60
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)

@@ -33,12 +33,8 @@ public final class BucketsImpl implements Buckets {
         String volumeName, String bucketName, Context context) {
         Response<BucketInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BucketImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BucketImpl(inner.getValue(), this.manager()));
     }
 
     public Bucket get(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -81,12 +77,8 @@ public final class BucketsImpl implements Buckets {
         Response<BucketGenerateCredentialsInner> inner = this.serviceClient()
             .generateCredentialsWithResponse(resourceGroupName, accountName, poolName, volumeName, bucketName, body,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BucketGenerateCredentialsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BucketGenerateCredentialsImpl(inner.getValue(), this.manager()));
     }
 
     public BucketGenerateCredentials generateCredentials(String resourceGroupName, String accountName, String poolName,
@@ -98,6 +90,29 @@ public final class BucketsImpl implements Buckets {
         } else {
             return null;
         }
+    }
+
+    public void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, BucketCredentialsExpiry body) {
+        this.serviceClient()
+            .generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body);
+    }
+
+    public void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, BucketCredentialsExpiry body, Context context) {
+        this.serviceClient()
+            .generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context);
+    }
+
+    public void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName) {
+        this.serviceClient().refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName);
+    }
+
+    public void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, Context context) {
+        this.serviceClient()
+            .refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, context);
     }
 
     public Bucket getById(String id) {

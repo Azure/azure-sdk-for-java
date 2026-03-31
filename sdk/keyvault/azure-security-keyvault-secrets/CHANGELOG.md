@@ -1,16 +1,19 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.11.0-beta.1 (2026-03-23)
 
 ### Features Added
 
-### Breaking Changes
+- Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if
+  applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret` and
+  `getSecretWithResponse` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
+
+## 4.10.6 (2026-03-23)
 
 ### Bugs Fixed
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
-
-### Other Changes
 
 ## 4.10.5 (2026-01-29)
 

@@ -49,8 +49,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.bulkClient).isNotNull();
-        this.bulkClient.close();
+        safeCloseSyncClient(this.bulkClient);
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)

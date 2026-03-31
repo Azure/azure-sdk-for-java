@@ -363,8 +363,13 @@ public final class NamespaceDeviceProperties implements JsonSerializable<Namespa
         jsonWriter.writeStringField("operatingSystem", this.operatingSystem);
         jsonWriter.writeStringField("operatingSystemVersion", this.operatingSystemVersion);
         jsonWriter.writeJsonField("endpoints", this.endpoints);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeJsonField("policy", this.policy);
         return jsonWriter.writeEndObject();
     }

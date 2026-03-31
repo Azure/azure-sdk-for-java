@@ -1,5 +1,7 @@
 # Azure Resource Manager Neon Postgres client library for Java
 
+Please note, this package has been deprecated and will no longer be maintained after 2026-03-13. The Azure Neon Postgres service has been permanently retired. The migration guide for Neon Postgres from Azure is available at https://neon.com/docs/import/migrate-from-azure-native. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager Neon Postgres client library for Java.
 
 This package contains Microsoft Azure SDK for Neon Postgres Management SDK.  Package api-version 2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -32,7 +34,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-neonpostgres</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

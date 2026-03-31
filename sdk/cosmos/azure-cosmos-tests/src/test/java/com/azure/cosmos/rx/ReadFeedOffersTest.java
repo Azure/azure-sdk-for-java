@@ -22,7 +22,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Offer;
-import com.azure.cosmos.implementation.TestSuiteBase;
+// Uses rx.TestSuiteBase (local package)
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -49,7 +49,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public ReadFeedOffersTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }

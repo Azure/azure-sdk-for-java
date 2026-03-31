@@ -38,9 +38,7 @@ import java.util.Map;
  */
 public final class AzureTrafficCollectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * AzureTrafficCollectorCreate.json
+     * x-ms-original-file: 2022-11-01/AzureTrafficCollectorCreate.json
      */
     /**
      * Sample code: Create a traffic collector.
@@ -79,9 +77,7 @@ public final class AzureTrafficCollectorsCreateOrUpdateSamples {
  */
 public final class AzureTrafficCollectorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * AzureTrafficCollectorDelete.json
+     * x-ms-original-file: 2022-11-01/AzureTrafficCollectorDelete.json
      */
     /**
      * Sample code: Delete Traffic Collector.
@@ -103,9 +99,7 @@ public final class AzureTrafficCollectorsDeleteSamples {
  */
 public final class AzureTrafficCollectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * AzureTrafficCollectorGet.json
+     * x-ms-original-file: 2022-11-01/AzureTrafficCollectorGet.json
      */
     /**
      * Sample code: Get Traffic Collector.
@@ -131,9 +125,7 @@ import java.util.Map;
  */
 public final class AzureTrafficCollectorsUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * AzureTrafficCollectorUpdateTags.json
+     * x-ms-original-file: 2022-11-01/AzureTrafficCollectorUpdateTags.json
      */
     /**
      * Sample code: Update Traffic Collector tags.
@@ -170,9 +162,7 @@ public final class AzureTrafficCollectorsUpdateTagsSamples {
  */
 public final class AzureTrafficCollectorsByResourceGroupListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * AzureTrafficCollectorsByResourceGroupList.json
+     * x-ms-original-file: 2022-11-01/AzureTrafficCollectorsByResourceGroupList.json
      */
     /**
      * Sample code: List of Traffic Collectors by ResourceGroup.
@@ -194,9 +184,7 @@ public final class AzureTrafficCollectorsByResourceGroupListByResourceGroupSampl
  */
 public final class AzureTrafficCollectorsBySubscriptionListSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * AzureTrafficCollectorsBySubscriptionList.json
+     * x-ms-original-file: 2022-11-01/AzureTrafficCollectorsBySubscriptionList.json
      */
     /**
      * Sample code: List of Traffic Collectors by Subscription.
@@ -228,9 +216,7 @@ import java.util.Arrays;
  */
 public final class CollectorPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * CollectorPolicyCreate.json
+     * x-ms-original-file: 2022-11-01/CollectorPolicyCreate.json
      */
     /**
      * Sample code: Create a collection policy.
@@ -265,9 +251,7 @@ public final class CollectorPoliciesCreateOrUpdateSamples {
  */
 public final class CollectorPoliciesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * CollectorPolicyDelete.json
+     * x-ms-original-file: 2022-11-01/CollectorPolicyDelete.json
      */
     /**
      * Sample code: Delete Collection Policy.
@@ -289,9 +273,7 @@ public final class CollectorPoliciesDeleteSamples {
  */
 public final class CollectorPoliciesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * CollectorPolicyGet.json
+     * x-ms-original-file: 2022-11-01/CollectorPolicyGet.json
      */
     /**
      * Sample code: Get Collection Policy.
@@ -313,9 +295,7 @@ public final class CollectorPoliciesGetSamples {
  */
 public final class CollectorPoliciesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * CollectorPoliciesList.json
+     * x-ms-original-file: 2022-11-01/CollectorPoliciesList.json
      */
     /**
      * Sample code: List of Collection Policies.
@@ -341,9 +321,7 @@ import java.util.Map;
  */
 public final class CollectorPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * CollectorPolicyUpdateTags.json
+     * x-ms-original-file: 2022-11-01/CollectorPolicyUpdateTags.json
      */
     /**
      * Sample code: Update Collector Policy tags.
@@ -380,9 +358,7 @@ public final class CollectorPoliciesUpdateTagsSamples {
  */
 public final class NetworkFunctionListOperationsSamples {
     /*
-     * x-ms-original-file:
-     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
-     * OperationsList.json
+     * x-ms-original-file: 2022-11-01/OperationsList.json
      */
     /**
      * Sample code: OperationsList.

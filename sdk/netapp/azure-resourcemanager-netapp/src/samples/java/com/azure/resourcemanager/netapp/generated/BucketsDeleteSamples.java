@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BucketsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Buckets_Delete.json
+     * x-ms-original-file: 2025-12-15-preview/Buckets_Delete.json
      */
     /**
      * Sample code: Buckets_Delete.

@@ -20,7 +20,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in TaskRunsClient.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
  */
+@Deprecated
 public interface TaskRunsClient {
     /**
      * Gets the detailed information for a given task run.

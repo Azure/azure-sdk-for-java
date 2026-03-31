@@ -28,7 +28,7 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     private String userAssignedIdentity;
 
     /*
-     * ClientId of the multi-tenant AAD Application. Used to access cross-tenant keyvaults.
+     * ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
      */
     private String federatedClientId;
 
@@ -73,8 +73,8 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     }
 
     /**
-     * Get the federatedClientId property: ClientId of the multi-tenant AAD Application. Used to access cross-tenant
-     * keyvaults.
+     * Get the federatedClientId property: ClientId of the multi-tenant Entra ID Application. Used to access
+     * cross-tenant keyvaults.
      * 
      * @return the federatedClientId value.
      */
@@ -83,8 +83,8 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     }
 
     /**
-     * Set the federatedClientId property: ClientId of the multi-tenant AAD Application. Used to access cross-tenant
-     * keyvaults.
+     * Set the federatedClientId property: ClientId of the multi-tenant Entra ID Application. Used to access
+     * cross-tenant keyvaults.
      * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the EncryptionIdentity object itself.

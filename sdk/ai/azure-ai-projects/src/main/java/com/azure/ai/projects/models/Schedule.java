@@ -79,20 +79,6 @@ public final class Schedule implements JsonSerializable<Schedule> {
     private Map<String, String> systemData;
 
     /**
-     * Creates an instance of Schedule class.
-     *
-     * @param enabled the enabled value to set.
-     * @param trigger the trigger value to set.
-     * @param task the task value to set.
-     */
-    @Generated
-    public Schedule(boolean enabled, Trigger trigger, ScheduleTask task) {
-        this.enabled = enabled;
-        this.trigger = trigger;
-        this.task = task;
-    }
-
-    /**
      * Get the id property: Identifier of the schedule.
      *
      * @return the id value.
@@ -318,5 +304,19 @@ public final class Schedule implements JsonSerializable<Schedule> {
             deserializedSchedule.properties = properties;
             return deserializedSchedule;
         });
+    }
+
+    /**
+     * Creates an instance of Schedule class.
+     *
+     * @param enabled the enabled value to set.
+     * @param trigger the trigger value to set.
+     * @param task the task value to set.
+     */
+    @Generated
+    public Schedule(boolean enabled, Trigger trigger, ScheduleTask task) {
+        this.enabled = enabled;
+        this.trigger = trigger;
+        this.task = task;
     }
 }

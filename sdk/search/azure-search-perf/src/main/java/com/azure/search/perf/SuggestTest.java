@@ -3,12 +3,10 @@
 
 package com.azure.search.perf;
 
-import com.azure.search.perf.core.Hotel;
+import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.perf.core.SearchPerfStressOptions;
 import com.azure.search.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Performs suggestion operations.
@@ -34,21 +32,14 @@ public class SuggestTest extends ServiceTest<SearchPerfStressOptions> {
 
     @Override
     public void run() {
-        AtomicInteger count = new AtomicInteger();
-        searchClient.suggest("historic", SUGGESTER_NAME).iterator().forEachRemaining(result -> {
-            result.getDocument(Hotel.class);
-            count.incrementAndGet();
-        });
-
-        assert count.get() > 0;
+        assert !searchClient.suggest(new SuggestOptions("historic", SUGGESTER_NAME)).getResults().isEmpty();
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return searchAsyncClient.suggest("historic", SUGGESTER_NAME)
-            .map(result -> result.getDocument(Hotel.class))
-            .count()
-            .flatMap(
-                count -> count > 0 ? Mono.empty() : Mono.error(new RuntimeException("Expected autocomplete results.")));
+        return searchAsyncClient.suggest(new SuggestOptions("historic", SUGGESTER_NAME))
+            .flatMap(result -> result.getResults().isEmpty()
+                ? Mono.error(new RuntimeException("Expected autocomplete results."))
+                : Mono.empty());
     }
 }
