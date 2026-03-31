@@ -1339,14 +1339,6 @@
           "justification": "Common types now sourced from azure-core or ARM common types."
         },
         {
-          "code": "java.missing.oldSuperType",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AdminRule|ChildResource|Common(ProxyResource|Resource|TrackedResource)|DefaultAdminRule|SecurityPerimeter(ProxyResource|Resource))"
-          },
-          "justification": "Base class ProxyResource not in old API archive. Revapi analysis artifact."
-        },
-        {
           "code": "java.method.returnTypeChanged",
           "old" : {
             "matcher": "regex",
