@@ -1,16 +1,78 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-- Supported enabling/disabling authentication through access keys for `RedisCache`.
+## 2.54.0-beta.1 (2026-04-01)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.RedisListResult` was removed
+
+#### `models.RedisCacheAccessPolicyAssignmentList` was removed
+
+#### `models.RedisFirewallRuleListResult` was removed
+
+#### `models.RedisPatchScheduleListResult` was removed
+
+#### `models.RedisCacheAccessPolicyList` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.NotificationListResponse` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.RedisLinkedServerWithPropertiesList` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+
+#### `models.RedisInstanceDetails` was modified
+
+* `RedisInstanceDetails()` was changed to private access
+
+#### `models.OperationStatusResult` was modified
+
+* `models.OperationStatusResult withStatus(java.lang.String)` -> `models.OperationStatusResult withStatus(java.lang.String)`
+* `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)`
+* `models.OperationStatusResult withOperations(java.util.List)` -> `models.OperationStatusResult withOperations(java.util.List)`
+* `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)` -> `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)`
+* `withPercentComplete(java.lang.Float)` was removed
+* `models.OperationStatusResult withId(java.lang.String)` -> `models.OperationStatusResult withId(java.lang.String)`
+* `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)`
+* `java.lang.Float percentComplete()` -> `java.lang.Double percentComplete()`
+* `models.OperationStatusResult withName(java.lang.String)` -> `models.OperationStatusResult withName(java.lang.String)`
+
+#### `models.RedisLinkedServer` was modified
+
+* `RedisLinkedServer()` was changed to private access
+
+### Features Added
+
+#### `models.RedisCache` was modified
+
+* `isAccessKeyAuthenticationEnabled()` was added
+
+#### `models.ProvisioningState` was modified
+
+* `MIGRATING` was added
+* `MIGRATION_SUCCEEDED` was added
+* `MIGRATION_FAILED` was added
+* `MIGRATION_CANCELLATION_FAILED` was added
+* `MIGRATION_CANCELLING` was added
+
+#### `models.RedisFirewallRuleCreateParameters` was modified
+
+* `systemData()` was added
+
+#### `models.RedisCachePremium` was modified
+
+* `isAccessKeyAuthenticationEnabled()` was added
 
 ## 2.53.6 (2026-01-29)
 
