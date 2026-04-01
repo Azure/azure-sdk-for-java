@@ -1,4 +1,4 @@
 directory: specification/redis/resource-manager/Microsoft.Cache/Redis
-commit: 07b0b56d9865d820ec63b599d91a1ed99a8cb8ea
-repo: cxznmhdcxz/azure-rest-api-specs
+commit: d9564a36a402eec0d8fe557948ca0c630c91caf0
+repo: weidongxu-microsoft/azure-rest-api-specs
 additionalDirectories: 
