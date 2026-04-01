@@ -23,7 +23,7 @@ final class RecordingUrlValidator {
      * These are the only domains permitted for recording URLs to prevent credential exfiltration.
      */
     private static final List<String> ALLOWED_HOST_SUFFIXES
-        = Arrays.asList(".asm.skype.com", ".asyncgw.teams.microsoft.com");
+        = Arrays.asList(".asm.skype.com", ".asyncgw.teams.microsoft.com", ".gov.teams.microsoft.us");
 
     private RecordingUrlValidator() {
         // Private constructor to prevent instantiation
