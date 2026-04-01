@@ -245,8 +245,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         boolean reloadFailed = false;
         Exception lastException = null;
         AppConfigurationReplicaClient client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), true);
+        List<EnumerablePropertySource<?>> tempSourceList = new ArrayList<>();
 
         while (client != null) {
+            tempSourceList.clear();
             final AppConfigurationReplicaClient currentClient = client;
 
             if (reloadFailed && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
@@ -256,7 +258,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             }
 
             try {
-                sourceList.addAll(createSettings(currentClient));
+                tempSourceList.addAll(createSettings(currentClient));
                 List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
 
                 AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
@@ -269,6 +271,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 }
 
                 storeState.setLoadState(resource.getEndpoint(), true);
+                sourceList.addAll(tempSourceList);
                 return null; // Success
             } catch (AppConfigurationStatusException e) {
                 reloadFailed = true;
