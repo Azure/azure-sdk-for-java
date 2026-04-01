@@ -1,77 +1,16 @@
 # Release History
 
-## 2.54.0-beta.1 (2026-04-01)
-
-### Breaking Changes
-
-#### `models.OperationListResult` was removed
-
-#### `models.RedisListResult` was removed
-
-#### `models.RedisCacheAccessPolicyAssignmentList` was removed
-
-#### `models.RedisFirewallRuleListResult` was removed
-
-#### `models.RedisPatchScheduleListResult` was removed
-
-#### `models.RedisCacheAccessPolicyList` was removed
-
-#### `models.PrivateLinkResourceListResult` was removed
-
-#### `models.NotificationListResponse` was removed
-
-#### `models.PrivateEndpointConnectionListResult` was removed
-
-#### `models.RedisLinkedServerWithPropertiesList` was removed
-
-#### `models.OperationDisplay` was modified
-
-* `OperationDisplay()` was changed to private access
-* `withDescription(java.lang.String)` was removed
-* `withResource(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
-* `withProvider(java.lang.String)` was removed
-
-#### `models.RedisInstanceDetails` was modified
-
-* `RedisInstanceDetails()` was changed to private access
-
-#### `models.OperationStatusResult` was modified
-
-* `models.OperationStatusResult withStatus(java.lang.String)` -> `models.OperationStatusResult withStatus(java.lang.String)`
-* `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)`
-* `models.OperationStatusResult withOperations(java.util.List)` -> `models.OperationStatusResult withOperations(java.util.List)`
-* `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)` -> `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)`
-* `models.OperationStatusResult withPercentComplete(java.lang.Float)` -> `models.OperationStatusResult withPercentComplete(java.lang.Float)`
-* `models.OperationStatusResult withId(java.lang.String)` -> `models.OperationStatusResult withId(java.lang.String)`
-* `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)`
-* `models.OperationStatusResult withName(java.lang.String)` -> `models.OperationStatusResult withName(java.lang.String)`
-
-#### `models.RedisLinkedServer` was modified
-
-* `RedisLinkedServer()` was changed to private access
+## 2.54.0-beta.1 (Unreleased)
 
 ### Features Added
 
-#### `models.RedisCache` was modified
+- Supported enabling/disabling authentication through access keys for `RedisCache`.
 
-* `isAccessKeyAuthenticationEnabled()` was added
+### Breaking Changes
 
-#### `models.ProvisioningState` was modified
+### Bugs Fixed
 
-* `MIGRATING` was added
-* `MIGRATION_SUCCEEDED` was added
-* `MIGRATION_FAILED` was added
-* `MIGRATION_CANCELLATION_FAILED` was added
-* `MIGRATION_CANCELLING` was added
-
-#### `models.RedisFirewallRuleCreateParameters` was modified
-
-* `systemData()` was added
-
-#### `models.RedisCachePremium` was modified
-
-* `isAccessKeyAuthenticationEnabled()` was added
+### Other Changes
 
 ## 2.53.6 (2026-01-29)
 
