@@ -948,7 +948,7 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp,
             @BodyParam("application/xml") CreateSessionConfiguration createSessionConfiguration,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{containerName}")
         @ExpectedResponses({ 201 })
@@ -957,7 +957,7 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp,
             @BodyParam("application/xml") CreateSessionConfiguration createSessionConfiguration,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -6764,8 +6764,8 @@ public final class ContainersImpl {
         final String comp = "session";
         final String accept = "application/xml";
         return service
-            .createSession(this.client.getUrl(), containerName, restype, comp, createSessionConfiguration, accept,
-                context)
+            .createSession(this.client.getUrl(), containerName, restype, comp, createSessionConfiguration,
+                this.client.getVersion(), accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6825,7 +6825,7 @@ public final class ContainersImpl {
             final String comp = "session";
             final String accept = "application/xml";
             return service.createSessionSync(this.client.getUrl(), containerName, restype, comp,
-                createSessionConfiguration, accept, context);
+                createSessionConfiguration, this.client.getVersion(), accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
