@@ -1297,6 +1297,78 @@
             "match": "class com\\.azure\\.resourcemanager\\.containerinstance\\.models\\.(CachedImagesListResult|CapabilitiesListResult|ContainerGroupListResult|OperationListResult|UsageListResult)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models setters are now package-private if being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(AvailabilitySetListResult|CapacityReservationGroupListResult|CapacityReservationListResult|CloudServiceListResult|CloudServiceRoleListResult|DedicatedHostGroupListResult|DedicatedHostListResult|DedicatedHostSizeListResult|ImageListResult|ListUsagesResult|OSFamilyListResult|OSVersionListResult|OperationListResult|PrivateEndpointConnectionListResult|ProximityPlacementGroupListResult|ResourceSkusResult|RestorePointCollectionListResult|RoleInstanceListResult|RunCommandListResult|SshPublicKeysGroupListResult|UpdateDomainListResult|VirtualMachineListResult|VirtualMachineRunCommandsListResult|VirtualMachineScaleSetExtensionListResult|VirtualMachineScaleSetListResult|VirtualMachineScaleSetListSkusResult|VirtualMachineScaleSetListWithLinkResult|VirtualMachineScaleSetVMListResult|VirtualMachineSizeListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(CommunityGalleryImageList|CommunityGalleryImageVersionList|DiskAccessList|DiskEncryptionSetList|DiskList|DiskRestorePointList|GalleryApplicationList|GalleryApplicationVersionList|GalleryImageList|GalleryImageVersionList|GalleryInVMAccessControlProfileList|GalleryInVMAccessControlProfileVersionList|GalleryList|GalleryScriptList|GalleryScriptVersionList|GallerySoftDeletedResourceList|ResourceUriList|SharedGalleryImageList|SharedGalleryImageVersionList|SharedGalleryList|SnapshotList|VirtualMachineScaleSetListOSUpgradeHistory)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationDisplay|RedisInstanceDetails|RedisLinkedServer)::\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.redis\\.models\\.OperationDisplay\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.redis\\.models\\.OperationStatusResult\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationListResult|RedisListResult|RedisCacheAccessPolicyAssignmentList|RedisFirewallRuleListResult|RedisPatchScheduleListResult|RedisCacheAccessPolicyList|PrivateLinkResourceListResult|NotificationListResponse|PrivateEndpointConnectionListResult|RedisLinkedServerWithPropertiesList)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }
       ]
     }
