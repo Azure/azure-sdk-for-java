@@ -65,13 +65,12 @@ public final class ContentValidationModeResolver {
         return mono.contextWrite(FluxUtil.toReactorContext(new Context(CONTENT_VALIDATION_MODE_KEY, mode)));
     }
 
-    
     /**
      * Mode for a single-part upload. Use CRC64 header when length is less than 4MB, otherwise structured
      * message.
      */
     private static String getModeForSinglePartUpload(StorageChecksumAlgorithm algorithm, long length) {
-        if (algorithm == StorageChecksumAlgorithm.CRC64) {
+        if (algorithm == StorageChecksumAlgorithm.CRC64 || algorithm == StorageChecksumAlgorithm.AUTO) {
             return length < MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER
                 ? USE_CRC64_CHECKSUM_HEADER_CONTEXT
                 : USE_STRUCTURED_MESSAGE_CONTEXT;
@@ -83,7 +82,7 @@ public final class ContentValidationModeResolver {
      * Mode for a chunked (multi-part) upload. Always use structured message.
      */
     private static String getModeForChunkedUpload(StorageChecksumAlgorithm algorithm) {
-        if (algorithm == StorageChecksumAlgorithm.CRC64) {
+        if (algorithm == StorageChecksumAlgorithm.CRC64 || algorithm == StorageChecksumAlgorithm.AUTO) {
             return USE_STRUCTURED_MESSAGE_CONTEXT;
         }
         return null;
