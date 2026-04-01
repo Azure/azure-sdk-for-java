@@ -40,7 +40,7 @@ public class OperationStatusResult implements JsonSerializable<OperationStatusRe
     /*
      * Percent of the operation that is complete.
      */
-    private Double percentComplete;
+    private Float percentComplete;
 
     /*
      * The start time of the operation.
@@ -133,7 +133,7 @@ public class OperationStatusResult implements JsonSerializable<OperationStatusRe
      * 
      * @return the percentComplete value.
      */
-    public Double percentComplete() {
+    public Float percentComplete() {
         return this.percentComplete;
     }
 
@@ -143,7 +143,7 @@ public class OperationStatusResult implements JsonSerializable<OperationStatusRe
      * @param percentComplete the percentComplete value to set.
      * @return the OperationStatusResult object itself.
      */
-    OperationStatusResult withPercentComplete(Double percentComplete) {
+    OperationStatusResult withPercentComplete(Float percentComplete) {
         this.percentComplete = percentComplete;
         return this;
     }
@@ -287,7 +287,7 @@ public class OperationStatusResult implements JsonSerializable<OperationStatusRe
                 } else if ("name".equals(fieldName)) {
                     deserializedOperationStatusResult.name = reader.getString();
                 } else if ("percentComplete".equals(fieldName)) {
-                    deserializedOperationStatusResult.percentComplete = reader.getNullable(JsonReader::getDouble);
+                    deserializedOperationStatusResult.percentComplete = reader.getNullable(JsonReader::getFloat);
                 } else if ("startTime".equals(fieldName)) {
                     deserializedOperationStatusResult.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

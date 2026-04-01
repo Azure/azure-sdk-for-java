@@ -42,10 +42,9 @@
 * `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withEndTime(java.time.OffsetDateTime)`
 * `models.OperationStatusResult withOperations(java.util.List)` -> `models.OperationStatusResult withOperations(java.util.List)`
 * `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)` -> `models.OperationStatusResult withError(com.azure.core.management.exception.ManagementError)`
-* `withPercentComplete(java.lang.Float)` was removed
+* `models.OperationStatusResult withPercentComplete(java.lang.Float)` -> `models.OperationStatusResult withPercentComplete(java.lang.Float)`
 * `models.OperationStatusResult withId(java.lang.String)` -> `models.OperationStatusResult withId(java.lang.String)`
 * `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)` -> `models.OperationStatusResult withStartTime(java.time.OffsetDateTime)`
-* `java.lang.Float percentComplete()` -> `java.lang.Double percentComplete()`
 * `models.OperationStatusResult withName(java.lang.String)` -> `models.OperationStatusResult withName(java.lang.String)`
 
 #### `models.RedisLinkedServer` was modified

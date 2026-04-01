@@ -51,7 +51,7 @@ public final class OperationStatusInner extends OperationStatusResult {
     /*
      * Percent of the operation that is complete.
      */
-    private Double percentComplete;
+    private Float percentComplete;
 
     /*
      * Operation status.
@@ -129,7 +129,7 @@ public final class OperationStatusInner extends OperationStatusResult {
      * @return the percentComplete value.
      */
     @Override
-    public Double percentComplete() {
+    public Float percentComplete() {
         return this.percentComplete;
     }
 
@@ -224,7 +224,7 @@ public final class OperationStatusInner extends OperationStatusResult {
                 } else if ("name".equals(fieldName)) {
                     deserializedOperationStatusInner.name = reader.getString();
                 } else if ("percentComplete".equals(fieldName)) {
-                    deserializedOperationStatusInner.percentComplete = reader.getNullable(JsonReader::getDouble);
+                    deserializedOperationStatusInner.percentComplete = reader.getNullable(JsonReader::getFloat);
                 } else if ("startTime".equals(fieldName)) {
                     deserializedOperationStatusInner.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
