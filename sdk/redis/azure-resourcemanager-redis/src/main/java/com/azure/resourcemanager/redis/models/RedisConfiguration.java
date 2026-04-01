@@ -125,7 +125,7 @@ public final class RedisConfiguration implements JsonSerializable<RedisConfigura
      * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
      * aof-storage-connection-string-1 etc.
      */
-    private Map<String, Object> additionalProperties;
+    private Map<String, String> additionalProperties;
 
     /**
      * Creates an instance of RedisConfiguration class.
@@ -499,7 +499,7 @@ public final class RedisConfiguration implements JsonSerializable<RedisConfigura
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> additionalProperties() {
+    public Map<String, String> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -512,7 +512,7 @@ public final class RedisConfiguration implements JsonSerializable<RedisConfigura
      * @param additionalProperties the additionalProperties value to set.
      * @return the RedisConfiguration object itself.
      */
-    public RedisConfiguration withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public RedisConfiguration withAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -548,7 +548,7 @@ public final class RedisConfiguration implements JsonSerializable<RedisConfigura
         jsonWriter.writeStringField("storage-subscription-id", this.storageSubscriptionId);
         jsonWriter.writeStringField("aad-enabled", this.aadEnabled);
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+            for (Map.Entry<String, String> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
             }
         }
@@ -566,7 +566,7 @@ public final class RedisConfiguration implements JsonSerializable<RedisConfigura
     public static RedisConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RedisConfiguration deserializedRedisConfiguration = new RedisConfiguration();
-            Map<String, Object> additionalProperties = null;
+            Map<String, String> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -614,7 +614,7 @@ public final class RedisConfiguration implements JsonSerializable<RedisConfigura
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName, reader.getString());
                 }
             }
             deserializedRedisConfiguration.additionalProperties = additionalProperties;
