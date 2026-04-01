@@ -156,12 +156,8 @@ class QueryPlanRetriever {
                         }
 
                         if (queryClient.useThinClient(req) && partitionKeyDefinition != null) {
-                            List<Range<String>> epkRanges = PartitionKeyInternalHelper.convertToSortedEpkRanges(
-                                PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,
-                                responseBody,
-                                partitionKeyDefinition);
                             partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
-                                responseBody, timeline, epkRanges);
+                                responseBody, timeline, partitionKeyDefinition);
                         } else {
                             partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
                                 responseBody, timeline);
