@@ -111,6 +111,24 @@ public class ImplementationBridgeHelpers {
         BridgeInternal.initializeAllAccessors();
     }
 
+    /**
+     * Forces the initialization of a single class (triggering its {@code <clinit>} and thereby
+     * registering its accessor) without eagerly loading all other Cosmos SDK classes.
+     * <p>
+     * This targeted approach replaces broad {@link #initializeAllAccessors()} calls inside
+     * individual {@code getXxxAccessor()} methods to prevent JVM-level {@code <clinit>} deadlocks
+     * that occur when multiple threads concurrently trigger class loading of different Cosmos classes.
+     *
+     * @param className the fully-qualified name of the class whose accessor should be initialized
+     */
+    private static void ensureClassInitialized(String className) {
+        try {
+            Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            logger.error("Failed to load class for accessor initialization: {}", className, e);
+        }
+    }
+
     public static final class CosmosClientBuilderHelper {
         private static final AtomicReference<CosmosClientBuilderAccessor> accessor = new AtomicReference<>();
         private static final AtomicBoolean cosmosClientBuilderClassLoaded = new AtomicBoolean(false);
@@ -129,7 +147,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (!cosmosClientBuilderClassLoaded.get()) {
                 logger.debug("Initializing CosmosClientBuilderAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosClientBuilder");
             }
 
             CosmosClientBuilderAccessor snapshot = accessor.get();
@@ -190,7 +208,7 @@ public class ImplementationBridgeHelpers {
         public static PartitionKeyAccessor getPartitionKeyAccessor() {
             if (!partitionKeyClassLoaded.get()) {
                 logger.debug("Initializing PartitionKeyAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.PartitionKey");
             }
 
             PartitionKeyAccessor snapshot = accessor.get();
@@ -226,7 +244,7 @@ public class ImplementationBridgeHelpers {
         public static DirectConnectionConfigAccessor getDirectConnectionConfigAccessor() {
             if (!directConnectionConfigClassLoaded.get()) {
                 logger.debug("Initializing DirectConnectionConfigAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.DirectConnectionConfig");
             }
 
             DirectConnectionConfigAccessor snapshot = accessor.get();
@@ -271,7 +289,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosQueryRequestOptionsAccessor getCosmosQueryRequestOptionsAccessor() {
             if (!cosmosQueryRequestOptionsClassLoaded.get()) {
                 logger.debug("Initializing CosmosQueryRequestOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosQueryRequestOptions");
             }
 
             CosmosQueryRequestOptionsAccessor snapshot = accessor.get();
@@ -337,7 +355,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosReadManyRequestOptionsAccessor getCosmosReadManyRequestOptionsAccessor() {
             if (!cosmosReadManyRequestOptionsClassLoaded.get()) {
                 logger.debug("Initializing CosmosReadManyRequestOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosReadManyRequestOptions");
             }
 
             CosmosReadManyRequestOptionsAccessor snapshot = accessor.get();
@@ -371,7 +389,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosChangeFeedRequestOptionsAccessor getCosmosChangeFeedRequestOptionsAccessor() {
             if (!cosmosChangeFeedRequestOptionsClassLoaded.get()) {
                 logger.debug("Initializing CosmosChangeFeedRequestOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosChangeFeedRequestOptions");
             }
 
             CosmosChangeFeedRequestOptionsAccessor snapshot = accessor.get();
@@ -425,7 +443,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosItemRequestOptionsAccessor getCosmosItemRequestOptionsAccessor() {
             if (!cosmosItemRequestOptionsClassLoaded.get()) {
                 logger.debug("Initializing CosmosItemRequestOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosItemRequestOptions");
             }
 
             CosmosItemRequestOptionsAccessor snapshot = accessor.get();
@@ -469,7 +487,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBulkExecutionOptionsAccessor getCosmosBulkExecutionOptionsAccessor() {
             if (!cosmosBulkExecutionOptionsClassLoaded.get()) {
                 logger.debug("Initializing CosmosBulkExecutionOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBulkExecutionOptions");
             }
 
             CosmosBulkExecutionOptionsAccessor snapshot = accessor.get();
@@ -506,7 +524,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosItemResponseBuilderAccessor getCosmosItemResponseBuilderAccessor() {
             if (!cosmosItemResponseClassLoaded.get()) {
                 logger.debug("Initializing CosmosItemResponseBuilderAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosItemResponse");
             }
 
             CosmosItemResponseBuilderAccessor snapshot = accessor.get();
@@ -562,7 +580,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosClientAccessor getCosmosClientAccessor() {
             if (!cosmosClientClassLoaded.get()) {
                 logger.debug("Initializing CosmosClientAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosClient");
             }
 
             CosmosClientAccessor snapshot = accessor.get();
@@ -597,7 +615,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosContainerPropertiesAccessor getCosmosContainerPropertiesAccessor() {
             if (!cosmosContainerPropertiesClassLoaded.get()) {
                 logger.debug("Initializing CosmosContainerPropertiesAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosContainerProperties");
             }
 
             CosmosContainerPropertiesAccessor snapshot = accessor.get();
@@ -634,7 +652,7 @@ public class ImplementationBridgeHelpers {
         public static <T> CosmosPageFluxAccessor getCosmosPageFluxAccessor() {
             if (!cosmosPagedFluxClassLoaded.get()) {
                 logger.debug("Initializing CosmosPageFluxAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.util.CosmosPagedFluxDefaultImpl");
             }
 
             CosmosPageFluxAccessor snapshot = accessor.get();
@@ -669,7 +687,7 @@ public class ImplementationBridgeHelpers {
         public static <T> CosmosAsyncDatabaseAccessor getCosmosAsyncDatabaseAccessor() {
             if (!cosmosAsyncDatabaseClassLoaded.get()) {
                 logger.debug("Initializing CosmosAsyncDatabaseAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosAsyncDatabase");
             }
 
             CosmosAsyncDatabaseAccessor snapshot = accessor.get();
@@ -705,7 +723,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBulkExecutionThresholdsStateAccessor getBulkExecutionThresholdsAccessor() {
             if (!cosmosBulkExecutionThresholdsStateClassLoaded.get()) {
                 logger.debug("Initializing CosmosBulkExecutionThresholdsStateAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBulkExecutionThresholdsState");
             }
 
             CosmosBulkExecutionThresholdsStateAccessor snapshot = accessor.get();
@@ -743,7 +761,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosOperationDetailsAccessor getCosmosOperationDetailsAccessor() {
             if (!cosmosOperationDetailsClassLoaded.get()) {
                 logger.debug("Initializing CosmosOperationDetailsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosOperationDetails");
             }
 
             CosmosOperationDetailsAccessor snapshot = accessor.get();
@@ -779,7 +797,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosRequestContextAccessor getCosmosRequestContextAccessor() {
             if (!cosmosRequestContextClassLoaded.get()) {
                 logger.debug("Initializing CosmosRequestContextAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosRequestContext");
             }
 
             CosmosRequestContextAccessor snapshot = accessor.get();
@@ -815,7 +833,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosDiagnosticsAccessor getCosmosDiagnosticsAccessor() {
             if (!cosmosDiagnosticsClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosDiagnostics");
             }
 
             CosmosDiagnosticsAccessor snapshot = accessor.get();
@@ -879,7 +897,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosDiagnosticsContextAccessor getCosmosDiagnosticsContextAccessor() {
             if (!cosmosDiagnosticsContextClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosDiagnosticsContext");
             }
 
             CosmosDiagnosticsContextAccessor snapshot = accessor.get();
@@ -1013,7 +1031,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosAsyncContainerAccessor getCosmosAsyncContainerAccessor() {
             if (!cosmosAsyncContainerClassLoaded.get()) {
                 logger.debug("Initializing CosmosAsyncContainerAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosAsyncContainer");
             }
 
             CosmosAsyncContainerAccessor snapshot = accessor.get();
@@ -1096,7 +1114,7 @@ public class ImplementationBridgeHelpers {
         public static FeedResponseAccessor getFeedResponseAccessor() {
             if (!feedResponseClassLoaded.get()) {
                 logger.debug("Initializing FeedResponseAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.FeedResponse");
             }
 
             FeedResponseAccessor snapshot = accessor.get();
@@ -1142,7 +1160,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBatchRequestOptionsAccessor getCosmosBatchRequestOptionsAccessor() {
             if (!cosmosBatchRequestOptionsClassLoaded.get()) {
                 logger.debug("Initializing CosmosBatchRequestOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBatchRequestOptions");
             }
 
             CosmosBatchRequestOptionsAccessor snapshot = accessor.get();
@@ -1196,7 +1214,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBatchOperationResultAccessor getCosmosBatchOperationResultAccessor() {
             if (!cosmosBatchOperationResultClassLoaded.get()) {
                 logger.debug("Initializing CosmosBatchOperationResultAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBatchOperationResult");
             }
 
             CosmosBatchOperationResultAccessor snapshot = accessor.get();
@@ -1234,7 +1252,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosPatchOperationsAccessor getCosmosPatchOperationsAccessor() {
             if (!cosmosPatchOperationsClassLoaded.get()) {
                 logger.debug("Initializing CosmosPatchOperationsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosPatchOperations");
             }
 
             CosmosPatchOperationsAccessor snapshot = accessor.get();
@@ -1269,7 +1287,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBatchAccessor getCosmosBatchAccessor() {
             if (!cosmosBatchClassLoaded.get()) {
                 logger.debug("Initializing CosmosBatchAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBatch");
             }
 
             CosmosBatchAccessor snapshot = accessor.get();
@@ -1304,7 +1322,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
             if (!cosmosBulkItemResponseClassLoaded.get()) {
                 logger.debug("Initializing CosmosBulkItemResponseAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBulkItemResponse");
             }
 
             CosmosBulkItemResponseAccessor snapshot = accessor.get();
@@ -1345,7 +1363,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosBatchResponseAccessor getCosmosBatchResponseAccessor() {
             if (!cosmosBatchResponseClassLoaded.get()) {
                 logger.debug("Initializing CosmosBatchResponseAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosBatchResponse");
             }
 
             CosmosBatchResponseAccessor snapshot = accessor.get();
@@ -1396,7 +1414,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosAsyncClientEncryptionKeyAccessor getCosmosAsyncClientEncryptionKeyAccessor() {
             if (!cosmosAsyncClientEncryptionKeyClassLoaded.get()) {
                 logger.debug("Initializing CosmosAsyncClientEncryptionKeyAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosAsyncClientEncryptionKey");
             }
 
             CosmosAsyncClientEncryptionKeyAccessor snapshot = accessor.get();
@@ -1440,7 +1458,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosAsyncClientAccessor getCosmosAsyncClientAccessor() {
             if (!cosmosAsyncClientClassLoaded.get()) {
                 logger.debug("Initializing CosmosAsyncClientAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosAsyncClient");
             }
 
             CosmosAsyncClientAccessor snapshot = accessor.get();
@@ -1513,7 +1531,7 @@ public class ImplementationBridgeHelpers {
         public static Http2ConnectionConfigAccessor getHttp2ConnectionConfigAccessor() {
             if (!http2ConnectionConfigClassLoaded.get()) {
                 logger.debug("Initializing Http2ConnectionConfigAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.Http2ConnectionConfig");
             }
 
             Http2ConnectionConfigAccessor snapshot = accessor.get();
@@ -1550,7 +1568,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosDiagnosticsThresholdsAccessor getCosmosAsyncClientAccessor() {
             if (!cosmosDiagnosticsThresholdsClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsThresholds...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosDiagnosticsThresholds");
             }
 
             CosmosDiagnosticsThresholdsAccessor snapshot = accessor.get();
@@ -1580,7 +1598,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosExceptionAccessor getCosmosExceptionAccessor() {
             if (!cosmosExceptionClassLoaded.get()) {
                 logger.debug("Initializing CosmosExceptionAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosException");
             }
 
             CosmosExceptionAccessor snapshot = accessor.get();
@@ -1627,7 +1645,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosClientTelemetryConfigAccessor getCosmosClientTelemetryConfigAccessor() {
             if (!cosmosClientTelemetryClassLoaded.get()) {
                 logger.debug("Initializing CosmosClientTelemetryConfigAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosClientTelemetryConfig");
             }
 
             CosmosClientTelemetryConfigAccessor snapshot = accessor.get();
@@ -1700,7 +1718,7 @@ public class ImplementationBridgeHelpers {
         public static PriorityLevelAccessor getPriorityLevelAccessor() {
             if (!priorityLevelClassLoaded.get()) {
                 logger.debug("Initializing PriorityLevelAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.PriorityLevel");
             }
 
             PriorityLevelAccessor snapshot = accessor.get();
@@ -1739,7 +1757,7 @@ public class ImplementationBridgeHelpers {
 
             if (!cosmosContainerIdentityClassLoaded.get()) {
                 logger.debug("Initializing CosmosContainerIdentityAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.models.CosmosContainerIdentity");
             }
 
             CosmosContainerIdentityAccessor snapshot = accessor.get();
@@ -1781,7 +1799,7 @@ public class ImplementationBridgeHelpers {
 
             if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
                 logger.debug("Initializing CosmosContainerProactiveInitConfigAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosContainerProactiveInitConfig");
             }
 
             CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
@@ -1820,7 +1838,7 @@ public class ImplementationBridgeHelpers {
 
             if (!cosmosSessionRetryOptionsClassLoaded.get()) {
                 logger.debug("Initializing cosmosSessionRetryOptionsAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.SessionRetryOptions");
             }
 
             CosmosSessionRetryOptionsAccessor snapshot = accessor.get();
@@ -1870,7 +1888,7 @@ public class ImplementationBridgeHelpers {
         public static CosmosItemSerializerAccessor getCosmosItemSerializerAccessor() {
             if (!cosmosItemSerializerClassLoaded.get()) {
                 logger.debug("Initializing CosmosItemSerializerAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.CosmosItemSerializer");
             }
 
             CosmosItemSerializerAccessor snapshot = accessor.get();
@@ -1913,7 +1931,7 @@ public class ImplementationBridgeHelpers {
         public static ReadConsistencyStrategyAccessor getReadConsistencyStrategyAccessor() {
             if (!readConsistencyStrategyClassLoaded.get()) {
                 logger.debug("Initializing ReadConsistencyStrategyAccessor...");
-                initializeAllAccessors();
+                ensureClassInitialized("com.azure.cosmos.ReadConsistencyStrategy");
             }
 
             ReadConsistencyStrategyAccessor snapshot = accessor.get();
