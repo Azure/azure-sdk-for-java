@@ -1397,11 +1397,11 @@ public class CosmosAsyncDatabase {
         RequestOptions nonNullRequestOptions =
             options != null ? ModelBridgeInternal.toRequestOptions(options) : new RequestOptions();
 
-        CosmosGlobalSecondaryIndexDefinition gsiDefinition = containerProperties.getGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition gsiDefinition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
         Mono<Void> ridResolution;
         if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
             ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
-                .read()
+                .read(options, context)
                 .flatMap(sourceContainerResponse -> {
                     String rid = sourceContainerResponse.getProperties().getResourceId();
                     ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(gsiDefinition, rid);

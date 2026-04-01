@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Example:
  * <pre>{@code
  * CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
- *     .setSourceContainer("gsi-src")
+ *     .setSourceContainerId("gsi-src")
  *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
  * }</pre>
  */

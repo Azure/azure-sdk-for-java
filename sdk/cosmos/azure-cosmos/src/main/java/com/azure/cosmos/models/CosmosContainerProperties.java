@@ -394,31 +394,31 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the materialized view definition for this container in the Azure Cosmos DB service.
-     * A materialized view is derived from a source container and is defined by a SQL-like query.
+     * Gets the globalSecondaryIndex  definition for this container in the Azure Cosmos DB service.
+     * A globalSecondaryIndex is derived from a source container and is defined by a SQL-like query.
      *
      * @return the CosmosGlobalSecondaryIndexDefinition
      */
-    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+    public CosmosGlobalSecondaryIndexDefinition getCosmosGlobalSecondaryIndexDefinition() {
         return this.documentCollection.getGlobalSecondaryIndexDefinition();
     }
 
     /**
-     * Sets the materialized view definition for this container in the Azure Cosmos DB service.
-     * A materialized view is derived from a source container and is defined by a SQL-like query.
+     * Sets the globalSecondaryIndex definition for this container in the Azure Cosmos DB service.
+     * A globalSecondaryIndex view is derived from a source container and is defined by a SQL-like query.
      * <p>
      * Example:
      * <pre>{@code
      * CosmosGlobalSecondaryIndexDefinition mvDef = new CosmosGlobalSecondaryIndexDefinition()
-     *     .setSourceCollectionId("gsi-src")
+     *     .setSourceContainerId("gsi-src")
      *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
-     * containerProperties.setMaterializedViewDefinition(mvDef);
+     * containerProperties.setCosmosGlobalSecondaryIndexDefinition(mvDef);
      * }</pre>
      *
      * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setMaterializedViewDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+    public CosmosContainerProperties setCosmosGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         this.documentCollection.setGlobalSecondaryIndexDefinition(value);
         return this;
     }

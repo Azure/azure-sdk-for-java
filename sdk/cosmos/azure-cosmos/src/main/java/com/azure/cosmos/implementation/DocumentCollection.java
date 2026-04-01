@@ -495,7 +495,7 @@ public final class DocumentCollection extends Resource {
      * @param value the CosmosMaterializedViewDefinition
      */
     public void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
-        checkNotNull(value, "cosmosMaterializedViewDefinition cannot be null");
+        checkNotNull(value, "cosmosGlobalSecondaryIndexDefinition cannot be null");
         this.cosmosGlobalSecondaryIndexDefinition = value;
         this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
     }
