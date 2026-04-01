@@ -1302,6 +1302,54 @@
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(.*(Result|List)(s)?|ApplicationGatewayAvailableSslPredefinedPolicies)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.TrackedResource"
+          },
+          "justification": "Common types now sourced from azure-core or ARM common types."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\.EffectiveNetworkSecurityGroup\\:\\:tagMap\\(\\)"
+          },
+          "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
           "justification": "Output-only immutable models constructors are now private."
@@ -1369,54 +1417,6 @@
             "match": "class com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationListResult|RedisListResult|RedisCacheAccessPolicyAssignmentList|RedisFirewallRuleListResult|RedisPatchScheduleListResult|RedisCacheAccessPolicyList|PrivateLinkResourceListResult|NotificationListResponse|PrivateEndpointConnectionListResult|RedisLinkedServerWithPropertiesList)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "old" : {
-            "matcher": "regex",
-            "match": "method void com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:\\<init\\>\\(\\)"
-          },
-          "justification": "Output-only immutable models' constructors are now private."
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
-          },
-          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
-        },
-        {
-          "code": "java.method.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
-          },
-          "justification": "Output-only immutable models' setters are removed if no explicit usage."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(.*(Result|List)(s)?|ApplicationGatewayAvailableSslPredefinedPolicies)"
-          },
-          "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "code": "java.class.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.TrackedResource"
-          },
-          "justification": "Common types now sourced from azure-core or ARM common types."
-        },
-        {
-          "code": "java.method.returnTypeChanged",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\.EffectiveNetworkSecurityGroup\\:\\:tagMap\\(\\)"
-          },
-          "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
         }
       ]
     }
