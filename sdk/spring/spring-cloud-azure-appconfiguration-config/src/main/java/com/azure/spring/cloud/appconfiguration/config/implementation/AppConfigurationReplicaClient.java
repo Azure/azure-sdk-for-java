@@ -249,7 +249,7 @@ class AppConfigurationReplicaClient {
         List<PagedResponse<ConfigurationSetting>> results = client
             .listConfigurationSettings(settingSelector, context)
             .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != HTTP_NOT_MODIFIED).toList();
-        return results.size() > 0;
+        return !results.isEmpty();
     }
 
     /**
