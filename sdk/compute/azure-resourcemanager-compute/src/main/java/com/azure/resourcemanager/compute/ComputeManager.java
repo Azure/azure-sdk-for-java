@@ -105,7 +105,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      *
      * @return the cloud service client
      */
-    public CloudServiceManagementClient getCloudServiceClient() {
+    public CloudServiceManagementClient cloudServiceClient() {
         return cloudServiceClient;
     }
 
