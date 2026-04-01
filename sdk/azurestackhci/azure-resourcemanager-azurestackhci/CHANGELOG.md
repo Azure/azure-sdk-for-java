@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-03-31)
+## 1.0.0 (2026-04-01)
 
 - Azure Resource Manager Azure Stack Hci client library for Java. This package contains Microsoft Azure SDK for Azure Stack Hci Management SDK. Azure Stack HCI service. Package api-version 2026-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -57,10 +57,10 @@
 #### `models.ClusterNode` was modified
 
 * `ClusterNode()` was changed to private access
-* `validate()` was removed
 * `java.lang.Float memoryInGiB()` -> `java.lang.Double memoryInGiB()`
-* `java.lang.Float id()` -> `java.lang.Double id()`
 * `java.lang.Float coreCount()` -> `java.lang.Double coreCount()`
+* `validate()` was removed
+* `java.lang.Float id()` -> `java.lang.Double id()`
 
 #### `models.SwitchDetail` was modified
 
@@ -100,14 +100,14 @@
 
 * `Operation()` was removed
 * `validate()` was removed
-* `models.ActionType actionType()` -> `models.ActionType actionType()`
-* `toJson(com.azure.json.JsonWriter)` was removed
-* `models.Origin origin()` -> `models.Origin origin()`
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `java.lang.String name()` -> `java.lang.String name()`
-* `java.lang.Boolean isDataAction()` -> `java.lang.Boolean isDataAction()`
-* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
 * `withDisplay(models.OperationDisplay)` was removed
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.Boolean isDataAction()` -> `java.lang.Boolean isDataAction()`
+* `java.lang.String name()` -> `java.lang.String name()`
+* `models.Origin origin()` -> `models.Origin origin()`
+* `models.ActionType actionType()` -> `models.ActionType actionType()`
+* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
 
 #### `models.ClusterDesiredProperties` was modified
 
@@ -129,8 +129,8 @@
 #### `models.ClusterReportedProperties` was modified
 
 * `ClusterReportedProperties()` was changed to private access
-* `withDiagnosticLevel(models.DiagnosticLevel)` was removed
 * `validate()` was removed
+* `withDiagnosticLevel(models.DiagnosticLevel)` was removed
 
 #### `models.PhysicalNodes` was modified
 
@@ -176,9 +176,9 @@
 
 #### `models.Cluster` was modified
 
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 * `java.lang.Float trialDaysRemaining()` -> `java.lang.Double trialDaysRemaining()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.UploadCertificateRequest` was modified
 
@@ -225,8 +225,8 @@
 * `SkuMappings()` was changed to private access
 * `withCatalogPlanId(java.lang.String)` was removed
 * `withMarketplaceSkuId(java.lang.String)` was removed
-* `withMarketplaceSkuVersions(java.util.List)` was removed
 * `validate()` was removed
+* `withMarketplaceSkuVersions(java.util.List)` was removed
 
 #### `models.ValidateRequest` was modified
 
@@ -262,11 +262,11 @@
 #### `models.ExtensionInstanceViewStatus` was modified
 
 * `ExtensionInstanceViewStatus()` was changed to private access
-* `withLevel(models.StatusLevelTypes)` was removed
-* `withDisplayStatus(java.lang.String)` was removed
-* `withMessage(java.lang.String)` was removed
 * `validate()` was removed
+* `withMessage(java.lang.String)` was removed
 * `withTime(java.time.OffsetDateTime)` was removed
+* `withDisplayStatus(java.lang.String)` was removed
+* `withLevel(models.StatusLevelTypes)` was removed
 * `withCode(java.lang.String)` was removed
 
 #### `models.NetworkController` was modified
@@ -423,13 +423,13 @@
 #### `models.UserAssignedIdentity` was modified
 
 * `validate()` was removed
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.Operations` was modified
 
-* `listWithResponse(com.azure.core.util.Context)` was removed
 * `models.OperationListResult list()` -> `com.azure.core.http.rest.PagedIterable list()`
+* `listWithResponse(com.azure.core.util.Context)` was removed
 
 #### `models.ExtensionProfile` was modified
 
@@ -484,9 +484,9 @@
 
 #### `models.ArcSettingsPatch` was modified
 
-* `java.lang.Object connectivityProperties()` -> `models.ArcConnectivityProperties connectivityProperties()`
 * `validate()` was removed
 * `withConnectivityProperties(java.lang.Object)` was removed
+* `java.lang.Object connectivityProperties()` -> `models.ArcConnectivityProperties connectivityProperties()`
 
 #### `models.PerNodeExtensionState` was modified
 
@@ -496,11 +496,11 @@
 #### `models.ExtensionInstanceView` was modified
 
 * `ExtensionInstanceView()` was changed to private access
-* `validate()` was removed
 * `withType(java.lang.String)` was removed
-* `withTypeHandlerVersion(java.lang.String)` was removed
 * `withStatus(models.ExtensionInstanceViewStatus)` was removed
+* `validate()` was removed
 * `withName(java.lang.String)` was removed
+* `withTypeHandlerVersion(java.lang.String)` was removed
 
 #### `models.PackageVersionInfo` was modified
 
@@ -608,13 +608,13 @@
 
 #### `models.DeploymentData` was modified
 
-* `withIdentityProvider(models.IdentityProvider)` was added
-* `withLocalAvailabilityZones(java.util.List)` was added
-* `assemblyInfo()` was added
 * `identityProvider()` was added
 * `localAvailabilityZones()` was added
+* `withIdentityProvider(models.IdentityProvider)` was added
 * `isManagementCluster()` was added
+* `withLocalAvailabilityZones(java.util.List)` was added
 * `withAssemblyInfo(models.AssemblyInfo)` was added
+* `assemblyInfo()` was added
 * `withIsManagementCluster(java.lang.Boolean)` was added
 
 #### `models.HciReportedProperties` was modified
@@ -632,41 +632,41 @@
 
 #### `models.Clusters` was modified
 
-* `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest)` was added
 * `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
+* `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest)` was added
 
 #### `models.ClusterReportedProperties` was modified
 
-* `hardwareClass()` was added
 * `msiExpirationTimeStamp()` was added
+* `hardwareClass()` was added
 
 #### `models.DeploymentCluster` was modified
 
-* `withClusterPattern(models.ClusterPattern)` was added
 * `hardwareClass()` was added
+* `withClusterPattern(models.ClusterPattern)` was added
 * `clusterPattern()` was added
 
 #### `models.Cluster` was modified
 
-* `isManagementCluster()` was added
-* `updateSecretsLocations(models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
+* `localAvailabilityZones()` was added
 * `updateSecretsLocations(models.SecretsLocationsChangeRequest)` was added
 * `secretsLocations()` was added
-* `identityProvider()` was added
-* `localAvailabilityZones()` was added
+* `updateSecretsLocations(models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
+* `isManagementCluster()` was added
 * `clusterPattern()` was added
+* `identityProvider()` was added
 
 #### `models.InfrastructureNetwork` was modified
 
-* `withDnsServerConfig(models.DnsServerConfig)` was added
 * `dnsZones()` was added
+* `withDnsServerConfig(models.DnsServerConfig)` was added
 * `dnsServerConfig()` was added
 * `withDnsZones(java.util.List)` was added
 
 #### `models.ArcSettings` was modified
 
-* `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
 * `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest)` was added
+* `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
 
 #### `models.HciNicDetail` was modified
 
@@ -679,8 +679,8 @@
 
 #### `models.ArcSetting` was modified
 
-* `reconcile(models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
 * `reconcile(models.ReconcileArcSettingsRequest)` was added
+* `reconcile(models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
 
 #### `models.HciUpdate$Definition` was modified
 
@@ -697,13 +697,13 @@
 
 #### `models.Cluster$Definition` was modified
 
-* `withSecretsLocations(java.util.List)` was added
 * `withLocalAvailabilityZones(java.util.List)` was added
+* `withSecretsLocations(java.util.List)` was added
 
 #### `AzureStackHciManager` was modified
 
-* `validatedSolutionRecipes()` was added
 * `edgeDeviceJobs()` was added
+* `validatedSolutionRecipes()` was added
 
 #### `models.ArcSettingsPatch` was modified
 
