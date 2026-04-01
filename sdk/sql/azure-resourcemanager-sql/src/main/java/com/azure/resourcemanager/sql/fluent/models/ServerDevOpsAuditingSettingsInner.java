@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * A server DevOps auditing settings.
@@ -263,7 +264,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
      * 
      * @return the storageAccountSubscriptionId value.
      */
-    public String storageAccountSubscriptionId() {
+    public UUID storageAccountSubscriptionId() {
         return this.innerProperties() == null ? null : this.innerProperties().storageAccountSubscriptionId();
     }
 
@@ -273,7 +274,7 @@ public final class ServerDevOpsAuditingSettingsInner extends ProxyResource {
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ServerDevOpsAuditingSettingsInner object itself.
      */
-    public ServerDevOpsAuditingSettingsInner withStorageAccountSubscriptionId(String storageAccountSubscriptionId) {
+    public ServerDevOpsAuditingSettingsInner withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerDevOpsAuditSettingsProperties();
         }

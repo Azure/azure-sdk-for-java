@@ -18,6 +18,8 @@ import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The properties of a server.
@@ -78,7 +80,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     /*
      * The Client id used for cross tenant CMK scenario
      */
-    private String federatedClientId;
+    private UUID federatedClientId;
 
     /*
      * A CMK URI of the key to use for encryption.
@@ -291,7 +293,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * 
      * @return the federatedClientId value.
      */
-    public String federatedClientId() {
+    public UUID federatedClientId() {
         return this.federatedClientId;
     }
 
@@ -301,7 +303,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * @param federatedClientId the federatedClientId value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withFederatedClientId(String federatedClientId) {
+    public ServerProperties withFederatedClientId(UUID federatedClientId) {
         this.federatedClientId = federatedClientId;
         return this;
     }
@@ -471,7 +473,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("primaryUserAssignedIdentityId", this.primaryUserAssignedIdentityId);
-        jsonWriter.writeStringField("federatedClientId", this.federatedClientId);
+        jsonWriter.writeStringField("federatedClientId", Objects.toString(this.federatedClientId, null));
         jsonWriter.writeStringField("keyId", this.keyId);
         jsonWriter.writeJsonField("administrators", this.administrators);
         jsonWriter.writeStringField("restrictOutboundNetworkAccess",
@@ -522,7 +524,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                 } else if ("primaryUserAssignedIdentityId".equals(fieldName)) {
                     deserializedServerProperties.primaryUserAssignedIdentityId = reader.getString();
                 } else if ("federatedClientId".equals(fieldName)) {
-                    deserializedServerProperties.federatedClientId = reader.getString();
+                    deserializedServerProperties.federatedClientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("keyId".equals(fieldName)) {
                     deserializedServerProperties.keyId = reader.getString();
                 } else if ("administrators".equals(fieldName)) {

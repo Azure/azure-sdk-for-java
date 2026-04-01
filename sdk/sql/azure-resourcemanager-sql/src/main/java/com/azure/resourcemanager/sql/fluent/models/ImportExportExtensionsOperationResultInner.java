@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.PrivateEndpointConnectionRequestStatus;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * An Extension operation result resource.
@@ -103,7 +104,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
      * 
      * @return the requestId value.
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.innerProperties() == null ? null : this.innerProperties().requestId();
     }
 

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Azure Active Directory identity configuration for a resource.
@@ -25,7 +26,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
     /*
      * The Azure Active Directory principal id.
      */
-    private String principalId;
+    private UUID principalId;
 
     /*
      * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
@@ -36,7 +37,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
     /*
      * The Azure Active Directory tenant id.
      */
-    private String tenantId;
+    private UUID tenantId;
 
     /**
      * Creates an instance of ResourceIdentity class.
@@ -69,7 +70,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
      * 
      * @return the principalId value.
      */
-    public String principalId() {
+    public UUID principalId() {
         return this.principalId;
     }
 
@@ -100,7 +101,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -151,11 +152,13 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
                         = reader.readMap(reader1 -> UserIdentity.fromJson(reader1));
                     deserializedResourceIdentity.userAssignedIdentities = userAssignedIdentities;
                 } else if ("principalId".equals(fieldName)) {
-                    deserializedResourceIdentity.principalId = reader.getString();
+                    deserializedResourceIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("type".equals(fieldName)) {
                     deserializedResourceIdentity.type = IdentityType.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedResourceIdentity.tenantId = reader.getString();
+                    deserializedResourceIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

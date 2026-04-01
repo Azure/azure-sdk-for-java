@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * A LongTermRetentionBackup operation result resource.
@@ -87,7 +88,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
      * 
      * @return the requestId value.
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.innerProperties() == null ? null : this.innerProperties().requestId();
     }
 

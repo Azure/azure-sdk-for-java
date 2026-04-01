@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties of a server DevOps audit settings.
@@ -71,7 +73,7 @@ public final class ServerDevOpsAuditSettingsProperties
     /*
      * Specifies the blob storage subscription Id.
      */
-    private String storageAccountSubscriptionId;
+    private UUID storageAccountSubscriptionId;
 
     /**
      * Creates an instance of ServerDevOpsAuditSettingsProperties class.
@@ -230,7 +232,7 @@ public final class ServerDevOpsAuditSettingsProperties
      * 
      * @return the storageAccountSubscriptionId value.
      */
-    public String storageAccountSubscriptionId() {
+    public UUID storageAccountSubscriptionId() {
         return this.storageAccountSubscriptionId;
     }
 
@@ -240,7 +242,7 @@ public final class ServerDevOpsAuditSettingsProperties
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ServerDevOpsAuditSettingsProperties object itself.
      */
-    public ServerDevOpsAuditSettingsProperties withStorageAccountSubscriptionId(String storageAccountSubscriptionId) {
+    public ServerDevOpsAuditSettingsProperties withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId) {
         this.storageAccountSubscriptionId = storageAccountSubscriptionId;
         return this;
     }
@@ -271,7 +273,8 @@ public final class ServerDevOpsAuditSettingsProperties
         jsonWriter.writeBooleanField("isManagedIdentityInUse", this.isManagedIdentityInUse);
         jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
         jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
-        jsonWriter.writeStringField("storageAccountSubscriptionId", this.storageAccountSubscriptionId);
+        jsonWriter.writeStringField("storageAccountSubscriptionId",
+            Objects.toString(this.storageAccountSubscriptionId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -306,7 +309,8 @@ public final class ServerDevOpsAuditSettingsProperties
                 } else if ("storageAccountAccessKey".equals(fieldName)) {
                     deserializedServerDevOpsAuditSettingsProperties.storageAccountAccessKey = reader.getString();
                 } else if ("storageAccountSubscriptionId".equals(fieldName)) {
-                    deserializedServerDevOpsAuditSettingsProperties.storageAccountSubscriptionId = reader.getString();
+                    deserializedServerDevOpsAuditSettingsProperties.storageAccountSubscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

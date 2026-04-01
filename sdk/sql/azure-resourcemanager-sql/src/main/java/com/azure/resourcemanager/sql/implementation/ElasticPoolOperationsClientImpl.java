@@ -29,6 +29,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.sql.fluent.ElasticPoolOperationsClient;
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
 import com.azure.resourcemanager.sql.implementation.models.ElasticPoolOperationListResult;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -80,7 +81,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
         Mono<Response<Void>> cancel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("elasticPoolName") String elasticPoolName, @PathParam("operationId") String operationId,
+            @PathParam("elasticPoolName") String elasticPoolName, @PathParam("operationId") UUID operationId,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -266,7 +267,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
-        String elasticPoolName, String operationId) {
+        String elasticPoolName, UUID operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -310,7 +311,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
-        String elasticPoolName, String operationId, Context context) {
+        String elasticPoolName, UUID operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -352,7 +353,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String elasticPoolName,
-        String operationId) {
+        UUID operationId) {
         return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId)
             .flatMap(ignored -> Mono.empty());
     }
@@ -372,7 +373,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String elasticPoolName,
-        String operationId, Context context) {
+        UUID operationId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, serverName, elasticPoolName, operationId, context).block();
     }
 
@@ -388,7 +389,7 @@ public final class ElasticPoolOperationsClientImpl implements ElasticPoolOperati
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String serverName, String elasticPoolName, String operationId) {
+    public void cancel(String resourceGroupName, String serverName, String elasticPoolName, UUID operationId) {
         cancelWithResponse(resourceGroupName, serverName, elasticPoolName, operationId, Context.NONE);
     }
 

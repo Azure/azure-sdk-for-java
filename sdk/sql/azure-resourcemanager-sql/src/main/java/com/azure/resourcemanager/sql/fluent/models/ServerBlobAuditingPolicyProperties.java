@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties of a server blob auditing policy.
@@ -183,7 +185,7 @@ public final class ServerBlobAuditingPolicyProperties implements JsonSerializabl
     /*
      * Specifies the blob storage subscription Id.
      */
-    private String storageAccountSubscriptionId;
+    private UUID storageAccountSubscriptionId;
 
     /**
      * Creates an instance of ServerBlobAuditingPolicyProperties class.
@@ -614,7 +616,7 @@ public final class ServerBlobAuditingPolicyProperties implements JsonSerializabl
      * 
      * @return the storageAccountSubscriptionId value.
      */
-    public String storageAccountSubscriptionId() {
+    public UUID storageAccountSubscriptionId() {
         return this.storageAccountSubscriptionId;
     }
 
@@ -624,7 +626,7 @@ public final class ServerBlobAuditingPolicyProperties implements JsonSerializabl
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ServerBlobAuditingPolicyProperties object itself.
      */
-    public ServerBlobAuditingPolicyProperties withStorageAccountSubscriptionId(String storageAccountSubscriptionId) {
+    public ServerBlobAuditingPolicyProperties withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId) {
         this.storageAccountSubscriptionId = storageAccountSubscriptionId;
         return this;
     }
@@ -661,7 +663,8 @@ public final class ServerBlobAuditingPolicyProperties implements JsonSerializabl
         jsonWriter.writeBooleanField("isManagedIdentityInUse", this.isManagedIdentityInUse);
         jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
         jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
-        jsonWriter.writeStringField("storageAccountSubscriptionId", this.storageAccountSubscriptionId);
+        jsonWriter.writeStringField("storageAccountSubscriptionId",
+            Objects.toString(this.storageAccountSubscriptionId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -711,7 +714,8 @@ public final class ServerBlobAuditingPolicyProperties implements JsonSerializabl
                 } else if ("storageAccountAccessKey".equals(fieldName)) {
                     deserializedServerBlobAuditingPolicyProperties.storageAccountAccessKey = reader.getString();
                 } else if ("storageAccountSubscriptionId".equals(fieldName)) {
-                    deserializedServerBlobAuditingPolicyProperties.storageAccountSubscriptionId = reader.getString();
+                    deserializedServerBlobAuditingPolicyProperties.storageAccountSubscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

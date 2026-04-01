@@ -13,6 +13,8 @@ import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties of a sync member with support to MI.
@@ -32,7 +34,7 @@ public final class SyncMemberProperties implements JsonSerializable<SyncMemberPr
     /*
      * SQL Server database id of the sync member.
      */
-    private String sqlServerDatabaseId;
+    private UUID sqlServerDatabaseId;
 
     /*
      * ARM resource id of the sync member logical database, for sync members in Azure.
@@ -130,7 +132,7 @@ public final class SyncMemberProperties implements JsonSerializable<SyncMemberPr
      * 
      * @return the sqlServerDatabaseId value.
      */
-    public String sqlServerDatabaseId() {
+    public UUID sqlServerDatabaseId() {
         return this.sqlServerDatabaseId;
     }
 
@@ -140,7 +142,7 @@ public final class SyncMemberProperties implements JsonSerializable<SyncMemberPr
      * @param sqlServerDatabaseId the sqlServerDatabaseId value to set.
      * @return the SyncMemberProperties object itself.
      */
-    public SyncMemberProperties withSqlServerDatabaseId(String sqlServerDatabaseId) {
+    public SyncMemberProperties withSqlServerDatabaseId(UUID sqlServerDatabaseId) {
         this.sqlServerDatabaseId = sqlServerDatabaseId;
         return this;
     }
@@ -322,7 +324,7 @@ public final class SyncMemberProperties implements JsonSerializable<SyncMemberPr
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
         jsonWriter.writeStringField("syncAgentId", this.syncAgentId);
-        jsonWriter.writeStringField("sqlServerDatabaseId", this.sqlServerDatabaseId);
+        jsonWriter.writeStringField("sqlServerDatabaseId", Objects.toString(this.sqlServerDatabaseId, null));
         jsonWriter.writeStringField("syncMemberAzureDatabaseResourceId", this.syncMemberAzureDatabaseResourceId);
         jsonWriter.writeBooleanField("usePrivateLinkConnection", this.usePrivateLinkConnection);
         jsonWriter.writeStringField("serverName", this.serverName);
@@ -353,7 +355,8 @@ public final class SyncMemberProperties implements JsonSerializable<SyncMemberPr
                 } else if ("syncAgentId".equals(fieldName)) {
                     deserializedSyncMemberProperties.syncAgentId = reader.getString();
                 } else if ("sqlServerDatabaseId".equals(fieldName)) {
-                    deserializedSyncMemberProperties.sqlServerDatabaseId = reader.getString();
+                    deserializedSyncMemberProperties.sqlServerDatabaseId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("syncMemberAzureDatabaseResourceId".equals(fieldName)) {
                     deserializedSyncMemberProperties.syncMemberAzureDatabaseResourceId = reader.getString();
                 } else if ("usePrivateLinkConnection".equals(fieldName)) {

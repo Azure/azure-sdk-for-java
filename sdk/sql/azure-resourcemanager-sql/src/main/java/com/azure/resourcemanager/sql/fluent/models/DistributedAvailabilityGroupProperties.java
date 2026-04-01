@@ -16,6 +16,7 @@ import com.azure.resourcemanager.sql.models.ReplicationModeType;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The properties of a distributed availability group.
@@ -31,7 +32,7 @@ public final class DistributedAvailabilityGroupProperties
     /*
      * ID of the distributed availability group
      */
-    private String distributedAvailabilityGroupId;
+    private UUID distributedAvailabilityGroupId;
 
     /*
      * Replication mode of the link
@@ -99,7 +100,7 @@ public final class DistributedAvailabilityGroupProperties
      * 
      * @return the distributedAvailabilityGroupId value.
      */
-    public String distributedAvailabilityGroupId() {
+    public UUID distributedAvailabilityGroupId() {
         return this.distributedAvailabilityGroupId;
     }
 
@@ -329,7 +330,7 @@ public final class DistributedAvailabilityGroupProperties
                         = reader.getString();
                 } else if ("distributedAvailabilityGroupId".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.distributedAvailabilityGroupId
-                        = reader.getString();
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("replicationMode".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.replicationMode
                         = ReplicationModeType.fromString(reader.getString());

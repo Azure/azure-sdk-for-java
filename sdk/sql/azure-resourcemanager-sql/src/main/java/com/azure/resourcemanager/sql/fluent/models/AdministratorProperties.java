@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties of a active directory administrator.
@@ -31,12 +33,12 @@ public final class AdministratorProperties implements JsonSerializable<Administr
     /*
      * SID (object ID) of the server administrator.
      */
-    private String sid;
+    private UUID sid;
 
     /*
      * Tenant ID of the administrator.
      */
-    private String tenantId;
+    private UUID tenantId;
 
     /*
      * Azure Active Directory only Authentication enabled.
@@ -94,7 +96,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * 
      * @return the sid value.
      */
-    public String sid() {
+    public UUID sid() {
         return this.sid;
     }
 
@@ -104,7 +106,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * @param sid the sid value to set.
      * @return the AdministratorProperties object itself.
      */
-    public AdministratorProperties withSid(String sid) {
+    public AdministratorProperties withSid(UUID sid) {
         this.sid = sid;
         return this;
     }
@@ -114,7 +116,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -124,7 +126,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * @param tenantId the tenantId value to set.
      * @return the AdministratorProperties object itself.
      */
-    public AdministratorProperties withTenantId(String tenantId) {
+    public AdministratorProperties withTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -163,10 +165,10 @@ public final class AdministratorProperties implements JsonSerializable<Administr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("login", this.login);
-        jsonWriter.writeStringField("sid", this.sid);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
         jsonWriter.writeStringField("administratorType",
             this.administratorType == null ? null : this.administratorType.toString());
-        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -189,12 +191,14 @@ public final class AdministratorProperties implements JsonSerializable<Administr
                 if ("login".equals(fieldName)) {
                     deserializedAdministratorProperties.login = reader.getString();
                 } else if ("sid".equals(fieldName)) {
-                    deserializedAdministratorProperties.sid = reader.getString();
+                    deserializedAdministratorProperties.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("administratorType".equals(fieldName)) {
                     deserializedAdministratorProperties.administratorType
                         = AdministratorType.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedAdministratorProperties.tenantId = reader.getString();
+                    deserializedAdministratorProperties.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("azureADOnlyAuthentication".equals(fieldName)) {
                     deserializedAdministratorProperties.azureADOnlyAuthentication
                         = reader.getNullable(JsonReader::getBoolean);

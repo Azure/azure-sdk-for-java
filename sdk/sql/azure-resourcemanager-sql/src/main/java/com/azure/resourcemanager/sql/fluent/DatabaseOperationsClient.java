@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseOperationInner;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -77,7 +78,7 @@ public interface DatabaseOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName, String databaseName,
-        String operationId);
+        UUID operationId);
 
     /**
      * Cancels the asynchronous operation on the database.
@@ -92,7 +93,7 @@ public interface DatabaseOperationsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> cancelAsync(String resourceGroupName, String serverName, String databaseName, String operationId);
+    Mono<Void> cancelAsync(String resourceGroupName, String serverName, String databaseName, UUID operationId);
 
     /**
      * Cancels the asynchronous operation on the database.
@@ -109,7 +110,7 @@ public interface DatabaseOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String databaseName,
-        String operationId, Context context);
+        UUID operationId, Context context);
 
     /**
      * Cancels the asynchronous operation on the database.
@@ -123,5 +124,5 @@ public interface DatabaseOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String serverName, String databaseName, String operationId);
+    void cancel(String resourceGroupName, String serverName, String databaseName, UUID operationId);
 }

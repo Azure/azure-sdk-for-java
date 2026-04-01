@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties of an extended server blob auditing policy.
@@ -189,7 +191,7 @@ public final class ExtendedServerBlobAuditingPolicyProperties
     /*
      * Specifies the blob storage subscription Id.
      */
-    private String storageAccountSubscriptionId;
+    private UUID storageAccountSubscriptionId;
 
     /**
      * Creates an instance of ExtendedServerBlobAuditingPolicyProperties class.
@@ -642,7 +644,7 @@ public final class ExtendedServerBlobAuditingPolicyProperties
      * 
      * @return the storageAccountSubscriptionId value.
      */
-    public String storageAccountSubscriptionId() {
+    public UUID storageAccountSubscriptionId() {
         return this.storageAccountSubscriptionId;
     }
 
@@ -653,7 +655,7 @@ public final class ExtendedServerBlobAuditingPolicyProperties
      * @return the ExtendedServerBlobAuditingPolicyProperties object itself.
      */
     public ExtendedServerBlobAuditingPolicyProperties
-        withStorageAccountSubscriptionId(String storageAccountSubscriptionId) {
+        withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId) {
         this.storageAccountSubscriptionId = storageAccountSubscriptionId;
         return this;
     }
@@ -691,7 +693,8 @@ public final class ExtendedServerBlobAuditingPolicyProperties
         jsonWriter.writeBooleanField("isManagedIdentityInUse", this.isManagedIdentityInUse);
         jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
         jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
-        jsonWriter.writeStringField("storageAccountSubscriptionId", this.storageAccountSubscriptionId);
+        jsonWriter.writeStringField("storageAccountSubscriptionId",
+            Objects.toString(this.storageAccountSubscriptionId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -745,7 +748,7 @@ public final class ExtendedServerBlobAuditingPolicyProperties
                     deserializedExtendedServerBlobAuditingPolicyProperties.storageAccountAccessKey = reader.getString();
                 } else if ("storageAccountSubscriptionId".equals(fieldName)) {
                     deserializedExtendedServerBlobAuditingPolicyProperties.storageAccountSubscriptionId
-                        = reader.getString();
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -17,6 +17,7 @@ import com.azure.resourcemanager.sql.models.ReplicationModeType;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Distributed availability group between box and Sql Managed Instance.
@@ -116,7 +117,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
      * 
      * @return the distributedAvailabilityGroupId value.
      */
-    public String distributedAvailabilityGroupId() {
+    public UUID distributedAvailabilityGroupId() {
         return this.innerProperties() == null ? null : this.innerProperties().distributedAvailabilityGroupId();
     }
 

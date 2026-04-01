@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The service objectives capability.
@@ -20,7 +21,7 @@ public final class ServiceObjectiveCapability implements JsonSerializable<Servic
     /*
      * The unique ID of the service objective.
      */
-    private String id;
+    private UUID id;
 
     /*
      * The service objective name.
@@ -113,7 +114,7 @@ public final class ServiceObjectiveCapability implements JsonSerializable<Servic
      * 
      * @return the id value.
      */
-    public String id() {
+    public UUID id() {
         return this.id;
     }
 
@@ -325,7 +326,8 @@ public final class ServiceObjectiveCapability implements JsonSerializable<Servic
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedServiceObjectiveCapability.id = reader.getString();
+                    deserializedServiceObjectiveCapability.id
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
                     deserializedServiceObjectiveCapability.name = reader.getString();
                 } else if ("supportedMaxSizes".equals(fieldName)) {

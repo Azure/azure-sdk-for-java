@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Contains the operation result properties for long term retention backup operation.
@@ -21,7 +22,7 @@ public final class LongTermRetentionOperationResultProperties
     /*
      * Request Id.
      */
-    private String requestId;
+    private UUID requestId;
 
     /*
      * Operation type.
@@ -64,7 +65,7 @@ public final class LongTermRetentionOperationResultProperties
      * 
      * @return the requestId value.
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.requestId;
     }
 
@@ -156,7 +157,8 @@ public final class LongTermRetentionOperationResultProperties
                 reader.nextToken();
 
                 if ("requestId".equals(fieldName)) {
-                    deserializedLongTermRetentionOperationResultProperties.requestId = reader.getString();
+                    deserializedLongTermRetentionOperationResultProperties.requestId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("operationType".equals(fieldName)) {
                     deserializedLongTermRetentionOperationResultProperties.operationType = reader.getString();
                 } else if ("fromBackupResourceId".equals(fieldName)) {

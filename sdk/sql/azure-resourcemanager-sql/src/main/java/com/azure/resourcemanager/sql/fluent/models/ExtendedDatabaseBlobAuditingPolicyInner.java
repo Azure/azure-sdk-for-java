@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * An extended database blob auditing policy.
@@ -526,7 +527,7 @@ public final class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource
      * 
      * @return the storageAccountSubscriptionId value.
      */
-    public String storageAccountSubscriptionId() {
+    public UUID storageAccountSubscriptionId() {
         return this.innerProperties() == null ? null : this.innerProperties().storageAccountSubscriptionId();
     }
 
@@ -536,8 +537,7 @@ public final class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ExtendedDatabaseBlobAuditingPolicyInner object itself.
      */
-    public ExtendedDatabaseBlobAuditingPolicyInner
-        withStorageAccountSubscriptionId(String storageAccountSubscriptionId) {
+    public ExtendedDatabaseBlobAuditingPolicyInner withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExtendedDatabaseBlobAuditingPolicyProperties();
         }

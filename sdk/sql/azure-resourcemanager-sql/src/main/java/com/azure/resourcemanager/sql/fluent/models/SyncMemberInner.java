@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * An Azure SQL Database sync member.
@@ -176,7 +177,7 @@ public final class SyncMemberInner extends ProxyResource {
      * 
      * @return the sqlServerDatabaseId value.
      */
-    public String sqlServerDatabaseId() {
+    public UUID sqlServerDatabaseId() {
         return this.innerProperties() == null ? null : this.innerProperties().sqlServerDatabaseId();
     }
 
@@ -186,7 +187,7 @@ public final class SyncMemberInner extends ProxyResource {
      * @param sqlServerDatabaseId the sqlServerDatabaseId value to set.
      * @return the SyncMemberInner object itself.
      */
-    public SyncMemberInner withSqlServerDatabaseId(String sqlServerDatabaseId) {
+    public SyncMemberInner withSqlServerDatabaseId(UUID sqlServerDatabaseId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SyncMemberProperties();
         }

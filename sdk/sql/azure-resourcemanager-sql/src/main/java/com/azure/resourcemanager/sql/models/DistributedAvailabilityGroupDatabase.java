@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * Database specific information.
@@ -27,12 +28,12 @@ public final class DistributedAvailabilityGroupDatabase
     /*
      * Managed instance replica id
      */
-    private String instanceReplicaId;
+    private UUID instanceReplicaId;
 
     /*
      * SQL server replica id
      */
-    private String partnerReplicaId;
+    private UUID partnerReplicaId;
 
     /*
      * Current link state
@@ -155,7 +156,7 @@ public final class DistributedAvailabilityGroupDatabase
      * 
      * @return the instanceReplicaId value.
      */
-    public String instanceReplicaId() {
+    public UUID instanceReplicaId() {
         return this.instanceReplicaId;
     }
 
@@ -164,7 +165,7 @@ public final class DistributedAvailabilityGroupDatabase
      * 
      * @return the partnerReplicaId value.
      */
-    public String partnerReplicaId() {
+    public UUID partnerReplicaId() {
         return this.partnerReplicaId;
     }
 
@@ -370,9 +371,11 @@ public final class DistributedAvailabilityGroupDatabase
                 if ("databaseName".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupDatabase.databaseName = reader.getString();
                 } else if ("instanceReplicaId".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupDatabase.instanceReplicaId = reader.getString();
+                    deserializedDistributedAvailabilityGroupDatabase.instanceReplicaId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("partnerReplicaId".equals(fieldName)) {
-                    deserializedDistributedAvailabilityGroupDatabase.partnerReplicaId = reader.getString();
+                    deserializedDistributedAvailabilityGroupDatabase.partnerReplicaId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("replicaState".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupDatabase.replicaState = reader.getString();
                 } else if ("seedingProgress".equals(fieldName)) {

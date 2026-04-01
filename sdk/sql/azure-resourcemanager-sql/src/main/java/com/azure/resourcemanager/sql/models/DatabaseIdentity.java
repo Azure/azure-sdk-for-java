@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Azure Active Directory identity configuration for a resource.
@@ -25,7 +26,7 @@ public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity
     /*
      * The Azure Active Directory tenant id.
      */
-    private String tenantId;
+    private UUID tenantId;
 
     /*
      * The resource ids of the user assigned identities to use
@@ -63,7 +64,7 @@ public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -132,7 +133,8 @@ public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity
                 if ("type".equals(fieldName)) {
                     deserializedDatabaseIdentity.type = DatabaseIdentityType.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedDatabaseIdentity.tenantId = reader.getString();
+                    deserializedDatabaseIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("userAssignedIdentities".equals(fieldName)) {
                     Map<String, DatabaseUserIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> DatabaseUserIdentity.fromJson(reader1));

@@ -45,7 +45,7 @@ public final class ServerDnsAliasInner extends ProxyResource {
     /**
      * Creates an instance of ServerDnsAliasInner class.
      */
-    private ServerDnsAliasInner() {
+    public ServerDnsAliasInner() {
     }
 
     /**

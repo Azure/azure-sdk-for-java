@@ -11,6 +11,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The output configuration of a job step.
@@ -25,7 +27,7 @@ public final class JobStepOutput implements JsonSerializable<JobStepOutput> {
     /*
      * The output destination subscription id.
      */
-    private String subscriptionId;
+    private UUID subscriptionId;
 
     /*
      * The output destination resource group.
@@ -88,7 +90,7 @@ public final class JobStepOutput implements JsonSerializable<JobStepOutput> {
      * 
      * @return the subscriptionId value.
      */
-    public String subscriptionId() {
+    public UUID subscriptionId() {
         return this.subscriptionId;
     }
 
@@ -98,7 +100,7 @@ public final class JobStepOutput implements JsonSerializable<JobStepOutput> {
      * @param subscriptionId the subscriptionId value to set.
      * @return the JobStepOutput object itself.
      */
-    public JobStepOutput withSubscriptionId(String subscriptionId) {
+    public JobStepOutput withSubscriptionId(UUID subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -255,7 +257,7 @@ public final class JobStepOutput implements JsonSerializable<JobStepOutput> {
         jsonWriter.writeStringField("databaseName", this.databaseName);
         jsonWriter.writeStringField("tableName", this.tableName);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("subscriptionId", Objects.toString(this.subscriptionId, null));
         jsonWriter.writeStringField("resourceGroupName", this.resourceGroupName);
         jsonWriter.writeStringField("schemaName", this.schemaName);
         jsonWriter.writeStringField("credential", this.credential);
@@ -287,7 +289,8 @@ public final class JobStepOutput implements JsonSerializable<JobStepOutput> {
                 } else if ("type".equals(fieldName)) {
                     deserializedJobStepOutput.type = JobStepOutputType.fromString(reader.getString());
                 } else if ("subscriptionId".equals(fieldName)) {
-                    deserializedJobStepOutput.subscriptionId = reader.getString();
+                    deserializedJobStepOutput.subscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("resourceGroupName".equals(fieldName)) {
                     deserializedJobStepOutput.resourceGroupName = reader.getString();
                 } else if ("schemaName".equals(fieldName)) {

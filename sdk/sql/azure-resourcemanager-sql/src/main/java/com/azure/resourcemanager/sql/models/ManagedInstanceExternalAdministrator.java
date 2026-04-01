@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties of a active directory administrator.
@@ -35,12 +37,12 @@ public final class ManagedInstanceExternalAdministrator
     /*
      * SID (object ID) of the server administrator.
      */
-    private String sid;
+    private UUID sid;
 
     /*
      * Tenant ID of the administrator.
      */
-    private String tenantId;
+    private UUID tenantId;
 
     /*
      * Azure Active Directory only Authentication enabled.
@@ -118,7 +120,7 @@ public final class ManagedInstanceExternalAdministrator
      * 
      * @return the sid value.
      */
-    public String sid() {
+    public UUID sid() {
         return this.sid;
     }
 
@@ -128,7 +130,7 @@ public final class ManagedInstanceExternalAdministrator
      * @param sid the sid value to set.
      * @return the ManagedInstanceExternalAdministrator object itself.
      */
-    public ManagedInstanceExternalAdministrator withSid(String sid) {
+    public ManagedInstanceExternalAdministrator withSid(UUID sid) {
         this.sid = sid;
         return this;
     }
@@ -138,7 +140,7 @@ public final class ManagedInstanceExternalAdministrator
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -148,7 +150,7 @@ public final class ManagedInstanceExternalAdministrator
      * @param tenantId the tenantId value to set.
      * @return the ManagedInstanceExternalAdministrator object itself.
      */
-    public ManagedInstanceExternalAdministrator withTenantId(String tenantId) {
+    public ManagedInstanceExternalAdministrator withTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -191,8 +193,8 @@ public final class ManagedInstanceExternalAdministrator
             this.administratorType == null ? null : this.administratorType.toString());
         jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
         jsonWriter.writeStringField("login", this.login);
-        jsonWriter.writeStringField("sid", this.sid);
-        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeBooleanField("azureADOnlyAuthentication", this.azureADOnlyAuthentication);
         return jsonWriter.writeEndObject();
     }
@@ -222,9 +224,11 @@ public final class ManagedInstanceExternalAdministrator
                 } else if ("login".equals(fieldName)) {
                     deserializedManagedInstanceExternalAdministrator.login = reader.getString();
                 } else if ("sid".equals(fieldName)) {
-                    deserializedManagedInstanceExternalAdministrator.sid = reader.getString();
+                    deserializedManagedInstanceExternalAdministrator.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedManagedInstanceExternalAdministrator.tenantId = reader.getString();
+                    deserializedManagedInstanceExternalAdministrator.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("azureADOnlyAuthentication".equals(fieldName)) {
                     deserializedManagedInstanceExternalAdministrator.azureADOnlyAuthentication
                         = reader.getNullable(JsonReader::getBoolean);

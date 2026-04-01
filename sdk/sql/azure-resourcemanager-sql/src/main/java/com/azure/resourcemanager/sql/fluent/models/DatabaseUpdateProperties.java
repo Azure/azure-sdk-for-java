@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A database update properties.
@@ -95,7 +97,7 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
     /*
      * The ID of the database.
      */
-    private String databaseId;
+    private UUID databaseId;
 
     /*
      * The creation date of the database (ISO8601 format).
@@ -255,7 +257,7 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
     /*
      * The Client id used for cross tenant per database CMK scenario
      */
-    private String federatedClientId;
+    private UUID federatedClientId;
 
     /*
      * The resource ids of the user assigned identities to use
@@ -517,7 +519,7 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
      * 
      * @return the databaseId value.
      */
-    public String databaseId() {
+    public UUID databaseId() {
         return this.databaseId;
     }
 
@@ -1013,7 +1015,7 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
      * 
      * @return the federatedClientId value.
      */
-    public String federatedClientId() {
+    public UUID federatedClientId() {
         return this.federatedClientId;
     }
 
@@ -1023,7 +1025,7 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
      * @param federatedClientId the federatedClientId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
-    public DatabaseUpdateProperties withFederatedClientId(String federatedClientId) {
+    public DatabaseUpdateProperties withFederatedClientId(UUID federatedClientId) {
         this.federatedClientId = federatedClientId;
         return this;
     }
@@ -1309,7 +1311,7 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
         jsonWriter.writeNumberField("minCapacity", this.minCapacity);
         jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
         jsonWriter.writeBooleanField("isLedgerOn", this.isLedgerOn);
-        jsonWriter.writeStringField("federatedClientId", this.federatedClientId);
+        jsonWriter.writeStringField("federatedClientId", Objects.toString(this.federatedClientId, null));
         jsonWriter.writeMapField("keys", this.keys, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("encryptionProtector", this.encryptionProtector);
         jsonWriter.writeStringField("preferredEnclaveType",
@@ -1353,7 +1355,8 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
                 } else if ("status".equals(fieldName)) {
                     deserializedDatabaseUpdateProperties.status = DatabaseStatus.fromString(reader.getString());
                 } else if ("databaseId".equals(fieldName)) {
-                    deserializedDatabaseUpdateProperties.databaseId = reader.getString();
+                    deserializedDatabaseUpdateProperties.databaseId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("creationDate".equals(fieldName)) {
                     deserializedDatabaseUpdateProperties.creationDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -1425,7 +1428,8 @@ public final class DatabaseUpdateProperties implements JsonSerializable<Database
                     deserializedDatabaseUpdateProperties.isInfraEncryptionEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("federatedClientId".equals(fieldName)) {
-                    deserializedDatabaseUpdateProperties.federatedClientId = reader.getString();
+                    deserializedDatabaseUpdateProperties.federatedClientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("keys".equals(fieldName)) {
                     Map<String, DatabaseKey> keys = reader.readMap(reader1 -> DatabaseKey.fromJson(reader1));
                     deserializedDatabaseUpdateProperties.keys = keys;

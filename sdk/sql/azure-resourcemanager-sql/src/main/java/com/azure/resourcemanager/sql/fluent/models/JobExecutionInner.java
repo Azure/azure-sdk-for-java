@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.models.JobExecutionTarget;
 import com.azure.resourcemanager.sql.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * An execution of a job.
@@ -132,7 +133,7 @@ public final class JobExecutionInner extends ProxyResource {
      * 
      * @return the jobExecutionId value.
      */
-    public String jobExecutionId() {
+    public UUID jobExecutionId() {
         return this.innerProperties() == null ? null : this.innerProperties().jobExecutionId();
     }
 

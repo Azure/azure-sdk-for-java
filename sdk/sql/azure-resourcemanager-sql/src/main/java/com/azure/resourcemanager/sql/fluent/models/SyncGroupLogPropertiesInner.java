@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncGroupLogType;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * Properties of an Azure SQL Database sync group log.
@@ -42,7 +43,7 @@ public final class SyncGroupLogPropertiesInner implements JsonSerializable<SyncG
     /*
      * TracingId of the sync group log.
      */
-    private String tracingId;
+    private UUID tracingId;
 
     /*
      * OperationStatus of the sync group log.
@@ -96,7 +97,7 @@ public final class SyncGroupLogPropertiesInner implements JsonSerializable<SyncG
      * 
      * @return the tracingId value.
      */
-    public String tracingId() {
+    public UUID tracingId() {
         return this.tracingId;
     }
 
@@ -151,7 +152,8 @@ public final class SyncGroupLogPropertiesInner implements JsonSerializable<SyncG
                 } else if ("details".equals(fieldName)) {
                     deserializedSyncGroupLogPropertiesInner.details = reader.getString();
                 } else if ("tracingId".equals(fieldName)) {
-                    deserializedSyncGroupLogPropertiesInner.tracingId = reader.getString();
+                    deserializedSyncGroupLogPropertiesInner.tracingId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("operationStatus".equals(fieldName)) {
                     deserializedSyncGroupLogPropertiesInner.operationStatus = reader.getString();
                 } else {

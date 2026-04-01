@@ -44,7 +44,7 @@ public final class SyncGroupProperties implements JsonSerializable<SyncGroupProp
     /*
      * User name for the sync group hub database credential.
      */
-    private String hubDatabaseUserName;
+    private String hubDatabaseUsername;
 
     /*
      * Password for the sync group hub database credential.
@@ -157,22 +157,22 @@ public final class SyncGroupProperties implements JsonSerializable<SyncGroupProp
     }
 
     /**
-     * Get the hubDatabaseUserName property: User name for the sync group hub database credential.
+     * Get the hubDatabaseUsername property: User name for the sync group hub database credential.
      * 
-     * @return the hubDatabaseUserName value.
+     * @return the hubDatabaseUsername value.
      */
-    public String hubDatabaseUserName() {
-        return this.hubDatabaseUserName;
+    public String hubDatabaseUsername() {
+        return this.hubDatabaseUsername;
     }
 
     /**
-     * Set the hubDatabaseUserName property: User name for the sync group hub database credential.
+     * Set the hubDatabaseUsername property: User name for the sync group hub database credential.
      * 
-     * @param hubDatabaseUserName the hubDatabaseUserName value to set.
+     * @param hubDatabaseUsername the hubDatabaseUsername value to set.
      * @return the SyncGroupProperties object itself.
      */
-    public SyncGroupProperties withHubDatabaseUserName(String hubDatabaseUserName) {
-        this.hubDatabaseUserName = hubDatabaseUserName;
+    public SyncGroupProperties withHubDatabaseUsername(String hubDatabaseUsername) {
+        this.hubDatabaseUsername = hubDatabaseUsername;
         return this;
     }
 
@@ -316,7 +316,7 @@ public final class SyncGroupProperties implements JsonSerializable<SyncGroupProp
         jsonWriter.writeStringField("conflictResolutionPolicy",
             this.conflictResolutionPolicy == null ? null : this.conflictResolutionPolicy.toString());
         jsonWriter.writeStringField("syncDatabaseId", this.syncDatabaseId);
-        jsonWriter.writeStringField("hubDatabaseUserName", this.hubDatabaseUserName);
+        jsonWriter.writeStringField("hubDatabaseUserName", this.hubDatabaseUsername);
         jsonWriter.writeStringField("hubDatabasePassword", this.hubDatabasePassword);
         jsonWriter.writeJsonField("schema", this.schema);
         jsonWriter.writeBooleanField("enableConflictLogging", this.enableConflictLogging);
@@ -351,7 +351,7 @@ public final class SyncGroupProperties implements JsonSerializable<SyncGroupProp
                 } else if ("syncDatabaseId".equals(fieldName)) {
                     deserializedSyncGroupProperties.syncDatabaseId = reader.getString();
                 } else if ("hubDatabaseUserName".equals(fieldName)) {
-                    deserializedSyncGroupProperties.hubDatabaseUserName = reader.getString();
+                    deserializedSyncGroupProperties.hubDatabaseUsername = reader.getString();
                 } else if ("hubDatabasePassword".equals(fieldName)) {
                     deserializedSyncGroupProperties.hubDatabasePassword = reader.getString();
                 } else if ("syncState".equals(fieldName)) {

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Azure Active Directory identity configuration for a resource.
@@ -19,12 +20,12 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
     /*
      * The Azure Active Directory principal id.
      */
-    private String principalId;
+    private UUID principalId;
 
     /*
      * The Azure Active Directory client id.
      */
-    private String clientId;
+    private UUID clientId;
 
     /**
      * Creates an instance of UserIdentity class.
@@ -37,7 +38,7 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
      * 
      * @return the principalId value.
      */
-    public String principalId() {
+    public UUID principalId() {
         return this.principalId;
     }
 
@@ -46,7 +47,7 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
      * 
      * @return the clientId value.
      */
-    public String clientId() {
+    public UUID clientId() {
         return this.clientId;
     }
 
@@ -83,9 +84,11 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
                 reader.nextToken();
 
                 if ("principalId".equals(fieldName)) {
-                    deserializedUserIdentity.principalId = reader.getString();
+                    deserializedUserIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("clientId".equals(fieldName)) {
-                    deserializedUserIdentity.clientId = reader.getString();
+                    deserializedUserIdentity.clientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

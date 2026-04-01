@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.PrivateEndpointConnectionRequestStatus;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Contains the operation result properties for import/export operation.
@@ -22,7 +23,7 @@ public final class ImportExportExtensionsOperationResultProperties
     /*
      * Request Id.
      */
-    private String requestId;
+    private UUID requestId;
 
     /*
      * Request type.
@@ -80,7 +81,7 @@ public final class ImportExportExtensionsOperationResultProperties
      * 
      * @return the requestId value.
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.requestId;
     }
 
@@ -202,7 +203,8 @@ public final class ImportExportExtensionsOperationResultProperties
                 reader.nextToken();
 
                 if ("requestId".equals(fieldName)) {
-                    deserializedImportExportExtensionsOperationResultProperties.requestId = reader.getString();
+                    deserializedImportExportExtensionsOperationResultProperties.requestId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("requestType".equals(fieldName)) {
                     deserializedImportExportExtensionsOperationResultProperties.requestType = reader.getString();
                 } else if ("lastModifiedTime".equals(fieldName)) {

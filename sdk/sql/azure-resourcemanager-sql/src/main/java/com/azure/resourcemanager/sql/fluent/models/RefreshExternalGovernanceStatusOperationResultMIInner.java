@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * An RefreshExternalGovernanceStatus operation result resource.
@@ -86,7 +87,7 @@ public final class RefreshExternalGovernanceStatusOperationResultMIInner extends
      * 
      * @return the requestId value.
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.innerProperties() == null ? null : this.innerProperties().requestId();
     }
 

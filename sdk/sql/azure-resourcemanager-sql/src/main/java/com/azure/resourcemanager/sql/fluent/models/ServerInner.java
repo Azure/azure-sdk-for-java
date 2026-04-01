@@ -21,6 +21,7 @@ import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * An Azure SQL Database server.
@@ -347,7 +348,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the federatedClientId value.
      */
-    public String federatedClientId() {
+    public UUID federatedClientId() {
         return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
     }
 
@@ -357,7 +358,7 @@ public final class ServerInner extends Resource {
      * @param federatedClientId the federatedClientId value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withFederatedClientId(String federatedClientId) {
+    public ServerInner withFederatedClientId(UUID federatedClientId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }

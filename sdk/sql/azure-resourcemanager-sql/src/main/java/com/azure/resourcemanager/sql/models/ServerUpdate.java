@@ -13,6 +13,7 @@ import com.azure.resourcemanager.sql.fluent.models.ServerProperties;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * An update request for an Azure SQL Database server.
@@ -273,7 +274,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
      * 
      * @return the federatedClientId value.
      */
-    public String federatedClientId() {
+    public UUID federatedClientId() {
         return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
     }
 
@@ -283,7 +284,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
      * @param federatedClientId the federatedClientId value to set.
      * @return the ServerUpdate object itself.
      */
-    public ServerUpdate withFederatedClientId(String federatedClientId) {
+    public ServerUpdate withFederatedClientId(UUID federatedClientId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }

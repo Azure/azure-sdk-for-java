@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Contains the operation result properties for refresh external governance status operation.
@@ -20,7 +21,7 @@ public final class RefreshExternalGovernanceStatusOperationResultPropertiesMI
     /*
      * Request Id.
      */
-    private String requestId;
+    private UUID requestId;
 
     /*
      * Request type.
@@ -58,7 +59,7 @@ public final class RefreshExternalGovernanceStatusOperationResultPropertiesMI
      * 
      * @return the requestId value.
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.requestId;
     }
 
@@ -144,7 +145,7 @@ public final class RefreshExternalGovernanceStatusOperationResultPropertiesMI
 
                 if ("requestId".equals(fieldName)) {
                     deserializedRefreshExternalGovernanceStatusOperationResultPropertiesMI.requestId
-                        = reader.getString();
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("requestType".equals(fieldName)) {
                     deserializedRefreshExternalGovernanceStatusOperationResultPropertiesMI.requestType
                         = reader.getString();

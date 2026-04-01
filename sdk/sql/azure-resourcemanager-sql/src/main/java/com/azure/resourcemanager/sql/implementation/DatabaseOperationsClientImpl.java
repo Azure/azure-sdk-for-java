@@ -29,6 +29,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.sql.fluent.DatabaseOperationsClient;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseOperationInner;
 import com.azure.resourcemanager.sql.implementation.models.DatabaseOperationListResult;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -79,7 +80,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
         Mono<Response<Void>> cancel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName, @PathParam("operationId") String operationId,
+            @PathParam("databaseName") String databaseName, @PathParam("operationId") UUID operationId,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -263,7 +264,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
-        String databaseName, String operationId) {
+        String databaseName, UUID operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -306,7 +307,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
-        String databaseName, String operationId, Context context) {
+        String databaseName, UUID operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -346,8 +347,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String databaseName,
-        String operationId) {
+    public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String databaseName, UUID operationId) {
         return cancelWithResponseAsync(resourceGroupName, serverName, databaseName, operationId)
             .flatMap(ignored -> Mono.empty());
     }
@@ -367,7 +367,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String databaseName,
-        String operationId, Context context) {
+        UUID operationId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, serverName, databaseName, operationId, context).block();
     }
 
@@ -383,7 +383,7 @@ public final class DatabaseOperationsClientImpl implements DatabaseOperationsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String serverName, String databaseName, String operationId) {
+    public void cancel(String resourceGroupName, String serverName, String databaseName, UUID operationId) {
         cancelWithResponse(resourceGroupName, serverName, databaseName, operationId, Context.NONE);
     }
 

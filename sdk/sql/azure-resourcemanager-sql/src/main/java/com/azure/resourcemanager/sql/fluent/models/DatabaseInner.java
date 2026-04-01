@@ -27,6 +27,7 @@ import com.azure.resourcemanager.sql.models.Sku;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A database resource.
@@ -448,7 +449,7 @@ public final class DatabaseInner extends Resource {
      * 
      * @return the databaseId value.
      */
-    public String databaseId() {
+    public UUID databaseId() {
         return this.innerProperties() == null ? null : this.innerProperties().databaseId();
     }
 
@@ -995,7 +996,7 @@ public final class DatabaseInner extends Resource {
      * 
      * @return the federatedClientId value.
      */
-    public String federatedClientId() {
+    public UUID federatedClientId() {
         return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
     }
 
@@ -1005,7 +1006,7 @@ public final class DatabaseInner extends Resource {
      * @param federatedClientId the federatedClientId value to set.
      * @return the DatabaseInner object itself.
      */
-    public DatabaseInner withFederatedClientId(String federatedClientId) {
+    public DatabaseInner withFederatedClientId(UUID federatedClientId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseProperties();
         }

@@ -231,25 +231,25 @@ public final class SyncGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the hubDatabaseUserName property: User name for the sync group hub database credential.
+     * Get the hubDatabaseUsername property: User name for the sync group hub database credential.
      * 
-     * @return the hubDatabaseUserName value.
+     * @return the hubDatabaseUsername value.
      */
-    public String hubDatabaseUserName() {
-        return this.innerProperties() == null ? null : this.innerProperties().hubDatabaseUserName();
+    public String hubDatabaseUsername() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubDatabaseUsername();
     }
 
     /**
-     * Set the hubDatabaseUserName property: User name for the sync group hub database credential.
+     * Set the hubDatabaseUsername property: User name for the sync group hub database credential.
      * 
-     * @param hubDatabaseUserName the hubDatabaseUserName value to set.
+     * @param hubDatabaseUsername the hubDatabaseUsername value to set.
      * @return the SyncGroupInner object itself.
      */
-    public SyncGroupInner withHubDatabaseUserName(String hubDatabaseUserName) {
+    public SyncGroupInner withHubDatabaseUsername(String hubDatabaseUsername) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SyncGroupProperties();
         }
-        this.innerProperties().withHubDatabaseUserName(hubDatabaseUserName);
+        this.innerProperties().withHubDatabaseUsername(hubDatabaseUsername);
         return this;
     }
 

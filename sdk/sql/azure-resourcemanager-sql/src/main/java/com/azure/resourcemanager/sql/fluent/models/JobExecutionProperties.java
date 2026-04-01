@@ -15,6 +15,7 @@ import com.azure.resourcemanager.sql.models.JobExecutionTarget;
 import com.azure.resourcemanager.sql.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * Properties for an Azure SQL Database Elastic job execution.
@@ -39,7 +40,7 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
     /*
      * The unique identifier of the job execution.
      */
-    private String jobExecutionId;
+    private UUID jobExecutionId;
 
     /*
      * The detailed state of the job execution.
@@ -124,7 +125,7 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
      * 
      * @return the jobExecutionId value.
      */
-    public String jobExecutionId() {
+    public UUID jobExecutionId() {
         return this.jobExecutionId;
     }
 
@@ -252,7 +253,8 @@ public final class JobExecutionProperties implements JsonSerializable<JobExecuti
                 } else if ("stepId".equals(fieldName)) {
                     deserializedJobExecutionProperties.stepId = reader.getNullable(JsonReader::getInt);
                 } else if ("jobExecutionId".equals(fieldName)) {
-                    deserializedJobExecutionProperties.jobExecutionId = reader.getString();
+                    deserializedJobExecutionProperties.jobExecutionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("lifecycle".equals(fieldName)) {
                     deserializedJobExecutionProperties.lifecycle = JobExecutionLifecycle.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {

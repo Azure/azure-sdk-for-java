@@ -24,7 +24,7 @@ public final class ServerDnsAliasProperties implements JsonSerializable<ServerDn
     /**
      * Creates an instance of ServerDnsAliasProperties class.
      */
-    private ServerDnsAliasProperties() {
+    public ServerDnsAliasProperties() {
     }
 
     /**

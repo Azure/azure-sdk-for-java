@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Azure Active Directory identity configuration for a resource.
@@ -21,7 +23,7 @@ public final class JobAgentIdentity implements JsonSerializable<JobAgentIdentity
     /*
      * The job agent identity tenant id
      */
-    private String tenantId;
+    private UUID tenantId;
 
     /*
      * The job agent identity type
@@ -44,7 +46,7 @@ public final class JobAgentIdentity implements JsonSerializable<JobAgentIdentity
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -54,7 +56,7 @@ public final class JobAgentIdentity implements JsonSerializable<JobAgentIdentity
      * @param tenantId the tenantId value to set.
      * @return the JobAgentIdentity object itself.
      */
-    public JobAgentIdentity withTenantId(String tenantId) {
+    public JobAgentIdentity withTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -128,7 +130,7 @@ public final class JobAgentIdentity implements JsonSerializable<JobAgentIdentity
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -153,7 +155,8 @@ public final class JobAgentIdentity implements JsonSerializable<JobAgentIdentity
                 if ("type".equals(fieldName)) {
                     deserializedJobAgentIdentity.type = JobAgentIdentityType.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedJobAgentIdentity.tenantId = reader.getString();
+                    deserializedJobAgentIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("userAssignedIdentities".equals(fieldName)) {
                     Map<String, JobAgentUserAssignedIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> JobAgentUserAssignedIdentity.fromJson(reader1));

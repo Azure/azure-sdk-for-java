@@ -13,6 +13,7 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseUpdateProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A database update resource.
@@ -318,7 +319,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      * 
      * @return the databaseId value.
      */
-    public String databaseId() {
+    public UUID databaseId() {
         return this.innerProperties() == null ? null : this.innerProperties().databaseId();
     }
 
@@ -865,7 +866,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      * 
      * @return the federatedClientId value.
      */
-    public String federatedClientId() {
+    public UUID federatedClientId() {
         return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
     }
 
@@ -875,7 +876,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      * @param federatedClientId the federatedClientId value to set.
      * @return the DatabaseUpdate object itself.
      */
-    public DatabaseUpdate withFederatedClientId(String federatedClientId) {
+    public DatabaseUpdate withFederatedClientId(UUID federatedClientId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseUpdateProperties();
         }

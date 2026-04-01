@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The properties of a managed instance administrator.
@@ -32,12 +34,12 @@ public final class ManagedInstanceAdministratorProperties
     /*
      * SID (object ID) of the managed instance administrator.
      */
-    private String sid;
+    private UUID sid;
 
     /*
      * Tenant ID of the managed instance administrator.
      */
-    private String tenantId;
+    private UUID tenantId;
 
     /**
      * Creates an instance of ManagedInstanceAdministratorProperties class.
@@ -91,7 +93,7 @@ public final class ManagedInstanceAdministratorProperties
      * 
      * @return the sid value.
      */
-    public String sid() {
+    public UUID sid() {
         return this.sid;
     }
 
@@ -101,7 +103,7 @@ public final class ManagedInstanceAdministratorProperties
      * @param sid the sid value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
-    public ManagedInstanceAdministratorProperties withSid(String sid) {
+    public ManagedInstanceAdministratorProperties withSid(UUID sid) {
         this.sid = sid;
         return this;
     }
@@ -111,7 +113,7 @@ public final class ManagedInstanceAdministratorProperties
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -121,7 +123,7 @@ public final class ManagedInstanceAdministratorProperties
      * @param tenantId the tenantId value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
-    public ManagedInstanceAdministratorProperties withTenantId(String tenantId) {
+    public ManagedInstanceAdministratorProperties withTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -160,8 +162,8 @@ public final class ManagedInstanceAdministratorProperties
         jsonWriter.writeStringField("administratorType",
             this.administratorType == null ? null : this.administratorType.toString());
         jsonWriter.writeStringField("login", this.login);
-        jsonWriter.writeStringField("sid", this.sid);
-        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -188,9 +190,11 @@ public final class ManagedInstanceAdministratorProperties
                 } else if ("login".equals(fieldName)) {
                     deserializedManagedInstanceAdministratorProperties.login = reader.getString();
                 } else if ("sid".equals(fieldName)) {
-                    deserializedManagedInstanceAdministratorProperties.sid = reader.getString();
+                    deserializedManagedInstanceAdministratorProperties.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedManagedInstanceAdministratorProperties.tenantId = reader.getString();
+                    deserializedManagedInstanceAdministratorProperties.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

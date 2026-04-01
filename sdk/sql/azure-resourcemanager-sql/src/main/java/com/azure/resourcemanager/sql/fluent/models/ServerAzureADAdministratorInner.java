@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Azure Active Directory administrator.
@@ -148,7 +149,7 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
      * 
      * @return the sid value.
      */
-    public String sid() {
+    public UUID sid() {
         return this.innerProperties() == null ? null : this.innerProperties().sid();
     }
 
@@ -158,7 +159,7 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
      * @param sid the sid value to set.
      * @return the ServerAzureADAdministratorInner object itself.
      */
-    public ServerAzureADAdministratorInner withSid(String sid) {
+    public ServerAzureADAdministratorInner withSid(UUID sid) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AdministratorProperties();
         }
@@ -171,7 +172,7 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
@@ -181,7 +182,7 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
      * @param tenantId the tenantId value to set.
      * @return the ServerAzureADAdministratorInner object itself.
      */
-    public ServerAzureADAdministratorInner withTenantId(String tenantId) {
+    public ServerAzureADAdministratorInner withTenantId(UUID tenantId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AdministratorProperties();
         }
