@@ -152,7 +152,8 @@ public class AppConfigurationProperties {
         if (startupTimeout == null) {
             throw new IllegalArgumentException("startupTimeout cannot be null.");
         }
-        if (startupTimeout.getSeconds() < 30 || startupTimeout.getSeconds() > 600) {
+        if (startupTimeout.compareTo(Duration.ofSeconds(30)) < 0
+            || startupTimeout.compareTo(Duration.ofSeconds(600)) > 0) {
             throw new IllegalArgumentException("startupTimeout must be between 30 and 600 seconds.");
         }
     }

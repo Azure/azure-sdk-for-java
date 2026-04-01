@@ -256,7 +256,15 @@ class ConnectionManager {
             }
         }
 
-        return earliestAvailable.toEpochMilli() - now.toEpochMilli();
+        // If no clients were found or no backoff times were set, avoid calling toEpochMilli on Instant.MAX.
+        if (Instant.MAX.equals(earliestAvailable)) {
+            // No clients are currently tracked; treat as no wait required.
+            return 0L;
+        }
+
+        long millisUntilNext = earliestAvailable.toEpochMilli() - now.toEpochMilli();
+        // Ensure we never return a negative duration, even in the presence of clock skew.
+        return Math.max(millisUntilNext, 0L);
     }
 
     /**
