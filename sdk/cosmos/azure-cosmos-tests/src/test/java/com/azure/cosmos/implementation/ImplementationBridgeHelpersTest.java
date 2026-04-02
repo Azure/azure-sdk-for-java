@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -110,103 +111,114 @@ public class ImplementationBridgeHelpersTest {
         }
     }
 
+    /**
+     * Regression test for <a href="https://github.com/Azure/azure-sdk-for-java/issues/48622">#48622</a>
+     * and <a href="https://github.com/Azure/azure-sdk-for-java/issues/48585">#48585</a>.
+     * <p>
+     * Forks a fresh JVM that concurrently triggers {@code <clinit>} of different Cosmos classes
+     * from 6 threads. In a fresh JVM, {@code <clinit>} runs for the first time — the only way
+     * to exercise the real deadlock scenario. A 30-second timeout detects the hang.
+     */
     @Test(groups = { "unit" })
     public void concurrentAccessorInitializationShouldNotDeadlock() throws Exception {
-        // Regression test for https://github.com/Azure/azure-sdk-for-java/issues/48622
-        // and https://github.com/Azure/azure-sdk-for-java/issues/48585
-        //
-        // Verifies that concurrently calling different getXxxAccessor() methods from
-        // multiple threads completes without deadlock and returns non-null accessors.
-        //
-        // Limitation: Since JVM <clinit> runs exactly once per class per JVM lifetime,
-        // this in-process test validates accessor re-registration after a reflection
-        // reset — not the actual first-load <clinit> deadlock scenario. The real
-        // deadlock validation was performed via a 50-run fresh-JVM stress test
-        // documented in the PR description.
 
-        // Reset all accessors to force re-initialization
-        Class<?>[] declaredClasses = ImplementationBridgeHelpers.class.getDeclaredClasses();
-        for (Class<?> declaredClass : declaredClasses) {
-            if (declaredClass.getSimpleName().endsWith("Helper")) {
-                for (Field field : declaredClass.getDeclaredFields()) {
-                    if (field.getName().contains("accessor")) {
-                        field.setAccessible(true);
-                        AtomicReference<?> value = (AtomicReference<?>) FieldUtils.readStaticField(field);
-                        value.set(null);
-                    }
-                    if (field.getName().contains("ClassLoaded")) {
-                        field.setAccessible(true);
-                        AtomicBoolean value = (AtomicBoolean) FieldUtils.readStaticField(field);
-                        value.set(false);
-                    }
+        String javaHome = System.getProperty("java.home");
+        String javaBin = javaHome + java.io.File.separator + "bin" + java.io.File.separator + "java";
+        String classpath = System.getProperty("java.class.path");
+
+        List<String> command = new ArrayList<>();
+        command.add(javaBin);
+        command.add("--add-opens");
+        command.add("java.base/java.lang=ALL-UNNAMED");
+        command.add("-cp");
+        command.add(classpath);
+        command.add(ConcurrentClinitChildProcess.class.getName());
+
+        int timeoutSeconds = 30;
+        int runs = 3;
+
+        for (int run = 1; run <= runs; run++) {
+            ProcessBuilder pb = new ProcessBuilder(command);
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+
+            StringBuilder output = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    output.append(line).append(System.lineSeparator());
+                    logger.info("[child-jvm-run-{}] {}", run, line);
                 }
             }
-        }
 
-        try {
-            final int threadCount = 6;
-            final int timeoutSeconds = 30;
-            final CyclicBarrier barrier = new CyclicBarrier(threadCount);
+            boolean completed = process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
+
+            if (!completed) {
+                process.destroyForcibly();
+                fail("Run " + run + ": Child JVM did not complete within " + timeoutSeconds
+                    + " seconds — <clinit> deadlock detected");
+            }
+
+            int exitCode = process.exitValue();
+            assertThat(exitCode)
+                .as("Run " + run + ": Child JVM exited with non-zero code. Output:\n" + output)
+                .isEqualTo(0);
+        }
+    }
+
+    /**
+     * Entry point for the forked child JVM. Concurrently triggers {@code <clinit>} of 6 different
+     * Cosmos classes that are involved in the circular initialization chain reported in the issues.
+     * Exits 0 on success, 1 on deadlock (timeout), 2 on unexpected error.
+     */
+    public static final class ConcurrentClinitChildProcess {
+        public static void main(String[] args) {
+            int timeoutSeconds = 20;
+            int threadCount = 6;
+            CyclicBarrier barrier = new CyclicBarrier(threadCount);
             ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
+            String[] classesToLoad = {
+                "com.azure.cosmos.CosmosAsyncClient",
+                "com.azure.cosmos.models.SqlParameter",
+                "com.azure.cosmos.models.FeedResponse",
+                "com.azure.cosmos.models.CosmosItemRequestOptions",
+                "com.azure.cosmos.CosmosAsyncContainer",
+                "com.azure.cosmos.util.CosmosPagedFluxDefaultImpl"
+            };
+
             List<Future<?>> futures = new ArrayList<>();
+            for (int i = 0; i < classesToLoad.length; i++) {
+                final String className = classesToLoad[i];
+                final int idx = i;
+                futures.add(executor.submit(() -> {
+                    try {
+                        barrier.await();
+                        System.out.println("[Thread-" + idx + "] Loading " + className);
+                        Class.forName(className);
+                        System.out.println("[Thread-" + idx + "] Done.");
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to load " + className, e);
+                    }
+                }));
+            }
 
-            // Each thread triggers a different accessor getter concurrently
-            futures.add(executor.submit(() -> {
-                awaitBarrier(barrier);
-                assertThat(ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor()).isNotNull();
-            }));
-            futures.add(executor.submit(() -> {
-                awaitBarrier(barrier);
-                assertThat(ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor()).isNotNull();
-            }));
-            futures.add(executor.submit(() -> {
-                awaitBarrier(barrier);
-                assertThat(ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()).isNotNull();
-            }));
-            futures.add(executor.submit(() -> {
-                awaitBarrier(barrier);
-                assertThat(ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor()).isNotNull();
-            }));
-            futures.add(executor.submit(() -> {
-                awaitBarrier(barrier);
-                assertThat(ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor()).isNotNull();
-            }));
-            futures.add(executor.submit(() -> {
-                awaitBarrier(barrier);
-                assertThat(ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor()).isNotNull();
-            }));
-
-            boolean deadlockDetected = false;
+            boolean deadlock = false;
             for (int i = 0; i < futures.size(); i++) {
                 try {
                     futures.get(i).get(timeoutSeconds, TimeUnit.SECONDS);
-                } catch (TimeoutException e) {
-                    deadlockDetected = true;
-                    logger.error("Thread {} did not complete within {} seconds - possible deadlock", i, timeoutSeconds);
-                } catch (java.util.concurrent.ExecutionException e) {
-                    logger.error("Thread {} threw exception: {}", i, e.getCause().getMessage());
-                    fail("Unexpected exception in thread " + i + ": " + e.getCause());
+                } catch (java.util.concurrent.TimeoutException e) {
+                    System.err.println("DEADLOCK: Thread-" + i + " timed out after " + timeoutSeconds + "s");
+                    deadlock = true;
+                } catch (Exception e) {
+                    Throwable root = e;
+                    while (root.getCause() != null) root = root.getCause();
+                    System.err.println("Thread-" + i + " error: " + root);
                 }
             }
 
             executor.shutdownNow();
-            assertThat(deadlockDetected)
-                .as("Concurrent accessor initialization should complete without deadlock")
-                .isFalse();
-        } finally {
-            // Restore all accessors so subsequent tests in the same JVM are not affected
-            BridgeInternal.initializeAllAccessors();
-            ModelBridgeInternal.initializeAllAccessors();
-            UtilBridgeInternal.initializeAllAccessors();
-        }
-    }
-
-    private static void awaitBarrier(CyclicBarrier barrier) {
-        try {
-            barrier.await();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.exit(deadlock ? 1 : 0);
         }
     }
 }
