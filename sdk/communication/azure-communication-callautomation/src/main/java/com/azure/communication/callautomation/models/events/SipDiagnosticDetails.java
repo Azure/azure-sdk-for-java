@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The SipDiagnosticInfo model.
+ * The SipDiagnosticDetails model.
  */
 @Immutable
-public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticInfo> {
+public final class SipDiagnosticDetails implements JsonSerializable<SipDiagnosticDetails> {
     /*
      * Represents the diagnostic code returned by the SIP service, used for identifying specific issues or statuses.
      */
@@ -27,9 +27,9 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     private String message;
 
     /**
-     * Creates an instance of SipDiagnosticInfo class.
+     * Creates an instance of SipDiagnosticDetails class.
      */
-    public SipDiagnosticInfo() {
+    public SipDiagnosticDetails() {
     }
 
     /**
@@ -63,30 +63,30 @@ public final class SipDiagnosticInfo implements JsonSerializable<SipDiagnosticIn
     }
 
     /**
-     * Reads an instance of SipDiagnosticInfo from the JsonReader.
+     * Reads an instance of SipDiagnosticDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SipDiagnosticInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SipDiagnosticDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SipDiagnosticInfo.
+     * @throws IOException If an error occurs while reading the SipDiagnosticDetails.
      */
-    public static SipDiagnosticInfo fromJson(JsonReader jsonReader) throws IOException {
+    public static SipDiagnosticDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SipDiagnosticInfo deserializedSipDiagnosticInfo = new SipDiagnosticInfo();
+            SipDiagnosticDetails deserializedSipDiagnosticDetails = new SipDiagnosticDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("code".equals(fieldName)) {
-                    deserializedSipDiagnosticInfo.code = reader.getNullable(JsonReader::getInt);
+                    deserializedSipDiagnosticDetails.code = reader.getNullable(JsonReader::getInt);
                 } else if ("message".equals(fieldName)) {
-                    deserializedSipDiagnosticInfo.message = reader.getString();
+                    deserializedSipDiagnosticDetails.message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSipDiagnosticInfo;
+            return deserializedSipDiagnosticDetails;
         });
     }
 }

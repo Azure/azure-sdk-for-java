@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 /** The MoveParticipantsResult model. */
 @Immutable
-public class MoveParticipantsResult {
+public final class MoveParticipantsResult {
     /*
      * The participants moved.
      */

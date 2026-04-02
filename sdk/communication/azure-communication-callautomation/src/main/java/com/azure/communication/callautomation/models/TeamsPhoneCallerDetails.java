@@ -173,7 +173,7 @@ public final class TeamsPhoneCallerDetails {
      * @param isAuthenticated the isAuthenticated value to set.
      * @return the TeamsPhoneCallerDetails object itself.
      */
-    public TeamsPhoneCallerDetails setIsAuthenticated(Boolean isAuthenticated) {
+    public TeamsPhoneCallerDetails setAuthenticated(Boolean isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
         return this;
     }
