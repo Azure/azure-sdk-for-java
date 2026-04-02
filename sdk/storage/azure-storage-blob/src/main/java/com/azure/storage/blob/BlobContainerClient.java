@@ -1526,7 +1526,7 @@ public final class BlobContainerClient {
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
         Callable<Response<CreateSessionResponse>> operation = () -> this.azureBlobStorage.getContainers()
-            .createSessionWithResponse(containerName, config, finalContext);
+            .createSessionWithResponse(containerName, config, null, null, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
