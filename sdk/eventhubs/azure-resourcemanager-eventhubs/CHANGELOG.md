@@ -1,14 +1,164 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.49.0-beta.1 (2026-04-02)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ApplicationGroupListResult` was removed
 
-### Other Changes
+#### `models.AuthorizationRuleListResult` was removed
+
+#### `models.ArmDisasterRecoveryListResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfiguration` was removed
+
+#### `models.EHNamespaceListResult` was removed
+
+#### `models.SchemaGroupListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.EventHubListResult` was removed
+
+#### `models.ClusterListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.KeySource` was removed
+
+#### `models.ConsumerGroupListResult` was removed
+
+#### `models.NspAccessRuleProperties` was modified
+
+* `NspAccessRuleProperties()` was changed to private access
+* `withSubscriptions(java.util.List)` was removed
+* `withAddressPrefixes(java.util.List)` was removed
+* `withDirection(models.NspAccessRuleDirection)` was removed
+
+#### `models.ProvisioningIssueProperties` was modified
+
+* `ProvisioningIssueProperties()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withIssueType(java.lang.String)` was removed
+
+#### `models.Encryption` was modified
+
+* `models.KeySource keySource()` -> `models.EncryptionKeySource keySource()`
+* `withKeySource(models.KeySource)` was removed
+
+#### `models.NetworkSecurityPerimeter` was modified
+
+* `NetworkSecurityPerimeter()` was changed to private access
+* `withPerimeterGuid(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was changed to private access
+* `withRequiredZoneNames(java.util.List)` was removed
+* `withType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withRequiredMembers(java.util.List)` was removed
+
+#### `models.NspAccessRule` was modified
+
+* `NspAccessRule()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` was modified
+
+* `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+
+#### `models.EHNamespaceIdContainer` was modified
+
+* `EHNamespaceIdContainer()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationPropertiesProfile` was modified
+
+* `NetworkSecurityPerimeterConfigurationPropertiesProfile()` was changed to private access
+* `withAccessRulesVersion(java.lang.String)` was removed
+* `withAccessRules(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.NspAccessRulePropertiesSubscriptionsItem` was modified
+
+* `NspAccessRulePropertiesSubscriptionsItem()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+
+#### `models.AvailableCluster` was modified
+
+* `AvailableCluster()` was changed to private access
+* `withLocation(java.lang.String)` was removed
+
+#### `models.Destination` was modified
+
+* `java.util.UUID dataLakeSubscriptionId()` -> `java.lang.String dataLakeSubscriptionId()`
+* `withDataLakeSubscriptionId(java.util.UUID)` was removed
+
+#### `models.ProvisioningIssue` was modified
+
+* `ProvisioningIssue()` was changed to private access
+* `withName(java.lang.String)` was removed
+
+### Features Added
+
+* `models.PlatformCapabilities` was added
+
+* `models.NamespaceReplicaLocation` was added
+
+* `models.TimestampType` was added
+
+* `models.MessageTimestampDescription` was added
+
+* `models.GeoDRRoleType` was added
+
+* `models.GeoDataReplicationProperties` was added
+
+* `models.FailOver` was added
+
+* `models.EncryptionKeySource` was added
+
+* `models.ConfidentialCompute` was added
+
+* `models.Mode` was added
+
+#### `models.RetentionDescription` was modified
+
+* `minCompactionLagTimeInMinutes()` was added
+* `withMinCompactionLagTimeInMinutes(java.lang.Long)` was added
+
+#### `models.CleanupPolicyRetentionDescription` was modified
+
+* `DELETE_OR_COMPACT` was added
+
+#### `models.Encryption` was modified
+
+* `withKeySource(models.EncryptionKeySource)` was added
+
+#### `models.TlsVersion` was modified
+
+* `ONE_THREE` was added
+
+#### `models.SchemaType` was modified
+
+* `PROTO_BUF` was added
+* `JSON` was added
+
+#### `models.Destination` was modified
+
+* `withDataLakeSubscriptionId(java.lang.String)` was added
 
 ## 2.53.6 (2026-01-29)
 

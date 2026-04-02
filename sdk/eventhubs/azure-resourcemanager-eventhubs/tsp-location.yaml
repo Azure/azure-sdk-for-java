@@ -1,0 +1,4 @@
+directory: specification/eventhub/resource-manager/Microsoft.EventHub/Eventhub
+commit: HEAD
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
