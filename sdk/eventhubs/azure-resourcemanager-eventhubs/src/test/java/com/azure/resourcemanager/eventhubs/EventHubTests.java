@@ -89,6 +89,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withNewResourceGroup(rgName)
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
             .withAutoScaling()
+            .disableLocalAuth()
             .create();
 
         Assertions.assertNotNull(namespace1);
@@ -105,6 +106,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withExistingResourceGroup(rgName)
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 11
             .withCurrentThroughputUnits(11)
+            .disableLocalAuth()
             .create();
 
         Assertions.assertNotNull(namespace2);
@@ -120,6 +122,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSku(EventHubNamespaceSkuType.BASIC)
+            .disableLocalAuth()
             .create();
 
         Assertions.assertNotNull(namespace3);
@@ -149,6 +152,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withNewResourceGroup(rgName)
             .withNewEventHub(eventHubName1)
             .withNewEventHub(eventHubName2)
+            .disableLocalAuth()
             .create();
 
         Assertions.assertNotNull(namespace);
@@ -202,6 +206,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withNewResourceGroup(rgName)
             .withNewManageRule("mngRule1")
             .withNewSendRule("sndRule1")
+            .disableLocalAuth()
             .create();
 
         Assertions.assertNotNull(namespace);
@@ -265,8 +270,11 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
 
-        Creatable<EventHubNamespace> namespaceCreatable
-            = eventHubsManager.namespaces().define(namespaceName).withRegion(region).withNewResourceGroup(rgName);
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
+            .define(namespaceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableLocalAuth();
 
         EventHub eventHub = eventHubsManager.eventHubs()
             .define(eventHubName)
@@ -320,8 +328,11 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
 
-        Creatable<EventHubNamespace> namespaceCreatable
-            = eventHubsManager.namespaces().define(namespaceName).withRegion(region).withNewResourceGroup(rgName);
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
+            .define(namespaceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableLocalAuth();
 
         EventHub eventHub = eventHubsManager.eventHubs()
             .define(eventHubName)
@@ -383,8 +394,11 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS);
 
-        Creatable<EventHubNamespace> namespaceCreatable
-            = eventHubsManager.namespaces().define(namespaceName).withRegion(region).withNewResourceGroup(rgName);
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
+            .define(namespaceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableLocalAuth();
 
         final String containerName1 = "eventsctr1";
 
@@ -445,8 +459,11 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
         final String namespaceName = generateRandomResourceName("ns", 14);
         final String eventHubName = generateRandomResourceName("eh", 14);
 
-        Creatable<EventHubNamespace> namespaceCreatable
-            = eventHubsManager.namespaces().define(namespaceName).withRegion(region).withNewResourceGroup(rgName);
+        Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
+            .define(namespaceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableLocalAuth();
 
         EventHub eventHub
             = eventHubsManager.eventHubs().define(eventHubName).withNewNamespace(namespaceCreatable).create();
@@ -490,12 +507,14 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .define(namespaceName1)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withNewResourceGroup(rgName)
+            .disableLocalAuth()
             .create();
 
         EventHubNamespace secondaryNamespace = eventHubsManager.namespaces()
             .define(namespaceName2)
             .withRegion(Region.US_NORTH_CENTRAL)
             .withExistingResourceGroup(rgName)
+            .disableLocalAuth()
             .create();
 
         Exception exception = null;
@@ -585,6 +604,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
             .withAutoScaling()
             .withMinimumTlsVersion(TlsVersion.ONE_ONE)
+            .disableLocalAuth()
             .create();
         Assertions.assertEquals(TlsVersion.ONE_ONE, namespace.minimumTlsVersion());
 
@@ -605,6 +625,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withExistingResourceGroup(rgName)
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
             .withAutoScaling()
+            .disableLocalAuth()
             .create();
         Assertions.assertFalse(namespace1.zoneRedundant());
 
@@ -615,6 +636,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
             .withAutoScaling()
             .enableZoneRedundant()
+            .disableLocalAuth()
             .create();
         Assertions.assertTrue(namespace2.zoneRedundant());
     }
