@@ -37,7 +37,6 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerClient;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.Execution;

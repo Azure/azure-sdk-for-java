@@ -75,8 +75,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            batchClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            batchClientBuilder.httpClient(interceptorManager.getPlaybackClient()).credential(new MockTokenCredential());
 
             addTestRulesOnPlayback(interceptorManager);
         } else if (getTestMode() == TestMode.RECORD) {
