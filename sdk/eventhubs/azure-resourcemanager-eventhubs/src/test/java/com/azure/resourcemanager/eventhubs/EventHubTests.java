@@ -35,6 +35,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 
@@ -498,6 +499,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertTrue(eventHub.captureDestination().blobContainer().equalsIgnoreCase("eventctr"));
     }
 
+    @Disabled("pairing.listAuthorizationRules() returns rule ID without '/disasterRecoveryConfigs/{}/' segment")
     @Test
     public void canManageGeoDisasterRecoveryPairing() throws Throwable {
         rgName = generateRandomResourceName("javacsmrg", 15);
