@@ -1567,7 +1567,7 @@ public class ImplementationBridgeHelpers {
             }
         }
 
-        public static CosmosDiagnosticsThresholdsAccessor getCosmosAsyncClientAccessor() {
+        public static CosmosDiagnosticsThresholdsAccessor getCosmosDiagnosticsThresholdsAccessor() {
             if (!cosmosDiagnosticsThresholdsClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsThresholds...");
                 ensureClassInitialized("com.azure.cosmos.CosmosDiagnosticsThresholds");

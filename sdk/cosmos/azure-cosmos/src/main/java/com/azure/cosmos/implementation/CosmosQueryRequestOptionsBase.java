@@ -30,7 +30,7 @@ import java.util.UUID;
  */
 public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> implements OverridableRequestOptions {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
 
     private ConsistencyLevel consistencyLevel;
     private ReadConsistencyStrategy readConsistencyStrategy;

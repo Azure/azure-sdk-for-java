@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class CosmosItemRequestOptions {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
 
     private ConsistencyLevel consistencyLevel;
     private ReadConsistencyStrategy readConsistencyStrategy;
