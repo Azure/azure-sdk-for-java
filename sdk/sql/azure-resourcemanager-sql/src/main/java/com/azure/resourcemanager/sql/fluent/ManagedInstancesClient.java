@@ -520,8 +520,8 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailoverAsync(String resourceGroupName,
-        String managedInstanceName, ReplicaType replicaType);
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName,
+        ReplicaType replicaType);
 
     /**
      * Failovers a managed instance.
@@ -534,8 +534,7 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailoverAsync(String resourceGroupName,
-        String managedInstanceName);
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName);
 
     /**
      * Failovers a managed instance.
@@ -548,8 +547,7 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailover(String resourceGroupName,
-        String managedInstanceName);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName);
 
     /**
      * Failovers a managed instance.
@@ -564,8 +562,8 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailover(String resourceGroupName,
-        String managedInstanceName, ReplicaType replicaType, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName,
+        ReplicaType replicaType, Context context);
 
     /**
      * Failovers a managed instance.
@@ -576,11 +574,10 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceInner> failoverAsync(String resourceGroupName, String managedInstanceName,
-        ReplicaType replicaType);
+    Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName, ReplicaType replicaType);
 
     /**
      * Failovers a managed instance.
@@ -590,10 +587,10 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceInner> failoverAsync(String resourceGroupName, String managedInstanceName);
+    Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName);
 
     /**
      * Failovers a managed instance.
@@ -603,10 +600,9 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner failover(String resourceGroupName, String managedInstanceName);
+    void failover(String resourceGroupName, String managedInstanceName);
 
     /**
      * Failovers a managed instance.
@@ -618,11 +614,9 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner failover(String resourceGroupName, String managedInstanceName, ReplicaType replicaType,
-        Context context);
+    void failover(String resourceGroupName, String managedInstanceName, ReplicaType replicaType, Context context);
 
     /**
      * Gets the collection of outbound network dependencies for the given managed instance.
@@ -695,50 +689,7 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName);
-
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginReevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName);
-
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginReevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName, Context context);
-
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceInner> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
+    PollerFlux<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
         String managedInstanceName);
 
     /**
@@ -749,10 +700,11 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseState(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Reevaluates the inaccessibility state of all managed databases.
@@ -763,11 +715,49 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseState(String resourceGroupName,
+        String managedInstanceName, Context context);
+
+    /**
+     * Reevaluates the inaccessibility state of all managed databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName,
-        Context context);
+    Mono<Void> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Reevaluates the inaccessibility state of all managed databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Reevaluates the inaccessibility state of all managed databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName, Context context);
 
     /**
      * Refresh external governance enablement status.
@@ -1161,56 +1151,7 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginValidateAzureKeyVaultEncryptionKeyAsync(
-        String resourceGroupName, String managedInstanceName,
-        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters);
-
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginValidateAzureKeyVaultEncryptionKey(
-        String resourceGroupName, String managedInstanceName,
-        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters);
-
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginValidateAzureKeyVaultEncryptionKey(
-        String resourceGroupName, String managedInstanceName,
-        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context);
-
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceInner> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
+    PollerFlux<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
         String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters);
 
     /**
@@ -1222,10 +1163,56 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKey(String resourceGroupName,
+        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters);
+
+    /**
+     * Validates customer managed key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The validate azure key vault encryption key parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKey(String resourceGroupName,
+        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters,
+        Context context);
+
+    /**
+     * Validates customer managed key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The validate azure key vault encryption key parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
+    Mono<Void> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName, String managedInstanceName,
+        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters);
+
+    /**
+     * Validates customer managed key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The validate azure key vault encryption key parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters);
 
     /**
@@ -1238,10 +1225,9 @@ public interface ManagedInstancesClient extends InnerSupportsGet<ManagedInstance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
+    void validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context);
 
     /**

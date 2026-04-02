@@ -1254,12 +1254,12 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailoverAsync(String resourceGroupName,
-        String serverName, String elasticPoolName) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String elasticPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, serverName, elasticPoolName);
-        return this.client.<ElasticPoolInner, ElasticPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ElasticPoolInner.class, ElasticPoolInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1275,13 +1275,13 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailoverAsync(String resourceGroupName,
-        String serverName, String elasticPoolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, serverName, elasticPoolName, context);
-        return this.client.<ElasticPoolInner, ElasticPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ElasticPoolInner.class, ElasticPoolInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1296,8 +1296,8 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailover(String resourceGroupName,
-        String serverName, String elasticPoolName) {
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String elasticPoolName) {
         return this.beginFailoverAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
     }
 
@@ -1314,8 +1314,8 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailover(String resourceGroupName,
-        String serverName, String elasticPoolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String elasticPoolName, Context context) {
         return this.beginFailoverAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
     }
 
@@ -1328,10 +1328,10 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElasticPoolInner> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName) {
+    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         return beginFailoverAsync(resourceGroupName, serverName, elasticPoolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1346,10 +1346,10 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ElasticPoolInner> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName,
+    private Mono<Void> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName,
         Context context) {
         return beginFailoverAsync(resourceGroupName, serverName, elasticPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1364,11 +1364,10 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ElasticPoolInner failover(String resourceGroupName, String serverName, String elasticPoolName) {
-        return failoverAsync(resourceGroupName, serverName, elasticPoolName).block();
+    public void failover(String resourceGroupName, String serverName, String elasticPoolName) {
+        failoverAsync(resourceGroupName, serverName, elasticPoolName).block();
     }
 
     /**
@@ -1381,12 +1380,10 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ElasticPoolInner failover(String resourceGroupName, String serverName, String elasticPoolName,
-        Context context) {
-        return failoverAsync(resourceGroupName, serverName, elasticPoolName, context).block();
+    public void failover(String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+        failoverAsync(resourceGroupName, serverName, elasticPoolName, context).block();
     }
 
     /**

@@ -11,7 +11,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.models.TdeCertificate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -48,7 +47,7 @@ public interface TdeCertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(String resourceGroupName, String serverName,
+    PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String serverName,
         TdeCertificate parameters);
 
     /**
@@ -63,7 +62,7 @@ public interface TdeCertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String serverName,
         TdeCertificate parameters);
 
     /**
@@ -79,7 +78,7 @@ public interface TdeCertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String serverName,
         TdeCertificate parameters, Context context);
 
     /**
@@ -91,10 +90,10 @@ public interface TdeCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerInner> createAsync(String resourceGroupName, String serverName, TdeCertificate parameters);
+    Mono<Void> createAsync(String resourceGroupName, String serverName, TdeCertificate parameters);
 
     /**
      * Creates a TDE certificate for a given server.
@@ -105,10 +104,9 @@ public interface TdeCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner create(String resourceGroupName, String serverName, TdeCertificate parameters);
+    void create(String resourceGroupName, String serverName, TdeCertificate parameters);
 
     /**
      * Creates a TDE certificate for a given server.
@@ -120,8 +118,7 @@ public interface TdeCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner create(String resourceGroupName, String serverName, TdeCertificate parameters, Context context);
+    void create(String resourceGroupName, String serverName, TdeCertificate parameters, Context context);
 }

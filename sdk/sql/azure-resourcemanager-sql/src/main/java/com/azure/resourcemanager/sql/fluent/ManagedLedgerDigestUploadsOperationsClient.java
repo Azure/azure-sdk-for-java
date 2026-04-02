@@ -123,9 +123,9 @@ public interface ManagedLedgerDigestUploadsOperationsClient {
      * @return the {@link PollerFlux} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters);
+    PollerFlux<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters);
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -141,9 +141,9 @@ public interface ManagedLedgerDigestUploadsOperationsClient {
      * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters);
+    SyncPoller<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters);
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -160,9 +160,10 @@ public interface ManagedLedgerDigestUploadsOperationsClient {
      * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters, Context context);
+    SyncPoller<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters,
+        Context context);
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -178,8 +179,9 @@ public interface ManagedLedgerDigestUploadsOperationsClient {
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters);
+    Mono<ManagedLedgerDigestUploadsInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters);
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -192,10 +194,12 @@ public interface ManagedLedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters);
+    ManagedLedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters);
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
@@ -209,11 +213,12 @@ public interface ManagedLedgerDigestUploadsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters,
-        Context context);
+    ManagedLedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters, Context context);
 
     /**
      * Gets all ledger digest upload settings on a database.

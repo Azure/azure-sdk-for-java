@@ -485,8 +485,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMoveAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
@@ -501,8 +501,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
@@ -518,8 +518,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
      * Cancels a managed database move operation.
@@ -531,11 +531,11 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedDatabaseInner> cancelMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseMoveDefinition parameters);
+    Mono<Void> cancelMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
@@ -547,10 +547,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters);
 
     /**
@@ -564,10 +563,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
@@ -599,8 +597,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMoveAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
@@ -615,8 +613,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
@@ -632,8 +630,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
      * Completes a managed database move operation.
@@ -645,11 +643,11 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedDatabaseInner> completeMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseMoveDefinition parameters);
+    Mono<Void> completeMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
@@ -661,10 +659,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters);
 
     /**
@@ -678,10 +675,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
@@ -713,57 +709,7 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestoreAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        CompleteDatabaseRestoreDefinition parameters);
-
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestore(String resourceGroupName,
-        String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters);
-
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestore(String resourceGroupName,
-        String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context);
-
-    /**
-     * Completes the restore operation on a managed database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param parameters The definition for completing the restore of this managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedDatabaseInner> completeRestoreAsync(String resourceGroupName, String managedInstanceName,
+    PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, CompleteDatabaseRestoreDefinition parameters);
 
     /**
@@ -776,10 +722,58 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters);
+
+    /**
+     * Completes the restore operation on a managed database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The definition for completing the restore of this managed database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context);
+
+    /**
+     * Completes the restore operation on a managed database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The definition for completing the restore of this managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
+    Mono<Void> completeRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        CompleteDatabaseRestoreDefinition parameters);
+
+    /**
+     * Completes the restore operation on a managed database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The definition for completing the restore of this managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters);
 
     /**
@@ -793,10 +787,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
+    void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters, Context context);
 
     /**
@@ -935,8 +928,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMoveAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseStartMoveDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
@@ -951,8 +944,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseStartMoveDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
@@ -968,9 +961,8 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseStartMoveDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters, Context context);
 
     /**
      * Starts a managed database move operation.
@@ -982,10 +974,10 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedDatabaseInner> startMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+    Mono<Void> startMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters);
 
     /**
@@ -998,10 +990,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner startMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters);
 
     /**
@@ -1015,10 +1006,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner startMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters, Context context);
 
     /**

@@ -1449,12 +1449,12 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginFailoverAsync(String resourceGroupName, String managedInstanceName, ReplicaType replicaType) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName,
+        ReplicaType replicaType) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, managedInstanceName, replicaType);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1468,13 +1468,12 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginFailoverAsync(String resourceGroupName, String managedInstanceName) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, managedInstanceName, replicaType);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1490,13 +1489,13 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailoverAsync(
-        String resourceGroupName, String managedInstanceName, ReplicaType replicaType, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName,
+        ReplicaType replicaType, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, managedInstanceName, replicaType, context);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1510,8 +1509,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailover(String resourceGroupName,
-        String managedInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
         return this.beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).getSyncPoller();
     }
@@ -1529,8 +1527,8 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginFailover(String resourceGroupName,
-        String managedInstanceName, ReplicaType replicaType, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName,
+        ReplicaType replicaType, Context context) {
         return this.beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType, context).getSyncPoller();
     }
 
@@ -1543,11 +1541,10 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> failoverAsync(String resourceGroupName, String managedInstanceName,
-        ReplicaType replicaType) {
+    public Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName, ReplicaType replicaType) {
         return beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1560,10 +1557,10 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> failoverAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
         return beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1579,11 +1576,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceInner> failoverAsync(String resourceGroupName, String managedInstanceName,
-        ReplicaType replicaType, Context context) {
+    private Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName, ReplicaType replicaType,
+        Context context) {
         return beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1596,12 +1593,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner failover(String resourceGroupName, String managedInstanceName) {
+    public void failover(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
-        return failoverAsync(resourceGroupName, managedInstanceName, replicaType).block();
+        failoverAsync(resourceGroupName, managedInstanceName, replicaType).block();
     }
 
     /**
@@ -1614,12 +1610,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner failover(String resourceGroupName, String managedInstanceName, ReplicaType replicaType,
+    public void failover(String resourceGroupName, String managedInstanceName, ReplicaType replicaType,
         Context context) {
-        return failoverAsync(resourceGroupName, managedInstanceName, replicaType, context).block();
+        failoverAsync(resourceGroupName, managedInstanceName, replicaType, context).block();
     }
 
     /**
@@ -1864,12 +1859,12 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName) {
+    public PollerFlux<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
+        String managedInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = reevaluateInaccessibleDatabaseStateWithResponseAsync(resourceGroupName, managedInstanceName);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1884,14 +1879,13 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName,
-            Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = reevaluateInaccessibleDatabaseStateWithResponseAsync(resourceGroupName, managedInstanceName, context);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1905,8 +1899,8 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginReevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseState(String resourceGroupName,
+        String managedInstanceName) {
         return this.beginReevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName)
             .getSyncPoller();
     }
@@ -1923,8 +1917,8 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginReevaluateInaccessibleDatabaseState(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseState(String resourceGroupName,
+        String managedInstanceName, Context context) {
         return this.beginReevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName, context)
             .getSyncPoller();
     }
@@ -1937,11 +1931,10 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
-        String managedInstanceName) {
+    public Mono<Void> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName) {
         return beginReevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1955,11 +1948,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceInner> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
-        String managedInstanceName, Context context) {
+    private Mono<Void> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName,
+        Context context) {
         return beginReevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1972,12 +1965,10 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner reevaluateInaccessibleDatabaseState(String resourceGroupName,
-        String managedInstanceName) {
-        return reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName).block();
+    public void reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName) {
+        reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName).block();
     }
 
     /**
@@ -1989,12 +1980,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner reevaluateInaccessibleDatabaseState(String resourceGroupName,
-        String managedInstanceName, Context context) {
-        return reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName, context).block();
+    public void reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName,
+        Context context) {
+        reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName, context).block();
     }
 
     /**
@@ -2965,13 +2955,12 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginValidateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName, String managedInstanceName,
-            ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
+        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = validateAzureKeyVaultEncryptionKeyWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2987,14 +2976,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
-        beginValidateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName, String managedInstanceName,
-            ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
+        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = validateAzureKeyVaultEncryptionKeyWithResponseAsync(resourceGroupName,
             managedInstanceName, parameters, context);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -3009,9 +2998,8 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginValidateAzureKeyVaultEncryptionKey(
-        String resourceGroupName, String managedInstanceName,
-        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKey(String resourceGroupName,
+        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
         return this.beginValidateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters)
             .getSyncPoller();
     }
@@ -3029,9 +3017,9 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginValidateAzureKeyVaultEncryptionKey(
-        String resourceGroupName, String managedInstanceName,
-        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKey(String resourceGroupName,
+        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters,
+        Context context) {
         return this
             .beginValidateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters, context)
             .getSyncPoller();
@@ -3046,11 +3034,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
-        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
+    public Mono<Void> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName, String managedInstanceName,
+        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
         return beginValidateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3065,12 +3053,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceInner> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
-        String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters,
-        Context context) {
+    private Mono<Void> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName, String managedInstanceName,
+        ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context) {
         return beginValidateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3085,12 +3072,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
+    public void validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
-        return validateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters).block();
+        validateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
@@ -3103,13 +3089,11 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
+    public void validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context) {
-        return validateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters, context)
-            .block();
+        validateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters, context).block();
     }
 
     /**

@@ -191,7 +191,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
      * 
      * @return the minimalTlsVersion value.
      */
-    public MinimalTlsVersion minimalTlsVersion() {
+    public String minimalTlsVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
@@ -201,7 +201,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerUpdate object itself.
      */
-    public ServerUpdate withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+    public ServerUpdate withMinimalTlsVersion(String minimalTlsVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }

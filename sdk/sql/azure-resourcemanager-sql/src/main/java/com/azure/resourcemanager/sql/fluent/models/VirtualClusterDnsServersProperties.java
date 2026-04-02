@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.DNSRefreshOperationStatus;
+import com.azure.resourcemanager.sql.models.DnsRefreshConfigurationPropertiesStatus;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class VirtualClusterDnsServersProperties implements JsonSerializabl
     /*
      * The status of the DNS refresh operation.
      */
-    private DNSRefreshOperationStatus status;
+    private DnsRefreshConfigurationPropertiesStatus status;
 
     /**
      * Creates an instance of VirtualClusterDnsServersProperties class.
@@ -33,7 +33,7 @@ public final class VirtualClusterDnsServersProperties implements JsonSerializabl
      * 
      * @return the status value.
      */
-    public DNSRefreshOperationStatus status() {
+    public DnsRefreshConfigurationPropertiesStatus status() {
         return this.status;
     }
 
@@ -72,7 +72,7 @@ public final class VirtualClusterDnsServersProperties implements JsonSerializabl
 
                 if ("status".equals(fieldName)) {
                     deserializedVirtualClusterDnsServersProperties.status
-                        = DNSRefreshOperationStatus.fromString(reader.getString());
+                        = DnsRefreshConfigurationPropertiesStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

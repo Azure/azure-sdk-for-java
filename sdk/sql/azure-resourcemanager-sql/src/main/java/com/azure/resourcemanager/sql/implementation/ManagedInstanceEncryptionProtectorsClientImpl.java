@@ -782,15 +782,12 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName) {
+    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName);
-        return this.client
-            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResult(mono,
-                this.client.getHttpPipeline(), ManagedInstanceEncryptionProtectorInner.class,
-                ManagedInstanceEncryptionProtectorInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -806,16 +803,13 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context);
-        return this.client
-            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResult(mono,
-                this.client.getHttpPipeline(), ManagedInstanceEncryptionProtectorInner.class,
-                ManagedInstanceEncryptionProtectorInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -830,9 +824,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidate(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName) {
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
         return this.beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName)
             .getSyncPoller();
     }
@@ -850,9 +843,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidate(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
         return this.beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context)
             .getSyncPoller();
     }
@@ -866,11 +858,11 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceEncryptionProtectorInner> revalidateAsync(String resourceGroupName,
-        String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
+    public Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
         return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -885,11 +877,11 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceEncryptionProtectorInner> revalidateAsync(String resourceGroupName,
-        String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
+    private Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
         return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -903,12 +895,11 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner revalidate(String resourceGroupName, String managedInstanceName,
+    public void revalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName) {
-        return revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).block();
+        revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).block();
     }
 
     /**
@@ -921,12 +912,11 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner revalidate(String resourceGroupName, String managedInstanceName,
+    public void revalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
-        return revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).block();
+        revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).block();
     }
 
     /**

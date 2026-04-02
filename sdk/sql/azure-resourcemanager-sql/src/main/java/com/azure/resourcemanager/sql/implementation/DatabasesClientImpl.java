@@ -1634,12 +1634,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginFailoverAsync(String resourceGroupName,
-        String serverName, String databaseName, ReplicaType replicaType) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String databaseName, ReplicaType replicaType) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1654,13 +1654,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginFailoverAsync(String resourceGroupName,
-        String serverName, String databaseName) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String databaseName) {
         final ReplicaType replicaType = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1677,13 +1677,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginFailoverAsync(String resourceGroupName,
-        String serverName, String databaseName, ReplicaType replicaType, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String databaseName, ReplicaType replicaType, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType, context);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1698,8 +1698,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginFailover(String resourceGroupName,
-        String serverName, String databaseName) {
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String databaseName) {
         final ReplicaType replicaType = null;
         return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
     }
@@ -1718,8 +1718,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginFailover(String resourceGroupName,
-        String serverName, String databaseName, ReplicaType replicaType, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String databaseName, ReplicaType replicaType, Context context) {
         return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context)
             .getSyncPoller();
     }
@@ -1734,10 +1734,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseInner> failoverAsync(String resourceGroupName, String serverName, String databaseName,
+    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName,
         ReplicaType replicaType) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1752,10 +1752,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseInner> failoverAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName) {
         final ReplicaType replicaType = null;
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1772,10 +1772,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> failoverAsync(String resourceGroupName, String serverName, String databaseName,
+    private Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName,
         ReplicaType replicaType, Context context) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1790,12 +1790,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner failover(String resourceGroupName, String serverName, String databaseName) {
+    public void failover(String resourceGroupName, String serverName, String databaseName) {
         final ReplicaType replicaType = null;
-        return failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
+        failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
     }
 
     /**
@@ -1809,12 +1808,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner failover(String resourceGroupName, String serverName, String databaseName,
-        ReplicaType replicaType, Context context) {
-        return failoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).block();
+    public void failover(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType,
+        Context context) {
+        failoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).block();
     }
 
     /**
@@ -2754,12 +2752,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouseAsync(String resourceGroupName,
+    public PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(String resourceGroupName,
         String serverName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = upgradeDataWarehouseWithResponseAsync(resourceGroupName, serverName, databaseName);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2775,13 +2773,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(String resourceGroupName,
+        String serverName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = upgradeDataWarehouseWithResponseAsync(resourceGroupName, serverName, databaseName, context);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2796,8 +2794,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouse(String resourceGroupName,
-        String serverName, String databaseName) {
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(String resourceGroupName, String serverName,
+        String databaseName) {
         return this.beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
@@ -2814,8 +2812,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouse(String resourceGroupName,
-        String serverName, String databaseName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(String resourceGroupName, String serverName,
+        String databaseName, Context context) {
         return this.beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context)
             .getSyncPoller();
     }
@@ -2829,11 +2827,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseInner> upgradeDataWarehouseAsync(String resourceGroupName, String serverName,
-        String databaseName) {
+    public Mono<Void> upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
         return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2848,11 +2845,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> upgradeDataWarehouseAsync(String resourceGroupName, String serverName,
-        String databaseName, Context context) {
+    private Mono<Void> upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName,
+        Context context) {
         return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2866,11 +2863,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        return upgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).block();
+    public void upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
+        upgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).block();
     }
 
     /**
@@ -2883,12 +2879,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName,
+    public void upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName,
         Context context) {
-        return upgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context).block();
+        upgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context).block();
     }
 
     /**

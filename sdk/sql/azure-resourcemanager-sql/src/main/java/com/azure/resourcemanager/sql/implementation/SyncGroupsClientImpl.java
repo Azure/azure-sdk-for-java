@@ -1952,12 +1952,12 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchemaAsync(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName) {
+    public PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = refreshHubSchemaWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName);
-        return this.client.<SyncGroupInner, SyncGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SyncGroupInner.class, SyncGroupInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1974,13 +1974,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchemaAsync(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = refreshHubSchemaWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, context);
-        return this.client.<SyncGroupInner, SyncGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SyncGroupInner.class, SyncGroupInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1996,8 +1996,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName) {
+    public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName) {
         return this.beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName)
             .getSyncPoller();
     }
@@ -2016,8 +2016,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, Context context) {
         return this.beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
             .getSyncPoller();
     }
@@ -2032,10 +2032,10 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncGroupInner> refreshHubSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+    public Mono<Void> refreshHubSchemaAsync(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName) {
         return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2052,10 +2052,10 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SyncGroupInner> refreshHubSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+    private Mono<Void> refreshHubSchemaAsync(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName, Context context) {
         return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2071,12 +2071,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner refreshHubSchema(String resourceGroupName, String serverName, String databaseName,
+    public void refreshHubSchema(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName) {
-        return refreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
+        refreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).block();
     }
 
     /**
@@ -2090,12 +2089,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncGroupInner refreshHubSchema(String resourceGroupName, String serverName, String databaseName,
-        String syncGroupName, Context context) {
-        return refreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
+    public void refreshHubSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        Context context) {
+        refreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).block();
     }
 
     /**

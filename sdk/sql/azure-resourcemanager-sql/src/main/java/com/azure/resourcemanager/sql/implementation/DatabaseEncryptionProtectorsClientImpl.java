@@ -24,7 +24,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.DatabaseEncryptionProtectorsClient;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -184,12 +183,12 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginRevalidateAsync(String resourceGroupName,
-        String serverName, String databaseName, EncryptionProtectorName encryptionProtectorName) {
+    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
+        String databaseName, EncryptionProtectorName encryptionProtectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = revalidateWithResponseAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -206,13 +205,13 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginRevalidateAsync(String resourceGroupName,
-        String serverName, String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
+        String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = revalidateWithResponseAsync(resourceGroupName, serverName, databaseName,
             encryptionProtectorName, context);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -228,8 +227,8 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginRevalidate(String resourceGroupName,
-        String serverName, String databaseName, EncryptionProtectorName encryptionProtectorName) {
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
+        String databaseName, EncryptionProtectorName encryptionProtectorName) {
         return this.beginRevalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName)
             .getSyncPoller();
     }
@@ -248,8 +247,8 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginRevalidate(String resourceGroupName,
-        String serverName, String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
+        String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
         return this.beginRevalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context)
             .getSyncPoller();
     }
@@ -264,10 +263,10 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseInner> revalidateAsync(String resourceGroupName, String serverName, String databaseName,
+    public Mono<Void> revalidateAsync(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
         return beginRevalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -284,10 +283,10 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> revalidateAsync(String resourceGroupName, String serverName, String databaseName,
+    private Mono<Void> revalidateAsync(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
         return beginRevalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context)
             .last()
@@ -304,12 +303,11 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner revalidate(String resourceGroupName, String serverName, String databaseName,
+    public void revalidate(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
-        return revalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).block();
+        revalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).block();
     }
 
     /**
@@ -323,12 +321,11 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner revalidate(String resourceGroupName, String serverName, String databaseName,
+    public void revalidate(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
-        return revalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context).block();
+        revalidateAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context).block();
     }
 
     /**
@@ -431,12 +428,12 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginRevertAsync(String resourceGroupName,
-        String serverName, String databaseName, EncryptionProtectorName encryptionProtectorName) {
+    public PollerFlux<PollResult<Void>, Void> beginRevertAsync(String resourceGroupName, String serverName,
+        String databaseName, EncryptionProtectorName encryptionProtectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = revertWithResponseAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -453,13 +450,13 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginRevertAsync(String resourceGroupName,
-        String serverName, String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRevertAsync(String resourceGroupName, String serverName,
+        String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = revertWithResponseAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context);
-        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DatabaseInner.class, DatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -475,7 +472,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginRevert(String resourceGroupName, String serverName,
+    public SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName) {
         return this.beginRevertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName)
             .getSyncPoller();
@@ -495,7 +492,7 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginRevert(String resourceGroupName, String serverName,
+    public SyncPoller<PollResult<Void>, Void> beginRevert(String resourceGroupName, String serverName,
         String databaseName, EncryptionProtectorName encryptionProtectorName, Context context) {
         return this.beginRevertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context)
             .getSyncPoller();
@@ -511,10 +508,10 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseInner> revertAsync(String resourceGroupName, String serverName, String databaseName,
+    public Mono<Void> revertAsync(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
         return beginRevertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -531,10 +528,10 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> revertAsync(String resourceGroupName, String serverName, String databaseName,
+    private Mono<Void> revertAsync(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
         return beginRevertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -550,12 +547,11 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner revert(String resourceGroupName, String serverName, String databaseName,
+    public void revert(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName) {
-        return revertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).block();
+        revertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName).block();
     }
 
     /**
@@ -569,11 +565,10 @@ public final class DatabaseEncryptionProtectorsClientImpl implements DatabaseEnc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner revert(String resourceGroupName, String serverName, String databaseName,
+    public void revert(String resourceGroupName, String serverName, String databaseName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
-        return revertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context).block();
+        revertAsync(resourceGroupName, serverName, databaseName, encryptionProtectorName, context).block();
     }
 }

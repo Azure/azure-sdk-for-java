@@ -494,8 +494,8 @@ public interface ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailoverAsync(String resourceGroupName,
-        String serverName, String elasticPoolName);
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
@@ -509,8 +509,8 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailover(String resourceGroupName,
-        String serverName, String elasticPoolName);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
@@ -525,8 +525,8 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginFailover(String resourceGroupName,
-        String serverName, String elasticPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String elasticPoolName, Context context);
 
     /**
      * Failovers an elastic pool.
@@ -537,10 +537,10 @@ public interface ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ElasticPoolInner> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName);
+    Mono<Void> failoverAsync(String resourceGroupName, String serverName, String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
@@ -551,10 +551,9 @@ public interface ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticPoolInner failover(String resourceGroupName, String serverName, String elasticPoolName);
+    void failover(String resourceGroupName, String serverName, String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
@@ -566,8 +565,7 @@ public interface ElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticPoolInner failover(String resourceGroupName, String serverName, String elasticPoolName, Context context);
+    void failover(String resourceGroupName, String serverName, String elasticPoolName, Context context);
 }

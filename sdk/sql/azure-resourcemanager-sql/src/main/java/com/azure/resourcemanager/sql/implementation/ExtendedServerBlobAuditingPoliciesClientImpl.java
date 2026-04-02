@@ -354,12 +354,14 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
+    public PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExtendedServerBlobAuditingPolicyInner.class,
+            ExtendedServerBlobAuditingPolicyInner.class, this.client.getContext());
     }
 
     /**
@@ -376,14 +378,16 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
             blobAuditingPolicyName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<ExtendedServerBlobAuditingPolicyInner, ExtendedServerBlobAuditingPolicyInner>getLroResult(
+            mono, this.client.getHttpPipeline(), ExtendedServerBlobAuditingPolicyInner.class,
+            ExtendedServerBlobAuditingPolicyInner.class, context);
     }
 
     /**
@@ -399,8 +403,9 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
+    public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
+            ExtendedServerBlobAuditingPolicyInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters)
             .getSyncPoller();
     }
@@ -419,9 +424,9 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
-        Context context) {
+    public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
+            ExtendedServerBlobAuditingPolicyInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters, context)
             .getSyncPoller();
     }
@@ -439,7 +444,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @return an extended server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+    public Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -459,7 +464,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @return an extended server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+    private Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters, context)
@@ -477,11 +482,12 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName,
+    public ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
-        createOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters).block();
     }
 
     /**
@@ -495,12 +501,13 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName,
+    public ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
         Context context) {
-        createOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters, context).block();
     }
 
     /**

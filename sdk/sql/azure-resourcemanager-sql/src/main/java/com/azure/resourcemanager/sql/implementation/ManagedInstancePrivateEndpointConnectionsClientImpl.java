@@ -375,13 +375,16 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String privateEndpointConnectionName,
-        ManagedInstancePrivateEndpointConnectionInner parameters) {
+    public
+        PollerFlux<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             privateEndpointConnectionName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client
+            .<ManagedInstancePrivateEndpointConnectionInner, ManagedInstancePrivateEndpointConnectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ManagedInstancePrivateEndpointConnectionInner.class,
+                ManagedInstancePrivateEndpointConnectionInner.class, this.client.getContext());
     }
 
     /**
@@ -398,14 +401,18 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @return the {@link PollerFlux} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String privateEndpointConnectionName,
-        ManagedInstancePrivateEndpointConnectionInner parameters, Context context) {
+    private
+        PollerFlux<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             privateEndpointConnectionName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client
+            .<ManagedInstancePrivateEndpointConnectionInner, ManagedInstancePrivateEndpointConnectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ManagedInstancePrivateEndpointConnectionInner.class,
+                ManagedInstancePrivateEndpointConnectionInner.class, context);
     }
 
     /**
@@ -421,8 +428,10 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters) {
+    public
+        SyncPoller<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
+            ManagedInstancePrivateEndpointConnectionInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters)
             .getSyncPoller();
@@ -442,9 +451,10 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @return the {@link SyncPoller} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters,
-        Context context) {
+    public
+        SyncPoller<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
+            ManagedInstancePrivateEndpointConnectionInner parameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters,
                 context)
@@ -464,8 +474,9 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters) {
+    public Mono<ManagedInstancePrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String privateEndpointConnectionName,
+        ManagedInstancePrivateEndpointConnectionInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName,
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -484,9 +495,9 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters,
-        Context context) {
+    private Mono<ManagedInstancePrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String privateEndpointConnectionName,
+        ManagedInstancePrivateEndpointConnectionInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName,
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -501,11 +512,14 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters).block();
+    public ManagedInstancePrivateEndpointConnectionInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, String privateEndpointConnectionName,
+        ManagedInstancePrivateEndpointConnectionInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters)
+            .block();
     }
 
     /**
@@ -519,13 +533,14 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters,
-        Context context) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, context)
-            .block();
+    public ManagedInstancePrivateEndpointConnectionInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, String privateEndpointConnectionName,
+        ManagedInstancePrivateEndpointConnectionInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters,
+            context).block();
     }
 
     /**

@@ -360,11 +360,13 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link PollerFlux} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
+    public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<EncryptionProtectorInner, EncryptionProtectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class,
             this.client.getContext());
     }
 
@@ -382,13 +384,14 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link PollerFlux} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context) {
+    private PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
             encryptionProtectorName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<EncryptionProtectorInner, EncryptionProtectorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class, context);
     }
 
     /**
@@ -404,8 +407,9 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
+    public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters)
             .getSyncPoller();
     }
@@ -424,8 +428,9 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context) {
+    public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context)
             .getSyncPoller();
@@ -444,7 +449,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the server encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+    public Mono<EncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -464,7 +469,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the server encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+    private Mono<EncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context)
             .last()
@@ -481,11 +486,12 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName,
+    public EncryptionProtectorInner createOrUpdate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
-        createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters).block();
     }
 
     /**
@@ -499,11 +505,12 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName,
+    public EncryptionProtectorInner createOrUpdate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context) {
-        createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters, context).block();
     }
 
     /**
@@ -739,12 +746,11 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginRevalidateAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = revalidateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName);
-        return this.client.<EncryptionProtectorInner, EncryptionProtectorInner>getLroResult(mono,
-            this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class,
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
 
@@ -761,13 +767,13 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginRevalidateAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = revalidateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName, context);
-        return this.client.<EncryptionProtectorInner, EncryptionProtectorInner>getLroResult(mono,
-            this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -782,8 +788,8 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner>
-        beginRevalidate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName) {
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName) {
         return this.beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName).getSyncPoller();
     }
 
@@ -800,8 +806,8 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginRevalidate(
-        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
         return this.beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context)
             .getSyncPoller();
     }
@@ -815,10 +821,10 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptionProtectorInner> revalidateAsync(String resourceGroupName, String serverName,
+    public Mono<Void> revalidateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
         return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -834,10 +840,10 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EncryptionProtectorInner> revalidateAsync(String resourceGroupName, String serverName,
+    private Mono<Void> revalidateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
         return beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -852,12 +858,11 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner revalidate(String resourceGroupName, String serverName,
+    public void revalidate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
-        return revalidateAsync(resourceGroupName, serverName, encryptionProtectorName).block();
+        revalidateAsync(resourceGroupName, serverName, encryptionProtectorName).block();
     }
 
     /**
@@ -870,12 +875,11 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionProtectorInner revalidate(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, Context context) {
-        return revalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context).block();
+    public void revalidate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        Context context) {
+        revalidateAsync(resourceGroupName, serverName, encryptionProtectorName, context).block();
     }
 
     /**

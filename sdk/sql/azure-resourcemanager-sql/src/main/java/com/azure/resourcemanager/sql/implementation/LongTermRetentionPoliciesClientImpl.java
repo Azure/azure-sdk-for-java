@@ -370,11 +370,13 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
+    public PollerFlux<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<LongTermRetentionPolicyInner, LongTermRetentionPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionPolicyInner.class, LongTermRetentionPolicyInner.class,
             this.client.getContext());
     }
 
@@ -393,13 +395,14 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
             databaseName, policyName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<LongTermRetentionPolicyInner, LongTermRetentionPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LongTermRetentionPolicyInner.class, LongTermRetentionPolicyInner.class,
             context);
     }
 
@@ -417,8 +420,9 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
+    public SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
@@ -438,9 +442,9 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters,
-        Context context) {
+    public SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .getSyncPoller();
@@ -460,8 +464,8 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
-        LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
+    public Mono<LongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -481,8 +485,9 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
-        LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters, Context context) {
+    private Mono<LongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters,
+        Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -499,11 +504,12 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+    public LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters) {
-        createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
     /**
@@ -518,11 +524,13 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+    public LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters, Context context) {
-        createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+            .block();
     }
 
     /**

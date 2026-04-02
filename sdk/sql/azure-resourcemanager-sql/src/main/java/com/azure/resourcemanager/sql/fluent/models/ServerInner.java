@@ -11,7 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
-import com.azure.resourcemanager.sql.models.MinimalTlsVersion;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
@@ -265,7 +264,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the minimalTlsVersion value.
      */
-    public MinimalTlsVersion minimalTlsVersion() {
+    public String minimalTlsVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
@@ -275,7 +274,7 @@ public final class ServerInner extends Resource {
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+    public ServerInner withMinimalTlsVersion(String minimalTlsVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }

@@ -115,8 +115,9 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
+    PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates an extended server's blob auditing policy.
@@ -131,8 +132,9 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
+    SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
+            ExtendedServerBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates an extended server's blob auditing policy.
@@ -148,9 +150,9 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
-        Context context);
+    SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
+            ExtendedServerBlobAuditingPolicyInner parameters, Context context);
 
     /**
      * Creates or updates an extended server's blob auditing policy.
@@ -165,7 +167,7 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @return an extended server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+    Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
 
     /**
@@ -178,10 +180,11 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
-        ExtendedServerBlobAuditingPolicyInner parameters);
+    ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates an extended server's blob auditing policy.
@@ -194,10 +197,12 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
-        ExtendedServerBlobAuditingPolicyInner parameters, Context context);
+    ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
+        Context context);
 
     /**
      * Lists extended auditing settings of a server.

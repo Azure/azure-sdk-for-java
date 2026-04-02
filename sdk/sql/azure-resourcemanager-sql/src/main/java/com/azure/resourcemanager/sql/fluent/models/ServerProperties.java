@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
-import com.azure.resourcemanager.sql.models.MinimalTlsVersion;
 import com.azure.resourcemanager.sql.models.ServerCreateMode;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
@@ -59,7 +58,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     /*
      * Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'
      */
-    private MinimalTlsVersion minimalTlsVersion;
+    private String minimalTlsVersion;
 
     /*
      * Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be
@@ -219,7 +218,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * 
      * @return the minimalTlsVersion value.
      */
-    public MinimalTlsVersion minimalTlsVersion() {
+    public String minimalTlsVersion() {
         return this.minimalTlsVersion;
     }
 
@@ -229,7 +228,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+    public ServerProperties withMinimalTlsVersion(String minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
         return this;
     }
@@ -468,8 +467,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
         jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
         jsonWriter.writeStringField("version", this.version);
-        jsonWriter.writeStringField("minimalTlsVersion",
-            this.minimalTlsVersion == null ? null : this.minimalTlsVersion.toString());
+        jsonWriter.writeStringField("minimalTlsVersion", this.minimalTlsVersion);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("primaryUserAssignedIdentityId", this.primaryUserAssignedIdentityId);
@@ -514,7 +512,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                         = reader.readArray(reader1 -> ServerPrivateEndpointConnection.fromJson(reader1));
                     deserializedServerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("minimalTlsVersion".equals(fieldName)) {
-                    deserializedServerProperties.minimalTlsVersion = MinimalTlsVersion.fromString(reader.getString());
+                    deserializedServerProperties.minimalTlsVersion = reader.getString();
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedServerProperties.publicNetworkAccess
                         = ServerNetworkAccessFlag.fromString(reader.getString());

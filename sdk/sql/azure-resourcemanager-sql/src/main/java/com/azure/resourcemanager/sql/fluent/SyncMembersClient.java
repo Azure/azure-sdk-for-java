@@ -551,8 +551,8 @@ public interface SyncMembersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchemaAsync(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    PollerFlux<PollResult<Void>, Void> beginRefreshMemberSchemaAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Refreshes a sync member database schema.
@@ -568,8 +568,8 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Refreshes a sync member database schema.
@@ -586,8 +586,8 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, String syncMemberName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, Context context);
 
     /**
      * Refreshes a sync member database schema.
@@ -600,10 +600,10 @@ public interface SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SyncMemberInner> refreshMemberSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+    Mono<Void> refreshMemberSchemaAsync(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName, String syncMemberName);
 
     /**
@@ -617,11 +617,10 @@ public interface SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner refreshMemberSchema(String resourceGroupName, String serverName, String databaseName,
-        String syncGroupName, String syncMemberName);
+    void refreshMemberSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName);
 
     /**
      * Refreshes a sync member database schema.
@@ -635,11 +634,10 @@ public interface SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner refreshMemberSchema(String resourceGroupName, String serverName, String databaseName,
-        String syncGroupName, String syncMemberName, Context context);
+    void refreshMemberSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName, Context context);
 
     /**
      * Gets a sync member database schema.

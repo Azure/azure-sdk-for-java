@@ -114,8 +114,9 @@ public interface ManagedInstancePrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters);
+    PollerFlux<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -130,8 +131,9 @@ public interface ManagedInstancePrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters);
+    SyncPoller<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
+            ManagedInstancePrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -147,9 +149,9 @@ public interface ManagedInstancePrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters,
-        Context context);
+    SyncPoller<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
+            ManagedInstancePrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -164,8 +166,9 @@ public interface ManagedInstancePrivateEndpointConnectionsClient {
      * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters);
+    Mono<ManagedInstancePrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String privateEndpointConnectionName,
+        ManagedInstancePrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -177,10 +180,11 @@ public interface ManagedInstancePrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
-        ManagedInstancePrivateEndpointConnectionInner parameters);
+    ManagedInstancePrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -193,10 +197,12 @@ public interface ManagedInstancePrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
-        ManagedInstancePrivateEndpointConnectionInner parameters, Context context);
+    ManagedInstancePrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String privateEndpointConnectionName, ManagedInstancePrivateEndpointConnectionInner parameters,
+        Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.

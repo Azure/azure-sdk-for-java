@@ -399,13 +399,16 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @return the {@link PollerFlux} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters) {
+    public
+        PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, policyName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client
+            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ManagedBackupShortTermRetentionPolicyInner.class,
+                ManagedBackupShortTermRetentionPolicyInner.class, this.client.getContext());
     }
 
     /**
@@ -423,14 +426,18 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @return the {@link PollerFlux} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters, Context context) {
+    private
+        PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, policyName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client
+            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ManagedBackupShortTermRetentionPolicyInner.class,
+                ManagedBackupShortTermRetentionPolicyInner.class, context);
     }
 
     /**
@@ -447,9 +454,10 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters) {
+    public
+        SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
             .getSyncPoller();
@@ -470,9 +478,11 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters, Context context) {
+    public
+        SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
+            Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters,
                 context)
@@ -493,8 +503,9 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters) {
+    public Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -515,9 +526,9 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
-        Context context) {
+    private Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -533,11 +544,14 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters).block();
+    public ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
+            .block();
     }
 
     /**
@@ -552,13 +566,14 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
-        Context context) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters, context)
-            .block();
+    public ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters,
+            context).block();
     }
 
     /**

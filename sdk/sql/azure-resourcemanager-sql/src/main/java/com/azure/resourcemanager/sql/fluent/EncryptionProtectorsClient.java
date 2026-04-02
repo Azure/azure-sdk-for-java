@@ -113,8 +113,9 @@ public interface EncryptionProtectorsClient {
      * @return the {@link PollerFlux} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters);
+    PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters);
 
     /**
      * Updates an existing encryption protector.
@@ -129,8 +130,9 @@ public interface EncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters);
+    SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters);
 
     /**
      * Updates an existing encryption protector.
@@ -146,8 +148,9 @@ public interface EncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context);
+    SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters, Context context);
 
     /**
      * Updates an existing encryption protector.
@@ -162,7 +165,7 @@ public interface EncryptionProtectorsClient {
      * @return the server encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName,
+    Mono<EncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters);
 
     /**
@@ -175,10 +178,11 @@ public interface EncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
-        EncryptionProtectorInner parameters);
+    EncryptionProtectorInner createOrUpdate(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters);
 
     /**
      * Updates an existing encryption protector.
@@ -191,10 +195,11 @@ public interface EncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
-        EncryptionProtectorInner parameters, Context context);
+    EncryptionProtectorInner createOrUpdate(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context);
 
     /**
      * Gets a list of server encryption protectors.
@@ -263,8 +268,8 @@ public interface EncryptionProtectorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginRevalidateAsync(
-        String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName);
+    PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Revalidates an existing encryption protector.
@@ -278,8 +283,8 @@ public interface EncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginRevalidate(String resourceGroupName,
-        String serverName, EncryptionProtectorName encryptionProtectorName);
+    SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Revalidates an existing encryption protector.
@@ -294,52 +299,49 @@ public interface EncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginRevalidate(String resourceGroupName,
-        String serverName, EncryptionProtectorName encryptionProtectorName, Context context);
-
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EncryptionProtectorInner> revalidateAsync(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName);
-
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EncryptionProtectorInner revalidate(String resourceGroupName, String serverName,
-        EncryptionProtectorName encryptionProtectorName);
-
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EncryptionProtectorInner revalidate(String resourceGroupName, String serverName,
+    SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, Context context);
+
+    /**
+     * Revalidates an existing encryption protector.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> revalidateAsync(String resourceGroupName, String serverName,
+        EncryptionProtectorName encryptionProtectorName);
+
+    /**
+     * Revalidates an existing encryption protector.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void revalidate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName);
+
+    /**
+     * Revalidates an existing encryption protector.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void revalidate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
+        Context context);
 }

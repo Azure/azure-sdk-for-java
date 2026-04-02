@@ -123,9 +123,10 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return the {@link PollerFlux} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters);
+    PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
+            ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
@@ -141,9 +142,9 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters);
+    SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
@@ -160,9 +161,10 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters, Context context);
+    SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
+            Context context);
 
     /**
      * Sets a database's short term retention policy.
@@ -178,8 +180,8 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
+    Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
@@ -193,10 +195,12 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters);
+    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
@@ -210,11 +214,12 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
-        Context context);
+    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Sets a database's short term retention policy.

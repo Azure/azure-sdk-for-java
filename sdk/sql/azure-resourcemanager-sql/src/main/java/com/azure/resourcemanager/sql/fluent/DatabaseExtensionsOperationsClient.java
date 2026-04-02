@@ -117,8 +117,9 @@ public interface DatabaseExtensionsOperationsClient {
      * @return the {@link PollerFlux} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters);
+    PollerFlux<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters);
 
     /**
      * Perform a database extension operation, like database import, database export, or polybase import.
@@ -134,8 +135,9 @@ public interface DatabaseExtensionsOperationsClient {
      * @return the {@link SyncPoller} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters);
+    SyncPoller<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters);
 
     /**
      * Perform a database extension operation, like database import, database export, or polybase import.
@@ -152,8 +154,9 @@ public interface DatabaseExtensionsOperationsClient {
      * @return the {@link SyncPoller} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters, Context context);
+    SyncPoller<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters, Context context);
 
     /**
      * Perform a database extension operation, like database import, database export, or polybase import.
@@ -169,8 +172,8 @@ public interface DatabaseExtensionsOperationsClient {
      * @return an Extension operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
-        String extensionName, DatabaseExtensions parameters);
+    Mono<ImportExportExtensionsOperationResultInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, String extensionName, DatabaseExtensions parameters);
 
     /**
      * Perform a database extension operation, like database import, database export, or polybase import.
@@ -183,10 +186,11 @@ public interface DatabaseExtensionsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
-        DatabaseExtensions parameters);
+    ImportExportExtensionsOperationResultInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, String extensionName, DatabaseExtensions parameters);
 
     /**
      * Perform a database extension operation, like database import, database export, or polybase import.
@@ -200,10 +204,11 @@ public interface DatabaseExtensionsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
-        DatabaseExtensions parameters, Context context);
+    ImportExportExtensionsOperationResultInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, String extensionName, DatabaseExtensions parameters, Context context);
 
     /**
      * List database extension. This will return an empty list as it is not supported.

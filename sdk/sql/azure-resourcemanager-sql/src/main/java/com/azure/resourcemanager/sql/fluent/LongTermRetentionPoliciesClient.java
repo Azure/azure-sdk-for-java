@@ -120,8 +120,9 @@ public interface LongTermRetentionPoliciesClient {
      * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
+    PollerFlux<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters);
 
     /**
      * Set or update a database's long term retention policy.
@@ -137,8 +138,9 @@ public interface LongTermRetentionPoliciesClient {
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
+    SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters);
 
     /**
      * Set or update a database's long term retention policy.
@@ -155,9 +157,9 @@ public interface LongTermRetentionPoliciesClient {
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters,
-        Context context);
+    SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Set or update a database's long term retention policy.
@@ -173,8 +175,8 @@ public interface LongTermRetentionPoliciesClient {
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
-        LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
+    Mono<LongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
 
     /**
      * Set or update a database's long term retention policy.
@@ -187,9 +189,10 @@ public interface LongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+    LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
 
     /**
@@ -204,9 +207,10 @@ public interface LongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+    LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters, Context context);
 
     /**

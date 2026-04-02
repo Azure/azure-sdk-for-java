@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
 import com.azure.resourcemanager.sql.models.FailoverModeType;
 import com.azure.resourcemanager.sql.models.LinkRole;
-import com.azure.resourcemanager.sql.models.ReplicationModeType;
+import com.azure.resourcemanager.sql.models.ReplicationMode;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
 import java.util.List;
@@ -126,7 +126,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
      * 
      * @return the replicationMode value.
      */
-    public ReplicationModeType replicationMode() {
+    public ReplicationMode replicationMode() {
         return this.innerProperties() == null ? null : this.innerProperties().replicationMode();
     }
 
@@ -136,7 +136,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
      * @param replicationMode the replicationMode value to set.
      * @return the DistributedAvailabilityGroupInner object itself.
      */
-    public DistributedAvailabilityGroupInner withReplicationMode(ReplicationModeType replicationMode) {
+    public DistributedAvailabilityGroupInner withReplicationMode(ReplicationMode replicationMode) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DistributedAvailabilityGroupProperties();
         }

@@ -399,13 +399,17 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters) {
+    public
+        PollerFlux<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, policyName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client
+            .<ManagedInstanceLongTermRetentionPolicyInner, ManagedInstanceLongTermRetentionPolicyInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ManagedInstanceLongTermRetentionPolicyInner.class,
+                ManagedInstanceLongTermRetentionPolicyInner.class, this.client.getContext());
     }
 
     /**
@@ -423,14 +427,18 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context) {
+    private
+        PollerFlux<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, policyName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client
+            .<ManagedInstanceLongTermRetentionPolicyInner, ManagedInstanceLongTermRetentionPolicyInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ManagedInstanceLongTermRetentionPolicyInner.class,
+                ManagedInstanceLongTermRetentionPolicyInner.class, context);
     }
 
     /**
@@ -447,9 +455,11 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters) {
+    public
+        SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
             .getSyncPoller();
@@ -470,9 +480,11 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context) {
+    public
+        SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters,
                 context)
@@ -493,8 +505,9 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters) {
+    public Mono<ManagedInstanceLongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -515,9 +528,9 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters,
-        Context context) {
+    private Mono<ManagedInstanceLongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -533,11 +546,14 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters).block();
+    public ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
+            .block();
     }
 
     /**
@@ -552,13 +568,14 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters,
-        Context context) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters, context)
-            .block();
+    public ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters,
+            context).block();
     }
 
     /**

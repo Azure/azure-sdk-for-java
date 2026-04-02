@@ -707,8 +707,8 @@ public interface SyncGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchemaAsync(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName);
+    PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName);
 
     /**
      * Refreshes a hub database schema.
@@ -723,8 +723,8 @@ public interface SyncGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName);
+    SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName);
 
     /**
      * Refreshes a hub database schema.
@@ -740,8 +740,8 @@ public interface SyncGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginRefreshHubSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, Context context);
 
     /**
      * Refreshes a hub database schema.
@@ -753,10 +753,10 @@ public interface SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SyncGroupInner> refreshHubSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+    Mono<Void> refreshHubSchemaAsync(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName);
 
     /**
@@ -769,11 +769,9 @@ public interface SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncGroupInner refreshHubSchema(String resourceGroupName, String serverName, String databaseName,
-        String syncGroupName);
+    void refreshHubSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName);
 
     /**
      * Refreshes a hub database schema.
@@ -786,11 +784,10 @@ public interface SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncGroupInner refreshHubSchema(String resourceGroupName, String serverName, String databaseName,
-        String syncGroupName, Context context);
+    void refreshHubSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        Context context);
 
     /**
      * Triggers a sync group synchronization.

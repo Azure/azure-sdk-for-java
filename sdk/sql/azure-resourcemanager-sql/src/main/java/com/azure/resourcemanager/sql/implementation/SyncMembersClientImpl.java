@@ -1451,12 +1451,12 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName) {
+    public PollerFlux<PollResult<Void>, Void> beginRefreshMemberSchemaAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName) {
         Mono<Response<Flux<ByteBuffer>>> mono = refreshMemberSchemaWithResponseAsync(resourceGroupName, serverName,
             databaseName, syncGroupName, syncMemberName);
-        return this.client.<SyncMemberInner, SyncMemberInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SyncMemberInner.class, SyncMemberInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1474,14 +1474,13 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRefreshMemberSchemaAsync(String resourceGroupName,
+        String serverName, String databaseName, String syncGroupName, String syncMemberName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = refreshMemberSchemaWithResponseAsync(resourceGroupName, serverName,
             databaseName, syncGroupName, syncMemberName, context);
-        return this.client.<SyncMemberInner, SyncMemberInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SyncMemberInner.class, SyncMemberInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1498,8 +1497,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, String syncMemberName) {
+    public SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName) {
         return this
             .beginRefreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
             .getSyncPoller();
@@ -1520,8 +1519,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginRefreshMemberSchema(String resourceGroupName,
-        String serverName, String databaseName, String syncGroupName, String syncMemberName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, Context context) {
         return this
             .beginRefreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName,
                 context)
@@ -1539,11 +1538,11 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SyncMemberInner> refreshMemberSchemaAsync(String resourceGroupName, String serverName,
-        String databaseName, String syncGroupName, String syncMemberName) {
+    public Mono<Void> refreshMemberSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName) {
         return beginRefreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1561,11 +1560,11 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SyncMemberInner> refreshMemberSchemaAsync(String resourceGroupName, String serverName,
-        String databaseName, String syncGroupName, String syncMemberName, Context context) {
+    private Mono<Void> refreshMemberSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, Context context) {
         return beginRefreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1581,13 +1580,11 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncMemberInner refreshMemberSchema(String resourceGroupName, String serverName, String databaseName,
+    public void refreshMemberSchema(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName, String syncMemberName) {
-        return refreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
-            .block();
+        refreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName).block();
     }
 
     /**
@@ -1602,13 +1599,12 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncMemberInner refreshMemberSchema(String resourceGroupName, String serverName, String databaseName,
+    public void refreshMemberSchema(String resourceGroupName, String serverName, String databaseName,
         String syncGroupName, String syncMemberName, Context context) {
-        return refreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName,
-            context).block();
+        refreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, context)
+            .block();
     }
 
     /**

@@ -405,12 +405,13 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @return the {@link PollerFlux} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters) {
+    public PollerFlux<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, ledgerDigestUploads, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<ManagedLedgerDigestUploadsInner, ManagedLedgerDigestUploadsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ManagedLedgerDigestUploadsInner.class, ManagedLedgerDigestUploadsInner.class,
             this.client.getContext());
     }
 
@@ -429,13 +430,15 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @return the {@link PollerFlux} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters, Context context) {
+    private PollerFlux<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, ledgerDigestUploads, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<ManagedLedgerDigestUploadsInner, ManagedLedgerDigestUploadsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ManagedLedgerDigestUploadsInner.class, ManagedLedgerDigestUploadsInner.class,
             context);
     }
 
@@ -453,9 +456,9 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters) {
+    public SyncPoller<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads,
                 parameters)
@@ -477,9 +480,10 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
-        ManagedLedgerDigestUploadsInner parameters, Context context) {
+    public SyncPoller<PollResult<ManagedLedgerDigestUploadsInner>, ManagedLedgerDigestUploadsInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters,
+        Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads,
                 parameters, context)
@@ -500,8 +504,9 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters) {
+    public Mono<ManagedLedgerDigestUploadsInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads,
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -521,9 +526,9 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters,
-        Context context) {
+    private Mono<ManagedLedgerDigestUploadsInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads,
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -539,12 +544,14 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads, parameters)
-            .block();
+    public ManagedLedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads,
+            parameters).block();
     }
 
     /**
@@ -559,13 +566,14 @@ public final class ManagedLedgerDigestUploadsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedLedgerDigestUploadsName ledgerDigestUploads, ManagedLedgerDigestUploadsInner parameters,
-        Context context) {
-        createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads, parameters,
-            context).block();
+    public ManagedLedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedLedgerDigestUploadsName ledgerDigestUploads,
+        ManagedLedgerDigestUploadsInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads,
+            parameters, context).block();
     }
 
     /**

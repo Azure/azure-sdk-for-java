@@ -277,9 +277,8 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName);
+    PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Revalidates an existing encryption protector.
@@ -293,9 +292,8 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidate(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName);
+    SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Revalidates an existing encryption protector.
@@ -310,9 +308,8 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginRevalidate(String resourceGroupName, String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, Context context);
 
     /**
      * Revalidates an existing encryption protector.
@@ -323,10 +320,10 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceEncryptionProtectorInner> revalidateAsync(String resourceGroupName, String managedInstanceName,
+    Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName);
 
     /**
@@ -338,10 +335,9 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceEncryptionProtectorInner revalidate(String resourceGroupName, String managedInstanceName,
+    void revalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName);
 
     /**
@@ -354,9 +350,8 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceEncryptionProtectorInner revalidate(String resourceGroupName, String managedInstanceName,
+    void revalidate(String resourceGroupName, String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName, Context context);
 }

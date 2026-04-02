@@ -626,7 +626,7 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginFailoverAsync(String resourceGroupName, String serverName,
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
         String databaseName, ReplicaType replicaType);
 
     /**
@@ -641,7 +641,7 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginFailoverAsync(String resourceGroupName, String serverName,
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
         String databaseName);
 
     /**
@@ -656,8 +656,7 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginFailover(String resourceGroupName, String serverName,
-        String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Failovers a database.
@@ -673,8 +672,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginFailover(String resourceGroupName, String serverName,
-        String databaseName, ReplicaType replicaType, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName, String databaseName,
+        ReplicaType replicaType, Context context);
 
     /**
      * Failovers a database.
@@ -686,11 +685,10 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseInner> failoverAsync(String resourceGroupName, String serverName, String databaseName,
-        ReplicaType replicaType);
+    Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType);
 
     /**
      * Failovers a database.
@@ -701,10 +699,10 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseInner> failoverAsync(String resourceGroupName, String serverName, String databaseName);
+    Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Failovers a database.
@@ -715,10 +713,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner failover(String resourceGroupName, String serverName, String databaseName);
+    void failover(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Failovers a database.
@@ -731,10 +728,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner failover(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType,
+    void failover(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType,
         Context context);
 
     /**
@@ -1150,8 +1146,8 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouseAsync(String resourceGroupName,
-        String serverName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Upgrades a data warehouse.
@@ -1165,8 +1161,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouse(String resourceGroupName,
-        String serverName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Upgrades a data warehouse.
@@ -1181,8 +1177,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpgradeDataWarehouse(String resourceGroupName,
-        String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Upgrades a data warehouse.
@@ -1193,10 +1189,10 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseInner> upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName);
+    Mono<Void> upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Upgrades a data warehouse.
@@ -1207,10 +1203,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName);
+    void upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * Upgrades a data warehouse.
@@ -1222,11 +1217,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName,
-        Context context);
+    void upgradeDataWarehouse(String resourceGroupName, String serverName, String databaseName, Context context);
 
     /**
      * Gets a list of inaccessible databases in a logical server.

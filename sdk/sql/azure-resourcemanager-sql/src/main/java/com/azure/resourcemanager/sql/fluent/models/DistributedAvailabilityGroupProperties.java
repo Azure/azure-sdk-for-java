@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
 import com.azure.resourcemanager.sql.models.FailoverModeType;
 import com.azure.resourcemanager.sql.models.LinkRole;
-import com.azure.resourcemanager.sql.models.ReplicationModeType;
+import com.azure.resourcemanager.sql.models.ReplicationMode;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +37,7 @@ public final class DistributedAvailabilityGroupProperties
     /*
      * Replication mode of the link
      */
-    private ReplicationModeType replicationMode;
+    private ReplicationMode replicationMode;
 
     /*
      * SQL server side link role
@@ -109,7 +109,7 @@ public final class DistributedAvailabilityGroupProperties
      * 
      * @return the replicationMode value.
      */
-    public ReplicationModeType replicationMode() {
+    public ReplicationMode replicationMode() {
         return this.replicationMode;
     }
 
@@ -119,7 +119,7 @@ public final class DistributedAvailabilityGroupProperties
      * @param replicationMode the replicationMode value to set.
      * @return the DistributedAvailabilityGroupProperties object itself.
      */
-    public DistributedAvailabilityGroupProperties withReplicationMode(ReplicationModeType replicationMode) {
+    public DistributedAvailabilityGroupProperties withReplicationMode(ReplicationMode replicationMode) {
         this.replicationMode = replicationMode;
         return this;
     }
@@ -333,7 +333,7 @@ public final class DistributedAvailabilityGroupProperties
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("replicationMode".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.replicationMode
-                        = ReplicationModeType.fromString(reader.getString());
+                        = ReplicationMode.fromString(reader.getString());
                 } else if ("partnerLinkRole".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.partnerLinkRole
                         = LinkRole.fromString(reader.getString());

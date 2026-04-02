@@ -39,7 +39,7 @@ public final class JobStepExecutionOptions implements JsonSerializable<JobStepEx
     /*
      * The backoff multiplier for the time between retries.
      */
-    private Double retryIntervalBackoffMultiplier;
+    private Float retryIntervalBackoffMultiplier;
 
     /**
      * Creates an instance of JobStepExecutionOptions class.
@@ -136,7 +136,7 @@ public final class JobStepExecutionOptions implements JsonSerializable<JobStepEx
      * 
      * @return the retryIntervalBackoffMultiplier value.
      */
-    public Double retryIntervalBackoffMultiplier() {
+    public Float retryIntervalBackoffMultiplier() {
         return this.retryIntervalBackoffMultiplier;
     }
 
@@ -146,7 +146,7 @@ public final class JobStepExecutionOptions implements JsonSerializable<JobStepEx
      * @param retryIntervalBackoffMultiplier the retryIntervalBackoffMultiplier value to set.
      * @return the JobStepExecutionOptions object itself.
      */
-    public JobStepExecutionOptions withRetryIntervalBackoffMultiplier(Double retryIntervalBackoffMultiplier) {
+    public JobStepExecutionOptions withRetryIntervalBackoffMultiplier(Float retryIntervalBackoffMultiplier) {
         this.retryIntervalBackoffMultiplier = retryIntervalBackoffMultiplier;
         return this;
     }
@@ -200,7 +200,7 @@ public final class JobStepExecutionOptions implements JsonSerializable<JobStepEx
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("retryIntervalBackoffMultiplier".equals(fieldName)) {
                     deserializedJobStepExecutionOptions.retryIntervalBackoffMultiplier
-                        = reader.getNullable(JsonReader::getDouble);
+                        = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

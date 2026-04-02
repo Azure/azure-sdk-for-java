@@ -9,7 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.DNSRefreshOperationStatus;
+import com.azure.resourcemanager.sql.models.DnsRefreshConfigurationPropertiesStatus;
 import java.io.IOException;
 
 /**
@@ -87,7 +87,7 @@ public final class UpdateVirtualClusterDnsServersOperationInner extends ProxyRes
      * 
      * @return the status value.
      */
-    public DNSRefreshOperationStatus status() {
+    public DnsRefreshConfigurationPropertiesStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 

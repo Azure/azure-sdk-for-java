@@ -26,7 +26,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceTdeCertificatesClient;
-import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceInner;
 import com.azure.resourcemanager.sql.models.TdeCertificate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -171,12 +170,12 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateAsync(String resourceGroupName,
-        String managedInstanceName, TdeCertificate parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -192,13 +191,13 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateAsync(
-        String resourceGroupName, String managedInstanceName, TdeCertificate parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = createWithResponseAsync(resourceGroupName, managedInstanceName, parameters, context);
-        return this.client.<ManagedInstanceInner, ManagedInstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedInstanceInner.class, ManagedInstanceInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -213,8 +212,8 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreate(String resourceGroupName,
-        String managedInstanceName, TdeCertificate parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters) {
         return this.beginCreateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
     }
 
@@ -231,8 +230,8 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreate(String resourceGroupName,
-        String managedInstanceName, TdeCertificate parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters, Context context) {
         return this.beginCreateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
     }
 
@@ -245,11 +244,10 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceInner> createAsync(String resourceGroupName, String managedInstanceName,
-        TdeCertificate parameters) {
+    public Mono<Void> createAsync(String resourceGroupName, String managedInstanceName, TdeCertificate parameters) {
         return beginCreateAsync(resourceGroupName, managedInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -264,11 +262,11 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceInner> createAsync(String resourceGroupName, String managedInstanceName,
-        TdeCertificate parameters, Context context) {
+    private Mono<Void> createAsync(String resourceGroupName, String managedInstanceName, TdeCertificate parameters,
+        Context context) {
         return beginCreateAsync(resourceGroupName, managedInstanceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -282,12 +280,10 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner create(String resourceGroupName, String managedInstanceName,
-        TdeCertificate parameters) {
-        return createAsync(resourceGroupName, managedInstanceName, parameters).block();
+    public void create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters) {
+        createAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
@@ -300,11 +296,10 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceInner create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters,
+    public void create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters,
         Context context) {
-        return createAsync(resourceGroupName, managedInstanceName, parameters, context).block();
+        createAsync(resourceGroupName, managedInstanceName, parameters, context).block();
     }
 }

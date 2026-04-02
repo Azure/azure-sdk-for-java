@@ -1325,13 +1325,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMoveAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseMoveDefinition parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = cancelMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1348,14 +1347,13 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMoveAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseMoveDefinition parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = cancelMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1371,8 +1369,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters) {
         return this.beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
             .getSyncPoller();
     }
@@ -1391,8 +1389,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCancelMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
         return this.beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
@@ -1407,11 +1405,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> cancelMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseMoveDefinition parameters) {
+    public Mono<Void> cancelMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
         return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1427,11 +1425,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedDatabaseInner> cancelMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
+    private Mono<Void> cancelMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters, Context context) {
         return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1446,12 +1444,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    public void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
-        return cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+        cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
@@ -1465,12 +1462,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    public void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters, Context context) {
-        return cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
+        cancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
     /**
@@ -1580,13 +1576,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMoveAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseMoveDefinition parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = completeMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1603,14 +1598,13 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMoveAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseMoveDefinition parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = completeMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1626,9 +1620,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMove(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseMoveDefinition parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters) {
         return this.beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
             .getSyncPoller();
     }
@@ -1647,9 +1640,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteMove(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseMoveDefinition parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
         return this.beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
@@ -1664,11 +1656,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> completeMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseMoveDefinition parameters) {
+    public Mono<Void> completeMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters) {
         return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1684,11 +1676,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedDatabaseInner> completeMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context) {
+    private Mono<Void> completeMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters, Context context) {
         return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1703,12 +1695,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    public void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
-        return completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+        completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
@@ -1722,12 +1713,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    public void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters, Context context) {
-        return completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
+        completeMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
     /**
@@ -1838,13 +1828,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestoreAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        CompleteDatabaseRestoreDefinition parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = completeRestoreWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1861,14 +1850,14 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestoreAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        CompleteDatabaseRestoreDefinition parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = completeRestoreWithResponseAsync(resourceGroupName, managedInstanceName,
             databaseName, parameters, context);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1884,9 +1873,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestore(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        CompleteDatabaseRestoreDefinition parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters) {
         return this.beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
             .getSyncPoller();
     }
@@ -1905,9 +1893,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCompleteRestore(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        CompleteDatabaseRestoreDefinition parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context) {
         return this.beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
@@ -1922,11 +1909,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> completeRestoreAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, CompleteDatabaseRestoreDefinition parameters) {
+    public Mono<Void> completeRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        CompleteDatabaseRestoreDefinition parameters) {
         return beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1942,11 +1929,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedDatabaseInner> completeRestoreAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context) {
+    private Mono<Void> completeRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        CompleteDatabaseRestoreDefinition parameters, Context context) {
         return beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1962,12 +1949,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner completeRestore(String resourceGroupName, String managedInstanceName,
-        String databaseName, CompleteDatabaseRestoreDefinition parameters) {
-        return completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+    public void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
+        CompleteDatabaseRestoreDefinition parameters) {
+        completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
@@ -1981,12 +1967,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner completeRestore(String resourceGroupName, String managedInstanceName,
-        String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context) {
-        return completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
+    public void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
+        CompleteDatabaseRestoreDefinition parameters, Context context) {
+        completeRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
     /**
@@ -2335,13 +2320,12 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMoveAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters) {
+    public PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2358,14 +2342,13 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMoveAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = startMoveWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context);
-        return this.client.<ManagedDatabaseInner, ManagedDatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
-            ManagedDatabaseInner.class, ManagedDatabaseInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2381,8 +2364,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
         return this.beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
             .getSyncPoller();
     }
@@ -2401,9 +2384,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginStartMove(String resourceGroupName,
-        String managedInstanceName, String databaseName, ManagedDatabaseStartMoveDefinition parameters,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters, Context context) {
         return this.beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
@@ -2418,11 +2400,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseInner> startMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseStartMoveDefinition parameters) {
+    public Mono<Void> startMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters) {
         return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2438,11 +2420,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedDatabaseInner> startMoveAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedDatabaseStartMoveDefinition parameters, Context context) {
+    private Mono<Void> startMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters, Context context) {
         return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2457,12 +2439,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner startMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    public void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters) {
-        return startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
+        startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).block();
     }
 
     /**
@@ -2476,12 +2457,11 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseInner startMove(String resourceGroupName, String managedInstanceName, String databaseName,
+    public void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters, Context context) {
-        return startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
+        startMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context).block();
     }
 
     /**

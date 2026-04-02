@@ -25,7 +25,7 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
     /*
      * The type property.
      */
-    private CheckNameAvailabilityResourceType type;
+    private final String type = "Microsoft.Sql/servers";
 
     /**
      * Creates an instance of CheckNameAvailabilityRequest class.
@@ -58,19 +58,8 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
      * 
      * @return the type value.
      */
-    public CheckNameAvailabilityResourceType type() {
+    public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type property.
-     * 
-     * @param type the type value to set.
-     * @return the CheckNameAvailabilityRequest object itself.
-     */
-    public CheckNameAvailabilityRequest withType(CheckNameAvailabilityResourceType type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -84,11 +73,6 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
                 .log(new IllegalArgumentException(
                     "Missing required property name in model CheckNameAvailabilityRequest"));
         }
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property type in model CheckNameAvailabilityRequest"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityRequest.class);
@@ -100,7 +84,7 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -122,9 +106,6 @@ public final class CheckNameAvailabilityRequest implements JsonSerializable<Chec
 
                 if ("name".equals(fieldName)) {
                     deserializedCheckNameAvailabilityRequest.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedCheckNameAvailabilityRequest.type
-                        = CheckNameAvailabilityResourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

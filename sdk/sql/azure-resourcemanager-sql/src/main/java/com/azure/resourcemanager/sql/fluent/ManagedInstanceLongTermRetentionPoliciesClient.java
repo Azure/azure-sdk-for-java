@@ -123,9 +123,10 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters);
+    PollerFlux<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
@@ -141,9 +142,10 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters);
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
@@ -160,9 +162,10 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
-        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
-        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context);
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            ManagedInstanceLongTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Sets a managed database's long term retention policy.
@@ -178,8 +181,9 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters);
+    Mono<ManagedInstanceLongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
@@ -192,10 +196,12 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters);
+    ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters);
 
     /**
      * Sets a managed database's long term retention policy.
@@ -209,11 +215,12 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
-        ManagedInstanceLongTermRetentionPolicyName policyName, ManagedInstanceLongTermRetentionPolicyInner parameters,
-        Context context);
+    ManagedInstanceLongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedInstanceLongTermRetentionPolicyName policyName,
+        ManagedInstanceLongTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Deletes a managed database's long term retention policy.

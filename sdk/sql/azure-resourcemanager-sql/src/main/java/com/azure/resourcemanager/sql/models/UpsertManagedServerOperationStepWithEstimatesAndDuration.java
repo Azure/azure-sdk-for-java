@@ -48,7 +48,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration
     /*
      * The status property.
      */
-    private UpsertManagedServerOperationStepWithEstimatesAndDurationStatus status;
+    private Status status;
 
     /**
      * Creates an instance of UpsertManagedServerOperationStepWithEstimatesAndDuration class.
@@ -106,7 +106,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration
      * 
      * @return the status value.
      */
-    public UpsertManagedServerOperationStepWithEstimatesAndDurationStatus status() {
+    public Status status() {
         return this.status;
     }
 
@@ -169,7 +169,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration
                     deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.name = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.status
-                        = UpsertManagedServerOperationStepWithEstimatesAndDurationStatus.fromString(reader.getString());
+                        = Status.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

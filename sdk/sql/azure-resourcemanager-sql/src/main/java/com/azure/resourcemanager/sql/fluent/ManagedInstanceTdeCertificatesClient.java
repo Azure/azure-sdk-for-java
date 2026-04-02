@@ -11,7 +11,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceInner;
 import com.azure.resourcemanager.sql.models.TdeCertificate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -48,53 +47,7 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateAsync(String resourceGroupName,
-        String managedInstanceName, TdeCertificate parameters);
-
-    /**
-     * Creates a TDE certificate for a given server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested TDE certificate to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreate(String resourceGroupName,
-        String managedInstanceName, TdeCertificate parameters);
-
-    /**
-     * Creates a TDE certificate for a given server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested TDE certificate to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreate(String resourceGroupName,
-        String managedInstanceName, TdeCertificate parameters, Context context);
-
-    /**
-     * Creates a TDE certificate for a given server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested TDE certificate to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceInner> createAsync(String resourceGroupName, String managedInstanceName,
+    PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String managedInstanceName,
         TdeCertificate parameters);
 
     /**
@@ -106,10 +59,11 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters);
 
     /**
      * Creates a TDE certificate for a given server.
@@ -121,9 +75,50 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters, Context context);
+
+    /**
+     * Creates a TDE certificate for a given server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested TDE certificate to be created or updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceInner create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters,
-        Context context);
+    Mono<Void> createAsync(String resourceGroupName, String managedInstanceName, TdeCertificate parameters);
+
+    /**
+     * Creates a TDE certificate for a given server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested TDE certificate to be created or updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters);
+
+    /**
+     * Creates a TDE certificate for a given server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested TDE certificate to be created or updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void create(String resourceGroupName, String managedInstanceName, TdeCertificate parameters, Context context);
 }

@@ -363,12 +363,16 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @return the {@link PollerFlux} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters) {
+    public
+        PollerFlux<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, extensionName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client
+            .<ImportExportExtensionsOperationResultInner, ImportExportExtensionsOperationResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ImportExportExtensionsOperationResultInner.class,
+                ImportExportExtensionsOperationResultInner.class, this.client.getContext());
     }
 
     /**
@@ -386,13 +390,17 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @return the {@link PollerFlux} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters, Context context) {
+    private
+        PollerFlux<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
             databaseName, extensionName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client
+            .<ImportExportExtensionsOperationResultInner, ImportExportExtensionsOperationResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ImportExportExtensionsOperationResultInner.class,
+                ImportExportExtensionsOperationResultInner.class, context);
     }
 
     /**
@@ -409,8 +417,10 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @return the {@link SyncPoller} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters) {
+    public
+        SyncPoller<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters)
             .getSyncPoller();
     }
@@ -430,8 +440,10 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @return the {@link SyncPoller} for polling of an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String serverName,
-        String databaseName, String extensionName, DatabaseExtensions parameters, Context context) {
+    public
+        SyncPoller<PollResult<ImportExportExtensionsOperationResultInner>, ImportExportExtensionsOperationResultInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
+            DatabaseExtensions parameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters, context)
             .getSyncPoller();
@@ -451,8 +463,8 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @return an Extension operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
-        String extensionName, DatabaseExtensions parameters) {
+    public Mono<ImportExportExtensionsOperationResultInner> createOrUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String extensionName, DatabaseExtensions parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -472,8 +484,8 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @return an Extension operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
-        String extensionName, DatabaseExtensions parameters, Context context) {
+    private Mono<ImportExportExtensionsOperationResultInner> createOrUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String extensionName, DatabaseExtensions parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -490,11 +502,12 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
-        DatabaseExtensions parameters) {
-        createOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters).block();
+    public ImportExportExtensionsOperationResultInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, String extensionName, DatabaseExtensions parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters).block();
     }
 
     /**
@@ -509,11 +522,13 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Extension operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String serverName, String databaseName, String extensionName,
-        DatabaseExtensions parameters, Context context) {
-        createOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters, context).block();
+    public ImportExportExtensionsOperationResultInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, String extensionName, DatabaseExtensions parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters, context)
+            .block();
     }
 
     /**
