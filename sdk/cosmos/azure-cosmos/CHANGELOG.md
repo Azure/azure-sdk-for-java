@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
+* Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
 * Fixed JVM-level `<clinit>` deadlock caused by `ImplementationBridgeHelpers.initializeAllAccessors()` eagerly loading all Cosmos SDK classes during concurrent class initialization. Each accessor getter now performs targeted class loading (via `Class.forName`) of only the specific class it needs, eliminating the circular initialization dependency chain that caused permanent thread deadlocks in multi-threaded applications and CI environments. - See [PR 48667](https://github.com/Azure/azure-sdk-for-java/pull/48667)
 
 #### Other Changes

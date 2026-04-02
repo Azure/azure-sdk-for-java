@@ -12,6 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -99,6 +107,92 @@ public class ImplementationBridgeHelpersTest {
             }
         } catch (IllegalAccessException e) {
             fail("Failed with IllegalAccessException : ", e.getMessage());
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void concurrentAccessorInitializationShouldNotDeadlock() throws Exception {
+        // Regression test for https://github.com/Azure/azure-sdk-for-java/issues/48622
+        // and https://github.com/Azure/azure-sdk-for-java/issues/48585
+        //
+        // Verifies that concurrently calling different getXxxAccessor() methods from
+        // multiple threads completes without deadlock. Before the fix, each getter
+        // called initializeAllAccessors() which eagerly loaded 40+ classes, creating
+        // circular <clinit> dependencies that permanently deadlocked the JVM.
+
+        // Reset all accessors to force re-initialization
+        Class<?>[] declaredClasses = ImplementationBridgeHelpers.class.getDeclaredClasses();
+        for (Class<?> declaredClass : declaredClasses) {
+            if (declaredClass.getSimpleName().endsWith("Helper")) {
+                for (Field field : declaredClass.getDeclaredFields()) {
+                    if (field.getName().contains("accessor")) {
+                        field.setAccessible(true);
+                        AtomicReference<?> value = (AtomicReference<?>) FieldUtils.readStaticField(field);
+                        value.set(null);
+                    }
+                    if (field.getName().contains("ClassLoaded")) {
+                        field.setAccessible(true);
+                        AtomicBoolean value = (AtomicBoolean) FieldUtils.readStaticField(field);
+                        value.set(false);
+                    }
+                }
+            }
+        }
+
+        final int threadCount = 6;
+        final int timeoutSeconds = 30;
+        final CyclicBarrier barrier = new CyclicBarrier(threadCount);
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+
+        List<Future<?>> futures = new ArrayList<>();
+
+        // Each thread triggers a different accessor getter concurrently
+        futures.add(executor.submit(() -> {
+            awaitBarrier(barrier);
+            ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+        }));
+        futures.add(executor.submit(() -> {
+            awaitBarrier(barrier);
+            ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+        }));
+        futures.add(executor.submit(() -> {
+            awaitBarrier(barrier);
+            ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+        }));
+        futures.add(executor.submit(() -> {
+            awaitBarrier(barrier);
+            ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+        }));
+        futures.add(executor.submit(() -> {
+            awaitBarrier(barrier);
+            ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+        }));
+        futures.add(executor.submit(() -> {
+            awaitBarrier(barrier);
+            ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+        }));
+
+        boolean deadlockDetected = false;
+        for (int i = 0; i < futures.size(); i++) {
+            try {
+                futures.get(i).get(timeoutSeconds, TimeUnit.SECONDS);
+            } catch (TimeoutException e) {
+                deadlockDetected = true;
+                logger.error("Thread {} did not complete within {} seconds - possible deadlock", i, timeoutSeconds);
+            }
+        }
+
+        executor.shutdownNow();
+        assertThat(deadlockDetected)
+            .as("Concurrent accessor initialization should complete without deadlock")
+            .isFalse();
+    }
+
+    private static void awaitBarrier(CyclicBarrier barrier) {
+        try {
+            barrier.await();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

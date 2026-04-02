@@ -123,9 +123,11 @@ public class ImplementationBridgeHelpers {
      */
     private static void ensureClassInitialized(String className) {
         try {
-            Class.forName(className);
+            Class.forName(className, true, ImplementationBridgeHelpers.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             logger.error("Failed to load class for accessor initialization: {}", className, e);
+            throw new IllegalStateException(
+                "Unable to load class for accessor initialization: " + className, e);
         }
     }
 
