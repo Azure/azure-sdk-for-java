@@ -128,8 +128,18 @@ public class ImplementationBridgeHelpersTest {
 
         List<String> command = new ArrayList<>();
         command.add(javaBin);
-        command.add("--add-opens");
-        command.add("java.base/java.lang=ALL-UNNAMED");
+
+        // --add-opens is only supported on JDK 9+
+        try {
+            int majorVersion = Integer.parseInt(System.getProperty("java.specification.version").split("\\.")[0]);
+            if (majorVersion >= 9) {
+                command.add("--add-opens");
+                command.add("java.base/java.lang=ALL-UNNAMED");
+            }
+        } catch (NumberFormatException e) {
+            // JDK 8 returns "1.8" — first element is "1", which is < 9, so no --add-opens
+        }
+
         command.add("-cp");
         command.add(classpath);
         command.add(ConcurrentClinitChildProcess.class.getName());
