@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsGetAvailableAgentPoolVersionsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/AgentPoolsGetAgentPoolAvailableVersions.json
+     * x-ms-original-file: 2026-01-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
      */
     /**
      * Sample code: Get available versions for agent pool.
