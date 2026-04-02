@@ -9,13 +9,12 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskState;
-import com.azure.compute.batch.models.ElevationLevel;
 import com.azure.compute.batch.models.BatchTasksListOptions;
 import com.azure.compute.batch.models.BatchVmImageReference;
+import com.azure.compute.batch.models.ElevationLevel;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.UserAccount;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -30,6 +29,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -76,7 +76,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             batchClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
 
             addTestRulesOnPlayback(interceptorManager);
         } else if (getTestMode() == TestMode.RECORD) {
