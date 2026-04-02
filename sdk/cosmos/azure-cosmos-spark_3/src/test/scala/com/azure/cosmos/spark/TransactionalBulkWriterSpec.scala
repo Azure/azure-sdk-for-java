@@ -274,6 +274,12 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
   }
 
+  it should "NOT ignore 412 Precondition Failed" in {
+    Exceptions.isPreconditionFailedException(412) should be(true)
+    // ItemPatchIfExists only ignores 404/0 in BulkWriter/TransactionalBulkWriter semantics.
+    Exceptions.isNotFoundExceptionCore(412, 0) should be(false)
+  }
+
   "shouldIgnore for ItemOverwrite" should "have no ignorable errors" in {
     // Upsert always succeeds — there are no semantic errors to ignore
     Exceptions.isResourceExistsException(200) should be(false)
@@ -837,6 +843,35 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     ops.get(1).getId should be("doc-B")
   }
 
+  "buildReconstructedBatch pattern for ItemPatchIfExists" should
+    "remove reconstructed 404 item and keep other patch items" in {
+      val pk = new PartitionKey("user-patch")
+      val itemA = createObjectNode("doc-A", "user-patch")
+      val itemC = createObjectNode("doc-C", "user-patch")
+
+      // Simulate reconstruction for index 1 (doc-B) due to 404/0 on ItemPatchIfExists.
+      val reconstructedActions = Map(1 -> TransactionalBulkWriter.ReconstructionAction.Remove)
+
+      val newBatch = CosmosBatch.createCosmosBatch(pk)
+      // index 0 unchanged patch operation (represented with placeholder patch ops in this spec)
+      newBatch.readItemOperation(itemA.get("id").asText())
+      // index 1 removed from batch (no operation emitted)
+      // index 2 unchanged patch operation
+      newBatch.readItemOperation(itemC.get("id").asText())
+
+      val ops = newBatch.getOperations
+      ops.size() should be(2)
+      ops.get(0).getOperationType.toString should be("READ")
+      ops.get(0).getId should be("doc-A")
+      ops.get(1).getOperationType.toString should be("READ")
+      ops.get(1).getId should be("doc-C")
+
+      val removedIndices = TransactionalBulkWriter.extractRemovedIndices(reconstructedActions)
+      removedIndices should be(Set(1))
+      TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, removedIndices, 3) should be(Some(0))
+      TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, removedIndices, 3) should be(Some(2))
+    }
+
   "reconstructedIndices state" should "be empty on initial batch" in {
     // First attempt: no reconstruction has happened
     val indices: Set[Int] = Set.empty
@@ -1047,6 +1082,31 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     transient should be(None)
     badRequest should be(None)
     notFoundTransient should be(None)
+  }
+
+  "getReconstructionActionForStatus for ItemPatchIfExists" should
+    "map 404/0 to Remove" in {
+      val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+        ItemWriteStrategy.ItemPatchIfExists,
+        404,
+        0)
+      action should be(Some(TransactionalBulkWriter.ReconstructionAction.Remove))
+    }
+
+  it should "not reconstruct 412 (predicate rejection)" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemPatchIfExists,
+      412,
+      0)
+    action should be(None)
+  }
+
+  it should "not reconstruct transient 404/1002" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemPatchIfExists,
+      404,
+      1002)
+    action should be(None)
   }
 
   // =====================================================

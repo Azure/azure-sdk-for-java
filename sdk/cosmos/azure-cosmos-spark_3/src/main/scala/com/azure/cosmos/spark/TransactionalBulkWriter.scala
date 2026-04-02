@@ -280,14 +280,7 @@ private class TransactionalBulkWriter
                 }
 
               case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
-                val patchOps = cosmosPatchHelperOpt.get.createCosmosPatchOperations(
-                  bulkItem.itemId, partitionKeyDefinition, bulkItem.objectNode)
-                val requestOptions = new CosmosBatchPatchItemRequestOptions()
-                val patchConfigs = writeConfig.patchConfigs.get
-                if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
-                  requestOptions.setFilterPredicate(patchConfigs.filter.get)
-                }
-                cosmosBatch.patchItemOperation(bulkItem.itemId, patchOps, requestOptions)
+                addPatchItemOperation(cosmosBatch, bulkItem)
 
               case _ =>
                 throw new IllegalStateException(
@@ -1095,8 +1088,17 @@ private class TransactionalBulkWriter
                 ()
             }
 
-          // Other strategies will add their reconstruction here:
-          //   ItemPatchIfExists: skip (remove from batch)
+          case ItemWriteStrategy.ItemPatchIfExists =>
+            // For ItemPatchIfExists, only 404/0 is reconstructable and maps to Remove.
+            // Remove means "no-op success" semantics for missing documents.
+            reconstructionAction match {
+              case TransactionalBulkWriter.ReconstructionAction.Remove =>
+                ()
+              case TransactionalBulkWriter.ReconstructionAction.Read =>
+                throw new IllegalStateException(
+                  s"Unexpected reconstruction action 'Read' for ItemPatchIfExists at index $index")
+            }
+
           case _ =>
             throw new IllegalStateException(
               s"Reconstruction not yet implemented for strategy ${writeConfig.itemWriteStrategy} " +
@@ -1131,6 +1133,9 @@ private class TransactionalBulkWriter
                 newBatch.createItemOperation(item.objectNode)
             }
 
+          case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
+            addPatchItemOperation(newBatch, item)
+
           // Other strategies will be added here as reconstruction support is implemented
           case _ =>
             throw new IllegalStateException(
@@ -1142,6 +1147,29 @@ private class TransactionalBulkWriter
 
     if (operationCount == 0) None
     else Some(new CosmosBatchBulkOperation(newBatch))
+  }
+
+  private def addPatchItemOperation(cosmosBatch: CosmosBatch, bulkItem: TransactionalBulkItem): Unit = {
+    if (cosmosPatchHelperOpt.isEmpty) {
+      throw new IllegalStateException(
+        s"cosmosPatchHelperOpt must be defined for strategy ${writeConfig.itemWriteStrategy}")
+    }
+    if (writeConfig.patchConfigs.isEmpty) {
+      throw new IllegalStateException(
+        s"patchConfigs must be defined for strategy ${writeConfig.itemWriteStrategy}")
+    }
+
+    val patchOps = cosmosPatchHelperOpt.get.createCosmosPatchOperations(
+      bulkItem.itemId,
+      partitionKeyDefinition,
+      bulkItem.objectNode)
+    val requestOptions = new CosmosBatchPatchItemRequestOptions()
+    val patchConfigs = writeConfig.patchConfigs.get
+    if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
+      requestOptions.setFilterPredicate(patchConfigs.filter.get)
+    }
+
+    cosmosBatch.patchItemOperation(bulkItem.itemId, patchOps, requestOptions)
   }
 
   private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
@@ -1249,6 +1277,12 @@ private object TransactionalBulkWriter {
         // 404/0 = item already gone; 412 = correctly skipped due to ETag mismatch.
         if (Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
           || Exceptions.isPreconditionFailedException(statusCode)) Some(ReconstructionAction.Remove)
+        else None
+
+      case ItemWriteStrategy.ItemPatchIfExists =>
+        // 404/0 on patch-if-exists means missing document -> no-op success semantics.
+        // 412 is intentionally NOT reconstructed (it remains a failure).
+        if (Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)) Some(ReconstructionAction.Remove)
         else None
 
       case ItemWriteStrategy.ItemOverwriteIfNotModified =>
