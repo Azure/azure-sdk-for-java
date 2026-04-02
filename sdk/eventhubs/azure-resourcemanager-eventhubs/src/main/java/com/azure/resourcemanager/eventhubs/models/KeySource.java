@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 /**
- * Defines values for EncryptionKeySource.
+ * Defines values for KeySource.
  */
-public enum EncryptionKeySource {
+public enum KeySource {
     /**
      * Enum value Microsoft.KeyVault.
      */
     MICROSOFT_KEY_VAULT("Microsoft.KeyVault");
 
     /**
-     * The actual serialized value for a EncryptionKeySource instance.
+     * The actual serialized value for a KeySource instance.
      */
     private final String value;
 
-    EncryptionKeySource(String value) {
+    KeySource(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a EncryptionKeySource instance.
+     * Parses a serialized value to a KeySource instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed EncryptionKeySource object, or null if unable to parse.
+     * @return the parsed KeySource object, or null if unable to parse.
      */
-    public static EncryptionKeySource fromString(String value) {
+    public static KeySource fromString(String value) {
         if (value == null) {
             return null;
         }
-        EncryptionKeySource[] items = EncryptionKeySource.values();
-        for (EncryptionKeySource item : items) {
+        KeySource[] items = KeySource.values();
+        for (KeySource item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

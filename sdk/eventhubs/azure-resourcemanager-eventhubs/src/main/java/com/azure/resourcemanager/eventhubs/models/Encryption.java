@@ -25,7 +25,7 @@ public final class Encryption implements JsonSerializable<Encryption> {
     /*
      * Enumerates the possible value of keySource for Encryption
      */
-    private EncryptionKeySource keySource;
+    private KeySource keySource;
 
     /*
      * Enable Infrastructure Encryption (Double Encryption)
@@ -63,7 +63,7 @@ public final class Encryption implements JsonSerializable<Encryption> {
      * 
      * @return the keySource value.
      */
-    public EncryptionKeySource keySource() {
+    public KeySource keySource() {
         return this.keySource;
     }
 
@@ -73,7 +73,7 @@ public final class Encryption implements JsonSerializable<Encryption> {
      * @param keySource the keySource value to set.
      * @return the Encryption object itself.
      */
-    public Encryption withKeySource(EncryptionKeySource keySource) {
+    public Encryption withKeySource(KeySource keySource) {
         this.keySource = keySource;
         return this;
     }
@@ -142,7 +142,7 @@ public final class Encryption implements JsonSerializable<Encryption> {
                         = reader.readArray(reader1 -> KeyVaultProperties.fromJson(reader1));
                     deserializedEncryption.keyVaultProperties = keyVaultProperties;
                 } else if ("keySource".equals(fieldName)) {
-                    deserializedEncryption.keySource = EncryptionKeySource.fromString(reader.getString());
+                    deserializedEncryption.keySource = KeySource.fromString(reader.getString());
                 } else if ("requireInfrastructureEncryption".equals(fieldName)) {
                     deserializedEncryption.requireInfrastructureEncryption = reader.getNullable(JsonReader::getBoolean);
                 } else {

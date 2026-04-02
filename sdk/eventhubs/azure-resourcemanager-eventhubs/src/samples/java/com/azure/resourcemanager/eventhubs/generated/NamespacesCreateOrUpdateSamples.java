@@ -6,10 +6,10 @@ package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
-import com.azure.resourcemanager.eventhubs.models.EncryptionKeySource;
 import com.azure.resourcemanager.eventhubs.models.GeoDRRoleType;
 import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.eventhubs.models.Identity;
+import com.azure.resourcemanager.eventhubs.models.KeySource;
 import com.azure.resourcemanager.eventhubs.models.KeyVaultProperties;
 import com.azure.resourcemanager.eventhubs.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.eventhubs.models.NamespaceReplicaLocation;
@@ -48,7 +48,7 @@ public final class NamespacesCreateOrUpdateSamples {
                     .withKeyVaultUri("fakeTokenPlaceholder")
                     .withIdentity(new UserAssignedIdentityProperties().withUserAssignedIdentity(
                         "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"))))
-                    .withKeySource(EncryptionKeySource.MICROSOFT_KEY_VAULT))
+                    .withKeySource(KeySource.MICROSOFT_KEY_VAULT))
                 .withGeoDataReplication(new GeoDataReplicationProperties().withMaxReplicationLagDurationInSeconds(300)
                     .withLocations(Arrays.asList(
                         new NamespaceReplicaLocation().withLocationName("eastus").withRoleType(GeoDRRoleType.PRIMARY),
