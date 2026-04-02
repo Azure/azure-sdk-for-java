@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfiguration;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public final class NetworkSecurityPerimeterConfigurationListInner
     /*
      * A collection of NetworkSecurityPerimeterConfigurations
      */
-    private List<NetworkSecurityPerimeterConfigurationInner> value;
+    private List<NetworkSecurityPerimeterConfiguration> value;
 
     /**
      * Creates an instance of NetworkSecurityPerimeterConfigurationListInner class.
@@ -34,7 +35,7 @@ public final class NetworkSecurityPerimeterConfigurationListInner
      * 
      * @return the value value.
      */
-    public List<NetworkSecurityPerimeterConfigurationInner> value() {
+    public List<NetworkSecurityPerimeterConfiguration> value() {
         return this.value;
     }
 
@@ -75,8 +76,8 @@ public final class NetworkSecurityPerimeterConfigurationListInner
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<NetworkSecurityPerimeterConfigurationInner> value
-                        = reader.readArray(reader1 -> NetworkSecurityPerimeterConfigurationInner.fromJson(reader1));
+                    List<NetworkSecurityPerimeterConfiguration> value
+                        = reader.readArray(reader1 -> NetworkSecurityPerimeterConfiguration.fromJson(reader1));
                     deserializedNetworkSecurityPerimeterConfigurationListInner.value = value;
                 } else {
                     reader.skipChildren();

@@ -11,7 +11,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.eventhubs.fluent.models.NetworkSecurityPerimeterConfigurationInner;
+import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfiguration;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,7 +34,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getResourceAssociationNameWithResponseAsync(
+    Mono<Response<NetworkSecurityPerimeterConfiguration>> getResourceAssociationNameWithResponseAsync(
         String resourceGroupName, String namespaceName, String resourceAssociationName);
 
     /**
@@ -50,7 +50,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkSecurityPerimeterConfigurationInner> getResourceAssociationNameAsync(String resourceGroupName,
+    Mono<NetworkSecurityPerimeterConfiguration> getResourceAssociationNameAsync(String resourceGroupName,
         String namespaceName, String resourceAssociationName);
 
     /**
@@ -66,8 +66,8 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return network Security Perimeter related configurations of a given namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkSecurityPerimeterConfigurationInner> getResourceAssociationNameWithResponse(
-        String resourceGroupName, String namespaceName, String resourceAssociationName, Context context);
+    Response<NetworkSecurityPerimeterConfiguration> getResourceAssociationNameWithResponse(String resourceGroupName,
+        String namespaceName, String resourceAssociationName, Context context);
 
     /**
      * Return a NetworkSecurityPerimeterConfigurations resourceAssociationName.
@@ -81,8 +81,8 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return network Security Perimeter related configurations of a given namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSecurityPerimeterConfigurationInner getResourceAssociationName(String resourceGroupName,
-        String namespaceName, String resourceAssociationName);
+    NetworkSecurityPerimeterConfiguration getResourceAssociationName(String resourceGroupName, String namespaceName,
+        String resourceAssociationName);
 
     /**
      * Refreshes any information about the association.
@@ -111,7 +111,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
+    PollerFlux<PollResult<NetworkSecurityPerimeterConfiguration>, NetworkSecurityPerimeterConfiguration>
         beginCreateOrUpdateAsync(String resourceGroupName, String namespaceName, String resourceAssociationName);
 
     /**
@@ -126,7 +126,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
+    SyncPoller<PollResult<NetworkSecurityPerimeterConfiguration>, NetworkSecurityPerimeterConfiguration>
         beginCreateOrUpdate(String resourceGroupName, String namespaceName, String resourceAssociationName);
 
     /**
@@ -142,7 +142,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
+    SyncPoller<PollResult<NetworkSecurityPerimeterConfiguration>, NetworkSecurityPerimeterConfiguration>
         beginCreateOrUpdate(String resourceGroupName, String namespaceName, String resourceAssociationName,
             Context context);
 
@@ -158,7 +158,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkSecurityPerimeterConfigurationInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+    Mono<NetworkSecurityPerimeterConfiguration> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String resourceAssociationName);
 
     /**
@@ -173,7 +173,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSecurityPerimeterConfigurationInner createOrUpdate(String resourceGroupName, String namespaceName,
+    NetworkSecurityPerimeterConfiguration createOrUpdate(String resourceGroupName, String namespaceName,
         String resourceAssociationName);
 
     /**
@@ -189,6 +189,6 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSecurityPerimeterConfigurationInner createOrUpdate(String resourceGroupName, String namespaceName,
+    NetworkSecurityPerimeterConfiguration createOrUpdate(String resourceGroupName, String namespaceName,
         String resourceAssociationName, Context context);
 }
