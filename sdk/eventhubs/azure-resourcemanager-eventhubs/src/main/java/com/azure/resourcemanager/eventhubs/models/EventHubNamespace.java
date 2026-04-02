@@ -282,7 +282,7 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
         }
 
         /**
-         * The stage of the event hub namespace definition allowing to enable Zone Redundant.
+         * The stage of the event hub namespace definition allowing to configure Zone Redundant.
          */
         interface WithZoneRedundant {
             /**

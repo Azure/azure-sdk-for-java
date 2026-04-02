@@ -34,7 +34,6 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
-import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
@@ -46,6 +45,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EventHubTests extends ResourceManagerTestProxyTestBase {
     protected EventHubsManager eventHubsManager;
@@ -533,7 +533,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
                 pairing = pairing.refresh();
                 ResourceManagerUtils.sleep(Duration.ofSeconds(15));
                 if (pairing.provisioningState() == ProvisioningStateDR.FAILED) {
-                    Assertions.assertTrue(false, "Provisioning state of the pairing is FAILED");
+                    Assertions.fail("Provisioning state of the pairing is FAILED");
                 }
             }
 
@@ -542,8 +542,9 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertTrue(pairing.primaryNamespaceName().equalsIgnoreCase(primaryNamespace.name()));
             assertResourceIdEquals(pairing.secondaryNamespaceId(), secondaryNamespace.id());
 
-            PagedIterable<DisasterRecoveryPairingAuthorizationRule> rules = pairing.listAuthorizationRules();
-            Assertions.assertTrue(TestUtilities.getSize(rules) > 0);
+            List<DisasterRecoveryPairingAuthorizationRule> rules
+                = pairing.listAuthorizationRules().stream().collect(Collectors.toList());
+            Assertions.assertFalse(rules.isEmpty());
             for (DisasterRecoveryPairingAuthorizationRule rule : rules) {
                 DisasterRecoveryPairingAuthorizationKey keys = rule.getKeys();
                 Assertions.assertNotNull(keys.aliasPrimaryConnectionString());
@@ -553,10 +554,11 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             }
 
             EventHubDisasterRecoveryPairings pairingsCol = eventHubsManager.eventHubDisasterRecoveryPairings();
-            PagedIterable<EventHubDisasterRecoveryPairing> pairings
-                = pairingsCol.listByNamespace(primaryNamespace.resourceGroupName(), primaryNamespace.name());
-
-            Assertions.assertTrue(TestUtilities.getSize(pairings) > 0);
+            List<EventHubDisasterRecoveryPairing> pairings
+                = pairingsCol.listByNamespace(primaryNamespace.resourceGroupName(), primaryNamespace.name())
+                    .stream()
+                    .collect(Collectors.toList());
+            Assertions.assertFalse(pairings.isEmpty());
 
             boolean found = false;
             for (EventHubDisasterRecoveryPairing pairing1 : pairings) {
@@ -620,6 +622,8 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
         final String namespaceName1 = generateRandomResourceName("ns", 14);
         final String namespaceName2 = generateRandomResourceName("ns", 14);
 
+        // zone redundancy is by default true
+        // https://learn.microsoft.com/azure/reliability/reliability-event-hubs#resilience-to-availability-zone-failures
         resourceManager.resourceGroups().define(rgName).withRegion(region).create();
         EventHubNamespace namespace1 = eventHubsManager.namespaces()
             .define(namespaceName1)
@@ -629,17 +633,19 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .withAutoScaling()
             .disableLocalAuth()
             .create();
-        Assertions.assertFalse(namespace1.zoneRedundant());
+        Assertions.assertTrue(namespace1.zoneRedundant());
 
+        // and seems cannot be disabled
+        /*
         EventHubNamespace namespace2 = eventHubsManager.namespaces()
             .define(namespaceName2)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             // SDK should use Sku as 'Standard' and set capacity.capacity in it as 1
             .withAutoScaling()
-            .enableZoneRedundant()
             .disableLocalAuth()
             .create();
-        Assertions.assertTrue(namespace2.zoneRedundant());
+        Assertions.assertFalse(namespace2.zoneRedundant());
+         */
     }
 }
