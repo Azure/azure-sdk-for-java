@@ -1294,7 +1294,6 @@ public class BlobAsyncClientBase {
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
-        String structuredBodyType = isStructuredMessageEnabled ? Constants.STRUCTURED_MESSAGE_CRC64_BODY_TYPE : null;
         final Context responseScopedContext = isStructuredMessageEnabled
             ? baseContext.addData(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true)
             : baseContext;
@@ -1313,7 +1312,7 @@ public class BlobAsyncClientBase {
         }
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), finalGetMD5,
-            structuredBodyType, firstRangeContext).map(response -> {
+            firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
@@ -1332,6 +1331,8 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
+                // The resume function takes throwable and offset at the destination.
+                // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
                     if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                         return Mono.error(throwable);
@@ -1340,12 +1341,27 @@ public class BlobAsyncClientBase {
                     try {
                         if (isStructuredMessageEnabled) {
                             return retryStructuredDownload(throwable, offset, decoderStateRef, responseStartOffset,
-                                finalCount, initialOffset, firstRangeContext, finalRequestConditions, eTag, finalGetMD5,
-                                structuredBodyType);
+                                finalCount, initialOffset, firstRangeContext, finalRequestConditions, eTag,
+                                finalGetMD5);
                         } else {
                             long newCount = finalCount - offset;
+
+                            /*
+                             * It's possible that the network stream will throw an error after emitting all data but
+                             * before completing. Issuing a retry at this stage would leave the download in a bad
+                             * state with incorrect count and offset values. Because we have read the intended amount
+                             * of data, we can ignore the error at the end of the stream.
+                             */
+                            if (newCount == 0) {
+                                LOGGER.warning(
+                                    "Exception encountered in ReliableDownload after all data read from the network "
+                                        + "but before stream signaled completion. Returning success as all data was "
+                                        + "downloaded. Exception message: " + throwable.getMessage());
+                                return Mono.empty();
+                            }
+
                             BlobRange retryRange = new BlobRange(initialOffset + offset, newCount);
-                            return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, null,
+                            return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5,
                                 firstRangeContext);
                         }
                     } catch (Exception e) {
@@ -1360,10 +1376,10 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
-        Boolean getMD5, String structuredBodyType, Context context) {
+        Boolean getMD5, Context context) {
         return azureBlobStorage.getBlobs()
             .downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-                range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, structuredBodyType,
+                range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, null,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
                 context);
@@ -1371,8 +1387,7 @@ public class BlobAsyncClientBase {
 
     private Mono<StreamResponse> retryStructuredDownload(Throwable throwable, long emittedOffset,
         AtomicReference<DecoderState> decoderStateRef, AtomicLong responseStartOffset, long finalCount,
-        long initialOffset, Context baseRetryContext, BlobRequestConditions conditions, String eTag, Boolean getMD5,
-        String structuredBodyType) {
+        long initialOffset, Context baseRetryContext, BlobRequestConditions conditions, String eTag, Boolean getMD5) {
 
         long currentResponseOffset = responseStartOffset.get();
         DecoderState decoderState = decoderStateRef.get();
@@ -1404,7 +1419,7 @@ public class BlobAsyncClientBase {
         LOGGER.info("Structured message retry: resuming from offset {} (initial={}, decoded={}, remaining={}, skip={})",
             initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount, bytesToSkip);
 
-        return downloadRange(retryRange, conditions, eTag, getMD5, structuredBodyType, retryContext);
+        return downloadRange(retryRange, conditions, eTag, getMD5, retryContext);
     }
 
     private static long resolveStructuredRetryOffset(DecoderState decoderState, Throwable throwable,

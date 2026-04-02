@@ -65,6 +65,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             return next.process();
         }
 
+        context.getHttpRequest().getHeaders().set(X_MS_STRUCTURED_BODY, Constants.STRUCTURED_MESSAGE_CRC64_BODY_TYPE);
+
         return next.process().map(httpResponse -> {
             Long contentLength = ContentValidationDecoderUtils.getContentLength(httpResponse.getHeaders());
 

@@ -41,14 +41,6 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
             AtomicReference<DecoderState> decoderStateRef);
 
         /**
-         * Gets the source {@link StreamResponse} from a {@link BlobDownloadAsyncResponse}.
-         *
-         * @param response The {@link BlobDownloadAsyncResponse}.
-         * @return The source {@link StreamResponse}, or null if not available.
-         */
-        StreamResponse getSourceResponse(BlobDownloadAsyncResponse response);
-
-        /**
          * Gets the current decoder state from a {@link BlobDownloadAsyncResponse}.
          *
          * @param response The {@link BlobDownloadAsyncResponse}.
@@ -90,34 +82,12 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
     }
 
     /**
-     * Gets the source {@link StreamResponse} from a {@link BlobDownloadAsyncResponse}.
-     *
-     * @param response The {@link BlobDownloadAsyncResponse}.
-     * @return The source {@link StreamResponse}, or null if not available.
-     */
-    public static StreamResponse getSourceResponse(BlobDownloadAsyncResponse response) {
-        if (accessor == null) {
-            new BlobDownloadAsyncResponse(new HttpRequest(HttpMethod.GET, "http://microsoft.com"), 200,
-                new HttpHeaders(), null, null);
-        }
-
-        assert accessor != null;
-        return accessor.getSourceResponse(response);
-    }
-
-    /**
      * Gets the current decoder state from a {@link BlobDownloadAsyncResponse}.
      *
      * @param response The {@link BlobDownloadAsyncResponse}.
      * @return The decoder state, or null if not available.
      */
     public static DecoderState getDecoderState(BlobDownloadAsyncResponse response) {
-        if (accessor == null) {
-            new BlobDownloadAsyncResponse(new HttpRequest(HttpMethod.GET, "http://microsoft.com"), 200,
-                new HttpHeaders(), null, null);
-        }
-
-        assert accessor != null;
         return accessor.getDecoderState(response);
     }
 }

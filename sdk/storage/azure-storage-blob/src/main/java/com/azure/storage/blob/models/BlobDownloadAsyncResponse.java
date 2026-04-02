@@ -46,11 +46,6 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 }
 
                 @Override
-                public StreamResponse getSourceResponse(BlobDownloadAsyncResponse response) {
-                    return response.sourceResponse;
-                }
-
-                @Override
                 public DecoderState getDecoderState(BlobDownloadAsyncResponse response) {
                     AtomicReference<DecoderState> ref = response.decoderStateRef;
                     return ref == null ? null : ref.get();
