@@ -187,15 +187,26 @@ public class AzureAppConfigDataLoaderTest {
 
     @Test
     public void startupRetriesAfterClientFailureThenSucceedsTest() throws IOException {
+        // Use very short timeout so test runs quickly (minimal real sleeping)
+        Profiles profiles = Mockito.mock(Profiles.class);
+        when(profiles.getActive()).thenReturn(List.of(LABEL_FILTER));
+        
+        ConfigStore fastTimeoutStore = new ConfigStore();
+        fastTimeoutStore.setEndpoint(ENDPOINT);
+        fastTimeoutStore.setEnabled(true);
+        FeatureFlagStore featureFlagStore = new FeatureFlagStore();
+        featureFlagStore.setEnabled(false);
+        fastTimeoutStore.setFeatureFlags(featureFlagStore);
+        
+        // Short timeout - test will retry once then succeed, sleeping ~5 seconds total
+        AzureAppConfigDataResource fastResource = new AzureAppConfigDataResource(
+            true, fastTimeoutStore, profiles, true, Duration.ofMinutes(1), Duration.ofSeconds(10));
+        
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
         selector.setKeyFilter(KEY_FILTER);
         selector.setLabelFilter(LABEL_FILTER);
-        configStore.getSelects().add(selector);
-
-        // Create a second client mock for the successful retry
-        AppConfigurationReplicaClient secondClientMock = Mockito.mock(AppConfigurationReplicaClient.class);
-        lenient().when(secondClientMock.getEndpoint()).thenReturn(ENDPOINT);
+        fastTimeoutStore.getSelects().add(selector);
 
         // Setup mocks:
         // - First getNextActiveClient(true) returns clientMock which will throw
@@ -211,7 +222,7 @@ public class AzureAppConfigDataLoaderTest {
 
         // Test using public load() method
         AzureAppConfigDataLoader loader = new AzureAppConfigDataLoader(logFactoryMock);
-        ConfigData result = loader.load(configDataLoaderContextMock, resource);
+        ConfigData result = loader.load(configDataLoaderContextMock, fastResource);
 
         // Verify - retried after failure
         assertNotNull(result);
@@ -222,7 +233,7 @@ public class AzureAppConfigDataLoaderTest {
     public void startupFailsAfterAllRetriesExhaustedTest() {
         // Setup with a short timeout
         Profiles profiles = Mockito.mock(Profiles.class);
-        when(profiles.getActive()).thenReturn(List.of(LABEL_FILTER));
+        lenient().when(profiles.getActive()).thenReturn(List.of(LABEL_FILTER));
 
         ConfigStore shortTimeoutStore = new ConfigStore();
         shortTimeoutStore.setEndpoint(ENDPOINT);
@@ -231,8 +242,9 @@ public class AzureAppConfigDataLoaderTest {
         featureFlagStore.setEnabled(false);
         shortTimeoutStore.setFeatureFlags(featureFlagStore);
 
+        // Use 6-second timeout - enough for 1-2 retries (~5-10s total with backoff)
         AzureAppConfigDataResource shortTimeoutResource = new AzureAppConfigDataResource(
-            true, shortTimeoutStore, profiles, true, Duration.ofMinutes(1), Duration.ofSeconds(30));
+            true, shortTimeoutStore, profiles, true, Duration.ofMinutes(1), Duration.ofSeconds(6));
 
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
@@ -240,11 +252,11 @@ public class AzureAppConfigDataLoaderTest {
         selector.setLabelFilter(LABEL_FILTER);
         shortTimeoutStore.getSelects().add(selector);
 
-        // Setup mocks - client always fails
-        when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(true))).thenReturn(clientMock);
-        when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(false))).thenReturn(null);
-        when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
-        when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
+        // Setup mocks - client always fails (keep returning clientMock so it keeps trying and failing)
+        lenient().when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(true))).thenReturn(clientMock);
+        lenient().when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(false))).thenReturn(null);
+        lenient().when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
+        lenient().when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
 
         // Test using public load() method - should throw RuntimeException after retries exhausted
         AzureAppConfigDataLoader loader = new AzureAppConfigDataLoader(logFactoryMock);
