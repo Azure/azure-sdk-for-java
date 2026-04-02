@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
 
 #### Other Changes
 

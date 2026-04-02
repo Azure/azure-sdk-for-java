@@ -28,6 +28,16 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     private List<ResourceReference> effectiveOutboundIPs;
 
     /*
+     * Desired outbound IP Prefix resources for the managed NAT Gateway. Only compatible with NAT Gateway V2.
+     */
+    private ManagedClusterNATGatewayProfileOutboundIpPrefixes outboundIpPrefixes;
+
+    /*
+     * Desired outbound IP resources for the managed NAT Gateway.
+     */
+    private ManagedClusterNATGatewayProfileOutboundIPs outboundIps;
+
+    /*
      * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The
      * default value is 4 minutes.
      */
@@ -72,6 +82,49 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     }
 
     /**
+     * Get the outboundIpPrefixes property: Desired outbound IP Prefix resources for the managed NAT Gateway. Only
+     * compatible with NAT Gateway V2.
+     * 
+     * @return the outboundIpPrefixes value.
+     */
+    public ManagedClusterNATGatewayProfileOutboundIpPrefixes outboundIpPrefixes() {
+        return this.outboundIpPrefixes;
+    }
+
+    /**
+     * Set the outboundIpPrefixes property: Desired outbound IP Prefix resources for the managed NAT Gateway. Only
+     * compatible with NAT Gateway V2.
+     * 
+     * @param outboundIpPrefixes the outboundIpPrefixes value to set.
+     * @return the ManagedClusterNatGatewayProfile object itself.
+     */
+    public ManagedClusterNatGatewayProfile
+        withOutboundIpPrefixes(ManagedClusterNATGatewayProfileOutboundIpPrefixes outboundIpPrefixes) {
+        this.outboundIpPrefixes = outboundIpPrefixes;
+        return this;
+    }
+
+    /**
+     * Get the outboundIps property: Desired outbound IP resources for the managed NAT Gateway.
+     * 
+     * @return the outboundIps value.
+     */
+    public ManagedClusterNATGatewayProfileOutboundIPs outboundIps() {
+        return this.outboundIps;
+    }
+
+    /**
+     * Set the outboundIps property: Desired outbound IP resources for the managed NAT Gateway.
+     * 
+     * @param outboundIps the outboundIps value to set.
+     * @return the ManagedClusterNatGatewayProfile object itself.
+     */
+    public ManagedClusterNatGatewayProfile withOutboundIps(ManagedClusterNATGatewayProfileOutboundIPs outboundIps) {
+        this.outboundIps = outboundIps;
+        return this;
+    }
+
+    /**
      * Get the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
      * range of 4 to 120 (inclusive). The default value is 4 minutes.
      * 
@@ -105,6 +158,12 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
         if (effectiveOutboundIPs() != null) {
             effectiveOutboundIPs().forEach(e -> e.validate());
         }
+        if (outboundIpPrefixes() != null) {
+            outboundIpPrefixes().validate();
+        }
+        if (outboundIps() != null) {
+            outboundIps().validate();
+        }
     }
 
     /**
@@ -114,6 +173,8 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("managedOutboundIPProfile", this.managedOutboundIpProfile);
+        jsonWriter.writeJsonField("outboundIPPrefixes", this.outboundIpPrefixes);
+        jsonWriter.writeJsonField("outboundIPs", this.outboundIps);
         jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
         return jsonWriter.writeEndObject();
     }
@@ -141,6 +202,12 @@ public final class ManagedClusterNatGatewayProfile implements JsonSerializable<M
                     List<ResourceReference> effectiveOutboundIPs
                         = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
                     deserializedManagedClusterNatGatewayProfile.effectiveOutboundIPs = effectiveOutboundIPs;
+                } else if ("outboundIPPrefixes".equals(fieldName)) {
+                    deserializedManagedClusterNatGatewayProfile.outboundIpPrefixes
+                        = ManagedClusterNATGatewayProfileOutboundIpPrefixes.fromJson(reader);
+                } else if ("outboundIPs".equals(fieldName)) {
+                    deserializedManagedClusterNatGatewayProfile.outboundIps
+                        = ManagedClusterNATGatewayProfileOutboundIPs.fromJson(reader);
                 } else if ("idleTimeoutInMinutes".equals(fieldName)) {
                     deserializedManagedClusterNatGatewayProfile.idleTimeoutInMinutes
                         = reader.getNullable(JsonReader::getInt);

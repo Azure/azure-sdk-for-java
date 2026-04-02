@@ -275,7 +275,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         return nRegionSynchronousCommitEnabled;
     }
 
-    public void setNRegionSynchronousCommitEnabled(Boolean nRegionSynchronousCommitEnabled) {
+    public void setNRegionSynchronousCommitEnabled(boolean nRegionSynchronousCommitEnabled) {
         this.nRegionSynchronousCommitEnabled = nRegionSynchronousCommitEnabled;
     }
 
