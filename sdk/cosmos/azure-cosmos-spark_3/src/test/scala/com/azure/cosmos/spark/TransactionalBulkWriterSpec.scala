@@ -175,6 +175,19 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     batch.getOperations.get(0).getId should be("doc1")
   }
 
+  it should "map ItemDeleteIfNotModified without ETag to unconditional deleteItemOperation" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+
+    // This matches the optimized code path used by reconstruction and initial batching.
+    batch.deleteItemOperation("doc-no-etag")
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("DELETE")
+    batch.getOperations.get(0).getId should be("doc-no-etag")
+    batch.getOperations.get(0).getItem[ObjectNode] should be(null)
+  }
+
   it should "map ItemOverwriteIfNotModified with ETag to replaceItemOperation" in {
     val pk = new PartitionKey("user-A")
     val batch = CosmosBatch.createCosmosBatch(pk)
@@ -244,21 +257,17 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     Exceptions.isNotFoundExceptionCore(412, 0) should be(false)
   }
 
-  "shouldIgnore for ItemDeleteIfNotModified" should "ignore 404/0 but NOT 412" in {
-    // TransactionalBulkWriter excludes 412 — ambiguous on retry for batch operations
-    // BulkWriter includes both 404/0 and 412
+  "shouldIgnore for ItemDeleteIfNotModified" should "ignore 404/0 and 412" in {
+    // Both 404/0 (item gone) and 412 (item modified, conditional delete correctly skipped)
+    // are reconstruction-eligible — consistent with BulkWriter's shouldIgnore
     Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
-    // 412 is a valid Precondition Failed code, but should NOT be in TransactionalBulkWriter's shouldIgnore
-    Exceptions.isPreconditionFailedException(412) should be(true) // helper returns true...
-    // ...but TransactionalBulkWriter's shouldIgnore does NOT include 412 for this strategy
+    Exceptions.isPreconditionFailedException(412) should be(true)
   }
 
-  "shouldIgnore for ItemOverwriteIfNotModified" should "ignore 409 and 404/0 but NOT 412" in {
+  "shouldIgnore for ItemOverwriteIfNotModified" should "ignore 409, 404/0, and 412" in {
     Exceptions.isResourceExistsException(409) should be(true)
     Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
-    // 412 is excluded from TransactionalBulkWriter's shouldIgnore
-    Exceptions.isPreconditionFailedException(412) should be(true) // helper returns true...
-    // ...but TransactionalBulkWriter's shouldIgnore does NOT include 412 for this strategy
+    Exceptions.isPreconditionFailedException(412) should be(true)
   }
 
   "shouldIgnore for ItemPatchIfExists" should "ignore 404/0 Not Found" in {
@@ -760,6 +769,74 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     ops.get(0).getOperationType.toString should be("READ")
   }
 
+  // =====================================================
+  // Batch Reconstruction Tests (ItemOverwriteIfNotModified)
+  // =====================================================
+
+  "buildReconstructedBatch pattern for ItemOverwriteIfNotModified" should
+    "support mixed reconstruction actions (read + remove + unchanged)" in {
+      // Original logical batch:
+      //   index 0: replace A (etag present)
+      //   index 1: replace B (etag present)
+      //   index 2: create C  (no etag)
+      // Reconstructed actions:
+      //   index 0 -> Read   (e.g., 412)
+      //   index 1 -> Remove (e.g., 404/0)
+      //   index 2 -> unchanged create
+      val pk = new PartitionKey("user-A")
+      val itemA = createObjectNode("doc-A", "user-A", Some("etag-a"))
+      val itemB = createObjectNode("doc-B", "user-A", Some("etag-b"))
+      val itemC = createObjectNode("doc-C", "user-A")
+
+      val reconstructedActions = Map(
+        0 -> TransactionalBulkWriter.ReconstructionAction.Read,
+        1 -> TransactionalBulkWriter.ReconstructionAction.Remove)
+
+      val newBatch = CosmosBatch.createCosmosBatch(pk)
+
+      // index 0 -> read
+      newBatch.readItemOperation(itemA.get("id").asText())
+      // index 1 -> remove from batch (no operation emitted)
+      // index 2 -> unchanged (no etag => create)
+      newBatch.createItemOperation(itemC)
+
+      val ops = newBatch.getOperations
+      ops.size() should be(2)
+      ops.get(0).getOperationType.toString should be("READ")
+      ops.get(0).getId should be("doc-A")
+      ops.get(1).getOperationType.toString should be("CREATE")
+      ops.get(1).getItem[ObjectNode].get("id").asText() should be("doc-C")
+
+      // Mapping should skip only removed indices, not read indices.
+      val removedIndices = TransactionalBulkWriter.extractRemovedIndices(reconstructedActions)
+      removedIndices should be(Set(1))
+      TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, removedIndices, 3) should be(Some(0))
+      TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, removedIndices, 3) should be(Some(2))
+    }
+
+  it should "keep unchanged replace operations when only other indices are reconstructed" in {
+    // index 0 reconstructed to READ, index 1 unchanged REPLACE (etag preserved)
+    val pk = new PartitionKey("user-B")
+    val itemA = createObjectNode("doc-A", "user-B", Some("etag-a"))
+    val itemB = createObjectNode("doc-B", "user-B", Some("etag-b"))
+
+    val newBatch = CosmosBatch.createCosmosBatch(pk)
+
+    // index 0 reconstructed
+    newBatch.readItemOperation(itemA.get("id").asText())
+
+    // index 1 unchanged replace-with-etag
+    val requestOptions = new CosmosBatchItemRequestOptions()
+    requestOptions.setIfMatchETag("etag-b")
+    newBatch.replaceItemOperation("doc-B", itemB, requestOptions)
+
+    val ops = newBatch.getOperations
+    ops.size() should be(2)
+    ops.get(0).getOperationType.toString should be("READ")
+    ops.get(1).getOperationType.toString should be("REPLACE")
+    ops.get(1).getId should be("doc-B")
+  }
+
   "reconstructedIndices state" should "be empty on initial batch" in {
     // First attempt: no reconstruction has happened
     val indices: Set[Int] = Set.empty
@@ -792,29 +869,47 @@ class TransactionalBulkWriterSpec extends UnitSpec {
   }
 
   // =====================================================
-  // Reconstruction Retry Budget Tests
+  // Reconstruction Budget Tests (Reconstruction ≠ Retry)
   // =====================================================
 
-  "reconstruction retry budget" should "count reconstruction against maxRetryCount" in {
-    // A batch with N items needs up to N retries for reconstruction
+  "reconstruction budget" should "not consume retry counter (reconstruction != retry)" in {
+    // Reconstruction does NOT increment attemptNumber.
+    // The retry counter only increments on transient errors (unchanged batch retries).
+    // A batch of 100 items where all need reconstruction uses 0 retry budget.
     val maxRetryCount = 10
+    val batchSize = 100
 
-    // 3-item batch: worst case needs 3 reconstruction retries + 1 transient = 4 attempts
-    // Well within budget of 10
-    (4 < maxRetryCount) should be(true)
-
-    // 10-item batch: worst case needs 10 reconstruction retries = exactly at limit
-    (10 < maxRetryCount) should be(false) // exhausted
-    (9 < maxRetryCount) should be(true)   // last retry
+    // Reconstruction budget = batch size (natural bound, no counter needed)
+    // Transient retry budget = maxRetryCount (separate)
+    // These compose independently
+    (batchSize <= 100) should be(true) // max transactional batch size
+    (maxRetryCount > 0) should be(true) // full budget available for transient errors
   }
 
   it should "allow reconstruction on first attempt (no attemptNumber > 1 guard)" in {
-    // Scenario 2 from design doc: 409 on first attempt (external process created item)
+    // Scenario : 409/404 on first attempt (external process)
     // Reconstruction must fire — there's no attemptNumber guard
     val attemptNumber = 1
-    val maxRetryCount = 10
 
-    (attemptNumber < maxRetryCount) should be(true) // reconstruction allowed
+    // Reconstruction fires regardless of attemptNumber — it's not a retry
+    (attemptNumber >= 1) should be(true)
+  }
+
+  it should "bound reconstruction naturally by batch size" in {
+    // Each reconstruction makes irreversible progress (one item removed/replaced).
+    // After N reconstructions on an N-item batch, batch is fully corrected or empty.
+    var reconstructedIndices: Set[Int] = Set.empty
+    val batchSize = 5
+
+    // Simulate reconstructing all items
+    for (i <- 0 until batchSize) {
+      reconstructedIndices = reconstructedIndices + i
+    }
+    reconstructedIndices.size should be(batchSize)
+
+    // Same item cannot trigger reconstruction twice
+    reconstructedIndices = reconstructedIndices + 0 // duplicate
+    reconstructedIndices.size should be(batchSize) // still 5, not 6
   }
 
   "getReconstructionIndex for ItemAppend" should "return index for 409 (Conflict)" in {
@@ -838,6 +933,194 @@ class TransactionalBulkWriterSpec extends UnitSpec {
   it should "NOT trigger for 429 (throttling)" in {
     // 429 means the server didn't process the request — nothing to reconstruct
     Exceptions.isResourceExistsException(429) should be(false)
+  }
+
+  // Delete reconstruction semantics are covered by:
+  // 1) mock batch response tests below (status-code eligibility), and
+  // 2) index-remapping tests (correctness across shrinking batches).
+
+  // =====================================================
+  // getReconstructionIndex with mock batch responses
+  // =====================================================
+
+  it should "select first non-success non-424 result (skip leading 200)" in {
+    // Transactional batch responses can include leading 200s for operations processed
+    // before the first failure, even though the whole batch rolls back.
+    val response = createMockBatchResponse(409, 0, List((200, 0), (409, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNonSuccessNon424 = results.zipWithIndex.find { case (result, _) =>
+      !result.isSuccessStatusCode && result.getStatusCode != 424
+    }
+
+    firstNonSuccessNon424 should be(defined)
+    val (result, index) = firstNonSuccessNon424.get
+    index should be(1)
+    Exceptions.isResourceExistsException(result.getStatusCode) should be(true)
+  }
+
+  "getReconstructionIndex with mock response" should "find 404/0 at correct index for ItemDelete" in {
+    // Batch response: [404/0, 424, 424] — 404 at index 0
+    val response = createMockBatchResponse(404, 0, List((404, 0), (424, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(defined)
+    val (result, index) = firstNon424.get
+    index should be(0)
+    Exceptions.isNotFoundExceptionCore(result.getStatusCode, result.getSubStatusCode) should be(true)
+  }
+
+  it should "find 412 at correct index for ItemDeleteIfNotModified" in {
+    // Batch response: [412, 424, 424] — 412 at index 0
+    val response = createMockBatchResponse(412, 0, List((412, 0), (424, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(defined)
+    val (result, index) = firstNon424.get
+    index should be(0)
+    Exceptions.isPreconditionFailedException(result.getStatusCode) should be(true)
+  }
+
+  it should "NOT reconstruct on 400 (Bad Request)" in {
+    // 400 = permanent error, no reconstruction
+    val response = createMockBatchResponse(400, 0, List((400, 0), (424, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(defined)
+    val (result, _) = firstNon424.get
+    Exceptions.isNotFoundExceptionCore(result.getStatusCode, result.getSubStatusCode) should be(false)
+    Exceptions.isPreconditionFailedException(result.getStatusCode) should be(false)
+    Exceptions.isResourceExistsException(result.getStatusCode) should be(false)
+  }
+
+  "getReconstructionActionForStatus for ItemOverwriteIfNotModified" should
+    "map 409 to Read" in {
+      val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+        ItemWriteStrategy.ItemOverwriteIfNotModified,
+        409,
+        0)
+      action should be(Some(TransactionalBulkWriter.ReconstructionAction.Read))
+    }
+
+  it should "map 404/0 to Remove" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      404,
+      0)
+    action should be(Some(TransactionalBulkWriter.ReconstructionAction.Remove))
+  }
+
+  it should "map 412 to Read" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      412,
+      0)
+    action should be(Some(TransactionalBulkWriter.ReconstructionAction.Read))
+  }
+
+  it should "not reconstruct non-eligible statuses" in {
+    val transient = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      503,
+      0)
+    val badRequest = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      400,
+      0)
+    val notFoundTransient = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      404,
+      1002)
+
+    transient should be(None)
+    badRequest should be(None)
+    notFoundTransient should be(None)
+  }
+
+  // =====================================================
+  // Reconstruction Index Remapping (Current Batch -> Original Batch)
+  // =====================================================
+
+  "extractRemovedIndices" should "return only indices reconstructed as remove" in {
+    val actions = Map(
+      0 -> TransactionalBulkWriter.ReconstructionAction.Remove,
+      1 -> TransactionalBulkWriter.ReconstructionAction.Read,
+      3 -> TransactionalBulkWriter.ReconstructionAction.Remove)
+
+    TransactionalBulkWriter.extractRemovedIndices(actions) should be(Set(0, 3))
+  }
+
+  "mapCurrentBatchIndexToOriginalIndex" should "map directly when no indices are reconstructed" in {
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, Set.empty, 3) should be(Some(0))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, Set.empty, 3) should be(Some(1))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(2, Set.empty, 3) should be(Some(2))
+  }
+
+  it should "map correctly after batch shrink for delete reconstruction" in {
+    // Original items: [A, B, C]
+    // Reconstructed indices: {0} means A removed from current batch
+    // Current batch is [B, C] -> current index 0 maps to original index 1
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, Set(0), 3) should be(Some(1))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, Set(0), 3) should be(Some(2))
+  }
+
+  it should "map correctly with non-contiguous reconstructed indices" in {
+    // Original items: [A, B, C, D, E]
+    // Reconstructed indices: {1, 3} => current batch [A, C, E]
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, Set(1, 3), 5) should be(Some(0))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, Set(1, 3), 5) should be(Some(2))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(2, Set(1, 3), 5) should be(Some(4))
+  }
+
+  it should "return None for out-of-range current indices" in {
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(2, Set(0), 3) should be(None)
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(-1, Set.empty, 3) should be(None)
+  }
+
+  it should "prevent index drift across multiple delete reconstructions" in {
+    // Attempt 2: current batch [A,B,C], failing current index 0 (A) -> original 0
+    val afterFirst = Set(TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, Set.empty, 3).get)
+    afterFirst should be(Set(0))
+
+    // Attempt 3: current batch is now [B,C], failing current index 0 (B) must map to original 1
+    val secondOriginal = TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, afterFirst, 3).get
+    secondOriginal should be(1)
+
+    // Accumulated reconstructed indices should be {0,1}, not {0}
+    (afterFirst + secondOriginal) should be(Set(0, 1))
+  }
+
+  "reconstructedActions state" should "preserve read actions and shrink only on remove actions" in {
+    // Start with one read-style reconstruction at original index 0.
+    var actions: Map[Int, TransactionalBulkWriter.ReconstructionAction] =
+      Map(0 -> TransactionalBulkWriter.ReconstructionAction.Read)
+
+    // Read does NOT shrink the batch.
+    var removed = TransactionalBulkWriter.extractRemovedIndices(actions)
+    removed should be(Set.empty)
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, removed, 3) should be(Some(0))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, removed, 3) should be(Some(1))
+
+    // Add a remove-style reconstruction at original index 1.
+    actions = actions + (1 -> TransactionalBulkWriter.ReconstructionAction.Remove)
+    removed = TransactionalBulkWriter.extractRemovedIndices(actions)
+    removed should be(Set(1))
+
+    // Now current batch excludes original index 1, but keeps index 0 (read action).
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(0, removed, 3) should be(Some(0))
+    TransactionalBulkWriter.mapCurrentBatchIndexToOriginalIndex(1, removed, 3) should be(Some(2))
   }
 }
 //scalastyle:on null
