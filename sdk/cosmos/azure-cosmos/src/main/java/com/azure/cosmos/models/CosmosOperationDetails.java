@@ -56,4 +56,6 @@ public final class CosmosOperationDetails {
             .setCosmosOperationDetailsAccessor(
                     CosmosOperationDetails::new);
     }
+
+    static { initialize(); }
 }

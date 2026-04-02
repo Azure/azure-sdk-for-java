@@ -116,9 +116,13 @@ public class ImplementationBridgeHelpersTest {
         // and https://github.com/Azure/azure-sdk-for-java/issues/48585
         //
         // Verifies that concurrently calling different getXxxAccessor() methods from
-        // multiple threads completes without deadlock. Before the fix, each getter
-        // called initializeAllAccessors() which eagerly loaded 40+ classes, creating
-        // circular <clinit> dependencies that permanently deadlocked the JVM.
+        // multiple threads completes without deadlock and returns non-null accessors.
+        //
+        // Limitation: Since JVM <clinit> runs exactly once per class per JVM lifetime,
+        // this in-process test validates accessor re-registration after a reflection
+        // reset — not the actual first-load <clinit> deadlock scenario. The real
+        // deadlock validation was performed via a 50-run fresh-JVM stress test
+        // documented in the PR description.
 
         // Reset all accessors to force re-initialization
         Class<?>[] declaredClasses = ImplementationBridgeHelpers.class.getDeclaredClasses();
@@ -150,27 +154,27 @@ public class ImplementationBridgeHelpersTest {
             // Each thread triggers a different accessor getter concurrently
             futures.add(executor.submit(() -> {
                 awaitBarrier(barrier);
-                ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+                assertThat(ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor()).isNotNull();
             }));
             futures.add(executor.submit(() -> {
                 awaitBarrier(barrier);
-                ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+                assertThat(ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor()).isNotNull();
             }));
             futures.add(executor.submit(() -> {
                 awaitBarrier(barrier);
-                ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+                assertThat(ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()).isNotNull();
             }));
             futures.add(executor.submit(() -> {
                 awaitBarrier(barrier);
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+                assertThat(ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor()).isNotNull();
             }));
             futures.add(executor.submit(() -> {
                 awaitBarrier(barrier);
-                ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+                assertThat(ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor()).isNotNull();
             }));
             futures.add(executor.submit(() -> {
                 awaitBarrier(barrier);
-                ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+                assertThat(ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor()).isNotNull();
             }));
 
             boolean deadlockDetected = false;
@@ -180,6 +184,9 @@ public class ImplementationBridgeHelpersTest {
                 } catch (TimeoutException e) {
                     deadlockDetected = true;
                     logger.error("Thread {} did not complete within {} seconds - possible deadlock", i, timeoutSeconds);
+                } catch (java.util.concurrent.ExecutionException e) {
+                    logger.error("Thread {} threw exception: {}", i, e.getCause().getMessage());
+                    fail("Unexpected exception in thread " + i + ": " + e.getCause());
                 }
             }
 

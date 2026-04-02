@@ -1201,4 +1201,6 @@ public final class CosmosDiagnosticsContext {
                     }
                 });
     }
+
+    static { initialize(); }
 }
