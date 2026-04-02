@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolchainOperatorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
@@ -21,6 +22,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterHealthMonitorProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
@@ -37,6 +40,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsPr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
+import com.azure.resourcemanager.containerservice.models.SchedulerProfile;
 import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import java.io.IOException;
@@ -57,6 +61,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * The Power State of the cluster.
      */
     private PowerState powerState;
+
+    /*
+     * CreationData to be used to specify the source Snapshot ID if the cluster will be created/upgraded using a
+     * snapshot.
+     */
+    private CreationData creationData;
 
     /*
      * The max number of agent pools for the managed cluster.
@@ -167,6 +177,13 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
      */
     private KubernetesSupportPlan supportPlan;
+
+    /*
+     * Enable namespace as Azure resource. The default value is false. It can be enabled/disabled on creation and
+     * updating of the managed cluster. See [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource)
+     * for more details on Namespace as a ARM Resource.
+     */
+    private Boolean enableNamespaceResources;
 
     /*
      * The network configuration profile.
@@ -291,6 +308,21 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile;
 
     /*
+     * Profile of the pod scheduler configuration.
+     */
+    private SchedulerProfile schedulerProfile;
+
+    /*
+     * Settings for hosted system addons. For more information, see https://aka.ms/aks/automatic/systemcomponents.
+     */
+    private ManagedClusterHostedSystemProfile hostedSystemProfile;
+
+    /*
+     * Health monitor profile for the managed cluster.
+     */
+    private ManagedClusterHealthMonitorProfile healthMonitorProfile;
+
+    /*
      * Contains read-only information about the Managed Cluster.
      */
     private ManagedClusterStatus status;
@@ -317,6 +349,28 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public PowerState powerState() {
         return this.powerState;
+    }
+
+    /**
+     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the cluster will be
+     * created/upgraded using a snapshot.
+     * 
+     * @return the creationData value.
+     */
+    public CreationData creationData() {
+        return this.creationData;
+    }
+
+    /**
+     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the cluster will be
+     * created/upgraded using a snapshot.
+     * 
+     * @param creationData the creationData value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withCreationData(CreationData creationData) {
+        this.creationData = creationData;
+        return this;
     }
 
     /**
@@ -675,6 +729,32 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
         this.supportPlan = supportPlan;
+        return this;
+    }
+
+    /**
+     * Get the enableNamespaceResources property: Enable namespace as Azure resource. The default value is false. It can
+     * be enabled/disabled on creation and updating of the managed cluster. See
+     * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM
+     * Resource.
+     * 
+     * @return the enableNamespaceResources value.
+     */
+    public Boolean enableNamespaceResources() {
+        return this.enableNamespaceResources;
+    }
+
+    /**
+     * Set the enableNamespaceResources property: Enable namespace as Azure resource. The default value is false. It can
+     * be enabled/disabled on creation and updating of the managed cluster. See
+     * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM
+     * Resource.
+     * 
+     * @param enableNamespaceResources the enableNamespaceResources value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withEnableNamespaceResources(Boolean enableNamespaceResources) {
+        this.enableNamespaceResources = enableNamespaceResources;
         return this;
     }
 
@@ -1151,6 +1231,68 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the schedulerProfile property: Profile of the pod scheduler configuration.
+     * 
+     * @return the schedulerProfile value.
+     */
+    public SchedulerProfile schedulerProfile() {
+        return this.schedulerProfile;
+    }
+
+    /**
+     * Set the schedulerProfile property: Profile of the pod scheduler configuration.
+     * 
+     * @param schedulerProfile the schedulerProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withSchedulerProfile(SchedulerProfile schedulerProfile) {
+        this.schedulerProfile = schedulerProfile;
+        return this;
+    }
+
+    /**
+     * Get the hostedSystemProfile property: Settings for hosted system addons. For more information, see
+     * https://aka.ms/aks/automatic/systemcomponents.
+     * 
+     * @return the hostedSystemProfile value.
+     */
+    public ManagedClusterHostedSystemProfile hostedSystemProfile() {
+        return this.hostedSystemProfile;
+    }
+
+    /**
+     * Set the hostedSystemProfile property: Settings for hosted system addons. For more information, see
+     * https://aka.ms/aks/automatic/systemcomponents.
+     * 
+     * @param hostedSystemProfile the hostedSystemProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withHostedSystemProfile(ManagedClusterHostedSystemProfile hostedSystemProfile) {
+        this.hostedSystemProfile = hostedSystemProfile;
+        return this;
+    }
+
+    /**
+     * Get the healthMonitorProfile property: Health monitor profile for the managed cluster.
+     * 
+     * @return the healthMonitorProfile value.
+     */
+    public ManagedClusterHealthMonitorProfile healthMonitorProfile() {
+        return this.healthMonitorProfile;
+    }
+
+    /**
+     * Set the healthMonitorProfile property: Health monitor profile for the managed cluster.
+     * 
+     * @param healthMonitorProfile the healthMonitorProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withHealthMonitorProfile(ManagedClusterHealthMonitorProfile healthMonitorProfile) {
+        this.healthMonitorProfile = healthMonitorProfile;
+        return this;
+    }
+
+    /**
      * Get the status property: Contains read-only information about the Managed Cluster.
      * 
      * @return the status value.
@@ -1178,6 +1320,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     public void validate() {
         if (powerState() != null) {
             powerState().validate();
+        }
+        if (creationData() != null) {
+            creationData().validate();
         }
         if (agentPoolProfiles() != null) {
             agentPoolProfiles().forEach(e -> e.validate());
@@ -1268,6 +1413,15 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (aiToolchainOperatorProfile() != null) {
             aiToolchainOperatorProfile().validate();
         }
+        if (schedulerProfile() != null) {
+            schedulerProfile().validate();
+        }
+        if (hostedSystemProfile() != null) {
+            hostedSystemProfile().validate();
+        }
+        if (healthMonitorProfile() != null) {
+            healthMonitorProfile().validate();
+        }
         if (status() != null) {
             status().validate();
         }
@@ -1279,6 +1433,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("creationData", this.creationData);
         jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
         jsonWriter.writeStringField("dnsPrefix", this.dnsPrefix);
         jsonWriter.writeStringField("fqdnSubdomain", this.fqdnSubdomain);
@@ -1294,6 +1449,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
+        jsonWriter.writeBooleanField("enableNamespaceResources", this.enableNamespaceResources);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
@@ -1319,6 +1475,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeProvisioningProfile", this.nodeProvisioningProfile);
         jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
         jsonWriter.writeJsonField("aiToolchainOperatorProfile", this.aiToolchainOperatorProfile);
+        jsonWriter.writeJsonField("schedulerProfile", this.schedulerProfile);
+        jsonWriter.writeJsonField("hostedSystemProfile", this.hostedSystemProfile);
+        jsonWriter.writeJsonField("healthMonitorProfile", this.healthMonitorProfile);
         jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
@@ -1342,6 +1501,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                     deserializedManagedClusterProperties.provisioningState = reader.getString();
                 } else if ("powerState".equals(fieldName)) {
                     deserializedManagedClusterProperties.powerState = PowerState.fromJson(reader);
+                } else if ("creationData".equals(fieldName)) {
+                    deserializedManagedClusterProperties.creationData = CreationData.fromJson(reader);
                 } else if ("maxAgentPools".equals(fieldName)) {
                     deserializedManagedClusterProperties.maxAgentPools = reader.getNullable(JsonReader::getInt);
                 } else if ("kubernetesVersion".equals(fieldName)) {
@@ -1389,6 +1550,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("supportPlan".equals(fieldName)) {
                     deserializedManagedClusterProperties.supportPlan
                         = KubernetesSupportPlan.fromString(reader.getString());
+                } else if ("enableNamespaceResources".equals(fieldName)) {
+                    deserializedManagedClusterProperties.enableNamespaceResources
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.networkProfile
                         = ContainerServiceNetworkProfile.fromJson(reader);
@@ -1452,6 +1616,14 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("aiToolchainOperatorProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.aiToolchainOperatorProfile
                         = ManagedClusterAIToolchainOperatorProfile.fromJson(reader);
+                } else if ("schedulerProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.schedulerProfile = SchedulerProfile.fromJson(reader);
+                } else if ("hostedSystemProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.hostedSystemProfile
+                        = ManagedClusterHostedSystemProfile.fromJson(reader);
+                } else if ("healthMonitorProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.healthMonitorProfile
+                        = ManagedClusterHealthMonitorProfile.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterProperties.status = ManagedClusterStatus.fromJson(reader);
                 } else {

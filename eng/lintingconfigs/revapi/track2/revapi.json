@@ -1299,6 +1299,12 @@
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
         {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.containerservice.models.MachineProperties::<init>()",
+          "new" : "method void com.azure.resourcemanager.containerservice.models.MachineProperties::<init>()",
+          "justification": "Output-only immutable model's constructor visibility increased."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",

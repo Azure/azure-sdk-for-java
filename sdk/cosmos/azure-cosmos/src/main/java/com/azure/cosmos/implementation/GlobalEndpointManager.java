@@ -438,11 +438,11 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.perPartitionAutomaticFailoverConfigModifier = perPartitionAutomaticFailoverConfigModifier;
     }
 
-    public Boolean getNRegionSynchronousCommitEnabled() {
+    public boolean getNRegionSynchronousCommitEnabled() {
         this.databaseAccountReadLock.lock();
         try {
             if (this.latestDatabaseAccount == null) {
-                return null;
+                return false;
             }
             return this.latestDatabaseAccount.isNRegionSynchronousCommitEnabled();
         } finally {
