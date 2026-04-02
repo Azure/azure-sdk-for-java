@@ -392,7 +392,8 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .define(stgName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
-            .withSku(StorageAccountSkuType.STANDARD_LRS);
+            .withSku(StorageAccountSkuType.STANDARD_LRS)
+            .disableSharedKeyAccess();
 
         Creatable<EventHubNamespace> namespaceCreatable = eventHubsManager.namespaces()
             .define(namespaceName)
@@ -482,7 +483,8 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             .define(stgName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
-            .withSku(StorageAccountSkuType.STANDARD_LRS);
+            .withSku(StorageAccountSkuType.STANDARD_LRS)
+            .disableSharedKeyAccess();
 
         eventHub.update()
             .withDataCaptureEnabled()
