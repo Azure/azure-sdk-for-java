@@ -11,6 +11,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.eventhubs.fluent.models.NetworkSecurityPerimeterConfigurationListInner;
 import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfiguration;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -83,6 +84,63 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkSecurityPerimeterConfiguration getResourceAssociationName(String resourceGroupName, String namespaceName,
         String resourceAssociationName);
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkSecurityPerimeterConfigurationListInner>> listWithResponseAsync(String resourceGroupName,
+        String namespaceName);
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkSecurityPerimeterConfigurationListInner> listAsync(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkSecurityPerimeterConfigurationListInner> listWithResponse(String resourceGroupName,
+        String namespaceName, Context context);
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkSecurityPerimeterConfigurationListInner list(String resourceGroupName, String namespaceName);
 
     /**
      * Refreshes any information about the association.

@@ -28,14 +28,14 @@
 
 * `NspAccessRuleProperties()` was changed to private access
 * `withDirection(models.NspAccessRuleDirection)` was removed
-* `withSubscriptions(java.util.List)` was removed
 * `withAddressPrefixes(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
 
 #### `models.NetworkSecurityPerimeterConfiguration` was modified
 
 * `NetworkSecurityPerimeterConfiguration()` was changed to private access
-* `withProvisioningState(models.NetworkSecurityPerimeterConfigurationProvisioningState)` was removed
 * `withProvisioningIssues(java.util.List)` was removed
+* `withProvisioningState(models.NetworkSecurityPerimeterConfigurationProvisioningState)` was removed
 
 #### `models.ProvisioningIssueProperties` was modified
 
@@ -46,32 +46,32 @@
 #### `models.NetworkSecurityPerimeter` was modified
 
 * `NetworkSecurityPerimeter()` was changed to private access
-* `withLocation(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
 * `withPerimeterGuid(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
 
 #### `models.PrivateLinkResource` was modified
 
 * `PrivateLinkResource()` was changed to private access
-* `withType(java.lang.String)` was removed
-* `withRequiredMembers(java.util.List)` was removed
-* `withName(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
-* `withRequiredZoneNames(java.util.List)` was removed
+* `withRequiredMembers(java.util.List)` was removed
+* `withType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 * `withGroupId(java.lang.String)` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
 
 #### `models.NspAccessRule` was modified
 
 * `NspAccessRule()` was changed to private access
-* `withId(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
 
 #### `models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` was modified
 
 * `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.EHNamespaceIdContainer` was modified
 
@@ -81,9 +81,9 @@
 #### `models.NetworkSecurityPerimeterConfigurationPropertiesProfile` was modified
 
 * `NetworkSecurityPerimeterConfigurationPropertiesProfile()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withAccessRules(java.util.List)` was removed
 * `withAccessRulesVersion(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.NspAccessRulePropertiesSubscriptionsItem` was modified
 

@@ -117,13 +117,6 @@ public interface EventHubManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
-     * Gets the NetworkSecurityPerimeterConfigurationOperationsClient object to access its operations.
-     * 
-     * @return the NetworkSecurityPerimeterConfigurationOperationsClient object.
-     */
-    NetworkSecurityPerimeterConfigurationOperationsClient getNetworkSecurityPerimeterConfigurationOperations();
-
-    /**
      * Gets the SchemaRegistriesClient object to access its operations.
      * 
      * @return the SchemaRegistriesClient object.

@@ -26,6 +26,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventhubs.fluent.NetworkSecurityPerimeterConfigurationsClient;
+import com.azure.resourcemanager.eventhubs.fluent.models.NetworkSecurityPerimeterConfigurationListInner;
 import com.azure.resourcemanager.eventhubs.models.NetworkSecurityPerimeterConfiguration;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -75,6 +76,15 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("resourceAssociationName") String resourceAssociationName, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkSecurityPerimeterConfigurationListInner>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}/reconcile")
@@ -224,6 +234,127 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
         String namespaceName, String resourceAssociationName) {
         return getResourceAssociationNameWithResponse(resourceGroupName, namespaceName, resourceAssociationName,
             Context.NONE).getValue();
+    }
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<NetworkSecurityPerimeterConfigurationListInner>>
+        listWithResponseAsync(String resourceGroupName, String namespaceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkSecurityPerimeterConfigurationListInner>>
+        listWithResponseAsync(String resourceGroupName, String namespaceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (namespaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, namespaceName, accept, context);
+    }
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkSecurityPerimeterConfigurationListInner> listAsync(String resourceGroupName,
+        String namespaceName) {
+        return listWithResponseAsync(resourceGroupName, namespaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkSecurityPerimeterConfigurationListInner> listWithResponse(String resourceGroupName,
+        String namespaceName, Context context) {
+        return listWithResponseAsync(resourceGroupName, namespaceName, context).block();
+    }
+
+    /**
+     * Gets list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of current NetworkSecurityPerimeterConfiguration for Namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkSecurityPerimeterConfigurationListInner list(String resourceGroupName, String namespaceName) {
+        return listWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
     }
 
     /**

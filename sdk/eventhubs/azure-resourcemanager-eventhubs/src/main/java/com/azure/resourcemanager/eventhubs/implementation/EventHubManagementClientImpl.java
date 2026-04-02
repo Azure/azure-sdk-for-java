@@ -16,7 +16,6 @@ import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
-import com.azure.resourcemanager.eventhubs.fluent.NetworkSecurityPerimeterConfigurationOperationsClient;
 import com.azure.resourcemanager.eventhubs.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.eventhubs.fluent.OperationsClient;
 import com.azure.resourcemanager.eventhubs.fluent.PrivateEndpointConnectionsClient;
@@ -255,20 +254,6 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The NetworkSecurityPerimeterConfigurationOperationsClient object to access its operations.
-     */
-    private final NetworkSecurityPerimeterConfigurationOperationsClient networkSecurityPerimeterConfigurationOperations;
-
-    /**
-     * Gets the NetworkSecurityPerimeterConfigurationOperationsClient object to access its operations.
-     * 
-     * @return the NetworkSecurityPerimeterConfigurationOperationsClient object.
-     */
-    public NetworkSecurityPerimeterConfigurationOperationsClient getNetworkSecurityPerimeterConfigurationOperations() {
-        return this.networkSecurityPerimeterConfigurationOperations;
-    }
-
-    /**
      * The SchemaRegistriesClient object to access its operations.
      */
     private final SchemaRegistriesClient schemaRegistries;
@@ -325,8 +310,6 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         this.configurations = new ConfigurationsClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.networkSecurityPerimeterConfigurationOperations
-            = new NetworkSecurityPerimeterConfigurationOperationsClientImpl(this);
         this.schemaRegistries = new SchemaRegistriesClientImpl(this);
         this.applicationGroups = new ApplicationGroupsClientImpl(this);
     }
