@@ -298,7 +298,7 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     LOGGER.atWarning()
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .log("Connection-level error in session manager, forcing connection recovery.", failure);
-                    connectionCacheWrapper.forceCloseConnection();
+                    connectionCacheWrapper.invalidateConnection();
                 }
 
                 if (failure instanceof TimeoutException) {

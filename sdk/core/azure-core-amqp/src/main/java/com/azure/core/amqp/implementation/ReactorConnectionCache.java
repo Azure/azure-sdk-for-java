@@ -48,7 +48,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
-    // Holds the ID of the connection that forceCloseConnection() asked to force-invalidate.
+    // Holds the ID of the connection that invalidateConnection() asked to force-invalidate.
     // Only the connection whose getId() matches this value will be invalidated by cacheInvalidateIf;
     // a freshly created connection with a different ID is never accidentally invalidated.
     private final AtomicReference<String> forceInvalidateConnectionId = new AtomicReference<>(null);
@@ -128,8 +128,10 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             if (targetId != null
                 && targetId.equals(c.getId())
                 && forceInvalidateConnectionId.compareAndSet(targetId, null)) {
-                // forceCloseConnection() asked to invalidate exactly this connection.
-                withConnectionId(logger, c.getId()).log("Forcing connection close, requesting a new connection.");
+                // invalidateConnection() marked this connection dirty.
+                // Close it here — the cache owns the connection lifecycle.
+                withConnectionId(logger, c.getId()).log("Force-invalidating and closing connection for recovery.");
+                closeConnection(c, logger, "Force-invalidated for recovery.");
                 return true;
             }
             // No forced invalidation targeted this connection — emit it from cache.
@@ -188,11 +190,15 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     }
 
     /**
-     * Closes the current cached connection (if any) so that the next {@link #get()} call creates
-     * a fresh connection. This is used for connection-level recovery when the current connection
-     * is in a stale state that the cache's normal error detection (via endpoint state signals)
-     * has not detected — for example, when intermediate infrastructure (load balancers, NAT gateways)
-     * is echoing AMQP heartbeats on behalf of a dead connection.
+     * Marks the current cached connection for invalidation so that the next {@link #get()} call
+     * closes it and creates a fresh connection. This is used for connection-level recovery when
+     * the current connection is in a stale state that the cache's normal error detection (via
+     * endpoint state signals) has not detected — for example, when intermediate infrastructure
+     * (load balancers, NAT gateways) is echoing AMQP heartbeats on behalf of a dead connection.
+     *
+     * <p>The actual close is deferred to the cache chain's {@code cacheInvalidateIf} predicate
+     * inside {@link #get()}, keeping the connection lifecycle local to the cache. This avoids
+     * the concurrency concern of two threads touching the cached connection simultaneously.</p>
      *
      * <p>This is modeled after the Go SDK's {@code Namespace.Recover()} which explicitly closes
      * the old connection and increments the connection revision.</p>
@@ -200,21 +206,12 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      * <p>This method is safe to call concurrently. If the connection is already closed or being
      * closed, this is a no-op.</p>
      */
-    public void forceCloseConnection() {
+    public void invalidateConnection() {
         final T connection = currentConnection;
         if (connection != null && !connection.isDisposed()) {
             withConnectionId(logger, connection.getId())
-                .log("Force-closing connection for recovery. Next get() will create a fresh connection.");
-            // Set forceInvalidate before starting async close so that cacheInvalidateIf immediately
-            // invalidates this connection on the next get() call, without blocking the caller
-            // while the AMQP close handshake completes. ReactorConnection.dispose() calls
-            // closeAsync().block(), which is illegal on a non-blocking Reactor thread.
+                .log("Marking connection for force-invalidation. Next get() will close and replace it.");
             forceInvalidateConnectionId.set(connection.getId());
-            connection.closeAsync()
-                .subscribe(null,
-                    error -> logger.atVerbose()
-                        .addKeyValue(CONNECTION_ID_KEY, connection.getId())
-                        .log("Error during async connection force-close.", error));
         }
     }
 

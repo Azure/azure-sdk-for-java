@@ -53,13 +53,13 @@ final class ConnectionCacheWrapper {
     }
 
     /**
-     * Force-closes the current cached connection so the next get() creates a fresh one.
-     * Used for connection-level recovery when the connection is stale but the cache
-     * has not detected it via endpoint state signals.
+     * Marks the current cached connection for invalidation so the next get() closes it and
+     * creates a fresh one. Used for connection-level recovery when the connection is stale
+     * but the cache has not detected it via endpoint state signals.
      */
-    void forceCloseConnection() {
+    void invalidateConnection() {
         if (isV2) {
-            cache.forceCloseConnection();
+            cache.invalidateConnection();
         } else {
             processor.forceCloseChannel();
         }

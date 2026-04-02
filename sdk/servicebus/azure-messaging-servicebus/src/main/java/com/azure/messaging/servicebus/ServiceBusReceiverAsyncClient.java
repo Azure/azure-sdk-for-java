@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -1735,36 +1736,48 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
         //      the retry can eventually receive a new connection and then proceed with creating session and link.
         //
-        final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono = RetryUtil
-            .withRetryAndRecovery(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
+        final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono
+            = RetryUtil.withRetry(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
                 return new AmqpException(true, e.getMessage(), e, null);
-            }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true,
-                recoveryKind -> {
-                    if (recoveryKind == RecoveryKind.LINK || recoveryKind == RecoveryKind.CONNECTION) {
+            }).onErrorResume(e -> {
+                final RecoveryKind recoveryKind = RecoveryKind.classify(e);
+                if (recoveryKind == RecoveryKind.LINK || recoveryKind == RecoveryKind.CONNECTION) {
+                    LOGGER.atWarning()
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue("recoveryKind", recoveryKind)
+                        .log("Receive link creation failed, performing {} recovery.", recoveryKind);
+
+                    // For LINK errors during link creation, the session hosting the link may be stale.
+                    // Ask the connection to remove it so the next retry creates a fresh session + link.
+                    Mono<Void> recovery = connectionProcessor.flatMap(connection -> {
+                        final boolean removed = connection.removeSession(entityPath);
+                        LOGGER.atVerbose()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue("sessionRemoved", removed)
+                            .log("Stale session removal during {} recovery.", recoveryKind);
+                        return Mono.<Void>empty();
+                    }).onErrorResume(error -> {
                         LOGGER.atWarning()
                             .addKeyValue(LINK_NAME_KEY, linkName)
-                            .addKeyValue("recoveryKind", recoveryKind)
-                            .log("Receive link creation failed, performing {} recovery.", recoveryKind);
+                            .log("Error obtaining connection during {} recovery.", recoveryKind, error);
+                        return Mono.empty();
+                    });
 
-                        // For LINK errors during link creation, the session hosting the link may be stale.
-                        // Ask the connection to remove it so the next retry creates a fresh session + link.
-                        // The entityPath is the session name used by createReceiveLink().
-                        // Note: the error handler fires only if obtaining the connection fails, not if removeSession fails
-                        // (removeSession returns a boolean and never propagates an error into the reactive stream).
-                        connectionProcessor.subscribe(connection -> {
-                            final boolean removed = connection.removeSession(entityPath);
-                            LOGGER.atVerbose()
-                                .addKeyValue(LINK_NAME_KEY, linkName)
-                                .addKeyValue("sessionRemoved", removed)
-                                .log("Attempted stale session removal during {} recovery.", recoveryKind);
-                        }, error -> LOGGER.atWarning()
-                            .addKeyValue(LINK_NAME_KEY, linkName)
-                            .log("Error obtaining connection during {} recovery.", recoveryKind, error));
-                    }
                     if (recoveryKind == RecoveryKind.CONNECTION) {
-                        connectionCacheWrapper.forceCloseConnection();
+                        recovery
+                            = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
                     }
-                });
+                    // Ensure the error passes the standard retry filter. Non-AMQP errors
+                    // (e.g., IllegalStateException) classified as LINK/CONNECTION must be wrapped
+                    // as transient AmqpException so RetryUtil.createRetry accepts them for retry.
+                    final Throwable retriable = (e instanceof TimeoutException
+                        || (e instanceof AmqpException && ((AmqpException) e).isTransient()))
+                            ? e
+                            : new AmqpException(true, e.getMessage(), e, null);
+                    return recovery.then(Mono.error(retriable));
+                }
+                return Mono.error(e);
+            }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
         // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.

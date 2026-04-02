@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
@@ -882,10 +883,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
 
         final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
-        final Mono<Void> withRetry
-            = RetryUtil.withRetryAndRecovery(sendMessage, retryOptions, timeoutMessage, recoveryKind -> {
-                performRecovery(recoveryKind, "sendBatch", operationLink);
-            }).onErrorMap(this::mapError);
+        final Mono<Void> withRetry = RetryUtil.withRetry(
+            sendMessage
+                .onErrorResume(e -> recoverBeforeRetry(e, "sendBatch", operationLink).then(Mono.error(asRetriable(e)))),
+            retryOptions, timeoutMessage).onErrorMap(this::mapError);
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
 
@@ -901,9 +902,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         // which could duplicate side-effects or re-consume a hot publisher.
         final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
         final Mono<AmqpSendLink> linkWithRecovery
-            = RetryUtil.withRetryAndRecovery(getSendLink("send-batches").doOnNext(operationLink::set), retryOptions,
-                "Failed to acquire send link for batch collection." + entityId(),
-                recoveryKind -> performRecovery(recoveryKind, "sendFlux-link", operationLink));
+            = RetryUtil
+                .withRetry(
+                    getSendLink("send-batches").doOnNext(operationLink::set)
+                        .onErrorResume(e -> recoverBeforeRetry(e, "sendFlux-link", operationLink)
+                            .then(Mono.error(asRetriable(e)))),
+                    retryOptions, "Failed to acquire send link for batch collection." + entityId());
 
         final Mono<List<ServiceBusMessageBatch>> batchListMono
             = linkWithRecovery.flatMap(link -> link.getLinkSize().flatMap(size -> {
@@ -950,10 +954,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     private Mono<AmqpSendLink> getSendLinkWithRetry(String callSite) {
-        return RetryUtil.withRetryAndRecovery(getSendLink(callSite), retryOptions,
-            String.format(retryGetLinkErrorMessageFormat, callSite), recoveryKind -> {
-                performRecovery(recoveryKind, "getSendLink-" + callSite, null);
-            });
+        return RetryUtil.withRetry(
+            getSendLink(callSite).onErrorResume(
+                e -> recoverBeforeRetry(e, "getSendLink-" + callSite, null).then(Mono.error(asRetriable(e)))),
+            retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
     }
 
     private Throwable mapError(Throwable throwable) {
@@ -964,48 +968,70 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Performs tiered recovery by disposing stale resources based on the classified error.
-     * For LINK recovery, disposes the send link so the next retry creates a fresh one.
-     * For CONNECTION recovery, disposes the link and the connection so the connection
-     * processor creates everything fresh.
+     * Performs reactive tiered recovery based on the classified error. For LINK recovery, closes the
+     * send link so the next retry creates a fresh one. For CONNECTION recovery, closes the link and
+     * invalidates the connection so the cache creates everything fresh.
      *
-     * <p>This matches the Go SDK's RecoverIfNeeded() and the .NET SDK's
-     * FaultTolerantAmqpObject pattern.</p>
+     * <p>Called from {@code onErrorResume} at each send call site so that recovery completes before
+     * the error is re-emitted and the standard retry logic re-subscribes.</p>
      */
-    private void performRecovery(RecoveryKind recoveryKind, String callSite, AtomicReference<AmqpSendLink> linkRef) {
-        if (recoveryKind == RecoveryKind.NONE || recoveryKind == RecoveryKind.FATAL) {
-            return;
+    private Mono<Void> recoverBeforeRetry(Throwable error, String callSite, AtomicReference<AmqpSendLink> linkRef) {
+        final RecoveryKind kind = RecoveryKind.classify(error);
+        if (kind != RecoveryKind.LINK && kind != RecoveryKind.CONNECTION) {
+            return Mono.empty();
         }
 
         logger.atWarning()
             .addKeyValue(ENTITY_PATH_KEY, entityName)
-            .addKeyValue("recoveryKind", recoveryKind)
+            .addKeyValue("recoveryKind", kind)
             .addKeyValue("callSite", callSite)
-            .log("Performing {} recovery before retry.", recoveryKind);
+            .log("Performing {} recovery before retry.", kind);
 
-        // Start async close of the operation-scoped send link so the next retry creates a fresh one.
+        // Close the operation-scoped send link so the next retry creates a fresh one.
         // Using a per-operation AtomicReference (not a class-level field) prevents concurrent send
         // operations from accidentally closing each other's links.
-        // Use closeAsync() rather than dispose() to avoid blocking the Reactor thread; ReactorSender
-        // dispose() calls closeAsync().block(tryTimeout), which is illegal on a non-blocking scheduler.
+        // Use closeAsync() rather than dispose() to avoid blocking the Reactor thread.
+        Mono<Void> recovery = Mono.empty();
         final AmqpSendLink link = linkRef != null ? linkRef.getAndSet(null) : null;
         if (link != null) {
-            link.closeAsync()
-                .subscribe(null,
-                    error -> logger.atVerbose()
-                        .addKeyValue(ENTITY_PATH_KEY, entityName)
-                        .log("Error closing stale send link during recovery.", error));
+            recovery = Mono.defer(() -> {
+                Mono<Void> close = link.closeAsync();
+                return close != null ? close : Mono.empty();
+            }).onErrorResume(closeErr -> {
+                logger.atVerbose()
+                    .addKeyValue(ENTITY_PATH_KEY, entityName)
+                    .log("Error closing stale send link during recovery.", closeErr);
+                return Mono.empty();
+            });
         }
         linkName.set(null);
 
-        // For CONNECTION errors, explicitly force-close the cached connection so the
-        // next get() on the connection processor creates a fresh one. This handles the
-        // stale-connection scenario where heartbeats are echoed by intermediate
-        // infrastructure and the cache has not yet detected the failure.
-        // Matches Go SDK's Namespace.Recover().
-        if (recoveryKind == RecoveryKind.CONNECTION) {
-            connectionCacheWrapper.forceCloseConnection();
+        // For CONNECTION errors, invalidate the cached connection so the next get() closes it
+        // and creates a fresh one. Matches Go SDK's Namespace.Recover().
+        if (kind == RecoveryKind.CONNECTION) {
+            recovery = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
         }
+
+        return recovery;
+    }
+
+    /**
+     * Ensures the error is retriable by the standard {@link RetryUtil#createRetry} filter.
+     * That filter only accepts {@link TimeoutException} or transient {@link AmqpException}.
+     * Non-AMQP errors like {@code IllegalStateException("Cannot publish when disposed")}
+     * that {@link RecoveryKind} classifies as LINK would otherwise be rejected, bypassing
+     * the recovery we just performed. This wraps such errors as transient AmqpException.
+     */
+    private static Throwable asRetriable(Throwable error) {
+        if (error instanceof TimeoutException
+            || (error instanceof AmqpException && ((AmqpException) error).isTransient())) {
+            return error;
+        }
+        final RecoveryKind kind = RecoveryKind.classify(error);
+        if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
+            return new AmqpException(true, error.getMessage(), error, null);
+        }
+        return error;
     }
 
     private String entityId() {
