@@ -139,53 +139,60 @@ public class ImplementationBridgeHelpersTest {
             }
         }
 
-        final int threadCount = 6;
-        final int timeoutSeconds = 30;
-        final CyclicBarrier barrier = new CyclicBarrier(threadCount);
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+        try {
+            final int threadCount = 6;
+            final int timeoutSeconds = 30;
+            final CyclicBarrier barrier = new CyclicBarrier(threadCount);
+            ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
-        List<Future<?>> futures = new ArrayList<>();
+            List<Future<?>> futures = new ArrayList<>();
 
-        // Each thread triggers a different accessor getter concurrently
-        futures.add(executor.submit(() -> {
-            awaitBarrier(barrier);
-            ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
-        }));
-        futures.add(executor.submit(() -> {
-            awaitBarrier(barrier);
-            ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
-        }));
-        futures.add(executor.submit(() -> {
-            awaitBarrier(barrier);
-            ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
-        }));
-        futures.add(executor.submit(() -> {
-            awaitBarrier(barrier);
-            ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-        }));
-        futures.add(executor.submit(() -> {
-            awaitBarrier(barrier);
-            ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
-        }));
-        futures.add(executor.submit(() -> {
-            awaitBarrier(barrier);
-            ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
-        }));
+            // Each thread triggers a different accessor getter concurrently
+            futures.add(executor.submit(() -> {
+                awaitBarrier(barrier);
+                ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+            }));
+            futures.add(executor.submit(() -> {
+                awaitBarrier(barrier);
+                ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+            }));
+            futures.add(executor.submit(() -> {
+                awaitBarrier(barrier);
+                ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+            }));
+            futures.add(executor.submit(() -> {
+                awaitBarrier(barrier);
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+            }));
+            futures.add(executor.submit(() -> {
+                awaitBarrier(barrier);
+                ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+            }));
+            futures.add(executor.submit(() -> {
+                awaitBarrier(barrier);
+                ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+            }));
 
-        boolean deadlockDetected = false;
-        for (int i = 0; i < futures.size(); i++) {
-            try {
-                futures.get(i).get(timeoutSeconds, TimeUnit.SECONDS);
-            } catch (TimeoutException e) {
-                deadlockDetected = true;
-                logger.error("Thread {} did not complete within {} seconds - possible deadlock", i, timeoutSeconds);
+            boolean deadlockDetected = false;
+            for (int i = 0; i < futures.size(); i++) {
+                try {
+                    futures.get(i).get(timeoutSeconds, TimeUnit.SECONDS);
+                } catch (TimeoutException e) {
+                    deadlockDetected = true;
+                    logger.error("Thread {} did not complete within {} seconds - possible deadlock", i, timeoutSeconds);
+                }
             }
-        }
 
-        executor.shutdownNow();
-        assertThat(deadlockDetected)
-            .as("Concurrent accessor initialization should complete without deadlock")
-            .isFalse();
+            executor.shutdownNow();
+            assertThat(deadlockDetected)
+                .as("Concurrent accessor initialization should complete without deadlock")
+                .isFalse();
+        } finally {
+            // Restore all accessors so subsequent tests in the same JVM are not affected
+            BridgeInternal.initializeAllAccessors();
+            ModelBridgeInternal.initializeAllAccessors();
+            UtilBridgeInternal.initializeAllAccessors();
+        }
     }
 
     private static void awaitBarrier(CyclicBarrier barrier) {
