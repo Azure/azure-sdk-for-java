@@ -30,6 +30,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public abstract class CosmosItemSerializer {
 
+    // Register the accessor before any static fields that may trigger other classes'
+    // <clinit> which need this accessor (e.g., DefaultCosmosItemSerializer).
+    static { initialize(); }
 
     /**
      * Gets the default Cosmos item serializer. This serializer is used by default when no custom serializer is
@@ -163,6 +166,4 @@ public abstract class CosmosItemSerializer {
                 }
             });
     }
-
-    static { initialize(); }
 }

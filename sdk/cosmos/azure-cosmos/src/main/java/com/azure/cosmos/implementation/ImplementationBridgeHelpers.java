@@ -123,24 +123,11 @@ public class ImplementationBridgeHelpers {
      */
     private static void ensureClassInitialized(String className) {
         try {
-            Class<?> cls = Class.forName(className, true, ImplementationBridgeHelpers.class.getClassLoader());
-            // Class.forName triggers <clinit> for first-time loading. However, during recursive
-            // <clinit> from the same thread (e.g., CosmosItemSerializer.<clinit> → DefaultCosmosItemSerializer
-            // → getCosmosItemSerializerAccessor() → ensureClassInitialized("CosmosItemSerializer")),
-            // Class.forName is a no-op per JLS §12.4.2. In that case the accessor hasn't been registered
-            // yet. Calling initialize() as a regular static method IS allowed during recursive <clinit>
-            // from the same thread and will explicitly register the accessor.
-            java.lang.reflect.Method initMethod = cls.getDeclaredMethod("initialize");
-            initMethod.setAccessible(true);
-            initMethod.invoke(null);
+            Class.forName(className, true, ImplementationBridgeHelpers.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             logger.error("Failed to load class for accessor initialization: {}", className, e);
             throw new IllegalStateException(
                 "Unable to load class for accessor initialization: " + className, e);
-        } catch (NoSuchMethodException e) {
-            // Not all classes have an initialize() method — Class.forName alone suffices for those
-        } catch (java.lang.reflect.InvocationTargetException | IllegalAccessException e) {
-            logger.debug("Could not invoke initialize() on {}: {}", className, e.getMessage());
         }
     }
 
