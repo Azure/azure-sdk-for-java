@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Properties describing the storage account, blob container and archive name format for capture destination.
@@ -36,7 +38,7 @@ public final class DestinationProperties implements JsonSerializable<Destination
     /*
      * Subscription Id of Azure Data Lake Store
      */
-    private String dataLakeSubscriptionId;
+    private UUID dataLakeSubscriptionId;
 
     /*
      * The Azure Data Lake Store name for the captured events
@@ -123,7 +125,7 @@ public final class DestinationProperties implements JsonSerializable<Destination
      * 
      * @return the dataLakeSubscriptionId value.
      */
-    public String dataLakeSubscriptionId() {
+    public UUID dataLakeSubscriptionId() {
         return this.dataLakeSubscriptionId;
     }
 
@@ -133,7 +135,7 @@ public final class DestinationProperties implements JsonSerializable<Destination
      * @param dataLakeSubscriptionId the dataLakeSubscriptionId value to set.
      * @return the DestinationProperties object itself.
      */
-    public DestinationProperties withDataLakeSubscriptionId(String dataLakeSubscriptionId) {
+    public DestinationProperties withDataLakeSubscriptionId(UUID dataLakeSubscriptionId) {
         this.dataLakeSubscriptionId = dataLakeSubscriptionId;
         return this;
     }
@@ -195,7 +197,7 @@ public final class DestinationProperties implements JsonSerializable<Destination
         jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
         jsonWriter.writeStringField("blobContainer", this.blobContainer);
         jsonWriter.writeStringField("archiveNameFormat", this.archiveNameFormat);
-        jsonWriter.writeStringField("dataLakeSubscriptionId", this.dataLakeSubscriptionId);
+        jsonWriter.writeStringField("dataLakeSubscriptionId", Objects.toString(this.dataLakeSubscriptionId, null));
         jsonWriter.writeStringField("dataLakeAccountName", this.dataLakeAccountName);
         jsonWriter.writeStringField("dataLakeFolderPath", this.dataLakeFolderPath);
         return jsonWriter.writeEndObject();
@@ -223,7 +225,8 @@ public final class DestinationProperties implements JsonSerializable<Destination
                 } else if ("archiveNameFormat".equals(fieldName)) {
                     deserializedDestinationProperties.archiveNameFormat = reader.getString();
                 } else if ("dataLakeSubscriptionId".equals(fieldName)) {
-                    deserializedDestinationProperties.dataLakeSubscriptionId = reader.getString();
+                    deserializedDestinationProperties.dataLakeSubscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("dataLakeAccountName".equals(fieldName)) {
                     deserializedDestinationProperties.dataLakeAccountName = reader.getString();
                 } else if ("dataLakeFolderPath".equals(fieldName)) {

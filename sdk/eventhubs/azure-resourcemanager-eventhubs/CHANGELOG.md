@@ -31,8 +31,8 @@
 #### `models.NspAccessRuleProperties` was modified
 
 * `NspAccessRuleProperties()` was changed to private access
-* `withSubscriptions(java.util.List)` was removed
 * `withAddressPrefixes(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
 * `withDirection(models.NspAccessRuleDirection)` was removed
 
 #### `models.ProvisioningIssueProperties` was modified
@@ -43,38 +43,38 @@
 
 #### `models.Encryption` was modified
 
-* `models.KeySource keySource()` -> `models.EncryptionKeySource keySource()`
 * `withKeySource(models.KeySource)` was removed
+* `models.KeySource keySource()` -> `models.EncryptionKeySource keySource()`
 
 #### `models.NetworkSecurityPerimeter` was modified
 
 * `NetworkSecurityPerimeter()` was changed to private access
-* `withPerimeterGuid(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
 * `withLocation(java.lang.String)` was removed
+* `withPerimeterGuid(java.lang.String)` was removed
 
 #### `models.PrivateLinkResource` was modified
 
 * `PrivateLinkResource()` was changed to private access
 * `withRequiredZoneNames(java.util.List)` was removed
-* `withType(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
-* `withId(java.lang.String)` was removed
-* `withGroupId(java.lang.String)` was removed
 * `withRequiredMembers(java.util.List)` was removed
+* `withType(java.lang.String)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
 
 #### `models.NspAccessRule` was modified
 
 * `NspAccessRule()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withType(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` was modified
 
 * `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.EHNamespaceIdContainer` was modified
 
@@ -85,8 +85,8 @@
 
 * `NetworkSecurityPerimeterConfigurationPropertiesProfile()` was changed to private access
 * `withAccessRulesVersion(java.lang.String)` was removed
-* `withAccessRules(java.util.List)` was removed
 * `withName(java.lang.String)` was removed
+* `withAccessRules(java.util.List)` was removed
 
 #### `models.NspAccessRulePropertiesSubscriptionsItem` was modified
 
@@ -101,11 +101,6 @@
 
 * `AvailableCluster()` was changed to private access
 * `withLocation(java.lang.String)` was removed
-
-#### `models.Destination` was modified
-
-* `java.util.UUID dataLakeSubscriptionId()` -> `java.lang.String dataLakeSubscriptionId()`
-* `withDataLakeSubscriptionId(java.util.UUID)` was removed
 
 #### `models.ProvisioningIssue` was modified
 
@@ -136,8 +131,8 @@
 
 #### `models.RetentionDescription` was modified
 
-* `minCompactionLagTimeInMinutes()` was added
 * `withMinCompactionLagTimeInMinutes(java.lang.Long)` was added
+* `minCompactionLagTimeInMinutes()` was added
 
 #### `models.CleanupPolicyRetentionDescription` was modified
 
@@ -155,10 +150,6 @@
 
 * `PROTO_BUF` was added
 * `JSON` was added
-
-#### `models.Destination` was modified
-
-* `withDataLakeSubscriptionId(java.lang.String)` was added
 
 ## 2.53.6 (2026-01-29)
 

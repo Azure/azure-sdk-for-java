@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.fluent.models.DestinationProperties;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Capture storage details for capture description.
@@ -166,7 +167,7 @@ public final class Destination implements JsonSerializable<Destination> {
      * 
      * @return the dataLakeSubscriptionId value.
      */
-    public String dataLakeSubscriptionId() {
+    public UUID dataLakeSubscriptionId() {
         return this.innerProperties() == null ? null : this.innerProperties().dataLakeSubscriptionId();
     }
 
@@ -176,7 +177,7 @@ public final class Destination implements JsonSerializable<Destination> {
      * @param dataLakeSubscriptionId the dataLakeSubscriptionId value to set.
      * @return the Destination object itself.
      */
-    public Destination withDataLakeSubscriptionId(String dataLakeSubscriptionId) {
+    public Destination withDataLakeSubscriptionId(UUID dataLakeSubscriptionId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DestinationProperties();
         }
