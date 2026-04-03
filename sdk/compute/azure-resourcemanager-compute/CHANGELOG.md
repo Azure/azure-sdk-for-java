@@ -6,6 +6,14 @@
 
 ### Breaking Changes
 
+#### Changes to `ComputeManagementClient` Class
+
+- Moved `ComputeManager.serviceClient().getCloudServiceRoleInstances()` to `ComputeManager.cloudServiceClient().getCloudServiceRoleInstances()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceRoles()` to `ComputeManager.cloudServiceClient().getCloudServiceRoles()`.
+- Moved `ComputeManager.serviceClient().getCloudServices()` to `ComputeManager.cloudServiceClient().getCloudServices()`.
+- Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.cloudServiceClient().getCloudServicesUpdateDomains()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.cloudServiceClient().getCloudServiceOperatingSystems()`.
+
 ### Bugs Fixed
 
 ### Other Changes
