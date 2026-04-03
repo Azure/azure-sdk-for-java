@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `azure.scopes` using wrong default value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#44945](https://github.com/Azure/azure-sdk-for-java/issues/44945))
+
 ### Other Changes
 
 ## 7.1.0 (2026-03-11)

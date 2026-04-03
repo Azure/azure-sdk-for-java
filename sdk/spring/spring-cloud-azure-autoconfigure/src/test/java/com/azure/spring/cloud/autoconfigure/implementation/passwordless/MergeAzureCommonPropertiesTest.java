@@ -5,11 +5,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.passwordless;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MergeAzureCommonPropertiesTest {
@@ -115,5 +117,44 @@ class MergeAzureCommonPropertiesTest {
         assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, result.getProfile().getCloudType());
         assertEquals("sub", result.getProfile().getSubscriptionId());
         assertEquals("global-tenant-id", result.getProfile().getTenantId());
+    }
+
+    @Test
+    void testJdbcPropertiesGetCorrectScopeFromGlobalCloudType() {
+        AzureGlobalProperties globalProperties = new AzureGlobalProperties();
+        globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+
+        AzureJdbcPasswordlessProperties jdbcProperties = new AzureJdbcPasswordlessProperties();
+        // User has not explicitly set scopes
+
+        AzureJdbcPasswordlessProperties result = new AzureJdbcPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, jdbcProperties, result);
+
+        // scopes field should be null (not explicitly set)
+        assertNull(result.getScopes());
+        // effective scopes should use the merged cloud type (AZURE_CHINA)
+        assertEquals("https://ossrdbms-aad.database.chinacloudapi.cn/.default", result.getEffectiveScopes());
+        // toPasswordlessProperties should include the correct cloud-type-aware scope
+        assertEquals("https://ossrdbms-aad.database.chinacloudapi.cn/.default",
+            result.toPasswordlessProperties().getProperty("azure.scopes"));
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, result.getProfile().getCloudType());
+    }
+
+    @Test
+    void testJdbcPropertiesExplicitScopesOverridesDefault() {
+        AzureGlobalProperties globalProperties = new AzureGlobalProperties();
+        globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+
+        AzureJdbcPasswordlessProperties jdbcProperties = new AzureJdbcPasswordlessProperties();
+        jdbcProperties.setScopes("https://custom-scope/.default");
+
+        AzureJdbcPasswordlessProperties result = new AzureJdbcPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, jdbcProperties, result);
+
+        // Explicit scopes should be preserved
+        assertEquals("https://custom-scope/.default", result.getScopes());
+        assertEquals("https://custom-scope/.default", result.getEffectiveScopes());
+        assertEquals("https://custom-scope/.default",
+            result.toPasswordlessProperties().getProperty("azure.scopes"));
     }
 }

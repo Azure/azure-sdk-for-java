@@ -51,7 +51,9 @@ public final class AzurePasswordlessPropertiesUtils {
         copyPropertiesIgnoreNull(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
-        target.setScopes(source.getScopes());
+        if (source.getScopes() != null) {
+            target.setScopes(source.getScopes());
+        }
         target.setPasswordlessEnabled(source.isPasswordlessEnabled());
     }
 

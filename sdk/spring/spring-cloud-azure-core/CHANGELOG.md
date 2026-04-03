@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `copyAzureCommonPropertiesIgnoreNull` to respect "ignore null" semantics for `scopes` property, preventing incorrect scope overwriting during property merging.
+
 ### Other Changes
 
 ## 7.1.0 (2026-03-11)
