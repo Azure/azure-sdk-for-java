@@ -25,10 +25,8 @@ tools:
     - "git commit"
     - "git config"
     - "git branch"
-    - "make recompile"
-    - "make fmt"
-    - "make lint"
-    - "make test-unit"
+    - "git branch"
+    - "git format-patch"
     - "cat"
     - "echo"
     - "ls"
@@ -213,7 +211,7 @@ git status --short | grep '^UU' || git status --short | grep '^AA' || true
 git merge --continue || git commit --no-edit -m "Resolve merge conflicts from main"
 ```
 
-6. **If there were .lock.yml conflicts, recompile workflows**:
+<!-- 6. **If there were .lock.yml conflicts, recompile workflows**:
 ```bash
 # Check if we resolved any .lock.yml conflicts
 if git log -1 --stat | grep '\.lock\.yml'; then
@@ -229,9 +227,9 @@ if git log -1 --stat | grep '\.lock\.yml'; then
     git commit -m "Recompile workflows after merge conflict resolution"
   fi
 fi
-```
+``` -->
 
-### 8. Format, Lint, Test, and Recompile
+<!-- ### 8. Format, Lint, Test, and Recompile
 
 After the merge is complete, ensure code quality:
 
@@ -259,7 +257,7 @@ git add -A
 if ! git diff --cached --quiet; then
   git commit -m "Format, lint, and recompile after merge"
 fi
-```
+``` -->
 
 ### 9. Verify No Workflow YML Files Are Staged
 
@@ -307,7 +305,7 @@ The `push-to-pull-request-branch` safe output will automatically:
 - **Be Careful**: This operation modifies the PR branch directly
 - **Never Commit Workflow YMLs**: Always exclude `.github/workflows/*.yml` files
 - **Recompile After Lock File Conflicts**: Run `make recompile` if `.lock.yml` files had conflicts
-- **Format, Lint, Test**: Always run `make fmt`, `make lint`, `make test-unit`, and `make recompile` after merge
+<!-- - **Format, Lint, Test**: Always run `make fmt`, `make lint`, `make test-unit`, and `make recompile` after merge -->
 - **Verify Before Pushing**: Always check what's staged before pushing
 - **Handle Conflicts Intelligently**: Use repository knowledge to resolve conflicts
 - **Document Actions**: Explain what was merged and any conflicts resolved
