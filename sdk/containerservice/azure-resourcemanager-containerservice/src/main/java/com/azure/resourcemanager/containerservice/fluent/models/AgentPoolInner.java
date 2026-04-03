@@ -10,6 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolArtifactStreamingProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolBlueGreenUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
@@ -25,6 +27,7 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
+import com.azure.resourcemanager.containerservice.models.NodeCustomizationProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -33,6 +36,7 @@ import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.UpgradeStrategy;
 import com.azure.resourcemanager.containerservice.models.VirtualMachineNodes;
 import com.azure.resourcemanager.containerservice.models.VirtualMachinesProfile;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
@@ -125,14 +129,14 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
-     * Get the eTag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
      * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.innerProperties() == null ? null : this.innerProperties().eTag();
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
     }
 
     /**
@@ -679,6 +683,56 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
+     * Get the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
+     * 
+     * @return the upgradeStrategy value.
+     */
+    public UpgradeStrategy upgradeStrategy() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeStrategy();
+    }
+
+    /**
+     * Set the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
+     * 
+     * @param upgradeStrategy the upgradeStrategy value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withUpgradeStrategy(UpgradeStrategy upgradeStrategy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withUpgradeStrategy(upgradeStrategy);
+        return this;
+    }
+
+    /**
+     * Get the enableOSDiskFullCaching property: Whether to enable the full-cache ephemeral OS disk feature. When this
+     * feature is enabled, the entire operating system will be locally cached on the ephemeral OS disk, preventing E17
+     * events caused by network failures.
+     * 
+     * @return the enableOSDiskFullCaching value.
+     */
+    public Boolean enableOSDiskFullCaching() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableOSDiskFullCaching();
+    }
+
+    /**
+     * Set the enableOSDiskFullCaching property: Whether to enable the full-cache ephemeral OS disk feature. When this
+     * feature is enabled, the entire operating system will be locally cached on the ephemeral OS disk, preventing E17
+     * events caused by network failures.
+     * 
+     * @param enableOSDiskFullCaching the enableOSDiskFullCaching value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withEnableOSDiskFullCaching(Boolean enableOSDiskFullCaching) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withEnableOSDiskFullCaching(enableOSDiskFullCaching);
+        return this;
+    }
+
+    /**
      * Get the upgradeSettings property: Settings for upgrading the agentpool.
      * 
      * @return the upgradeSettings value.
@@ -698,6 +752,31 @@ public final class AgentPoolInner extends ProxyResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withUpgradeSettings(upgradeSettings);
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
+     * strategy is set to BlueGreen.
+     * 
+     * @return the upgradeSettingsBlueGreen value.
+     */
+    public AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeSettingsBlueGreen();
+    }
+
+    /**
+     * Set the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
+     * strategy is set to BlueGreen.
+     * 
+     * @param upgradeSettingsBlueGreen the upgradeSettingsBlueGreen value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withUpgradeSettingsBlueGreen(AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withUpgradeSettingsBlueGreen(upgradeSettingsBlueGreen);
         return this;
     }
 
@@ -973,6 +1052,39 @@ public final class AgentPoolInner extends ProxyResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withNodeTaints(nodeTaints);
+        return this;
+    }
+
+    /**
+     * Get the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
+     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
+     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
+     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
+     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
+     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
+     * 
+     * @return the nodeInitializationTaints value.
+     */
+    public List<String> nodeInitializationTaints() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeInitializationTaints();
+    }
+
+    /**
+     * Set the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
+     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
+     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
+     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
+     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
+     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
+     * 
+     * @param nodeInitializationTaints the nodeInitializationTaints value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodeInitializationTaints(List<String> nodeInitializationTaints) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withNodeInitializationTaints(nodeInitializationTaints);
         return this;
     }
 
@@ -1352,6 +1464,29 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
+     * Get the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * 
+     * @return the artifactStreamingProfile value.
+     */
+    public AgentPoolArtifactStreamingProfile artifactStreamingProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactStreamingProfile();
+    }
+
+    /**
+     * Set the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * 
+     * @param artifactStreamingProfile the artifactStreamingProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withArtifactStreamingProfile(artifactStreamingProfile);
+        return this;
+    }
+
+    /**
      * Get the virtualMachinesProfile property: Specifications on VirtualMachines agent pool.
      * 
      * @return the virtualMachinesProfile value.
@@ -1421,29 +1556,54 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
-     * Get the localDNSProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * Get the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
      * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
      * aka.ms/aks/localdns.
      * 
-     * @return the localDNSProfile value.
+     * @return the localDnsProfile value.
      */
-    public LocalDnsProfile localDNSProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().localDNSProfile();
+    public LocalDnsProfile localDnsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().localDnsProfile();
     }
 
     /**
-     * Set the localDNSProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * Set the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
      * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
      * aka.ms/aks/localdns.
      * 
-     * @param localDNSProfile the localDNSProfile value to set.
+     * @param localDnsProfile the localDnsProfile value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withLocalDNSProfile(LocalDnsProfile localDNSProfile) {
+    public AgentPoolInner withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
-        this.innerProperties().withLocalDNSProfile(localDNSProfile);
+        this.innerProperties().withLocalDnsProfile(localDnsProfile);
+        return this;
+    }
+
+    /**
+     * Get the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
+     * in a pool.
+     * 
+     * @return the nodeCustomizationProfile value.
+     */
+    public NodeCustomizationProfile nodeCustomizationProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeCustomizationProfile();
+    }
+
+    /**
+     * Set the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
+     * in a pool.
+     * 
+     * @param nodeCustomizationProfile the nodeCustomizationProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withNodeCustomizationProfile(nodeCustomizationProfile);
         return this;
     }
 

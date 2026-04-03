@@ -41,12 +41,6 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
     @Generated
     private Double maxValue;
 
-    /*
-     * Indicates if this metric is primary when there are multiple metrics.
-     */
-    @Generated
-    private Boolean isPrimary;
-
     /**
      * Creates an instance of EvaluatorMetric class.
      */
@@ -145,25 +139,13 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
     }
 
     /**
-     * Get the isPrimary property: Indicates if this metric is primary when there are multiple metrics.
+     * Get the primary property: Indicates if this metric is primary when there are multiple metrics.
      *
-     * @return the isPrimary value.
+     * @return the primary value.
      */
     @Generated
     public Boolean isPrimary() {
-        return this.isPrimary;
-    }
-
-    /**
-     * Set the isPrimary property: Indicates if this metric is primary when there are multiple metrics.
-     *
-     * @param isPrimary the isPrimary value to set.
-     * @return the EvaluatorMetric object itself.
-     */
-    @Generated
-    public EvaluatorMetric setIsPrimary(Boolean isPrimary) {
-        this.isPrimary = isPrimary;
-        return this;
+        return this.primary;
     }
 
     /**
@@ -178,7 +160,7 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
             this.desirableDirection == null ? null : this.desirableDirection.toString());
         jsonWriter.writeNumberField("min_value", this.minValue);
         jsonWriter.writeNumberField("max_value", this.maxValue);
-        jsonWriter.writeBooleanField("is_primary", this.isPrimary);
+        jsonWriter.writeBooleanField("is_primary", this.primary);
         return jsonWriter.writeEndObject();
     }
 
@@ -207,12 +189,30 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
                 } else if ("max_value".equals(fieldName)) {
                     deserializedEvaluatorMetric.maxValue = reader.getNullable(JsonReader::getDouble);
                 } else if ("is_primary".equals(fieldName)) {
-                    deserializedEvaluatorMetric.isPrimary = reader.getNullable(JsonReader::getBoolean);
+                    deserializedEvaluatorMetric.primary = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedEvaluatorMetric;
         });
+    }
+
+    /*
+     * Indicates if this metric is primary when there are multiple metrics.
+     */
+    @Generated
+    private Boolean primary;
+
+    /**
+     * Set the primary property: Indicates if this metric is primary when there are multiple metrics.
+     *
+     * @param primary the primary value to set.
+     * @return the EvaluatorMetric object itself.
+     */
+    @Generated
+    public EvaluatorMetric setPrimary(Boolean primary) {
+        this.primary = primary;
+        return this;
     }
 }

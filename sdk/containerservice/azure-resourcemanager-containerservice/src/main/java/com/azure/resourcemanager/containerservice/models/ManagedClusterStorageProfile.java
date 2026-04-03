@@ -19,12 +19,12 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
     /*
      * AzureDisk CSI Driver settings for the storage profile.
      */
-    private ManagedClusterStorageProfileDiskCsiDriver diskCSIDriver;
+    private ManagedClusterStorageProfileDiskCsiDriver diskCsiDriver;
 
     /*
      * AzureFile CSI Driver settings for the storage profile.
      */
-    private ManagedClusterStorageProfileFileCsiDriver fileCSIDriver;
+    private ManagedClusterStorageProfileFileCsiDriver fileCsiDriver;
 
     /*
      * Snapshot Controller settings for the storage profile.
@@ -34,7 +34,7 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
     /*
      * AzureBlob CSI Driver settings for the storage profile.
      */
-    private ManagedClusterStorageProfileBlobCsiDriver blobCSIDriver;
+    private ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver;
 
     /**
      * Creates an instance of ManagedClusterStorageProfile class.
@@ -43,42 +43,42 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Get the diskCSIDriver property: AzureDisk CSI Driver settings for the storage profile.
+     * Get the diskCsiDriver property: AzureDisk CSI Driver settings for the storage profile.
      * 
-     * @return the diskCSIDriver value.
+     * @return the diskCsiDriver value.
      */
-    public ManagedClusterStorageProfileDiskCsiDriver diskCSIDriver() {
-        return this.diskCSIDriver;
+    public ManagedClusterStorageProfileDiskCsiDriver diskCsiDriver() {
+        return this.diskCsiDriver;
     }
 
     /**
-     * Set the diskCSIDriver property: AzureDisk CSI Driver settings for the storage profile.
+     * Set the diskCsiDriver property: AzureDisk CSI Driver settings for the storage profile.
      * 
-     * @param diskCSIDriver the diskCSIDriver value to set.
+     * @param diskCsiDriver the diskCsiDriver value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
-    public ManagedClusterStorageProfile withDiskCSIDriver(ManagedClusterStorageProfileDiskCsiDriver diskCSIDriver) {
-        this.diskCSIDriver = diskCSIDriver;
+    public ManagedClusterStorageProfile withDiskCsiDriver(ManagedClusterStorageProfileDiskCsiDriver diskCsiDriver) {
+        this.diskCsiDriver = diskCsiDriver;
         return this;
     }
 
     /**
-     * Get the fileCSIDriver property: AzureFile CSI Driver settings for the storage profile.
+     * Get the fileCsiDriver property: AzureFile CSI Driver settings for the storage profile.
      * 
-     * @return the fileCSIDriver value.
+     * @return the fileCsiDriver value.
      */
-    public ManagedClusterStorageProfileFileCsiDriver fileCSIDriver() {
-        return this.fileCSIDriver;
+    public ManagedClusterStorageProfileFileCsiDriver fileCsiDriver() {
+        return this.fileCsiDriver;
     }
 
     /**
-     * Set the fileCSIDriver property: AzureFile CSI Driver settings for the storage profile.
+     * Set the fileCsiDriver property: AzureFile CSI Driver settings for the storage profile.
      * 
-     * @param fileCSIDriver the fileCSIDriver value to set.
+     * @param fileCsiDriver the fileCsiDriver value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
-    public ManagedClusterStorageProfile withFileCSIDriver(ManagedClusterStorageProfileFileCsiDriver fileCSIDriver) {
-        this.fileCSIDriver = fileCSIDriver;
+    public ManagedClusterStorageProfile withFileCsiDriver(ManagedClusterStorageProfileFileCsiDriver fileCsiDriver) {
+        this.fileCsiDriver = fileCsiDriver;
         return this;
     }
 
@@ -104,22 +104,22 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Get the blobCSIDriver property: AzureBlob CSI Driver settings for the storage profile.
+     * Get the blobCsiDriver property: AzureBlob CSI Driver settings for the storage profile.
      * 
-     * @return the blobCSIDriver value.
+     * @return the blobCsiDriver value.
      */
-    public ManagedClusterStorageProfileBlobCsiDriver blobCSIDriver() {
-        return this.blobCSIDriver;
+    public ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver() {
+        return this.blobCsiDriver;
     }
 
     /**
-     * Set the blobCSIDriver property: AzureBlob CSI Driver settings for the storage profile.
+     * Set the blobCsiDriver property: AzureBlob CSI Driver settings for the storage profile.
      * 
-     * @param blobCSIDriver the blobCSIDriver value to set.
+     * @param blobCsiDriver the blobCsiDriver value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
-    public ManagedClusterStorageProfile withBlobCSIDriver(ManagedClusterStorageProfileBlobCsiDriver blobCSIDriver) {
-        this.blobCSIDriver = blobCSIDriver;
+    public ManagedClusterStorageProfile withBlobCsiDriver(ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver) {
+        this.blobCsiDriver = blobCsiDriver;
         return this;
     }
 
@@ -129,17 +129,17 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (diskCSIDriver() != null) {
-            diskCSIDriver().validate();
+        if (diskCsiDriver() != null) {
+            diskCsiDriver().validate();
         }
-        if (fileCSIDriver() != null) {
-            fileCSIDriver().validate();
+        if (fileCsiDriver() != null) {
+            fileCsiDriver().validate();
         }
         if (snapshotController() != null) {
             snapshotController().validate();
         }
-        if (blobCSIDriver() != null) {
-            blobCSIDriver().validate();
+        if (blobCsiDriver() != null) {
+            blobCsiDriver().validate();
         }
     }
 
@@ -149,10 +149,10 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("diskCSIDriver", this.diskCSIDriver);
-        jsonWriter.writeJsonField("fileCSIDriver", this.fileCSIDriver);
+        jsonWriter.writeJsonField("diskCSIDriver", this.diskCsiDriver);
+        jsonWriter.writeJsonField("fileCSIDriver", this.fileCsiDriver);
         jsonWriter.writeJsonField("snapshotController", this.snapshotController);
-        jsonWriter.writeJsonField("blobCSIDriver", this.blobCSIDriver);
+        jsonWriter.writeJsonField("blobCSIDriver", this.blobCsiDriver);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,16 +172,16 @@ public final class ManagedClusterStorageProfile implements JsonSerializable<Mana
                 reader.nextToken();
 
                 if ("diskCSIDriver".equals(fieldName)) {
-                    deserializedManagedClusterStorageProfile.diskCSIDriver
+                    deserializedManagedClusterStorageProfile.diskCsiDriver
                         = ManagedClusterStorageProfileDiskCsiDriver.fromJson(reader);
                 } else if ("fileCSIDriver".equals(fieldName)) {
-                    deserializedManagedClusterStorageProfile.fileCSIDriver
+                    deserializedManagedClusterStorageProfile.fileCsiDriver
                         = ManagedClusterStorageProfileFileCsiDriver.fromJson(reader);
                 } else if ("snapshotController".equals(fieldName)) {
                     deserializedManagedClusterStorageProfile.snapshotController
                         = ManagedClusterStorageProfileSnapshotController.fromJson(reader);
                 } else if ("blobCSIDriver".equals(fieldName)) {
-                    deserializedManagedClusterStorageProfile.blobCSIDriver
+                    deserializedManagedClusterStorageProfile.blobCsiDriver
                         = ManagedClusterStorageProfileBlobCsiDriver.fromJson(reader);
                 } else {
                     reader.skipChildren();

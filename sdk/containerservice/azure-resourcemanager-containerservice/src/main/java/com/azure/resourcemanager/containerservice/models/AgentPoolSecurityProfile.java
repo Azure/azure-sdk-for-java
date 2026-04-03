@@ -20,7 +20,7 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
      * vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys and measurements held locally
      * on the node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the default is false.
      */
-    private Boolean enableVTPM;
+    private Boolean enableVtpm;
 
     /*
      * Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot.
@@ -40,26 +40,26 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
     }
 
     /**
-     * Get the enableVTPM property: vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys
+     * Get the enableVtpm property: vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys
      * and measurements held locally on the node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the
      * default is false.
      * 
-     * @return the enableVTPM value.
+     * @return the enableVtpm value.
      */
-    public Boolean enableVTPM() {
-        return this.enableVTPM;
+    public Boolean enableVtpm() {
+        return this.enableVtpm;
     }
 
     /**
-     * Set the enableVTPM property: vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys
+     * Set the enableVtpm property: vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys
      * and measurements held locally on the node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the
      * default is false.
      * 
-     * @param enableVTPM the enableVTPM value to set.
+     * @param enableVtpm the enableVtpm value to set.
      * @return the AgentPoolSecurityProfile object itself.
      */
-    public AgentPoolSecurityProfile withEnableVTPM(Boolean enableVTPM) {
-        this.enableVTPM = enableVTPM;
+    public AgentPoolSecurityProfile withEnableVtpm(Boolean enableVtpm) {
+        this.enableVtpm = enableVtpm;
         return this;
     }
 
@@ -121,7 +121,7 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeBooleanField("enableVTPM", this.enableVTPM);
+        jsonWriter.writeBooleanField("enableVTPM", this.enableVtpm);
         jsonWriter.writeBooleanField("enableSecureBoot", this.enableSecureBoot);
         jsonWriter.writeStringField("sshAccess", this.sshAccess == null ? null : this.sshAccess.toString());
         return jsonWriter.writeEndObject();
@@ -143,7 +143,7 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
                 reader.nextToken();
 
                 if ("enableVTPM".equals(fieldName)) {
-                    deserializedAgentPoolSecurityProfile.enableVTPM = reader.getNullable(JsonReader::getBoolean);
+                    deserializedAgentPoolSecurityProfile.enableVtpm = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableSecureBoot".equals(fieldName)) {
                     deserializedAgentPoolSecurityProfile.enableSecureBoot = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sshAccess".equals(fieldName)) {

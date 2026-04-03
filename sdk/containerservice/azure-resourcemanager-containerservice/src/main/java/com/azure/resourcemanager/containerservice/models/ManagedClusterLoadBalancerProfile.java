@@ -20,7 +20,7 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     /*
      * Desired managed outbound IPs for the cluster load balancer.
      */
-    private ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIps;
+    private ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs;
 
     /*
      * Desired outbound IP Prefix resources for the cluster load balancer.
@@ -30,12 +30,12 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     /*
      * Desired outbound IP resources for the cluster load balancer.
      */
-    private ManagedClusterLoadBalancerProfileOutboundIPs outboundIps;
+    private ManagedClusterLoadBalancerProfileOutboundIPs outboundIPs;
 
     /*
      * The effective outbound IP resources of the cluster load balancer.
      */
-    private List<ResourceReference> effectiveOutboundIps;
+    private List<ResourceReference> effectiveOutboundIPs;
 
     /*
      * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive). The
@@ -59,6 +59,11 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
      */
     private BackendPoolType backendPoolType;
 
+    /*
+     * The health probing behavior for External Traffic Policy Cluster services.
+     */
+    private ClusterServiceLoadBalancerHealthProbeMode clusterServiceLoadBalancerHealthProbeMode;
+
     /**
      * Creates an instance of ManagedClusterLoadBalancerProfile class.
      */
@@ -66,23 +71,23 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     }
 
     /**
-     * Get the managedOutboundIps property: Desired managed outbound IPs for the cluster load balancer.
+     * Get the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
      * 
-     * @return the managedOutboundIps value.
+     * @return the managedOutboundIPs value.
      */
-    public ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIps() {
-        return this.managedOutboundIps;
+    public ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs() {
+        return this.managedOutboundIPs;
     }
 
     /**
-     * Set the managedOutboundIps property: Desired managed outbound IPs for the cluster load balancer.
+     * Set the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
      * 
-     * @param managedOutboundIps the managedOutboundIps value to set.
+     * @param managedOutboundIPs the managedOutboundIPs value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
     public ManagedClusterLoadBalancerProfile
-        withManagedOutboundIps(ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIps) {
-        this.managedOutboundIps = managedOutboundIps;
+        withManagedOutboundIPs(ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs) {
+        this.managedOutboundIPs = managedOutboundIPs;
         return this;
     }
 
@@ -108,32 +113,32 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     }
 
     /**
-     * Get the outboundIps property: Desired outbound IP resources for the cluster load balancer.
+     * Get the outboundIPs property: Desired outbound IP resources for the cluster load balancer.
      * 
-     * @return the outboundIps value.
+     * @return the outboundIPs value.
      */
-    public ManagedClusterLoadBalancerProfileOutboundIPs outboundIps() {
-        return this.outboundIps;
+    public ManagedClusterLoadBalancerProfileOutboundIPs outboundIPs() {
+        return this.outboundIPs;
     }
 
     /**
-     * Set the outboundIps property: Desired outbound IP resources for the cluster load balancer.
+     * Set the outboundIPs property: Desired outbound IP resources for the cluster load balancer.
      * 
-     * @param outboundIps the outboundIps value to set.
+     * @param outboundIPs the outboundIPs value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
-    public ManagedClusterLoadBalancerProfile withOutboundIps(ManagedClusterLoadBalancerProfileOutboundIPs outboundIps) {
-        this.outboundIps = outboundIps;
+    public ManagedClusterLoadBalancerProfile withOutboundIPs(ManagedClusterLoadBalancerProfileOutboundIPs outboundIPs) {
+        this.outboundIPs = outboundIPs;
         return this;
     }
 
     /**
-     * Get the effectiveOutboundIps property: The effective outbound IP resources of the cluster load balancer.
+     * Get the effectiveOutboundIPs property: The effective outbound IP resources of the cluster load balancer.
      * 
-     * @return the effectiveOutboundIps value.
+     * @return the effectiveOutboundIPs value.
      */
-    public List<ResourceReference> effectiveOutboundIps() {
-        return this.effectiveOutboundIps;
+    public List<ResourceReference> effectiveOutboundIPs() {
+        return this.effectiveOutboundIPs;
     }
 
     /**
@@ -224,22 +229,45 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     }
 
     /**
+     * Get the clusterServiceLoadBalancerHealthProbeMode property: The health probing behavior for External Traffic
+     * Policy Cluster services.
+     * 
+     * @return the clusterServiceLoadBalancerHealthProbeMode value.
+     */
+    public ClusterServiceLoadBalancerHealthProbeMode clusterServiceLoadBalancerHealthProbeMode() {
+        return this.clusterServiceLoadBalancerHealthProbeMode;
+    }
+
+    /**
+     * Set the clusterServiceLoadBalancerHealthProbeMode property: The health probing behavior for External Traffic
+     * Policy Cluster services.
+     * 
+     * @param clusterServiceLoadBalancerHealthProbeMode the clusterServiceLoadBalancerHealthProbeMode value to set.
+     * @return the ManagedClusterLoadBalancerProfile object itself.
+     */
+    public ManagedClusterLoadBalancerProfile withClusterServiceLoadBalancerHealthProbeMode(
+        ClusterServiceLoadBalancerHealthProbeMode clusterServiceLoadBalancerHealthProbeMode) {
+        this.clusterServiceLoadBalancerHealthProbeMode = clusterServiceLoadBalancerHealthProbeMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (managedOutboundIps() != null) {
-            managedOutboundIps().validate();
+        if (managedOutboundIPs() != null) {
+            managedOutboundIPs().validate();
         }
         if (outboundIpPrefixes() != null) {
             outboundIpPrefixes().validate();
         }
-        if (outboundIps() != null) {
-            outboundIps().validate();
+        if (outboundIPs() != null) {
+            outboundIPs().validate();
         }
-        if (effectiveOutboundIps() != null) {
-            effectiveOutboundIps().forEach(e -> e.validate());
+        if (effectiveOutboundIPs() != null) {
+            effectiveOutboundIPs().forEach(e -> e.validate());
         }
     }
 
@@ -249,14 +277,18 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("managedOutboundIPs", this.managedOutboundIps);
+        jsonWriter.writeJsonField("managedOutboundIPs", this.managedOutboundIPs);
         jsonWriter.writeJsonField("outboundIPPrefixes", this.outboundIpPrefixes);
-        jsonWriter.writeJsonField("outboundIPs", this.outboundIps);
+        jsonWriter.writeJsonField("outboundIPs", this.outboundIPs);
         jsonWriter.writeNumberField("allocatedOutboundPorts", this.allocatedOutboundPorts);
         jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
         jsonWriter.writeBooleanField("enableMultipleStandardLoadBalancers", this.enableMultipleStandardLoadBalancers);
         jsonWriter.writeStringField("backendPoolType",
             this.backendPoolType == null ? null : this.backendPoolType.toString());
+        jsonWriter.writeStringField("clusterServiceLoadBalancerHealthProbeMode",
+            this.clusterServiceLoadBalancerHealthProbeMode == null
+                ? null
+                : this.clusterServiceLoadBalancerHealthProbeMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -277,18 +309,18 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
                 reader.nextToken();
 
                 if ("managedOutboundIPs".equals(fieldName)) {
-                    deserializedManagedClusterLoadBalancerProfile.managedOutboundIps
+                    deserializedManagedClusterLoadBalancerProfile.managedOutboundIPs
                         = ManagedClusterLoadBalancerProfileManagedOutboundIPs.fromJson(reader);
                 } else if ("outboundIPPrefixes".equals(fieldName)) {
                     deserializedManagedClusterLoadBalancerProfile.outboundIpPrefixes
                         = ManagedClusterLoadBalancerProfileOutboundIpPrefixes.fromJson(reader);
                 } else if ("outboundIPs".equals(fieldName)) {
-                    deserializedManagedClusterLoadBalancerProfile.outboundIps
+                    deserializedManagedClusterLoadBalancerProfile.outboundIPs
                         = ManagedClusterLoadBalancerProfileOutboundIPs.fromJson(reader);
                 } else if ("effectiveOutboundIPs".equals(fieldName)) {
-                    List<ResourceReference> effectiveOutboundIps
+                    List<ResourceReference> effectiveOutboundIPs
                         = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
-                    deserializedManagedClusterLoadBalancerProfile.effectiveOutboundIps = effectiveOutboundIps;
+                    deserializedManagedClusterLoadBalancerProfile.effectiveOutboundIPs = effectiveOutboundIPs;
                 } else if ("allocatedOutboundPorts".equals(fieldName)) {
                     deserializedManagedClusterLoadBalancerProfile.allocatedOutboundPorts
                         = reader.getNullable(JsonReader::getInt);
@@ -301,6 +333,9 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
                 } else if ("backendPoolType".equals(fieldName)) {
                     deserializedManagedClusterLoadBalancerProfile.backendPoolType
                         = BackendPoolType.fromString(reader.getString());
+                } else if ("clusterServiceLoadBalancerHealthProbeMode".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.clusterServiceLoadBalancerHealthProbeMode
+                        = ClusterServiceLoadBalancerHealthProbeMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

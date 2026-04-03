@@ -32,12 +32,8 @@ public final class NetworkSecurityPerimetersImpl implements NetworkSecurityPerim
         Response<NetworkSecurityPerimeterConfigurationInner> inner = this.serviceClient()
             .getConfigurationWithResponse(resourceGroupName, accountName, networkSecurityPerimeterConfigurationName,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NetworkSecurityPerimeterConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NetworkSecurityPerimeterConfigurationImpl(inner.getValue(), this.manager()));
     }
 
     public NetworkSecurityPerimeterConfiguration getConfiguration(String resourceGroupName, String accountName,

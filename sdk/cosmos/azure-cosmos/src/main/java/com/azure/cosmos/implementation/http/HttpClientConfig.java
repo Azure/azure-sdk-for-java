@@ -40,7 +40,7 @@ public class HttpClientConfig {
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
         this.http2ConnectionConfig = new Http2ConnectionConfig();
-        this.thinClientConnectTimeoutMs = Configs.getThinClientConnectionTimeoutInSeconds() * 1000;
+        this.thinClientConnectTimeoutMs = Configs.getThinClientConnectionTimeoutInMs();
     }
 
     public HttpClientConfig withMaxHeaderSize(int maxHeaderSize) {
