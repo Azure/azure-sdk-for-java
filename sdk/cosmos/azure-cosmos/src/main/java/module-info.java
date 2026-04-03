@@ -47,6 +47,8 @@ module com.azure.cosmos {
     exports com.azure.cosmos.implementation.patch to com.azure.cosmos.encryption;
     exports com.azure.cosmos.implementation.query to com.azure.cosmos.encryption;
     exports com.azure.cosmos.implementation.apachecommons.lang.tuple to com.azure.cosmos.encryption, com.azure.cosmos.kafka.connect;
+    exports com.azure.cosmos.implementation.query.queryadvisor to com.azure.cosmos.encryption;
+
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
@@ -71,6 +73,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.throughputControl.sdk.controller.group.global to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.perPartitionCircuitBreaker to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.perPartitionAutomaticFailover to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.query.queryadvisor to com.fasterxml.jackson.databind;
 
     // exporting packages specifically for cosmos test
     exports com.azure.cosmos.implementation.faultinjection to com.azure.cosmos.test;

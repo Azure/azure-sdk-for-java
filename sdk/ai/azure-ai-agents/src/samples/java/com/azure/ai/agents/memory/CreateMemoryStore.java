@@ -13,7 +13,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class CreateMemoryStore {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = configuration.get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String chatModel = configuration.get("AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME");
         String embeddingModel = configuration.get("AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME");
 

@@ -34,12 +34,8 @@ public final class CommunitiesImpl implements Communities {
         Context context) {
         Response<CommunityResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, communityName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CommunityResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CommunityResourceImpl(inner.getValue(), this.manager()));
     }
 
     public CommunityResource getByResourceGroup(String resourceGroupName, String communityName) {
@@ -86,12 +82,8 @@ public final class CommunitiesImpl implements Communities {
         Response<CheckAddressSpaceAvailabilityResponseInner> inner = this.serviceClient()
             .checkAddressSpaceAvailabilityWithResponse(resourceGroupName, communityName,
                 checkAddressSpaceAvailabilityRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckAddressSpaceAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckAddressSpaceAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CheckAddressSpaceAvailabilityResponse checkAddressSpaceAvailability(String resourceGroupName,

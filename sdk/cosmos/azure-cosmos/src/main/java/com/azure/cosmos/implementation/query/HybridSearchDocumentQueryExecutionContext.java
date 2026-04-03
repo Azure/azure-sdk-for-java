@@ -24,10 +24,13 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.hybridsearch.FullTextQueryStatistics;
 import com.azure.cosmos.implementation.query.hybridsearch.GlobalFullTextSearchQueryStatistics;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
+import com.azure.cosmos.models.CosmosFullTextScoreScope;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -49,6 +52,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQueryExecutionContextBase<Document> {
+
+    private static final Logger logger = LoggerFactory.getLogger(HybridSearchDocumentQueryExecutionContext.class);
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -141,24 +146,39 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         this.hybridSearchSchedulingStopwatch.start();
 
         if (hybridSearchQueryInfo.getRequiresGlobalStatistics()) {
+            // When FullTextScoreScope is GLOBAL (default), use allFeedRanges for statistics.
+            // When LOCAL, use only targetFeedRanges for scoped statistics.
+            CosmosFullTextScoreScope scope = this.cosmosQueryRequestOptions.getFullTextScoreScope();
+            List<FeedRangeEpkImpl> statisticsTargetRanges =
+                scope == CosmosFullTextScoreScope.LOCAL
+                    ? targetFeedRanges
+                    : allFeedRanges;
+
+            if (scope == CosmosFullTextScoreScope.LOCAL && targetFeedRanges.size() == allFeedRanges.size()) {
+                logger.warn("LOCAL fullTextScoreScope is set but no partition key filter was specified; "
+                    + "statistics will be computed across all partitions, equivalent to GLOBAL scope.");
+            }
+
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
-            for (FeedRangeEpkImpl feedRangeEpk : allFeedRanges) {
+            for (FeedRangeEpkImpl feedRangeEpk : statisticsTargetRanges) {
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
-            super.initialize(collection,
+
+            List<DocumentProducer<Document>> globalStatsProducers = createProducers(
+                collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters())
-            );
+                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters()));
 
-            aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
+            aggregatedGlobalStatistics = Flux.fromIterable(globalStatsProducers)
                 .flatMap(producer -> producer.produceAsync()
                     .map(documentProducerFeedResponse -> {
                         List<Document> results = documentProducerFeedResponse.pageResult.getResults();
                         return new GlobalFullTextSearchQueryStatistics(results.get(0));
                     }))
                 .collectList()
-                .map(this::aggregateStatistics);
+                .map(this::aggregateStatistics)
+                .cache();
         }
 
         hybridObservable = hybridSearch(targetFeedRanges, initialPageSize, collection);
@@ -388,20 +408,41 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         });
     }
 
+    /**
+     * Creates document producers for the given feed ranges and query, returning them as an isolated
+     * local list. This avoids relying on the shared mutable {@code documentProducers} field in
+     * {@link ParallelDocumentQueryExecutionContextBase}, preventing race conditions when multiple
+     * logical operations (global statistics, component queries) each need their own producer set.
+     */
+    private List<DocumentProducer<Document>> createProducers(
+        DocumentCollection collection,
+        Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap,
+        int initialPageSize,
+        SqlQuerySpec querySpecForInit) {
+
+        documentProducers = new ArrayList<>();
+        super.initialize(collection, feedRangeToContinuationTokenMap, initialPageSize, querySpecForInit);
+        List<DocumentProducer<Document>> result = new ArrayList<>(documentProducers);
+        documentProducers = new ArrayList<>();
+        return result;
+    }
+
     private Flux<Document> getComponentQueryResults(List<FeedRangeEpkImpl> targetFeedRanges, int initialPageSize, DocumentCollection collection, Flux<QueryInfo> rewrittenQueryInfos) {
-        return rewrittenQueryInfos.flatMap(queryInfo -> {
+        // Use concatMap to serialize component query initialization. Each component query still
+        // executes its partition queries in parallel via the inner flatMap.
+        return rewrittenQueryInfos.concatMap(queryInfo -> {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
             for (FeedRangeEpkImpl feedRangeEpk : targetFeedRanges) {
-                partitionKeyRangeToContinuationToken.put(feedRangeEpk,
-                    null);
+                partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
-            documentProducers = new ArrayList<>();
-            super.initialize(collection,
+
+            List<DocumentProducer<Document>> componentProducers = createProducers(
+                collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
                 new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
-            return Flux.fromIterable(documentProducers)
+            return Flux.fromIterable(componentProducers)
                 .flatMap(DocumentProducer::produceAsync)
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
         });

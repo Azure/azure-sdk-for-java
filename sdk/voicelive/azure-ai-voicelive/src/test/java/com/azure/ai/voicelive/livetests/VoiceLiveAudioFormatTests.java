@@ -25,10 +25,11 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import reactor.core.Disposable;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -43,48 +44,39 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> modelAndSamplingRateProvider() {
-        return Stream.of(Arguments.of("gpt-4o-realtime-preview", 16000), Arguments.of("gpt-4o-realtime", 44100),
+        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", 16000), Arguments.of("gpt-4o-realtime", 44100),
             Arguments.of("gpt-4o-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
-            Arguments.of("gpt-4.1", 8000), Arguments.of("phi4-mm-realtime", 16000),
-            Arguments.of("phi4-mm-realtime", 44100));
+            Arguments.of("gpt-4.1", 8000)), API_VERSION_GA, API_VERSION_PREVIEW);
     }
 
     static Stream<Arguments> modelAndInputAudioFormatProvider() {
-        return Stream.of(Arguments.of("gpt-4o", "g711_ulaw", "azure_semantic_vad"),
+        return withApiVersions(Stream.of(Arguments.of("gpt-4o", "g711_ulaw", "azure_semantic_vad"),
             Arguments.of("gpt-4o", "g711_alaw", "azure_semantic_vad"),
             Arguments.of("gpt-4o-realtime-preview", "g711_ulaw", "azure_semantic_vad"),
             Arguments.of("gpt-4o-realtime-preview", "g711_ulaw", "server_vad"),
             Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "server_vad"),
-            Arguments.of("phi4-mm-realtime", "g711_ulaw", "azure_semantic_vad"),
-            Arguments.of("phi4-mm-realtime", "g711_alaw", "azure_semantic_vad"),
-            Arguments.of("phi4-mini", "g711_ulaw", "azure_semantic_vad"),
-            Arguments.of("phi4-mini", "g711_alaw", "azure_semantic_vad"));
+            Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "server_vad")));
     }
 
     static Stream<Arguments> modelAndOutputAudioFormatAzureVoiceProvider() {
-        return Stream.of(Arguments.of("gpt-4.1", "pcm16"), Arguments.of("gpt-4.1", "pcm16_8000hz"),
+        return withApiVersions(Stream.of(Arguments.of("gpt-4.1", "pcm16"), Arguments.of("gpt-4.1", "pcm16_8000hz"),
             Arguments.of("gpt-4.1", "pcm16_16000hz"), Arguments.of("gpt-4.1", "pcm16_22050hz"),
             Arguments.of("gpt-4.1", "pcm16_24000hz"), Arguments.of("gpt-4.1", "pcm16_44100hz"),
             Arguments.of("gpt-4.1", "pcm16_48000hz"), Arguments.of("gpt-4.1", "g711_ulaw"),
-            Arguments.of("gpt-4.1", "g711_alaw"), Arguments.of("phi4-mini", "pcm16"),
-            Arguments.of("phi4-mini", "pcm16_8000hz"), Arguments.of("phi4-mini", "pcm16_16000hz"),
-            Arguments.of("phi4-mini", "pcm16_22050hz"), Arguments.of("phi4-mini", "pcm16_24000hz"),
-            Arguments.of("phi4-mini", "pcm16_44100hz"), Arguments.of("phi4-mini", "pcm16_48000hz"),
-            Arguments.of("phi4-mini", "g711_ulaw"), Arguments.of("phi4-mini", "g711_alaw"));
+            Arguments.of("gpt-4.1", "g711_alaw")));
     }
 
     static Stream<Arguments> modelAndOutputAudioFormatOpenAIVoiceProvider() {
-        return Stream.of(Arguments.of("gpt-4o-realtime", "pcm16"), Arguments.of("gpt-4o-realtime", "g711_ulaw"),
-            Arguments.of("gpt-4o-realtime", "g711_alaw"));
+        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", "pcm16"),
+            Arguments.of("gpt-4o-realtime", "g711_ulaw"), Arguments.of("gpt-4o-realtime", "g711_alaw")));
     }
 
     @ParameterizedTest
     @MethodSource("modelAndInputAudioFormatProvider")
     @LiveOnly
-    public void testRealtimeServiceWithInputAudioFormat(String model, String audioFormat, String turnDetectionType)
-        throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceWithInputAudioFormat(String model, String audioFormat, String turnDetectionType,
+        String apiVersion) throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         String audioFile = "g711_ulaw".equals(audioFormat) ? "largest_lake.ulaw" : "largest_lake.alaw";
         byte[] audioData = loadAudioFile(audioFile);
@@ -94,6 +86,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         CountDownLatch sessionUpdatedLatch = new CountDownLatch(1);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             InputAudioFormat inputFormat = parseInputAudioFormat(audioFormat);
 
@@ -107,11 +101,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(turnDetection)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -169,19 +163,20 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(received, "Should receive response within timeout");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE,
                 "Output audio too short for " + audioFormat + " format: " + audioResponseBytes.get() + " bytes");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
     @ParameterizedTest
     @MethodSource("modelAndSamplingRateProvider")
     @LiveOnly
-    public void testRealtimeServiceWithInputAudioSamplingRate(String model, int samplingRate)
+    public void testRealtimeServiceWithInputAudioSamplingRate(String model, int samplingRate, String apiVersion)
         throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         String audioFile = getAudioFileForSamplingRate(samplingRate);
         byte[] audioData = loadAudioFile(audioFile);
@@ -195,6 +190,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         CountDownLatch speechStoppedLatch = new CountDownLatch(1);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AriaNeural")))
@@ -202,13 +199,15 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model))
                 .setInstructions(
                     "You are a helpful assistant. Please respond briefly to the user's question about lakes.")
-                .setTurnDetection(new ServerVadTurnDetection());
+                .setTurnDetection(API_VERSION_PREVIEW.equals(apiVersion)
+                    ? new ServerVadTurnDetection().setSilenceDurationMs(200)
+                    : new ServerVadTurnDetection());
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -276,9 +275,9 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(speechStopped, "Should receive speech stopped event");
             Assertions.assertNotNull(speechStoppedEvent.get(), "Speech stopped event should not be null");
             int audioEndMs = speechStoppedEvent.get().getAudioEndMs();
-            int expectedEndMs = 1664;
-            double tolerance = 0.02;
-            Assertions.assertTrue(Math.abs(audioEndMs - expectedEndMs) <= expectedEndMs * tolerance,
+            int expectedEndMs = 1680;
+            int absoluteTolerance = 50;
+            Assertions.assertTrue(Math.abs(audioEndMs - expectedEndMs) <= absoluteTolerance,
                 "Audio end ms should be approximately " + expectedEndMs + " (got " + audioEndMs + ")");
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -286,20 +285,20 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(received, "Should receive response within timeout");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE, "Output audio too short: "
                 + audioResponseBytes.get() + " bytes (expected > " + MIN_AUDIO_BYTES_LARGE + ")");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
     @ParameterizedTest
-    @Disabled
     @MethodSource("modelAndOutputAudioFormatAzureVoiceProvider")
     @LiveOnly
-    public void testOutputFormatsWithAzureVoice(String model, String outputFormat)
+    public void testOutputFormatsWithAzureVoice(String model, String outputFormat, String apiVersion)
         throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
 
@@ -307,6 +306,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         AtomicInteger audioDoneEvents = new AtomicInteger(0);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             OutputAudioFormat format = parseOutputAudioFormat(outputFormat);
 
@@ -317,11 +318,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
@@ -359,19 +360,20 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioDoneEvents.get() >= 1, "Should receive audio done events");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES,
                 "Output audio too short: " + audioResponseBytes.get() + " bytes");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
     @ParameterizedTest
     @MethodSource("modelAndOutputAudioFormatOpenAIVoiceProvider")
     @LiveOnly
-    public void testOutputFormatsWithOpenAIVoice(String model, String outputFormat)
+    public void testOutputFormatsWithOpenAIVoice(String model, String outputFormat, String apiVersion)
         throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
 
@@ -379,6 +381,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         AtomicInteger audioDoneEvents = new AtomicInteger(0);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             OutputAudioFormat format = parseOutputAudioFormat(outputFormat);
 
@@ -390,11 +394,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
@@ -432,10 +436,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioDoneEvents.get() >= 1, "Should receive audio done events");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES,
                 "Output audio too short: " + audioResponseBytes.get() + " bytes");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

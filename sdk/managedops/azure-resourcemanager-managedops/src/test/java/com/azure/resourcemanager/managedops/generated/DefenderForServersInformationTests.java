@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingInformationEnablementStatus;
 import com.azure.resourcemanager.managedops.models.DefenderForServersInformation;
+import com.azure.resourcemanager.managedops.models.EnablementState;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderForServersInformationTests {
@@ -14,6 +14,6 @@ public final class DefenderForServersInformationTests {
     public void testDeserialize() throws Exception {
         DefenderForServersInformation model
             = BinaryData.fromString("{\"enablementStatus\":\"Failed\"}").toObject(DefenderForServersInformation.class);
-        Assertions.assertEquals(ChangeTrackingInformationEnablementStatus.FAILED, model.enablementStatus());
+        Assertions.assertEquals(EnablementState.FAILED, model.enablementStatus());
     }
 }

@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.AzureAISearchIndex;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 public class IndexesAsyncSample {
 
     private static IndexesAsyncClient indexesAsyncClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildIndexesAsyncClient();
 
@@ -25,7 +25,7 @@ public class IndexesAsyncSample {
         listIndexes().blockLast();
     }
 
-    public static Mono<Index> createOrUpdateIndex() {
+    public static Mono<AIProjectIndex> createOrUpdateIndex() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.createOrUpdateIndex
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
@@ -33,7 +33,7 @@ public class IndexesAsyncSample {
         String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
         String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-        return indexesAsyncClient.createOrUpdateVersion(
+        return indexesAsyncClient.createOrUpdateIndexVersion(
             indexName,
             indexVersion,
             new AzureAISearchIndex()
@@ -44,10 +44,10 @@ public class IndexesAsyncSample {
         // END:com.azure.ai.projects.IndexesAsyncSample.createOrUpdateIndex
     }
 
-    public static Flux<Index> listIndexes() {
+    public static Flux<AIProjectIndex> listIndexes() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.listIndexes
 
-        return indexesAsyncClient.listLatest()
+        return indexesAsyncClient.listLatestIndexVersions()
             .doOnNext(index -> {
                 System.out.println("Index name: " + index.getName());
                 System.out.println("Index version: " + index.getVersion());
@@ -56,12 +56,12 @@ public class IndexesAsyncSample {
         // END:com.azure.ai.projects.IndexesAsyncSample.listIndexes
     }
 
-    public static Flux<Index> listIndexVersions() {
+    public static Flux<AIProjectIndex> listIndexVersions() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.listIndexVersions
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 
-        return indexesAsyncClient.listVersions(indexName)
+        return indexesAsyncClient.listIndexVersions(indexName)
             .doOnNext(index -> {
                 System.out.println("Index name: " + index.getName());
                 System.out.println("Index version: " + index.getVersion());
@@ -71,13 +71,13 @@ public class IndexesAsyncSample {
         // END:com.azure.ai.projects.IndexesAsyncSample.listIndexVersions
     }
 
-    public static Mono<Index> getIndex() {
+    public static Mono<AIProjectIndex> getIndex() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.getIndex
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
-        return indexesAsyncClient.getVersion(indexName, indexVersion)
+        return indexesAsyncClient.getIndexVersion(indexName, indexVersion)
             .doOnNext(index -> {
                 System.out.println("Retrieved index:");
                 System.out.println("Name: " + index.getName());
@@ -95,7 +95,7 @@ public class IndexesAsyncSample {
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
         // Delete the index version
-        return indexesAsyncClient.deleteVersion(indexName, indexVersion)
+        return indexesAsyncClient.deleteIndexVersion(indexName, indexVersion)
             .doOnSuccess(unused ->
                 System.out.println("Deleted index: " + indexName + ", version: " + indexVersion));
 

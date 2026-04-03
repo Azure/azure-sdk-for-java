@@ -35,6 +35,7 @@ public final class CosmosRequestOptions {
     private Integer maxItemCount;
     private Boolean queryMetricsEnabled;
     private Boolean indexMetricsEnabled;
+    private Boolean queryAdviceEnabled;
     private Integer maxPrefetchPageCount;
     private String queryName;
     private Set<String> keywordIdentifiers;
@@ -221,6 +222,18 @@ public final class CosmosRequestOptions {
     }
 
     /**
+     * Sets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized.
+     *
+     * @param queryAdviceEnabled the queryAdviceEnabled flag.
+     * @return current CosmosRequestOptions.
+     */
+    public CosmosRequestOptions setQueryAdviceEnabled(Boolean queryAdviceEnabled) {
+        this.queryAdviceEnabled = queryAdviceEnabled;
+        return this;
+    }
+
+    /**
      * Sets the MaxPrefetchPageCount.
      *
      * @param maxPrefetchPageCount the MaxPrefetchPageCount.
@@ -282,6 +295,15 @@ public final class CosmosRequestOptions {
      */
     public Boolean isIndexMetricsEnabled() {
         return this.indexMetricsEnabled;
+    }
+
+    /**
+     * Gets the queryAdviceEnabled flag.
+     *
+     * @return the queryAdviceEnabled flag.
+     */
+    public Boolean isQueryAdviceEnabled() {
+        return this.queryAdviceEnabled;
     }
 
     /**

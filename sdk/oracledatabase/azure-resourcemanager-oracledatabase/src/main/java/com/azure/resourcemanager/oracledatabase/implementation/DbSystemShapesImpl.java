@@ -29,12 +29,8 @@ public final class DbSystemShapesImpl implements DbSystemShapes {
 
     public Response<DbSystemShape> getWithResponse(String location, String dbsystemshapename, Context context) {
         Response<DbSystemShapeInner> inner = this.serviceClient().getWithResponse(location, dbsystemshapename, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DbSystemShapeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DbSystemShapeImpl(inner.getValue(), this.manager()));
     }
 
     public DbSystemShape get(String location, String dbsystemshapename) {

@@ -35,12 +35,8 @@ public final class TroubleshootersImpl implements Troubleshooters {
     public Response<TroubleshooterResource> getWithResponse(String scope, String troubleshooterName, Context context) {
         Response<TroubleshooterResourceInner> inner
             = this.serviceClient().getWithResponse(scope, troubleshooterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TroubleshooterResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TroubleshooterResourceImpl(inner.getValue(), this.manager()));
     }
 
     public TroubleshooterResource get(String scope, String troubleshooterName) {

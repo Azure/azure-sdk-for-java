@@ -11,7 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetMemoryStore {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String memoryStoreName = "my_memory_store_java";
 
         // Code sample for getting a memory store

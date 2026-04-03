@@ -30,12 +30,8 @@ public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupReso
         Context context) {
         Response<BackupResourceConfigResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupResourceConfigResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupResourceConfigResourceImpl(inner.getValue(), this.manager()));
     }
 
     public BackupResourceConfigResource get(String vaultName, String resourceGroupName) {
@@ -51,12 +47,8 @@ public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupReso
         BackupResourceConfigResourceInner parameters, Context context) {
         Response<BackupResourceConfigResourceInner> inner
             = this.serviceClient().updateWithResponse(vaultName, resourceGroupName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupResourceConfigResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupResourceConfigResourceImpl(inner.getValue(), this.manager()));
     }
 
     public BackupResourceConfigResource update(String vaultName, String resourceGroupName,

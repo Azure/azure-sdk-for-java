@@ -1,5 +1,13 @@
 # Release History
 
+## 1.3.5 (2026-03-05)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added a new libary entry to the BOM:
+    - [`azure-ai-contentunderstanding`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md)  
+
 ## 1.3.4 (2026-01-30)
 
 - Updated Azure SDK dependency versions to the latest releases.

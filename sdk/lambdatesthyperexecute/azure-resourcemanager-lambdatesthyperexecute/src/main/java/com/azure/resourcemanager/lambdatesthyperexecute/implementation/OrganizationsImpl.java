@@ -31,12 +31,8 @@ public final class OrganizationsImpl implements Organizations {
         String organizationname, Context context) {
         Response<OrganizationResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, organizationname, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OrganizationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OrganizationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OrganizationResource getByResourceGroup(String resourceGroupName, String organizationname) {

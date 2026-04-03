@@ -97,7 +97,7 @@ class ConnectionManager {
     AppConfigurationReplicaClient getNextActiveClient(boolean useLastActive) {
         if (useLastActive) {
             List<AppConfigurationReplicaClient> clients = getAvailableClients();
-            for (AppConfigurationReplicaClient client: clients) {
+            for (AppConfigurationReplicaClient client : clients) {
                 if (client.getEndpoint().equals(lastActiveClient)) {
                     return client;
                 }
@@ -106,7 +106,7 @@ class ConnectionManager {
         if (activeClients.isEmpty()) {
             lastActiveClient = "";
             return null;
-        } 
+        }
 
         if (!configStore.isLoadBalancingEnabled()) {
             if (!activeClients.isEmpty()) {
@@ -115,7 +115,8 @@ class ConnectionManager {
             return null;
         }
 
-        // Remove the current client from the list. The list will be rebuilt and rotated on the next refresh cycle by findActiveClients().
+        // Remove the current client from the list. The list will be rebuilt and rotated on the next refresh cycle by
+        // findActiveClients().
         AppConfigurationReplicaClient nextClient = activeClients.remove(0);
         lastActiveClient = nextClient.getEndpoint();
         return nextClient;
@@ -125,27 +126,17 @@ class ConnectionManager {
      * Finds the currently active clients for a given origin endpoint.
      */
     void findActiveClients() {
-        activeClients = getAvailableClients();
-
-        if (!configStore.isLoadBalancingEnabled() || lastActiveClient.isEmpty()) {
+        // Load balancing enabled: only refresh if no active clients (rotation happens in getNextActiveClient)
+        if (configStore.isLoadBalancingEnabled()) {
+            if (activeClients.isEmpty()) {
+                activeClients = getAvailableClients();
+            }
             return;
         }
-
-        for (int i = 0; i < activeClients.size(); i++) {
-            AppConfigurationReplicaClient client = activeClients.get(i);
-            if (client.getEndpoint().equals(lastActiveClient)) {
-                int swapPoint = (i + 1) % activeClients.size();
-                List<AppConfigurationReplicaClient> rotatedClients = new ArrayList<>();
-
-                // Add elements from swapPoint to end
-                rotatedClients.addAll(activeClients.subList(swapPoint, activeClients.size()));
-
-                // Add elements from beginning to swapPoint
-                rotatedClients.addAll(activeClients.subList(0, swapPoint));
-
-                activeClients = rotatedClients;
-                return;
-            }
+        // Load balancing disabled: always refresh to use the most preferred available client
+        List<AppConfigurationReplicaClient> availableClients = getAvailableClients();
+        if (!availableClients.isEmpty()) {
+            activeClients = availableClients;
         }
     }
 
@@ -169,7 +160,7 @@ class ConnectionManager {
             if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
                 availableClients.add(clients.get(0));
             }
-        } else if (clients.size() > 0 && !configStore.isLoadBalancingEnabled()) {
+        } else if (!clients.isEmpty() && !configStore.isLoadBalancingEnabled()) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
@@ -177,17 +168,17 @@ class ConnectionManager {
                 }
             }
         } else if (configStore.isLoadBalancingEnabled()) {
-            for (AppConfigurationReplicaClient client: clients) {
+            for (AppConfigurationReplicaClient client : clients) {
                 if (client.getBackoffEndTime().isBefore(Instant.now())) {
                     availableClients.add(client);
                 }
             }
         }
 
-        if (availableClients.size() == 0 || configStore.isLoadBalancingEnabled()) {
+        if (availableClients.isEmpty() || configStore.isLoadBalancingEnabled()) {
             List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
 
-            if (autoFailoverEndpoints.size() > 0) {
+            if (!autoFailoverEndpoints.isEmpty()) {
                 for (String failoverEndpoint : autoFailoverEndpoints) {
                     AppConfigurationReplicaClient client = autoFailoverClients.get(failoverEndpoint);
                     if (client == null) {
@@ -201,9 +192,9 @@ class ConnectionManager {
                 }
             }
         }
-        if (clients.size() > 0 && availableClients.size() == 0) {
+        if (!clients.isEmpty() && availableClients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.DOWN;
-        } else if (clients.size() > 0) {
+        } else if (!clients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.UP;
         }
 

@@ -54,12 +54,8 @@ public final class OrganizationsImpl implements Organizations {
 
     public Response<UserApiKeyResponse> getApiKeyWithResponse(UserEmailId body, Context context) {
         Response<UserApiKeyResponseInner> inner = this.serviceClient().getApiKeyWithResponse(body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new UserApiKeyResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new UserApiKeyResponseImpl(inner.getValue(), this.manager()));
     }
 
     public UserApiKeyResponse getApiKey() {
@@ -75,12 +71,8 @@ public final class OrganizationsImpl implements Organizations {
         getElasticToAzureSubscriptionMappingWithResponse(Context context) {
         Response<ElasticOrganizationToAzureSubscriptionMappingResponseInner> inner
             = this.serviceClient().getElasticToAzureSubscriptionMappingWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticOrganizationToAzureSubscriptionMappingResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticOrganizationToAzureSubscriptionMappingResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticOrganizationToAzureSubscriptionMappingResponse getElasticToAzureSubscriptionMapping() {

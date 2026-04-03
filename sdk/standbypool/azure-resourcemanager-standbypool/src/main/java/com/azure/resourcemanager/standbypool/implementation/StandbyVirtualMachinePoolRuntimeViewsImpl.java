@@ -31,12 +31,8 @@ public final class StandbyVirtualMachinePoolRuntimeViewsImpl implements StandbyV
         String standbyVirtualMachinePoolName, String runtimeView, Context context) {
         Response<StandbyVirtualMachinePoolRuntimeViewResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, standbyVirtualMachinePoolName, runtimeView, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StandbyVirtualMachinePoolRuntimeViewResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StandbyVirtualMachinePoolRuntimeViewResourceImpl(inner.getValue(), this.manager()));
     }
 
     public StandbyVirtualMachinePoolRuntimeViewResource get(String resourceGroupName,

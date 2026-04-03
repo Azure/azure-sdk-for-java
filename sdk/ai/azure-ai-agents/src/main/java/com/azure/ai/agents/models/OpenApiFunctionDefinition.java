@@ -6,11 +6,14 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +46,6 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
      */
     @Generated
     private final OpenApiAuthDetails auth;
-
-    /*
-     * List of OpenAPI spec parameters that will use user-provided defaults
-     */
-    @Generated
-    private List<String> defaultParams;
 
     /*
      * List of function definitions used by OpenApi tool
@@ -111,28 +108,6 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
     }
 
     /**
-     * Get the defaultParams property: List of OpenAPI spec parameters that will use user-provided defaults.
-     *
-     * @return the defaultParams value.
-     */
-    @Generated
-    public List<String> getDefaultParams() {
-        return this.defaultParams;
-    }
-
-    /**
-     * Set the defaultParams property: List of OpenAPI spec parameters that will use user-provided defaults.
-     *
-     * @param defaultParams the defaultParams value to set.
-     * @return the OpenApiFunctionDefinition object itself.
-     */
-    @Generated
-    public OpenApiFunctionDefinition setDefaultParams(List<String> defaultParams) {
-        this.defaultParams = defaultParams;
-        return this;
-    }
-
-    /**
      * Get the functions property: List of function definitions used by OpenApi tool.
      *
      * @return the functions value.
@@ -159,7 +134,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
         });
         jsonWriter.writeJsonField("auth", this.auth);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeArrayField("default_params", this.defaultParams,
+        jsonWriter.writeArrayField("default_params", this.defaultParameters,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -180,7 +155,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             Map<String, BinaryData> spec = null;
             OpenApiAuthDetails auth = null;
             String description = null;
-            List<String> defaultParams = null;
+            List<String> defaultParameters = null;
             List<OpenApiFunctionDefinitionFunction> functions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -195,7 +170,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("default_params".equals(fieldName)) {
-                    defaultParams = reader.readArray(reader1 -> reader1.getString());
+                    defaultParameters = reader.readArray(reader1 -> reader1.getString());
                 } else if ("functions".equals(fieldName)) {
                     functions = reader.readArray(reader1 -> OpenApiFunctionDefinitionFunction.fromJson(reader1));
                 } else {
@@ -205,7 +180,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             OpenApiFunctionDefinition deserializedOpenApiFunctionDefinition
                 = new OpenApiFunctionDefinition(name, spec, auth);
             deserializedOpenApiFunctionDefinition.description = description;
-            deserializedOpenApiFunctionDefinition.defaultParams = defaultParams;
+            deserializedOpenApiFunctionDefinition.defaultParameters = defaultParameters;
             deserializedOpenApiFunctionDefinition.functions = functions;
             return deserializedOpenApiFunctionDefinition;
         });
@@ -223,5 +198,49 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
         this.name = name;
         this.spec = spec;
         this.auth = auth;
+    }
+
+    /**
+     * Reads an OpenAPI specification from a JSON file and returns it as a {@code Map<String, BinaryData>}
+     * suitable for the {@code spec} parameter of
+     * {@link #OpenApiFunctionDefinition(String, Map, OpenApiAuthDetails)}.
+     *
+     * @param path the path to the OpenAPI spec JSON file.
+     * @return the spec as a map of top-level keys to their serialized values.
+     * @throws IOException if the file cannot be read or parsed.
+     */
+    public static Map<String, BinaryData> readSpecFromFile(Path path) throws IOException {
+        try (JsonReader reader = JsonProviders.createReader(Files.readAllBytes(path))) {
+            return reader
+                .readMap(r -> r.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+        }
+    }
+
+    /*
+     * List of OpenAPI spec parameters that will use user-provided defaults
+     */
+    @Generated
+    private List<String> defaultParameters;
+
+    /**
+     * Get the defaultParameters property: List of OpenAPI spec parameters that will use user-provided defaults.
+     *
+     * @return the defaultParameters value.
+     */
+    @Generated
+    public List<String> getDefaultParameters() {
+        return this.defaultParameters;
+    }
+
+    /**
+     * Set the defaultParameters property: List of OpenAPI spec parameters that will use user-provided defaults.
+     *
+     * @param defaultParameters the defaultParameters value to set.
+     * @return the OpenApiFunctionDefinition object itself.
+     */
+    @Generated
+    public OpenApiFunctionDefinition setDefaultParameters(List<String> defaultParameters) {
+        this.defaultParameters = defaultParameters;
+        return this;
     }
 }

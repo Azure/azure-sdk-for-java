@@ -43,7 +43,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         CdnProfile cdnProfile = profiles.define(cdnProfileName)
             .withRegion(region)
             .withNewResourceGroup(groupName)
-            .withStandardVerizonSku()
+            .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .defineNewEndpoint(cdnEndpointName)
             .withOrigin(cdnOriginHostName)
             .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryIsoCode.ARGENTINA)

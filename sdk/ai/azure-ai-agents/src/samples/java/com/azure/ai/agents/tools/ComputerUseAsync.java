@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
@@ -49,7 +50,7 @@ import java.util.stream.Collectors;
  *
  * <p>Before running the sample, set these environment variables with your own values:</p>
  * <ul>
- *   <li>AZURE_AGENTS_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
+ *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
  *       page of your Microsoft Foundry portal.</li>
  *   <li>(Optional) AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME - The deployment name of the
  *       computer-use-preview model, as found under the "Name" column in the "Models + endpoints"
@@ -62,7 +63,7 @@ public class ComputerUseAsync {
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = configuration.get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "computer-use-preview");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -137,9 +138,11 @@ public class ComputerUseAsync {
                 System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
 
                 // Send initial request
-                return responsesClient.createWithAgent(agentReference, ResponseCreateParams.builder()
-                        .inputOfResponse(initialInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO))
+                return responsesClient.createAzureResponse(
+                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                        ResponseCreateParams.builder()
+                            .inputOfResponse(initialInput)
+                            .truncation(ResponseCreateParams.Truncation.AUTO))
                     .doOnNext(response -> System.out.printf("Initial response received (ID: %s)%n", response.id()))
                     .flatMap(response -> runInteractionLoop(
                         responsesClient, agentReference, response, screenshots, SearchState.INITIAL, 0));
@@ -219,10 +222,12 @@ public class ComputerUseAsync {
                     .build())
         );
 
-        return responsesClient.createWithAgent(agentReference, ResponseCreateParams.builder()
-                .previousResponseId(response.id())
-                .inputOfResponse(followUpInput)
-                .truncation(ResponseCreateParams.Truncation.AUTO))
+        return responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .previousResponseId(response.id())
+                    .inputOfResponse(followUpInput)
+                    .truncation(ResponseCreateParams.Truncation.AUTO))
             .doOnNext(newResponse -> System.out.printf("Follow-up response received (ID: %s)%n", newResponse.id()))
             .flatMap(newResponse -> runInteractionLoop(
                 responsesClient, agentReference, newResponse, screenshots, newState, iteration + 1));

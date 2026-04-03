@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01/Projects_CreateOrUpdate.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.

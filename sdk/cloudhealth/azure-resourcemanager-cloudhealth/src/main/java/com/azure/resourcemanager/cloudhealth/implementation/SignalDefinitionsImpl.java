@@ -32,12 +32,8 @@ public final class SignalDefinitionsImpl implements SignalDefinitions {
         String signalDefinitionName, Context context) {
         Response<SignalDefinitionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, healthModelName, signalDefinitionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SignalDefinitionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SignalDefinitionImpl(inner.getValue(), this.manager()));
     }
 
     public SignalDefinition get(String resourceGroupName, String healthModelName, String signalDefinitionName) {
