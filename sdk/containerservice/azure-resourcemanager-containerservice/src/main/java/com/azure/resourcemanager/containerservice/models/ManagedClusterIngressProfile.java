@@ -22,6 +22,16 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
      */
     private ManagedClusterIngressProfileWebAppRouting webAppRouting;
 
+    /*
+     * Settings for the managed Gateway API installation
+     */
+    private ManagedClusterIngressProfileGatewayConfiguration gatewayApi;
+
+    /*
+     * Settings for the managed Application Load Balancer installation
+     */
+    private ManagedClusterIngressProfileApplicationLoadBalancer applicationLoadBalancer;
+
     /**
      * Creates an instance of ManagedClusterIngressProfile class.
      */
@@ -53,6 +63,47 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
     }
 
     /**
+     * Get the gatewayApi property: Settings for the managed Gateway API installation.
+     * 
+     * @return the gatewayApi value.
+     */
+    public ManagedClusterIngressProfileGatewayConfiguration gatewayApi() {
+        return this.gatewayApi;
+    }
+
+    /**
+     * Set the gatewayApi property: Settings for the managed Gateway API installation.
+     * 
+     * @param gatewayApi the gatewayApi value to set.
+     * @return the ManagedClusterIngressProfile object itself.
+     */
+    public ManagedClusterIngressProfile withGatewayApi(ManagedClusterIngressProfileGatewayConfiguration gatewayApi) {
+        this.gatewayApi = gatewayApi;
+        return this;
+    }
+
+    /**
+     * Get the applicationLoadBalancer property: Settings for the managed Application Load Balancer installation.
+     * 
+     * @return the applicationLoadBalancer value.
+     */
+    public ManagedClusterIngressProfileApplicationLoadBalancer applicationLoadBalancer() {
+        return this.applicationLoadBalancer;
+    }
+
+    /**
+     * Set the applicationLoadBalancer property: Settings for the managed Application Load Balancer installation.
+     * 
+     * @param applicationLoadBalancer the applicationLoadBalancer value to set.
+     * @return the ManagedClusterIngressProfile object itself.
+     */
+    public ManagedClusterIngressProfile
+        withApplicationLoadBalancer(ManagedClusterIngressProfileApplicationLoadBalancer applicationLoadBalancer) {
+        this.applicationLoadBalancer = applicationLoadBalancer;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -60,6 +111,12 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
     public void validate() {
         if (webAppRouting() != null) {
             webAppRouting().validate();
+        }
+        if (gatewayApi() != null) {
+            gatewayApi().validate();
+        }
+        if (applicationLoadBalancer() != null) {
+            applicationLoadBalancer().validate();
         }
     }
 
@@ -70,6 +127,8 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("webAppRouting", this.webAppRouting);
+        jsonWriter.writeJsonField("gatewayAPI", this.gatewayApi);
+        jsonWriter.writeJsonField("applicationLoadBalancer", this.applicationLoadBalancer);
         return jsonWriter.writeEndObject();
     }
 
@@ -91,6 +150,12 @@ public final class ManagedClusterIngressProfile implements JsonSerializable<Mana
                 if ("webAppRouting".equals(fieldName)) {
                     deserializedManagedClusterIngressProfile.webAppRouting
                         = ManagedClusterIngressProfileWebAppRouting.fromJson(reader);
+                } else if ("gatewayAPI".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfile.gatewayApi
+                        = ManagedClusterIngressProfileGatewayConfiguration.fromJson(reader);
+                } else if ("applicationLoadBalancer".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfile.applicationLoadBalancer
+                        = ManagedClusterIngressProfileApplicationLoadBalancer.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

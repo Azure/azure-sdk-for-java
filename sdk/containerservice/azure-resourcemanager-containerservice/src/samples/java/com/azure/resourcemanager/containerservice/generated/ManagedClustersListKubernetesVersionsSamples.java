@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListKubernetesVersionsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/KubernetesVersions_List.json
+     * x-ms-original-file: 2026-01-02-preview/KubernetesVersions_List.json
      */
     /**
      * Sample code: List Kubernetes Versions.
