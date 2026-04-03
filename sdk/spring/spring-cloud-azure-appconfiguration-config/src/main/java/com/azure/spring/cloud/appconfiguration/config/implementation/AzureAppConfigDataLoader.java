@@ -176,7 +176,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
         // During startup, retry with backoff until deadline
         Instant startTime = Instant.now();
-        Instant deadline = startTime.plusSeconds(resource.getStartupTimeout().getSeconds());
+        Instant deadline = startTime.plus(resource.getStartupTimeout());
         Exception lastException = null;
         int postFixedWindowAttempts = 0;
 

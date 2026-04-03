@@ -55,7 +55,7 @@ spring.config.import | The Spring property that triggers the loading of Azure Ap
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | Empty List
-spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
+spring.cloud.azure.appconfiguration.enabled | Whether to enable spring-cloud-azure-appconfiguration-config or not | No | true
 spring.cloud.azure.appconfiguration.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. | No | null
 spring.cloud.azure.appconfiguration.startup-timeout | Maximum time to retry loading configuration during application startup when transient failures occur. | No | 100s
 
