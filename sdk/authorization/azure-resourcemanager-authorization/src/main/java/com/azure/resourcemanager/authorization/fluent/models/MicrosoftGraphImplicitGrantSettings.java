@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an implicit grant settings.
+ * implicitGrantSettings.
  */
 @Fluent
 public final class MicrosoftGraphImplicitGrantSettings

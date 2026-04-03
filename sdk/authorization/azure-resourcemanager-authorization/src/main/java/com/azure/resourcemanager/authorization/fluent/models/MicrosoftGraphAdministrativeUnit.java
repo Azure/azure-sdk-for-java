@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an administrative unit.
- * <p>
+ * administrativeUnit
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -246,7 +246,6 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
      */
     @Override
     public void validate() {
-        super.validate();
         if (members() != null) {
             members().forEach(e -> e.validate());
         }

@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a password credential.
+ * passwordCredential.
  */
 @Fluent
 public final class MicrosoftGraphPasswordCredentialInner

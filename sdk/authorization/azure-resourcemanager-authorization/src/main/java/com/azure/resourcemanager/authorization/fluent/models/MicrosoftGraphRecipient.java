@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a recipient.
+ * recipient.
  */
 @Fluent
 public class MicrosoftGraphRecipient implements JsonSerializable<MicrosoftGraphRecipient> {

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook chart data labels.
+ * workbookChartDataLabels.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphEntity {
@@ -292,7 +292,6 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

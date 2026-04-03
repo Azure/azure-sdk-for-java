@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a video.
+ * video.
  */
 @Fluent
 public final class MicrosoftGraphVideo implements JsonSerializable<MicrosoftGraphVideo> {

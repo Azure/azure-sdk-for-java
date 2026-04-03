@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a planner task.
+ * plannerTask.
  */
 @Fluent
 public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
@@ -709,7 +709,6 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (completedBy() != null) {
             completedBy().validate();
         }

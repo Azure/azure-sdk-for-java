@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook worksheet protection options.
+ * workbookWorksheetProtectionOptions.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookWorksheetProtectionOptions

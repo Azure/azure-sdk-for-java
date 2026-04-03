@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an onenote operation error.
+ * onenoteOperationError.
  */
 @Fluent
 public final class MicrosoftGraphOnenoteOperationError

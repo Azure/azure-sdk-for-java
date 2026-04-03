@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a date time column.
+ * dateTimeColumn.
  */
 @Fluent
 public final class MicrosoftGraphDateTimeColumn implements JsonSerializable<MicrosoftGraphDateTimeColumn> {

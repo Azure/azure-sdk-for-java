@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a folder view.
+ * folderView.
  */
 @Fluent
 public final class MicrosoftGraphFolderView implements JsonSerializable<MicrosoftGraphFolderView> {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an onenote user role.
+ * onenoteUserRole.
  */
 public final class MicrosoftGraphOnenoteUserRole extends ExpandableStringEnum<MicrosoftGraphOnenoteUserRole> {
     /**

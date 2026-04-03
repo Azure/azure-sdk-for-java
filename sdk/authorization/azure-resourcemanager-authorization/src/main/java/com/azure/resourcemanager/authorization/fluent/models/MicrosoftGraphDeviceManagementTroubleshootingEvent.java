@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a device management troubleshooting event.
- * <p>
+ * deviceManagementTroubleshootingEvent
+ * 
  * Event representing an general failure.
  */
 @Fluent
@@ -120,7 +120,6 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a license processing state.
+ * licenseProcessingState.
  */
 @Fluent
 public final class MicrosoftGraphLicenseProcessingState

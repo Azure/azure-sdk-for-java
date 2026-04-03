@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a page links.
+ * pageLinks.
  */
 @Fluent
 public final class MicrosoftGraphPageLinks implements JsonSerializable<MicrosoftGraphPageLinks> {

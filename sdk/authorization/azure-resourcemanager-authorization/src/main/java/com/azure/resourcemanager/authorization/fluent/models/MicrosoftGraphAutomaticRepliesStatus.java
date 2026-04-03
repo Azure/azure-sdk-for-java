@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an automatic replies status.
+ * automaticRepliesStatus.
  */
 public final class MicrosoftGraphAutomaticRepliesStatus
     extends ExpandableStringEnum<MicrosoftGraphAutomaticRepliesStatus> {

@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a chat message reaction.
+ * chatMessageReaction.
  */
 @Fluent
 public final class MicrosoftGraphChatMessageReaction implements JsonSerializable<MicrosoftGraphChatMessageReaction> {

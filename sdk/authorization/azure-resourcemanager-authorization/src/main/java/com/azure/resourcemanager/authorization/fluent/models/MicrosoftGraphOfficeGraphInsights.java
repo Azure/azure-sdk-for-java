@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an office graph insights.
+ * officeGraphInsights.
  */
 @Fluent
 public final class MicrosoftGraphOfficeGraphInsights extends MicrosoftGraphEntity {
@@ -160,7 +160,6 @@ public final class MicrosoftGraphOfficeGraphInsights extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (shared() != null) {
             shared().forEach(e -> e.validate());
         }

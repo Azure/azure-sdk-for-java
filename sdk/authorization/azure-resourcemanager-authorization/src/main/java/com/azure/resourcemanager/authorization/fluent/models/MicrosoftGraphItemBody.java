@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an item body.
+ * itemBody.
  */
 @Fluent
 public final class MicrosoftGraphItemBody implements JsonSerializable<MicrosoftGraphItemBody> {

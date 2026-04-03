@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a channel membership type.
+ * channelMembershipType.
  */
 public final class MicrosoftGraphChannelMembershipType
     extends ExpandableStringEnum<MicrosoftGraphChannelMembershipType> {

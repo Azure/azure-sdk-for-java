@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a teams template.
+ * teamsTemplate.
  */
 @Fluent
 public final class MicrosoftGraphTeamsTemplate extends MicrosoftGraphEntity {
@@ -64,7 +64,6 @@ public final class MicrosoftGraphTeamsTemplate extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

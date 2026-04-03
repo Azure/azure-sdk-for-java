@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a group setting.
+ * groupSetting.
  */
 @Fluent
 public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
@@ -142,7 +142,6 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (values() != null) {
             values().forEach(e -> e.validate());
         }

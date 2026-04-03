@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a device configuration state.
- * <p>
+ * deviceConfigurationState
+ * 
  * Device Configuration State for a given device.
  */
 @Fluent
@@ -218,7 +218,6 @@ public final class MicrosoftGraphDeviceConfigurationState extends MicrosoftGraph
      */
     @Override
     public void validate() {
-        super.validate();
         if (settingStates() != null) {
             settingStates().forEach(e -> e.validate());
         }

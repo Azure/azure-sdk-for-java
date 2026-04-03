@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents audio.
+ * audio.
  */
 @Fluent
 public final class MicrosoftGraphAudio implements JsonSerializable<MicrosoftGraphAudio> {

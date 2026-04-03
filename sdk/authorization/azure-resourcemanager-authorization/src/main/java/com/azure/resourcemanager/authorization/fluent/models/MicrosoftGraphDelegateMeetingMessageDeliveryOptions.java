@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents delegate meeting message delivery options.
+ * delegateMeetingMessageDeliveryOptions.
  */
 public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
     extends ExpandableStringEnum<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> {

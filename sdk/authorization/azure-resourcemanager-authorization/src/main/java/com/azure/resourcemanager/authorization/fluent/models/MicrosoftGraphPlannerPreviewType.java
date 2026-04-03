@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a planner preview type.
+ * plannerPreviewType.
  */
 public final class MicrosoftGraphPlannerPreviewType extends ExpandableStringEnum<MicrosoftGraphPlannerPreviewType> {
     /**

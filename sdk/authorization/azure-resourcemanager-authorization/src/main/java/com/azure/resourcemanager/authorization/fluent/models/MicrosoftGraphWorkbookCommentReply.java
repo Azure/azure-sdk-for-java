@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook comment reply.
+ * workbookCommentReply.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookCommentReply extends MicrosoftGraphEntity {
@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookCommentReply extends MicrosoftGraphEnti
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

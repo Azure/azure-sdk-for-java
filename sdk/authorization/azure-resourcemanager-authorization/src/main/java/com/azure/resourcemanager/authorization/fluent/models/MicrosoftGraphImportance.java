@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an importance.
+ * importance.
  */
 public final class MicrosoftGraphImportance extends ExpandableStringEnum<MicrosoftGraphImportance> {
     /**

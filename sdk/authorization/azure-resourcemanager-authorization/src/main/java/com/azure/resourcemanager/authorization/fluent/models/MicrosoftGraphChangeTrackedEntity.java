@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a change tracked entity.
+ * changeTrackedEntity.
  */
 @Fluent
 public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
@@ -150,7 +150,6 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }

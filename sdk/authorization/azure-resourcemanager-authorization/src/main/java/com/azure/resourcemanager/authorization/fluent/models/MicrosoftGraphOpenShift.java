@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an open shift.
+ * openShift.
  */
 @Fluent
 public final class MicrosoftGraphOpenShift extends MicrosoftGraphChangeTrackedEntity {
@@ -169,12 +169,14 @@ public final class MicrosoftGraphOpenShift extends MicrosoftGraphChangeTrackedEn
      */
     @Override
     public void validate() {
-        super.validate();
         if (draftOpenShift() != null) {
             draftOpenShift().validate();
         }
         if (sharedOpenShift() != null) {
             sharedOpenShift().validate();
+        }
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
         }
     }
 

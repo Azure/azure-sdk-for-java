@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook chart font.
+ * workbookChartFont.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity {
@@ -214,7 +214,6 @@ public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

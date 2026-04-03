@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a choice column.
+ * choiceColumn.
  */
 @Fluent
 public final class MicrosoftGraphChoiceColumn implements JsonSerializable<MicrosoftGraphChoiceColumn> {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a management agent type.
+ * managementAgentType.
  */
 public final class MicrosoftGraphManagementAgentType extends ExpandableStringEnum<MicrosoftGraphManagementAgentType> {
     /**

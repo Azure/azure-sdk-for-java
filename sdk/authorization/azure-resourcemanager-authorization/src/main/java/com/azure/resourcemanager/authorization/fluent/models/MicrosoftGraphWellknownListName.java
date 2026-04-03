@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a wellknown list name.
+ * wellknownListName.
  */
 public final class MicrosoftGraphWellknownListName extends ExpandableStringEnum<MicrosoftGraphWellknownListName> {
     /**

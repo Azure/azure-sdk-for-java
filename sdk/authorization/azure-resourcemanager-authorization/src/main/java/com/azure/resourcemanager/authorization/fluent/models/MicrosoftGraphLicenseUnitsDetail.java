@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a license units detail.
+ * licenseUnitsDetail.
  */
 @Fluent
 public final class MicrosoftGraphLicenseUnitsDetail implements JsonSerializable<MicrosoftGraphLicenseUnitsDetail> {

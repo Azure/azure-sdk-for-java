@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an attachment.
+ * attachment.
  */
 @Fluent
 public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
@@ -197,7 +197,6 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

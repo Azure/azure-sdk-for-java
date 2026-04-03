@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a mailbox settings.
+ * mailboxSettings.
  */
 @Fluent
 public final class MicrosoftGraphMailboxSettings implements JsonSerializable<MicrosoftGraphMailboxSettings> {

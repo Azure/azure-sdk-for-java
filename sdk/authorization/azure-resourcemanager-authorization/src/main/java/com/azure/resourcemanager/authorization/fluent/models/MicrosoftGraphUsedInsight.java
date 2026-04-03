@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an used insight.
+ * usedInsight.
  */
 @Fluent
 public final class MicrosoftGraphUsedInsight extends MicrosoftGraphEntity {
@@ -165,7 +165,6 @@ public final class MicrosoftGraphUsedInsight extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastUsed() != null) {
             lastUsed().validate();
         }

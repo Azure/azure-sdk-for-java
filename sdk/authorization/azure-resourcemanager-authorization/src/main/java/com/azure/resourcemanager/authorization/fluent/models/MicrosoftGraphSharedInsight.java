@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a shared insight.
+ * sharedInsight.
  */
 @Fluent
 public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
@@ -216,7 +216,6 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastShared() != null) {
             lastShared().validate();
         }

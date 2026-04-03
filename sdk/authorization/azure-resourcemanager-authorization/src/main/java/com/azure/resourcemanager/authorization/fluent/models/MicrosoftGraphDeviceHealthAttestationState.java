@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a device health attestation state.
+ * deviceHealthAttestationState.
  */
 @Fluent
 public final class MicrosoftGraphDeviceHealthAttestationState

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a person or group column.
+ * personOrGroupColumn.
  */
 @Fluent
 public final class MicrosoftGraphPersonOrGroupColumn implements JsonSerializable<MicrosoftGraphPersonOrGroupColumn> {

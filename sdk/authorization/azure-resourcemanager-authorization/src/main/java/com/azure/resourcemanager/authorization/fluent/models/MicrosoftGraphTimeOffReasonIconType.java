@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a time off reason icon type.
+ * timeOffReasonIconType.
  */
 public final class MicrosoftGraphTimeOffReasonIconType
     extends ExpandableStringEnum<MicrosoftGraphTimeOffReasonIconType> {

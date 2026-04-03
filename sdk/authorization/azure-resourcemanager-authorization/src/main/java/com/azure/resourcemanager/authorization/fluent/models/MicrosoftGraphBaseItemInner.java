@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a base item.
+ * baseItem.
  */
 @Fluent
 public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
@@ -342,7 +342,6 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (createdBy() != null) {
             createdBy().validate();
         }

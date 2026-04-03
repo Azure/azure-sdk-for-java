@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an onenote source service.
+ * onenoteSourceService.
  */
 public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEnum<MicrosoftGraphOnenoteSourceService> {
     /**

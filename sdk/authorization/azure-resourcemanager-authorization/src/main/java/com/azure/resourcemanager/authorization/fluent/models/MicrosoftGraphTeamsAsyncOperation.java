@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a teams async operation.
+ * teamsAsyncOperation.
  */
 @Fluent
 public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntity {
@@ -274,7 +274,6 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (error() != null) {
             error().validate();
         }

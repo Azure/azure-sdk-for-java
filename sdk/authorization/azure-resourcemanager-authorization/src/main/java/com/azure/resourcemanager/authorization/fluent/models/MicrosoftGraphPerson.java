@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a person.
+ * person.
  */
 @Fluent
 public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {
@@ -548,7 +548,6 @@ public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (personType() != null) {
             personType().validate();
         }

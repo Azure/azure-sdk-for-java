@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a base item version.
+ * baseItemVersion.
  */
 @Fluent
 public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
@@ -142,7 +142,6 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }

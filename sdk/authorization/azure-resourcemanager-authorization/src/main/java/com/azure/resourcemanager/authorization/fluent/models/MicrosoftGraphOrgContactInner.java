@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an org contact.
- * <p>
+ * orgContact
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -538,7 +538,6 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
      */
     @Override
     public void validate() {
-        super.validate();
         if (addresses() != null) {
             addresses().forEach(e -> e.validate());
         }

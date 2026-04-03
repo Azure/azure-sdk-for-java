@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an image info.
+ * imageInfo.
  */
 @Fluent
 public final class MicrosoftGraphImageInfo implements JsonSerializable<MicrosoftGraphImageInfo> {

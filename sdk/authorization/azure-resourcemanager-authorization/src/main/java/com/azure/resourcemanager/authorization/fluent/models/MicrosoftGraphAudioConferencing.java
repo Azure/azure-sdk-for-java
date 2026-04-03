@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents audio conferencing.
+ * audioConferencing.
  */
 @Fluent
 public final class MicrosoftGraphAudioConferencing implements JsonSerializable<MicrosoftGraphAudioConferencing> {

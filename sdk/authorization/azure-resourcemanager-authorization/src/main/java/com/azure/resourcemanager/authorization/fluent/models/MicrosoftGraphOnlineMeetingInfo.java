@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an online meeting info.
+ * onlineMeetingInfo.
  */
 @Fluent
 public final class MicrosoftGraphOnlineMeetingInfo implements JsonSerializable<MicrosoftGraphOnlineMeetingInfo> {

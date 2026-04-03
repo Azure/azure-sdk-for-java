@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a field value set.
+ * fieldValueSet.
  */
 @Fluent
 public final class MicrosoftGraphFieldValueSet extends MicrosoftGraphEntity {
@@ -64,7 +64,6 @@ public final class MicrosoftGraphFieldValueSet extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

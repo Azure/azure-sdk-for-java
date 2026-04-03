@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an on premises provisioning error.
+ * onPremisesProvisioningError.
  */
 @Fluent
 public final class MicrosoftGraphOnPremisesProvisioningError

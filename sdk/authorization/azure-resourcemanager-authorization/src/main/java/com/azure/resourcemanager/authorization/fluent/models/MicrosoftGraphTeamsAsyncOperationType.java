@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a teams async operation type.
+ * teamsAsyncOperationType.
  */
 public final class MicrosoftGraphTeamsAsyncOperationType
     extends ExpandableStringEnum<MicrosoftGraphTeamsAsyncOperationType> {

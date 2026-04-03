@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook filter.
+ * workbookFilter.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
@@ -89,7 +89,6 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (criteria() != null) {
             criteria().validate();
         }

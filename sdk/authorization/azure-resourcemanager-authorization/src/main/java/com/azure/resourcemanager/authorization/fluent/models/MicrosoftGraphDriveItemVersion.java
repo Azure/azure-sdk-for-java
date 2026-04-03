@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a drive item version.
+ * driveItemVersion.
  */
 @Fluent
 public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItemVersion {
@@ -155,7 +155,12 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
      */
     @Override
     public void validate() {
-        super.validate();
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
+        }
+        if (publication() != null) {
+            publication().validate();
+        }
     }
 
     /**

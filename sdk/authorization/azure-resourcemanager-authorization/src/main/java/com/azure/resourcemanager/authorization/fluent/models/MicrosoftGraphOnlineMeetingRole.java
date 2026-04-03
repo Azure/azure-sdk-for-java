@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an online meeting role.
+ * onlineMeetingRole.
  */
 public final class MicrosoftGraphOnlineMeetingRole extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingRole> {
     /**

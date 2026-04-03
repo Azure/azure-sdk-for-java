@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a sharepoint ids.
+ * sharepointIds.
  */
 @Fluent
 public final class MicrosoftGraphSharepointIds implements JsonSerializable<MicrosoftGraphSharepointIds> {

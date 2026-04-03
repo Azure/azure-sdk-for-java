@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents an alternative security ID.
+ * alternativeSecurityId.
  */
 @Fluent
 public final class MicrosoftGraphAlternativeSecurityId

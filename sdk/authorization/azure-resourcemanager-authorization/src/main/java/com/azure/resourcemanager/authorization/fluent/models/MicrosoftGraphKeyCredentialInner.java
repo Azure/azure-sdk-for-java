@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a key credential.
+ * keyCredential.
  */
 @Fluent
 public final class MicrosoftGraphKeyCredentialInner implements JsonSerializable<MicrosoftGraphKeyCredentialInner> {

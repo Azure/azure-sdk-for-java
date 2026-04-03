@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a drive.
+ * drive.
  */
 @Fluent
 public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
@@ -422,7 +422,6 @@ public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (owner() != null) {
             owner().validate();
         }
@@ -446,6 +445,21 @@ public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
         }
         if (special() != null) {
             special().forEach(e -> e.validate());
+        }
+        if (createdBy() != null) {
+            createdBy().validate();
+        }
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
+        }
+        if (parentReference() != null) {
+            parentReference().validate();
+        }
+        if (createdByUser() != null) {
+            createdByUser().validate();
+        }
+        if (lastModifiedByUser() != null) {
+            lastModifiedByUser().validate();
         }
     }
 

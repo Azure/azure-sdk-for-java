@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a device compliance policy state.
- * <p>
- * Device compliance policy State for a given device.
+ * deviceCompliancePolicyState
+ * 
+ * Device Compliance Policy State for a given device.
  */
 @Fluent
 public final class MicrosoftGraphDeviceCompliancePolicyState extends MicrosoftGraphEntity {
@@ -219,7 +219,6 @@ public final class MicrosoftGraphDeviceCompliancePolicyState extends MicrosoftGr
      */
     @Override
     public void validate() {
-        super.validate();
         if (settingStates() != null) {
             settingStates().forEach(e -> e.validate());
         }

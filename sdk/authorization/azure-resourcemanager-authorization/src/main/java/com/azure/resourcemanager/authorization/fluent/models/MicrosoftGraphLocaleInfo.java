@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a locale info.
+ * localeInfo.
  */
 @Fluent
 public final class MicrosoftGraphLocaleInfo implements JsonSerializable<MicrosoftGraphLocaleInfo> {

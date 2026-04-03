@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an extension property.
- * <p>
+ * extensionProperty
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -220,7 +220,6 @@ public final class MicrosoftGraphExtensionPropertyInner extends MicrosoftGraphDi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a resource reference.
+ * resourceReference.
  */
 @Fluent
 public final class MicrosoftGraphResourceReference implements JsonSerializable<MicrosoftGraphResourceReference> {

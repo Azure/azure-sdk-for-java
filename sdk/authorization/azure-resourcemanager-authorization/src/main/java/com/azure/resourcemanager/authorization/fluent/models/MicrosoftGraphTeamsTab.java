@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a teams tab.
+ * teamsTab.
  */
 @Fluent
 public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
@@ -164,7 +164,6 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (configuration() != null) {
             configuration().validate();
         }

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a certificate authority.
+ * certificateAuthority.
  */
 @Fluent
 public final class MicrosoftGraphCertificateAuthority implements JsonSerializable<MicrosoftGraphCertificateAuthority> {

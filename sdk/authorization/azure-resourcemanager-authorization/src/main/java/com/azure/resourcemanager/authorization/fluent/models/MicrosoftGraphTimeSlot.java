@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a time slot.
+ * timeSlot.
  */
 @Fluent
 public final class MicrosoftGraphTimeSlot implements JsonSerializable<MicrosoftGraphTimeSlot> {

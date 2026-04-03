@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a key value.
+ * keyValue.
  */
 @Fluent
 public final class MicrosoftGraphKeyValue implements JsonSerializable<MicrosoftGraphKeyValue> {

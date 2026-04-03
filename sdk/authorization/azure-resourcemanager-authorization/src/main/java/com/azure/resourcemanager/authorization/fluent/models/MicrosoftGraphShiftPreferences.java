@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a shift preferences.
+ * shiftPreferences.
  */
 @Fluent
 public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTrackedEntity {
@@ -120,9 +120,11 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
      */
     @Override
     public void validate() {
-        super.validate();
         if (availability() != null) {
             availability().forEach(e -> e.validate());
+        }
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
         }
     }
 

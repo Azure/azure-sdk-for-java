@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a message rule predicates.
+ * messageRulePredicates.
  */
 @Fluent
 public final class MicrosoftGraphMessageRulePredicates

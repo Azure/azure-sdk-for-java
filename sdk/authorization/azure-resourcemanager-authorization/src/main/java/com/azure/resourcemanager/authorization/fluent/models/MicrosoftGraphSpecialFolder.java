@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a special folder.
+ * specialFolder.
  */
 @Fluent
 public final class MicrosoftGraphSpecialFolder implements JsonSerializable<MicrosoftGraphSpecialFolder> {

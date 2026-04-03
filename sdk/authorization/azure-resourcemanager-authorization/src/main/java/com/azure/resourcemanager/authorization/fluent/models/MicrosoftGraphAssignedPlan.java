@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents an assigned plan.
+ * assignedPlan.
  */
 @Fluent
 public final class MicrosoftGraphAssignedPlan implements JsonSerializable<MicrosoftGraphAssignedPlan> {

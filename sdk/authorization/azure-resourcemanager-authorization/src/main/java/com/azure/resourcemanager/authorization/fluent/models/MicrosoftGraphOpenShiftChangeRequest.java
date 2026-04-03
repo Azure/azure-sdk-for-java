@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an open shift change request.
+ * openShiftChangeRequest.
  */
 @Fluent
 public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphScheduleChangeRequest {
@@ -191,7 +191,9 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
      */
     @Override
     public void validate() {
-        super.validate();
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
+        }
     }
 
     /**

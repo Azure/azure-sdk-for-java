@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a shift availability.
+ * shiftAvailability.
  */
 @Fluent
 public final class MicrosoftGraphShiftAvailability implements JsonSerializable<MicrosoftGraphShiftAvailability> {

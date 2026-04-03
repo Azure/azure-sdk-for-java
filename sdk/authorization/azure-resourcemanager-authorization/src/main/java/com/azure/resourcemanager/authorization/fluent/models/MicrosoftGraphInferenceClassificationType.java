@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an inference classification type.
+ * inferenceClassificationType.
  */
 public final class MicrosoftGraphInferenceClassificationType
     extends ExpandableStringEnum<MicrosoftGraphInferenceClassificationType> {

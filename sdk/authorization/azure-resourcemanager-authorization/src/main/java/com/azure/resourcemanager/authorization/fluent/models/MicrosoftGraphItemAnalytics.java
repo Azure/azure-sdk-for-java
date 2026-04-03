@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an item analytics.
+ * itemAnalytics.
  */
 @Fluent
 public final class MicrosoftGraphItemAnalytics extends MicrosoftGraphEntity {
@@ -140,7 +140,6 @@ public final class MicrosoftGraphItemAnalytics extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (allTime() != null) {
             allTime().validate();
         }

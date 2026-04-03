@@ -87,7 +87,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClient")
+    @ServiceInterface(name = "MicrosoftGraphClientApplications")
     public interface ApplicationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/applications/{application-id}/createdOnBehalfOf")
@@ -2972,13 +2972,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
+     * Get extensionProperties from applications
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of extensionProperty along with {@link PagedResponse} on successful completion of
+     * @return extensionProperties from applications along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2993,6 +2995,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
+     * Get extensionProperties from applications
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3000,7 +3004,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of extensionProperty along with {@link PagedResponse} on successful completion of
+     * @return extensionProperties from applications along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3016,13 +3020,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
+     * Get homeRealmDiscoveryPolicies from applications
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion of
+     * @return homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3039,6 +3045,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
+     * Get homeRealmDiscoveryPolicies from applications
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3046,7 +3054,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion of
+     * @return homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3062,14 +3070,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
+     * Get ref of homeRealmDiscoveryPolicies from applications
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return ref of homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefHomeRealmDiscoveryPoliciesNextSinglePageAsync(String nextLink) {
@@ -3083,6 +3093,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
+     * Get ref of homeRealmDiscoveryPolicies from applications
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3090,8 +3102,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return ref of homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefHomeRealmDiscoveryPoliciesNextSinglePageAsync(String nextLink,

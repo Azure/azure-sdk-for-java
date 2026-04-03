@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents chat message importance.
+ * chatMessageImportance.
  */
 public final class MicrosoftGraphChatMessageImportance
     extends ExpandableStringEnum<MicrosoftGraphChatMessageImportance> {

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a planner bucket task board task format.
+ * plannerBucketTaskBoardTaskFormat.
  */
 @Fluent
 public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends MicrosoftGraphEntity {
@@ -92,7 +92,6 @@ public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends Micros
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

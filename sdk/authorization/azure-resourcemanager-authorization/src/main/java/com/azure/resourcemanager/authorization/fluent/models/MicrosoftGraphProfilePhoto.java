@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a profile photo.
+ * profilePhoto.
  */
 @Fluent
 public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
@@ -114,7 +114,6 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

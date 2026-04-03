@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a sts policy.
- * <p>
+ * stsPolicy
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -182,7 +182,6 @@ public class MicrosoftGraphStsPolicy extends MicrosoftGraphPolicyBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (appliesTo() != null) {
             appliesTo().forEach(e -> e.validate());
         }

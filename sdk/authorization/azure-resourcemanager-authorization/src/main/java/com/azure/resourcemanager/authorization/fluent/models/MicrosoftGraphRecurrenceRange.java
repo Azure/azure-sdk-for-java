@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a recurrence range.
+ * recurrenceRange.
  */
 @Fluent
 public final class MicrosoftGraphRecurrenceRange implements JsonSerializable<MicrosoftGraphRecurrenceRange> {

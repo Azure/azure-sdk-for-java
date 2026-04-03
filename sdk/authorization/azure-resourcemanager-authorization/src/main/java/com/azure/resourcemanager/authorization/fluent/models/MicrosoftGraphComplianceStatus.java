@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a compliance status.
+ * complianceStatus.
  */
 public final class MicrosoftGraphComplianceStatus extends ExpandableStringEnum<MicrosoftGraphComplianceStatus> {
     /**

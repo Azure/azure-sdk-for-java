@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents an onenote page.
+ * onenotePage.
  */
 @Fluent
 public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntitySchemaObjectModel {
@@ -378,7 +378,6 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (links() != null) {
             links().validate();
         }

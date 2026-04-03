@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a directory object.
- * <p>
+ * directoryObject
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -98,7 +98,6 @@ public class MicrosoftGraphDirectoryObjectInner extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a chat message policy violation.
+ * chatMessagePolicyViolation.
  */
 @Fluent
 public final class MicrosoftGraphChatMessagePolicyViolation

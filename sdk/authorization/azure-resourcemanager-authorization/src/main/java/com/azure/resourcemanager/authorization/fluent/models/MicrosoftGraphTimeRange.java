@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a time range.
+ * timeRange.
  */
 @Fluent
 public final class MicrosoftGraphTimeRange implements JsonSerializable<MicrosoftGraphTimeRange> {

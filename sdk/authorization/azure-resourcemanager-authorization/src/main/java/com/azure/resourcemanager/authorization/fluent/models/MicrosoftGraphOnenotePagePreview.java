@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an onenote page preview.
+ * onenotePagePreview.
  */
 @Fluent
 public final class MicrosoftGraphOnenotePagePreview implements JsonSerializable<MicrosoftGraphOnenotePagePreview> {

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook table column.
+ * workbookTableColumn.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntity {
@@ -166,7 +166,6 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (filter() != null) {
             filter().validate();
         }

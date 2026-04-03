@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a currency column.
+ * currencyColumn.
  */
 @Fluent
 public final class MicrosoftGraphCurrencyColumn implements JsonSerializable<MicrosoftGraphCurrencyColumn> {

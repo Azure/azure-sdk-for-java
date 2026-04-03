@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents an app role.
+ * appRole.
  */
 @Fluent
 public final class MicrosoftGraphAppRole implements JsonSerializable<MicrosoftGraphAppRole> {

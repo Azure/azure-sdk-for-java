@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a directory role.
- * <p>
+ * directoryRole
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -216,7 +216,6 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
      */
     @Override
     public void validate() {
-        super.validate();
         if (members() != null) {
             members().forEach(e -> e.validate());
         }

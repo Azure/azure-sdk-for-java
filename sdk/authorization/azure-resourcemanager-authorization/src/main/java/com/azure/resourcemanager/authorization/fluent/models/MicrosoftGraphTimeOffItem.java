@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a time off item.
+ * timeOffItem.
  */
 @Fluent
 public final class MicrosoftGraphTimeOffItem extends MicrosoftGraphScheduleEntity {
@@ -110,7 +110,6 @@ public final class MicrosoftGraphTimeOffItem extends MicrosoftGraphScheduleEntit
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

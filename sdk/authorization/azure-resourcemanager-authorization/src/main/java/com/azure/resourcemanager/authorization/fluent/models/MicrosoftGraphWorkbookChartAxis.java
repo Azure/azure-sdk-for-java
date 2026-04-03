@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook chart axis.
+ * workbookChartAxis.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity {
@@ -264,7 +264,6 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

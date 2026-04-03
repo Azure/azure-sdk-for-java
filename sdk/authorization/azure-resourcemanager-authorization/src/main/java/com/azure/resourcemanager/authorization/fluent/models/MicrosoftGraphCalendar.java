@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a calendar.
+ * calendar.
  */
 @Fluent
 public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
@@ -544,7 +544,6 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (owner() != null) {
             owner().validate();
         }

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a website.
+ * website.
  */
 @Fluent
 public final class MicrosoftGraphWebsite implements JsonSerializable<MicrosoftGraphWebsite> {

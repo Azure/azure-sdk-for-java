@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an onenote patch action type.
+ * onenotePatchActionType.
  */
 public final class MicrosoftGraphOnenotePatchActionType
     extends ExpandableStringEnum<MicrosoftGraphOnenotePatchActionType> {

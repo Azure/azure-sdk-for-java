@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a device.
- * <p>
+ * device
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -737,7 +737,6 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      */
     @Override
     public void validate() {
-        super.validate();
         if (alternativeSecurityIds() != null) {
             alternativeSecurityIds().forEach(e -> e.validate());
         }

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook chart legend.
+ * workbookChartLegend.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntity {
@@ -169,7 +169,6 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

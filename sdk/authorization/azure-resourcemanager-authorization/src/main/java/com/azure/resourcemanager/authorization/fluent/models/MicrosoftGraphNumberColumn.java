@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a number column.
+ * numberColumn.
  */
 @Fluent
 public final class MicrosoftGraphNumberColumn implements JsonSerializable<MicrosoftGraphNumberColumn> {

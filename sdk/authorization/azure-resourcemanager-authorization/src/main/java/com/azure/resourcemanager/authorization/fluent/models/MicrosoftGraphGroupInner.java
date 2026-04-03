@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a group.
- * <p>
+ * group
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -1849,7 +1849,6 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      */
     @Override
     public void validate() {
-        super.validate();
         if (assignedLabels() != null) {
             assignedLabels().forEach(e -> e.validate());
         }

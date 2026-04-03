@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a conversation thread.
+ * conversationThread.
  */
 @Fluent
 public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity {
@@ -303,7 +303,6 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (ccRecipients() != null) {
             ccRecipients().forEach(e -> e.validate());
         }

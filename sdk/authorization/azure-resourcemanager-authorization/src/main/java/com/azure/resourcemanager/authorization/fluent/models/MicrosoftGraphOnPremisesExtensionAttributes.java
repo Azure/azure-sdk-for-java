@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an on premises extension attributes.
+ * onPremisesExtensionAttributes.
  */
 @Fluent
 public final class MicrosoftGraphOnPremisesExtensionAttributes

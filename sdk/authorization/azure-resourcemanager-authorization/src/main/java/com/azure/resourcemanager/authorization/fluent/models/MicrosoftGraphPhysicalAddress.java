@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a physical address.
+ * physicalAddress.
  */
 @Fluent
 public final class MicrosoftGraphPhysicalAddress implements JsonSerializable<MicrosoftGraphPhysicalAddress> {

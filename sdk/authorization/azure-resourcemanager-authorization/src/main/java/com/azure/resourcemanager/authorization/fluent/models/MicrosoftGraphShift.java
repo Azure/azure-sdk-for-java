@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a shift.
+ * shift.
  */
 @Fluent
 public final class MicrosoftGraphShift extends MicrosoftGraphChangeTrackedEntity {
@@ -194,12 +194,14 @@ public final class MicrosoftGraphShift extends MicrosoftGraphChangeTrackedEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (draftShift() != null) {
             draftShift().validate();
         }
         if (sharedShift() != null) {
             sharedShift().validate();
+        }
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
         }
     }
 

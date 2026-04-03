@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an onenote patch content command.
+ * onenotePatchContentCommand.
  */
 @Fluent
 public final class MicrosoftGraphOnenotePatchContentCommand

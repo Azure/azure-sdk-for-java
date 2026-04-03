@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a domain state.
+ * domainState.
  */
 @Fluent
 public final class MicrosoftGraphDomainState implements JsonSerializable<MicrosoftGraphDomainState> {

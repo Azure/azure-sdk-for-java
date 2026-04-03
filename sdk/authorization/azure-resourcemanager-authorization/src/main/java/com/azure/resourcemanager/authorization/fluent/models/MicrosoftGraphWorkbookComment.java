@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a workbook comment.
+ * workbookComment.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
@@ -140,7 +140,6 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (replies() != null) {
             replies().forEach(e -> e.validate());
         }

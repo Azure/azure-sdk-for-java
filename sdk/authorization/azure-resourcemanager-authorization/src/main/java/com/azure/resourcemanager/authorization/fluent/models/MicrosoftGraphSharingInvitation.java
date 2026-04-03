@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a sharing invitation.
+ * sharingInvitation.
  */
 @Fluent
 public final class MicrosoftGraphSharingInvitation implements JsonSerializable<MicrosoftGraphSharingInvitation> {

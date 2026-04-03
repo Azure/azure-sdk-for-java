@@ -17,8 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a device action result.
- * <p>
+ * deviceActionResult
+ * 
  * Device action result.
  */
 @Fluent

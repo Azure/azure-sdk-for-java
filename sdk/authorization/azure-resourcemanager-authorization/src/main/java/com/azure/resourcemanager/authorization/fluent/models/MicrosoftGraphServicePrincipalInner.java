@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a service principal.
- * <p>
+ * servicePrincipal
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -1304,7 +1304,6 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      */
     @Override
     public void validate() {
-        super.validate();
         if (addIns() != null) {
             addIns().forEach(e -> e.validate());
         }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an open shift item.
+ * openShiftItem.
  */
 @Fluent
 public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
@@ -138,7 +138,9 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (activities() != null) {
+            activities().forEach(e -> e.validate());
+        }
     }
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a mdm authority.
+ * mdmAuthority.
  */
 public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<MicrosoftGraphMdmAuthority> {
     /**

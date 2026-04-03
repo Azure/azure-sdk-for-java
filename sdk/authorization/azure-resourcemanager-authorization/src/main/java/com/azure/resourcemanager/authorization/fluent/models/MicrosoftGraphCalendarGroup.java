@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a calendar group.
+ * calendarGroup.
  */
 @Fluent
 public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
@@ -172,7 +172,6 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (calendars() != null) {
             calendars().forEach(e -> e.validate());
         }

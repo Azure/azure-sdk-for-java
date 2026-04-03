@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook chart title format.
+ * workbookChartTitleFormat.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraphEntity {
@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
      */
     @Override
     public void validate() {
-        super.validate();
         if (fill() != null) {
             fill().validate();
         }

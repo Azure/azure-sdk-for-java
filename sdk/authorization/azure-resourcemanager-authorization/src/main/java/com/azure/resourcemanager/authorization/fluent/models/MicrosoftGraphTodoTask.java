@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a todo task.
+ * todoTask.
  */
 @Fluent
 public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
@@ -436,7 +436,6 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (body() != null) {
             body().validate();
         }

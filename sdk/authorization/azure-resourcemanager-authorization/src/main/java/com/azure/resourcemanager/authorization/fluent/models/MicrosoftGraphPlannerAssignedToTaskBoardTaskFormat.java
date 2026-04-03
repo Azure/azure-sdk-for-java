@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a planner assigned to task board task format.
+ * plannerAssignedToTaskBoardTaskFormat.
  */
 @Fluent
 public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends MicrosoftGraphEntity {
@@ -122,7 +122,6 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

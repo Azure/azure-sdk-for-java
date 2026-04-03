@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a required resource access.
+ * requiredResourceAccess.
  */
 @Fluent
 public final class MicrosoftGraphRequiredResourceAccess

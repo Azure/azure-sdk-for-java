@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a lookup column.
+ * lookupColumn.
  */
 @Fluent
 public final class MicrosoftGraphLookupColumn implements JsonSerializable<MicrosoftGraphLookupColumn> {

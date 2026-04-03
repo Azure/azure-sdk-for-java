@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a web application.
+ * webApplication.
  */
 @Fluent
 public final class MicrosoftGraphWebApplication implements JsonSerializable<MicrosoftGraphWebApplication> {

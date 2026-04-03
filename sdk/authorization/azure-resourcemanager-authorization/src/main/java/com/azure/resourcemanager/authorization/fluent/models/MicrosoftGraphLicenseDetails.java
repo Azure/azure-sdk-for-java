@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a license details.
+ * licenseDetails.
  */
 @Fluent
 public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
@@ -147,7 +147,6 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (servicePlans() != null) {
             servicePlans().forEach(e -> e.validate());
         }

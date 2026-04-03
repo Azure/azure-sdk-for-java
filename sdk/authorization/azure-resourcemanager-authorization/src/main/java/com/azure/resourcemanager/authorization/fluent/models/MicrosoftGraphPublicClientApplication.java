@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a public client application.
+ * publicClientApplication.
  */
 @Fluent
 public final class MicrosoftGraphPublicClientApplication

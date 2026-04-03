@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a planner bucket.
+ * plannerBucket.
  */
 @Fluent
 public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
@@ -167,7 +167,6 @@ public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (tasks() != null) {
             tasks().forEach(e -> e.validate());
         }

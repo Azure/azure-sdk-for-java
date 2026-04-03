@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a file system info.
+ * fileSystemInfo.
  */
 @Fluent
 public final class MicrosoftGraphFileSystemInfo implements JsonSerializable<MicrosoftGraphFileSystemInfo> {

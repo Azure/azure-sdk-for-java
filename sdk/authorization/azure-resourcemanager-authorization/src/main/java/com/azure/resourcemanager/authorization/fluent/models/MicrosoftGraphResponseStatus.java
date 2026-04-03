@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a response status.
+ * responseStatus.
  */
 @Fluent
 public final class MicrosoftGraphResponseStatus implements JsonSerializable<MicrosoftGraphResponseStatus> {

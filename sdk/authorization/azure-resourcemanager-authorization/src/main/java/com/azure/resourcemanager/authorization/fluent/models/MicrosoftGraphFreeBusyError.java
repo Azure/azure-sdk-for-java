@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a free busy error.
+ * freeBusyError.
  */
 @Fluent
 public final class MicrosoftGraphFreeBusyError implements JsonSerializable<MicrosoftGraphFreeBusyError> {

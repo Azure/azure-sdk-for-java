@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a scored email address.
+ * scoredEmailAddress.
  */
 @Fluent
 public final class MicrosoftGraphScoredEmailAddress implements JsonSerializable<MicrosoftGraphScoredEmailAddress> {

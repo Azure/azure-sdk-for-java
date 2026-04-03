@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a provisioned plan.
+ * provisionedPlan.
  */
 @Fluent
 public final class MicrosoftGraphProvisionedPlan implements JsonSerializable<MicrosoftGraphProvisionedPlan> {

@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a pending content update.
+ * pendingContentUpdate.
  */
 @Fluent
 public final class MicrosoftGraphPendingContentUpdate implements JsonSerializable<MicrosoftGraphPendingContentUpdate> {

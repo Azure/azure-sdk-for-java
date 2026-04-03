@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a message action flag.
+ * messageActionFlag.
  */
 public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<MicrosoftGraphMessageActionFlag> {
     /**

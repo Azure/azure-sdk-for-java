@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook functions.
+ * workbookFunctions.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookFunctions extends MicrosoftGraphEntity {
@@ -64,7 +64,6 @@ public final class MicrosoftGraphWorkbookFunctions extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

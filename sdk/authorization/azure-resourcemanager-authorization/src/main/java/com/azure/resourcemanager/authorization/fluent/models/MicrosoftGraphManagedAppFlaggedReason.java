@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a managed app flagged reason.
+ * managedAppFlaggedReason.
  */
 public final class MicrosoftGraphManagedAppFlaggedReason
     extends ExpandableStringEnum<MicrosoftGraphManagedAppFlaggedReason> {

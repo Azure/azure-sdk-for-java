@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an automatic replies setting.
+ * automaticRepliesSetting.
  */
 @Fluent
 public final class MicrosoftGraphAutomaticRepliesSetting

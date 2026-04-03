@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a publication facet.
+ * publicationFacet.
  */
 @Fluent
 public final class MicrosoftGraphPublicationFacet implements JsonSerializable<MicrosoftGraphPublicationFacet> {

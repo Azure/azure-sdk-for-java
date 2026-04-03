@@ -18,8 +18,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents an app role assignment.
- * <p>
+ * appRoleAssignment
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -286,7 +286,6 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

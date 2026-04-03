@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a message rule actions.
+ * messageRuleActions.
  */
 @Fluent
 public final class MicrosoftGraphMessageRuleActions implements JsonSerializable<MicrosoftGraphMessageRuleActions> {

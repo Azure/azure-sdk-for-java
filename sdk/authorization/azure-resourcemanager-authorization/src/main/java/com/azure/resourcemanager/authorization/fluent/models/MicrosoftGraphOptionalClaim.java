@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an optional claim.
+ * optionalClaim.
  */
 @Fluent
 public final class MicrosoftGraphOptionalClaim implements JsonSerializable<MicrosoftGraphOptionalClaim> {

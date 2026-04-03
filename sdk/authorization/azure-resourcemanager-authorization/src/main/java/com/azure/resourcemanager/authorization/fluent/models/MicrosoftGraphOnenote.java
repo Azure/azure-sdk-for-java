@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an onenote.
+ * onenote.
  */
 @Fluent
 public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
@@ -231,7 +231,6 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (notebooks() != null) {
             notebooks().forEach(e -> e.validate());
         }

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a visual info.
+ * visualInfo.
  */
 @Fluent
 public final class MicrosoftGraphVisualInfo implements JsonSerializable<MicrosoftGraphVisualInfo> {

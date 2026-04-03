@@ -18,8 +18,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a contract.
- * <p>
+ * contract
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -210,7 +210,6 @@ public final class MicrosoftGraphContract extends MicrosoftGraphDirectoryObjectI
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

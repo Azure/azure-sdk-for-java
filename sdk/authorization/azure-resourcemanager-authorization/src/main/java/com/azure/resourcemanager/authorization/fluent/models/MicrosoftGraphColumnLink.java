@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a column link.
+ * columnLink.
  */
 @Fluent
 public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
@@ -89,7 +89,6 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a list item.
+ * listItem.
  */
 @Fluent
 public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
@@ -317,7 +317,6 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (contentType() != null) {
             contentType().validate();
         }
@@ -335,6 +334,21 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
         }
         if (versions() != null) {
             versions().forEach(e -> e.validate());
+        }
+        if (createdBy() != null) {
+            createdBy().validate();
+        }
+        if (lastModifiedBy() != null) {
+            lastModifiedBy().validate();
+        }
+        if (parentReference() != null) {
+            parentReference().validate();
+        }
+        if (createdByUser() != null) {
+            createdByUser().validate();
+        }
+        if (lastModifiedByUser() != null) {
+            lastModifiedByUser().validate();
         }
     }
 

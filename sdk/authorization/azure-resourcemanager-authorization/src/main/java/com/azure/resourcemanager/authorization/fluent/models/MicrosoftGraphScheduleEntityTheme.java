@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a schedule entity theme.
+ * scheduleEntityTheme.
  */
 public final class MicrosoftGraphScheduleEntityTheme extends ExpandableStringEnum<MicrosoftGraphScheduleEntityTheme> {
     /**

@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a managed app registration.
- * <p>
+ * managedAppRegistration
+ * 
  * The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
  */
 @Fluent
@@ -457,7 +457,6 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
      */
     @Override
     public void validate() {
-        super.validate();
         if (appliedPolicies() != null) {
             appliedPolicies().forEach(e -> e.validate());
         }

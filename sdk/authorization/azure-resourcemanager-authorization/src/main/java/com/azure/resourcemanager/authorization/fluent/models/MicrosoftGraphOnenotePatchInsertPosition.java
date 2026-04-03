@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an onenote patch insert position.
+ * onenotePatchInsertPosition.
  */
 public final class MicrosoftGraphOnenotePatchInsertPosition
     extends ExpandableStringEnum<MicrosoftGraphOnenotePatchInsertPosition> {

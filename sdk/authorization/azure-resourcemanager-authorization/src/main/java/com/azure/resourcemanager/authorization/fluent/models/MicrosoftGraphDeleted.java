@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a deleted item.
+ * deleted.
  */
 @Fluent
 public final class MicrosoftGraphDeleted implements JsonSerializable<MicrosoftGraphDeleted> {

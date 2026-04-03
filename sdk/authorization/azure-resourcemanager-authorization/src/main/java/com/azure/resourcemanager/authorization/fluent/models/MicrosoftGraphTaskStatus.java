@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a task status.
+ * taskStatus.
  */
 public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<MicrosoftGraphTaskStatus> {
     /**

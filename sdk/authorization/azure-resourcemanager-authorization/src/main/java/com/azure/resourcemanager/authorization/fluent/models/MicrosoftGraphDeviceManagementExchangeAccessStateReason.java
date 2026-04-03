@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a device management exchange access state reason.
+ * deviceManagementExchangeAccessStateReason.
  */
 public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessStateReason> {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a team specialization.
+ * teamSpecialization.
  */
 public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum<MicrosoftGraphTeamSpecialization> {
     /**

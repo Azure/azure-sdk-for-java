@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents a resource access.
+ * resourceAccess.
  */
 @Fluent
 public final class MicrosoftGraphResourceAccess implements JsonSerializable<MicrosoftGraphResourceAccess> {

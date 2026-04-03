@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a workbook table.
+ * workbookTable.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
@@ -440,7 +440,6 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }

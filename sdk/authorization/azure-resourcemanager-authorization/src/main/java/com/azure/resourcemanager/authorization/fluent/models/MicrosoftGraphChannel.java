@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a channel.
+ * channel.
  */
 @Fluent
 public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
@@ -327,7 +327,6 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (filesFolder() != null) {
             filesFolder().validate();
         }

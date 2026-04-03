@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a workbook worksheet protection.
+ * workbookWorksheetProtection.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGraphEntity {
@@ -116,7 +116,6 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
      */
     @Override
     public void validate() {
-        super.validate();
         if (options() != null) {
             options().validate();
         }

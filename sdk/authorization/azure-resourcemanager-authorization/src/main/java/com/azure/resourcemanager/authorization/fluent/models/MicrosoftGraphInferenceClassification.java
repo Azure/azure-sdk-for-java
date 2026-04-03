@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an inference classification.
+ * inferenceClassification.
  */
 @Fluent
 public final class MicrosoftGraphInferenceClassification extends MicrosoftGraphEntity {
@@ -94,7 +94,6 @@ public final class MicrosoftGraphInferenceClassification extends MicrosoftGraphE
      */
     @Override
     public void validate() {
-        super.validate();
         if (overrides() != null) {
             overrides().forEach(e -> e.validate());
         }

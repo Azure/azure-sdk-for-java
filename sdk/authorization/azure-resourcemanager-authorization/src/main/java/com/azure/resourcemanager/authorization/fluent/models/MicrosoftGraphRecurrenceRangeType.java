@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a recurrence range type.
+ * recurrenceRangeType.
  */
 public final class MicrosoftGraphRecurrenceRangeType extends ExpandableStringEnum<MicrosoftGraphRecurrenceRangeType> {
     /**

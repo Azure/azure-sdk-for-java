@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an item activity stat.
+ * itemActivityStat.
  */
 @Fluent
 public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
@@ -318,7 +318,6 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (access() != null) {
             access().validate();
         }

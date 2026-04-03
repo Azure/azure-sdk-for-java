@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a policy platform type.
+ * policyPlatformType.
  */
 public final class MicrosoftGraphPolicyPlatformType extends ExpandableStringEnum<MicrosoftGraphPolicyPlatformType> {
     /**

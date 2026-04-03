@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an attendee base.
+ * attendeeBase.
  */
 @Fluent
 public class MicrosoftGraphAttendeeBase extends MicrosoftGraphRecipient {
@@ -89,7 +89,9 @@ public class MicrosoftGraphAttendeeBase extends MicrosoftGraphRecipient {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (emailAddress() != null) {
+            emailAddress().validate();
+        }
     }
 
     /**

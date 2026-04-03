@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a managed device.
- * <p>
+ * managedDevice
+ * 
  * Devices that are managed or pre-enrolled through Intune.
  */
 @Fluent
@@ -1330,7 +1330,6 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (configurationManagerClientEnabledFeatures() != null) {
             configurationManagerClientEnabledFeatures().validate();
         }

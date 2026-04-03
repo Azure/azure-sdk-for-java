@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a group lifecycle policy.
+ * groupLifecyclePolicy.
  */
 @Fluent
 public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEntity {
@@ -147,7 +147,6 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

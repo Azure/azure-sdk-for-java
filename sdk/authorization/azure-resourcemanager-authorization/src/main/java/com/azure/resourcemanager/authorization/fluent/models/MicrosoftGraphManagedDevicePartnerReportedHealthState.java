@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a managed device partner reported health state.
+ * managedDevicePartnerReportedHealthState.
  */
 public final class MicrosoftGraphManagedDevicePartnerReportedHealthState
     extends ExpandableStringEnum<MicrosoftGraphManagedDevicePartnerReportedHealthState> {

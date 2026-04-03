@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an user scope teams app installation.
+ * userScopeTeamsAppInstallation.
  */
 @Fluent
 public final class MicrosoftGraphUserScopeTeamsAppInstallation extends MicrosoftGraphTeamsAppInstallation {
@@ -109,9 +109,14 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
      */
     @Override
     public void validate() {
-        super.validate();
         if (chat() != null) {
             chat().validate();
+        }
+        if (teamsApp() != null) {
+            teamsApp().validate();
+        }
+        if (teamsAppDefinition() != null) {
+            teamsAppDefinition().validate();
         }
     }
 

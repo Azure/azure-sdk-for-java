@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an external link.
+ * externalLink.
  */
 @Fluent
 public final class MicrosoftGraphExternalLink implements JsonSerializable<MicrosoftGraphExternalLink> {

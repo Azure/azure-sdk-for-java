@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a giphy rating type.
+ * giphyRatingType.
  */
 public final class MicrosoftGraphGiphyRatingType extends ExpandableStringEnum<MicrosoftGraphGiphyRatingType> {
     /**

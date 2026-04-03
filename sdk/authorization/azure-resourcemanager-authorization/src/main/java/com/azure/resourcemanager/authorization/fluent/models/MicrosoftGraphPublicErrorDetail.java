@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a public error detail.
+ * publicErrorDetail.
  */
 @Fluent
 public final class MicrosoftGraphPublicErrorDetail implements JsonSerializable<MicrosoftGraphPublicErrorDetail> {

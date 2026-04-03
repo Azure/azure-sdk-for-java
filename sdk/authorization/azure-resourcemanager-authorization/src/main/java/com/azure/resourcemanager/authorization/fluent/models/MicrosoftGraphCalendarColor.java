@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a calendar color.
+ * calendarColor.
  */
 public final class MicrosoftGraphCalendarColor extends ExpandableStringEnum<MicrosoftGraphCalendarColor> {
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an operation status.
+ * operationStatus.
  */
 public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<MicrosoftGraphOperationStatus> {
     /**

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a chat message.
+ * chatMessage.
  */
 @Fluent
 public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
@@ -586,7 +586,6 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (attachments() != null) {
             attachments().forEach(e -> e.validate());
         }

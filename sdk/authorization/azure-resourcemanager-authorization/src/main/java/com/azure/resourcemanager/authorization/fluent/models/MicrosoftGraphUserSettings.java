@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an user settings.
+ * userSettings.
  */
 @Fluent
 public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
@@ -145,7 +145,6 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (shiftPreferences() != null) {
             shiftPreferences().validate();
         }

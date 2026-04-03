@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a schedule entity.
+ * scheduleEntity.
  */
 @Fluent
 public class MicrosoftGraphScheduleEntity implements JsonSerializable<MicrosoftGraphScheduleEntity> {

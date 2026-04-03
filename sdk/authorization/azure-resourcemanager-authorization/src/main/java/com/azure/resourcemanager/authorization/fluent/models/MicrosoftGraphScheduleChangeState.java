@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a schedule change state.
+ * scheduleChangeState.
  */
 public final class MicrosoftGraphScheduleChangeState extends ExpandableStringEnum<MicrosoftGraphScheduleChangeState> {
     /**

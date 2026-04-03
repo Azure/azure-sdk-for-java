@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a directory role template.
- * <p>
+ * directoryRoleTemplate
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -132,7 +132,6 @@ public final class MicrosoftGraphDirectoryRoleTemplate extends MicrosoftGraphDir
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

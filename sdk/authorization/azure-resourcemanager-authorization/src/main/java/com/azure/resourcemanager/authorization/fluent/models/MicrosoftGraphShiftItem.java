@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a shift item.
+ * shiftItem.
  */
 @Fluent
 public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
@@ -164,7 +164,6 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (activities() != null) {
             activities().forEach(e -> e.validate());
         }

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a workbook chart.
+ * workbookChart.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
@@ -368,7 +368,6 @@ public final class MicrosoftGraphWorkbookChart extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (axes() != null) {
             axes().validate();
         }

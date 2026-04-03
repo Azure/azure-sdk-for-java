@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents an attendee type.
+ * attendeeType.
  */
 public final class MicrosoftGraphAttendeeType extends ExpandableStringEnum<MicrosoftGraphAttendeeType> {
     /**

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a followup flag.
+ * followupFlag.
  */
 @Fluent
 public final class MicrosoftGraphFollowupFlag implements JsonSerializable<MicrosoftGraphFollowupFlag> {

@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a subscription.
+ * subscription.
  */
 @Fluent
 public final class MicrosoftGraphSubscription extends MicrosoftGraphEntity {
@@ -439,7 +439,6 @@ public final class MicrosoftGraphSubscription extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

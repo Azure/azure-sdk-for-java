@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a claims mapping policy.
- * <p>
+ * claimsMappingPolicy
+ * 
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -128,7 +128,9 @@ public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPo
      */
     @Override
     public void validate() {
-        super.validate();
+        if (appliesTo() != null) {
+            appliesTo().forEach(e -> e.validate());
+        }
     }
 
     /**

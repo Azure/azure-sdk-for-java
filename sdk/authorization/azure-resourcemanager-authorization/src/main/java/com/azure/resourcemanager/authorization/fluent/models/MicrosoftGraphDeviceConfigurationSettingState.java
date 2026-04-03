@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a device configuration setting state.
- * <p>
+ * deviceConfigurationSettingState
+ * 
  * Device Configuration Setting State for a given device.
  */
 @Fluent

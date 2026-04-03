@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents an internet message header.
+ * internetMessageHeader.
  */
 @Fluent
 public final class MicrosoftGraphInternetMessageHeader

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a schedule information.
+ * scheduleInformation.
  */
 @Fluent
 public final class MicrosoftGraphScheduleInformation implements JsonSerializable<MicrosoftGraphScheduleInformation> {

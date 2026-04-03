@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a search result.
+ * searchResult.
  */
 @Fluent
 public final class MicrosoftGraphSearchResult implements JsonSerializable<MicrosoftGraphSearchResult> {

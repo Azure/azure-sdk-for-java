@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a chat message attachment.
+ * chatMessageAttachment.
  */
 @Fluent
 public final class MicrosoftGraphChatMessageAttachment

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a package.
+ * package.
  */
 @Fluent
 public final class MicrosoftGraphPackage implements JsonSerializable<MicrosoftGraphPackage> {

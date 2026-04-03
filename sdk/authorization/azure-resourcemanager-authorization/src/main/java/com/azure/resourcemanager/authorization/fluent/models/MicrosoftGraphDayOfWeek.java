@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Represents a day of week.
+ * dayOfWeek.
  */
 public final class MicrosoftGraphDayOfWeek extends ExpandableStringEnum<MicrosoftGraphDayOfWeek> {
     /**

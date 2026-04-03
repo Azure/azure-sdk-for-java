@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Represents a person type.
+ * personType.
  */
 @Fluent
 public final class MicrosoftGraphPersonType implements JsonSerializable<MicrosoftGraphPersonType> {
