@@ -166,6 +166,25 @@ public class ReactorNettyClient implements HttpClient {
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
+
+                    // Install exception handler on the HTTP/2 parent (TCP) channel.
+                    // In H2, doOnConnected fires for stream (child) channels — channel.parent()
+                    // is the TCP connection. The parent pipeline has no ChannelOperationsHandler
+                    // (unlike H1.1), so TCP-level exceptions (RST, broken pipe) propagate to
+                    // Netty's TailContext and get logged as WARN. This handler matches H1.1
+                    // behavior by consuming exceptions at DEBUG level.
+                    Channel parent = connection.channel().parent();
+                    if (parent != null
+                        && parent.pipeline().get(Http2ParentChannelExceptionHandler.HANDLER_NAME) == null) {
+
+                        try {
+                            parent.pipeline().addLast(
+                                Http2ParentChannelExceptionHandler.HANDLER_NAME,
+                                new Http2ParentChannelExceptionHandler());
+                        } catch (IllegalArgumentException ignored) {
+                            // Duplicate handler — already installed by a concurrent stream
+                        }
+                    }
                 }));
         }
     }
