@@ -1040,6 +1040,82 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     Exceptions.isResourceExistsException(result.getStatusCode) should be(false)
   }
 
+  "getReconstructionActionForStatus for ItemAppend" should
+    "map 409 to Read" in {
+      val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+        ItemWriteStrategy.ItemAppend,
+        409,
+        0)
+      action should be(Some(TransactionalBulkWriter.ReconstructionAction.Read))
+    }
+
+  it should "not reconstruct 404 for ItemAppend" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemAppend,
+      404,
+      0)
+    action should be(None)
+  }
+
+  "getReconstructionActionForStatus for ItemDelete" should
+    "map 404/0 to Remove" in {
+      val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+        ItemWriteStrategy.ItemDelete,
+        404,
+        0)
+      action should be(Some(TransactionalBulkWriter.ReconstructionAction.Remove))
+    }
+
+  it should "not reconstruct transient 404/1002 for ItemDelete" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemDelete,
+      404,
+      1002)
+    action should be(None)
+  }
+
+  "getReconstructionActionForStatus for ItemDeleteIfNotModified" should
+    "map 404/0 to Remove" in {
+      val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+        ItemWriteStrategy.ItemDeleteIfNotModified,
+        404,
+        0)
+      action should be(Some(TransactionalBulkWriter.ReconstructionAction.Remove))
+    }
+
+  it should "map 412 to Remove" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      412,
+      0)
+    action should be(Some(TransactionalBulkWriter.ReconstructionAction.Remove))
+  }
+
+  it should "not reconstruct transient 404/1002 for ItemDeleteIfNotModified" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      404,
+      1002)
+    action should be(None)
+  }
+
+  "getReconstructionActionForStatus for ItemPatch" should
+    "not reconstruct 404/0" in {
+      val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+        ItemWriteStrategy.ItemPatch,
+        404,
+        0)
+      action should be(None)
+    }
+
+  it should "not reconstruct 412" in {
+    val action = TransactionalBulkWriter.getReconstructionActionForStatus(
+      ItemWriteStrategy.ItemPatch,
+      412,
+      0)
+    action should be(None)
+  }
+
   "getReconstructionActionForStatus for ItemOverwriteIfNotModified" should
     "map 409 to Read" in {
       val action = TransactionalBulkWriter.getReconstructionActionForStatus(
@@ -1107,6 +1183,50 @@ class TransactionalBulkWriterSpec extends UnitSpec {
       404,
       1002)
     action should be(None)
+  }
+
+  "getFallbackReconstructionDecision" should "select unique overwrite-if-not-modified 412 candidate" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      412,
+      0,
+      Seq((0, false), (1, true)),
+      Set.empty)
+
+    decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Read))
+  }
+
+  it should "return None when fallback candidates are ambiguous" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      404,
+      0,
+      Seq((0, false), (1, true)),
+      Set.empty)
+
+    decision should be(None)
+  }
+
+  it should "ignore already reconstructed indices when selecting fallback candidate" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      409,
+      0,
+      Seq((0, false), (1, false), (2, true)),
+      Set(0))
+
+    decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Read))
+  }
+
+  it should "not use fallback for unsupported strategies" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemAppend,
+      409,
+      0,
+      Seq((0, false)),
+      Set.empty)
+
+    decision should be(None)
   }
 
   // =====================================================

@@ -249,43 +249,11 @@ private class TransactionalBulkWriter
         } else {
           val cosmosBatch = CosmosBatch.createCosmosBatch(bulkItemsList.get(0).partitionKey)
           bulkItemsList.forEach(bulkItem => {
-            writeConfig.itemWriteStrategy match {
-              case ItemWriteStrategy.ItemOverwrite =>
-                cosmosBatch.upsertItemOperation(bulkItem.objectNode)
-
-              case ItemWriteStrategy.ItemAppend =>
-                cosmosBatch.createItemOperation(bulkItem.objectNode)
-
-              case ItemWriteStrategy.ItemDelete =>
-                cosmosBatch.deleteItemOperation(bulkItem.itemId)
-
-              case ItemWriteStrategy.ItemDeleteIfNotModified =>
-                bulkItem.eTag match {
-                  case Some(etag) =>
-                    val requestOptions = new CosmosBatchItemRequestOptions()
-                    requestOptions.setIfMatchETag(etag)
-                    cosmosBatch.deleteItemOperation(bulkItem.itemId, requestOptions)
-                  case None =>
-                    cosmosBatch.deleteItemOperation(bulkItem.itemId)
-                }
-
-              case ItemWriteStrategy.ItemOverwriteIfNotModified =>
-                bulkItem.eTag match {
-                  case Some(etag) =>
-                    val requestOptions = new CosmosBatchItemRequestOptions()
-                    requestOptions.setIfMatchETag(etag)
-                    cosmosBatch.replaceItemOperation(bulkItem.itemId, bulkItem.objectNode, requestOptions)
-                  case None =>
-                    cosmosBatch.createItemOperation(bulkItem.objectNode)
-                }
-
-              case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
-                addPatchItemOperation(cosmosBatch, bulkItem)
-
-              case _ =>
-                throw new IllegalStateException(
-                  s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional")
-            }
+            addOriginalOperationToBatch(
+              cosmosBatch,
+              bulkItem,
+              unsupportedStrategyMessage =
+                s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional")
           })
 
           scheduleBatch(cosmosBatch, bulkItemsList.asScala.toList)
@@ -342,7 +310,19 @@ private class TransactionalBulkWriter
           if (activeBatchOperationOpt.isDefined || pendingBatchOperationRetriesOpt.isDefined) {
             val batchOperation = activeBatchOperationOpt.orElse(pendingBatchOperationRetriesOpt).get
 
-            if (resp.getException != null) {
+            if (resp.getResponse != null && !resp.getResponse.isSuccessStatusCode) {
+              val cosmosExceptionOpt = Option(resp.getException).collect {
+                case cosmosException: CosmosException => cosmosException
+              }
+              handleNonSuccessfulStatusCode(
+                batchOperation.operationContext,
+                batchOperation.cosmosBatchBulkOperation,
+                Some(resp.getResponse),
+                isGettingRetried,
+                cosmosExceptionOpt,
+                batchOperation.originalItems,
+                batchOperation.reconstructedActions)
+            } else if (resp.getException != null) {
               Option(resp.getException) match {
                 case Some(cosmosException: CosmosException) =>
                   handleNonSuccessfulStatusCode(
@@ -362,15 +342,6 @@ private class TransactionalBulkWriter
                   captureIfFirstFailure(resp.getException)
                   cancelWork()
               }
-            } else if (!resp.getResponse.isSuccessStatusCode) {
-              handleNonSuccessfulStatusCode(
-                batchOperation.operationContext,
-                batchOperation.cosmosBatchBulkOperation,
-                Some(resp.getResponse),
-                isGettingRetried,
-                None,
-                batchOperation.originalItems,
-                batchOperation.reconstructedActions)
             } else {
               // Happy path: batch succeeded
               outputMetricsPublisher.trackWriteOperation(batchOperation.originalItems.size, None)
@@ -566,59 +537,40 @@ private class TransactionalBulkWriter
       }
 
       val failedOriginalIndex = failedOriginalIndexOpt.get
-      val newReconstructedActions = reconstructedActions + (failedOriginalIndex -> reconstructionAction)
-      val reconstructionActionText = reconstructionAction match {
-        case TransactionalBulkWriter.ReconstructionAction.Read => "changing to read"
-        case TransactionalBulkWriter.ReconstructionAction.Remove => "removing from batch"
-      }
-
-      log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
-        s"reconstructing batch: operation at index $failedIndex hit semantic error " +
-        s"(original index $failedOriginalIndex), " +
-        s"($effectiveStatusCode:$effectiveSubStatusCode), $reconstructionActionText. " +
-        s"reconstructedActions=$newReconstructedActions, " +
-        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=$exceptionMessage, " +
-        s"Context: {${operationContext.toString}} $getThreadInfo")
-
-      val reconstructedBatchOpt = buildReconstructedBatch(
+      applyReconstructionDecision(
+        operationContext,
         originalItems,
-        operationContext.partitionKeyValueInput,
-        newReconstructedActions)
+        reconstructedActions,
+        failedOriginalIndex,
+        reconstructionAction,
+        effectiveStatusCode,
+        effectiveSubStatusCode,
+        exceptionMessage,
+        isGettingRetried,
+        s"response failure at current index $failedIndex (original index $failedOriginalIndex)")
+    } else {
+      val fallbackReconstructionDecisionOpt =
+        if (cosmosBatchResponse.isEmpty) {
+          getFallbackReconstructionIndexFromException(responseException, originalItems, reconstructedActions)
+        } else {
+          None
+        }
 
-      reconstructedBatchOpt match {
-        case None =>
-          // All items were reconstructed (removed from batch) — empty batch = trivial SUCCESS.
-          // This happens when every item in a delete batch was already gone (404) or
-          // correctly skipped (412). Nothing left to execute.
-          log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
-            s"all items reconstructed — empty batch, treating as SUCCESS. " +
-            s"reconstructedActions=$newReconstructedActions, " +
-            s"Context: {${operationContext.toString}} $getThreadInfo")
-          totalSuccessfulIngestionMetrics.getAndAdd(originalItems.size)
+      if (fallbackReconstructionDecisionOpt.isDefined) {
+        val (failedOriginalIndex, reconstructionAction) = fallbackReconstructionDecisionOpt.get
+        applyReconstructionDecision(
+          operationContext,
+          originalItems,
+          reconstructedActions,
+          failedOriginalIndex,
+          reconstructionAction,
+          effectiveStatusCode,
+          effectiveSubStatusCode,
+          exceptionMessage,
+          isGettingRetried,
+          s"exception-only fallback (original index $failedOriginalIndex)")
 
-        case Some(reconstructedBatchOp) =>
-          // Reconstruction does NOT increment attemptNumber — it's not a retry,
-          // it's a batch correction. The retry counter only increments on transient errors.
-          val batchOperationRetry = CosmosBatchOperation(
-            reconstructedBatchOp,
-            new OperationContext(
-              operationContext.partitionKeyValueInput,
-              operationContext.attemptNumber,
-              operationContext.sequenceNumber,
-              operationContext.isIdempotent),
-            originalItems,
-            newReconstructedActions
-          )
-
-          this.scheduleRetry(
-            trackPendingRetryAction = () => pendingBatchRetries.put(reconstructedBatchOp.getPartitionKeyValue, batchOperationRetry).isEmpty,
-            clearPendingRetryAction = () => pendingBatchRetries.remove(reconstructedBatchOp.getPartitionKeyValue).isDefined,
-            batchOperationRetry,
-            effectiveStatusCode)
-          isGettingRetried.set(true)
-      }
-
-    } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
+      } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
       // Transient error: requeue the same batch (possibly already reconstructed from a prior retry).
       // The reconstructedActions state is preserved so that if a subsequent retry hits another
       // semantic error, reconstruction continues from where it left off.
@@ -644,8 +596,7 @@ private class TransactionalBulkWriter
         batchOperationRetry,
         effectiveStatusCode)
       isGettingRetried.set(true)
-
-    } else {
+      } else {
       log.logError(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', all retries exhausted! " +
         s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${exceptionMessage}, " +
@@ -664,6 +615,7 @@ private class TransactionalBulkWriter
 
       captureIfFirstFailure(exceptionToBeThrown)
       cancelWork()
+      }
     }
   }
 
@@ -1033,6 +985,165 @@ private class TransactionalBulkWriter
     }
   }
 
+  // Fallback reconstruction rules for exception-only failures (no per-operation batch response):
+  // 1) Reconstruct only when we can uniquely identify the failing operation.
+  // 2) If zero or multiple candidates match, do NOT reconstruct.
+  // 3) Fallback applies only to strategies with safe inferable semantics.
+  private def getFallbackReconstructionIndexFromException(
+    responseException: Option[CosmosException],
+    originalItems: List[TransactionalBulkItem],
+    reconstructedActions: Map[Int, TransactionalBulkWriter.ReconstructionAction]
+  ): Option[(Int, TransactionalBulkWriter.ReconstructionAction)] = {
+    val cosmosException = responseException.getOrElse(return None)
+    val fallbackCandidates = originalItems.zipWithIndex.map { case (item, index) =>
+      (index, item.eTag.isDefined)
+    }
+
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      writeConfig.itemWriteStrategy,
+      cosmosException.getStatusCode,
+      cosmosException.getSubStatusCode,
+      fallbackCandidates,
+      reconstructedActions.keySet)
+
+    if (decision.isEmpty) {
+      val fallbackAction = writeConfig.itemWriteStrategy match {
+        case ItemWriteStrategy.ItemDeleteIfNotModified | ItemWriteStrategy.ItemOverwriteIfNotModified =>
+          TransactionalBulkWriter.getReconstructionActionForStatus(
+            writeConfig.itemWriteStrategy,
+            cosmosException.getStatusCode,
+            cosmosException.getSubStatusCode)
+        case _ =>
+          None
+      }
+
+      if (fallbackAction.isDefined) {
+        val candidateIndices = TransactionalBulkWriter.getFallbackCandidateIndices(
+          writeConfig.itemWriteStrategy,
+          cosmosException.getStatusCode,
+          cosmosException.getSubStatusCode,
+          fallbackCandidates,
+          reconstructedActions.keySet)
+
+        if (candidateIndices.size > 1) {
+          log.logWarning(
+            s"Skipping exception-only fallback reconstruction due to ambiguous candidates " +
+              s"$candidateIndices for strategy ${writeConfig.itemWriteStrategy}, " +
+              s"status=${cosmosException.getStatusCode}:${cosmosException.getSubStatusCode}, " +
+              s"Context: {${operationContext.toString}} $getThreadInfo")
+        }
+      }
+    }
+
+    decision
+  }
+
+  // Centralizes strategy-specific "original operation" construction so initial-batch creation and
+  // reconstructed-batch creation stay behaviorally identical for all supported strategies.
+  private def addOriginalOperationToBatch(
+    cosmosBatch: CosmosBatch,
+    item: TransactionalBulkItem,
+    unsupportedStrategyMessage: String
+  ): Unit = {
+    writeConfig.itemWriteStrategy match {
+      case ItemWriteStrategy.ItemOverwrite =>
+        cosmosBatch.upsertItemOperation(item.objectNode)
+
+      case ItemWriteStrategy.ItemAppend =>
+        cosmosBatch.createItemOperation(item.objectNode)
+
+      case ItemWriteStrategy.ItemDelete =>
+        cosmosBatch.deleteItemOperation(item.itemId)
+
+      case ItemWriteStrategy.ItemDeleteIfNotModified =>
+        item.eTag match {
+          case Some(etag) =>
+            val requestOptions = new CosmosBatchItemRequestOptions()
+            requestOptions.setIfMatchETag(etag)
+            cosmosBatch.deleteItemOperation(item.itemId, requestOptions)
+          case None =>
+            cosmosBatch.deleteItemOperation(item.itemId)
+        }
+
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        item.eTag match {
+          case Some(etag) =>
+            val requestOptions = new CosmosBatchItemRequestOptions()
+            requestOptions.setIfMatchETag(etag)
+            cosmosBatch.replaceItemOperation(item.itemId, item.objectNode, requestOptions)
+          case None =>
+            cosmosBatch.createItemOperation(item.objectNode)
+        }
+
+      case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
+        addPatchItemOperation(cosmosBatch, item)
+
+      case _ =>
+        throw new IllegalStateException(unsupportedStrategyMessage)
+    }
+  }
+
+  // Applies one reconstruction decision end-to-end: update reconstructedActions, rebuild batch,
+  // and either mark success (empty batch) or reschedule a corrected batch without incrementing retries.
+  private def applyReconstructionDecision(
+    operationContext: OperationContext,
+    originalItems: List[TransactionalBulkItem],
+    reconstructedActions: Map[Int, TransactionalBulkWriter.ReconstructionAction],
+    failedOriginalIndex: Int,
+    reconstructionAction: TransactionalBulkWriter.ReconstructionAction,
+    effectiveStatusCode: Int,
+    effectiveSubStatusCode: Int,
+    exceptionMessage: String,
+    isGettingRetried: AtomicBoolean,
+    reconstructionSource: String
+  ): Unit = {
+    val newReconstructedActions = reconstructedActions + (failedOriginalIndex -> reconstructionAction)
+    val reconstructionActionText = reconstructionAction match {
+      case TransactionalBulkWriter.ReconstructionAction.Read => "changing to read"
+      case TransactionalBulkWriter.ReconstructionAction.Remove => "removing from batch"
+    }
+
+    log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+      s"reconstructing batch: $reconstructionSource hit semantic error " +
+      s"($effectiveStatusCode:$effectiveSubStatusCode), $reconstructionActionText. " +
+      s"reconstructedActions=$newReconstructedActions, " +
+      s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=$exceptionMessage, " +
+      s"Context: {${operationContext.toString}} $getThreadInfo")
+
+    val reconstructedBatchOpt = buildReconstructedBatch(
+      originalItems,
+      operationContext.partitionKeyValueInput,
+      newReconstructedActions)
+
+    reconstructedBatchOpt match {
+      case None =>
+        log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+          s"all items reconstructed - empty batch, treating as SUCCESS. " +
+          s"reconstructedActions=$newReconstructedActions, " +
+          s"Context: {${operationContext.toString}} $getThreadInfo")
+        totalSuccessfulIngestionMetrics.getAndAdd(originalItems.size)
+
+      case Some(reconstructedBatchOp) =>
+        val batchOperationRetry = CosmosBatchOperation(
+          reconstructedBatchOp,
+          new OperationContext(
+            operationContext.partitionKeyValueInput,
+            operationContext.attemptNumber,
+            operationContext.sequenceNumber,
+            operationContext.isIdempotent),
+          originalItems,
+          newReconstructedActions
+        )
+
+        this.scheduleRetry(
+          trackPendingRetryAction = () => pendingBatchRetries.put(reconstructedBatchOp.getPartitionKeyValue, batchOperationRetry).isEmpty,
+          clearPendingRetryAction = () => pendingBatchRetries.remove(reconstructedBatchOp.getPartitionKeyValue).isDefined,
+          batchOperationRetry,
+          effectiveStatusCode)
+        isGettingRetried.set(true)
+    }
+  }
+
   // Builds a new CosmosBatch from originalItems, applying reconstruction rules
   // to items at reconstructedActions.
   //
@@ -1106,41 +1217,11 @@ private class TransactionalBulkWriter
         }
       } else {
         // Non-reconstructed: add the original operation based on strategy
-        writeConfig.itemWriteStrategy match {
-          case ItemWriteStrategy.ItemAppend =>
-            newBatch.createItemOperation(item.objectNode)
-
-          case ItemWriteStrategy.ItemDelete =>
-            newBatch.deleteItemOperation(item.itemId)
-
-          case ItemWriteStrategy.ItemDeleteIfNotModified =>
-            item.eTag match {
-              case Some(etag) =>
-                val requestOptions = new CosmosBatchItemRequestOptions()
-                requestOptions.setIfMatchETag(etag)
-                newBatch.deleteItemOperation(item.itemId, requestOptions)
-              case None =>
-                newBatch.deleteItemOperation(item.itemId)
-            }
-
-          case ItemWriteStrategy.ItemOverwriteIfNotModified =>
-            item.eTag match {
-              case Some(etag) =>
-                val requestOptions = new CosmosBatchItemRequestOptions()
-                requestOptions.setIfMatchETag(etag)
-                newBatch.replaceItemOperation(item.itemId, item.objectNode, requestOptions)
-              case None =>
-                newBatch.createItemOperation(item.objectNode)
-            }
-
-          case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
-            addPatchItemOperation(newBatch, item)
-
-          // Other strategies will be added here as reconstruction support is implemented
-          case _ =>
-            throw new IllegalStateException(
-              s"Reconstruction not yet implemented for strategy ${writeConfig.itemWriteStrategy}")
-        }
+        addOriginalOperationToBatch(
+          newBatch,
+          item,
+          unsupportedStrategyMessage =
+            s"Reconstruction not yet implemented for strategy ${writeConfig.itemWriteStrategy}")
         operationCount += 1
       }
     }
@@ -1323,6 +1404,79 @@ private object TransactionalBulkWriter {
     }
 
     None
+  }
+
+  private[spark] def getFallbackReconstructionDecision(
+    itemWriteStrategy: ItemWriteStrategy.Value,
+    statusCode: Int,
+    subStatusCode: Int,
+    candidateIndicesWithHasEtag: scala.collection.Seq[(Int, Boolean)],
+    alreadyReconstructedIndices: Set[Int]
+  ): Option[(Int, ReconstructionAction)] = {
+    // Safety rule: fallback is allowed only when one candidate is uniquely inferable.
+    // Ambiguous candidate sets return None to avoid wrong-item reconstruction.
+    val reconstructionAction = itemWriteStrategy match {
+      case ItemWriteStrategy.ItemDeleteIfNotModified | ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        getReconstructionActionForStatus(itemWriteStrategy, statusCode, subStatusCode)
+      case _ =>
+        None
+    }
+
+    if (reconstructionAction.isEmpty) {
+      return None
+    }
+
+    val candidateIndices = getFallbackCandidateIndices(
+      itemWriteStrategy,
+      statusCode,
+      subStatusCode,
+      candidateIndicesWithHasEtag,
+      alreadyReconstructedIndices)
+
+    if (candidateIndices.size == 1) {
+      Some(candidateIndices.head -> reconstructionAction.get)
+    } else {
+      None
+    }
+  }
+
+  private[spark] def getFallbackCandidateIndices(
+    itemWriteStrategy: ItemWriteStrategy.Value,
+    statusCode: Int,
+    subStatusCode: Int,
+    candidateIndicesWithHasEtag: scala.collection.Seq[(Int, Boolean)],
+    alreadyReconstructedIndices: Set[Int]
+  ): scala.collection.Seq[Int] = {
+    // Strategy/status + ETag-path filtering for "could this operation have caused this status?"
+    candidateIndicesWithHasEtag.collect {
+      case (index, hasEtag)
+        if !alreadyReconstructedIndices.contains(index)
+          && isFallbackCandidateCompatible(itemWriteStrategy, statusCode, subStatusCode, hasEtag) => index
+    }
+  }
+
+  private def isFallbackCandidateCompatible(
+    itemWriteStrategy: ItemWriteStrategy.Value,
+    statusCode: Int,
+    subStatusCode: Int,
+    hasEtag: Boolean
+  ): Boolean = {
+    itemWriteStrategy match {
+      case ItemWriteStrategy.ItemDeleteIfNotModified if Exceptions.isPreconditionFailedException(statusCode) =>
+        hasEtag
+
+      case ItemWriteStrategy.ItemOverwriteIfNotModified if Exceptions.isPreconditionFailedException(statusCode) =>
+        hasEtag
+
+      case ItemWriteStrategy.ItemOverwriteIfNotModified if Exceptions.isResourceExistsException(statusCode) =>
+        !hasEtag
+
+      case ItemWriteStrategy.ItemOverwriteIfNotModified if Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) =>
+        hasEtag
+
+      case _ =>
+        true
+    }
   }
   //scalastyle:off magic.number
   private val maxDelayOn408RequestTimeoutInMs = 3000

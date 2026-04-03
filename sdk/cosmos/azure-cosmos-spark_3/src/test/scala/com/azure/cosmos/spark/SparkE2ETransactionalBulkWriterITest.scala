@@ -169,11 +169,245 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     item.getItem.get("name").asText() shouldEqual "ConditionalDoc"
   }
 
+  "transactional write with ItemDeleteIfNotModified" should "skip stale ETag (412) and delete other items" in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
+      ("spark.cosmos.write.strategy" -> "ItemDeleteIfNotModified")
+
+    val staleId = s"delete-ifnm-stale-${UUID.randomUUID()}"
+    val staleSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    staleSeed.put("id", staleId)
+    staleSeed.put("pk", partitionKeyValue)
+    staleSeed.put("name", "BeforeUpdate")
+    container.createItem(staleSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    val staleRead = container.readItem(staleId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    val staleEtag = staleRead.getETag
+
+    // Change the document to force ETag mismatch for staleEtag.
+    staleSeed.put("name", "AfterUpdate")
+    container.upsertItem(staleSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    val deleteId = s"delete-ifnm-ok-${UUID.randomUUID()}"
+    val deleteSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    deleteSeed.put("id", deleteId)
+    deleteSeed.put("pk", partitionKeyValue)
+    deleteSeed.put("name", "ToDelete")
+    container.createItem(deleteSeed, new PartitionKey(partitionKeyValue), null).block()
+    val deleteEtag = container.readItem(deleteId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block().getETag
+
+    val deleteSchemaWithEtag = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("name", StringType, nullable = false),
+      StructField("_etag", StringType, nullable = true)
+    ))
+
+    val deleteRows = Seq(
+      Row(staleId, partitionKeyValue, "IgnoredDueTo412", staleEtag),
+      Row(deleteId, partitionKeyValue, "DeleteMe", deleteEtag)
+    )
+    val deleteDf = spark.createDataFrame(deleteRows.asJava, deleteSchemaWithEtag)
+
+    deleteDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    val staleAfter = container.readItem(staleId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    staleAfter should not be null
+    staleAfter.getItem.get("name").asText() shouldEqual "AfterUpdate"
+
+    val deleted = container
+      .queryItems(s"SELECT * FROM c WHERE c.id = '$deleteId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+    deleted.size() shouldBe 0
+  }
+
+  it should "skip missing item (404/0) and delete existing item" in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
+      ("spark.cosmos.write.strategy" -> "ItemDeleteIfNotModified")
+
+    val existingId = s"delete-ifnm-existing-${UUID.randomUUID()}"
+    val existingSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    existingSeed.put("id", existingId)
+    existingSeed.put("pk", partitionKeyValue)
+    existingSeed.put("name", "DeleteMe")
+    container.createItem(existingSeed, new PartitionKey(partitionKeyValue), null).block()
+    val existingEtag = container.readItem(existingId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block().getETag
+
+    val missingId = s"delete-ifnm-missing-${UUID.randomUUID()}"
+
+    val deleteSchemaWithEtag = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("name", StringType, nullable = false),
+      StructField("_etag", StringType, nullable = true)
+    ))
+
+    val deleteRows = Seq(
+      Row(missingId, partitionKeyValue, "Missing", "stale-etag"),
+      Row(existingId, partitionKeyValue, "DeleteMe", existingEtag)
+    )
+    val deleteDf = spark.createDataFrame(deleteRows.asJava, deleteSchemaWithEtag)
+
+    deleteDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    val existingAfter = container
+      .queryItems(s"SELECT * FROM c WHERE c.id = '$existingId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+    existingAfter.size() shouldBe 0
+  }
+
+  it should "skip stale replace (412) and still create no-ETag items" in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
+      ("spark.cosmos.write.strategy" -> "ItemOverwriteIfNotModified")
+
+    val staleId = s"overwrite-ifnm-stale-${UUID.randomUUID()}"
+    val staleSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    staleSeed.put("id", staleId)
+    staleSeed.put("pk", partitionKeyValue)
+    staleSeed.put("name", "BeforeUpdate")
+    container.createItem(staleSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    val staleRead = container.readItem(staleId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    val staleEtag = staleRead.getETag
+
+    // Force stale ETag for the conditional replace row.
+    staleSeed.put("name", "AfterUpdate")
+    container.upsertItem(staleSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    val newId = s"overwrite-ifnm-create-${UUID.randomUUID()}"
+
+    val schemaWithOptionalEtag = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("name", StringType, nullable = false),
+      StructField("_etag", StringType, nullable = true)
+    ))
+
+    val rows = Seq(
+      Row(staleId, partitionKeyValue, "ShouldNotOverwrite", staleEtag),
+      Row(newId, partitionKeyValue, "CreatedViaFallback", null)
+    )
+    val df = spark.createDataFrame(rows.asJava, schemaWithOptionalEtag)
+
+    df.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    val staleAfter = container.readItem(staleId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    staleAfter.getItem.get("name").asText() shouldEqual "AfterUpdate"
+
+    val created = container.readItem(newId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    created should not be null
+    created.getItem.get("name").asText() shouldEqual "CreatedViaFallback"
+  }
+
+  "transactional write with ItemPatchIfExists" should "skip missing docs (404) and patch existing docs" in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) ++ Map(
+      "spark.cosmos.write.strategy" -> "ItemPatchIfExists",
+      "spark.cosmos.write.patch.defaultOperationType" -> "Set",
+      "spark.cosmos.write.patch.columnConfigs" -> "[col(name).op(set)]"
+    )
+
+    val existingId = s"patch-ifexists-existing-${UUID.randomUUID()}"
+    val existingSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    existingSeed.put("id", existingId)
+    existingSeed.put("pk", partitionKeyValue)
+    existingSeed.put("name", "BeforePatch")
+    container.createItem(existingSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    val missingId = s"patch-ifexists-missing-${UUID.randomUUID()}"
+    val patchRows = Seq(
+      Row(existingId, partitionKeyValue, "AfterPatch"),
+      Row(missingId, partitionKeyValue, "IgnoredMissing")
+    )
+    val patchDf = spark.createDataFrame(patchRows.asJava, simpleSchema)
+
+    patchDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    val existingAfter = container.readItem(existingId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    existingAfter.getItem.get("name").asText() shouldEqual "AfterPatch"
+
+    val missingAfter = container
+      .queryItems(s"SELECT * FROM c WHERE c.id = '$missingId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+    missingAfter.size() shouldBe 0
+  }
+
+  "transactional write with ItemPatch and predicate" should "fail batch when predicate is false (412)" in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) ++ Map(
+      "spark.cosmos.write.strategy" -> "ItemPatch",
+      "spark.cosmos.write.patch.defaultOperationType" -> "Set",
+      "spark.cosmos.write.patch.columnConfigs" -> "[col(name).op(set)]",
+      "spark.cosmos.write.patch.filter" -> "from c where c.name = 'Allowed'"
+    )
+
+    val blockedId = s"patch-filter-blocked-${UUID.randomUUID()}"
+    val blockedSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    blockedSeed.put("id", blockedId)
+    blockedSeed.put("pk", partitionKeyValue)
+    blockedSeed.put("name", "Blocked")
+    container.createItem(blockedSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    val allowedId = s"patch-filter-allowed-${UUID.randomUUID()}"
+    val allowedSeed = Utils.getSimpleObjectMapper.createObjectNode()
+    allowedSeed.put("id", allowedId)
+    allowedSeed.put("pk", partitionKeyValue)
+    allowedSeed.put("name", "Allowed")
+    container.createItem(allowedSeed, new PartitionKey(partitionKeyValue), null).block()
+
+    // First row fails predicate (412); second row should be rolled back by transactional atomicity.
+    val patchRows = Seq(
+      Row(blockedId, partitionKeyValue, "BlockedAfter"),
+      Row(allowedId, partitionKeyValue, "AllowedAfter")
+    )
+    val patchDf = spark.createDataFrame(patchRows.asJava, simpleSchema)
+
+    intercept[Exception] {
+      patchDf.write
+        .format("cosmos.oltp")
+        .options(writeConfig)
+        .mode(SaveMode.Append)
+        .save()
+    }
+
+    val blockedAfter = container.readItem(blockedId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    blockedAfter.getItem.get("name").asText() shouldEqual "Blocked"
+
+    val allowedAfter = container.readItem(allowedId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+    allowedAfter.getItem.get("name").asText() shouldEqual "Allowed"
+  }
+
   // =====================================================
   // Error / Atomicity Tests
   // =====================================================
 
-  "transactional write with ItemAppend on existing docs" should "FAIL entire batch on first attempt" in {
+  "transactional write with ItemAppend on existing docs" should "reconstruct on 409 and still create new docs" in {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
     val partitionKeyValue = UUID.randomUUID().toString
 
@@ -196,28 +430,25 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
       ("spark.cosmos.write.strategy" -> "ItemAppend")
 
-    // Should fail because existingId already exists -> 409 -> batch rolls back
-    intercept[Exception] {
-      operationsDf.write
-        .format("cosmos.oltp")
-        .options(writeConfig)
-        .mode(SaveMode.Append)
-        .save()
-    }
+    operationsDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
 
-    // Verify the new doc was NOT created (rolled back)
+    // 409 conflict on existingId is reconstructed to read; new doc should still be created.
     val queryResult = container
       .queryItems(s"SELECT * FROM c WHERE c.id = '$newId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
       .collectList()
       .block()
-    queryResult.size() shouldBe 0
+    queryResult.size() shouldBe 1
 
     // Verify the original doc is unchanged
     val originalDoc = container.readItem(existingId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
     originalDoc.getItem.get("name").asText() shouldEqual "AlreadyExists"
   }
 
-  "transactional batch atomicity" should "roll back all operations on failure" in {
+  "transactional batch with ItemDelete" should "reconstruct on missing item (404/0) and delete remaining docs" in {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
     val partitionKeyValue = UUID.randomUUID().toString
 
@@ -229,7 +460,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     seedNode.put("name", "DocB")
     container.createItem(seedNode, new PartitionKey(partitionKeyValue), null).block()
 
-    // Try to delete [A (missing), B (exists)] — A will cause 404 -> entire batch rolls back
+    // Try to delete [A (missing), B (exists)] — A 404/0 should be reconstructed and B should be deleted.
     val idA = s"docA-${UUID.randomUUID()}"
     val deleteRows = Seq(
       Row(idA, partitionKeyValue, "phantom"),
@@ -240,19 +471,17 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
       ("spark.cosmos.write.strategy" -> "ItemDelete")
 
-    // Should fail because doc A doesn't exist
-    intercept[Exception] {
-      deleteDf.write
-        .format("cosmos.oltp")
-        .options(writeConfig)
-        .mode(SaveMode.Append)
-        .save()
-    }
+    deleteDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
 
-    // Verify doc B was NOT deleted (entire batch rolled back)
-    val docB = container.readItem(idB, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
-    docB should not be null
-    docB.getItem.get("name").asText() shouldEqual "DocB"
+    val docBAfter = container
+      .queryItems(s"SELECT * FROM c WHERE c.id = '$idB' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+    docBAfter.size() shouldBe 0
   }
 
   "transactional write across multiple partition keys" should "group into separate atomic batches" in {
