@@ -1,14 +1,6 @@
 # Release History
 
-## 2.61.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+## 2.61.0 (2026-04-03)
 
 ### azure-resourcemanager-containerservice
 
@@ -24,6 +16,12 @@
 ### azure-resourcemanager-resources
 
 - Updated `api-version` of policy to `2025-03-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.60.0 (2026-02-26)
 
