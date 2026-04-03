@@ -182,10 +182,10 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 
 ### Credential chains
 
-| Credential                         | Usage                                                                                         | Reference                                           |
-|------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| [DefaultAzureCredential][cred_dac] | Provides a simplified authentication experience to quickly start developing apps run in Azure | [DefaultAzureCredential overview][cred_dac_example] |
-| [ChainedTokenCredential][cred_ctc] | Allows users to define custom authentication flows composing multiple credentials             | [ChainedTokenCredential overview][cred_ctc_example] |
+| Credential                         | Usage                                                                                              | Reference                                           |
+|------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| [DefaultAzureCredential][cred_dac] | Provides a simplified authentication experience to quickly start developing apps that run in Azure | [DefaultAzureCredential overview][cred_dac_example] |
+| [ChainedTokenCredential][cred_ctc] | Allows users to define custom authentication flows composing multiple credentials                  | [ChainedTokenCredential overview][cred_ctc_example] |
 
 ### Authenticate Azure-hosted applications
 
