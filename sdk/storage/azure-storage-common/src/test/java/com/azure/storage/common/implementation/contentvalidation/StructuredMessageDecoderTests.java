@@ -4,7 +4,9 @@
 package com.azure.storage.common.implementation.contentvalidation;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -24,7 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * and segment splits across chunks.
  */
 public class StructuredMessageDecoderTests {
-    
+
+    private static ByteBuffer collectFlux(Flux<ByteBuffer> flux) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        flux.toIterable().forEach(buf -> {
+            byte[] bytes = new byte[buf.remaining()];
+            buf.get(bytes);
+            out.write(bytes, 0, bytes.length);
+        });
+        return ByteBuffer.wrap(out.toByteArray()).order(ByteOrder.LITTLE_ENDIAN);
+    }
+
     @Test
     public void readsCompleteMessageInSingleChunk() throws IOException {
         // Test: Complete message in a single ByteBuffer should decode fully
@@ -33,7 +45,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
@@ -54,7 +66,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 128, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
@@ -86,7 +98,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 256, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
@@ -124,7 +136,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(minimalData.length, 1024, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(minimalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(minimalData)));
         int encodedLength = encodedData.remaining();
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
@@ -143,7 +155,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 256, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
@@ -171,7 +183,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 256, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
@@ -203,7 +215,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 128, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
@@ -212,7 +224,7 @@ public class StructuredMessageDecoderTests {
 
         // Feed in chunks of 32 bytes
         int chunkSize = 32;
-        java.io.ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         for (int offset = 0; offset < encodedLength; offset += chunkSize) {
             int len = Math.min(chunkSize, encodedLength - offset);
@@ -243,7 +255,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 128, StructuredMessageFlags.NONE);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
@@ -264,7 +276,7 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(originalData.length, 128, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(originalData));
+        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(originalData)));
         int encodedLength = encodedData.remaining();
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);

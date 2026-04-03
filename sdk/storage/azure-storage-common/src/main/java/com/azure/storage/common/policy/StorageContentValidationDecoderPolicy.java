@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageDecoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -65,7 +66,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             return next.process();
         }
 
-        context.getHttpRequest().getHeaders().set(X_MS_STRUCTURED_BODY, Constants.STRUCTURED_MESSAGE_CRC64_BODY_TYPE);
+        context.getHttpRequest()
+            .getHeaders()
+            .set(X_MS_STRUCTURED_BODY, StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE);
 
         return next.process().map(httpResponse -> {
             Long contentLength = ContentValidationDecoderUtils.getContentLength(httpResponse.getHeaders());

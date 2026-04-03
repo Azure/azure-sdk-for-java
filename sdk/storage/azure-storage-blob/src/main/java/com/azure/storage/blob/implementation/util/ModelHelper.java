@@ -111,8 +111,6 @@ public final class ModelHelper {
             blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
-        Long initialTransferSize = other.getInitialTransferSizeLong();
-
         Integer maxConcurrency = other.getMaxConcurrency();
         if (maxConcurrency == null) {
             maxConcurrency = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
@@ -126,8 +124,7 @@ public final class ModelHelper {
         return new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
             .setProgressListener(other.getProgressListener())
-            .setMaxSingleUploadSizeLong(maxSingleUploadSize)
-            .setInitialTransferSizeLong(initialTransferSize);
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }
 
     /**
@@ -146,8 +143,6 @@ public final class ModelHelper {
             blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
-        Long initialTransferSize = other.getInitialTransferSizeLong();
-
         Integer maxConcurrency = other.getMaxConcurrency();
         if (maxConcurrency == null) {
             maxConcurrency = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
@@ -161,8 +156,7 @@ public final class ModelHelper {
         return new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
             .setProgressListener(other.getProgressListener())
-            .setMaxSingleUploadSizeLong(maxSingleUploadSize)
-            .setInitialTransferSizeLong(initialTransferSize);
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }
 
     /**
@@ -175,8 +169,7 @@ public final class ModelHelper {
         return new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(blobOptions.getBlockSizeLong())
             .setMaxConcurrency(blobOptions.getMaxConcurrency())
             .setProgressListener(blobOptions.getProgressListener())
-            .setMaxSingleUploadSizeLong(blobOptions.getMaxSingleUploadSizeLong())
-            .setInitialTransferSizeLong(blobOptions.getInitialTransferSizeLong());
+            .setMaxSingleUploadSizeLong(blobOptions.getMaxSingleUploadSizeLong());
     }
 
     /**

@@ -103,8 +103,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         Path tempFile = Files.createTempFile("structured-download-sync", ".bin");
         Files.deleteIfExists(tempFile);
 
-        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) blockSize)
-            .setInitialTransferSizeLong((long) blockSize);
+        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) blockSize);
         BlobDownloadToFileOptions options
             = new BlobDownloadToFileOptions(tempFile.toString()).setParallelTransferOptions(parallelOptions)
                 .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);

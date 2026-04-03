@@ -116,6 +116,8 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
+        policies.add(new StorageContentValidationDecoderPolicy());
+
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
@@ -133,8 +135,6 @@ public final class BuilderHelper {
         } else if (sasToken != null) {
             policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
-
-        policies.add(new StorageContentValidationDecoderPolicy());
 
         policies.addAll(perRetryPolicies);
 

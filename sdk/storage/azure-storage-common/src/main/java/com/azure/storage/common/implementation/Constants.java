@@ -85,16 +85,6 @@ public final class Constants {
 
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
 
-    /**
-     * System property name for enabling legacy default concurrency behavior.
-     */
-    public static final String USE_LEGACY_DEFAULT_CONCURRENCY_PROPERTY = "Azure.Storage.UseLegacyDefaultConcurrency";
-
-    /**
-     * Environment variable name for enabling legacy default concurrency behavior.
-     */
-    public static final String USE_LEGACY_DEFAULT_CONCURRENCY_ENV_VAR = "AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY";
-
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
@@ -132,11 +122,6 @@ public final class Constants {
      */
     public static final String STRUCTURED_MESSAGE_AGGREGATE_CRC_CONTEXT_KEY
         = "azure-storage-structured-message-aggregate-crc";
-
-    /**
-     * Structured message header value for CRC64 validation.
-     */
-    public static final String STRUCTURED_MESSAGE_CRC64_BODY_TYPE = "XSM/1.0; properties=crc64";
 
     private Constants() {
     }

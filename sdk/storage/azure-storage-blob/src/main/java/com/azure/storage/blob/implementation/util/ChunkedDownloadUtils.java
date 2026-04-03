@@ -122,7 +122,7 @@ public class ChunkedDownloadUtils {
 
                     BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> fallbackDownloader
                         = emptyBlobDownloader != null ? emptyBlobDownloader : downloader;
-                    return fallbackDownloader.apply(new BlobRange(0), requestConditions)
+                    return fallbackDownloader.apply(new BlobRange(0, 0L), requestConditions)
                         // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
                         // provided the same functionality with the added benefit that it won't infinitely create
                         // threads if needed and will instead queue.
