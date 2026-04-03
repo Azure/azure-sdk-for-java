@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `disableLocalAuth()` and `enabledLocalAuth()` in `EventHubNamespace`.
+- Supported `disableLocalAuth()` and `enableLocalAuth()` in `EventHubNamespace`.
 
 ### Breaking Changes
 
