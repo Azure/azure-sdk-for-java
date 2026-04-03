@@ -1196,7 +1196,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Read))
   }
 
-  it should "return None when fallback candidates are ambiguous" in {
+  it should "select deterministic first candidate when fallback candidates are ambiguous for delete-if-not-modified" in {
     val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
       ItemWriteStrategy.ItemDeleteIfNotModified,
       404,
@@ -1204,7 +1204,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
       Seq((0, false), (1, true)),
       Set.empty)
 
-    decision should be(None)
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Remove))
   }
 
   it should "ignore already reconstructed indices when selecting fallback candidate" in {
@@ -1218,7 +1218,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Read))
   }
 
-  it should "not use fallback for unsupported strategies" in {
+  it should "use fallback for append when status is reconstructable" in {
     val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
       ItemWriteStrategy.ItemAppend,
       409,
@@ -1226,7 +1226,18 @@ class TransactionalBulkWriterSpec extends UnitSpec {
       Seq((0, false)),
       Set.empty)
 
-    decision should be(None)
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Read))
+  }
+
+  it should "select deterministic last candidate for patch-if-exists fallback" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemPatchIfExists,
+      404,
+      0,
+      Seq((0, false), (1, false)),
+      Set.empty)
+
+    decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Remove))
   }
 
   // =====================================================

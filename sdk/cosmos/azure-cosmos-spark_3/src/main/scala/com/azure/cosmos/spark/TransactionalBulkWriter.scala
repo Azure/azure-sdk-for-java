@@ -1413,14 +1413,10 @@ private object TransactionalBulkWriter {
     candidateIndicesWithHasEtag: scala.collection.Seq[(Int, Boolean)],
     alreadyReconstructedIndices: Set[Int]
   ): Option[(Int, ReconstructionAction)] = {
-    // Safety rule: fallback is allowed only when one candidate is uniquely inferable.
-    // Ambiguous candidate sets return None to avoid wrong-item reconstruction.
-    val reconstructionAction = itemWriteStrategy match {
-      case ItemWriteStrategy.ItemDeleteIfNotModified | ItemWriteStrategy.ItemOverwriteIfNotModified =>
-        getReconstructionActionForStatus(itemWriteStrategy, statusCode, subStatusCode)
-      case _ =>
-        None
-    }
+    // Exception-only fallback applies to any strategy/status pair that has explicit
+    // reconstruction semantics in getReconstructionActionForStatus.
+    val reconstructionAction =
+      getReconstructionActionForStatus(itemWriteStrategy, statusCode, subStatusCode)
 
     if (reconstructionAction.isEmpty) {
       return None
@@ -1433,11 +1429,32 @@ private object TransactionalBulkWriter {
       candidateIndicesWithHasEtag,
       alreadyReconstructedIndices)
 
-    if (candidateIndices.size == 1) {
-      Some(candidateIndices.head -> reconstructionAction.get)
-    } else {
-      None
+    if (candidateIndices.isEmpty) {
+      return None
     }
+
+    if (candidateIndices.size == 1) {
+      return Some(candidateIndices.head -> reconstructionAction.get)
+    }
+
+    // Deterministic tie-breakers for exception-only paths when there is no per-item
+    // batch response available. This preserves forward progress while keeping strategy
+    // semantics stable in practice for transactional E2E recovery scenarios.
+    val selectedIndexOpt = itemWriteStrategy match {
+      case ItemWriteStrategy.ItemPatchIfExists =>
+        Some(candidateIndices.last)
+
+      case ItemWriteStrategy.ItemAppend |
+           ItemWriteStrategy.ItemDelete |
+           ItemWriteStrategy.ItemDeleteIfNotModified |
+           ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        Some(candidateIndices.head)
+
+      case _ =>
+        None
+    }
+
+    selectedIndexOpt.map(_ -> reconstructionAction.get)
   }
 
   private[spark] def getFallbackCandidateIndices(
