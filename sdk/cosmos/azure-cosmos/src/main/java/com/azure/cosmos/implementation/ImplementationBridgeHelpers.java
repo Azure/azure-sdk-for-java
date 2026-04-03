@@ -169,6 +169,8 @@ public class ImplementationBridgeHelpers {
             void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled);
 
             boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
+
+            void setAddressResolverGroup(CosmosClientBuilder builder, io.netty.resolver.AddressResolverGroup<?> resolverGroup);
         }
     }
 

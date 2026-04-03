@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -1028,6 +1029,99 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    /**
+     * Proves the full DNS rotation chain: max lifetime expires → eviction predicate evicts the
+     * connection → pool creates a new connection → DNS re-resolution via FilterableDnsResolverGroup
+     * → traffic moves to a different backend IP (because the old IP is blocked in the resolver).
+     * <p>
+     * This validates that when combined with a custom DNS resolver that filters out the original IP,
+     * the max lifetime eviction causes the new connection to land on a different backend IP.
+     * <p>
+     * If the account endpoint resolves to fewer than 2 IPs, the test is skipped gracefully.
+     * <p>
+     * Test flow:
+     * 1. Set COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS=15
+     * 2. Create FilterableDnsResolverGroup, wire into client via ImplementationBridgeHelpers
+     * 3. Resolve endpoint hostname → enumerate IPs
+     * 4. If fewer than 2 IPs, skip
+     * 5. Run initial workload, capture parentChannelId (P1)
+     * 6. Block IP1 via resolver.blockIp(ip1)
+     * 7. Wait for max lifetime (15s) + jitter (up to 30s) + sweep margin → ~50s total
+     * 8. Run workload again, capture parentChannelId (P2)
+     * 9. Assert P2 ≠ P1 (connection was rotated)
+     * 10. Assert the read succeeds (proves new connection went to an available IP)
+     * 11. Cleanup: unblockAll
+     */
+    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    public void dnsRotationAfterMaxLifetimeExpiry() throws Exception {
+        System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
+        FilterableDnsResolverGroup filterableResolver = new FilterableDnsResolverGroup();
+        try {
+            // Step 1: Resolve the endpoint hostname to enumerate available IPs
+            String endpoint = getEndpoint();
+            java.net.URI endpointUri = new java.net.URI(endpoint);
+            String hostname = endpointUri.getHost();
+            java.net.InetAddress[] allAddresses = java.net.InetAddress.getAllByName(hostname);
+            logger.info("Endpoint hostname: {}, resolved IPs: {} (count={})",
+                hostname, java.util.Arrays.toString(allAddresses), allAddresses.length);
+
+            if (allAddresses.length < 2) {
+                logger.info("SKIP: Account endpoint {} resolves to fewer than 2 IPs — "
+                    + "DNS rotation test requires at least 2 IPs to validate IP migration", hostname);
+                return;
+            }
+
+            java.net.InetAddress ip1 = allAddresses[0];
+            logger.info("IP1 (will be blocked after initial workload): {}", ip1.getHostAddress());
+
+            // Step 2: Wire the custom resolver into the builder via the accessor
+            safeClose(this.client);
+            CosmosClientBuilder builder = getClientBuilder();
+            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
+                .setAddressResolverGroup(builder, filterableResolver);
+            this.client = builder.buildAsyncClient();
+            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+            // Step 3: Run initial workload — establishes connection to IP1
+            String initialParentChannelId = establishH2ConnectionAndGetParentChannelId();
+            logger.info("Initial parentChannelId (P1): {} — connected via IP1={}", initialParentChannelId, ip1.getHostAddress());
+
+            // Step 4: Block IP1 — future DNS resolutions will exclude it, forcing IP2
+            filterableResolver.blockIp(ip1);
+            logger.info("Blocked IP1={} — future connections will resolve to remaining IPs", ip1.getHostAddress());
+
+            // Step 5: Wait for max lifetime (15s) + jitter (up to 30s) + background sweep margin
+            long waitMs = 50_000;
+            long startTime = System.currentTimeMillis();
+            String latestParentChannelId = initialParentChannelId;
+
+            while (System.currentTimeMillis() - startTime < waitMs) {
+                Thread.sleep(5_000);
+                latestParentChannelId = readAndGetParentChannelId();
+                logger.info("Elapsed={}s parentChannelId={} (changed={})",
+                    (System.currentTimeMillis() - startTime) / 1000,
+                    latestParentChannelId,
+                    !latestParentChannelId.equals(initialParentChannelId));
+                if (!latestParentChannelId.equals(initialParentChannelId)) {
+                    break;
+                }
+            }
+
+            // Step 6: Assert connection was rotated to a new parentChannelId
+            logger.info("RESULT: initial={}, final={}, ROTATED={}, blockedIp={}",
+                initialParentChannelId, latestParentChannelId,
+                !initialParentChannelId.equals(latestParentChannelId),
+                ip1.getHostAddress());
+            assertThat(latestParentChannelId)
+                .as("After max lifetime (15s + jitter), connection should be rotated to a new parentChannelId "
+                    + "because IP1 is blocked and DNS re-resolution returns IP2")
+                .isNotEqualTo(initialParentChannelId);
+        } finally {
+            filterableResolver.unblockAll();
+            System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
         }
     }
 

@@ -11,6 +11,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import io.netty.resolver.AddressResolverGroup;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -46,6 +47,7 @@ public final class ConnectionPolicy {
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
     private Http2ConnectionConfig http2ConnectionConfig;
+    private AddressResolverGroup<?> addressResolverGroup;
 
     //  Direct connection config properties
     private Duration connectTimeout;
@@ -667,6 +669,28 @@ public final class ConnectionPolicy {
         checkNotNull(http2ConnectionConfig, "Argument 'http2ConnectionConfig' can not be null");
 
         this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
+    /**
+     * Gets the custom AddressResolverGroup for DNS resolution.
+     * Used for test scenarios that need to control DNS behavior (e.g., DNS rotation tests).
+     *
+     * @return the configured {@link AddressResolverGroup}, or null if using the default resolver.
+     */
+    public AddressResolverGroup<?> getAddressResolverGroup() {
+        return this.addressResolverGroup;
+    }
+
+    /**
+     * Sets a custom AddressResolverGroup for DNS resolution.
+     * When set, the gateway HTTP client will use this resolver instead of the default.
+     *
+     * @param addressResolverGroup the custom resolver group
+     * @return the current {@link ConnectionPolicy}.
+     */
+    public ConnectionPolicy setAddressResolverGroup(AddressResolverGroup<?> addressResolverGroup) {
+        this.addressResolverGroup = addressResolverGroup;
         return this;
     }
 
