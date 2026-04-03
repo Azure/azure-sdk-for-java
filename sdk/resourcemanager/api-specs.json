@@ -92,8 +92,8 @@
   },
   "msgraph": {
     "spec": ".",
-    "dir": "azure-resourcemanager-authorization",
-    "source": "azure-resourcemanager-authorization/swagger/swagger.md",
+    "dir": "../authorization/azure-resourcemanager-authorization",
+    "source": "../authorization/azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=v1.0 --service-name=Authorization --metadata-suffix=msgraph --title=MicrosoftGraphClient --models-subpackage=fluent.models --enable-sync-stack=false"
   },
