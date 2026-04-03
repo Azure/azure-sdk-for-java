@@ -12,6 +12,7 @@
 * Fixed JVM `<clinit>` deadlock when multiple threads concurrently trigger Cosmos SDK class loading for the first time. - See [PR 48689](https://github.com/Azure/azure-sdk-for-java/pull/48689)
 * Fixed an issue where `CustomItemSerializer` was incorrectly applied to internal SDK query pipeline structures (e.g., `OrderByRowResult`, `Document`), causing deserialization failures in ORDER BY, GROUP BY, aggregate, DISTINCT, and hybrid search queries. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
 * Fixed an issue where `SqlParameter` ignored the configured `CustomItemSerializer`, always using the internal default serializer instead. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
+* Fixed Netty WARN log "An exceptionCaught() event was fired, and it reached at the tail of the pipeline" appearing on HTTP/2 connections when the server resets idle TCP connections. Added an exception handler on the HTTP/2 parent channel to consume connection-level exceptions at DEBUG level, matching HTTP/1.1 behavior. - See [PR 48687](https://github.com/Azure/azure-sdk-for-java/pull/48687)
 
 #### Other Changes
 
