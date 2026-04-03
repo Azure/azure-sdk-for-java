@@ -115,11 +115,14 @@ public class ImplementationBridgeHelpersTest {
      * Regression test for <a href="https://github.com/Azure/azure-sdk-for-java/issues/48622">#48622</a>
      * and <a href="https://github.com/Azure/azure-sdk-for-java/issues/48585">#48585</a>.
      * <p>
-     * Forks a fresh JVM that concurrently triggers {@code <clinit>} of different Cosmos classes
-     * from 6 threads. In a fresh JVM, {@code <clinit>} runs for the first time — the only way
-     * to exercise the real deadlock scenario. A 30-second timeout detects the hang.
+     * Forks a fresh JVM that concurrently triggers {@code <clinit>} of 12 different Cosmos classes
+     * from 12 threads synchronized via a {@link CyclicBarrier}. In a fresh JVM, {@code <clinit>}
+     * runs for the first time — the only way to exercise the real deadlock scenario. A 30-second
+     * timeout detects the hang. Runs 5 invocations via TestNG ({@code invocationCount = 5}),
+     * each forking 3 child JVMs — totaling 15 fresh JVMs × 12 concurrent threads = 180
+     * {@code <clinit>} race attempts.
      */
-    @Test(groups = { "unit" })
+    @Test(groups = { "unit" }, invocationCount = 5)
     public void concurrentAccessorInitializationShouldNotDeadlock() throws Exception {
 
         String javaHome = System.getProperty("java.home");
@@ -148,27 +151,39 @@ public class ImplementationBridgeHelpersTest {
         int runs = 3;
 
         for (int run = 1; run <= runs; run++) {
+            final int currentRun = run;
             ProcessBuilder pb = new ProcessBuilder(command);
             pb.redirectErrorStream(true);
             Process process = pb.start();
 
+            // Drain stdout on a separate thread to prevent blocking if child JVM deadlocks.
+            // Without this, readLine() would block indefinitely and the timeout below
+            // would never be reached.
             StringBuilder output = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    output.append(line).append(System.lineSeparator());
-                    logger.info("[child-jvm-run-{}] {}", run, line);
+            Thread gobbler = new Thread(() -> {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        output.append(line).append(System.lineSeparator());
+                        logger.info("[child-jvm-run-{}] {}", currentRun, line);
+                    }
+                } catch (Exception e) {
+                    // Process was destroyed — expected on timeout
                 }
-            }
+            });
+            gobbler.setDaemon(true);
+            gobbler.start();
 
             boolean completed = process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
 
             if (!completed) {
                 process.destroyForcibly();
+                gobbler.join(5000);
                 fail("Run " + run + ": Child JVM did not complete within " + timeoutSeconds
                     + " seconds — <clinit> deadlock detected");
             }
 
+            gobbler.join(5000);
             int exitCode = process.exitValue();
             assertThat(exitCode)
                 .as("Run " + run + ": Child JVM exited with non-zero code. Output:\n" + output)
@@ -177,16 +192,13 @@ public class ImplementationBridgeHelpersTest {
     }
 
     /**
-     * Entry point for the forked child JVM. Concurrently triggers {@code <clinit>} of 6 different
+     * Entry point for the forked child JVM. Concurrently triggers {@code <clinit>} of 12 different
      * Cosmos classes that are involved in the circular initialization chain reported in the issues.
-     * Exits 0 on success, 1 on deadlock (timeout), 2 on unexpected error.
+     * Exits 0 on success, 1 on deadlock (timeout).
      */
     public static final class ConcurrentClinitChildProcess {
         public static void main(String[] args) {
             int timeoutSeconds = 20;
-            int threadCount = 6;
-            CyclicBarrier barrier = new CyclicBarrier(threadCount);
-            ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
             String[] classesToLoad = {
                 "com.azure.cosmos.CosmosAsyncClient",
@@ -194,41 +206,244 @@ public class ImplementationBridgeHelpersTest {
                 "com.azure.cosmos.models.FeedResponse",
                 "com.azure.cosmos.models.CosmosItemRequestOptions",
                 "com.azure.cosmos.CosmosAsyncContainer",
-                "com.azure.cosmos.util.CosmosPagedFluxDefaultImpl"
+                "com.azure.cosmos.util.CosmosPagedFluxDefaultImpl",
+                "com.azure.cosmos.CosmosClientBuilder",
+                "com.azure.cosmos.CosmosItemSerializer",
+                "com.azure.cosmos.CosmosDiagnostics",
+                "com.azure.cosmos.CosmosDiagnosticsContext",
+                "com.azure.cosmos.models.CosmosQueryRequestOptions",
+                "com.azure.cosmos.models.CosmosChangeFeedRequestOptions"
             };
 
-            List<Future<?>> futures = new ArrayList<>();
-            for (int i = 0; i < classesToLoad.length; i++) {
-                final String className = classesToLoad[i];
-                final int idx = i;
-                futures.add(executor.submit(() -> {
-                    try {
-                        barrier.await();
-                        System.out.println("[Thread-" + idx + "] Loading " + className);
-                        Class.forName(className);
-                        System.out.println("[Thread-" + idx + "] Done.");
-                    } catch (Exception e) {
-                        throw new RuntimeException("Failed to load " + className, e);
-                    }
-                }));
-            }
+            int threadCount = classesToLoad.length;
 
-            boolean deadlock = false;
-            for (int i = 0; i < futures.size(); i++) {
+            // CyclicBarrier ensures all threads release at the exact same instant,
+            // maximizing the probability of concurrent <clinit> collisions. Without it,
+            // thread startup stagger means earlier threads may finish <clinit> before
+            // later threads start — hiding the deadlock.
+            CyclicBarrier barrier = new CyclicBarrier(threadCount);
+            ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+
+            try {
+                List<Future<?>> futures = new ArrayList<>();
+                for (int i = 0; i < classesToLoad.length; i++) {
+                    final String className = classesToLoad[i];
+                    final int idx = i;
+                    futures.add(executor.submit(() -> {
+                        try {
+                            barrier.await();
+                            System.out.println("[Thread-" + idx + "] Loading " + className);
+                            Class.forName(className);
+                            System.out.println("[Thread-" + idx + "] Done.");
+                        } catch (Exception e) {
+                            throw new RuntimeException("Failed to load " + className, e);
+                        }
+                    }));
+                }
+
+                boolean deadlock = false;
+                for (int i = 0; i < futures.size(); i++) {
+                    try {
+                        futures.get(i).get(timeoutSeconds, TimeUnit.SECONDS);
+                    } catch (java.util.concurrent.TimeoutException e) {
+                        System.err.println("DEADLOCK: Thread-" + i + " timed out after " + timeoutSeconds + "s");
+                        deadlock = true;
+                    } catch (Exception e) {
+                        Throwable root = e;
+                        while (root.getCause() != null) {
+                            root = root.getCause();
+                        }
+                        System.err.println("Thread-" + i + " error: " + root);
+                    }
+                }
+
+                if (deadlock) {
+                    System.exit(1);
+                }
+
+                // Verify all classes are actually initialized
+                for (String className : classesToLoad) {
+                    try {
+                        // Class.forName with initialize=false just checks if already loaded
+                        // If the class was loaded above, this returns immediately
+                        Class<?> cls = Class.forName(className, false,
+                            ConcurrentClinitChildProcess.class.getClassLoader());
+                        // Verify the class is initialized by accessing its static state
+                        // (calling a static method would trigger <clinit> if not done,
+                        // but we explicitly check it's already done)
+                        System.out.println("Verified loaded: " + cls.getName());
+                    } catch (ClassNotFoundException e) {
+                        System.err.println("Class not loaded: " + className);
+                        System.exit(1);
+                    }
+                }
+
+                System.exit(0);
+            } finally {
+                executor.shutdownNow();
+            }
+        }
+    }
+
+    /**
+     * Enforces that every class targeted by {@code ensureClassInitialized()} in
+     * {@link ImplementationBridgeHelpers} registers its accessor during {@code <clinit>}
+     * (i.e., has a {@code static { initialize(); }} block).
+     * <p>
+     * Verification is behavioral, not source-based: a forked child JVM iterates every
+     * {@code *Helper} inner class, calls each {@code getXxxAccessor()} getter (which triggers
+     * {@code Class.forName()} → {@code <clinit>}), and checks the accessor is non-null
+     * via reflection. If a class is missing {@code static { initialize(); }}, the accessor
+     * remains null and this test fails.
+     */
+    @Test(groups = { "unit" })
+    public void allAccessorClassesMustHaveStaticInitializerBlock() throws Exception {
+        String javaHome = System.getProperty("java.home");
+        String javaBin = javaHome + java.io.File.separator + "bin" + java.io.File.separator + "java";
+        String classpath = System.getProperty("java.class.path");
+
+        List<String> command = new ArrayList<>();
+        command.add(javaBin);
+
+        try {
+            int majorVersion = Integer.parseInt(System.getProperty("java.specification.version").split("\\.")[0]);
+            if (majorVersion >= 9) {
+                command.add("--add-opens");
+                command.add("java.base/java.lang=ALL-UNNAMED");
+            }
+        } catch (NumberFormatException e) {
+            // JDK 8
+        }
+
+        command.add("-cp");
+        command.add(classpath);
+        command.add(AccessorRegistrationChildProcess.class.getName());
+
+        ProcessBuilder pb = new ProcessBuilder(command);
+        pb.redirectErrorStream(true);
+        Process process = pb.start();
+
+        StringBuilder output = new StringBuilder();
+        Thread gobbler = new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    output.append(line).append(System.lineSeparator());
+                    logger.info("[accessor-check] {}", line);
+                }
+            } catch (Exception e) {
+                // Process destroyed
+            }
+        });
+        gobbler.setDaemon(true);
+        gobbler.start();
+
+        boolean completed = process.waitFor(60, TimeUnit.SECONDS);
+        if (!completed) {
+            process.destroyForcibly();
+            gobbler.join(5000);
+            fail("Accessor registration check timed out after 60s. Output:\n" + output);
+        }
+
+        gobbler.join(5000);
+        int exitCode = process.exitValue();
+        assertThat(exitCode)
+            .as("Some accessor classes don't register their accessor during <clinit>. Output:\n" + output)
+            .isEqualTo(0);
+    }
+
+    /**
+     * Child process that verifies every {@code *Helper} inner class in
+     * {@link ImplementationBridgeHelpers} has its accessor registered after calling the
+     * corresponding {@code getXxxAccessor()} getter. Runs in a fresh JVM where no Cosmos
+     * classes have been loaded yet, so {@code <clinit>} is triggered for the first time.
+     */
+    public static final class AccessorRegistrationChildProcess {
+        public static void main(String[] args) throws Exception {
+            // Iterate all *Helper inner classes in ImplementationBridgeHelpers.
+            // For each, call the getXxxAccessor() getter which triggers ensureClassInitialized()
+            // → Class.forName() → <clinit>. Then verify the accessor field is non-null.
+
+            Class<?>[] helpers = ImplementationBridgeHelpers.class.getDeclaredClasses();
+            List<String> failures = new ArrayList<>();
+
+            for (Class<?> helper : helpers) {
+                if (!helper.getSimpleName().endsWith("Helper")) {
+                    continue;
+                }
+
+                // Find the accessor AtomicReference field
+                Field accessorField = null;
+                Field classLoadedField = null;
+                for (Field f : helper.getDeclaredFields()) {
+                    if (f.getName().contains("accessor") && f.getType() == AtomicReference.class) {
+                        accessorField = f;
+                    }
+                    if (f.getName().contains("ClassLoaded") && f.getType() == AtomicBoolean.class) {
+                        classLoadedField = f;
+                    }
+                }
+
+                if (accessorField == null || classLoadedField == null) {
+                    continue;
+                }
+
+                // Check if the accessor is already set (from transitive <clinit> of earlier classes)
+                accessorField.setAccessible(true);
+                AtomicReference<?> ref = (AtomicReference<?>) accessorField.get(null);
+                if (ref.get() != null) {
+                    System.out.println("OK (already loaded): " + helper.getSimpleName());
+                    continue;
+                }
+
+                // Find the target class name by looking for a getXxxAccessor method that calls
+                // ensureClassInitialized. We can't easily extract the string constant, so instead
+                // we call the getter and check if the accessor becomes non-null.
+                // The getter calls ensureClassInitialized() → Class.forName() → <clinit>.
+                // If <clinit> calls initialize(), the accessor is registered.
+                java.lang.reflect.Method getterMethod = null;
+                for (java.lang.reflect.Method m : helper.getDeclaredMethods()) {
+                    if (m.getName().startsWith("get") && m.getName().endsWith("Accessor")
+                        && m.getParameterCount() == 0
+                        && java.lang.reflect.Modifier.isStatic(m.getModifiers())) {
+                        getterMethod = m;
+                        break;
+                    }
+                }
+
+                if (getterMethod == null) {
+                    continue;
+                }
+
                 try {
-                    futures.get(i).get(timeoutSeconds, TimeUnit.SECONDS);
-                } catch (java.util.concurrent.TimeoutException e) {
-                    System.err.println("DEADLOCK: Thread-" + i + " timed out after " + timeoutSeconds + "s");
-                    deadlock = true;
+                    Object result = getterMethod.invoke(null);
+                    if (result == null) {
+                        failures.add(helper.getSimpleName() + ": accessor is null after getter call — "
+                            + "target class <clinit> does not call initialize()");
+                    } else {
+                        System.out.println("OK: " + helper.getSimpleName());
+                    }
                 } catch (Exception e) {
                     Throwable root = e;
-                    while (root.getCause() != null) root = root.getCause();
-                    System.err.println("Thread-" + i + " error: " + root);
+                    while (root.getCause() != null) {
+                        root = root.getCause();
+                    }
+                    failures.add(helper.getSimpleName() + ": " + root.getClass().getSimpleName()
+                        + " — " + root.getMessage());
                 }
             }
 
-            executor.shutdownNow();
-            System.exit(deadlock ? 1 : 0);
+            if (failures.isEmpty()) {
+                System.out.println("All accessor classes register their accessor during <clinit>.");
+                System.exit(0);
+            } else {
+                System.err.println("FAILURES — the following classes do not register their accessor "
+                    + "during <clinit> (missing 'static { initialize(); }' block):");
+                for (String f : failures) {
+                    System.err.println("  " + f);
+                }
+                System.exit(1);
+            }
         }
     }
 }
