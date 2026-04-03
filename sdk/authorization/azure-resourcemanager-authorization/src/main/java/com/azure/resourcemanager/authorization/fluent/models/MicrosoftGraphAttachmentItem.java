@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * attachmentItem.
+ * Represents an attachment item.
  */
 @Fluent
 public final class MicrosoftGraphAttachmentItem implements JsonSerializable<MicrosoftGraphAttachmentItem> {

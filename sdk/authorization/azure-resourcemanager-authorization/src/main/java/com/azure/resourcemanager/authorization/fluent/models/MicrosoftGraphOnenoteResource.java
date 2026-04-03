@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * onenoteResource.
+ * Represents an onenote resource.
  */
 @Fluent
 public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEntityBaseModel {
@@ -135,6 +135,7 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

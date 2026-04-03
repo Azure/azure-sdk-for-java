@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * notebook.
+ * Represents a notebook.
  */
 @Fluent
 public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHierarchyModel {
@@ -330,6 +330,7 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
      */
     @Override
     public void validate() {
+        super.validate();
         if (links() != null) {
             links().validate();
         }
@@ -338,12 +339,6 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
         }
         if (sections() != null) {
             sections().forEach(e -> e.validate());
-        }
-        if (createdBy() != null) {
-            createdBy().validate();
-        }
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
         }
     }
 

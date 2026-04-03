@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * trending.
+ * Represents a trending.
  */
 @Fluent
 public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
@@ -197,6 +197,7 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (resourceReference() != null) {
             resourceReference().validate();
         }

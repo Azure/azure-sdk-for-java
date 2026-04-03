@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * contactFolder.
+ * Represents a contact folder.
  */
 @Fluent
 public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
@@ -223,6 +223,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (childFolders() != null) {
             childFolders().forEach(e -> e.validate());
         }

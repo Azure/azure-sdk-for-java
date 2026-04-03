@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * user
- * 
+ * Represents an user.
+ * <p>
  * Represents an Azure Active Directory user object.
  */
 @Fluent
@@ -3069,6 +3069,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      */
     @Override
     public void validate() {
+        super.validate();
         if (assignedLicenses() != null) {
             assignedLicenses().forEach(e -> e.validate());
         }

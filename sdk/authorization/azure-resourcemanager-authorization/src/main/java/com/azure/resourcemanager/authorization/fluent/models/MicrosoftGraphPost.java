@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * post.
+ * Represents a post.
  */
 @Fluent
 public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
@@ -443,6 +443,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
+        super.validate();
         if (body() != null) {
             body().validate();
         }

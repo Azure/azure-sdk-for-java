@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * teamsApp.
+ * Represents a teams app.
  */
 @Fluent
 public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
@@ -169,6 +169,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (appDefinitions() != null) {
             appDefinitions().forEach(e -> e.validate());
         }

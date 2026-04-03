@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * workbookChartSeries.
+ * Represents a workbook chart series.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartSeries extends MicrosoftGraphEntity {
@@ -140,6 +140,7 @@ public final class MicrosoftGraphWorkbookChartSeries extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
+        super.validate();
         if (format() != null) {
             format().validate();
         }

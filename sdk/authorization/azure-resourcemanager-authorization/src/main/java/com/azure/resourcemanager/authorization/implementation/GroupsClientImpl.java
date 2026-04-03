@@ -70,7 +70,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClientGroups")
+    @ServiceInterface(name = "MicrosoftGraphClient")
     public interface GroupsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/groups/{group-id}/acceptedSenders")
@@ -1124,15 +1124,13 @@ public final class GroupsClientImpl implements GroupsClient {
     }
 
     /**
-     * Get acceptedSenders from groups
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of directoryObject along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMoreSinglePageAsync(String nextLink) {
@@ -1146,8 +1144,6 @@ public final class GroupsClientImpl implements GroupsClient {
     }
 
     /**
-     * Get acceptedSenders from groups
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1155,7 +1151,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of directoryObject along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMoreSinglePageAsync(String nextLink,
@@ -1170,15 +1166,13 @@ public final class GroupsClientImpl implements GroupsClient {
     }
 
     /**
-     * Get members from groups
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of directoryObject along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersNextSinglePageAsync(String nextLink) {
@@ -1192,8 +1186,6 @@ public final class GroupsClientImpl implements GroupsClient {
     }
 
     /**
-     * Get members from groups
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1201,7 +1193,7 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of directoryObject along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersNextSinglePageAsync(String nextLink,
@@ -1216,15 +1208,14 @@ public final class GroupsClientImpl implements GroupsClient {
     }
 
     /**
-     * Get ref of members from groups
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of links of directoryObject along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefMembersNextSinglePageAsync(String nextLink) {
@@ -1238,8 +1229,6 @@ public final class GroupsClientImpl implements GroupsClient {
     }
 
     /**
-     * Get ref of members from groups
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1247,7 +1236,8 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of links of directoryObject along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefMembersNextSinglePageAsync(String nextLink, Context context) {

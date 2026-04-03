@@ -72,7 +72,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClientDomainsDomains")
+    @ServiceInterface(name = "MicrosoftGraphClient")
     public interface DomainsDomainsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/domains")
@@ -760,15 +760,13 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
     }
 
     /**
-     * Get entities from domains
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of domain along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDomainInner>> listMoreSinglePageAsync(String nextLink) {
@@ -782,8 +780,6 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
     }
 
     /**
-     * Get entities from domains
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -791,7 +787,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of domain along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDomainInner>> listMoreSinglePageAsync(String nextLink, Context context) {

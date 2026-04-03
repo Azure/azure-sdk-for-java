@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * servicePlanInfo.
+ * Represents a service plan info.
  */
 @Fluent
 public final class MicrosoftGraphServicePlanInfo implements JsonSerializable<MicrosoftGraphServicePlanInfo> {

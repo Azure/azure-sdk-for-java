@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * delegatedPermissionClassification.
+ * Represents a delegated permission classification.
  */
 @Fluent
 public final class MicrosoftGraphDelegatedPermissionClassification extends MicrosoftGraphEntity {
@@ -147,6 +147,7 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

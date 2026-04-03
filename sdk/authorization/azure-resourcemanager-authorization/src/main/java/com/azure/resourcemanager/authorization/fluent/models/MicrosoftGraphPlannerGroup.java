@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * plannerGroup.
+ * Represents a planner group.
  */
 @Fluent
 public final class MicrosoftGraphPlannerGroup extends MicrosoftGraphEntity {
@@ -90,6 +90,7 @@ public final class MicrosoftGraphPlannerGroup extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (plans() != null) {
             plans().forEach(e -> e.validate());
         }

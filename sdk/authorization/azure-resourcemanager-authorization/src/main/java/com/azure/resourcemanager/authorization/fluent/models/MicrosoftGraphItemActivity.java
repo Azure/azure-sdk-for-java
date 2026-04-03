@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * itemActivity.
+ * Represents an item activity.
  */
 @Fluent
 public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
@@ -167,6 +167,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (actor() != null) {
             actor().validate();
         }

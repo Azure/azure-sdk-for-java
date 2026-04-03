@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * outlookGeoCoordinates.
+ * Represents an outlook geo coordinates.
  */
 @Fluent
 public final class MicrosoftGraphOutlookGeoCoordinates

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * insightIdentity.
+ * Represents an insight identity.
  */
 @Fluent
 public final class MicrosoftGraphInsightIdentity implements JsonSerializable<MicrosoftGraphInsightIdentity> {

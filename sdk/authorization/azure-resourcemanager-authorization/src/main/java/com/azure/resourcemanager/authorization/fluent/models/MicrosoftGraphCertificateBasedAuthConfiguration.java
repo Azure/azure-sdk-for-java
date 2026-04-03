@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * certificateBasedAuthConfiguration.
+ * Represents a certificate based auth configuration.
  */
 @Fluent
 public final class MicrosoftGraphCertificateBasedAuthConfiguration extends MicrosoftGraphEntity {
@@ -94,6 +94,7 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
      */
     @Override
     public void validate() {
+        super.validate();
         if (certificateAuthorities() != null) {
             certificateAuthorities().forEach(e -> e.validate());
         }

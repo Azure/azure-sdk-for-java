@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * userActivity.
+ * Represents an user activity.
  */
 @Fluent
 public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
@@ -438,6 +438,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (visualElements() != null) {
             visualElements().validate();
         }

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * message.
+ * Represents a message.
  */
 @Fluent
 public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
@@ -916,6 +916,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
+        super.validate();
         if (bccRecipients() != null) {
             bccRecipients().forEach(e -> e.validate());
         }

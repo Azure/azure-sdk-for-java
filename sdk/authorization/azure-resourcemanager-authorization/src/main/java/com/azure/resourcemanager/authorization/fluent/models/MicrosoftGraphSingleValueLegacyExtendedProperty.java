@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * singleValueLegacyExtendedProperty.
+ * Represents a single value legacy extended property.
  */
 @Fluent
 public final class MicrosoftGraphSingleValueLegacyExtendedProperty extends MicrosoftGraphEntity {
@@ -90,6 +90,7 @@ public final class MicrosoftGraphSingleValueLegacyExtendedProperty extends Micro
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * extension.
+ * Represents an extension.
  */
 @Fluent
 public final class MicrosoftGraphExtension extends MicrosoftGraphEntity {
@@ -64,6 +64,7 @@ public final class MicrosoftGraphExtension extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

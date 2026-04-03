@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * contentType.
+ * Represents a content type.
  */
 @Fluent
 public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
@@ -318,6 +318,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (inheritedFrom() != null) {
             inheritedFrom().validate();
         }

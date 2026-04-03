@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * schedulingGroup.
+ * Represents a scheduling group.
  */
 @Fluent
 public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTrackedEntity {
@@ -172,9 +172,7 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
      */
     @Override
     public void validate() {
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
-        }
+        super.validate();
     }
 
     /**

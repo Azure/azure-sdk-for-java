@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * plannerUser.
+ * Represents a planner user.
  */
 @Fluent
 public final class MicrosoftGraphPlannerUser extends MicrosoftGraphEntity {
@@ -115,6 +115,7 @@ public final class MicrosoftGraphPlannerUser extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (plans() != null) {
             plans().forEach(e -> e.validate());
         }

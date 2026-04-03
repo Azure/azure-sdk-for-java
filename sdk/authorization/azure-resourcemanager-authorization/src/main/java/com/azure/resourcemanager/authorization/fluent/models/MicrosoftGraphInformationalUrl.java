@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * informationalUrl.
+ * Represents an informational url.
  */
 @Fluent
 public final class MicrosoftGraphInformationalUrl implements JsonSerializable<MicrosoftGraphInformationalUrl> {

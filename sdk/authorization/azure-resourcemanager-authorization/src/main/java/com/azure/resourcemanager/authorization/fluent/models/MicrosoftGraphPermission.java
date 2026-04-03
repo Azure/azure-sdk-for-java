@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * permission.
+ * Represents a permission.
  */
 @Fluent
 public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
@@ -303,6 +303,7 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (grantedTo() != null) {
             grantedTo().validate();
         }

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * messageRule.
+ * Represents a message rule.
  */
 @Fluent
 public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
@@ -266,6 +266,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (actions() != null) {
             actions().validate();
         }

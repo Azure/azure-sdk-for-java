@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * actionState.
+ * Represents an action state.
  */
 public final class MicrosoftGraphActionState extends ExpandableStringEnum<MicrosoftGraphActionState> {
     /**

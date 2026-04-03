@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamsTabConfiguration.
+ * Represents a teams tab configuration.
  */
 @Fluent
 public final class MicrosoftGraphTeamsTabConfiguration

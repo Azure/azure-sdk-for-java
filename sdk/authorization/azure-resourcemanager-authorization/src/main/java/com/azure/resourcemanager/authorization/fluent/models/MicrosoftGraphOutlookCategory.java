@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * outlookCategory.
+ * Represents an outlook category.
  */
 @Fluent
 public final class MicrosoftGraphOutlookCategory extends MicrosoftGraphEntity {
@@ -117,6 +117,7 @@ public final class MicrosoftGraphOutlookCategory extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

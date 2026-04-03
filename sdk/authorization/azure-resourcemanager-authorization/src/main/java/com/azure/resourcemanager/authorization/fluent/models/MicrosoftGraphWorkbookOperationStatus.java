@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * workbookOperationStatus.
+ * Represents a workbook operation status.
  */
 public final class MicrosoftGraphWorkbookOperationStatus
     extends ExpandableStringEnum<MicrosoftGraphWorkbookOperationStatus> {

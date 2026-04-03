@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * licenseAssignmentState.
+ * Represents a license assignment state.
  */
 @Fluent
 public final class MicrosoftGraphLicenseAssignmentState

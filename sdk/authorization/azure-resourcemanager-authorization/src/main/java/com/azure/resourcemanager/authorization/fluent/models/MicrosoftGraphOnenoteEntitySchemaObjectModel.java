@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * onenoteEntitySchemaObjectModel.
+ * Represents an onenote entity schema object model.
  */
 @Fluent
 public class MicrosoftGraphOnenoteEntitySchemaObjectModel extends MicrosoftGraphOnenoteEntityBaseModel {
@@ -108,6 +108,7 @@ public class MicrosoftGraphOnenoteEntitySchemaObjectModel extends MicrosoftGraph
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

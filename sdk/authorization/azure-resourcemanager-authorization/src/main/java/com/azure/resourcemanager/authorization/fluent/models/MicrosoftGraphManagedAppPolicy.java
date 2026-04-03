@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * managedAppPolicy
- * 
+ * Represents a managed app policy.
+ * <p>
  * The ManagedAppPolicy resource represents a base type for platform specific policies.
  */
 @Fluent
@@ -196,6 +196,7 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

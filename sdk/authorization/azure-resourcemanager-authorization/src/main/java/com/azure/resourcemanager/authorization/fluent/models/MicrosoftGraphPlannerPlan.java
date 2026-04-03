@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * plannerPlan.
+ * Represents a planner plan.
  */
 @Fluent
 public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
@@ -252,6 +252,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (createdBy() != null) {
             createdBy().validate();
         }

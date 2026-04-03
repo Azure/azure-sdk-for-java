@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * directory.
+ * Represents a directory.
  */
 @Fluent
 public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
@@ -115,6 +115,7 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (administrativeUnits() != null) {
             administrativeUnits().forEach(e -> e.validate());
         }

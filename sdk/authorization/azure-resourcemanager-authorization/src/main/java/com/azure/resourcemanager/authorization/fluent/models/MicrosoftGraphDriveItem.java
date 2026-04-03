@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * driveItem.
+ * Represents a drive item.
  */
 @Fluent
 public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
@@ -939,6 +939,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
+        super.validate();
         if (audio() != null) {
             audio().validate();
         }
@@ -1013,21 +1014,6 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
         }
         if (versions() != null) {
             versions().forEach(e -> e.validate());
-        }
-        if (createdBy() != null) {
-            createdBy().validate();
-        }
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
-        }
-        if (parentReference() != null) {
-            parentReference().validate();
-        }
-        if (createdByUser() != null) {
-            createdByUser().validate();
-        }
-        if (lastModifiedByUser() != null) {
-            lastModifiedByUser().validate();
         }
     }
 

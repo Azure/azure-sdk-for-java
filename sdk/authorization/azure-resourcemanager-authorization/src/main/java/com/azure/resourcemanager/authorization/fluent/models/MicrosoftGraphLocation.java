@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * location.
+ * Represents a location.
  */
 @Fluent
 public final class MicrosoftGraphLocation implements JsonSerializable<MicrosoftGraphLocation> {

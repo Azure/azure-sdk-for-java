@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookChartPointFormat.
+ * Represents a workbook chart point format.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartPointFormat extends MicrosoftGraphEntity {
@@ -89,6 +89,7 @@ public final class MicrosoftGraphWorkbookChartPointFormat extends MicrosoftGraph
      */
     @Override
     public void validate() {
+        super.validate();
         if (fill() != null) {
             fill().validate();
         }

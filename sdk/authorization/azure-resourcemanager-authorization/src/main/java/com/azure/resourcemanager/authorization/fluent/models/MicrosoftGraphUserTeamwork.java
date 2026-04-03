@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * userTeamwork.
+ * Represents an user teamwork.
  */
 @Fluent
 public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
@@ -91,6 +91,7 @@ public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (installedApps() != null) {
             installedApps().forEach(e -> e.validate());
         }

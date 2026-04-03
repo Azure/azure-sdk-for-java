@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * contact.
+ * Represents a contact.
  */
 @Fluent
 public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
@@ -1048,6 +1048,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
+        super.validate();
         if (businessAddress() != null) {
             businessAddress().validate();
         }

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * team.
+ * Represents a team.
  */
 @Fluent
 public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
@@ -580,6 +580,7 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (funSettings() != null) {
             funSettings().validate();
         }

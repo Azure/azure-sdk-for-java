@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * workbookTableSort.
+ * Represents a workbook table sort.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookTableSort extends MicrosoftGraphEntity {
@@ -143,6 +143,7 @@ public final class MicrosoftGraphWorkbookTableSort extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
+        super.validate();
         if (fields() != null) {
             fields().forEach(e -> e.validate());
         }

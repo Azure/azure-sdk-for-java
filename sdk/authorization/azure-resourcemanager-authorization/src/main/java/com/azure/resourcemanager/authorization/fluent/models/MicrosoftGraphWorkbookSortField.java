@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookSortField.
+ * Represents a workbook sort field.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookSortField implements JsonSerializable<MicrosoftGraphWorkbookSortField> {

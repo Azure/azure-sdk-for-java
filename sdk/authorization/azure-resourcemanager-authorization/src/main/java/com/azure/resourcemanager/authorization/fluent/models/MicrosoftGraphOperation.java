@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * operation.
+ * Represents an operation.
  */
 @Fluent
 public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
@@ -142,6 +142,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

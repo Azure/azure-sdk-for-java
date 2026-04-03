@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * site.
+ * Represents a site.
  */
 @Fluent
 public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
@@ -517,6 +517,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
+        super.validate();
         if (error() != null) {
             error().validate();
         }
@@ -552,21 +553,6 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
         }
         if (onenote() != null) {
             onenote().validate();
-        }
-        if (createdBy() != null) {
-            createdBy().validate();
-        }
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
-        }
-        if (parentReference() != null) {
-            parentReference().validate();
-        }
-        if (createdByUser() != null) {
-            createdByUser().validate();
-        }
-        if (lastModifiedByUser() != null) {
-            lastModifiedByUser().validate();
         }
     }
 

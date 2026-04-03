@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * incompleteData.
+ * Represents an incomplete data.
  */
 @Fluent
 public final class MicrosoftGraphIncompleteData implements JsonSerializable<MicrosoftGraphIncompleteData> {

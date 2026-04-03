@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * weekIndex.
+ * Represents a week index.
  */
 public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<MicrosoftGraphWeekIndex> {
     /**

@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * subscribedSku.
+ * Represents a subscribed sku.
  */
 @Fluent
 public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
@@ -242,6 +242,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (prepaidUnits() != null) {
             prepaidUnits().validate();
         }

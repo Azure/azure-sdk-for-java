@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * mailFolder.
+ * Represents a mail folder.
  */
 @Fluent
 public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
@@ -321,6 +321,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (childFolders() != null) {
             childFolders().forEach(e -> e.validate());
         }

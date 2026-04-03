@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * meetingParticipants.
+ * Represents a meeting participants.
  */
 @Fluent
 public final class MicrosoftGraphMeetingParticipants implements JsonSerializable<MicrosoftGraphMeetingParticipants> {

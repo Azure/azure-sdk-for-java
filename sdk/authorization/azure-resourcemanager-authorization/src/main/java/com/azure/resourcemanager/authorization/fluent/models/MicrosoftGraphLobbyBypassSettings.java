@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * lobbyBypassSettings.
+ * Represents a lobby bypass settings.
  */
 @Fluent
 public final class MicrosoftGraphLobbyBypassSettings implements JsonSerializable<MicrosoftGraphLobbyBypassSettings> {

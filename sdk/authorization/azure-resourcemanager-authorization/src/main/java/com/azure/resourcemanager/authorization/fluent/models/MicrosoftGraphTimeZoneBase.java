@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * timeZoneBase.
+ * Represents a time zone base.
  */
 @Fluent
 public final class MicrosoftGraphTimeZoneBase implements JsonSerializable<MicrosoftGraphTimeZoneBase> {

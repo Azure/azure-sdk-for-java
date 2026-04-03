@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * samlSingleSignOnSettings.
+ * Represents a saml single sign on settings.
  */
 @Fluent
 public final class MicrosoftGraphSamlSingleSignOnSettings

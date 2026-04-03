@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * chatMessagePolicyViolationPolicyTip.
+ * Represents a chat message policy violation policy tip.
  */
 @Fluent
 public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip

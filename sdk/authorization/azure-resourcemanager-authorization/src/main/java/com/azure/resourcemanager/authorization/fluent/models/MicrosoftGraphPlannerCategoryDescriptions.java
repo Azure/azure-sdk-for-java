@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * plannerCategoryDescriptions.
+ * Represents a planner category descriptions.
  */
 @Fluent
 public final class MicrosoftGraphPlannerCategoryDescriptions

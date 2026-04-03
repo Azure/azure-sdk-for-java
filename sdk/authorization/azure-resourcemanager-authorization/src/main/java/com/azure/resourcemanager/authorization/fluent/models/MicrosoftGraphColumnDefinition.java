@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * columnDefinition.
+ * Represents a column definition.
  */
 @Fluent
 public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
@@ -569,6 +569,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (calculated() != null) {
             calculated().validate();
         }

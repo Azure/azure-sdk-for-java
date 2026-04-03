@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * event.
+ * Represents an event.
  */
 @Fluent
 public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
@@ -1220,6 +1220,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
+        super.validate();
         if (attendees() != null) {
             attendees().forEach(e -> e.validate());
         }

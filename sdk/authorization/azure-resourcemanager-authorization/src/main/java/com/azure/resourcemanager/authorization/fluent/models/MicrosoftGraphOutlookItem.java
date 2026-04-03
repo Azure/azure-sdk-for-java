@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * outlookItem.
+ * Represents an outlook item.
  */
 @Fluent
 public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
@@ -179,6 +179,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

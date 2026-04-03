@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * schedule.
+ * Represents a schedule.
  */
 @Fluent
 public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
@@ -542,6 +542,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (offerShiftRequests() != null) {
             offerShiftRequests().forEach(e -> e.validate());
         }

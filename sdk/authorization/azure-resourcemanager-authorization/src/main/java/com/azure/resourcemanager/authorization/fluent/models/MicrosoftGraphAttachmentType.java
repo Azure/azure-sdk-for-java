@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * attachmentType.
+ * Represents an attachment type.
  */
 public final class MicrosoftGraphAttachmentType extends ExpandableStringEnum<MicrosoftGraphAttachmentType> {
     /**

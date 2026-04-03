@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * multiValueLegacyExtendedProperty.
+ * Represents a multi value legacy extended property.
  */
 @Fluent
 public final class MicrosoftGraphMultiValueLegacyExtendedProperty extends MicrosoftGraphEntity {
@@ -91,6 +91,7 @@ public final class MicrosoftGraphMultiValueLegacyExtendedProperty extends Micros
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

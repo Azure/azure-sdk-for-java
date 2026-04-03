@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * scheduleChangeRequest.
+ * Represents a schedule change request.
  */
 @Fluent
 public class MicrosoftGraphScheduleChangeRequest extends MicrosoftGraphChangeTrackedEntity {
@@ -294,9 +294,7 @@ public class MicrosoftGraphScheduleChangeRequest extends MicrosoftGraphChangeTra
      */
     @Override
     public void validate() {
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
-        }
+        super.validate();
     }
 
     /**

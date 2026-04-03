@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * linkedResource.
+ * Represents a linked resource.
  */
 @Fluent
 public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
@@ -166,6 +166,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * contentTypeOrder.
+ * Represents a content type order.
  */
 @Fluent
 public final class MicrosoftGraphContentTypeOrder implements JsonSerializable<MicrosoftGraphContentTypeOrder> {

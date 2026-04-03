@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * timeOff.
+ * Represents a time off.
  */
 @Fluent
 public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEntity {
@@ -169,14 +169,12 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
      */
     @Override
     public void validate() {
+        super.validate();
         if (draftTimeOff() != null) {
             draftTimeOff().validate();
         }
         if (sharedTimeOff() != null) {
             sharedTimeOff().validate();
-        }
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
         }
     }
 

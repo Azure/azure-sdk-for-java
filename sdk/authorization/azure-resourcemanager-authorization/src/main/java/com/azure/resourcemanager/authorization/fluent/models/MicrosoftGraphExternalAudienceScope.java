@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * externalAudienceScope.
+ * Represents an external audience scope.
  */
 public final class MicrosoftGraphExternalAudienceScope
     extends ExpandableStringEnum<MicrosoftGraphExternalAudienceScope> {

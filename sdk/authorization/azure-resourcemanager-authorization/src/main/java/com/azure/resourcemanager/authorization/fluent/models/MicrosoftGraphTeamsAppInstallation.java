@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamsAppInstallation.
+ * Represents a teams app installation.
  */
 @Fluent
 public class MicrosoftGraphTeamsAppInstallation extends MicrosoftGraphEntity {
@@ -115,6 +115,7 @@ public class MicrosoftGraphTeamsAppInstallation extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (teamsApp() != null) {
             teamsApp().validate();
         }

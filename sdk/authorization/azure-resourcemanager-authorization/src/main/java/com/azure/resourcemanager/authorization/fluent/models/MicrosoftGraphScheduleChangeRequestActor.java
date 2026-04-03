@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * scheduleChangeRequestActor.
+ * Represents a schedule change request actor.
  */
 public final class MicrosoftGraphScheduleChangeRequestActor
     extends ExpandableStringEnum<MicrosoftGraphScheduleChangeRequestActor> {

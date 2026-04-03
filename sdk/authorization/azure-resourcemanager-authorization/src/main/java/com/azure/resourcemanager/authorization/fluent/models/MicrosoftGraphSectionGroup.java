@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * sectionGroup.
+ * Represents a section group.
  */
 @Fluent
 public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntityHierarchyModel {
@@ -277,6 +277,7 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
      */
     @Override
     public void validate() {
+        super.validate();
         if (parentNotebook() != null) {
             parentNotebook().validate();
         }
@@ -288,12 +289,6 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
         }
         if (sections() != null) {
             sections().forEach(e -> e.validate());
-        }
-        if (createdBy() != null) {
-            createdBy().validate();
-        }
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
         }
     }
 

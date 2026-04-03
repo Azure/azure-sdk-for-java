@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * outlookUser.
+ * Represents an outlook user.
  */
 @Fluent
 public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
@@ -90,6 +90,7 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (masterCategories() != null) {
             masterCategories().forEach(e -> e.validate());
         }

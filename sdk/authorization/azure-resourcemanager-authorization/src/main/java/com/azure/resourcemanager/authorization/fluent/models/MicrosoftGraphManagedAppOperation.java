@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * managedAppOperation
- * 
+ * Represents a managed app operation.
+ * <p>
  * Represents an operation applied against an app registration.
  */
 @Fluent
@@ -169,6 +169,7 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

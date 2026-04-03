@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * domain.
+ * Represents a domain.
  */
 @Fluent
 public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
@@ -520,6 +520,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (state() != null) {
             state().validate();
         }

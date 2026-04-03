@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * entity.
+ * Represents an entity.
  */
 @Fluent
 public class MicrosoftGraphEntity implements JsonSerializable<MicrosoftGraphEntity> {

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * oAuth2PermissionGrant.
+ * Represents an o auth2 permission grant.
  */
 @Fluent
 public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEntity {
@@ -221,6 +221,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

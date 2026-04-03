@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookPivotTable.
+ * Represents a workbook pivot table.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity {
@@ -114,6 +114,7 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
+        super.validate();
         if (worksheet() != null) {
             worksheet().validate();
         }

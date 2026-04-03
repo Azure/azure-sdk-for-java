@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * onenoteEntityHierarchyModel.
+ * Represents an onenote entity hierarchy model.
  */
 @Fluent
 public class MicrosoftGraphOnenoteEntityHierarchyModel extends MicrosoftGraphOnenoteEntitySchemaObjectModel {
@@ -192,6 +192,7 @@ public class MicrosoftGraphOnenoteEntityHierarchyModel extends MicrosoftGraphOne
      */
     @Override
     public void validate() {
+        super.validate();
         if (createdBy() != null) {
             createdBy().validate();
         }

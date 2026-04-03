@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * verifiedDomain.
+ * Represents a verified domain.
  */
 @Fluent
 public final class MicrosoftGraphVerifiedDomain implements JsonSerializable<MicrosoftGraphVerifiedDomain> {

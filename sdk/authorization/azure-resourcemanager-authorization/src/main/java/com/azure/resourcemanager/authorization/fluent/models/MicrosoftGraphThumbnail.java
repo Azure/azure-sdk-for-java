@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * thumbnail.
+ * Represents a thumbnail.
  */
 @Fluent
 public final class MicrosoftGraphThumbnail implements JsonSerializable<MicrosoftGraphThumbnail> {

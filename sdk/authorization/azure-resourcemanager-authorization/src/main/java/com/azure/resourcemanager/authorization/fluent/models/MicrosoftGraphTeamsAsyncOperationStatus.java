@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * teamsAsyncOperationStatus.
+ * Represents a teams async operation status.
  */
 public final class MicrosoftGraphTeamsAsyncOperationStatus
     extends ExpandableStringEnum<MicrosoftGraphTeamsAsyncOperationStatus> {

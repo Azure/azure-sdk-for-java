@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * listItemVersion.
+ * Represents a list item version.
  */
 @Fluent
 public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemVersion {
@@ -119,14 +119,9 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
      */
     @Override
     public void validate() {
+        super.validate();
         if (fields() != null) {
             fields().validate();
-        }
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
-        }
-        if (publication() != null) {
-            publication().validate();
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * operationError.
+ * Represents an operation error.
  */
 @Fluent
 public final class MicrosoftGraphOperationError implements JsonSerializable<MicrosoftGraphOperationError> {

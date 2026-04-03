@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * scopedRoleMembership.
+ * Represents a scoped role membership.
  */
 @Fluent
 public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEntity {
@@ -141,6 +141,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      */
     @Override
     public void validate() {
+        super.validate();
         if (roleMemberInfo() != null) {
             roleMemberInfo().validate();
         }

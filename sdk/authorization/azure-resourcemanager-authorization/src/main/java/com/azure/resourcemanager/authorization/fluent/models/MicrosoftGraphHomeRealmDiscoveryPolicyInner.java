@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * homeRealmDiscoveryPolicy
- * 
+ * Represents a home realm discovery policy.
+ * <p>
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
@@ -130,9 +130,7 @@ public final class MicrosoftGraphHomeRealmDiscoveryPolicyInner extends Microsoft
      */
     @Override
     public void validate() {
-        if (appliesTo() != null) {
-            appliesTo().forEach(e -> e.validate());
-        }
+        super.validate();
     }
 
     /**

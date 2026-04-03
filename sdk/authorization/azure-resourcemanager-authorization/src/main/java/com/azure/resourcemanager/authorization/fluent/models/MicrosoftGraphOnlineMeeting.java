@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * onlineMeeting.
+ * Represents an online meeting.
  */
 @Fluent
 public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
@@ -417,6 +417,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (audioConferencing() != null) {
             audioConferencing().validate();
         }

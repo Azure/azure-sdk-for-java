@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * thumbnailSet.
+ * Represents a thumbnail set.
  */
 @Fluent
 public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
@@ -164,6 +164,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
+        super.validate();
         if (large() != null) {
             large().validate();
         }

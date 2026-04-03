@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookNamedItem.
+ * Represents a workbook named item.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity {
@@ -244,6 +244,7 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
+        super.validate();
         if (worksheet() != null) {
             worksheet().validate();
         }

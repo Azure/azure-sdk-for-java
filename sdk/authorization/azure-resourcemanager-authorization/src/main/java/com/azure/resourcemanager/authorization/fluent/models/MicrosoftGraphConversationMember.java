@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * conversationMember.
+ * Represents a conversation member.
  */
 @Fluent
 public final class MicrosoftGraphConversationMember extends MicrosoftGraphEntity {
@@ -115,6 +115,7 @@ public final class MicrosoftGraphConversationMember extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
+        super.validate();
     }
 
     /**

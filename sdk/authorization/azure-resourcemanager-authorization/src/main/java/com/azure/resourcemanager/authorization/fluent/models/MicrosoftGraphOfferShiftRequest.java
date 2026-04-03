@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * offerShiftRequest.
+ * Represents an offer shift request.
  */
 @Fluent
 public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChangeRequest {
@@ -271,9 +271,7 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
      */
     @Override
     public void validate() {
-        if (lastModifiedBy() != null) {
-            lastModifiedBy().validate();
-        }
+        super.validate();
     }
 
     /**

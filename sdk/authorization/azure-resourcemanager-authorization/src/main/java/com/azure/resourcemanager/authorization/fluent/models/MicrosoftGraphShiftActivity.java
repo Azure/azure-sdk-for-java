@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * shiftActivity.
+ * Represents a shift activity.
  */
 @Fluent
 public final class MicrosoftGraphShiftActivity implements JsonSerializable<MicrosoftGraphShiftActivity> {

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * sectionLinks.
+ * Represents a section links.
  */
 @Fluent
 public final class MicrosoftGraphSectionLinks implements JsonSerializable<MicrosoftGraphSectionLinks> {

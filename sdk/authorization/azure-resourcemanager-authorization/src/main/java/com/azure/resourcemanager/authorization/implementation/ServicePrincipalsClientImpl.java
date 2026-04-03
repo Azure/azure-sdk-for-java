@@ -58,7 +58,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClientServicePrincipals")
+    @ServiceInterface(name = "MicrosoftGraphClient")
     public interface ServicePrincipalsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/servicePrincipals/{servicePrincipal-id}/microsoft.graph.addKey")
