@@ -35,6 +35,7 @@ public class HttpClientConfig {
     private boolean serverCertValidationDisabled = false;
     private Http2ConnectionConfig http2ConnectionConfig;
     private AddressResolverGroup<?> addressResolverGroup;
+    private java.util.function.Consumer<reactor.netty.Connection> doOnConnectedCallback;
 
     // Eagerly resolved thin client connect timeout — avoids per-request System.getProperty/getenv calls.
     private final int thinClientConnectTimeoutMs;
@@ -195,6 +196,15 @@ public class HttpClientConfig {
 
     public HttpClientConfig withAddressResolverGroup(AddressResolverGroup<?> resolverGroup) {
         this.addressResolverGroup = resolverGroup;
+        return this;
+    }
+
+    public java.util.function.Consumer<reactor.netty.Connection> getDoOnConnectedCallback() {
+        return this.doOnConnectedCallback;
+    }
+
+    public HttpClientConfig withDoOnConnectedCallback(java.util.function.Consumer<reactor.netty.Connection> callback) {
+        this.doOnConnectedCallback = callback;
         return this;
     }
 

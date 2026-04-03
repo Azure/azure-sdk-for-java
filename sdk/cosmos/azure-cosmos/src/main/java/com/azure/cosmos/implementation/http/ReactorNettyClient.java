@@ -164,6 +164,25 @@ public class ReactorNettyClient implements HttpClient {
                         jitterRangeSeconds * 1000L);
                 }
             }
+
+            // Manual HTTP/2 PING keepalive — sends PING frames when the connection is idle
+            // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
+            // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
+            // and the second fires for stream channels (parent()!=null).
+            // We install on the parent channel — detect it via Http2MultiplexHandler in the pipeline.
+            if (Configs.isHttp2PingHealthEnabled()
+                && connection.channel().pipeline().get(io.netty.handler.codec.http2.Http2MultiplexHandler.class) != null) {
+                int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                if (pingIntervalSeconds > 0) {
+                    Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds);
+                }
+            }
+
+            // Test hook: allows injection of custom handlers (e.g., PING frame counter)
+            java.util.function.Consumer<reactor.netty.Connection> doOnConnectedCb = ReactorNettyClient.this.httpClientConfig.getDoOnConnectedCallback();
+            if (doOnConnectedCb != null) {
+                doOnConnectedCb.accept(connection);
+            }
         });
 
         if (isH2Enabled) {
@@ -175,29 +194,12 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-                .http2Settings(settings -> {
-                    settings
-                        .initialWindowSize(1024 * 1024) // 1MB initial window size
-                        .maxFrameSize(64 * 1024)        // 64KB max frame size
-                        .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg));  // Increased from default 30
-
-                    // Native HTTP/2 PING keepalive — prevents L7 middleboxes (NAT, firewalls, LBs)
-                    // from silently reaping idle connections. Also detects half-open TCP connections
-                    // by closing the connection after consecutive unanswered PINGs.
-                    // Uses reactor-netty's built-in PING support (available since 1.2.12).
-                    if (Configs.isHttp2PingHealthEnabled()) {
-                        int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                        if (pingIntervalSeconds > 0) {
-                            settings
-                                .pingAckTimeout(Duration.ofSeconds(pingIntervalSeconds))
-                                .pingAckDropThreshold(2); // close after 2 consecutive unanswered PINGs
-                        }
-                    }
-                })
+                .http2Settings(settings -> settings
+                    .initialWindowSize(1024 * 1024) // 1MB initial window size
+                    .maxFrameSize(64 * 1024)        // 64KB max frame size
+                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
+                )
                 .doOnConnected((connection -> {
-                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
-                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
-                    // validateHeaders(false) does not work for http2
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get("reactor.left.httpCodec") != null) {
                         channelPipeline.addAfter(

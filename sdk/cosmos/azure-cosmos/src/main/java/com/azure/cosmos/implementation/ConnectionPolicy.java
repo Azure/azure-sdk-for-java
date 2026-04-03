@@ -48,6 +48,7 @@ public final class ConnectionPolicy {
     private Duration idleHttpConnectionTimeout;
     private Http2ConnectionConfig http2ConnectionConfig;
     private AddressResolverGroup<?> addressResolverGroup;
+    private java.util.function.Consumer<reactor.netty.Connection> doOnConnectedCallback;
 
     //  Direct connection config properties
     private Duration connectTimeout;
@@ -691,6 +692,15 @@ public final class ConnectionPolicy {
      */
     public ConnectionPolicy setAddressResolverGroup(AddressResolverGroup<?> addressResolverGroup) {
         this.addressResolverGroup = addressResolverGroup;
+        return this;
+    }
+
+    public java.util.function.Consumer<reactor.netty.Connection> getDoOnConnectedCallback() {
+        return this.doOnConnectedCallback;
+    }
+
+    public ConnectionPolicy setDoOnConnectedCallback(java.util.function.Consumer<reactor.netty.Connection> callback) {
+        this.doOnConnectedCallback = callback;
         return this;
     }
 

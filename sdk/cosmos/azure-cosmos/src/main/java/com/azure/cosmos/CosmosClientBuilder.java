@@ -154,6 +154,7 @@ public class CosmosClientBuilder implements
     private boolean isPerPartitionAutomaticFailoverEnabled = false;
     private boolean serverCertValidationDisabled = false;
     private io.netty.resolver.AddressResolverGroup<?> addressResolverGroup;
+    private java.util.function.Consumer<reactor.netty.Connection> doOnConnectedCallback;
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
 
@@ -1310,6 +1311,7 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
         this.connectionPolicy.setServerCertValidationDisabled(this.serverCertValidationDisabled);
         this.connectionPolicy.setAddressResolverGroup(this.addressResolverGroup);
+        this.connectionPolicy.setDoOnConnectedCallback(this.doOnConnectedCallback);
         return this.connectionPolicy;
     }
 
@@ -1505,6 +1507,11 @@ public class CosmosClientBuilder implements
                 @Override
                 public void setAddressResolverGroup(CosmosClientBuilder builder, io.netty.resolver.AddressResolverGroup<?> resolverGroup) {
                     builder.addressResolverGroup = resolverGroup;
+                }
+
+                @Override
+                public void setDoOnConnectedCallback(CosmosClientBuilder builder, java.util.function.Consumer<reactor.netty.Connection> callback) {
+                    builder.doOnConnectedCallback = callback;
                 }
             });
     }
