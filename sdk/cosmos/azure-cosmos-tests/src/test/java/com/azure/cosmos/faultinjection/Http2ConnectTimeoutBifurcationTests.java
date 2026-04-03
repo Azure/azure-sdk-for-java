@@ -126,8 +126,9 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     private void addPerPortDelay(int port443DelayMs, int port10250DelayMs) {
         String iface = networkInterface;
         String[] cmds = {
-            // Create root prio qdisc with 3 bands
-            sudoPrefix + "tc qdisc add dev " + iface + " root handle 1: prio bands 3",
+            // Create root prio qdisc with 3 bands. priomap sends ALL traffic to band 3 (no delay)
+            // by default — only explicitly marked packets go to delay bands 1 and 2.
+            sudoPrefix + "tc qdisc add dev " + iface + " root handle 1: prio bands 3 priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
             // Band 1 (handle 1:1): delay for port 443
             String.format("%stc qdisc add dev %s parent 1:1 handle 10: netem delay %dms", sudoPrefix, iface, port443DelayMs),
             // Band 2 (handle 1:2): delay for port 10250
@@ -170,8 +171,11 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     private void addPerPortSynDelay(int port443SynDelayMs, int port10250SynDelayMs) {
         String iface = networkInterface;
         String[] cmds = {
-            // Create root prio qdisc with 3 bands
-            sudoPrefix + "tc qdisc add dev " + iface + " root handle 1: prio bands 3",
+            // Create root prio qdisc with 3 bands. priomap sends ALL traffic to band 3 (no delay)
+            // by default — only explicitly marked SYN packets go to delay bands 1 and 2.
+            // Without priomap override, the default TOS-based mapping sends some packets to band 1,
+            // accidentally delaying non-SYN traffic and causing metadata fetch failures.
+            sudoPrefix + "tc qdisc add dev " + iface + " root handle 1: prio bands 3 priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
             // Band 1 (handle 1:1): delay for port 443 SYN
             String.format("%stc qdisc add dev %s parent 1:1 handle 10: netem delay %dms", sudoPrefix, iface, port443SynDelayMs),
             // Band 2 (handle 1:2): delay for port 10250 SYN
