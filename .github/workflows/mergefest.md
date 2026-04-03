@@ -12,25 +12,7 @@ permissions:
 engine: copilot
 tools:
   bash:
-    - "git fetch"
-    - "git checkout"
-    - "git pull"
-    - "git merge"
-    - "git status"
-    - "git diff"
-    - "git log"
-    - "git rev-parse"
-    - "git reset"
-    - "git add"
-    - "git commit"
-    - "git config"
-    - "git branch"
-    - "git branch"
-    - "git format-patch"
-    - "cat"
-    - "echo"
-    - "ls"
-    - "grep"
+    - "*"
   edit:
   github:
     toolsets: [pull_requests, repos]
@@ -304,8 +286,8 @@ The `push-to-pull-request-branch` safe output will automatically:
 
 - **Be Careful**: This operation modifies the PR branch directly
 - **Never Commit Workflow YMLs**: Always exclude `.github/workflows/*.yml` files
-- **Recompile After Lock File Conflicts**: Run `make recompile` if `.lock.yml` files had conflicts
-<!-- - **Format, Lint, Test**: Always run `make fmt`, `make lint`, `make test-unit`, and `make recompile` after merge -->
+<!-- - **Recompile After Lock File Conflicts**: Run `make recompile` if `.lock.yml` files had conflicts
+- **Format, Lint, Test**: Always run `make fmt`, `make lint`, `make test-unit`, and `make recompile` after merge -->
 - **Verify Before Pushing**: Always check what's staged before pushing
 - **Handle Conflicts Intelligently**: Use repository knowledge to resolve conflicts
 - **Document Actions**: Explain what was merged and any conflicts resolved
