@@ -1,5 +1,15 @@
 # Release History
 
+## 2.62.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.61.0 (2026-04-03)
 
 ### azure-resourcemanager-containerservice
