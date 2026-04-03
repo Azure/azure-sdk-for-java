@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookChartGridlines extends MicrosoftGraphEn
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

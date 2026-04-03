@@ -321,7 +321,6 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (childFolders() != null) {
             childFolders().forEach(e -> e.validate());
         }

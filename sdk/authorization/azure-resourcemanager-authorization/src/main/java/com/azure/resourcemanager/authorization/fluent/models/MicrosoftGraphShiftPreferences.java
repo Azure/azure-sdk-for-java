@@ -120,7 +120,6 @@ public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTr
      */
     @Override
     public void validate() {
-        super.validate();
         if (availability() != null) {
             availability().forEach(e -> e.validate());
         }

@@ -252,7 +252,6 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (createdBy() != null) {
             createdBy().validate();
         }

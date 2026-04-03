@@ -204,7 +204,6 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (emailAddress() != null) {
             emailAddress().validate();
         }

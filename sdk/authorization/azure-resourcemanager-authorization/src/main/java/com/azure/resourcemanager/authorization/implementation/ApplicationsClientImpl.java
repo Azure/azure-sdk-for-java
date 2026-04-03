@@ -87,7 +87,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClient")
+    @ServiceInterface(name = "MicrosoftGraphClientApplications")
     public interface ApplicationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/applications/{application-id}/createdOnBehalfOf")

@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookChartLegendFormat extends MicrosoftGrap
      */
     @Override
     public void validate() {
-        super.validate();
         if (fill() != null) {
             fill().validate();
         }

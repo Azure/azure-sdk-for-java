@@ -164,7 +164,6 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

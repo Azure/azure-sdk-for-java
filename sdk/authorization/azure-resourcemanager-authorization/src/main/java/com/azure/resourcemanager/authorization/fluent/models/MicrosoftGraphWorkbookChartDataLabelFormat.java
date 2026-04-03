@@ -115,7 +115,6 @@ public final class MicrosoftGraphWorkbookChartDataLabelFormat extends MicrosoftG
      */
     @Override
     public void validate() {
-        super.validate();
         if (fill() != null) {
             fill().validate();
         }

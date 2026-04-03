@@ -267,7 +267,6 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
         if (charts() != null) {
             charts().forEach(e -> e.validate());
         }

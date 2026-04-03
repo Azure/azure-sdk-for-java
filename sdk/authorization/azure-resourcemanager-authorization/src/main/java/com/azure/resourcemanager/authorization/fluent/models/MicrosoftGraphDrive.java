@@ -422,7 +422,6 @@ public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (owner() != null) {
             owner().validate();
         }

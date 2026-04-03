@@ -109,7 +109,6 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
      */
     @Override
     public void validate() {
-        super.validate();
         if (chat() != null) {
             chat().validate();
         }

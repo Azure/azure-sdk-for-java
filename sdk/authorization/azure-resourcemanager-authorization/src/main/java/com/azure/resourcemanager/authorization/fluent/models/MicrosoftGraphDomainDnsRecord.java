@@ -205,7 +205,6 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -115,7 +115,6 @@ public final class MicrosoftGraphConversationMember extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

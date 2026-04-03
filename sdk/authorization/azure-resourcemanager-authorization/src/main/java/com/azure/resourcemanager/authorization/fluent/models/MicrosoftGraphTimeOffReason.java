@@ -171,7 +171,6 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

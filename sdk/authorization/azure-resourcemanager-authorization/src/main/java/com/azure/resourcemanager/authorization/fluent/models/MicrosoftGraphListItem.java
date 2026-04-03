@@ -317,7 +317,6 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (contentType() != null) {
             contentType().validate();
         }

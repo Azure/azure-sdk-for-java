@@ -90,7 +90,6 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
      */
     @Override
     public void validate() {
-        super.validate();
         if (line() != null) {
             line().validate();
         }

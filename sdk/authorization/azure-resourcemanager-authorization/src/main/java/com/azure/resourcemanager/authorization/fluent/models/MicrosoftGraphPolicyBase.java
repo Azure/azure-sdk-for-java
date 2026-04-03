@@ -132,7 +132,6 @@ public class MicrosoftGraphPolicyBase extends MicrosoftGraphDirectoryObjectInner
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

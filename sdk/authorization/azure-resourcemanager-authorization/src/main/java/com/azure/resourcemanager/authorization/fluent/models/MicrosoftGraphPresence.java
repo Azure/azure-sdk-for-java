@@ -123,7 +123,6 @@ public final class MicrosoftGraphPresence extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

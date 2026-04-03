@@ -132,7 +132,6 @@ public final class MicrosoftGraphDirectoryRoleTemplate extends MicrosoftGraphDir
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

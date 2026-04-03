@@ -169,7 +169,6 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

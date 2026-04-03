@@ -64,7 +64,6 @@ public final class MicrosoftGraphChatMessageHostedContent extends MicrosoftGraph
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

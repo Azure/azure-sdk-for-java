@@ -916,7 +916,6 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
-        super.validate();
         if (bccRecipients() != null) {
             bccRecipients().forEach(e -> e.validate());
         }

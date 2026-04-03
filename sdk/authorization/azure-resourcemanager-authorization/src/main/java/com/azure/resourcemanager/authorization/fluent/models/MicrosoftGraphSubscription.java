@@ -439,7 +439,6 @@ public final class MicrosoftGraphSubscription extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

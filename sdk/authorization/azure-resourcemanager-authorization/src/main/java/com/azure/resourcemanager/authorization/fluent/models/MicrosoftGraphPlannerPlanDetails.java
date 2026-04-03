@@ -115,7 +115,6 @@ public final class MicrosoftGraphPlannerPlanDetails extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (categoryDescriptions() != null) {
             categoryDescriptions().validate();
         }

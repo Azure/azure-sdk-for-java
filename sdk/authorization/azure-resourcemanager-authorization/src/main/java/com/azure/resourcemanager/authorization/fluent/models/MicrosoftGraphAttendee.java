@@ -123,7 +123,6 @@ public final class MicrosoftGraphAttendee extends MicrosoftGraphAttendeeBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (proposedNewTime() != null) {
             proposedNewTime().validate();
         }

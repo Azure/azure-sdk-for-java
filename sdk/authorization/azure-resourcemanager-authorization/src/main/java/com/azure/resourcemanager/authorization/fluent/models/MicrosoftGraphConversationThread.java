@@ -303,7 +303,6 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (ccRecipients() != null) {
             ccRecipients().forEach(e -> e.validate());
         }

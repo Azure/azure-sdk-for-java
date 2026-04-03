@@ -438,7 +438,6 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (visualElements() != null) {
             visualElements().validate();
         }

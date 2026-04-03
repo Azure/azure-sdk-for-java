@@ -294,7 +294,6 @@ public class MicrosoftGraphScheduleChangeRequest extends MicrosoftGraphChangeTra
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -139,7 +139,6 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

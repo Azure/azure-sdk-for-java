@@ -70,7 +70,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClient")
+    @ServiceInterface(name = "MicrosoftGraphClientServicePrincipalsServicePrincipals")
     public interface ServicePrincipalsServicePrincipalsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/servicePrincipals")

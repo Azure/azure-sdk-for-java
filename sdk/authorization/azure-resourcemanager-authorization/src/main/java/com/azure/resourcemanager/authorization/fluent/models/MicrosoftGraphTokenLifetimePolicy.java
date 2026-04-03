@@ -128,7 +128,6 @@ public final class MicrosoftGraphTokenLifetimePolicy extends MicrosoftGraphStsPo
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

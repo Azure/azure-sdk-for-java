@@ -196,7 +196,6 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

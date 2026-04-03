@@ -327,7 +327,6 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (filesFolder() != null) {
             filesFolder().validate();
         }

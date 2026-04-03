@@ -135,7 +135,6 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

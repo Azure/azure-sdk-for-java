@@ -122,7 +122,6 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

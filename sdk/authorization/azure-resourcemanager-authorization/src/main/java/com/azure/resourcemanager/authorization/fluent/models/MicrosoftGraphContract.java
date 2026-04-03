@@ -210,7 +210,6 @@ public final class MicrosoftGraphContract extends MicrosoftGraphDirectoryObjectI
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

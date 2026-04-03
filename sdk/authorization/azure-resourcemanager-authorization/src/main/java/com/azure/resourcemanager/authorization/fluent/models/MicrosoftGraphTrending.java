@@ -197,7 +197,6 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (resourceReference() != null) {
             resourceReference().validate();
         }

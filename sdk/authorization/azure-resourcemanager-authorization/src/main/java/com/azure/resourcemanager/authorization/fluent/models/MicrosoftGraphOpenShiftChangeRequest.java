@@ -191,7 +191,6 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

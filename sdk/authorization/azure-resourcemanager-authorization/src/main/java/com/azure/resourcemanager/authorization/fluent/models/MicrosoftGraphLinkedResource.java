@@ -166,7 +166,6 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

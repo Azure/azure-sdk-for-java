@@ -1330,7 +1330,6 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (configurationManagerClientEnabledFeatures() != null) {
             configurationManagerClientEnabledFeatures().validate();
         }

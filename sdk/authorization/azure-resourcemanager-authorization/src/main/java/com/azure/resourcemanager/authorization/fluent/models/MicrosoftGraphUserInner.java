@@ -3069,7 +3069,6 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      */
     @Override
     public void validate() {
-        super.validate();
         if (assignedLicenses() != null) {
             assignedLicenses().forEach(e -> e.validate());
         }

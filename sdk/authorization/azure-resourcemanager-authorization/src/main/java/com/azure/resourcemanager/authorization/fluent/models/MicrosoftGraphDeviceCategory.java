@@ -130,7 +130,6 @@ public final class MicrosoftGraphDeviceCategory extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

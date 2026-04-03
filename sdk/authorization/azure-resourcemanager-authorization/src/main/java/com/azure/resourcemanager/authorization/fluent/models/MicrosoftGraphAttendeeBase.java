@@ -89,7 +89,6 @@ public class MicrosoftGraphAttendeeBase extends MicrosoftGraphRecipient {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

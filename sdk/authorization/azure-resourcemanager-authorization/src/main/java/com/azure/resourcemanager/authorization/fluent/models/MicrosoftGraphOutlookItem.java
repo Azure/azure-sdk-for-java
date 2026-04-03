@@ -179,7 +179,6 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

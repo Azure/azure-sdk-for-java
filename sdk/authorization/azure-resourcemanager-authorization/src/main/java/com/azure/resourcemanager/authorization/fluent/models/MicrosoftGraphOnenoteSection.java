@@ -274,7 +274,6 @@ public final class MicrosoftGraphOnenoteSection extends MicrosoftGraphOnenoteEnt
      */
     @Override
     public void validate() {
-        super.validate();
         if (links() != null) {
             links().validate();
         }

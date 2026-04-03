@@ -90,7 +90,6 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (masterCategories() != null) {
             masterCategories().forEach(e -> e.validate());
         }

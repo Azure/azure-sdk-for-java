@@ -165,7 +165,6 @@ public final class MicrosoftGraphUsedInsight extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastUsed() != null) {
             lastUsed().validate();
         }

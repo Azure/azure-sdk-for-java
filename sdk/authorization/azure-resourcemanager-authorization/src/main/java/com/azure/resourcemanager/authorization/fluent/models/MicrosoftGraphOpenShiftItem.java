@@ -138,7 +138,6 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

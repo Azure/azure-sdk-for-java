@@ -140,7 +140,6 @@ public final class MicrosoftGraphWorkbookChartSeries extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

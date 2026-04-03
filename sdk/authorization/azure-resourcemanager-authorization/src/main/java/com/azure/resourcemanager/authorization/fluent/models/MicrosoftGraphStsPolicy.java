@@ -182,7 +182,6 @@ public class MicrosoftGraphStsPolicy extends MicrosoftGraphPolicyBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (appliesTo() != null) {
             appliesTo().forEach(e -> e.validate());
         }

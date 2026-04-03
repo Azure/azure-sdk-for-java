@@ -90,7 +90,6 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lists() != null) {
             lists().forEach(e -> e.validate());
         }

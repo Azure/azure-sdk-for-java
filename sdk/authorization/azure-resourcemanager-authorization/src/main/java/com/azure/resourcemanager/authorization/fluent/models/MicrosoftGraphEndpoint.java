@@ -213,7 +213,6 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

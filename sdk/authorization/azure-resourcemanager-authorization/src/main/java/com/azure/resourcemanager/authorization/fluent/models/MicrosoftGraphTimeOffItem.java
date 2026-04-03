@@ -110,7 +110,6 @@ public final class MicrosoftGraphTimeOffItem extends MicrosoftGraphScheduleEntit
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

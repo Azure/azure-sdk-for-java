@@ -94,7 +94,6 @@ public final class MicrosoftGraphInferenceClassification extends MicrosoftGraphE
      */
     @Override
     public void validate() {
-        super.validate();
         if (overrides() != null) {
             overrides().forEach(e -> e.validate());
         }

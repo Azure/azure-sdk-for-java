@@ -92,7 +92,6 @@ public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends Micros
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

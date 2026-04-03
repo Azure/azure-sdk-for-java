@@ -586,7 +586,6 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (attachments() != null) {
             attachments().forEach(e -> e.validate());
         }

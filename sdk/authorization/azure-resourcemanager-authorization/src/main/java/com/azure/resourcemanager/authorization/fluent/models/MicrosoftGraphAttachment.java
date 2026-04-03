@@ -197,7 +197,6 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

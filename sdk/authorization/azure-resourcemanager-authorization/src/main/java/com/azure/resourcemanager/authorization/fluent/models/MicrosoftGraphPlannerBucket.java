@@ -167,7 +167,6 @@ public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (tasks() != null) {
             tasks().forEach(e -> e.validate());
         }

@@ -169,7 +169,6 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

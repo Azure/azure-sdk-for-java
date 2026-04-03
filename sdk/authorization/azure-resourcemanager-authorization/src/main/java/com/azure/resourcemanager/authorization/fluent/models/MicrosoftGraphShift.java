@@ -194,7 +194,6 @@ public final class MicrosoftGraphShift extends MicrosoftGraphChangeTrackedEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (draftShift() != null) {
             draftShift().validate();
         }

@@ -274,7 +274,6 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (error() != null) {
             error().validate();
         }

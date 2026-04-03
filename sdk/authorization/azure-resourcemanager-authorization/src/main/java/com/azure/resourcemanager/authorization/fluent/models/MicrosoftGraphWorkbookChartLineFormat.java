@@ -89,7 +89,6 @@ public final class MicrosoftGraphWorkbookChartLineFormat extends MicrosoftGraphE
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

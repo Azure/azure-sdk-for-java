@@ -130,7 +130,6 @@ public final class MicrosoftGraphHomeRealmDiscoveryPolicyInner extends Microsoft
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

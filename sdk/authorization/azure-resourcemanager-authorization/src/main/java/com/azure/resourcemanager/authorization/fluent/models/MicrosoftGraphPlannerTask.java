@@ -709,7 +709,6 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (completedBy() != null) {
             completedBy().validate();
         }

@@ -436,7 +436,6 @@ public final class MicrosoftGraphTodoTask extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (body() != null) {
             body().validate();
         }

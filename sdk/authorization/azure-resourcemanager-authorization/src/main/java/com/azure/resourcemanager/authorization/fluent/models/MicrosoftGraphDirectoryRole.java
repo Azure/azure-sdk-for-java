@@ -216,7 +216,6 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
      */
     @Override
     public void validate() {
-        super.validate();
         if (members() != null) {
             members().forEach(e -> e.validate());
         }

@@ -89,7 +89,6 @@ public final class MicrosoftGraphColumnLink extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

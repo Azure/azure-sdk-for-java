@@ -108,7 +108,6 @@ public class MicrosoftGraphOnenoteEntitySchemaObjectModel extends MicrosoftGraph
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -220,7 +220,6 @@ public final class MicrosoftGraphExtensionPropertyInner extends MicrosoftGraphDi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

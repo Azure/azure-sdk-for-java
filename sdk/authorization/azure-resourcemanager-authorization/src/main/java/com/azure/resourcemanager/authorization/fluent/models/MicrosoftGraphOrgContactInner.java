@@ -538,7 +538,6 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
      */
     @Override
     public void validate() {
-        super.validate();
         if (addresses() != null) {
             addresses().forEach(e -> e.validate());
         }

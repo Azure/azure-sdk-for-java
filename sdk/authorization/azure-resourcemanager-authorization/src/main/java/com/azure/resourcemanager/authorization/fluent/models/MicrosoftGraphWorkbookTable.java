@@ -440,7 +440,6 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }

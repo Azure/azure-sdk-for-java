@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookCommentReply extends MicrosoftGraphEnti
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

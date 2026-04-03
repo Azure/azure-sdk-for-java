@@ -128,7 +128,6 @@ public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPo
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -330,7 +330,6 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
      */
     @Override
     public void validate() {
-        super.validate();
         if (links() != null) {
             links().validate();
         }

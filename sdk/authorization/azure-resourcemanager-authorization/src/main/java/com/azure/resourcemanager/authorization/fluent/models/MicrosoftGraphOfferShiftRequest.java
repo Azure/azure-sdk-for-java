@@ -271,7 +271,6 @@ public class MicrosoftGraphOfferShiftRequest extends MicrosoftGraphScheduleChang
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

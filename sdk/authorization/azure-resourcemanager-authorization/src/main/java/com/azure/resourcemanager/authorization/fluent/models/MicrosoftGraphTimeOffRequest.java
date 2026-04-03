@@ -247,7 +247,6 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

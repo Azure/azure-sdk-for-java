@@ -164,7 +164,6 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (configuration() != null) {
             configuration().validate();
         }

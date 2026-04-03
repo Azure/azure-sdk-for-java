@@ -286,7 +286,6 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -569,7 +569,6 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (calculated() != null) {
             calculated().validate();
         }

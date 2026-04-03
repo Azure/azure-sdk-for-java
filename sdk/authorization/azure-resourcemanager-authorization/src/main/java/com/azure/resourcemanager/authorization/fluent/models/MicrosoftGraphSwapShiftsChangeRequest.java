@@ -227,7 +227,6 @@ public final class MicrosoftGraphSwapShiftsChangeRequest extends MicrosoftGraphO
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

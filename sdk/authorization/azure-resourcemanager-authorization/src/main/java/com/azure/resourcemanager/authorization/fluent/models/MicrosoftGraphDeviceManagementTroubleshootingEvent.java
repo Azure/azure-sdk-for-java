@@ -120,7 +120,6 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

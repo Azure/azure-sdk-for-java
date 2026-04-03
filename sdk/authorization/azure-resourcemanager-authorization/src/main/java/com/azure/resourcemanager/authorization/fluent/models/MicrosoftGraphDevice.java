@@ -737,7 +737,6 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
      */
     @Override
     public void validate() {
-        super.validate();
         if (alternativeSecurityIds() != null) {
             alternativeSecurityIds().forEach(e -> e.validate());
         }

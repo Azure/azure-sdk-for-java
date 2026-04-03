@@ -116,7 +116,6 @@ public final class MicrosoftGraphWorkbookTableRow extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

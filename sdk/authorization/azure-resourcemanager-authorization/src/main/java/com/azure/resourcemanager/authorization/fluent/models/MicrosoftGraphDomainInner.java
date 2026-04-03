@@ -520,7 +520,6 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (state() != null) {
             state().validate();
         }

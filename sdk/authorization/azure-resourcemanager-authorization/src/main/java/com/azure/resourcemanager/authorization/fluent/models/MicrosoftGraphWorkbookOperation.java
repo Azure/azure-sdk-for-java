@@ -139,7 +139,6 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
         if (error() != null) {
             error().validate();
         }

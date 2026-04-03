@@ -139,7 +139,6 @@ public final class MicrosoftGraphTeamsAppDefinition extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

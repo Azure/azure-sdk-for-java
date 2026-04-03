@@ -142,7 +142,6 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }

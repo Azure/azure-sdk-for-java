@@ -1013,7 +1013,6 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      */
     @Override
     public void validate() {
-        super.validate();
         if (addIns() != null) {
             addIns().forEach(e -> e.validate());
         }

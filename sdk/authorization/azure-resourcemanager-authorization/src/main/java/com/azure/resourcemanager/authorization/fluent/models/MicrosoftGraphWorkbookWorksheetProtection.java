@@ -116,7 +116,6 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
      */
     @Override
     public void validate() {
-        super.validate();
         if (options() != null) {
             options().validate();
         }

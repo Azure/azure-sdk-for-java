@@ -89,7 +89,6 @@ public class MicrosoftGraphOnenoteEntityBaseModel extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

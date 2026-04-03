@@ -90,7 +90,6 @@ public final class MicrosoftGraphSingleValueLegacyExtendedProperty extends Micro
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -142,7 +142,6 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (values() != null) {
             values().forEach(e -> e.validate());
         }

@@ -169,7 +169,6 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
      */
     @Override
     public void validate() {
-        super.validate();
         if (draftTimeOff() != null) {
             draftTimeOff().validate();
         }

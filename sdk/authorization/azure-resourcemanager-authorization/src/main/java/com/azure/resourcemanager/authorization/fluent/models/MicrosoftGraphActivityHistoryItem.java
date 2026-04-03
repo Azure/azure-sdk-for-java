@@ -309,7 +309,6 @@ public final class MicrosoftGraphActivityHistoryItem extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (activity() != null) {
             activity().validate();
         }

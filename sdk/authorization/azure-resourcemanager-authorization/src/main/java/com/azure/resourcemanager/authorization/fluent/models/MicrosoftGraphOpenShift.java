@@ -169,7 +169,6 @@ public final class MicrosoftGraphOpenShift extends MicrosoftGraphChangeTrackedEn
      */
     @Override
     public void validate() {
-        super.validate();
         if (draftOpenShift() != null) {
             draftOpenShift().validate();
         }

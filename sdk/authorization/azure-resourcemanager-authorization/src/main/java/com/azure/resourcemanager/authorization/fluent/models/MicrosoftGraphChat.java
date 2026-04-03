@@ -64,7 +64,6 @@ public final class MicrosoftGraphChat extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

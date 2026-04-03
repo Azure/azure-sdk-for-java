@@ -164,7 +164,6 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (large() != null) {
             large().validate();
         }

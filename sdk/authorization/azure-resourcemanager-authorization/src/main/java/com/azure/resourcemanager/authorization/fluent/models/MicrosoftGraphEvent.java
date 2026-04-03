@@ -1220,7 +1220,6 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
-        super.validate();
         if (attendees() != null) {
             attendees().forEach(e -> e.validate());
         }

@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (worksheet() != null) {
             worksheet().validate();
         }

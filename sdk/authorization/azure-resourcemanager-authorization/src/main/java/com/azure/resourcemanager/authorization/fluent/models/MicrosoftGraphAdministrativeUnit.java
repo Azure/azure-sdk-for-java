@@ -246,7 +246,6 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
      */
     @Override
     public void validate() {
-        super.validate();
         if (members() != null) {
             members().forEach(e -> e.validate());
         }

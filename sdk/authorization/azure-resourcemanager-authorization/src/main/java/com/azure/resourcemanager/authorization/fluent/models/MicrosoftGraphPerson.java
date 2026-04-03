@@ -548,7 +548,6 @@ public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (personType() != null) {
             personType().validate();
         }

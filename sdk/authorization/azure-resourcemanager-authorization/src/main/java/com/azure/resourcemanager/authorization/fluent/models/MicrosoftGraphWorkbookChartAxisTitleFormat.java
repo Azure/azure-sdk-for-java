@@ -90,7 +90,6 @@ public final class MicrosoftGraphWorkbookChartAxisTitleFormat extends MicrosoftG
      */
     @Override
     public void validate() {
-        super.validate();
         if (font() != null) {
             font().validate();
         }

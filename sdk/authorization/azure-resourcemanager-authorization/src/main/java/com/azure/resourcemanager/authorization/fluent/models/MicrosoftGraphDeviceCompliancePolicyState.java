@@ -219,7 +219,6 @@ public final class MicrosoftGraphDeviceCompliancePolicyState extends MicrosoftGr
      */
     @Override
     public void validate() {
-        super.validate();
         if (settingStates() != null) {
             settingStates().forEach(e -> e.validate());
         }

@@ -164,7 +164,6 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (activities() != null) {
             activities().forEach(e -> e.validate());
         }

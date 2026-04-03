@@ -1048,7 +1048,6 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      */
     @Override
     public void validate() {
-        super.validate();
         if (businessAddress() != null) {
             businessAddress().validate();
         }

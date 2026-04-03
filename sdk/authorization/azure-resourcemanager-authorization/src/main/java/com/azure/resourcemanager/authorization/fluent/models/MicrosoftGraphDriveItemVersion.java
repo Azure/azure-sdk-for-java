@@ -155,7 +155,6 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

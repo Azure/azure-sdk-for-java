@@ -216,7 +216,6 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastShared() != null) {
             lastShared().validate();
         }

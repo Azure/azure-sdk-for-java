@@ -72,7 +72,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClient")
+    @ServiceInterface(name = "MicrosoftGraphClientDomainsDomains")
     public interface DomainsDomainsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/domains")

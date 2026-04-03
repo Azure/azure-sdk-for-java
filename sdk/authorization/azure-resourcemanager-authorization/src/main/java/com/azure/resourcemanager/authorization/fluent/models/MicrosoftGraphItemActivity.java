@@ -167,7 +167,6 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (actor() != null) {
             actor().validate();
         }

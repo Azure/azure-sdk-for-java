@@ -378,7 +378,6 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (links() != null) {
             links().validate();
         }

@@ -417,7 +417,6 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (audioConferencing() != null) {
             audioConferencing().validate();
         }

@@ -196,7 +196,6 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
      */
     @Override
     public void validate() {
-        super.validate();
         if (error() != null) {
             error().validate();
         }

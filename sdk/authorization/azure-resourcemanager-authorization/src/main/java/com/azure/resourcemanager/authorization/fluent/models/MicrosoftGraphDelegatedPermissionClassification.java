@@ -147,7 +147,6 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

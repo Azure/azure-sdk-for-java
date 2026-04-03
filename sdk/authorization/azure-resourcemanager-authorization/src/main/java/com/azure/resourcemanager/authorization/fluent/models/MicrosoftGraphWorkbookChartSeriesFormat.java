@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookChartSeriesFormat extends MicrosoftGrap
      */
     @Override
     public void validate() {
-        super.validate();
         if (fill() != null) {
             fill().validate();
         }

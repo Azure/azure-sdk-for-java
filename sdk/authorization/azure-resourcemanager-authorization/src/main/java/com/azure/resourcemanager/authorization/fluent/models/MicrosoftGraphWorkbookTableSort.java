@@ -143,7 +143,6 @@ public final class MicrosoftGraphWorkbookTableSort extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
         if (fields() != null) {
             fields().forEach(e -> e.validate());
         }

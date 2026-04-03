@@ -150,7 +150,6 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }

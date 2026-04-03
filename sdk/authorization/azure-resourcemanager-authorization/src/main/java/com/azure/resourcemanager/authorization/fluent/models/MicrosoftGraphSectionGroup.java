@@ -277,7 +277,6 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (parentNotebook() != null) {
             parentNotebook().validate();
         }

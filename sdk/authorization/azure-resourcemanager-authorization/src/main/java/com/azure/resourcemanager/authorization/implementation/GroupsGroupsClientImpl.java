@@ -72,7 +72,7 @@ public final class GroupsGroupsClientImpl implements GroupsGroupsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClient")
+    @ServiceInterface(name = "MicrosoftGraphClientGroupsGroups")
     public interface GroupsGroupsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/groups")

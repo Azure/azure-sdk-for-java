@@ -89,7 +89,6 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (criteria() != null) {
             criteria().validate();
         }

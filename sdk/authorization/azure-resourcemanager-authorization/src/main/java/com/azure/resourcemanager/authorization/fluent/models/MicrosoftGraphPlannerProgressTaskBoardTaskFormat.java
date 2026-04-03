@@ -92,7 +92,6 @@ public final class MicrosoftGraphPlannerProgressTaskBoardTaskFormat extends Micr
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

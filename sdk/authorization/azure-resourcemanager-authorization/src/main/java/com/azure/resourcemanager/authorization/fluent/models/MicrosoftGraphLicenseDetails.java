@@ -147,7 +147,6 @@ public final class MicrosoftGraphLicenseDetails extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (servicePlans() != null) {
             servicePlans().forEach(e -> e.validate());
         }

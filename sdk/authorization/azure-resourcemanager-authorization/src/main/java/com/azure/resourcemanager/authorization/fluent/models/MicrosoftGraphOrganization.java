@@ -718,7 +718,6 @@ public final class MicrosoftGraphOrganization extends MicrosoftGraphDirectoryObj
      */
     @Override
     public void validate() {
-        super.validate();
         if (assignedPlans() != null) {
             assignedPlans().forEach(e -> e.validate());
         }

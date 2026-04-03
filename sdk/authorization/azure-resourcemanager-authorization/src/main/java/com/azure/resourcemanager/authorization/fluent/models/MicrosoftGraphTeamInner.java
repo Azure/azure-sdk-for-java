@@ -580,7 +580,6 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (funSettings() != null) {
             funSettings().validate();
         }

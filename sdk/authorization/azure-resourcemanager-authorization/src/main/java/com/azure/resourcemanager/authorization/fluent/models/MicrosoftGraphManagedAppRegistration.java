@@ -457,7 +457,6 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
      */
     @Override
     public void validate() {
-        super.validate();
         if (appliedPolicies() != null) {
             appliedPolicies().forEach(e -> e.validate());
         }

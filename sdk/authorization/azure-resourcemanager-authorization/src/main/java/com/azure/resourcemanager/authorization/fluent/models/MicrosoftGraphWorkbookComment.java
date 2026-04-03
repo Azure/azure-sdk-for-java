@@ -140,7 +140,6 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (replies() != null) {
             replies().forEach(e -> e.validate());
         }

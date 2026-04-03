@@ -318,7 +318,6 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (inheritedFrom() != null) {
             inheritedFrom().validate();
         }

@@ -231,7 +231,6 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (notebooks() != null) {
             notebooks().forEach(e -> e.validate());
         }

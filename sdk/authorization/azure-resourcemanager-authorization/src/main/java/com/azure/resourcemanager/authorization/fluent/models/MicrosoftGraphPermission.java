@@ -303,7 +303,6 @@ public final class MicrosoftGraphPermission extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (grantedTo() != null) {
             grantedTo().validate();
         }

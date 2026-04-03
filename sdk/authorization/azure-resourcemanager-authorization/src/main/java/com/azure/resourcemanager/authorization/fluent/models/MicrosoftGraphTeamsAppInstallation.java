@@ -115,7 +115,6 @@ public class MicrosoftGraphTeamsAppInstallation extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (teamsApp() != null) {
             teamsApp().validate();
         }

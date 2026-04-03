@@ -72,7 +72,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftGraphClient")
+    @ServiceInterface(name = "MicrosoftGraphClientUsersUsers")
     public interface UsersUsersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/users")

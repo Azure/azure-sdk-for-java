@@ -208,7 +208,6 @@ public final class MicrosoftGraphResourceSpecificPermissionGrant extends Microso
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

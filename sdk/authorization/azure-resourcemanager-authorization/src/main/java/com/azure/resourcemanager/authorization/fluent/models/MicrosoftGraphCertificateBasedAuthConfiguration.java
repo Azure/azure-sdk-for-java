@@ -94,7 +94,6 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
      */
     @Override
     public void validate() {
-        super.validate();
         if (certificateAuthorities() != null) {
             certificateAuthorities().forEach(e -> e.validate());
         }

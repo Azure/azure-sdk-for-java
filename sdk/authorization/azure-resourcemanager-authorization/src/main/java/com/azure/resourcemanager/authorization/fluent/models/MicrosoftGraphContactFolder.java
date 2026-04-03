@@ -223,7 +223,6 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (childFolders() != null) {
             childFolders().forEach(e -> e.validate());
         }

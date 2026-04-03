@@ -242,7 +242,6 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (prepaidUnits() != null) {
             prepaidUnits().validate();
         }

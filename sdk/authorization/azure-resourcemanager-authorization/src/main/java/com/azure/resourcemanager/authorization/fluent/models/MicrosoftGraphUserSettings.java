@@ -145,7 +145,6 @@ public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (shiftPreferences() != null) {
             shiftPreferences().validate();
         }

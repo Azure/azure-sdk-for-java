@@ -114,7 +114,6 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

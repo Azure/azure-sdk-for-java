@@ -91,7 +91,6 @@ public final class MicrosoftGraphWorkbookApplication extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

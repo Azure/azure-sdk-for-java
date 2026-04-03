@@ -939,7 +939,6 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (audio() != null) {
             audio().validate();
         }

@@ -64,7 +64,6 @@ public final class MicrosoftGraphWorkbookChartFill extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -292,7 +292,6 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

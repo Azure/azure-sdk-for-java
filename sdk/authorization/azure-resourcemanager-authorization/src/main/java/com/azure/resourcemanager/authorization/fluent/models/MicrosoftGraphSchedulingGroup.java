@@ -172,7 +172,6 @@ public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTra
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

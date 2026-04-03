@@ -147,7 +147,6 @@ public final class MicrosoftGraphGroupLifecyclePolicy extends MicrosoftGraphEnti
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -164,7 +164,6 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

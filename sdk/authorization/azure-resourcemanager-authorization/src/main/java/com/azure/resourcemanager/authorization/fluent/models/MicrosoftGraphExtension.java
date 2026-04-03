@@ -64,7 +64,6 @@ public final class MicrosoftGraphExtension extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

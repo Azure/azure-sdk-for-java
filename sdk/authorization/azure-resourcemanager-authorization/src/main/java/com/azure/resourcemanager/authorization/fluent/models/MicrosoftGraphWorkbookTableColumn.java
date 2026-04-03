@@ -166,7 +166,6 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (filter() != null) {
             filter().validate();
         }

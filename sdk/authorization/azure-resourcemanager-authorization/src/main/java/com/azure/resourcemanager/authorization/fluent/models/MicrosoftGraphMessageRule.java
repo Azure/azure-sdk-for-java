@@ -266,7 +266,6 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (actions() != null) {
             actions().validate();
         }

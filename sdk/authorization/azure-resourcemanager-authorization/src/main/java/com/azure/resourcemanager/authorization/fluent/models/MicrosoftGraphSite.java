@@ -517,7 +517,6 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (error() != null) {
             error().validate();
         }

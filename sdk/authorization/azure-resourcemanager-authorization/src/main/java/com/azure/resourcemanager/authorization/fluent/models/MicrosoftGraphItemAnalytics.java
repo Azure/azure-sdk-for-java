@@ -140,7 +140,6 @@ public final class MicrosoftGraphItemAnalytics extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (allTime() != null) {
             allTime().validate();
         }

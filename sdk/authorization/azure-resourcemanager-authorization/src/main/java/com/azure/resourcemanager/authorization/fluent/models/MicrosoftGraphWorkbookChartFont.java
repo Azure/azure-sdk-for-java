@@ -214,7 +214,6 @@ public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

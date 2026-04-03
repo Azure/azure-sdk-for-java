@@ -117,7 +117,6 @@ public final class MicrosoftGraphInferenceClassificationOverride extends Microso
      */
     @Override
     public void validate() {
-        super.validate();
         if (senderEmailAddress() != null) {
             senderEmailAddress().validate();
         }

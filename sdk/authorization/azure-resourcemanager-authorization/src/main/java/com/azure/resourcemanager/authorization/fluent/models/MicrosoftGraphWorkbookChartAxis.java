@@ -264,7 +264,6 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
         if (format() != null) {
             format().validate();
         }

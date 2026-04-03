@@ -141,7 +141,6 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      */
     @Override
     public void validate() {
-        super.validate();
         if (roleMemberInfo() != null) {
             roleMemberInfo().validate();
         }

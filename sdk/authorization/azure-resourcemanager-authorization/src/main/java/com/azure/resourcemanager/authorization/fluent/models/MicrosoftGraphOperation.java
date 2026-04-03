@@ -142,7 +142,6 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

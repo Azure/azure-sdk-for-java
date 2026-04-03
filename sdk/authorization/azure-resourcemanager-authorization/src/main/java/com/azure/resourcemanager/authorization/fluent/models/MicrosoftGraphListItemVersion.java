@@ -119,7 +119,6 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
      */
     @Override
     public void validate() {
-        super.validate();
         if (fields() != null) {
             fields().validate();
         }

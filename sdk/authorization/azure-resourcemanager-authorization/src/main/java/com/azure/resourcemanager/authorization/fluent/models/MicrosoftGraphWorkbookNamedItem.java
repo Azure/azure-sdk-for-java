@@ -244,7 +244,6 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
      */
     @Override
     public void validate() {
-        super.validate();
         if (worksheet() != null) {
             worksheet().validate();
         }

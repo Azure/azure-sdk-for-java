@@ -1849,7 +1849,6 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      */
     @Override
     public void validate() {
-        super.validate();
         if (assignedLabels() != null) {
             assignedLabels().forEach(e -> e.validate());
         }

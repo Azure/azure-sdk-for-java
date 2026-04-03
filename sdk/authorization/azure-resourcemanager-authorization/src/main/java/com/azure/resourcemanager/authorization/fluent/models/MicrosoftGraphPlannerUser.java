@@ -115,7 +115,6 @@ public final class MicrosoftGraphPlannerUser extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (plans() != null) {
             plans().forEach(e -> e.validate());
         }

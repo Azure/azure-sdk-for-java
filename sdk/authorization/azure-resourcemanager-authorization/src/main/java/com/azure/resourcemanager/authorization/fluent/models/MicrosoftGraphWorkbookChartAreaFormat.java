@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookChartAreaFormat extends MicrosoftGraphE
      */
     @Override
     public void validate() {
-        super.validate();
         if (fill() != null) {
             fill().validate();
         }

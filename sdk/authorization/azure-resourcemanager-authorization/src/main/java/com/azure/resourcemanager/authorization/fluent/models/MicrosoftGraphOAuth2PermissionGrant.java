@@ -221,7 +221,6 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

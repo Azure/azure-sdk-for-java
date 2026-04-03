@@ -117,7 +117,6 @@ public final class MicrosoftGraphOutlookCategory extends MicrosoftGraphEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

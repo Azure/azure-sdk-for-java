@@ -114,7 +114,6 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
      */
     @Override
     public void validate() {
-        super.validate();
         if (fill() != null) {
             fill().validate();
         }

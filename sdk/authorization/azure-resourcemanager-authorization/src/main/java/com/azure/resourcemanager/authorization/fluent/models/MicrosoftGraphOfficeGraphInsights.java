@@ -160,7 +160,6 @@ public final class MicrosoftGraphOfficeGraphInsights extends MicrosoftGraphEntit
      */
     @Override
     public void validate() {
-        super.validate();
         if (shared() != null) {
             shared().forEach(e -> e.validate());
         }
