@@ -804,14 +804,14 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testReturnNullForNoValidMessages() {
-        // Should return null when no valid messages found
+    public void testReturnRawOutputForNoValidMessages() {
+        // Should return raw output when no valid messages found (JSON parsing fails or .data.message not set)
         String output = "{\"data\":{\"notamessage\":\"Not a message\"}}\n" + "{\"nomessage\":\"Also not a message\"}\n"
             + "This is not JSON";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertNull(result);
+        assertEquals(output, result);
     }
 
     @Test

@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from azd auth token JSON output, providing cleaner error messages to users.
+
 ## 1.19.0-beta.2 (2026-02-25)
 
 ### Breaking Changes
