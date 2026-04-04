@@ -12,7 +12,8 @@
   <suppress files="com.azure.ai.voicelive.VoiceLiveTracerTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.VoiceLiveClientBuilderTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.ReadmeSamples.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.ai.voicelive.TelemetrySample.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.ai.voicelive.telemetry.ExplicitTracingSample.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.ai.voicelive.telemetry.GlobalTracingSample.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.VoiceAssistantSample.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.telemetry.VoiceLiveTelemetryAttributeKeys.java" checks="IllegalImportCheck" />
 

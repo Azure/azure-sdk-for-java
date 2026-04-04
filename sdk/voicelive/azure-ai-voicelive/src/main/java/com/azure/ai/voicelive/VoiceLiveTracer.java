@@ -556,7 +556,7 @@ final class VoiceLiveTracer {
     }
 
     /**
-     * Traces a raw (unparseable) receive operation. Used when a message fails to parse or for raw events.
+     * Traces a raw receive operation. Used when a message fails to parse or for raw events.
      *
      * @param rawPayload The raw JSON payload string.
      */

@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.voicelive;
+package com.azure.ai.voicelive.telemetry;
 
+import com.azure.ai.voicelive.VoiceLiveAsyncClient;
+import com.azure.ai.voicelive.VoiceLiveClientBuilder;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
@@ -38,13 +40,13 @@ import java.util.concurrent.TimeUnit;
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
  * # Basic (no tracing):
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test
  *
  * # With OpenTelemetry tracing enabled:
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
  *
  * # With tracing + JSON payload content recording:
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing --enable-recording"
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing --enable-recording"
  * }</pre>
  *
  * <p><strong>Span Structure:</strong></p>
@@ -84,7 +86,7 @@ import java.util.concurrent.TimeUnit;
  *     .build();
  * }</pre>
  */
-public final class TelemetrySample {
+public final class ExplicitTracingSample {
 
     /**
      * Main method to run the telemetry sample.
@@ -187,7 +189,7 @@ public final class TelemetrySample {
         }
     }
 
-    private TelemetrySample() {
+    private ExplicitTracingSample() {
     }
 
     /**

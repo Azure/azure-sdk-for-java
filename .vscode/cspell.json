@@ -1472,6 +1472,8 @@
         "FILLER",
         "foundry",
         "FOUNDRY",
+        "genai",
+        "GENAI",
         "Unpooled",
         "viseme",
         "VISEME",

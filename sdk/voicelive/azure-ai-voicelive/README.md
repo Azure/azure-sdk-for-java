@@ -169,19 +169,23 @@ For easier learning, explore these focused samples in order:
    - Execute functions locally and return results
    - Continue conversation with function results
 
-7. **TelemetrySample.java** - OpenTelemetry tracing integration
-   - Automatic tracing via GlobalOpenTelemetry (zero-config)
+7. **telemetry/ExplicitTracingSample.java** - Explicit OpenTelemetry tracing
    - Explicit OpenTelemetry instance via builder
-   - Span structure and session-level attributes
+   - Content recording with `--enable-recording` flag
+   - Custom console span exporter
    - Azure Monitor integration example
 
-8. **MCPSample.java** - Model Context Protocol (MCP) tool integration
+8. **telemetry/GlobalTracingSample.java** - Automatic tracing via GlobalOpenTelemetry
+   - Zero builder configuration — uses `buildAndRegisterGlobal()`
+   - Same span output as explicit tracing
+
+9. **MCPSample.java** - Model Context Protocol (MCP) tool integration
    - Configure MCP servers for external tool access
    - Handle MCP call events and tool execution
    - Handle MCP approval requests for tool calls
    - Process MCP call results and continue conversations
 
-9. **AgentV2Sample.java** - Azure AI Foundry agent session
+10. **AgentV2Sample.java** - Azure AI Foundry agent session
    - Connect directly to an Azure AI Foundry agent via AgentSessionConfig
    - Real-time audio capture and playback
    - Sequence number based audio for interrupt handling
@@ -485,7 +489,10 @@ The SDK has built-in [OpenTelemetry](https://opentelemetry.io/) tracing that emi
 
 #### Automatic tracing (recommended)
 
-If the [OpenTelemetry Java agent](https://opentelemetry.io/docs/languages/java/automatic/) is attached, or `GlobalOpenTelemetry` is configured, tracing works automatically with no code changes:
+When no `.openTelemetry()` is called on the builder, the SDK defaults to `GlobalOpenTelemetry.getOrNoop()` —
+tracing is automatically active when a global OpenTelemetry instance exists (e.g., via the
+[OpenTelemetry Java agent](https://opentelemetry.io/docs/languages/java/automatic/) or
+`OpenTelemetrySdk.builder().buildAndRegisterGlobal()`), and is a zero-cost no-op otherwise:
 
 ```java com.azure.ai.voicelive.tracing.automatic
 // No special configuration needed — tracing is picked up from GlobalOpenTelemetry
@@ -497,7 +504,8 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
 
 #### Explicit OpenTelemetry instance
 
-Provide your own `OpenTelemetry` instance to control trace export:
+Pass your own `OpenTelemetry` instance directly to the builder for full control. This is useful
+when you want different clients to use different tracer configurations:
 
 ```java com.azure.ai.voicelive.tracing.explicit
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
@@ -514,29 +522,30 @@ When tracing is active, the following span hierarchy is emitted for each voice s
 ```
 connect gpt-4o-realtime-preview        ← session lifetime span
 ├── send session.update                 ← one span per sent event
+├── send input_audio_buffer.append
 ├── send response.create
 ├── recv session.created                ← one span per received event
+├── recv session.updated
 ├── recv response.audio.delta
 ├── recv response.done                  ← includes token usage attributes
+├── recv rate_limits.updated            ← rate limit info
 └── close
 ```
 
-**Session-level attributes** (on the connect span):
-- `gen_ai.system` — `az.ai.voicelive`
-- `gen_ai.provider.name` — `microsoft.foundry`
-- `gen_ai.request.model` — Model name (e.g., `gpt-4o-realtime-preview`)
-- `server.address` — Service endpoint
+**Common attributes** (on all spans): `gen_ai.system`, `gen_ai.operation.name`, `gen_ai.provider.name`, `gen_ai.request.model`, `az.namespace`, `server.address`, `server.port`
+
+**Session-level attributes** (on the connect span, flushed at session close):
 - `gen_ai.voice.session_id` — Voice session ID
-- `gen_ai.conversation.id` — Conversation ID
-- `gen_ai.response.id` — Latest response ID
-- `gen_ai.response.finish_reasons` — Response status list (e.g. `[`"completed"`]`)
-- `gen_ai.agent.name` / `gen_ai.agent.id` / `gen_ai.agent.thread_id` — Agent metadata when using agent sessions
-- `gen_ai.system_instructions` / `gen_ai.request.temperature` / `gen_ai.request.max_output_tokens` / `gen_ai.request.tools` — Session config tracked from `session.update`
+- `gen_ai.voice.input_audio_format` / `gen_ai.voice.output_audio_format` — Audio formats (e.g., `pcm16`)
+- `gen_ai.voice.input_sample_rate` — Input audio sampling rate (Hz)
 - `gen_ai.voice.turn_count` — Completed response turns
 - `gen_ai.voice.interruption_count` — User interruptions
 - `gen_ai.voice.audio_bytes_sent` / `gen_ai.voice.audio_bytes_received` — Audio payload bytes
 - `gen_ai.voice.first_token_latency_ms` — Time to first audio response
-- `gen_ai.voice.mcp.call_count` / `gen_ai.voice.mcp.list_tools_count` — MCP operation counters
+- `gen_ai.conversation.id` — Conversation ID
+- `gen_ai.response.id` / `gen_ai.response.finish_reasons` — Last response metadata
+- `gen_ai.system_instructions` / `gen_ai.request.temperature` / `gen_ai.request.max_output_tokens` / `gen_ai.request.tools` — Session config from `session.update`
+- `gen_ai.agent.name` / `gen_ai.agent.id` / `gen_ai.agent.version` / `gen_ai.agent.project_name` / `gen_ai.agent.thread_id` — Agent metadata (when using `AgentSessionConfig`)
 
 #### Content recording
 
@@ -556,15 +565,18 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
 // (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
 ```
 
-> See `TelemetrySample.java` for complete tracing examples including Azure Monitor integration.
+> See `telemetry/ExplicitTracingSample.java` and `telemetry/GlobalTracingSample.java` for complete tracing examples.
 >
-> **Run the telemetry sample** to see tracing in action:
+> **Run the telemetry samples** to see tracing in action:
 > ```bash
-> # Tracing only (prints span names and attributes):
-> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
+> # Explicit tracing (prints span names and attributes):
+> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
 >
-> # Tracing + content recording (also prints full JSON payloads):
-> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing --enable-recording"
+> # Explicit tracing + content recording (also prints full JSON payloads):
+> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing --enable-recording"
+>
+> # Automatic tracing via GlobalOpenTelemetry:
+> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.GlobalTracingSample" -Dexec.classpathScope=test
 > ```
 >
 > Sample output with `--enable-tracing`:
