@@ -18,6 +18,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 
@@ -142,7 +143,8 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
      *
      * <p>When enabled, full JSON payloads (including audio data) will be captured in span events.
      * This is off by default for privacy. Can also be controlled via the
-     * {@code AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED} environment variable.</p>
+    * {@code OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT} environment variable.
+    * The legacy {@code AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED} variable is still supported.</p>
      *
      * @param enableContentRecording true to enable content recording in spans.
      * @return The updated VoiceLiveClientBuilder instance.
@@ -171,14 +173,15 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
         HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
 
         OpenTelemetry otel = openTelemetry != null ? openTelemetry : GlobalOpenTelemetry.getOrNoop();
-        Tracer tracer = otel.getTracer(SDK_NAME, SDK_VERSION);
+        Tracer tracer = otel.getTracer(SDK_NAME);
+        Meter meter = otel.getMeter(SDK_NAME);
 
         if (keyCredential != null) {
             return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders, tracer,
-                enableContentRecording);
+                meter, enableContentRecording);
         } else {
             return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders, tracer,
-                enableContentRecording);
+                meter, enableContentRecording);
         }
     }
 }

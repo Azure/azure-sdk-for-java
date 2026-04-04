@@ -3,6 +3,7 @@
 
 package com.azure.ai.voicelive;
 
+import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.AudioEchoCancellation;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
@@ -13,7 +14,12 @@ import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.FunctionCallOutputItem;
 import com.azure.ai.voicelive.models.ItemType;
+import com.azure.ai.voicelive.models.MCPApprovalResponseRequestItem;
+import com.azure.ai.voicelive.models.MCPApprovalType;
+import com.azure.ai.voicelive.models.MCPServer;
 import com.azure.ai.voicelive.models.ResponseFunctionCallItem;
+import com.azure.ai.voicelive.models.ResponseMCPApprovalRequestItem;
+import com.azure.ai.voicelive.models.SessionResponseItem;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
 import com.azure.ai.voicelive.models.AzurePersonalVoice;
@@ -30,6 +36,7 @@ import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.AzureKeyCredential;
@@ -429,6 +436,92 @@ public final class ReadmeSamples {
             .openTelemetry(otel)
             .buildAsyncClient();
         // END: com.azure.ai.voicelive.tracing.explicit
+    }
+
+    /**
+     * Tracing: enable content recording
+     */
+    public void tracingContentRecording() {
+        OpenTelemetry otel = OpenTelemetry.noop(); // Replace with your configured OpenTelemetry SDK instance
+
+        // BEGIN: com.azure.ai.voicelive.tracing.contentrecording
+        // Enable content recording to capture full JSON payloads in span events
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
+            .openTelemetry(otel)
+            .enableContentRecording(true)
+            .buildAsyncClient();
+
+        // Or via environment variables (no code changes needed):
+        // OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+        // (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
+        // END: com.azure.ai.voicelive.tracing.contentrecording
+    }
+
+    /**
+     * Sample for MCP tool integration
+     */
+    public void mcpToolIntegration() {
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
+            .buildAsyncClient();
+
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-4o-realtime-preview").block();
+
+        // BEGIN: com.azure.ai.voicelive.mcp
+        // Configure MCP servers as tools
+        MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+            .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
+            .setTools(Arrays.asList(mcpServer))
+            .setInstructions("You have access to external tools via MCP. Use them when asked.");
+
+        // Handle MCP approval requests in your event loop
+        session.receiveEvents().subscribe(event -> {
+            if (event instanceof SessionUpdateResponseOutputItemDone) {
+                SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
+                SessionResponseItem item = itemDone.getItem();
+
+                if (item instanceof ResponseMCPApprovalRequestItem) {
+                    // Approve the tool call
+                    ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
+                    MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                        approvalRequest.getId(), true);
+                    ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                        .setItem(approval);
+                    session.sendEvent(createItem).subscribe();
+                    session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                }
+            }
+        });
+        // END: com.azure.ai.voicelive.mcp
+    }
+
+    /**
+     * Sample for Azure AI Foundry agent session
+     */
+    public void agentSession() {
+        // BEGIN: com.azure.ai.voicelive.agentsession
+        // Configure agent connection
+        AgentSessionConfig agentConfig = new AgentSessionConfig("my-agent", "my-project")
+            .setAgentVersion("1.0");
+
+        // Start session with agent config (uses DefaultAzureCredential)
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+        client.startSession(agentConfig)
+            .flatMap(session -> {
+                session.receiveEvents().subscribe(event -> handleEvent(event));
+                return Mono.just(session);
+            })
+            .block();
+        // END: com.azure.ai.voicelive.agentsession
     }
 
     // Helper methods

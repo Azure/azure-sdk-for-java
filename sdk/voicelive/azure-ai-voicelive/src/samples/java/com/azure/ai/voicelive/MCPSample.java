@@ -75,8 +75,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>Try asking:</strong></p>
  * <ul>
- *   <li>"Can you summary github repo azure sdk for java?"</li>
- *   <li>"Can you summary azure docs about voice live?"</li>
+ *   <li>"Can you summarize the Azure SDK for Java GitHub repo?"</li>
+ *   <li>"Can you summarize Azure docs about VoiceLive?"</li>
  * </ul>
  */
 public final class MCPSample {

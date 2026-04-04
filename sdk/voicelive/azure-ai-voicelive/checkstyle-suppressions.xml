@@ -14,6 +14,7 @@
   <suppress files="com.azure.ai.voicelive.ReadmeSamples.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.TelemetrySample.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.VoiceAssistantSample.java" checks="IllegalImportCheck" />
+  <suppress files="com.azure.ai.voicelive.telemetry.VoiceLiveTelemetryAttributeKeys.java" checks="IllegalImportCheck" />
 
   <suppress files="com.azure.ai.voicelive.models.AssistantMessageItem.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.ai.voicelive.models.MessageItem.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />

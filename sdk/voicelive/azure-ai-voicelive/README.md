@@ -126,6 +126,8 @@ The following sections provide code snippets for common scenarios:
 * [Handle event types](#handle-event-types)
 * [Voice configuration](#voice-configuration)
 * [Function calling](#function-calling)
+* [MCP tool integration](#mcp-tool-integration)
+* [Azure AI Foundry agent session](#azure-ai-foundry-agent-session)
 * [Telemetry and tracing](#telemetry-and-tracing)
 * [Complete voice assistant with microphone](#complete-voice-assistant-with-microphone)
 
@@ -172,6 +174,19 @@ For easier learning, explore these focused samples in order:
    - Explicit OpenTelemetry instance via builder
    - Span structure and session-level attributes
    - Azure Monitor integration example
+
+8. **MCPSample.java** - Model Context Protocol (MCP) tool integration
+   - Configure MCP servers for external tool access
+   - Handle MCP call events and tool execution
+   - Handle MCP approval requests for tool calls
+   - Process MCP call results and continue conversations
+
+9. **AgentV2Sample.java** - Azure AI Foundry agent session
+   - Connect directly to an Azure AI Foundry agent via AgentSessionConfig
+   - Real-time audio capture and playback
+   - Sequence number based audio for interrupt handling
+   - Azure noise suppression and echo cancellation
+   - Conversation logging to file
 
 > **Note:** To run audio samples (AudioPlaybackSample, MicrophoneInputSample, VoiceAssistantSample, FunctionCallingSample):
 > ```bash
@@ -404,6 +419,66 @@ client.startSession("gpt-4o-realtime-preview")
 * Results are sent back to continue the conversation
 * See `FunctionCallingSample.java` for a complete working example
 
+### MCP tool integration
+
+Use [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers to give the AI access to external tools during a voice session. The service calls the MCP server directly — your code only needs to handle approval requests when required:
+
+```java com.azure.ai.voicelive.mcp
+// Configure MCP servers as tools
+MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+    .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+
+VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
+    .setTools(Arrays.asList(mcpServer))
+    .setInstructions("You have access to external tools via MCP. Use them when asked.");
+
+// Handle MCP approval requests in your event loop
+session.receiveEvents().subscribe(event -> {
+    if (event instanceof SessionUpdateResponseOutputItemDone) {
+        SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
+        SessionResponseItem item = itemDone.getItem();
+
+        if (item instanceof ResponseMCPApprovalRequestItem) {
+            // Approve the tool call
+            ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
+            MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                approvalRequest.getId(), true);
+            ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                .setItem(approval);
+            session.sendEvent(createItem).subscribe();
+            session.sendEvent(new ClientEventResponseCreate()).subscribe();
+        }
+    }
+});
+```
+
+> See `MCPSample.java` for a complete working example with MCP server configuration.
+
+### Azure AI Foundry agent session
+
+Connect directly to an Azure AI Foundry agent using `AgentSessionConfig`. The agent becomes the primary responder for the voice session:
+
+```java com.azure.ai.voicelive.agentsession
+// Configure agent connection
+AgentSessionConfig agentConfig = new AgentSessionConfig("my-agent", "my-project")
+    .setAgentVersion("1.0");
+
+// Start session with agent config (uses DefaultAzureCredential)
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
+
+client.startSession(agentConfig)
+    .flatMap(session -> {
+        session.receiveEvents().subscribe(event -> handleEvent(event));
+        return Mono.just(session);
+    })
+    .block();
+```
+
+> See `AgentV2Sample.java` for a full implementation with audio capture, playback, and conversation logging.
+
 ### Telemetry and tracing
 
 The SDK has built-in [OpenTelemetry](https://opentelemetry.io/) tracing that emits spans for every WebSocket operation. When no OpenTelemetry SDK is present, all tracing calls are automatically no-op with zero performance impact.
@@ -448,29 +523,58 @@ connect gpt-4o-realtime-preview        ← session lifetime span
 
 **Session-level attributes** (on the connect span):
 - `gen_ai.system` — `az.ai.voicelive`
+- `gen_ai.provider.name` — `microsoft.foundry`
 - `gen_ai.request.model` — Model name (e.g., `gpt-4o-realtime-preview`)
 - `server.address` — Service endpoint
 - `gen_ai.voice.session_id` — Voice session ID
+- `gen_ai.conversation.id` — Conversation ID
+- `gen_ai.response.id` — Latest response ID
+- `gen_ai.response.finish_reasons` — Response status list (e.g. `[`"completed"`]`)
+- `gen_ai.agent.name` / `gen_ai.agent.id` / `gen_ai.agent.thread_id` — Agent metadata when using agent sessions
+- `gen_ai.system_instructions` / `gen_ai.request.temperature` / `gen_ai.request.max_output_tokens` / `gen_ai.request.tools` — Session config tracked from `session.update`
 - `gen_ai.voice.turn_count` — Completed response turns
 - `gen_ai.voice.interruption_count` — User interruptions
 - `gen_ai.voice.audio_bytes_sent` / `gen_ai.voice.audio_bytes_received` — Audio payload bytes
 - `gen_ai.voice.first_token_latency_ms` — Time to first audio response
+- `gen_ai.voice.mcp.call_count` / `gen_ai.voice.mcp.list_tools_count` — MCP operation counters
 
 #### Content recording
 
 By default, message payloads are not recorded in spans for privacy. Enable content recording via the builder or environment variable:
 
-```java
-// Via builder
-new VoiceLiveClientBuilder()
+```java com.azure.ai.voicelive.tracing.contentrecording
+// Enable content recording to capture full JSON payloads in span events
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .openTelemetry(otel)
     .enableContentRecording(true)
-    // ...
+    .buildAsyncClient();
 
-// Or via environment variable
-// AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
+// Or via environment variables (no code changes needed):
+// OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+// (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
 ```
 
 > See `TelemetrySample.java` for complete tracing examples including Azure Monitor integration.
+>
+> **Run the telemetry sample** to see tracing in action:
+> ```bash
+> # Tracing only (prints span names and attributes):
+> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
+>
+> # Tracing + content recording (also prints full JSON payloads):
+> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.TelemetrySample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing --enable-recording"
+> ```
+>
+> Sample output with `--enable-tracing`:
+> ```
+> 'send session.update' : {gen_ai.operation.name=send, gen_ai.voice.event_type=session.update, ...}
+> 'recv session.created' : {gen_ai.operation.name=recv, gen_ai.voice.event_type=session.created, ...}
+> 'recv response.done'   : {gen_ai.usage.input_tokens=100, gen_ai.usage.output_tokens=50, ...}
+> 'close'                : {gen_ai.operation.name=close, ...}
+> 'connect gpt-4o-realtime-preview' : {gen_ai.voice.session_id=..., gen_ai.voice.turn_count=1, ...}
+> ```
 
 ### Complete voice assistant with microphone
 
@@ -517,7 +621,7 @@ client.startSession("gpt-4o-realtime-preview")
         // Subscribe to receive server events
         session.receiveEvents()
             .subscribe(
-                event -> handleEvent(event, session),
+                event -> handleEvent(event),
                 error -> System.err.println("Error: " + error.getMessage())
             );
 

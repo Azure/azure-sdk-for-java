@@ -6,6 +6,8 @@ package com.azure.ai.voicelive;
 import com.azure.ai.voicelive.models.AudioEchoCancellation;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
+import com.azure.ai.voicelive.models.AudioNoiseReduction;
+import com.azure.ai.voicelive.models.AudioNoiseReductionType;
 import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
@@ -88,7 +90,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class FunctionCallingSample {
 
     // Service configuration
-    private static final String DEFAULT_API_VERSION = "2025-10-01";
     private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
     private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
@@ -129,15 +130,14 @@ public final class FunctionCallingSample {
         System.out.println("🎤️ Voice Assistant with Function Calling - Azure VoiceLive SDK");
         System.out.println(separator);
 
-        // Create client
-        KeyCredential credential = new KeyCredential(apiKey);
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
-            .buildAsyncClient();
-
         try {
+            // Create client
+            KeyCredential credential = new KeyCredential(apiKey);
+            VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
+
             runFunctionCallingSession(client);
         } catch (Exception e) {
             System.err.println("Error running function calling sample: " + e.getMessage());
@@ -256,6 +256,7 @@ public final class FunctionCallingSample {
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
             .setInputAudioSamplingRate(SAMPLE_RATE)
             .setInputAudioEchoCancellation(new AudioEchoCancellation())
+            .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.NEAR_FIELD))
             .setTurnDetection(new ServerVadTurnDetection()
                 .setThreshold(0.5)
                 .setPrefixPaddingMs(300)
