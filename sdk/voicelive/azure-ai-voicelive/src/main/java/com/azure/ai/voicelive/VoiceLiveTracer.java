@@ -21,8 +21,10 @@ import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateErrorDetails;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.SessionUpdateResponseAudioTranscriptDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseCreated;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
+import com.azure.ai.voicelive.models.SessionUpdateResponseTextDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDone;
 import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemAdded;
@@ -494,6 +496,14 @@ final class VoiceLiveTracer {
     void traceRecv(SessionUpdate update, String rawPayload) {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
+            return;
+        }
+
+        // Skip high-volume text/transcript delta events to reduce telemetry noise.
+        // These carry incremental fragments with no counters to track.
+        // Matches Python SDK's _DELTA_SKIP_EVENT_TYPES.
+        if (update instanceof SessionUpdateResponseTextDelta
+            || update instanceof SessionUpdateResponseAudioTranscriptDelta) {
             return;
         }
 
