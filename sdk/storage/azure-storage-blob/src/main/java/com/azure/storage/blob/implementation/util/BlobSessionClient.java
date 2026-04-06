@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.AuthenticationType;
@@ -24,14 +25,21 @@ import reactor.core.publisher.Mono;
 final class BlobSessionClient {
 
     private final AzureBlobStorageImpl azureBlobStorage;
+    private final String accountName;
     private final String containerName;
 
     BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
+        String containerName) {
+        this(bearerPipeline, url, serviceVersion, BlobUrlParts.parse(url).getAccountName(), containerName);
+    }
+
+    BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(bearerPipeline)
             .url(url)
             .version(serviceVersion.getVersion())
             .buildClient();
+        this.accountName = accountName;
         this.containerName = containerName;
     }
 
@@ -56,6 +64,7 @@ final class BlobSessionClient {
     private StorageSessionCredential toCredential(Response<CreateSessionResponse> response) {
         CreateSessionResponse session = response.getValue();
         SessionCredentials creds = session.getCredentials();
-        return new StorageSessionCredential(creds.getSessionToken(), creds.getSessionKey(), session.getExpiration());
+        return new StorageSessionCredential(creds.getSessionToken(), creds.getSessionKey(), session.getExpiration(),
+            accountName);
     }
 }
