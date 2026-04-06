@@ -35,7 +35,7 @@ final class BlobSessionClient {
         this.containerName = containerName;
     }
 
-    Mono<StorageSessionCredential> createSession() {
+    Mono<StorageSessionCredential> createSessionAsync() {
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
 
@@ -56,7 +56,6 @@ final class BlobSessionClient {
     private StorageSessionCredential toCredential(Response<CreateSessionResponse> response) {
         CreateSessionResponse session = response.getValue();
         SessionCredentials creds = session.getCredentials();
-        return new StorageSessionCredential(creds.getSessionToken(), creds.getSessionKey(),
-            session.getExpiration());
+        return new StorageSessionCredential(creds.getSessionToken(), creds.getSessionKey(), session.getExpiration());
     }
 }
