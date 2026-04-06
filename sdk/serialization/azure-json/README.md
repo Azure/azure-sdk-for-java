@@ -17,7 +17,7 @@ Azure JSON provides shared primitives, abstractions, and helpers for JSON.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-json</artifactId>
-  <version>1.6.0-beta.1</version>
+  <version>1.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
