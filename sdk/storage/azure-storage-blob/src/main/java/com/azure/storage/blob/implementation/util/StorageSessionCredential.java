@@ -10,6 +10,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import java.util.Objects;
+
 import java.net.URL;
 import java.text.Collator;
 import java.time.OffsetDateTime;
@@ -32,18 +34,22 @@ public final class StorageSessionCredential {
     private final String sessionToken;
     private final String sessionKey;
     private final OffsetDateTime expiration;
+    private final String accountName;
 
     /**
-     * Creates a StorageSessionCredential with the given session token, key, and expiration.
+     * Creates a StorageSessionCredential with the given session token, key, expiration, and storage account name.
      *
      * @param sessionToken The opaque session token from Create Session response.
      * @param sessionKey The Base64-encoded symmetric key for HMAC signing.
      * @param expiration The time when this session expires.
+     * @param accountName The storage account name associated with the request.
      */
-    public StorageSessionCredential(String sessionToken, String sessionKey, OffsetDateTime expiration) {
-        this.sessionToken = sessionToken;
-        this.sessionKey = sessionKey;
-        this.expiration = expiration;
+    public StorageSessionCredential(String sessionToken, String sessionKey, OffsetDateTime expiration,
+        String accountName) {
+        this.sessionToken = Objects.requireNonNull(sessionToken, "'sessionToken' cannot be null.");
+        this.sessionKey = Objects.requireNonNull(sessionKey, "'sessionKey' cannot be null.");
+        this.expiration = Objects.requireNonNull(expiration, "'expiration' cannot be null.");
+        this.accountName = Objects.requireNonNull(accountName, "'accountName' cannot be null.");
     }
 
     /**
@@ -88,8 +94,7 @@ public final class StorageSessionCredential {
     }
 
     // ---- String-to-sign logic (Shared Key protocol) ----
-    // Ported from StorageSharedKeyCredential.buildStringToSign(). The signing format is identical;
-    // the only difference is that account name is extracted from the URL rather than a constructor parameter.
+    // Ported from StorageSharedKeyCredential.buildStringToSign(). The signing format is identical.
 
     private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers) {
         String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
@@ -152,11 +157,7 @@ public final class StorageSessionCredential {
         return canonicalizedHeaders.toString();
     }
 
-    private static String getCanonicalizedResource(URL requestURL, Collator collator) {
-        // Extract account name from hostname: "myaccount.blob.core.windows.net" -> "myaccount"
-        String host = requestURL.getHost();
-        String accountName = host.contains(".") ? host.substring(0, host.indexOf('.')) : host;
-
+    private String getCanonicalizedResource(URL requestURL, Collator collator) {
         String absolutePath = requestURL.getPath();
         if (CoreUtils.isNullOrEmpty(absolutePath)) {
             absolutePath = "/";
