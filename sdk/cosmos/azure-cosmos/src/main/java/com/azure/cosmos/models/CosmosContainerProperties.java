@@ -394,8 +394,8 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the globalSecondaryIndex  definition for this container in the Azure Cosmos DB service.
-     * A globalSecondaryIndex is derived from a source container and is defined by a SQL-like query.
+     * Gets the global secondary index definition for this container in the Azure Cosmos DB service.
+     * A global secondary index is derived from a source container and is defined by a SQL-like query.
      *
      * @return the CosmosGlobalSecondaryIndexDefinition
      */
@@ -404,15 +404,15 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Sets the globalSecondaryIndex definition for this container in the Azure Cosmos DB service.
-     * A globalSecondaryIndex view is derived from a source container and is defined by a SQL-like query.
+     * Sets the global secondary index definition for this container in the Azure Cosmos DB service.
+     * A global secondary index is derived from a source container and is defined by a SQL-like query.
      * <p>
      * Example:
      * <pre>{@code
-     * CosmosGlobalSecondaryIndexDefinition mvDef = new CosmosGlobalSecondaryIndexDefinition()
+     * CosmosGlobalSecondaryIndexDefinition gsiDef = new CosmosGlobalSecondaryIndexDefinition()
      *     .setSourceContainerId("gsi-src")
      *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
-     * containerProperties.setCosmosGlobalSecondaryIndexDefinition(mvDef);
+     * containerProperties.setCosmosGlobalSecondaryIndexDefinition(gsiDef);
      * }</pre>
      *
      * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
@@ -424,18 +424,18 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the read-only list of materialized view containers derived from this container.
+     * Gets the read-only list of global secondary indexes derived from this container.
      * This property is populated only when reading a container response from the Azure Cosmos DB service.
      * <p>
      * Example JSON representation in the response:
      * <pre>{@code
-     * "globalSecondaryIndexViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
+     * "globalSecondaryIndexes": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
      * }</pre>
      *
-     * @return the list of {@link CosmosGlobalSecondaryIndexView}, or an empty list if none are present.
+     * @return the list of {@link CosmosGlobalSecondaryIndex}, or an empty list if none are present.
      */
-    public List<CosmosGlobalSecondaryIndexView> getGlobalSecondaryIndexViews() {
-        return this.documentCollection.getGlobalSecondaryIndexViews();
+    public List<CosmosGlobalSecondaryIndex> getGlobalSecondaryIndexes() {
+        return this.documentCollection.getGlobalSecondaryIndexes();
     }
 
     Resource getResource() {

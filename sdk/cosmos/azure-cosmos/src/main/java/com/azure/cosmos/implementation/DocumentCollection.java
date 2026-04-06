@@ -10,7 +10,7 @@ import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
-import com.azure.cosmos.models.CosmosGlobalSecondaryIndexView;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndex;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -474,9 +474,9 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
-     * Gets the materialized view definition for this container in the Azure Cosmos DB service.
+     * Gets the global secondary index definition for this container in the Azure Cosmos DB service.
      *
-     * @return the CosmosMaterializedViewDefinition
+     * @return the CosmosGlobalSecondaryIndexDefinition
      */
     public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
         if (this.cosmosGlobalSecondaryIndexDefinition == null) {
@@ -490,9 +490,9 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
-     * Sets the materialized view definition for this container in the Azure Cosmos DB service.
+     * Sets the global secondary index definition for this container in the Azure Cosmos DB service.
      *
-     * @param value the CosmosMaterializedViewDefinition
+     * @param value the CosmosGlobalSecondaryIndexDefinition
      */
     public void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         checkNotNull(value, "cosmosGlobalSecondaryIndexDefinition cannot be null");
@@ -501,14 +501,14 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
-     * Gets the read-only list of materialized views derived from this container.
+     * Gets the read-only list of global secondary indexes derived from this container.
      * This property is populated only when reading a container response from the Azure Cosmos DB service.
      *
-     * @return the list of {@link CosmosGlobalSecondaryIndexView}, or an empty list if none are present.
+     * @return the list of {@link CosmosGlobalSecondaryIndex}, or an empty list if none are present.
      */
-    public List<CosmosGlobalSecondaryIndexView> getGlobalSecondaryIndexViews() {
-        List<CosmosGlobalSecondaryIndexView> results =
-            super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosGlobalSecondaryIndexView.class);
+    public List<CosmosGlobalSecondaryIndex> getGlobalSecondaryIndexes() {
+        List<CosmosGlobalSecondaryIndex> results =
+            super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosGlobalSecondaryIndex.class);
         if (results == null) {
             return Collections.emptyList();
         }

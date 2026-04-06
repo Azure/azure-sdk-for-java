@@ -136,7 +136,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setMaterializedViewDefinitionSourceCollectionRid(
+    public static void setGlobalSecondaryIndexDefinitionSourceCollectionRid(
         CosmosGlobalSecondaryIndexDefinition definition, String sourceCollectionRid) {
         definition.setSourceContainerRidInternal(sourceCollectionRid);
     }

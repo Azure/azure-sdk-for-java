@@ -6,7 +6,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.models.CosmosGlobalSecondaryIndexView;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndex;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -19,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class MaterializedViewTest {
+public class GlobalSecondaryIndexTest {
 
     protected static final int TIMEOUT = 30000;
 
@@ -38,11 +38,11 @@ public class MaterializedViewTest {
     }
 
     // -------------------------------------------------------------------------
-    // CosmosMaterializedViewDefinition – getter/setter tests
+    // CosmosGlobalSecondaryIndexDefinition – getter/setter tests
     // -------------------------------------------------------------------------
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void containerProperties_setAndGetMaterializedViewDefinition() {
+    public void containerProperties_setAndGetGlobalSecondaryIndexDefinition() {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
@@ -59,17 +59,17 @@ public class MaterializedViewTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void containerProperties_setMaterializedViewDefinition_nullThrows() {
+    public void containerProperties_setGlobalSecondaryIndexDefinition_nullThrows() {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
         assertThatThrownBy(() -> containerProperties.setCosmosGlobalSecondaryIndexDefinition(null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessageContaining("cosmosMaterializedViewDefinition cannot be null");
+            .hasMessageContaining("cosmosGlobalSecondaryIndexDefinition cannot be null");
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void containerProperties_setMaterializedViewDefinition_returnsThis() {
+    public void containerProperties_setGlobalSecondaryIndexDefinition_returnsThis() {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
@@ -85,7 +85,7 @@ public class MaterializedViewTest {
     // -------------------------------------------------------------------------
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void materializedViewDefinition_serializesToJson() throws Exception {
+    public void globalSecondaryIndexDefinition_serializesToJson() throws Exception {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
@@ -94,7 +94,7 @@ public class MaterializedViewTest {
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
-        ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(definition, "TughAMEOdUI=");
+        ModelBridgeInternal.setGlobalSecondaryIndexDefinitionSourceCollectionRid(definition, "TughAMEOdUI=");
 
         containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition);
 
@@ -102,16 +102,16 @@ public class MaterializedViewTest {
         String json = ModelBridgeInternal.getResource(containerProperties).toJson();
 
         ObjectNode jsonNode = (ObjectNode) simpleObjectMapper.readTree(json);
-        ObjectNode mvDefNode = (ObjectNode) jsonNode.get("materializedViewDefinition");
+        ObjectNode gsiDefNode = (ObjectNode) jsonNode.get("materializedViewDefinition");
 
-        assertThat(mvDefNode).isNotNull();
-        assertThat(mvDefNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
-        assertThat(mvDefNode.get("definition").asText())
+        assertThat(gsiDefNode).isNotNull();
+        assertThat(gsiDefNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
+        assertThat(gsiDefNode.get("definition").asText())
             .isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void materializedViewDefinition_deserializesFromJson() {
+    public void globalSecondaryIndexDefinition_deserializesFromJson() {
         String json = "{"
             + "\"id\":\"testContainer\","
             + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
@@ -133,7 +133,7 @@ public class MaterializedViewTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void materializedViewDefinition_deserializesStatusFromJson() {
+    public void globalSecondaryIndexDefinition_deserializesStatusFromJson() {
         String json = "{"
             + "\"id\":\"testContainer\","
             + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
@@ -153,7 +153,7 @@ public class MaterializedViewTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void materializedViewDefinition_fullRoundTrip() throws Exception {
+    public void GlobalSecondaryIndexDefinition_fullRoundTrip() throws Exception {
         // Set on container properties using the new public API
         CosmosContainerProperties original = new CosmosContainerProperties("testContainer", "/pk");
         CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
@@ -161,7 +161,7 @@ public class MaterializedViewTest {
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
-        ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(definition, "TughAMEOdUI=");
+        ModelBridgeInternal.setGlobalSecondaryIndexDefinitionSourceCollectionRid(definition, "TughAMEOdUI=");
 
         original.setCosmosGlobalSecondaryIndexDefinition(definition);
 
@@ -178,27 +178,27 @@ public class MaterializedViewTest {
 
         // Verify the RID round-tripped correctly through the wire format
         ObjectNode jsonNode = (ObjectNode) simpleObjectMapper.readTree(json);
-        ObjectNode mvDefNode = (ObjectNode) jsonNode.get("materializedViewDefinition");
-        assertThat(mvDefNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
+        ObjectNode gsiDefNode = (ObjectNode) jsonNode.get("materializedViewDefinition");
+        assertThat(gsiDefNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
     }
 
 
     // -------------------------------------------------------------------------
-    // getMaterializedViews – read-only list from server response
+    // getGlobalSecondaryIndexes – read-only list from server response
     // -------------------------------------------------------------------------
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void getMaterializedViews_returnsEmptyListWhenAbsent() {
+    public void getGlobalSecondaryIndexes_returnsEmptyListWhenAbsent() {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        List<CosmosGlobalSecondaryIndexView> views = containerProperties.getGlobalSecondaryIndexViews();
-        assertThat(views).isNotNull();
-        assertThat(views).isEmpty();
+        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
+        assertThat(gsiList).isNotNull();
+        assertThat(gsiList).isEmpty();
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void getMaterializedViews_deserializesFromServerResponse() {
+    public void getGlobalSecondaryIndexes_deserializesFromServerResponse() {
         String json = "{"
             + "\"id\":\"src-container\","
             + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
@@ -210,15 +210,15 @@ public class MaterializedViewTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        List<CosmosGlobalSecondaryIndexView> views = containerProperties.getGlobalSecondaryIndexViews();
-        assertThat(views).isNotNull();
-        assertThat(views).hasSize(2);
+        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
+        assertThat(gsiList).isNotNull();
+        assertThat(gsiList).hasSize(2);
 
-        assertThat(views.get(0).getId()).isEqualTo("gsi_testcontainer1");
-        assertThat(views.get(0).getResourceId()).isEqualTo("TughAMEOdUI=");
+        assertThat(gsiList.get(0).getId()).isEqualTo("gsi_testcontainer1");
+        assertThat(gsiList.get(0).getResourceId()).isEqualTo("TughAMEOdUI=");
 
-        assertThat(views.get(1).getId()).isEqualTo("gsi_testcontainer2");
-        assertThat(views.get(1).getResourceId()).isEqualTo("AbcdEFGhIJk=");
+        assertThat(gsiList.get(1).getId()).isEqualTo("gsi_testcontainer2");
+        assertThat(gsiList.get(1).getResourceId()).isEqualTo("AbcdEFGhIJk=");
     }
 
 }

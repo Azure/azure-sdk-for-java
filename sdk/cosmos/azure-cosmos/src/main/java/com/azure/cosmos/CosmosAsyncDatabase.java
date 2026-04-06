@@ -1401,10 +1401,10 @@ public class CosmosAsyncDatabase {
         Mono<Void> ridResolution;
         if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
             ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
-                .read(options, context)
+                .read(null, context)
                 .flatMap(sourceContainerResponse -> {
                     String rid = sourceContainerResponse.getProperties().getResourceId();
-                    ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(gsiDefinition, rid);
+                    ModelBridgeInternal.setGlobalSecondaryIndexDefinitionSourceCollectionRid(gsiDefinition, rid);
                     return Mono.empty();
                 });
         } else {

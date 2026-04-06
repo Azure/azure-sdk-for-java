@@ -156,7 +156,7 @@ public final class Constants {
         public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
         public static final String VECTOR_INDEX_SHARD_KEYS = "vectorIndexShardKeys";
 
-        // Materialized View Definition
+        // Global Secondary Index Definition
         public static final String MATERIALIZED_VIEW_DEFINITION = "materializedViewDefinition";
         public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_ID = "sourceCollectionId";
         public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_RID = "sourceCollectionRid";

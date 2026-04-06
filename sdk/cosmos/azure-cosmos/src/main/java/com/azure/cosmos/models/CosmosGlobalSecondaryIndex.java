@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
- * Represents an entry in the read-only {@code materializedViews} list returned from the Azure Cosmos DB service
- * when reading a container. Each entry identifies a materialized view container derived from the source container.
+ * Represents an entry in the read-only {@code globalSecondaryIndexes} list returned from the Azure Cosmos DB service
+ * when reading a container. Each entry identifies a globalSecondaryIndex container derived from the source container.
  * <p>
  * Example JSON representation:
  * <pre>{@code
- * "materializedViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
+ * "globalSecondaryIndexes": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
  * }</pre>
  */
-public final class CosmosGlobalSecondaryIndexView {
+public final class CosmosGlobalSecondaryIndex {
 
     @JsonProperty(Constants.Properties.ID)
     private String id;
@@ -28,22 +28,22 @@ public final class CosmosGlobalSecondaryIndexView {
     /**
      * Constructor
      */
-    public CosmosGlobalSecondaryIndexView() {
+    public CosmosGlobalSecondaryIndex() {
     }
 
     /**
-     * Gets the id of the materialized view container.
+     * Gets the id of the globalSecondaryIndex container.
      *
-     * @return the id of the materialized view container.
+     * @return the id of the globalSecondaryIndex container.
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Gets the resource id (_rid) of the materialized view container.
+     * Gets the resource id (_rid) of the globalSecondaryIndex container.
      *
-     * @return the resource id of the materialized view container.
+     * @return the resource id of the globalSecondaryIndex container.
      */
     public String getResourceId() {
         return resourceId;

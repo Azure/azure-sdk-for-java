@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * Represents the materialized view definition for a container in the Azure Cosmos DB service.
- * A materialized view is derived from a source container and is defined by a SQL-like query.
+ * Represents the global secondary index definition for a container in the Azure Cosmos DB service.
+ * A global secondary index is derived from a source container and is defined by a SQL-like query.
  * <p>
  * Example:
  * <pre>{@code
@@ -34,14 +34,14 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     /**
      * Constructor.
      *
-     * @param objectNode the {@link ObjectNode} that represents the materialized view definition.
+     * @param objectNode the {@link ObjectNode} that represents the global secondary index definition.
      */
     CosmosGlobalSecondaryIndexDefinition(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
-     * Gets the source container id for the materialized view.
+     * Gets the source container id for the global secondary index.
      *
      * @return the source container id.
      */
@@ -50,7 +50,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Sets the source container id for the materialized view.
+     * Sets the source container id for the global secondary index.
      * The SDK will automatically resolve this container id to its resource id (RID)
      * during container creation.
      *
@@ -77,17 +77,17 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Gets the build status of the GlobalSecondaryIndex view as returned by the server.
+     * Gets the build status of the global secondary index as returned by the server.
      * This is a read-only field populated from server responses.
      *
-     * @return the GlobalSecondaryIndex view build status.
+     * @return the GlobalSecondaryIndex build status.
      */
     public String getStatus() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_STATUS);
     }
 
     /**
-     * Gets the query definition for the GlobalSecondaryIndex view.
+     * Gets the query definition for the GlobalSecondaryIndex.
      *
      * @return the query definition.
      */
@@ -96,7 +96,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Sets the query definition for the materialized view.
+     * Sets the query definition for the global secondary index.
      *
      * @param definition the query definition (e.g. {@code "SELECT c.customerId, c.emailAddress FROM c"}).
      * @return CosmosGlobalSecondaryIndexDefinition
