@@ -1725,7 +1725,7 @@ public final class BlobContainerAsyncClient {
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
         return this.azureBlobStorage.getContainers()
-            .createSessionWithResponseAsync(containerName, config, context)
+            .createSessionWithResponseAsync(containerName, config, null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
