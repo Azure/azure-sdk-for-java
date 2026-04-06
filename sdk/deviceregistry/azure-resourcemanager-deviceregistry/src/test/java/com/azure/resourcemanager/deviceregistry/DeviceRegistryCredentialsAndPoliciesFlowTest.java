@@ -23,6 +23,7 @@ import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
 import com.azure.resourcemanager.deviceregistry.models.PolicyUpdateProperties;
 import com.azure.resourcemanager.deviceregistry.models.ProvisioningState;
 import com.azure.resourcemanager.deviceregistry.models.SupportedKeyType;
+import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -68,6 +69,7 @@ public class DeviceRegistryCredentialsAndPoliciesFlowTest extends DeviceRegistry
     private static final String BYOR_POLICY_NAME = "cms-test-byor-policy-" + SUFFIX;
     private static final String DEVICE_NAME = "cms-test-device-" + SUFFIX;
 
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testCredentialAndPolicyFlow() {
         System.out.println("\n============================================================");
