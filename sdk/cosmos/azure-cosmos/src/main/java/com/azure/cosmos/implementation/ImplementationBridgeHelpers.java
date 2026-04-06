@@ -105,6 +105,12 @@ import java.util.function.Function;
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
+    static {
+        ModelBridgeInternal.initializeAllAccessors();
+        UtilBridgeInternal.initializeAllAccessors();
+        BridgeInternal.initializeAllAccessors();
+    }
+
     public static void initializeAllAccessors() {
         ModelBridgeInternal.initializeAllAccessors();
         UtilBridgeInternal.initializeAllAccessors();
