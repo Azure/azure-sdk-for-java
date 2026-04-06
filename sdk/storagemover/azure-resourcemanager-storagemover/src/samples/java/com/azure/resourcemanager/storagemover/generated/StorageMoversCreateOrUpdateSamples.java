@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class StorageMoversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageMovers_CreateOrUpdate.

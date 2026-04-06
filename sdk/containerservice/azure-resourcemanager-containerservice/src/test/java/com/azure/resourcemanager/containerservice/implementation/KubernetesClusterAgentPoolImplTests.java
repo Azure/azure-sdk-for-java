@@ -59,6 +59,10 @@ public class KubernetesClusterAgentPoolImplTests {
         AgentPoolInner agentPoolInner = impl.getAgentPoolInner();
         for (Method method : agentPoolInner.getClass().getDeclaredMethods()) {
             String name = method.getName();
+            if ("upgradeStrategy".equals(name)) {
+                // skip the property only exists in preview
+                continue;
+            }
             if (mockValues.containsKey(name)) {
                 Object value = method.invoke(agentPoolInner);
                 Assertions.assertEquals(mockValues.get(name), value, String.format("Field %s mismatch", name));

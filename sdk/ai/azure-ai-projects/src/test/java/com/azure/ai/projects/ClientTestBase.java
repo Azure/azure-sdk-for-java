@@ -153,7 +153,7 @@ public class ClientTestBase extends TestProxyTestBase {
         Assertions.assertNotNull(connection.getId());
         Assertions.assertNotNull(connection.getType());
         Assertions.assertNotNull(connection.getTarget());
-        Assertions.assertNotNull(connection.getCredentials());
+        Assertions.assertNotNull(connection.getCredential());
 
         if (expectedName != null) {
             Assertions.assertEquals(expectedName, connection.getName());
@@ -195,7 +195,7 @@ public class ClientTestBase extends TestProxyTestBase {
         String expectedVersion, String expectedDataUri) {
         assertDatasetVersion(fileDatasetVersion, expectedName, expectedVersion);
         if (expectedDataUri != null) {
-            Assertions.assertEquals(expectedDataUri, fileDatasetVersion.getDataUri(),
+            Assertions.assertEquals(expectedDataUri, fileDatasetVersion.getDataUrl(),
                 "Dataset dataUri should match expected value");
         }
     }

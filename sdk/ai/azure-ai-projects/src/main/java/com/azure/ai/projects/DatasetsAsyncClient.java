@@ -60,42 +60,6 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * List all versions of the given DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listVersionsAsync(name, requestOptions);
-    }
-
-    /**
      * Get the SAS credential to access the storage account associated with a Dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -107,7 +71,7 @@ public final class DatasetsAsyncClient {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      * }
@@ -129,38 +93,6 @@ public final class DatasetsAsyncClient {
     public Mono<Response<BinaryData>> getCredentialsWithResponse(String name, String version,
         RequestOptions requestOptions) {
         return this.serviceClient.getCredentialsWithResponseAsync(name, version, requestOptions);
-    }
-
-    /**
-     * List all versions of the given DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasetVersion> listVersions(String name) {
-        // Generated convenience method for listVersions
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -229,9 +161,10 @@ public final class DatasetsAsyncClient {
             return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
         }).flatMap(blobUrl -> {
             RequestOptions requestOptions = new RequestOptions();
-            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUri(blobUrl);
+            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
             return this
-                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(fileDataset), requestOptions)
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
+                    requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FileDatasetVersion.class));
         });
@@ -293,9 +226,10 @@ public final class DatasetsAsyncClient {
             }
         }).flatMap(containerUrl -> {
             RequestOptions requestOptions = new RequestOptions();
-            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
+            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
             return this
-                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(folderDataset), requestOptions)
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(folderDataset),
+                    requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FolderDatasetVersion.class));
         });
@@ -325,7 +259,7 @@ public final class DatasetsAsyncClient {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      *     pendingUploadId: String (Required)
@@ -419,6 +353,100 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific version of the DatasetVersion on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatasetVersion> getDatasetVersion(String name, String version) {
+        // Generated convenience method for getDatasetVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
+    }
+
+    /**
+     * List all versions of the given DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listDatasetVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listDatasetVersionsAsync(name, requestOptions);
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listLatestDatasetVersions(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestDatasetVersionsAsync(requestOptions);
+    }
+
+    /**
      * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
      * deleted successfully or if the DatasetVersion does not exist.
      *
@@ -433,8 +461,9 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteDatasetVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteDatasetVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -491,32 +520,72 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateVersionWithResponse(String name, String version,
+    public Mono<Response<BinaryData>> createOrUpdateDatasetVersionWithResponse(String name, String version,
         BinaryData datasetVersion, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateVersionWithResponseAsync(name, version, datasetVersion, requestOptions);
+        return this.serviceClient.createOrUpdateDatasetVersionWithResponseAsync(name, version, datasetVersion,
+            requestOptions);
     }
 
     /**
-     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
-     * does not exist.
+     * List all versions of the given DatasetVersion.
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the DatasetVersion on successful completion of {@link Mono}.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> getDatasetVersion(String name, String version) {
-        // Generated convenience method for getDatasetVersionWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatasetVersion> listDatasetVersions(String name) {
+        // Generated convenience method for listDatasetVersions
         RequestOptions requestOptions = new RequestOptions();
-        return getDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listDatasetVersions(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatasetVersion> listLatestDatasetVersions() {
+        // Generated convenience method for listLatestDatasetVersions
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listLatestDatasetVersions(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -535,10 +604,10 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteVersion(String name, String version) {
-        // Generated convenience method for deleteVersionWithResponse
+    public Mono<Void> deleteDatasetVersion(String name, String version) {
+        // Generated convenience method for deleteDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -557,81 +626,17 @@ public final class DatasetsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> createOrUpdateVersion(String name, String version, DatasetVersion datasetVersion) {
-        // Generated convenience method for createOrUpdateVersionWithResponse
+    public Mono<DatasetVersion> createOrUpdateDatasetVersion(String name, String version,
+        DatasetVersion datasetVersion) {
+        // Generated convenience method for createOrUpdateDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, true);
         BinaryData datasetVersionInBinaryData = BinaryData.fromObject(datasetVersion);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         datasetVersionInBinaryData.getLength();
         JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(datasetVersion, false);
-        return createOrUpdateVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
+        return createOrUpdateDatasetVersionWithResponse(name, version, datasetVersionInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
-    }
-
-    /**
-     * List the latest version of each DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatestVersion(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestVersionAsync(requestOptions);
-    }
-
-    /**
-     * List the latest version of each DatasetVersion.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatasetVersion> listLatestVersion() {
-        // Generated convenience method for listLatestVersion
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listLatestVersion(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DatasetVersion>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
     }
 }

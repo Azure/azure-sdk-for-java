@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class TrustedAccessRoleBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/TrustedAccessRoleBindings_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-02-preview/TrustedAccessRoleBindings_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a trusted access role binding.

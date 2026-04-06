@@ -258,6 +258,11 @@ class EventHubNamespaceImpl
     }
 
     @Override
+    public boolean localAuthDisabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableLocalAuth());
+    }
+
+    @Override
     protected Mono<EHNamespaceInner> getInnerAsync() {
         return this.manager()
             .serviceClient()
@@ -287,6 +292,18 @@ class EventHubNamespaceImpl
     @Override
     public EventHubNamespaceImpl enableZoneRedundant() {
         this.innerModel().withZoneRedundant(true);
+        return this;
+    }
+
+    @Override
+    public EventHubNamespaceImpl disableLocalAuth() {
+        this.innerModel().withDisableLocalAuth(true);
+        return this;
+    }
+
+    @Override
+    public EventHubNamespaceImpl enableLocalAuth() {
+        this.innerModel().withDisableLocalAuth(false);
         return this;
     }
 }
