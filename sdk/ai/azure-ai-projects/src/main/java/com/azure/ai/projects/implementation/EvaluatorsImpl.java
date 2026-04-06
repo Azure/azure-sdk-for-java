@@ -214,6 +214,54 @@ public final class EvaluatorsImpl {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
+        @Post("/evaluators/{name}/versions/{version}/startPendingUpload")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> startPendingUpload(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @PathParam("version") String version,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData pendingUploadRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/evaluators/{name}/versions/{version}/startPendingUpload")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> startPendingUploadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @PathParam("version") String version,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData pendingUploadRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/evaluators/{name}/versions/{version}/credentials")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCredentials(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @PathParam("version") String version,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData credentialRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/evaluators/{name}/versions/{version}/credentials")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCredentialsSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @PathParam("version") String version, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData credentialRequest, RequestOptions requestOptions,
+            Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -1480,6 +1528,255 @@ public final class EvaluatorsImpl {
         return service.updateEvaluatorVersionSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
             evaluatorVersion, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Toolboxes=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     pendingUploadId: String (Optional)
+     *     connectionName: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     *     pendingUploadId: String (Required)
+     *     version: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the response for a pending upload request along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> startPendingUploadWithResponseAsync(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.startPendingUpload(this.client.getEndpoint(), name, version,
+            this.client.getServiceVersion().getVersion(), contentType, accept, pendingUploadRequest, requestOptions,
+            context));
+    }
+
+    /**
+     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Toolboxes=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     pendingUploadId: String (Optional)
+     *     connectionName: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     *     pendingUploadId: String (Required)
+     *     version: String (Optional)
+     *     pendingUploadType: String(None/BlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the response for a pending upload request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> startPendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.startPendingUploadSync(this.client.getEndpoint(), name, version,
+            this.client.getServiceVersion().getVersion(), contentType, accept, pendingUploadRequest, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Toolboxes=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blob_uri: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the SAS credential to access the storage account associated with an Evaluator version along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCredentialsWithResponseAsync(String name, String version,
+        BinaryData credentialRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCredentials(this.client.getEndpoint(), name, version,
+            this.client.getServiceVersion().getVersion(), contentType, accept, credentialRequest, requestOptions,
+            context));
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Toolboxes=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blob_uri: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the SAS credential to access the storage account associated with an Evaluator version along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCredentialsWithResponse(String name, String version, BinaryData credentialRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getCredentialsSync(this.client.getEndpoint(), name, version,
+            this.client.getServiceVersion().getVersion(), contentType, accept, credentialRequest, requestOptions,
+            Context.NONE);
     }
 
     /**
