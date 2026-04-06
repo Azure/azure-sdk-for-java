@@ -47,8 +47,12 @@ public class HelloWorld {
 
         // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
         // then a new version of the certificate is created.
+        // Subject Alternative Names (SANs) can include emails, DNS names, IP addresses, and URIs.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
+            .setSubjectAlternativeNames(new SubjectAlternativeNames()
+                .setEmails(Arrays.asList("wow@gmail.com"))
+                .setIpAddresses(Arrays.asList("10.0.0.1", "2001:db8::1"))
+                .setUniformResourceIdentifiers(Arrays.asList("https://mydomain.com")))
             .setKeyReusable(true)
             .setKeyType(CertificateKeyType.EC)
             .setKeyCurveName(CertificateKeyCurveName.P_256)

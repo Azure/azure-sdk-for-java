@@ -47,6 +47,10 @@ public class HelloWorld {
 
         System.out.printf("Secret is returned with name %s and value %s \n", bankSecret.getName(), bankSecret.getValue());
 
+        // For certificate-backed secrets, we can retrieve the secret value in a different format using outContentType.
+        // For example, to get the value in PEM format instead of the default PKCS#12 format:
+        // KeyVaultSecret pemSecret = secretClient.getSecret("MyCertSecret", null, "application/x-pem-file");
+
         // After one year, the bank account is still active, we need to update the expiry time of the secret.
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update the
         // value of the secret.
@@ -62,6 +66,15 @@ public class HelloWorld {
         secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "bhjd4DDgsa")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
+
+        // For secrets created after June 1, 2025, we can retrieve the previous version identifier.
+        // This is useful for certificate-backed secrets to track version history.
+        KeyVaultSecret latestSecret = secretClient.getSecret("BankAccountPassword");
+        String previousVersion = latestSecret.getProperties().getPreviousVersion();
+
+        if (previousVersion != null) {
+            System.out.printf("Secret's previous version is %s \n", previousVersion);
+        }
 
         // The bank account was closed, need to delete its credentials from the key vault.
         SyncPoller<DeletedSecret, Void> deletedBankSecretPoller =
