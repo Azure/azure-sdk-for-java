@@ -67,8 +67,9 @@ public class HelloWorld {
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
-        // For secrets created after June 1, 2025, we can retrieve the previous version identifier.
-        // This is useful for certificate-backed secrets to track version history.
+        // For secrets created after June 1, 2025, the service may populate the previous version identifier
+        // when applicable. This is primarily useful for certificate-backed secrets to track version history,
+        // and it may be null for other secrets.
         KeyVaultSecret latestSecret = secretClient.getSecret("BankAccountPassword");
         String previousVersion = latestSecret.getProperties().getPreviousVersion();
 
