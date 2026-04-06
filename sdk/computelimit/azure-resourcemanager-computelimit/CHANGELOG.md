@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-03-31)
+## 1.0.0 (2026-04-06)
 
 - Azure Resource Manager ComputeLimit client library for Java. This package contains Microsoft Azure SDK for ComputeLimit Management SDK. Microsoft Azure Compute Limit Resource Provider. Package api-version 2026-03-20. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
