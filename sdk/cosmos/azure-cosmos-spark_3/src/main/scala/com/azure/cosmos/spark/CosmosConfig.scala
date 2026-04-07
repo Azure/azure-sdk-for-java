@@ -1462,6 +1462,25 @@ private[spark] object DiagnosticsConfig {
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
   val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemPatchIfExists, ItemBulkUpdate = Value
+
+  // Single source of truth for strategies allowed in transactional bulk mode.
+  private val TransactionalBulkSupportedStrategies: Set[ItemWriteStrategy] = Set(
+    ItemOverwrite,
+    ItemAppend,
+    ItemDelete,
+    ItemDeleteIfNotModified,
+    ItemOverwriteIfNotModified,
+    ItemPatch,
+    ItemPatchIfExists
+  )
+
+  def isSupportedInTransactionalBulk(strategy: ItemWriteStrategy): Boolean = {
+    TransactionalBulkSupportedStrategies.contains(strategy)
+  }
+
+  def transactionalBulkSupportedStrategiesAsString: String = {
+    TransactionalBulkSupportedStrategies.map(_.toString).toList.sorted.mkString(", ")
+  }
 }
 
 private object CosmosPatchOperationTypes extends Enumeration {
@@ -1829,6 +1848,15 @@ private object CosmosWriteConfig {
     // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteStrategy}' is missing.")
     assert(maxRetryCountOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteMaxRetryCount}' is missing.")
+
+    val isTransactionalBulkEnabled = bulkEnabledOpt.get && bulkTransactionalOpt.get
+    if (isTransactionalBulkEnabled && !ItemWriteStrategy.isSupportedInTransactionalBulk(itemWriteStrategyOpt.get)) {
+      val supportedStrategies = ItemWriteStrategy.transactionalBulkSupportedStrategiesAsString
+      throw new IllegalArgumentException(
+        s"Configuration '${CosmosConfigNames.WriteBulkTransactional}=true' does not support " +
+          s"'${CosmosConfigNames.WriteStrategy}=${itemWriteStrategyOpt.get}'. " +
+          s"Supported strategies: $supportedStrategies")
+    }
 
     itemWriteStrategyOpt.get match {
       case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>

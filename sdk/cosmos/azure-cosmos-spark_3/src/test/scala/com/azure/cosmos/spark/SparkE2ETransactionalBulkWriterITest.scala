@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
+import com.azure.cosmos.models.PartitionKey
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SaveMode}
@@ -577,7 +577,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
         .queryItems(s"SELECT * FROM c WHERE c.tenantId = 'Contoso' AND c.userId = 'alice'", classOf[ObjectNode])
         .collectList()
         .block()
-      // Should have 3 business docs (marker is actively deleted after success)
+      // Should have the 3 business docs written by the batch
       queryResult.size() should be >= 3
     } finally {
       container.delete().block()
@@ -652,47 +652,6 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     }
   }
 
-  // =====================================================
-  // Marker Cleanup Verification
-  // =====================================================
-
-  "transactional write marker cleanup" should "not leave marker documents after successful write" in {
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
-    val partitionKeyValue = UUID.randomUUID().toString
-    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
-      ("spark.cosmos.write.strategy" -> "ItemOverwrite")
-
-    val batchOperations = Seq(
-      Row(s"marker-test-1-${UUID.randomUUID()}", partitionKeyValue, "Doc1"),
-      Row(s"marker-test-2-${UUID.randomUUID()}", partitionKeyValue, "Doc2")
-    )
-    val operationsDf = spark.createDataFrame(batchOperations.asJava, simpleSchema)
-
-    operationsDf.write
-      .format("cosmos.oltp")
-      .options(writeConfig)
-      .mode(SaveMode.Append)
-      .save()
-
-    // Small delay to allow async marker deletion to complete
-    Thread.sleep(2000)
-
-    // Query all docs for this partition key
-    val allDocs = container
-      .queryItems(s"SELECT * FROM c WHERE c.pk = '$partitionKeyValue'", classOf[ObjectNode])
-      .collectList()
-      .block()
-
-    // Should have only business docs — marker should be actively deleted
-    val markerDocs = allDocs.asScala.filter(doc =>
-      doc.has("id") && doc.get("id").asText().startsWith("__tbw:"))
-
-    markerDocs.size shouldBe 0  // marker was actively deleted after success
-    // Business docs should exist
-    val businessDocs = allDocs.asScala.filter(doc =>
-      doc.has("id") && !doc.get("id").asText().startsWith("__tbw:"))
-    businessDocs.size shouldBe 2
-  }
 }
 //scalastyle:on magic.number
 //scalastyle:on multiple.string.literals

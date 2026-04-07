@@ -56,6 +56,11 @@ private class TransactionalBulkWriter
 
   private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
+  Preconditions.checkArgument(
+    ItemWriteStrategy.isSupportedInTransactionalBulk(writeConfig.itemWriteStrategy),
+    s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional. " +
+      s"Supported strategies: ${ItemWriteStrategy.transactionalBulkSupportedStrategiesAsString}")
+
   private val verboseLoggingAfterReEnqueueingRetriesEnabled = new AtomicBoolean(false)
 
   private val cpuCount = SparkUtils.getNumberOfHostCPUCores
@@ -411,10 +416,15 @@ private class TransactionalBulkWriter
         batchIsIdempotent)
     val partitionKeyString = cosmosBatch.getPartitionKeyValue.toString
     if (!transactionalBatchPartitionKeyScheduled.add(partitionKeyString)) {
-      log.logError(s"Partition key value '$partitionKeyString' has already been scheduled in this writer instance. " +
+      val message = s"Partition key value '$partitionKeyString' has already been scheduled in this writer instance. " +
         s"This indicates a bug in the data distribution or ordering pipeline. " +
         s"Atomicity guarantee may be violated for this partition key value. " +
-        s"Context: ${operationContext.toString} $getThreadInfo")
+        s"Context: ${operationContext.toString} $getThreadInfo"
+      val ex = new IllegalStateException(message)
+      log.logError(message, ex)
+      captureIfFirstFailure(ex)
+      cancelWork()
+      return
     }
 
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
@@ -986,9 +996,10 @@ private class TransactionalBulkWriter
   }
 
   // Fallback reconstruction rules for exception-only failures (no per-operation batch response):
-  // 1) Reconstruct only when we can uniquely identify the failing operation.
-  // 2) If zero or multiple candidates match, do NOT reconstruct.
-  // 3) Fallback applies only to strategies with safe inferable semantics.
+  // 1) Reconstruct only when the strategy/status has explicit reconstruction semantics.
+  // 2) If zero candidates match, do NOT reconstruct.
+  // 3) If multiple candidates match and action is Remove, do NOT reconstruct (conservative).
+  // 4) If multiple candidates match and action is Read, apply deterministic tie-breakers.
   private def getFallbackReconstructionIndexFromException(
     responseException: Option[CosmosException],
     originalItems: List[TransactionalBulkItem],
@@ -1437,16 +1448,17 @@ private object TransactionalBulkWriter {
       return Some(candidateIndices.head -> reconstructionAction.get)
     }
 
-    // Deterministic tie-breakers for exception-only paths when there is no per-item
-    // batch response available. This preserves forward progress while keeping strategy
-    // semantics stable in practice for transactional E2E recovery scenarios.
-    val selectedIndexOpt = itemWriteStrategy match {
-      case ItemWriteStrategy.ItemPatchIfExists =>
-        Some(candidateIndices.last)
+    val selectedAction = reconstructionAction.get
 
+    // For ambiguous candidates in exception-only paths, guessing a Remove target can
+    // drop a valid operation from subsequent retries. Be conservative and skip.
+    if (selectedAction == ReconstructionAction.Remove) {
+      return None
+    }
+
+    // Deterministic tie-breakers are retained only for non-destructive Read reconstruction.
+    val selectedIndexOpt = itemWriteStrategy match {
       case ItemWriteStrategy.ItemAppend |
-           ItemWriteStrategy.ItemDelete |
-           ItemWriteStrategy.ItemDeleteIfNotModified |
            ItemWriteStrategy.ItemOverwriteIfNotModified =>
         Some(candidateIndices.head)
 
@@ -1454,7 +1466,7 @@ private object TransactionalBulkWriter {
         None
     }
 
-    selectedIndexOpt.map(_ -> reconstructionAction.get)
+    selectedIndexOpt.map(_ -> selectedAction)
   }
 
   private[spark] def getFallbackCandidateIndices(

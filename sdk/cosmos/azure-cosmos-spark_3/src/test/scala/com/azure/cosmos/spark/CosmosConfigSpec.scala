@@ -748,6 +748,43 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     txConfigs.maxConcurrentBatches.get shouldEqual 5
   }
 
+  it should "fail fast when ItemBulkUpdate is configured with transactional bulk mode" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.bulk.transactional" -> "true"
+    )
+
+    try {
+      CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+      fail("expected config validation failure for ItemBulkUpdate with transactional bulk mode")
+    } catch {
+      case e: IllegalArgumentException =>
+        e.getMessage should include("spark.cosmos.write.bulk.transactional=true")
+        e.getMessage should include("spark.cosmos.write.strategy=ItemBulkUpdate")
+    }
+  }
+
+  it should "apply transactional bulk support matrix consistently for all write strategies" in {
+    ItemWriteStrategy.values.foreach { strategy =>
+      val userConfig = Map(
+        "spark.cosmos.write.strategy" -> strategy.toString,
+        "spark.cosmos.write.bulk.enabled" -> "true",
+        "spark.cosmos.write.bulk.transactional" -> "true"
+      )
+
+      if (ItemWriteStrategy.isSupportedInTransactionalBulk(strategy)) {
+        noException should be thrownBy CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+      } else {
+        val ex = intercept[IllegalArgumentException] {
+          CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+        }
+        ex.getMessage should include("spark.cosmos.write.bulk.transactional=true")
+        ex.getMessage should include(s"spark.cosmos.write.strategy=${strategy.toString}")
+      }
+    }
+  }
+
   it should "parse partitioning config with custom Strategy" in {
     val partitioningConfig = Map(
       "spark.cosmos.read.partitioning.strategy" -> "Custom",

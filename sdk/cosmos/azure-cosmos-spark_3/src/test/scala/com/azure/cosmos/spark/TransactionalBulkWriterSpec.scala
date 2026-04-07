@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import java.time.Duration
 import java.util
 import java.util.concurrent.ConcurrentHashMap
+import java.lang.reflect.InvocationTargetException
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -69,6 +70,27 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     response
   }
 
+  private def createWriteConfigViaReflection(strategy: ItemWriteStrategy.Value): AnyRef = {
+    val writeConfigClass = Class.forName("com.azure.cosmos.spark.CosmosWriteConfig")
+    val ctor = writeConfigClass.getDeclaredConstructors.find(_.getParameterCount == 13).get
+    ctor.setAccessible(true)
+    ctor.newInstance(
+      strategy,
+      Int.box(10),
+      Boolean.box(true),
+      Boolean.box(true),
+      None,
+      None,
+      None,
+      None,
+      None,
+      Int.box(60),
+      Int.box(180),
+      Int.box(2700),
+      None
+    ).asInstanceOf[AnyRef]
+  }
+
   // =====================================================
   //  Recovery for Delete Operations
   // =====================================================
@@ -93,6 +115,33 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     wrappedOp.getItem[ObjectNode] should not be null
     wrappedOp.getItem[ObjectNode].get("id").asText() should be("doc1")
     wrappedOp.getPartitionKeyValue should be(pk)
+  }
+
+  "TransactionalBulkWriter constructor" should "fail fast for unsupported transactional strategy" in {
+    val writerClass = Class.forName("com.azure.cosmos.spark.TransactionalBulkWriter")
+    val ctor = writerClass.getDeclaredConstructors.find(_.getParameterCount == 7).get
+    ctor.setAccessible(true)
+
+    val unsupportedWriteConfig = createWriteConfigViaReflection(ItemWriteStrategy.ItemBulkUpdate)
+    val outputMetricsPublisher = new OutputMetricsPublisherTrait {
+      override def trackWriteOperation(recordCount: Long, diagnostics: Option[com.azure.cosmos.CosmosDiagnosticsContext]): Unit = ()
+    }
+
+    val invocation = intercept[InvocationTargetException] {
+      ctor.newInstance(
+        null, // CosmosAsyncContainer - not needed because constructor fails on strategy guard first
+        CosmosContainerConfig("db", "container", None),
+        new PartitionKeyDefinition(),
+        unsupportedWriteConfig,
+        DiagnosticsConfig(),
+        outputMetricsPublisher,
+        Long.box(1L)
+      )
+    }
+
+    invocation.getCause shouldBe a[IllegalArgumentException]
+    invocation.getCause.getMessage should include("is not supported for bulk with transactional")
+    invocation.getCause.getMessage should include("ItemOverwrite")
   }
 
   // =====================================================
@@ -1196,7 +1245,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Read))
   }
 
-  it should "select deterministic first candidate when fallback candidates are ambiguous for delete-if-not-modified" in {
+  it should "skip fallback reconstruction when candidates are ambiguous for delete-if-not-modified remove path" in {
     val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
       ItemWriteStrategy.ItemDeleteIfNotModified,
       404,
@@ -1204,7 +1253,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
       Seq((0, false), (1, true)),
       Set.empty)
 
-    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Remove))
+    decision should be(None)
   }
 
   it should "ignore already reconstructed indices when selecting fallback candidate" in {
@@ -1229,7 +1278,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Read))
   }
 
-  it should "select deterministic last candidate for patch-if-exists fallback" in {
+  it should "skip fallback reconstruction when candidates are ambiguous for patch-if-exists remove path" in {
     val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
       ItemWriteStrategy.ItemPatchIfExists,
       404,
@@ -1237,7 +1286,82 @@ class TransactionalBulkWriterSpec extends UnitSpec {
       Seq((0, false), (1, false)),
       Set.empty)
 
-    decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Remove))
+    decision should be(None)
+  }
+
+  it should "select deterministic first candidate for append read path when fallback candidates are ambiguous" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemAppend,
+      409,
+      0,
+      Seq((0, false), (1, false)),
+      Set.empty)
+
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Read))
+  }
+
+  it should "select deterministic first candidate for overwrite-if-not-modified read path when fallback candidates are ambiguous" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      409,
+      0,
+      Seq((0, false), (1, false), (2, true)),
+      Set.empty)
+
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Read))
+  }
+
+  it should "skip fallback reconstruction for overwrite-if-not-modified remove path when candidates are ambiguous" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      404,
+      0,
+      Seq((0, true), (1, true)),
+      Set.empty)
+
+    decision should be(None)
+  }
+
+  // =====================================================
+  // Exception-Only Fallback Coverage (semantic vs transient)
+  // =====================================================
+
+  "exception-only fallback for delete paths" should "reconstruct when candidate is unique" in {
+    // cosmosBatchResponse = None + exception 404/0 on delete path with one candidate
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDelete,
+      404,
+      0,
+      Seq((0, false)),
+      Set.empty)
+
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Remove))
+  }
+
+  it should "skip reconstruction when remove-path candidates are ambiguous" in {
+    // cosmosBatchResponse = None + exception 404/0 with two plausible delete candidates
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDelete,
+      404,
+      0,
+      Seq((0, false), (1, false)),
+      Set.empty)
+
+    decision should be(None)
+  }
+
+  it should "treat 404/1002 as transient retry path and not reconstruction" in {
+    // Session-not-available / PK range movement can surface as exception-only 404/1002.
+    // It must not reconstruct and should flow through transient retry.
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      404,
+      1002,
+      Seq((0, false), (1, true)),
+      Set.empty)
+
+    decision should be(None)
+    Exceptions.canBeTransientFailure(404, 1002) should be(true)
   }
 
   // =====================================================
