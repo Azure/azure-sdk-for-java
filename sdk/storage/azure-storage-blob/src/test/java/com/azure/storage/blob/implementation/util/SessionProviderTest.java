@@ -40,7 +40,7 @@ public class SessionProviderTest {
 
     private static StorageSessionCredential credentialWithToken(String token) {
         return new StorageSessionCredential(token, SessionTestHelper.TEST_SESSION_KEY,
-            OffsetDateTime.now().plusHours(1));
+            OffsetDateTime.now().plusHours(1), SessionTestHelper.TEST_ACCOUNT_NAME);
     }
 
     // ---- Async tests ----
