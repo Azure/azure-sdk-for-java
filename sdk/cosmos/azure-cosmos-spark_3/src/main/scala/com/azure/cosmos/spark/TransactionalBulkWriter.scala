@@ -58,6 +58,7 @@ private class TransactionalBulkWriter
 
   Preconditions.checkArgument(
     ItemWriteStrategy.isSupportedInTransactionalBulk(writeConfig.itemWriteStrategy),
+    "%s",
     s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional. " +
       s"Supported strategies: ${ItemWriteStrategy.transactionalBulkSupportedStrategiesAsString}")
 
