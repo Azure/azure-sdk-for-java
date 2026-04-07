@@ -2,6 +2,8 @@
 
 ## 1.3.6 (2026-04-07)
 
+### Dependency Updates
+
 - Updated Azure SDK dependency versions to the latest releases.
 - Added new library entries to the BOM:
     - [`azure-ai-agents`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-agents/README.md) 
