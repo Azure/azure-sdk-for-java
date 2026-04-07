@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
@@ -24,11 +25,11 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.LeaseStateType;
@@ -90,7 +91,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled
 public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private static String vlwContainerName;
     private static final String ACCOUNT_NAME = ENVIRONMENT.getVersionedAccount().getName();
@@ -164,19 +164,92 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 createLeaseClient(containerClient).breakLeaseWithResponse(
                     new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
             }
-            if (containerProperties.isImmutableStorageWithVersioningEnabled()) {
-                ListBlobsOptions options = new ListBlobsOptions()
-                    .setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
-                for (BlobItem blob : containerClient.listBlobs(options, null)) {
-                    BlobClient blobClient = containerClient.getBlobClient(blob.getName());
-                    BlobItemProperties blobProperties = blob.getProperties();
-                    if (Objects.equals(true, blobProperties.hasLegalHold())) {
-                        blobClient.setLegalHold(false);
+            // Run when ISW is enabled or unknown (data plane may omit the flag); skip only when explicitly false.
+            if (!Boolean.FALSE.equals(containerProperties.isImmutableStorageWithVersioningEnabled())) {
+                ListBlobsOptions options
+                    = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true)
+                        .setRetrieveLegalHold(true)
+                        .setRetrieveVersions(true)
+                        .setRetrieveDeletedBlobs(true)
+                        .setRetrieveDeletedBlobsWithVersions(true)
+                        .setRetrieveSnapshots(true));
+                // Several passes: deletes can surface soft-deleted versions; list metadata can omit policies while
+                // Get Properties still reports immutability.
+                for (int round = 0; round < 15; round++) {
+                    int rowsThisRound = 0;
+                    for (BlobItem blob : containerClient.listBlobs(options, null)) {
+                        if (Boolean.TRUE.equals(blob.isPrefix())) {
+                            continue;
+                        }
+                        if (Boolean.TRUE.equals(blob.hasVersionsOnly())) {
+                            continue;
+                        }
+                        BlobClient baseClient = containerClient.getBlobClient(blob.getName());
+                        String versionId = blob.getVersionId();
+                        if (CoreUtils.isNullOrEmpty(versionId) && !Boolean.TRUE.equals(blob.isDeleted())) {
+                            try {
+                                versionId = baseClient.getProperties().getVersionId();
+                            } catch (BlobStorageException e) {
+                                if (e.getStatusCode() == 404) {
+                                    continue;
+                                }
+                                throw e;
+                            }
+                        }
+                        BlobClient blobClient
+                            = !CoreUtils.isNullOrEmpty(versionId) ? baseClient.getVersionClient(versionId) : baseClient;
+                        if (blob.getSnapshot() != null) {
+                            blobClient = blobClient.getSnapshotClient(blob.getSnapshot());
+                        }
+                        final BlobProperties live;
+                        try {
+                            live = blobClient.getProperties();
+                        } catch (BlobStorageException e) {
+                            if (e.getStatusCode() == 404) {
+                                continue;
+                            }
+                            throw e;
+                        }
+                        rowsThisRound++;
+                        if (Boolean.TRUE.equals(live.hasLegalHold())) {
+                            blobClient.setLegalHold(false);
+                        }
+                        BlobImmutabilityPolicy livePolicy = live.getImmutabilityPolicy();
+                        if (livePolicy != null && livePolicy.getPolicyMode() != null) {
+                            blobClient.deleteImmutabilityPolicy();
+                        }
+                        // Delete Blob with versionid is rejected for the *current* version (403
+                        // OperationNotAllowedOnRootBlob); delete via the base blob URL instead.
+                        BlobClient deleteClient = blobClient;
+                        if (blob.getSnapshot() == null && !CoreUtils.isNullOrEmpty(versionId)) {
+                            boolean useBaseForDelete = Boolean.TRUE.equals(blob.isCurrentVersion());
+                            if (!useBaseForDelete) {
+                                try {
+                                    BlobProperties rootProps = baseClient.getProperties();
+                                    if (Boolean.TRUE.equals(rootProps.isCurrentVersion())
+                                        && versionId.equals(rootProps.getVersionId())) {
+                                        useBaseForDelete = true;
+                                    }
+                                } catch (BlobStorageException e) {
+                                    if (e.getStatusCode() != 404) {
+                                        throw e;
+                                    }
+                                    // No root blob for this name (e.g. only non-current versions listed).
+                                }
+                            }
+                            if (useBaseForDelete) {
+                                deleteClient = baseClient;
+                            }
+                        }
+                        DeleteSnapshotsOptionType snapshotOpt
+                            = (blob.getSnapshot() == null && deleteClient == baseClient)
+                                ? DeleteSnapshotsOptionType.INCLUDE
+                                : null;
+                        deleteClient.deleteIfExistsWithResponse(snapshotOpt, null, null, Context.NONE);
                     }
-                    if (blobProperties.getImmutabilityPolicy().getPolicyMode() != null) {
-                        blobClient.deleteImmutabilityPolicy();
+                    if (rowsThisRound == 0) {
+                        break;
                     }
-                    blobClient.delete();
                 }
             }
 
