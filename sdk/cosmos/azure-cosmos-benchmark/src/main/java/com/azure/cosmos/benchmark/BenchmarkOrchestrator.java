@@ -60,8 +60,6 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
-
         // Console logging is always active — provides real-time visibility regardless of destination.
         LoggingMeterRegistry loggingRegistry = LoggingMeterRegistry.builder(
             new LoggingRegistryConfig() {
@@ -73,7 +71,6 @@ public class BenchmarkOrchestrator {
                     return java.time.Duration.ofSeconds(config.getPrintingInterval());
                 }
             }).build();
-        compositeRegistry.add(loggingRegistry);
         logger.info("Console reporter started (LoggingMeterRegistry, interval={}s)",
             config.getPrintingInterval());
 
@@ -81,111 +78,43 @@ public class BenchmarkOrchestrator {
         ThreadPrefixGaugeSet threadPrefixGaugeSet = null;
 
         if (config.isEnableJvmStats()) {
+            // JVM metrics are system-wide and live across all cycles.
+            // Bind them to the loggingRegistry so they appear in console output.
             gcMetrics = new JvmGcMetrics();
-            gcMetrics.bindTo(compositeRegistry);
-            new JvmMemoryMetrics().bindTo(compositeRegistry);
-            new JvmThreadMetrics().bindTo(compositeRegistry);
+            gcMetrics.bindTo(loggingRegistry);
+            new JvmMemoryMetrics().bindTo(loggingRegistry);
+            new JvmThreadMetrics().bindTo(loggingRegistry);
             threadPrefixGaugeSet = new ThreadPrefixGaugeSet(config.getPrintingInterval());
-            threadPrefixGaugeSet.bindTo(compositeRegistry);
+            threadPrefixGaugeSet.bindTo(loggingRegistry);
             logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
-        }
-
-        // Prepare all tenants (inject shared registry for SDK telemetry)
-        prepareTenants(config, compositeRegistry);
-
-        ReportingDestination destination = config.getReportingDestination();
-        CsvMetricsReporter csvReporter = null;
-        CosmosMetricsReporter cosmosReporter = null;
-        MeterRegistry appInsightsRegistry = null;
-
-        if (destination != null) {
-            switch (destination) {
-                case CSV:
-                    SimpleMeterRegistry csvSimpleRegistry = new SimpleMeterRegistry();
-                    compositeRegistry.add(csvSimpleRegistry);
-                    csvReporter = new CsvMetricsReporter(
-                        csvSimpleRegistry, config.getCsvReporterConfig().getReportingDirectory());
-                    csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-                    break;
-
-                case COSMOSDB:
-                    // The SDK's ClientTelemetryMetrics owns a static CompositeMeterRegistry
-                    // and adds our compositeRegistry as a child. Meters are registered on the
-                    // SDK's composite and flow *down* into child registries, but
-                    // CompositeMeterRegistry.getMeters() only returns meters registered
-                    // directly on that instance — not meters propagated from a parent.
-                    // Therefore the reporter must iterate the SimpleMeterRegistry (where
-                    // the actual meter data is stored), not the composite wrapper.
-                    SimpleMeterRegistry simpleMeterRegistry = new SimpleMeterRegistry();
-                    compositeRegistry.add(simpleMeterRegistry);
-                    Set<String> ops = new LinkedHashSet<>();
-                    int totalConcurrency = 0;
-                    for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
-                        ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
-                        totalConcurrency += t.getConcurrency();
-                    }
-                    cosmosReporter = CosmosMetricsReporter.create(
-                        simpleMeterRegistry, config.getCosmosReporterConfig(),
-                        String.join("+", ops), totalConcurrency);
-                    cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-                    break;
-
-                case APPLICATION_INSIGHTS:
-                    appInsightsRegistry = buildAppInsightsMeterRegistry(config.getAppInsightsReporterConfig());
-                    if (appInsightsRegistry != null) {
-                        compositeRegistry.add(appInsightsRegistry);
-                        logger.info("Application Insights registry added");
-                    } else {
-                        logger.warn("APPLICATION_INSIGHTS destination selected but no connection configured");
-                    }
-                    break;
-            }
-        }
-
-        // Netty HTTP connection pool metrics: when enabled, add the composite registry
-        // to Metrics.globalRegistry so Reactor Netty pool gauges flow through to
-        // whichever reporting destination is active.
-        boolean addedToGlobalRegistry = false;
-        if (config.isEnableNettyHttpMetrics()) {
-            Metrics.addRegistry(compositeRegistry);
-            addedToGlobalRegistry = true;
-            logger.info("CompositeRegistry added to globalRegistry for Reactor Netty pool metrics");
         }
 
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
         logger.info("BenchmarkConfig: {}", config);
 
         // ======== Lifecycle loop ========
+        // Reporters and per-cycle registries are created inside the loop so that
+        // each cycle starts with fresh metrics.  The SDK calls registry.clear() +
+        // registry.close() when a CosmosClient is destroyed; by giving each cycle
+        // its own registry we avoid cross-cycle contamination.
         try {
-            runLifecycleLoop(config);
+            runLifecycleLoop(config, loggingRegistry);
         } finally {
-            if (csvReporter != null) {
-                csvReporter.stop();
-            }
-            if (cosmosReporter != null) {
-                cosmosReporter.stop();
-            }
-            if (appInsightsRegistry != null) {
-                appInsightsRegistry.close();
-            }
             loggingRegistry.close();
-            if (addedToGlobalRegistry) {
-                Metrics.removeRegistry(compositeRegistry);
-            }
             if (gcMetrics != null) {
                 gcMetrics.close();
             }
             if (threadPrefixGaugeSet != null) {
                 threadPrefixGaugeSet.close();
             }
-            compositeRegistry.close();
             clearGlobalSystemProperties();
         }
     }
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
 
-    private void runLifecycleLoop(BenchmarkConfig config) throws Exception {
+    private void runLifecycleLoop(BenchmarkConfig config,
+                                  LoggingMeterRegistry loggingRegistry) throws Exception {
         int totalCycles = config.getCycles();
         List<TenantWorkloadConfig> tenants = config.getTenantWorkloads();
 
@@ -205,26 +134,125 @@ public class BenchmarkOrchestrator {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
-                // 1. Capture baseline CPU before benchmark creation (which includes data ingestion)
-                double baselineCpu = CpuMonitor.captureProcessCpuLoad();
+                // --- Fresh per-cycle metrics infrastructure ---
+                // Each cycle gets its own registry + reporter. The Cosmos SDK calls
+                // registry.clear() + registry.close() when a CosmosClient is destroyed,
+                // so we give it a disposable registry that we flush before shutdown.
+                CompositeMeterRegistry cycleRegistry = new CompositeMeterRegistry();
+                cycleRegistry.add(loggingRegistry);
 
-                // 2. Create clients (constructors perform data ingestion)
-                List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
-                logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
-                    cycle, benchmarks.size(), Instant.now());
+                // Netty HTTP connection pool metrics
+                boolean addedToGlobal = false;
+                if (config.isEnableNettyHttpMetrics()) {
+                    Metrics.addRegistry(cycleRegistry);
+                    addedToGlobal = true;
+                }
 
-                // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
-                CpuMonitor.awaitCoolDown(baselineCpu);
+                CsvMetricsReporter csvReporter = null;
+                CosmosMetricsReporter cosmosReporter = null;
+                MeterRegistry appInsightsRegistry = null;
 
-                // 4. Run workload in parallel
-                runWorkload(benchmarks, cycle, executor);
-                logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
+                try {
+                    ReportingDestination destination = config.getReportingDestination();
+                    if (destination != null) {
+                        switch (destination) {
+                            case CSV:
+                                SimpleMeterRegistry csvRegistry = new SimpleMeterRegistry();
+                                cycleRegistry.add(csvRegistry);
+                                csvReporter = new CsvMetricsReporter(
+                                    csvRegistry, config.getCsvReporterConfig().getReportingDirectory());
+                                csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                                break;
 
-                // 5. Close all clients
-                shutdownBenchmarks(benchmarks, cycle);
-                logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
+                            case COSMOSDB:
+                                SimpleMeterRegistry cosmosSimpleRegistry = new SimpleMeterRegistry();
+                                cycleRegistry.add(cosmosSimpleRegistry);
+                                Set<String> ops = new LinkedHashSet<>();
+                                int totalConcurrency = 0;
+                                for (TenantWorkloadConfig t : tenants) {
+                                    ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
+                                    totalConcurrency += t.getConcurrency();
+                                }
+                                cosmosReporter = CosmosMetricsReporter.create(
+                                    cosmosSimpleRegistry, config.getCosmosReporterConfig(),
+                                    String.join("+", ops), totalConcurrency);
+                                cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                                break;
 
-                // 6. Settle
+                            case APPLICATION_INSIGHTS:
+                                appInsightsRegistry = buildAppInsightsMeterRegistry(
+                                    config.getAppInsightsReporterConfig());
+                                if (appInsightsRegistry != null) {
+                                    cycleRegistry.add(appInsightsRegistry);
+                                } else {
+                                    logger.warn("APPLICATION_INSIGHTS reporting destination selected, but no "
+                                        + "Application Insights meter registry was created. Metrics will not be "
+                                        + "exported for this cycle. Please verify the Application Insights "
+                                        + "configuration, including the connection string.");
+                                }
+                                break;
+                        }
+                    }
+
+                    // Inject fresh registry into tenants for this cycle
+                    prepareTenants(config, cycleRegistry);
+
+                    // 1. Capture baseline CPU before benchmark creation (which includes data ingestion)
+                    double baselineCpu = CpuMonitor.captureProcessCpuLoad();
+
+                    // 2. Create clients (constructors perform data ingestion)
+                    List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
+                    logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
+                        cycle, benchmarks.size(), Instant.now());
+
+                    // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
+                    CpuMonitor.awaitCoolDown(baselineCpu);
+
+                    // 4. Run workload in parallel
+                    runWorkload(benchmarks, cycle, executor);
+                    logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
+
+                    // 5. Flush reporters before shutdown destroys the registry
+                    if (csvReporter != null) {
+                        csvReporter.stop();
+                    }
+                    if (cosmosReporter != null) {
+                        cosmosReporter.stop();
+                    }
+
+                    // 6. Disconnect loggingRegistry before SDK clears the cycle registry
+                    cycleRegistry.remove(loggingRegistry);
+                    if (addedToGlobal) {
+                        Metrics.removeRegistry(cycleRegistry);
+                        addedToGlobal = false;
+                    }
+
+                    // 7. Close all clients (SDK will clear+close cycleRegistry — safe now)
+                    shutdownBenchmarks(benchmarks, cycle);
+                    logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
+
+                    if (appInsightsRegistry != null) {
+                        appInsightsRegistry.close();
+                        appInsightsRegistry = null;
+                    }
+                } finally {
+                    // Ensure cleanup even if an exception occurred mid-cycle
+                    if (csvReporter != null) {
+                        try { csvReporter.stop(); } catch (Exception e) { /* already stopped or best-effort */ }
+                    }
+                    if (cosmosReporter != null) {
+                        try { cosmosReporter.stop(); } catch (Exception e) { /* already stopped or best-effort */ }
+                    }
+                    cycleRegistry.remove(loggingRegistry);
+                    if (addedToGlobal) {
+                        Metrics.removeRegistry(cycleRegistry);
+                    }
+                    if (appInsightsRegistry != null) {
+                        try { appInsightsRegistry.close(); } catch (Exception e) { /* best-effort */ }
+                    }
+                }
+
+                // 8. Settle
                 if (config.getSettleTimeMs() > 0) {
                     logger.info(" Settling for {}ms...", config.getSettleTimeMs());
                     long halfSettle = config.getSettleTimeMs() / 2;
