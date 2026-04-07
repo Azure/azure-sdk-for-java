@@ -25,7 +25,7 @@ public final class GatesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"bjx\",\"gateType\":\"Approval\",\"target\":{\"id\":\"w\",\"updateRunProperties\":{\"name\":\"lrcoolsttpki\",\"stage\":\"kbnujr\",\"group\":\"vtylbfpncu\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"wiithtywub\",\"id\":\"bihwqknfdnt\",\"name\":\"jchrdgoihxumw\",\"type\":\"ton\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"jygvjayvbl\",\"gateType\":\"Approval\",\"target\":{\"id\":\"vkzuhbxvvyhgso\",\"updateRunProperties\":{\"name\":\"yrqufegxuvwz\",\"stage\":\"nhlmctlpdng\",\"group\":\"vgbmhr\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"myijejvegr\",\"id\":\"pna\",\"name\":\"xexccbdreaxhcexd\",\"type\":\"rvqahqkghtpwi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,12 @@ public final class GatesListByFleetMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Gate> response = manager.gates()
-            .listByFleet("qncygupkvi", "mdscwxqupev", "hfstotxhojujbyp", 159734052, "mc",
-                com.azure.core.util.Context.NONE);
+        PagedIterable<Gate> response
+            = manager.gates().listByFleet("ggjioolvr", "x", "v", 1083346406, "k", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bjx", response.iterator().next().displayName());
+        Assertions.assertEquals("jygvjayvbl", response.iterator().next().displayName());
         Assertions.assertEquals(GateType.APPROVAL, response.iterator().next().gateType());
-        Assertions.assertEquals("w", response.iterator().next().target().id());
+        Assertions.assertEquals("vkzuhbxvvyhgso", response.iterator().next().target().id());
         Assertions.assertEquals(Timing.BEFORE, response.iterator().next().target().updateRunProperties().timing());
         Assertions.assertEquals(GateState.COMPLETED, response.iterator().next().state());
     }

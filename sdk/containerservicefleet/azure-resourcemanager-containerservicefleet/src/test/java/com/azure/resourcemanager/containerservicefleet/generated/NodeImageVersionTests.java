@@ -10,7 +10,8 @@ import com.azure.resourcemanager.containerservicefleet.models.NodeImageVersion;
 public final class NodeImageVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeImageVersion model = BinaryData.fromString("{\"version\":\"hrfou\"}").toObject(NodeImageVersion.class);
+        NodeImageVersion model
+            = BinaryData.fromString("{\"version\":\"ybsrfbjfdtwss\"}").toObject(NodeImageVersion.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -23,7 +23,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"lds\",\"groups\":[{\"name\":\"tjb\"},{\"name\":\"kdmflvestmjlx\"},{\"name\":\"ril\"}],\"afterStageWaitInSeconds\":1058689711,\"maxConcurrency\":\"eewchpxlktw\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"uztcktyhjtqed\",\"groups\":[{\"name\":\"ulwm\"},{\"name\":\"rqzz\"},{\"name\":\"rjvpglydzgkrvqee\"},{\"name\":\"toepryu\"}],\"afterStageWaitInSeconds\":479918870,\"maxConcurrency\":\"tpzdmovzvfvaawzq\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"iglaecx\",\"id\":\"t\",\"name\":\"cokpv\",\"type\":\"mlqtmldgxob\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"kcgxxlxsffgcvi\",\"groups\":[{\"name\":\"dwl\"},{\"name\":\"w\"},{\"name\":\"youpfgfbkj\"},{\"name\":\"bdyhgkfminsgowz\"}],\"afterStageWaitInSeconds\":770655875,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"ctxtgzukxi\",\"groups\":[{\"name\":\"qtgqqqxhrnxr\"}],\"afterStageWaitInSeconds\":1043435905,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"qdzfvazivjlfrqtt\",\"groups\":[{\"name\":\"lkatnwxyiopidkqq\"},{\"name\":\"kuvscxkdm\"},{\"name\":\"igovi\"}],\"afterStageWaitInSeconds\":483872150,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"ocbgoorbteoyb\",\"groups\":[{\"name\":\"xakvvjgslor\"},{\"name\":\"il\"}],\"afterStageWaitInSeconds\":1094227624,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"yedabgyvudtj\",\"id\":\"wbcihxuuwh\",\"name\":\"j\",\"type\":\"xccybvpa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,12 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies()
-            .listByFleet("xrkjpvdw", "fzwiivwzjbhyz", 954639384, "jrkambtrnegvmnv", com.azure.core.util.Context.NONE);
+            .listByFleet("hjoxo", "smsks", 409506451, "iml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lds", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("tjb", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1058689711,
+        Assertions.assertEquals("kcgxxlxsffgcvi", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("dwl", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(770655875,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals("eewchpxlktw", response.iterator().next().strategy().stages().get(0).maxConcurrency());
         Assertions.assertEquals(GateType.APPROVAL,
             response.iterator().next().strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL,
