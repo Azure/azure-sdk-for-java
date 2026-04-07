@@ -410,8 +410,8 @@ public abstract class IdentityClientBase {
             managedIdentityId = ManagedIdentityId.systemAssigned();
         }
 
-        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(managedIdentityId)
-            .logPii(options.isUnsafeSupportLoggingEnabled());
+        ManagedIdentityApplication.Builder miBuilder
+            = ManagedIdentityApplication.builder(managedIdentityId).logPii(options.isUnsafeSupportLoggingEnabled());
 
         ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
 
