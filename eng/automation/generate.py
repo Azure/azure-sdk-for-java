@@ -277,17 +277,34 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
     return packages
 
 
-def verify_self_serve_parameters(api_version, sdk_release_type):
-    if sdk_release_type and sdk_release_type not in ["stable", "beta"]:
-        raise ValueError(f"Invalid SDK release type [{sdk_release_type}], only support 'stable' or 'beta'.")
-    if api_version and sdk_release_type:
-        if api_version.endswith("-preview") and sdk_release_type == "stable":
-            raise ValueError(f"SDK release type is [stable], but API version [{api_version}] is preview.")
-        logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
-    elif api_version or sdk_release_type:
-        raise ValueError(
-            "Both [API version] and [SDK release type] parameters are required for self-serve SDK generation."
-        )
+def infer_sdk_release_type(sdk_root: str, sdk_folder: str, module: str) -> str:
+    """Infer SDK release type from the generated metadata JSON.
+
+    Reads {sdk_root}/{sdk_folder}/src/main/resources/META-INF/{module}_metadata.json
+    and inspects the apiVersions values:
+    - All GA (no 'preview' substring) -> 'stable'
+    - Any preview or mixed -> 'beta'
+    - Fallback on error -> 'beta' (safe default)
+    """
+    metadata_path = os.path.join(sdk_root, sdk_folder, "src", "main", "resources", "META-INF", f"{module}_metadata.json")
+    try:
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
+        api_versions = metadata.get("apiVersions", {})
+        if not api_versions:
+            logging.warning(f"[SelfServe] No apiVersions found in {metadata_path}, defaulting to beta.")
+            return "beta"
+
+        has_preview = any("preview" in v.lower() for v in api_versions.values())
+        inferred = "beta" if has_preview else "stable"
+        logging.info(f"[SelfServe] Inferred sdkReleaseType={inferred} from apiVersions: {api_versions}")
+        return inferred
+    except FileNotFoundError:
+        logging.warning(f"[SelfServe] Metadata file not found: {metadata_path}, defaulting to beta.")
+        return "beta"
+    except Exception as e:
+        logging.warning(f"[SelfServe] Failed to read metadata file {metadata_path}: {e}, defaulting to beta.")
+        return "beta"
 
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
@@ -299,14 +316,11 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     sdk_release_type: str = config["sdkReleaseType"] if "sdkReleaseType" in config else None
     api_version = config["apiVersion"] if "apiVersion" in config else None
+    # Generate with beta by default; will be corrected after inference if needed
     release_beta_sdk: bool = not sdk_release_type or sdk_release_type == "beta"
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
-    run_mode: str = config["runMode"] if "runMode" in config else None
-
-    if run_mode == "release" or run_mode == "local":
-        verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project,
@@ -321,6 +335,11 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     )
 
     if succeeded:
+        # Infer sdk release type from generated metadata when not explicitly provided
+        if not sdk_release_type and sdk_folder and module:
+            inferred_type = infer_sdk_release_type(sdk_root, sdk_folder, module)
+            release_beta_sdk = inferred_type == "beta"
+
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
