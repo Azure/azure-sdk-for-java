@@ -1,14 +1,99 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-04-07)
 
-### Features Added
+- Azure Resource Manager Device Registry client library for Java. This package contains Microsoft Azure SDK for Device Registry Management SDK. Microsoft.DeviceRegistry Resource Provider management API. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.NamespaceMigrateResponse` was removed
 
-### Other Changes
+#### `models.Error` was removed
+
+#### `models.MigrateResultType` was removed
+
+#### `models.MigrateResult` was removed
+
+#### `models.Namespaces` was modified
+
+* `models.NamespaceMigrateResponse migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest)` -> `void migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest)`
+* `models.NamespaceMigrateResponse migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest,com.azure.core.util.Context)` -> `void migrate(java.lang.String,java.lang.String,models.NamespaceMigrateRequest,com.azure.core.util.Context)`
+
+#### `models.Namespace` was modified
+
+* `models.NamespaceMigrateResponse migrate(models.NamespaceMigrateRequest,com.azure.core.util.Context)` -> `void migrate(models.NamespaceMigrateRequest,com.azure.core.util.Context)`
+* `models.NamespaceMigrateResponse migrate(models.NamespaceMigrateRequest)` -> `void migrate(models.NamespaceMigrateRequest)`
+
+### Features Added
+
+* `models.Policy` was added
+
+* `models.Policy$DefinitionStages` was added
+
+* `models.PolicyProperties` was added
+
+* `models.Policy$UpdateStages` was added
+
+* `models.CredentialUpdate` was added
+
+* `models.BringYourOwnRoot` was added
+
+* `models.CredentialProperties` was added
+
+* `models.CertificateAuthorityConfiguration` was added
+
+* `models.LeafCertificateConfiguration` was added
+
+* `models.Credential` was added
+
+* `models.DeviceCredentialPolicy` was added
+
+* `models.ActivateBringYourOwnRootRequest` was added
+
+* `models.CertificateConfiguration` was added
+
+* `models.Policies` was added
+
+* `models.SupportedKeyType` was added
+
+* `models.BringYourOwnRootStatus` was added
+
+* `models.Credentials` was added
+
+* `models.Policy$Definition` was added
+
+* `models.DeviceCredentialsRevokeRequest` was added
+
+* `models.PolicyUpdate` was added
+
+* `models.Policy$Update` was added
+
+* `models.PolicyUpdateProperties` was added
+
+#### `DeviceRegistryManager` was modified
+
+* `credentials()` was added
+* `policies()` was added
+
+#### `models.NamespaceDeviceProperties` was modified
+
+* `policy()` was added
+* `withPolicy(models.DeviceCredentialPolicy)` was added
+
+#### `models.NamespaceDeviceUpdateProperties` was modified
+
+* `withPolicy(models.DeviceCredentialPolicy)` was added
+* `policy()` was added
+
+#### `models.NamespaceDevices` was modified
+
+* `revoke(java.lang.String,java.lang.String,java.lang.String,models.DeviceCredentialsRevokeRequest)` was added
+* `revoke(java.lang.String,java.lang.String,java.lang.String,models.DeviceCredentialsRevokeRequest,com.azure.core.util.Context)` was added
+
+#### `models.NamespaceDevice` was modified
+
+* `revoke(models.DeviceCredentialsRevokeRequest,com.azure.core.util.Context)` was added
+* `revoke(models.DeviceCredentialsRevokeRequest)` was added
 
 ## 1.1.0 (2025-10-23)
 
