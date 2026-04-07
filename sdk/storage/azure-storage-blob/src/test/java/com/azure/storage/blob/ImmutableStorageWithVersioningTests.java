@@ -234,6 +234,14 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyMin() {
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+
+        // The service rounds Immutability Policy Expiry to the nearest second.
+        OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
+
+        BlobImmutabilityPolicy response = vlwBlob.setImmutabilityPolicy(immutabilityPolicy);
 
         assertEquals(expectedImmutabilityPolicyExpiry, response.getExpiryTime());
         assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, response.getPolicyMode());
