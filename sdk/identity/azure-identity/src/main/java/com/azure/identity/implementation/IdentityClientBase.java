@@ -259,8 +259,7 @@ public abstract class IdentityClientBase {
         initializeHttpPipelineAdapter();
 
         if (httpPipelineAdapter != null) {
-            applicationBuilder.disableInternalRetries()
-            .httpClient(httpPipelineAdapter);
+            applicationBuilder.disableInternalRetries().httpClient(httpPipelineAdapter);
         } else {
             applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -323,8 +322,7 @@ public abstract class IdentityClientBase {
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
-            builder.disableInternalRetries()
-            .httpClient(httpPipelineAdapter);
+            builder.disableInternalRetries().httpClient(httpPipelineAdapter);
         } else {
             builder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -421,8 +419,7 @@ public abstract class IdentityClientBase {
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
-            miBuilder.disableInternalRetries()
-            .httpClient(httpPipelineAdapter);
+            miBuilder.disableInternalRetries().httpClient(httpPipelineAdapter);
         } else {
             miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }

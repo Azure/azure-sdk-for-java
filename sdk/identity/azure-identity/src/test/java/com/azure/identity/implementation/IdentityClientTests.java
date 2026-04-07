@@ -342,6 +342,7 @@ public class IdentityClientTests {
 
                     when(builder.authority(any())).thenReturn(builder);
                     when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                    when(builder.disableInternalRetries()).thenReturn(builder);
                     when(builder.httpClient(any())).thenReturn(builder);
                     when(builder.logPii(anyBoolean())).thenReturn(builder);
                     ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
@@ -385,6 +386,7 @@ public class IdentityClientTests {
                 = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
                     when(builder.authority(any())).thenReturn(builder);
                     when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                    when(builder.disableInternalRetries()).thenReturn(builder);
                     when(builder.httpClient(any())).thenReturn(builder);
                     when(builder.logPii(anyBoolean())).thenReturn(builder);
                     ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
@@ -435,6 +437,7 @@ public class IdentityClientTests {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock
             = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
                 when(builder.authority(any())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
                 PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
@@ -486,6 +489,7 @@ public class IdentityClientTests {
                     when(builder.build()).thenReturn(application);
                     when(builder.authority(any())).thenReturn(builder);
                     when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                    when(builder.disableInternalRetries()).thenReturn(builder);
                     when(builder.httpClient(any())).thenReturn(builder);
                     when(builder.logPii(anyBoolean())).thenReturn(builder);
                 })) {
@@ -586,6 +590,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -623,6 +628,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -649,6 +655,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -675,6 +682,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -997,7 +1005,7 @@ public class IdentityClientTests {
     @Test
     public void testConfidentialClientRetryCountWithDisabledMsalInternalRetries() {
         AtomicInteger requestCount = new AtomicInteger(0);
-        final int RETRY_COUNT = 2;
+        final int retryCount = 2;
 
         HttpClient mockHttpClient = new HttpClient() {
             @Override
@@ -1015,7 +1023,7 @@ public class IdentityClientTests {
 
         IdentityClientOptions options = new IdentityClientOptions().setHttpClient(mockHttpClient)
             .disableInstanceDiscovery()
-            .setRetryPolicy(new RetryPolicy(new FixedDelay(RETRY_COUNT, Duration.ofMillis(1))));
+            .setRetryPolicy(new RetryPolicy(new FixedDelay(retryCount, Duration.ofMillis(1))));
 
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID)
             .clientId(CLIENT_ID)
@@ -1029,14 +1037,14 @@ public class IdentityClientTests {
             .expectErrorMatches(e -> e instanceof MsalServiceException)
             .verify();
 
-        assertEquals(RETRY_COUNT + 1, requestCount.get(), "With maxRetries=" + RETRY_COUNT
-            + ", total requests should be " + (RETRY_COUNT + 1) + " (1 initial + " + RETRY_COUNT + " retries)");
+        assertEquals(retryCount + 1, requestCount.get(), "With maxRetries=" + retryCount + ", total requests should be "
+            + (retryCount + 1) + " (1 initial + " + retryCount + " retries)");
     }
 
     @Test
     public void testPublicClientRetryCountWithDisabledMsalInternalRetries() {
         AtomicInteger requestCount = new AtomicInteger(0);
-        final int RETRY_COUNT = 2;
+        final int retryCount = 2;
 
         HttpClient mockHttpClient = new HttpClient() {
             @Override
@@ -1054,7 +1062,7 @@ public class IdentityClientTests {
 
         IdentityClientOptions options = new IdentityClientOptions().setHttpClient(mockHttpClient)
             .disableInstanceDiscovery()
-            .setRetryOptions(new RetryOptions(new FixedDelayOptions(RETRY_COUNT, Duration.ofMillis(1))));
+            .setRetryOptions(new RetryOptions(new FixedDelayOptions(retryCount, Duration.ofMillis(1))));
 
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID)
             .clientId(CLIENT_ID)
@@ -1067,14 +1075,14 @@ public class IdentityClientTests {
             .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
 
-        assertEquals(RETRY_COUNT + 1, requestCount.get(), "With maxRetries=" + RETRY_COUNT
-            + ", total requests should be " + (RETRY_COUNT + 1) + " (1 initial + " + RETRY_COUNT + " retries)");
+        assertEquals(retryCount + 1, requestCount.get(), "With maxRetries=" + retryCount + ", total requests should be "
+            + (retryCount + 1) + " (1 initial + " + retryCount + " retries)");
     }
 
     @Test
     public void testManagedIdentityClientRetryCountWithDisabledMsalInternalRetries() {
         AtomicInteger requestCount = new AtomicInteger(0);
-        final int RETRY_COUNT = 2;
+        final int retryCount = 2;
 
         HttpClient mockHttpClient = new HttpClient() {
             @Override
@@ -1090,7 +1098,7 @@ public class IdentityClientTests {
             }
         };
 
-        RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(RETRY_COUNT, Duration.ofMillis(1)));
+        RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(retryCount, Duration.ofMillis(1)));
 
         IdentityClientOptions options
             = new IdentityClientOptions().setHttpClient(mockHttpClient).setRetryPolicy(retryPolicy);
@@ -1103,8 +1111,8 @@ public class IdentityClientTests {
             .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
 
-        assertEquals(RETRY_COUNT + 1, requestCount.get(), "With maxRetries=" + RETRY_COUNT
-            + ", total requests should be " + (RETRY_COUNT + 1) + " (1 initial + " + RETRY_COUNT + " retries)");
+        assertEquals(retryCount + 1, requestCount.get(), "With maxRetries=" + retryCount + ", total requests should be "
+            + (retryCount + 1) + " (1 initial + " + retryCount + " retries)");
     }
 
 }
