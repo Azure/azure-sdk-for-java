@@ -238,8 +238,7 @@ public abstract class IdentityClientBase {
         try {
             applicationBuilder = applicationBuilder.logPii(options.isUnsafeSupportLoggingEnabled())
                 .authority(authorityUrl)
-                .instanceDiscovery(options.isInstanceDiscoveryEnabled())
-                .disableInternalRetries();
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -260,7 +259,8 @@ public abstract class IdentityClientBase {
         initializeHttpPipelineAdapter();
 
         if (httpPipelineAdapter != null) {
-            applicationBuilder.httpClient(httpPipelineAdapter);
+            applicationBuilder.disableInternalRetries()
+            .httpClient(httpPipelineAdapter);
         } else {
             applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -310,8 +310,7 @@ public abstract class IdentityClientBase {
         try {
             builder = builder.logPii(options.isUnsafeSupportLoggingEnabled())
                 .authority(authorityUrl)
-                .instanceDiscovery(options.isInstanceDiscoveryEnabled())
-                .disableInternalRetries();
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -324,7 +323,8 @@ public abstract class IdentityClientBase {
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
-            builder.httpClient(httpPipelineAdapter);
+            builder.disableInternalRetries()
+            .httpClient(httpPipelineAdapter);
         } else {
             builder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -411,8 +411,7 @@ public abstract class IdentityClientBase {
         }
 
         ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication.builder(managedIdentityId)
-            .logPii(options.isUnsafeSupportLoggingEnabled())
-            .disableInternalRetries();
+            .logPii(options.isUnsafeSupportLoggingEnabled());
 
         ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
 
@@ -422,7 +421,8 @@ public abstract class IdentityClientBase {
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
-            miBuilder.httpClient(httpPipelineAdapter);
+            miBuilder.disableInternalRetries()
+            .httpClient(httpPipelineAdapter);
         } else {
             miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
