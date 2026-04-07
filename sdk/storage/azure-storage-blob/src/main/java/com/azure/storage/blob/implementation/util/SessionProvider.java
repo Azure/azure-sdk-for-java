@@ -58,11 +58,14 @@ final class SessionProvider {
                 return inflightCreation;
             }
 
-            // Create and cache a shared Mono — all concurrent subscribers get the same result
-            inflightCreation = sessionClient.createSessionAsync()
-                .doOnNext(cached::set)
-                .doFinally(signal -> inflightCreation = null)
-                .cache();
+            // Create and cache a shared Mono — all concurrent subscribers get the same result.
+            // Clear inflightCreation inside the lock to avoid a race where another thread
+            // grabs a reference that is about to be nulled by an async doFinally callback.
+            inflightCreation = sessionClient.createSessionAsync().doOnNext(cached::set).doFinally(ignored -> {
+                synchronized (creationLock) {
+                    inflightCreation = null;
+                }
+            }).cache();
 
             return inflightCreation;
         }
@@ -78,7 +81,7 @@ final class SessionProvider {
             return current;
         }
 
-        synchronized (this) {
+        synchronized (creationLock) {
             // Double-check after acquiring lock
             current = getValidCachedSession();
             if (current != null) {
