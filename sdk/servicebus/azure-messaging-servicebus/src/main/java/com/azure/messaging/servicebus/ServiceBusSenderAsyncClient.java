@@ -478,7 +478,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     return monoError(logger,
                         new IllegalArgumentException(String.format(Locale.US,
                             "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
-                                + " allowed size (%s bytes).",
+                                + " batch size (%s bytes).",
                             maxSize, maximumLinkSize)));
                 }
                 final int batchSize = maxSize > 0 ? Math.min(maxSize, maximumLinkSize) : maximumLinkSize;
