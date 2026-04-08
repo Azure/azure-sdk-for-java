@@ -106,7 +106,7 @@ com.azure:azure-core-test;1.27.0-beta.14;1.27.0-beta.15
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.62;1.0.0-beta.63
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos;4.79.0;4.80.0-beta.1
+com.azure:azure-cosmos;4.79.1;4.80.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3;0.0.1-beta.1;0.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5;0.0.1-beta.1;0.0.1-beta.1
@@ -507,7 +507,7 @@ com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managedops;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
