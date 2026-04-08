@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -28,11 +26,6 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
      * Display name
      */
     private String displayName;
-
-    /*
-     * Entity kind
-     */
-    private String kind;
 
     /*
      * Positioning of the entity on the model canvas
@@ -55,24 +48,19 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
     private EntityImpact impact;
 
     /*
-     * Optional set of labels (key-value pairs)
+     * Optional set of tags (key-value pairs)
      */
-    private Map<String, String> labels;
+    private Map<String, String> tags;
 
     /*
      * Signal groups which are assigned to this entity
      */
-    private SignalGroup signals;
+    private SignalGroups signalGroups;
 
     /*
      * Discovered by which discovery rule. If set, the entity cannot be deleted manually.
      */
     private String discoveredBy;
-
-    /*
-     * Date when the entity was (soft-)deleted
-     */
-    private OffsetDateTime deletionDate;
 
     /*
      * Health state of this entity
@@ -116,26 +104,6 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
      */
     public EntityProperties withDisplayName(String displayName) {
         this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the kind property: Entity kind.
-     * 
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Entity kind.
-     * 
-     * @param kind the kind value to set.
-     * @return the EntityProperties object itself.
-     */
-    public EntityProperties withKind(String kind) {
-        this.kind = kind;
         return this;
     }
 
@@ -220,42 +188,42 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
     }
 
     /**
-     * Get the labels property: Optional set of labels (key-value pairs).
+     * Get the tags property: Optional set of tags (key-value pairs).
      * 
-     * @return the labels value.
+     * @return the tags value.
      */
-    public Map<String, String> labels() {
-        return this.labels;
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Set the labels property: Optional set of labels (key-value pairs).
+     * Set the tags property: Optional set of tags (key-value pairs).
      * 
-     * @param labels the labels value to set.
+     * @param tags the tags value to set.
      * @return the EntityProperties object itself.
      */
-    public EntityProperties withLabels(Map<String, String> labels) {
-        this.labels = labels;
+    public EntityProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
     /**
-     * Get the signals property: Signal groups which are assigned to this entity.
+     * Get the signalGroups property: Signal groups which are assigned to this entity.
      * 
-     * @return the signals value.
+     * @return the signalGroups value.
      */
-    public SignalGroup signals() {
-        return this.signals;
+    public SignalGroups signalGroups() {
+        return this.signalGroups;
     }
 
     /**
-     * Set the signals property: Signal groups which are assigned to this entity.
+     * Set the signalGroups property: Signal groups which are assigned to this entity.
      * 
-     * @param signals the signals value to set.
+     * @param signalGroups the signalGroups value to set.
      * @return the EntityProperties object itself.
      */
-    public EntityProperties withSignals(SignalGroup signals) {
-        this.signals = signals;
+    public EntityProperties withSignalGroups(SignalGroups signalGroups) {
+        this.signalGroups = signalGroups;
         return this;
     }
 
@@ -266,15 +234,6 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
      */
     public String discoveredBy() {
         return this.discoveredBy;
-    }
-
-    /**
-     * Get the deletionDate property: Date when the entity was (soft-)deleted.
-     * 
-     * @return the deletionDate value.
-     */
-    public OffsetDateTime deletionDate() {
-        return this.deletionDate;
     }
 
     /**
@@ -313,13 +272,12 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("canvasPosition", this.canvasPosition);
         jsonWriter.writeJsonField("icon", this.icon);
         jsonWriter.writeNumberField("healthObjective", this.healthObjective);
         jsonWriter.writeStringField("impact", this.impact == null ? null : this.impact.toString());
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("signals", this.signals);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("signalGroups", this.signalGroups);
         jsonWriter.writeJsonField("alerts", this.alerts);
         return jsonWriter.writeEndObject();
     }
@@ -344,8 +302,6 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
                         = HealthModelProvisioningState.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedEntityProperties.displayName = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedEntityProperties.kind = reader.getString();
                 } else if ("canvasPosition".equals(fieldName)) {
                     deserializedEntityProperties.canvasPosition = EntityCoordinates.fromJson(reader);
                 } else if ("icon".equals(fieldName)) {
@@ -354,16 +310,13 @@ public final class EntityProperties implements JsonSerializable<EntityProperties
                     deserializedEntityProperties.healthObjective = reader.getNullable(JsonReader::getDouble);
                 } else if ("impact".equals(fieldName)) {
                     deserializedEntityProperties.impact = EntityImpact.fromString(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedEntityProperties.labels = labels;
-                } else if ("signals".equals(fieldName)) {
-                    deserializedEntityProperties.signals = SignalGroup.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEntityProperties.tags = tags;
+                } else if ("signalGroups".equals(fieldName)) {
+                    deserializedEntityProperties.signalGroups = SignalGroups.fromJson(reader);
                 } else if ("discoveredBy".equals(fieldName)) {
                     deserializedEntityProperties.discoveredBy = reader.getString();
-                } else if ("deletionDate".equals(fieldName)) {
-                    deserializedEntityProperties.deletionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("healthState".equals(fieldName)) {
                     deserializedEntityProperties.healthState = HealthState.fromString(reader.getString());
                 } else if ("alerts".equals(fieldName)) {
