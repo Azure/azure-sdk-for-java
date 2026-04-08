@@ -26281,6 +26281,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -26294,7 +26295,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getInstanceProcessDumpWithResponseAsync(String resourceGroupName, String name,
-        String processId, String instanceId);
+        String processId, String instanceId, String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -26306,6 +26307,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -26319,7 +26321,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BinaryData> getInstanceProcessDumpAsync(String resourceGroupName, String name, String processId,
-        String instanceId);
+        String instanceId, String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -26331,6 +26333,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -26345,7 +26348,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getInstanceProcessDumpWithResponse(String resourceGroupName, String name, String processId,
-        String instanceId, Context context);
+        String instanceId, String accept, Context context);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -26357,6 +26360,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -26368,7 +26372,8 @@ public interface WebAppsClient
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData getInstanceProcessDump(String resourceGroupName, String name, String processId, String instanceId);
+    BinaryData getInstanceProcessDump(String resourceGroupName, String name, String processId, String instanceId,
+        String accept);
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
@@ -26689,6 +26694,7 @@ public interface WebAppsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param processId PID.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -26701,7 +26707,8 @@ public interface WebAppsClient
      * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getProcessDumpWithResponseAsync(String resourceGroupName, String name, String processId);
+    Mono<Response<BinaryData>> getProcessDumpWithResponseAsync(String resourceGroupName, String name, String processId,
+        String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -26711,6 +26718,7 @@ public interface WebAppsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param processId PID.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -26723,7 +26731,7 @@ public interface WebAppsClient
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BinaryData> getProcessDumpAsync(String resourceGroupName, String name, String processId);
+    Mono<BinaryData> getProcessDumpAsync(String resourceGroupName, String name, String processId, String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -26733,6 +26741,7 @@ public interface WebAppsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param processId PID.
+     * @param accept The accept parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -26747,7 +26756,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getProcessDumpWithResponse(String resourceGroupName, String name, String processId,
-        Context context);
+        String accept, Context context);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -26757,6 +26766,7 @@ public interface WebAppsClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Site name.
      * @param processId PID.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -26768,7 +26778,7 @@ public interface WebAppsClient
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData getProcessDump(String resourceGroupName, String name, String processId);
+    BinaryData getProcessDump(String resourceGroupName, String name, String processId, String accept);
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
@@ -27138,6 +27148,7 @@ public interface WebAppsClient
      * production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -27151,7 +27162,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getInstanceProcessDumpSlotWithResponseAsync(String resourceGroupName, String name,
-        String processId, String slot, String instanceId);
+        String processId, String slot, String instanceId, String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -27165,6 +27176,7 @@ public interface WebAppsClient
      * production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -27178,7 +27190,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BinaryData> getInstanceProcessDumpSlotAsync(String resourceGroupName, String name, String processId,
-        String slot, String instanceId);
+        String slot, String instanceId, String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -27192,6 +27204,7 @@ public interface WebAppsClient
      * production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -27206,7 +27219,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getInstanceProcessDumpSlotWithResponse(String resourceGroupName, String name, String processId,
-        String slot, String instanceId, Context context);
+        String slot, String instanceId, String accept, Context context);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -27220,6 +27233,7 @@ public interface WebAppsClient
      * production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      * response from "GET api/sites/{siteName}/instances".
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -27232,7 +27246,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BinaryData getInstanceProcessDumpSlot(String resourceGroupName, String name, String processId, String slot,
-        String instanceId);
+        String instanceId, String accept);
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
@@ -27586,6 +27600,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      * production slot.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -27599,7 +27614,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getProcessDumpSlotWithResponseAsync(String resourceGroupName, String name,
-        String processId, String slot);
+        String processId, String slot, String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -27611,6 +27626,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      * production slot.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -27623,7 +27639,8 @@ public interface WebAppsClient
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BinaryData> getProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot);
+    Mono<BinaryData> getProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot,
+        String accept);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -27635,6 +27652,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      * production slot.
+     * @param accept The accept parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -27649,7 +27667,7 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getProcessDumpSlotWithResponse(String resourceGroupName, String name, String processId,
-        String slot, Context context);
+        String slot, String accept, Context context);
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
@@ -27661,6 +27679,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      * production slot.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -27672,7 +27691,7 @@ public interface WebAppsClient
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData getProcessDumpSlot(String resourceGroupName, String name, String processId, String slot);
+    BinaryData getProcessDumpSlot(String resourceGroupName, String name, String processId, String slot, String accept);
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.

@@ -5125,6 +5125,7 @@ public final class ContentUnderstandingClientImpl {
      *
      * @param operationId Operation identifier.
      * @param path File path.
+     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5134,9 +5135,8 @@ public final class ContentUnderstandingClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResultFileWithResponseAsync(String operationId, String path,
+    public Mono<Response<BinaryData>> getResultFileWithResponseAsync(String operationId, String path, String accept,
         RequestOptions requestOptions) {
-        final String accept = "*/*";
         return FluxUtil.withContext(context -> service.getResultFile(this.getEndpoint(),
             this.getServiceVersion().getVersion(), operationId, path, accept, requestOptions, context));
     }
@@ -5153,6 +5153,7 @@ public final class ContentUnderstandingClientImpl {
      *
      * @param operationId Operation identifier.
      * @param path File path.
+     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5161,9 +5162,8 @@ public final class ContentUnderstandingClientImpl {
      * @return a file associated with the result of an analysis operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResultFileWithResponse(String operationId, String path,
+    public Response<BinaryData> getResultFileWithResponse(String operationId, String path, String accept,
         RequestOptions requestOptions) {
-        final String accept = "*/*";
         return service.getResultFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), operationId, path,
             accept, requestOptions, Context.NONE);
     }

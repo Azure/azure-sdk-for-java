@@ -1079,6 +1079,7 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param operationId Operation identifier.
      * @param path File path.
+     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1089,9 +1090,9 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResultFileWithResponse(String operationId, String path,
+    public Mono<Response<BinaryData>> getResultFileWithResponse(String operationId, String path, String accept,
         RequestOptions requestOptions) {
-        return this.serviceClient.getResultFileWithResponseAsync(operationId, path, requestOptions);
+        return this.serviceClient.getResultFileWithResponseAsync(operationId, path, accept, requestOptions);
     }
 
     /**
@@ -1891,6 +1892,7 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param operationId Operation identifier.
      * @param path File path.
+     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1901,10 +1903,10 @@ public final class ContentUnderstandingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getResultFile(String operationId, String path) {
+    public Mono<BinaryData> getResultFile(String operationId, String path, String accept) {
         // Generated convenience method for getResultFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getResultFileWithResponse(operationId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return getResultFileWithResponse(operationId, path, accept, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

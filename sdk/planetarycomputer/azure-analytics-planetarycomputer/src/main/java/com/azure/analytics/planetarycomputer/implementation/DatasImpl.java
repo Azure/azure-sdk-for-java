@@ -1414,7 +1414,8 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1523,7 +1524,8 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1631,7 +1633,8 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1740,7 +1743,8 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2444,7 +2448,8 @@ public final class DatasImpl {
      * @param maxx Bounding box max X.
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2537,7 +2542,8 @@ public final class DatasImpl {
      * @param maxx Bounding box max X.
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2629,7 +2635,8 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2723,7 +2730,8 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2933,7 +2941,8 @@ public final class DatasImpl {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3020,7 +3029,8 @@ public final class DatasImpl {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3106,7 +3116,8 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3193,7 +3204,8 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3896,7 +3908,8 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3994,7 +4007,8 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5631,7 +5645,8 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5738,7 +5753,8 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter.
+     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
+     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
