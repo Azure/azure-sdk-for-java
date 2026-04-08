@@ -17,14 +17,11 @@ with a success status.
 
 .PARAMETER RegenerationType
 The type of regeneration to perform. This can be 'All', 'Swagger', or 'TypeSpec'. If not specified, the script will use
-'All' as the default, which means it will run both Swagger and TypeSpec code generation.
+'TypeSpec' as the default.
 
 .PARAMETER Parallelization
 The number of parallel jobs to run. The default is the number of processors on the machine. If unspecified or
 less than 1, it will default to 1.
-
-.PARAMETER DisableAutorest
-Disables AutoRest-related install and Swagger regeneration steps when set to true. Defaults to true.
 #>
 
 param(
@@ -33,13 +30,10 @@ param(
 
   [Parameter(Mandatory = $false)]
   [ValidateSet('All', 'Swagger', 'TypeSpec')]
-  [string]$RegenerationType = 'All',
+  [string]$RegenerationType = 'TypeSpec',
 
   [Parameter(Mandatory = $false)]
-  [int]$Parallelization = [Environment]::ProcessorCount,
-
-  [Parameter(Mandatory = $false)]
-  [bool]$DisableAutorest = $true
+  [int]$Parallelization = [Environment]::ProcessorCount
 )
 
 $sdkFolder = Join-Path -Path $PSScriptRoot ".." ".." "sdk"
@@ -72,7 +66,7 @@ function Find-GenerationInformation {
   )
 
   $path = Join-Path -Path $sdkFolder $LibraryFolder
-  if (($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') -and -not $DisableAutorest) {
+  if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
     # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
       $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'Swagger')) | Out-Null
@@ -124,17 +118,13 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
   }
 }
 
-if ($DisableAutorest -and ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All')) {
-  Write-Host "Skipping AutoRest install and Swagger regeneration because DisableAutorest is set to true."
-}
-
 if ($generationInformations.Count -eq 0) {
   $kind = $RegenerationType -eq 'All' ? 'Swagger or TypeSpec' : $RegenerationType
   Write-Host "No $kind generation files to regenerate in directories: $ServiceDirectories."
   exit 0
 }
 
-if (($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') -and -not $DisableAutorest) {
+if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
   # Ensure Autorest is installed.
   $output = (& npm install -g autorest 2>&1)
   if ($LASTEXITCODE -ne 0) {
@@ -157,11 +147,6 @@ $generateScript = {
   $updateCodegenScript = $_.ScriptPath
 
   if ($_.Type -eq 'Swagger') {
-    if ($using:DisableAutorest) {
-      Write-Host "$separatorBar`nSkipping Swagger regeneration for $updateCodegenScript because DisableAutorest is set to true.`n$separatorBar"
-      return
-    }
-
     # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
     # 2>&1 redirects stderr to stdout to suppress autorest deprecation messages that would fail the pipeline.
     $generateOutput = (& $updateCodegenScript 2>&1 6>&1)

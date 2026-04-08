@@ -436,7 +436,7 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
-            -RegenerationType 'All'
+            -RegenerationType 'TypeSpec'
 
       # Authenticate with Azure Artifacts
       - template: /eng/pipelines/templates/steps/maven-authenticate.yml
