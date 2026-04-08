@@ -55,7 +55,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Create GSI container
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void createGsiContainer() {
         // Create the source container first
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -91,7 +91,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Read GSI container
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void readGsiContainer() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -129,7 +129,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Delete GSI container
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void deleteGsiContainer() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -167,7 +167,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Read source container to verify GSI views
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void readSourceContainerShowsGsiViews() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -215,7 +215,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Create GSI container with custom indexing policy
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void createGsiContainerWithCustomIndexingPolicy() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -264,7 +264,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Replace GSI container (indexing policy change)
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void replaceGsiContainer() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -312,7 +312,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // GSI definition status field
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void readGsiContainerHasStatusField() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
@@ -347,7 +347,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Source container without GSI has no definition and empty views list
     // ------------------------------------------------------------------
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void readContainerWithoutGsiReturnsNullDefinitionAndEmptyViews() {
         String containerId = "plain-" + UUID.randomUUID();
         CosmosContainerProperties containerDef = getCollectionDefinition(containerId);
@@ -369,13 +369,13 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Setup / Teardown
     // ------------------------------------------------------------------
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"gsi"}, timeOut = SETUP_TIMEOUT)
     public void before_GlobalSecondaryIndexContainerCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"gsi"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);
