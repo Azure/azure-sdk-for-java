@@ -219,7 +219,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
-     * The default maximum allowable size, in bytes, for a batch to be sent.
+     * Fallback maximum message size (256 KB) used when the AMQP link does not report a size.
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     // Fallback batch size limit (1 MB) used when the service does not advertise the vendor property
