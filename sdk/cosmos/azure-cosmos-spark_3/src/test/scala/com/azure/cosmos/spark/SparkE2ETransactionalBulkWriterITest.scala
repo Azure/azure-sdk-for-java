@@ -169,7 +169,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     item.getItem.get("name").asText() shouldEqual "ConditionalDoc"
   }
 
-  "transactional write with ItemDeleteIfNotModified" should "skip stale ETag (412) and delete other items" in {
+  "transactional write with ItemDeleteIfNotModified" should "skip stale ETag (412) and still delete item with current ETag" in {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
     val partitionKeyValue = UUID.randomUUID().toString
     val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
@@ -205,14 +205,12 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
 
     val deleteEtag = container.readItem(deleteId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block().getETag
 
-    val deleteRows = Seq(
-      Row(staleId, partitionKeyValue, "IgnoredDueTo412", staleEtag),
-      // Provide current ETag so this row can be conditionally deleted in the same batch.
-      Row(deleteId, partitionKeyValue, "DeleteMe", deleteEtag)
-    )
-    val deleteDf = spark.createDataFrame(deleteRows.asJava, deleteSchemaWithEtag)
+    // Write stale row first (single-candidate 412 path): should be skipped and not deleted.
+    val staleDeleteDf = spark.createDataFrame(Seq(
+      Row(staleId, partitionKeyValue, "IgnoredDueTo412", staleEtag)
+    ).asJava, deleteSchemaWithEtag)
 
-    deleteDf.write
+    staleDeleteDf.write
       .format("cosmos.oltp")
       .options(writeConfig)
       .mode(SaveMode.Append)
@@ -221,6 +219,17 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     val staleAfter = container.readItem(staleId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
     staleAfter should not be null
     staleAfter.getItem.get("name").asText() shouldEqual "AfterUpdate"
+
+    // Then write valid row (single-candidate conditional delete): should be deleted.
+    val validDeleteDf = spark.createDataFrame(Seq(
+      Row(deleteId, partitionKeyValue, "DeleteMe", deleteEtag)
+    ).asJava, deleteSchemaWithEtag)
+
+    validDeleteDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
 
     val deleted = container
       .queryItems(s"SELECT * FROM c WHERE c.id = '$deleteId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
