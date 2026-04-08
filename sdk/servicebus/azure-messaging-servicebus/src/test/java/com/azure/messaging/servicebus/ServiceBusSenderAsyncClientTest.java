@@ -332,12 +332,12 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that the batch max size uses the vendor property value when it is smaller than 1 MB.
-     * This simulates a Standard namespace where the link advertises 256 KB for both properties.
+     * Verifies that the batch max size uses the vendor property value (256 KB) on a Standard namespace.
+     * Both max-message-size and max-message-batch-size report 256 KB on Standard tier.
      */
     @ParameterizedTest
     @MethodSource("selectStack")
-    void createBatchUsesLinkSizeWhenSmallerThanMaxBatchSize(boolean isV2) {
+    void createBatchUsesVendorBatchSizeOnStandardNamespace(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
         int smallLinkSize = 256 * 1024; // 256 KB
