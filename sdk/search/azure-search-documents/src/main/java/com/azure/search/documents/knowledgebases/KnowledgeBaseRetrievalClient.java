@@ -19,8 +19,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.models.CreateOrUpdateRequestAccept48;
 
 /**
@@ -67,29 +69,6 @@ public final class KnowledgeBaseRetrievalClient {
      */
     public SearchServiceVersion getServiceVersion() {
         return serviceClient.getServiceVersion();
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
-            requestOptions).getValue().toObject(KnowledgeBaseRetrievalResponse.class);
     }
 
     /**
@@ -208,7 +187,6 @@ public final class KnowledgeBaseRetrievalClient {
      * }
      * </pre>
      *
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -219,15 +197,14 @@ public final class KnowledgeBaseRetrievalClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedRetrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
+    Response<BinaryData> hiddenGeneratedRetrieveWithResponse(BinaryData retrievalRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.retrieveWithResponse(knowledgeBaseName, retrievalRequest, requestOptions);
+        return this.serviceClient.retrieveWithResponse(retrievalRequest, requestOptions);
     }
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      *
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param accept The Accept header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,14 +217,35 @@ public final class KnowledgeBaseRetrievalClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest, CreateOrUpdateRequestAccept48 accept) {
+    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
+        CreateOrUpdateRequestAccept48 accept) {
         // Generated convenience method for hiddenGeneratedRetrieveWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
         }
-        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
-            requestOptions).getValue().toObject(KnowledgeBaseRetrievalResponse.class);
+        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
+            .toObject(KnowledgeBaseRetrievalResult.class);
+    }
+
+    /**
+     * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
+            .toObject(KnowledgeBaseRetrievalResult.class);
     }
 }

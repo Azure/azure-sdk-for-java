@@ -296,7 +296,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
         Set<String> expectedIndexers = new HashSet<>(Arrays.asList(indexer1.getName(), indexer2.getName()));
 
-        StepVerifier.create(searchIndexerAsyncClient.listIndexerNames().map(HashSet::new))
+        StepVerifier.create(searchIndexerAsyncClient.listIndexerNames().collect(Collectors.toSet()))
             .assertNext(actualIndexers -> {
                 assertEquals(expectedIndexers.size(), actualIndexers.size());
                 assertTrue(actualIndexers.containsAll(expectedIndexers));

@@ -111,12 +111,6 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
     private SimilarityAlgorithm similarity;
 
     /*
-     * Defines parameters for a search index that influence semantic capabilities.
-     */
-    @Generated
-    private SemanticSearch semantic;
-
-    /*
      * Contains configuration options related to vector search.
      */
     @Generated
@@ -289,16 +283,6 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
     }
 
     /**
-     * Get the semantic property: Defines parameters for a search index that influence semantic capabilities.
-     *
-     * @return the semantic value.
-     */
-    @Generated
-    public SemanticSearch getSemantic() {
-        return this.semantic;
-    }
-
-    /**
      * Get the vectorSearch property: Contains configuration options related to vector search.
      *
      * @return the vectorSearch value.
@@ -340,7 +324,7 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
         jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeJsonField("similarity", this.similarity);
-        jsonWriter.writeJsonField("semantic", this.semantic);
+        jsonWriter.writeJsonField("semantic", this.semanticSearch);
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
@@ -372,7 +356,7 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             List<LexicalNormalizer> normalizers = null;
             SearchResourceEncryptionKey encryptionKey = null;
             SimilarityAlgorithm similarity = null;
-            SemanticSearch semantic = null;
+            SemanticSearch semanticSearch = null;
             VectorSearch vectorSearch = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -407,7 +391,7 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
                 } else if ("similarity".equals(fieldName)) {
                     similarity = SimilarityAlgorithm.fromJson(reader);
                 } else if ("semantic".equals(fieldName)) {
-                    semantic = SemanticSearch.fromJson(reader);
+                    semanticSearch = SemanticSearch.fromJson(reader);
                 } else if ("vectorSearch".equals(fieldName)) {
                     vectorSearch = VectorSearch.fromJson(reader);
                 } else if ("@odata.etag".equals(fieldName)) {
@@ -430,10 +414,26 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             deserializedSearchIndexResponse.normalizers = normalizers;
             deserializedSearchIndexResponse.encryptionKey = encryptionKey;
             deserializedSearchIndexResponse.similarity = similarity;
-            deserializedSearchIndexResponse.semantic = semantic;
+            deserializedSearchIndexResponse.semanticSearch = semanticSearch;
             deserializedSearchIndexResponse.vectorSearch = vectorSearch;
             deserializedSearchIndexResponse.eTag = eTag;
             return deserializedSearchIndexResponse;
         });
+    }
+
+    /*
+     * Defines parameters for a search index that influence semantic capabilities.
+     */
+    @Generated
+    private SemanticSearch semanticSearch;
+
+    /**
+     * Get the semanticSearch property: Defines parameters for a search index that influence semantic capabilities.
+     *
+     * @return the semanticSearch value.
+     */
+    @Generated
+    public SemanticSearch getSemanticSearch() {
+        return this.semanticSearch;
     }
 }

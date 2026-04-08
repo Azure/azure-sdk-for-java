@@ -25,12 +25,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
     private String odataType = "#Microsoft.Skills.Custom.ChatCompletionSkill";
 
     /*
-     * The url for the Web API.
-     */
-    @Generated
-    private final String uri;
-
-    /*
      * The user-assigned managed identity used for outbound connections. If an authResourceId is provided and it's not
      * specified, the system-assigned managed identity is used. On updates to the indexer, if the identity is
      * unspecified, the value remains unchanged. If set to "none", the value of this property is cleared.
@@ -74,12 +68,12 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
      *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
-     * @param uri the uri value to set.
+     * @param url the url value to set.
      */
     @Generated
-    public ChatCompletionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
+    public ChatCompletionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String url) {
         super(inputs, outputs);
-        this.uri = uri;
+        this.url = url;
     }
 
     /**
@@ -91,16 +85,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
     @Override
     public String getOdataType() {
         return this.odataType;
-    }
-
-    /**
-     * Get the uri property: The url for the Web API.
-     *
-     * @return the uri value.
-     */
-    @Generated
-    public String getUri() {
-        return this.uri;
     }
 
     /**
@@ -294,7 +278,7 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("uri", this.url);
         jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         jsonWriter.writeStringField("apiKey", this.apiKey);
@@ -324,7 +308,7 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
             String name = null;
             String description = null;
             String context = null;
-            String uri = null;
+            String url = null;
             String odataType = "#Microsoft.Skills.Custom.ChatCompletionSkill";
             SearchIndexerDataIdentity authIdentity = null;
             String apiKey = null;
@@ -346,7 +330,7 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
                 } else if ("context".equals(fieldName)) {
                     context = reader.getString();
                 } else if ("uri".equals(fieldName)) {
-                    uri = reader.getString();
+                    url = reader.getString();
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
@@ -365,7 +349,7 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
                     reader.skipChildren();
                 }
             }
-            ChatCompletionSkill deserializedChatCompletionSkill = new ChatCompletionSkill(inputs, outputs, uri);
+            ChatCompletionSkill deserializedChatCompletionSkill = new ChatCompletionSkill(inputs, outputs, url);
             deserializedChatCompletionSkill.setName(name);
             deserializedChatCompletionSkill.setDescription(description);
             deserializedChatCompletionSkill.setContext(context);
@@ -378,5 +362,21 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
             deserializedChatCompletionSkill.responseFormat = responseFormat;
             return deserializedChatCompletionSkill;
         });
+    }
+
+    /*
+     * The url for the Web API.
+     */
+    @Generated
+    private final String url;
+
+    /**
+     * Get the url property: The url for the Web API.
+     *
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
     }
 }

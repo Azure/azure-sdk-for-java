@@ -59,6 +59,20 @@ public final class KnowledgeBaseRetrievalClientImpl {
     }
 
     /**
+     * The name of the knowledge base.
+     */
+    private final String knowledgeBaseName;
+
+    /**
+     * Gets The name of the knowledge base.
+     * 
+     * @return the knowledgeBaseName value.
+     */
+    public String getKnowledgeBaseName() {
+        return this.knowledgeBaseName;
+    }
+
+    /**
      * Service version.
      */
     private final SearchServiceVersion serviceVersion;
@@ -104,11 +118,13 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
      * @param endpoint The endpoint URL of the search service.
+     * @param knowledgeBaseName The name of the knowledge base.
      * @param serviceVersion Service version.
      */
-    public KnowledgeBaseRetrievalClientImpl(String endpoint, SearchServiceVersion serviceVersion) {
+    public KnowledgeBaseRetrievalClientImpl(String endpoint, String knowledgeBaseName,
+        SearchServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, knowledgeBaseName, serviceVersion);
     }
 
     /**
@@ -116,11 +132,13 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The endpoint URL of the search service.
+     * @param knowledgeBaseName The name of the knowledge base.
      * @param serviceVersion Service version.
      */
-    public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, String endpoint,
+    public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, String endpoint, String knowledgeBaseName,
         SearchServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, knowledgeBaseName,
+            serviceVersion);
     }
 
     /**
@@ -129,13 +147,15 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The endpoint URL of the search service.
+     * @param knowledgeBaseName The name of the knowledge base.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, SearchServiceVersion serviceVersion) {
+        String endpoint, String knowledgeBaseName, SearchServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.knowledgeBaseName = knowledgeBaseName;
         this.serviceVersion = serviceVersion;
         this.service = RestProxy.create(KnowledgeBaseRetrievalClientService.class, this.httpPipeline,
             this.getSerializerAdapter());
@@ -260,7 +280,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * }
      * </pre>
      * 
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -271,12 +290,12 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> retrieveWithResponseAsync(String knowledgeBaseName, BinaryData retrievalRequest,
+    public Mono<Response<BinaryData>> retrieveWithResponseAsync(BinaryData retrievalRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieve(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                knowledgeBaseName, contentType, retrievalRequest, requestOptions, context));
+                this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, context));
     }
 
     /**
@@ -368,7 +387,6 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * }
      * </pre>
      * 
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -378,10 +396,9 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * @return the output contract for the retrieval response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> retrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> retrieveWithResponse(BinaryData retrievalRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), knowledgeBaseName,
-            contentType, retrievalRequest, requestOptions, Context.NONE);
+        return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, Context.NONE);
     }
 }

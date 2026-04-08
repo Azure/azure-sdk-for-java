@@ -1,10 +1,30 @@
 # Release History
 
-## 12.0.0-beta.1 (Unreleased)
+## 12.0.0-beta.1 (2026-04-01)
 
 ### Features Added
+- Added support for the `2026-04-01` service version
+- Added `KnowledgeBaseRetrievalClient` for retrieval operations on knowledge bases
+- Added management types for knowledge bases, including `KnowledgeBase`, `KnowledgeBaseModel`,`KnowledgeBaseAzureOpenAIModel`, and `KnowledgeSourceReference`
+- Added support for new knowledge source types such as Azure Blob, Search Index, Web, and OneLake knowledge sources
+- Added knowledge base retrieval request and response models, including message content and reference metadata
+- Added knowledge base activity tracking models `KnowledgeBaseActivityRecord` and `KnowledgeBaseActivityRecordType`
+- Added knowledge source ingestion and status models `KnowledgeSourceIngestionParameters`, `KnowledgeSourceStatistics`, `KnowledgeSourceStatus` and `SynchronizationState`
+- Added AI skill types `ChatCompletionSkill`, `ContentUnderstandingSkill`, and `DocumentIntelligenceLayoutSkill` 
+- Added `AzureMachineLearningParameters` and `AzureMachineLearningVectorizer` for Azure Machine Learning integration
+- Added `SearchIndexResponse` for handling search responses with knowledge base results
+- Added `NativeBlobSoftDeleteDeletionDetectionPolicy` for Azure Blob Storage data source soft delete detection
+- Added `VectorizableImageBinaryQuery` and `VectorizableImageUrlQuery` for image-based vector queries
+- Added `DebugInfo` support for image-based queries
+- Added `aliasCounter` to `SearchServiceCounters` for alias resource tracking
+- Added `maxCumulativeIndexerRuntimeSeconds` to `ServiceLimits` for monitoring indexer runtime limits
+- Added `LookupDocument` model for document lookup responses
+- Added `AIServicesAccountIdentity` and `AIServicesAccountKey` for Azure AI Services authentication
+
 
 ### Breaking Changes
+- Removed `EntityRecognitionSkill`, `EntityRecognitionSkillVersion`, `SentimentSkill`, and `SentimentSkillVersion`
+  which were previously deprecated. Use `EntityRecognitionSkillV3` and `SentimentSkillV3` instead.
 
 ### Bugs Fixed
 

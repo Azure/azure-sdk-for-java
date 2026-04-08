@@ -20,7 +20,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
@@ -30,6 +29,7 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept3;
+import com.azure.search.documents.indexes.models.*;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
@@ -38,7 +38,6 @@ import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
@@ -1441,29 +1440,15 @@ public final class SearchIndexAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request on successful completion of {@link Mono}.
+     * @return the names of all synonym maps as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> listSynonymMapNames() {
-        return listSynonymMapNamesWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists the names of all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> listSynonymMapNamesWithResponse() {
-        return listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
-            .map(response -> new SimpleResponse<>(response,
-                response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList())));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listSynonymMapNames() {
+        return new PagedFlux<>(() -> listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList()),
+                null, null)));
     }
 
     /**
@@ -4273,7 +4258,7 @@ public final class SearchIndexAsyncClient {
      * {
      *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Optional)
      *     synchronizationStatus: String(creating/active/deleting) (Required)
-     *     synchronizationInterval: String (Optional)
+     *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -4299,7 +4284,7 @@ public final class SearchIndexAsyncClient {
      *     }
      *     statistics (Optional): {
      *         totalSynchronization: int (Required)
-     *         averageSynchronizationDuration: String (Required)
+     *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
      *     }
      * }

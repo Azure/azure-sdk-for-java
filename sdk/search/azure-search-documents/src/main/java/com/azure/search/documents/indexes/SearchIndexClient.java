@@ -16,9 +16,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchClient;
@@ -27,6 +27,7 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept3;
+import com.azure.search.documents.indexes.models.*;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
@@ -35,7 +36,6 @@ import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
@@ -1478,29 +1478,18 @@ public final class SearchIndexClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
+     * @return the names of all synonym maps as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listSynonymMapNames() {
-        return listSynonymMapNamesWithResponse().getValue();
-    }
-
-    /**
-     * Lists the names of all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> listSynonymMapNamesWithResponse() {
-        Response<ListSynonymMapsResult> response
-            = listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
-        return new SimpleResponse<>(response,
-            response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList()));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listSynonymMapNames() {
+        return new PagedIterable<>(() -> {
+            Response<ListSynonymMapsResult> response
+                = listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+            List<String> names
+                = response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                names, null, null);
+        });
     }
 
     /**
@@ -4182,7 +4171,7 @@ public final class SearchIndexClient {
      * {
      *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Optional)
      *     synchronizationStatus: String(creating/active/deleting) (Required)
-     *     synchronizationInterval: String (Optional)
+     *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -4208,7 +4197,7 @@ public final class SearchIndexClient {
      *     }
      *     statistics (Optional): {
      *         totalSynchronization: int (Required)
-     *         averageSynchronizationDuration: String (Required)
+     *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
      *     }
      * }

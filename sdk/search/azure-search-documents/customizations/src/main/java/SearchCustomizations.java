@@ -112,7 +112,7 @@ public class SearchCustomizations extends Customization {
     private static void includeOldApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
-            for (String version : Arrays.asList("2025-11-01-preview", "2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
+            for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
                 String enumName = ("V" + version.replace("-", "_")).toUpperCase();
                 entries.add(0, new EnumConstantDeclaration(enumName)
                     .addArgument(new StringLiteralExpr(version))

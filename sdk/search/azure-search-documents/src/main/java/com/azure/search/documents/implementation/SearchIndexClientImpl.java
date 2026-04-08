@@ -7133,7 +7133,7 @@ public final class SearchIndexClientImpl {
      * {
      *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Optional)
      *     synchronizationStatus: String(creating/active/deleting) (Required)
-     *     synchronizationInterval: String (Optional)
+     *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -7159,7 +7159,7 @@ public final class SearchIndexClientImpl {
      *     }
      *     statistics (Optional): {
      *         totalSynchronization: int (Required)
-     *         averageSynchronizationDuration: String (Required)
+     *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
      *     }
      * }
@@ -7199,7 +7199,7 @@ public final class SearchIndexClientImpl {
      * {
      *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Optional)
      *     synchronizationStatus: String(creating/active/deleting) (Required)
-     *     synchronizationInterval: String (Optional)
+     *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
      *         startTime: OffsetDateTime (Required)
      *         itemsUpdatesProcessed: int (Required)
@@ -7225,7 +7225,7 @@ public final class SearchIndexClientImpl {
      *     }
      *     statistics (Optional): {
      *         totalSynchronization: int (Required)
-     *         averageSynchronizationDuration: String (Required)
+     *         averageSynchronizationDuration: Duration (Required)
      *         averageItemsProcessedPerSynchronization: int (Required)
      *     }
      * }

@@ -15,9 +15,10 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchServiceVersion;
@@ -1402,33 +1403,20 @@ public final class SearchIndexerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request on successful completion of {@link Mono}.
+     * @return the names of all datasources as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> listDataSourceConnectionNames() {
-        return listDataSourceConnectionNamesWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists the names of all datasources available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> listDataSourceConnectionNamesWithResponse() {
-        return listDataSourceConnectionsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
-            .map(response -> new SimpleResponse<>(response,
-                response.getValue()
-                    .getDataSources()
-                    .stream()
-                    .map(SearchIndexerDataSourceConnection::getName)
-                    .collect(Collectors.toList())));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listDataSourceConnectionNames() {
+        return new PagedFlux<>(
+            () -> listDataSourceConnectionsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
+                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue()
+                        .getDataSources()
+                        .stream()
+                        .map(SearchIndexerDataSourceConnection::getName)
+                        .collect(Collectors.toList()),
+                    null, null)));
     }
 
     /**
@@ -1668,36 +1656,22 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all indexer names available for a search service.
+     * Lists the names of all indexers available for a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request on successful completion of {@link Mono}.
+     * @return the names of all indexers as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> listIndexerNames() {
-        return listIndexerNamesWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all indexer names available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> listIndexerNamesWithResponse() {
-        return listIndexersWithResponse(new RequestOptions().addQueryParam("$select", "name"))
-            .map(response -> new SimpleResponse<>(response,
-                response.getValue().getIndexers().stream().map(SearchIndexer::getName).collect(Collectors.toList())));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listIndexerNames() {
+        return new PagedFlux<>(() -> listIndexersWithResponse(new RequestOptions().addQueryParam("$select", "name"))
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue().getIndexers().stream().map(SearchIndexer::getName).collect(Collectors.toList()),
+                null, null)));
     }
 
     /**
@@ -1936,40 +1910,26 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * List the names of all skillsets in a search service.
+     * Lists the names of all skillsets in a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request on successful completion of {@link Mono}.
+     * @return the names of all skillsets as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> listSkillsetNames() {
-        return listSkillsetNamesWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * List the names of all skillsets in a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> listSkillsetNamesWithResponse() {
-        return listSkillsetsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
-            .map(response -> new SimpleResponse<>(response,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listSkillsetNames() {
+        return new PagedFlux<>(() -> listSkillsetsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
                 response.getValue()
                     .getSkillsets()
                     .stream()
                     .map(SearchIndexerSkillset::getName)
-                    .collect(Collectors.toList())));
+                    .collect(Collectors.toList()),
+                null, null)));
     }
 
     /**

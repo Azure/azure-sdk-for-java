@@ -1017,7 +1017,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMapNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames
-        List<String> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMapNames();
+        PagedIterable<String> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMapNames();
         for (String synonymMap: synonymMaps) {
             System.out.printf("The synonymMap name is %s.%n", synonymMap);
         }
@@ -1025,17 +1025,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
 //    /**
-//     * Code snippet for {@link SearchIndexClient#listSynonymMapNames(RequestOptions)}
+//     * Code snippet for {@link SearchIndexClient#getSynonymMapNames(RequestOptions)}
 //     */
-//    public void listSynonymMapNamesWithContext() {
-//        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context
+//    public void getSynonymMapNamesWithContext() {
+//        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapNamesWithResponse#Context
 //        PagedIterable<String> synonymMaps = SEARCH_INDEX_CLIENT.listIndexNames(new Context(KEY_1, VALUE_1));
 //        System.out.println("The status code of the response is"
 //            + synonymMaps.iterableByPage().iterator().next().getStatusCode());
 //        for (String synonymMapNames: synonymMaps) {
 //            System.out.printf("The synonymMap name is %s.%n", synonymMapNames);
 //        }
-//        // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context
+//        // END: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapNamesWithResponse#Context
 //    }
 
     /**
@@ -1550,7 +1550,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames
-        List<String> indexers = SEARCH_INDEXER_CLIENT.listIndexerNames();
+        PagedIterable<String> indexers = SEARCH_INDEXER_CLIENT.listIndexerNames();
         for (String indexerName: indexers) {
             System.out.printf("The indexer name is %s.%n", indexerName);
         }
@@ -1558,17 +1558,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
 //    /**
-//     * Code snippet for {@link SearchIndexerClient#listIndexerNames(RequestOptions)}
+//     * Code snippet for {@link SearchIndexerClient#getIndexerNames(RequestOptions)}
 //     */
-//    public void listIndexerNamesWithContext() {
-//        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context
-//        PagedIterable<String> indexers = SEARCH_INDEXER_CLIENT.listIndexerNames(new Context(KEY_1, VALUE_1));
+//    public void getIndexerNamesWithContext() {
+//        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerNames#Context
+//        PagedIterable<String> indexers = SEARCH_INDEXER_CLIENT.getIndexerNames(new Context(KEY_1, VALUE_1));
 //        System.out.println("The status code of the response is"
 //            + indexers.iterableByPage().iterator().next().getStatusCode());
 //        for (String indexerName: indexers) {
 //            System.out.printf("The indexer name is %s.%n", indexerName);
 //        }
-//        // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context
+//        // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerNames#Context
 //    }
 
     /**
@@ -1799,9 +1799,9 @@ public class SearchJavaDocCodeSnippets {
     /**
      * Code snippet for {@link SearchIndexerClient#listDataSourceConnectionNames()}
      */
-    public void listDataSourceNames() {
+    public void listDataSourceConnectionNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames
-        List<String> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnectionNames();
+        PagedIterable<String> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnectionNames();
         for (String dataSourceName: dataSources) {
             System.out.printf("The dataSource name is %s.%n", dataSourceName);
         }
@@ -1809,17 +1809,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
 //    /**
-//     * Code snippet for {@link SearchIndexerClient#listDataSourceConnectionNames()}
+//     * Code snippet for {@link SearchIndexerClient#getDataSourceConnectionNames()}
 //     */
-//    public void listDataSourceNamesWithContext() {
-//        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context
-//        PagedIterable<String> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnectionNames(new Context(KEY_1, VALUE_1));
+//    public void getDataSourceConnectionNamesWithContext() {
+//        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionNamesWithContext#Context
+//        PagedIterable<String> dataSources = SEARCH_INDEXER_CLIENT.getDataSourceConnectionNames(new Context(KEY_1, VALUE_1));
 //        System.out.println("The status code of the response is"
 //            + dataSources.iterableByPage().iterator().next().getStatusCode());
 //        for (String dataSourceName: dataSources) {
 //            System.out.printf("The dataSource name is %s.%n", dataSourceName);
 //        }
-//        // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context
+//        // END: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionNamesWithContext#Context
 //    }
 
     /**
@@ -1973,9 +1973,9 @@ public class SearchJavaDocCodeSnippets {
     /**
      * Code snippet for {@link SearchIndexerClient#listSkillsetNames()}
      */
-    public void listIndexerSkillsetNames() {
+    public void listSkillsetNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames
-        List<String> skillsetNames = SEARCH_INDEXER_CLIENT.listSkillsetNames();
+        PagedIterable<String> skillsetNames = SEARCH_INDEXER_CLIENT.listSkillsetNames();
         for (String skillsetName: skillsetNames) {
             System.out.printf("The indexer skillset name is %s.%n", skillsetName);
         }
@@ -1983,15 +1983,15 @@ public class SearchJavaDocCodeSnippets {
     }
 
 //    /**
-//     * Code snippet for {@link SearchIndexerClient#listSkillsetNames()}
+//     * Code snippet for {@link SearchIndexerClient#getSkillsetNames()}
 //     */
-//    public void listIndexerSkillsetNamesWithContext() {
-//        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context
-//        List<String> skillsetNames = SEARCH_INDEXER_CLIENT.listSkillsetNames();
+//    public void getSkillsetNamesWithContext() {
+//        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetNamesWithResponse#Context
+//        List<String> skillsetNames = SEARCH_INDEXER_CLIENT.getSkillsetNames();
 //        for (String skillsetName: skillsetNames) {
 //            System.out.printf("The indexer skillset name is %s.%n", skillsetName);
 //        }
-//        // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context
+//        // END: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetNamesWithResponse#Context
 //    }
 
     /**
@@ -2349,7 +2349,7 @@ public class SearchJavaDocCodeSnippets {
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#listDataSourceConnectionNames()}
      */
-    public void listDataSourceNamesAsync() {
+    public void listDataSourceConnectionNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames
         SEARCH_INDEXER_ASYNC_CLIENT.listDataSourceConnectionNames()
             .subscribe(dataSourceName -> System.out.printf("The dataSource name is %s.%n", dataSourceName));
@@ -2500,7 +2500,7 @@ public class SearchJavaDocCodeSnippets {
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#listSkillsetNames()}
      */
-    public void listIndexerSkillsetNamesAsync() {
+    public void listSkillsetNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames
         SEARCH_INDEXER_ASYNC_CLIENT.listSkillsetNames()
             .subscribe(skillsetName -> System.out.printf("The indexer skillset name is %s.%n", skillsetName));

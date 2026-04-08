@@ -20,13 +20,6 @@ import java.time.Duration;
 public final class AzureMachineLearningParameters implements JsonSerializable<AzureMachineLearningParameters> {
 
     /*
-     * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON
-     * payload will be sent. Only the https URI scheme is allowed.
-     */
-    @Generated
-    private final String scoringUri;
-
-    /*
      * (Required for key authentication) The key for the AML service.
      */
     @Generated
@@ -62,22 +55,11 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
     /**
      * Creates an instance of AzureMachineLearningParameters class.
      *
-     * @param scoringUri the scoringUri value to set.
+     * @param scoringUrl the scoringUrl value to set.
      */
     @Generated
-    public AzureMachineLearningParameters(String scoringUri) {
-        this.scoringUri = scoringUri;
-    }
-
-    /**
-     * Get the scoringUri property: (Required for no authentication or key authentication) The scoring URI of the AML
-     * service to which the JSON payload will be sent. Only the https URI scheme is allowed.
-     *
-     * @return the scoringUri value.
-     */
-    @Generated
-    public String getScoringUri() {
-        return this.scoringUri;
+    public AzureMachineLearningParameters(String scoringUrl) {
+        this.scoringUrl = scoringUrl;
     }
 
     /**
@@ -205,7 +187,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("uri", this.scoringUri);
+        jsonWriter.writeStringField("uri", this.scoringUrl);
         jsonWriter.writeStringField("key", this.authenticationKey);
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
@@ -226,7 +208,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
     @Generated
     public static AzureMachineLearningParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String scoringUri = null;
+            String scoringUrl = null;
             String authenticationKey = null;
             String resourceId = null;
             Duration timeout = null;
@@ -236,7 +218,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("uri".equals(fieldName)) {
-                    scoringUri = reader.getString();
+                    scoringUrl = reader.getString();
                 } else if ("key".equals(fieldName)) {
                     authenticationKey = reader.getString();
                 } else if ("resourceId".equals(fieldName)) {
@@ -252,7 +234,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
                 }
             }
             AzureMachineLearningParameters deserializedAzureMachineLearningParameters
-                = new AzureMachineLearningParameters(scoringUri);
+                = new AzureMachineLearningParameters(scoringUrl);
             deserializedAzureMachineLearningParameters.authenticationKey = authenticationKey;
             deserializedAzureMachineLearningParameters.resourceId = resourceId;
             deserializedAzureMachineLearningParameters.timeout = timeout;
@@ -260,5 +242,23 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
             deserializedAzureMachineLearningParameters.modelName = modelName;
             return deserializedAzureMachineLearningParameters;
         });
+    }
+
+    /*
+     * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON
+     * payload will be sent. Only the https URI scheme is allowed.
+     */
+    @Generated
+    private final String scoringUrl;
+
+    /**
+     * Get the scoringUrl property: (Required for no authentication or key authentication) The scoring URI of the AML
+     * service to which the JSON payload will be sent. Only the https URI scheme is allowed.
+     *
+     * @return the scoringUrl value.
+     */
+    @Generated
+    public String getScoringUrl() {
+        return this.scoringUrl;
     }
 }
