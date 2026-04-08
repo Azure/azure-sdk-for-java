@@ -473,15 +473,15 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
                 // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
                 // last-resort default to prevent oversized batches on broken links.
-                final int maximumLinkSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
-                if (maxSize > maximumLinkSize) {
+                final int maximumBatchSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
+                if (maxSize > maximumBatchSize) {
                     return monoError(logger,
                         new IllegalArgumentException(String.format(Locale.US,
                             "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
                                 + " batch size (%s bytes).",
-                            maxSize, maximumLinkSize)));
+                            maxSize, maximumBatchSize)));
                 }
-                final int batchSize = maxSize > 0 ? Math.min(maxSize, maximumLinkSize) : maximumLinkSize;
+                final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
                 return Mono.just(
                     new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
             }))
