@@ -8,6 +8,7 @@
   applicable. Applies only to secrets created after June 1, 2025.
 - Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret` and
   `getSecretWithResponse` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
+- Added support for service API version `2025-07-01`. This is now the default service version used by the client.
 
 ## 4.10.6 (2026-03-23)
 

@@ -13,7 +13,6 @@
 
 #### `CertificateServiceVersion` was modified
 
-* `V2025_06_01_PREVIEW` was added
 * `V2025_07_01` was added
 
 ## 4.8.6 (2026-03-23)
