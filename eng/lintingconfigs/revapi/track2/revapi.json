@@ -1439,6 +1439,40 @@
             "match": "class com\\.azure\\.resourcemanager\\.authorization\\.models\\.(ClassicAdministratorListResult|DenyAssignmentListResult|EligibleChildResourcesListResult|PermissionGetResult|ProviderOperationsMetadataListResult|RoleAssignmentListResult|RoleAssignmentScheduleInstanceListResult|RoleAssignmentScheduleListResult|RoleAssignmentScheduleRequestListResult|RoleDefinitionListResult|RoleEligibilityScheduleInstanceListResult|RoleEligibilityScheduleListResult|RoleEligibilityScheduleRequestListResult|RoleManagementPolicyAssignmentListResult|RoleManagementPolicyListResult)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.servicebus\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.servicebus\\.models\\.PrivateLinkResource\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.servicebus\\.models\\.(SBNamespaceListResult|SBTopicListResult|ArmDisasterRecoveryListResult|SBSubscriptionListResult|SBAuthorizationRuleListResult|PrivateEndpointConnectionListResult|RuleListResult|OperationListResult|MigrationConfigListResult|NetworkRuleSetListResult|SBQueueListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.servicebus.models.Action",
+          "justification": "Action no longer has subclass after TypeSpec migration. SqlRuleAction was a redundant allOf wrapper with identical fields."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.servicebus.models.SqlRuleAction",
+          "justification": "SqlRuleAction was a redundant Swagger allOf wrapper around Action with no extra properties. TypeSpec correctly simplified to single Action model."
         }
       ]
     }
