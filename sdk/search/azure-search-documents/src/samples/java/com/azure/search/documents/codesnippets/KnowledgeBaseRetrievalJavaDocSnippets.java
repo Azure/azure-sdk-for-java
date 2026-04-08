@@ -7,8 +7,8 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseReference;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
 import com.azure.search.documents.knowledgebases.models.SearchIndexKnowledgeSourceParams;
 
@@ -37,11 +37,11 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
      */
     public static void retrieve() {
         retrievalClient = createRetrievalClient();
-        // BEGIN: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalRequest
-        KnowledgeBaseRetrievalRequest request = new KnowledgeBaseRetrievalRequest()
+        // BEGIN: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalOptions
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels are near the ocean?"));
 
-        KnowledgeBaseRetrievalResponse response = retrievalClient.retrieve("my-knowledge-base", request);
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve("my-knowledge-base", request);
 
         response.getResponse().forEach(message ->
             message.getContent().forEach(content -> {
@@ -49,7 +49,7 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
                     System.out.println(((KnowledgeBaseMessageTextContent) content).getText());
                 }
             }));
-        // END: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalRequest
+        // END: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve#String-KnowledgeBaseRetrievalOptions
     }
 
     /**
@@ -58,10 +58,10 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
     public static void retrieveWithIntent() {
         retrievalClient = createRetrievalClient();
         // BEGIN: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve.withIntent
-        KnowledgeBaseRetrievalRequest request = new KnowledgeBaseRetrievalRequest()
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("hotels near the ocean with free parking"));
 
-        KnowledgeBaseRetrievalResponse response = retrievalClient.retrieve("my-knowledge-base", request);
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve("my-knowledge-base", request);
 
         response.getResponse().forEach(message ->
             message.getContent().forEach(content -> {
@@ -78,7 +78,7 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
     public static void retrieveWithSourceParamsAndReferences() {
         retrievalClient = createRetrievalClient();
         // BEGIN: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.retrieve.withSourceParams
-        KnowledgeBaseRetrievalRequest request = new KnowledgeBaseRetrievalRequest()
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels are available in Virginia?"))
             .setKnowledgeSourceParams(Arrays.asList(
                 new SearchIndexKnowledgeSourceParams("my-knowledge-source")
@@ -87,7 +87,7 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
                     .setIncludeReferenceSourceData(true)))
             .setIncludeActivity(true);
 
-        KnowledgeBaseRetrievalResponse response = retrievalClient.retrieve("my-knowledge-base", request);
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve("my-knowledge-base", request);
 
         // Print the assistant response
         response.getResponse().forEach(message ->

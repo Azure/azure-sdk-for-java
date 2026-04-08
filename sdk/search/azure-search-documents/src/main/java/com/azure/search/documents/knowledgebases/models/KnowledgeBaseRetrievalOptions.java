@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Get the intents property: A list of intended queries to execute without model query planning.
-     * 
+     *
      * @return the intents value.
      */
     @Generated
@@ -67,7 +68,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Set the intents property: A list of intended queries to execute without model query planning.
-     * 
+     *
      * @param intents the intents value to set.
      * @return the KnowledgeBaseRetrievalOptions object itself.
      */
@@ -78,8 +79,19 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
     }
 
     /**
+     * Set the intents property: A list of intended queries to execute without model query planning.
+     *
+     * @param intents the intents value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    public KnowledgeBaseRetrievalOptions setIntents(KnowledgeRetrievalIntent... intents) {
+        this.intents = Arrays.asList(intents);
+        return this;
+    }
+
+    /**
      * Get the maxRuntimeInSeconds property: The maximum runtime in seconds.
-     * 
+     *
      * @return the maxRuntimeInSeconds value.
      */
     @Generated
@@ -89,7 +101,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Set the maxRuntimeInSeconds property: The maximum runtime in seconds.
-     * 
+     *
      * @param maxRuntimeInSeconds the maxRuntimeInSeconds value to set.
      * @return the KnowledgeBaseRetrievalOptions object itself.
      */
@@ -101,7 +113,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Get the maxOutputSizeInTokens property: Limits the maximum size of the content in the output.
-     * 
+     *
      * @return the maxOutputSizeInTokens value.
      */
     @Generated
@@ -111,7 +123,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Set the maxOutputSizeInTokens property: Limits the maximum size of the content in the output.
-     * 
+     *
      * @param maxOutputSizeInTokens the maxOutputSizeInTokens value to set.
      * @return the KnowledgeBaseRetrievalOptions object itself.
      */
@@ -123,7 +135,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Get the includeActivity property: Indicates retrieval results should include activity information.
-     * 
+     *
      * @return the includeActivity value.
      */
     @Generated
@@ -133,7 +145,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Set the includeActivity property: Indicates retrieval results should include activity information.
-     * 
+     *
      * @param includeActivity the includeActivity value to set.
      * @return the KnowledgeBaseRetrievalOptions object itself.
      */
@@ -145,7 +157,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Get the knowledgeSourceParams property: A list of runtime parameters for the knowledge sources.
-     * 
+     *
      * @return the knowledgeSourceParams value.
      */
     @Generated
@@ -155,7 +167,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Set the knowledgeSourceParams property: A list of runtime parameters for the knowledge sources.
-     * 
+     *
      * @param knowledgeSourceParams the knowledgeSourceParams value to set.
      * @return the KnowledgeBaseRetrievalOptions object itself.
      */
@@ -183,7 +195,7 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
 
     /**
      * Reads an instance of KnowledgeBaseRetrievalOptions from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KnowledgeBaseRetrievalOptions if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

@@ -34,8 +34,8 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
-import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -388,10 +388,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
 
-        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
-        KnowledgeBaseRetrievalResponse response
+        KnowledgeBaseRetrievalResult response
             = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
@@ -405,12 +405,12 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBase knowledgeBase
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
-        Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
                     = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
-                KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
                     .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
                 return knowledgeBaseClient.retrieve(created.getName(), retrievalRequest);
@@ -433,11 +433,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
 
-        KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
         // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
-        KnowledgeBaseRetrievalResponse response
+        KnowledgeBaseRetrievalResult response
             = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
@@ -451,12 +451,12 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBase knowledgeBase
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
-        Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
                     = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
-                KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest()
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
                     .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
                 // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
