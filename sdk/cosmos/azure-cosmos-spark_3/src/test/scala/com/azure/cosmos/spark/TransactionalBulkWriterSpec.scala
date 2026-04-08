@@ -224,11 +224,12 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     batch.getOperations.get(0).getId should be("doc1")
   }
 
-  it should "map ItemDeleteIfNotModified without ETag to unconditional deleteItemOperation" in {
+  it should "support unconditional deleteItemOperation at SDK batch level (public ItemDeleteIfNotModified still requires _etag)" in {
     val pk = new PartitionKey("user-A")
     val batch = CosmosBatch.createCosmosBatch(pk)
 
-    // This matches the optimized code path used by reconstruction and initial batching.
+    // This validates the low-level CosmosBatch capability only.
+    // Public write-path validation in CosmosWriterBase enforces _etag for ItemDeleteIfNotModified.
     batch.deleteItemOperation("doc-no-etag")
 
     batch.getOperations.size() should be(1)

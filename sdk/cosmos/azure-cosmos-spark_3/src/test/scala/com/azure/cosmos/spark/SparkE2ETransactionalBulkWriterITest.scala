@@ -200,13 +200,15 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
       StructField("id", StringType, nullable = false),
       StructField("pk", StringType, nullable = false),
       StructField("name", StringType, nullable = false),
-      StructField("_etag", StringType, nullable = true)
+      StructField("_etag", StringType, nullable = false)
     ))
+
+    val deleteEtag = container.readItem(deleteId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block().getETag
 
     val deleteRows = Seq(
       Row(staleId, partitionKeyValue, "IgnoredDueTo412", staleEtag),
-      // Keep this row unconditional (no ETag) so 412 fallback has a unique candidate.
-      Row(deleteId, partitionKeyValue, "DeleteMe", null)
+      // Provide current ETag so this row can be conditionally deleted in the same batch.
+      Row(deleteId, partitionKeyValue, "DeleteMe", deleteEtag)
     )
     val deleteDf = spark.createDataFrame(deleteRows.asJava, deleteSchemaWithEtag)
 
@@ -283,6 +285,55 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
       .collectList()
       .block()
     existingAfter.size() shouldBe 0
+  }
+
+  it should "fail fast when _etag is missing or null for ItemDeleteIfNotModified" in {
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
+      ("spark.cosmos.write.strategy" -> "ItemDeleteIfNotModified")
+
+    val missingEtagDf = spark.createDataFrame(Seq(
+      Row(s"delete-ifnm-missing-etag-${UUID.randomUUID()}", partitionKeyValue, "DeleteMe")
+    ).asJava, simpleSchema)
+
+    val missingEtagException = intercept[Exception] {
+      missingEtagDf.write
+        .format("cosmos.oltp")
+        .options(writeConfig)
+        .mode(SaveMode.Append)
+        .save()
+    }
+
+    val nullEtagSchema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("name", StringType, nullable = false),
+      StructField("_etag", StringType, nullable = true)
+    ))
+
+    val nullEtagDf = spark.createDataFrame(Seq(
+      Row(s"delete-ifnm-null-etag-${UUID.randomUUID()}", partitionKeyValue, "DeleteMe", null)
+    ).asJava, nullEtagSchema)
+
+    val nullEtagException = intercept[Exception] {
+      nullEtagDf.write
+        .format("cosmos.oltp")
+        .options(writeConfig)
+        .mode(SaveMode.Append)
+        .save()
+    }
+
+    def collectCauseMessages(t: Throwable): String = {
+      Iterator
+        .iterate(t)(_.getCause)
+        .takeWhile(_ != null)
+        .map(ex => Option(ex.getMessage).getOrElse(""))
+        .mkString(" | ")
+    }
+
+    val expectedError = "_etag is a mandatory field for write strategy ItemDeleteIfNotModified"
+    collectCauseMessages(missingEtagException) should include(expectedError)
+    collectCauseMessages(nullEtagException) should include(expectedError)
   }
 
   it should "skip stale replace (412) and still create no-ETag items" in {
