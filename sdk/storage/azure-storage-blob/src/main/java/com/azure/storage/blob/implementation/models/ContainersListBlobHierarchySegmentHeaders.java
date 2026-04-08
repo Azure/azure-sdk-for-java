@@ -17,16 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ContainersListBlobHierarchySegmentHeaders {
     /*
-     * The x-ms-version property.
+     * The Content-Type property.
      */
     @Generated
-    private String xMsVersion;
-
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
+    private String contentType;
 
     /*
      * The x-ms-client-request-id property.
@@ -35,16 +29,22 @@ public final class ContainersListBlobHierarchySegmentHeaders {
     private String xMsClientRequestId;
 
     /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
-
-    /*
-     * The Content-Type property.
-     */
-    @Generated
-    private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -55,37 +55,59 @@ public final class ContainersListBlobHierarchySegmentHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersListBlobHierarchySegmentHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the contentType property: The Content-Type property.
      * 
-     * @return the xMsVersion value.
+     * @return the contentType value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getContentType() {
+        return this.contentType;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the contentType property: The Content-Type property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param contentType the contentType value to set.
      * @return the ContainersListBlobHierarchySegmentHeaders object itself.
      */
     @Generated
-    public ContainersListBlobHierarchySegmentHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public ContainersListBlobHierarchySegmentHeaders setContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the ContainersListBlobHierarchySegmentHeaders object itself.
+     */
+    @Generated
+    public ContainersListBlobHierarchySegmentHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -112,24 +134,24 @@ public final class ContainersListBlobHierarchySegmentHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersListBlobHierarchySegmentHeaders object itself.
      */
     @Generated
-    public ContainersListBlobHierarchySegmentHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public ContainersListBlobHierarchySegmentHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -159,28 +181,6 @@ public final class ContainersListBlobHierarchySegmentHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
-        return this;
-    }
-
-    /**
-     * Get the contentType property: The Content-Type property.
-     * 
-     * @return the contentType value.
-     */
-    @Generated
-    public String getContentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: The Content-Type property.
-     * 
-     * @param contentType the contentType value to set.
-     * @return the ContainersListBlobHierarchySegmentHeaders object itself.
-     */
-    @Generated
-    public ContainersListBlobHierarchySegmentHeaders setContentType(String contentType) {
-        this.contentType = contentType;
         return this;
     }
 }

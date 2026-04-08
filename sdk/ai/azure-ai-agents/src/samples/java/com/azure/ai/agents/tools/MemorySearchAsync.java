@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -96,9 +97,11 @@ public class MemorySearchAsync {
                 return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         firstConvRef.set(conv.id());
-                        return responsesAsyncClient.createWithAgentConversation(
-                            agentReference, conv.id(),
-                            ResponseCreateParams.builder().input("I prefer dark roast coffee"));
+                        return responsesAsyncClient.createAzureResponse(
+                            new AzureCreateResponseOptions().setAgentReference(agentReference),
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("I prefer dark roast coffee"));
                     });
             })
             .doOnNext(response -> System.out.println("First response received"))
@@ -112,9 +115,11 @@ public class MemorySearchAsync {
                 return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         secondConvRef.set(conv.id());
-                        return responsesAsyncClient.createWithAgentConversation(
-                            agentReference, conv.id(),
-                            ResponseCreateParams.builder().input("Please order my usual coffee"));
+                        return responsesAsyncClient.createAzureResponse(
+                            new AzureCreateResponseOptions().setAgentReference(agentReference),
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("Please order my usual coffee"));
                     });
             })
             .doOnNext(response -> System.out.println("Response: " + response.output()))

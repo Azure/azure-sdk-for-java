@@ -17,6 +17,11 @@ public final class SearchBypass extends ExpandableStringEnum<SearchBypass> {
     public static final SearchBypass NONE = fromString("None");
 
     /**
+     * Indicates that requests originating from the Azure Portal can bypass the rules defined in the 'ipRules' section.
+     */
+    public static final SearchBypass AZURE_PORTAL = fromString("AzurePortal");
+
+    /**
      * Indicates that requests originating from Azure trusted services can bypass the rules defined in the 'ipRules'
      * section.
      */

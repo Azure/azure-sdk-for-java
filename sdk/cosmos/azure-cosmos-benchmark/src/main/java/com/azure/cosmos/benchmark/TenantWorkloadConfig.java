@@ -335,6 +335,12 @@ public class TenantWorkloadConfig {
 
     public ConsistencyLevel getConsistencyLevel() {
         if (consistencyLevel == null) return ConsistencyLevel.SESSION;
+        for (ConsistencyLevel level : ConsistencyLevel.values()) {
+            if (level.toString().equalsIgnoreCase(consistencyLevel)
+                || level.name().equalsIgnoreCase(consistencyLevel)) {
+                return level;
+            }
+        }
         return ConsistencyLevel.valueOf(consistencyLevel.toUpperCase());
     }
 

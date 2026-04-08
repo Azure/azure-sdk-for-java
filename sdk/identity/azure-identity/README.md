@@ -73,13 +73,13 @@ Select each item above to learn about how to configure them for Azure Identity a
 
 A credential is a class that contains or can obtain the data needed for a service client to authenticate requests. Service clients across the Azure SDK accept credentials when they're constructed. The service clients use those credentials to authenticate requests to the service.
 
-The Azure Identity library focuses on OAuth authentication with Microsoft Entra ID, and it offers various credential classes capable of acquiring a Microsoft Entra token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`.
+The Azure Identity library focuses on OAuth authentication with Microsoft Entra ID, and it offers various credential classes capable of acquiring a Microsoft Entra token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used to construct service clients capable of authenticating with a `TokenCredential`.
 
 See [Credential classes](#credential-classes) for a complete list of available credential classes.
 
 ### DefaultAzureCredential
 
-`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][dac_overview].
+`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][cred_dac_example].
 
 #### Continuation policy
 
@@ -90,53 +90,6 @@ This allows for trying all of the developer credentials on your machine while ha
 ## Examples
 
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples).
-
-### Authenticate with `DefaultAzureCredential`
-
-This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `DefaultAzureCredential`:
-
-```java
-/**
- * DefaultAzureCredential first checks environment variables for configuration.
- * If environment configuration is incomplete, it tries managed identity.
- */
-public void createDefaultAzureCredential() {
-    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(defaultCredential)
-        .buildClient();
-}
-```
-
-### Authenticate a user-assigned managed identity with `DefaultAzureCredential`
-
-To authenticate using user-assigned managed identity, ensure that configuration instructions for your supported Azure resource [here](#managed-identity-support) have been successfully completed.
-
-The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `DefaultAzureCredential`, deployed to an Azure resource with a user-assigned managed identity configured.
-
-See more about how to configure a user-assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential).
-
-```java
-/**
- * DefaultAzureCredential uses the user-assigned managed identity with the specified client ID.
- */
-public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
-    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-        .managedIdentityClientId("<MANAGED_IDENTITY_CLIENT_ID>")
-        .build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(defaultCredential)
-        .buildClient();
-}
-```
-
-In addition to configuring the `managedIdentityClientId` via code, it can also be set using the `AZURE_CLIENT_ID` environment variable. These two approaches are equivalent when using `DefaultAzureCredential`.
 
 ### Authenticate a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
 
@@ -162,7 +115,7 @@ public void createDefaultAzureCredentialForIntelliJ() {
 }
 ```
 
-### Authenticate Using Visual Studio Code with `DefaultAzureCredential`
+### Authenticate using Visual Studio Code with `DefaultAzureCredential`
 
 To authenticate using Visual Studio Code, ensure you have signed in through the **Azure Resources** extension. The signed-in user is then picked up automatically by `DefaultAzureCredential` in the Azure SDK for Java.
 
@@ -190,7 +143,7 @@ public void createDefaultAzureCredentialForVSCode() {
         .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
         .credential(defaultCredential)
         .buildClient();
-    }
+}
 ```
 
 ## Managed Identity support
@@ -206,79 +159,6 @@ The [Managed identity authentication](https://learn.microsoft.com/entra/identity
 - [Azure Virtual Machines Scale Sets](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
 
 **Note:** Use `azure-identity` version `1.7.0` or later to utilize [token caching](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md) support for managed identity authentication.
-
-### Examples
-
-#### Authenticate in Azure with Managed Identity
-
-This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `ManagedIdentityCredential` in a Virtual Machine, App Service, Functions app, Cloud Shell, or AKS environment on Azure, with system-assigned or user-assigned managed identity enabled.
-
-See more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
-
-```java
-/**
- * Authenticate with a user-assigned managed identity.
- */
-public void createManagedIdentityCredential() {
-    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-        .clientId("<USER-ASSIGNED MANAGED IDENTITY CLIENT ID>") // only required for user-assigned
-        .build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(managedIdentityCredential)
-        .buildClient();
-}
-```
-
-```java
-public void createUserAssignedManagedIdentityCredentialWithResourceId() {
-    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-        .resourceId("/subscriptions/<subscriptionID>/resourcegroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<MI name>") // only required for user-assigned
-        .build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(managedIdentityCredential)
-        .buildClient();
-}
-```
-
-```java
-public void createUserAssignedManagedIdentityCredentialWithObjectId() {
-    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-        .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
-        .build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(managedIdentityCredential)
-        .buildClient();
-}
-```
-
-```java
-/**
- * Authenticate with a system-assigned managed identity.
- */
-public void createManagedIdentityCredential() {
-    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-        .build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(managedIdentityCredential)
-        .buildClient();
-}
-```
-
-### Define a custom authentication flow with `ChainedTokenCredential`
-
-While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
 ## Cloud / Sovereign configuration
 
@@ -302,27 +182,27 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 
 ### Credential chains
 
-|Credential|Usage|Example|
-|-|-|-|
-|[DefaultAzureCredential][cred_dac]|Provides a simplified authentication experience to quickly start developing apps run in Azure|[example][cred_dac_example]|
-|[ChainedTokenCredential][cred_ctc]|Allows users to define custom authentication flows composing multiple credentials|[example][cred_ctc_example]|
+| Credential                         | Usage                                                                                              | Reference                                           |
+|------------------------------------|----------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| [DefaultAzureCredential][cred_dac] | Provides a simplified authentication experience to quickly start developing apps that run in Azure | [DefaultAzureCredential overview][cred_dac_example] |
+| [ChainedTokenCredential][cred_ctc] | Allows users to define custom authentication flows composing multiple credentials                  | [ChainedTokenCredential overview][cred_ctc_example] |
 
 ### Authenticate Azure-hosted applications
 
-|Credential|Usage|Example|Reference|
-|-|-|-|-|
-|[EnvironmentCredential][cred_ec]|Authenticates a service principal or user via credential information specified in environment variables|||
-|[ManagedIdentityCredential][cred_mic]|Authenticates the managed identity of an Azure resource|[example][cred_mic_example]||
-|[WorkloadIdentityCredential][cred_wic]|Supports Microsoft Entra Workload ID on Kubernetes|[example][cred_wic_example]|[Microsoft Entra Workload ID][cred_wic_ref]|
+| Credential                              | Usage                                                                                                   | Example                     | Reference                                                                                                |
+|-----------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------|----------------------------------------------------------------------------------------------------------|
+| [EnvironmentCredential][cred_ec]       | Authenticates a service principal or user via credential information specified in environment variables |                             |                                                                                                          |
+| [ManagedIdentityCredential][cred_mic]  | Authenticates the managed identity of an Azure resource                                                 |                             | [user-assigned managed identity][cred_mic_ua_ref]<br>[system-assigned managed identity][cred_mic_sa_ref] |
+| [WorkloadIdentityCredential][cred_wic] | Supports Microsoft Entra Workload ID on Kubernetes                                                      | [example][cred_wic_example] | [Microsoft Entra Workload ID][cred_wic_ref]                                                              |
 
 ### Authenticate service principals
 
-|Credential|Usage|Example|Reference|
-|-|-|-|-|
-|[AzurePipelinesCredential][cred_apc]|Authenticates with a service connection in Azure Pipelines.||[Manage service connections][cred_apc_ref]|
-|[ClientAssertionCredential][cred_cac]|Authenticates a service principal using a signed client assertion|||
-|[ClientCertificateCredential][cred_ccc]|Authenticates a service principal using a certificate|[example][cred_ccc_example]|[Service principal authentication][sp]|
-|[ClientSecretCredential][cred_csc]|Authenticates a service principal using a secret|[example][cred_csc_example]|[Service principal authentication][sp]|
+| Credential                              | Usage                                                             | Example                     | Reference                                  |
+|-----------------------------------------|-------------------------------------------------------------------|-----------------------------|--------------------------------------------|
+| [AzurePipelinesCredential][cred_apc]    | Authenticates with a service connection in Azure Pipelines.       |                             | [Manage service connections][cred_apc_ref] |
+| [ClientAssertionCredential][cred_cac]   | Authenticates a service principal using a signed client assertion |                             |                                            |
+| [ClientCertificateCredential][cred_ccc] | Authenticates a service principal using a certificate             | [example][cred_ccc_example] | [Service principal authentication][sp]     |
+| [ClientSecretCredential][cred_csc]      | Authenticates a service principal using a secret                  | [example][cred_csc_example] | [Service principal authentication][sp]     |
 
 ### Authenticate users
 
@@ -344,8 +224,6 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 |[VisualStudioCodeCredential][cred_vsc]|Authenticates in a development environment with the account in Visual Studio Code|||
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
-
-Credentials can be chained together to be tried in turn until one succeeds using `ChainedTokenCredential`. For more information, see [chaining credentials](#define-a-custom-authentication-flow-with-the-chainedtokencredential).
 
 ## Environment variables
 
@@ -394,10 +272,9 @@ The Azure Identity library offers both in-memory and persistent disk caching. Fo
 
 An authentication broker is an application that runs on a user’s machine and manages the authentication handshakes and token maintenance for connected accounts. Currently, only the Windows Web Account Manager (WAM) is supported. To enable support, use the [`azure-identity-broker`][azure_identity_broker] package. For details on authenticating using WAM, see the [broker plugin documentation][azure_identity_broker_readme].
 
-
 ## Troubleshooting
 
-Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When `ChainedTokenCredential` raises this exception, the chained execution of underlying list of credentials is stopped.
+Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the `ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When `ChainedTokenCredential` raises this exception, the chained execution of underlying list of credentials is stopped.
 
 When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the `CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When `ChainedTokenCredential` raises this exception, the message collects error messages from each credential in the chain.
 
@@ -441,9 +318,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_csc]: https://learn.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable
 [cred_csc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret
 [cred_ctc]: https://learn.microsoft.com/java/api/com.azure.identity.chainedtokencredential?view=azure-java-stable
-[cred_ctc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials
+[cred_ctc_example]: https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview
 [cred_dac]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable
-[cred_dac_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential
+[cred_dac_example]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 [cred_dcc]: https://learn.microsoft.com/java/api/com.azure.identity.devicecodecredential?view=azure-java-stable
 [cred_dcc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow
 [cred_dcc_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-device-code
@@ -454,15 +331,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_ij_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea
 [cred_ij_ref]: https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions
 [cred_mic]: https://learn.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable
-[cred_mic_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity
+[cred_mic_sa_ref]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/system-assigned-managed-identity
+[cred_mic_ua_ref]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/user-assigned-managed-identity
 [cred_obo]: https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable
 [cred_obo_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-on-behalf-of-flow
 [cred_vsc]: https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable
 [cred_wic]: https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
-[ctc_overview]: https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview
-[dac_overview]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable

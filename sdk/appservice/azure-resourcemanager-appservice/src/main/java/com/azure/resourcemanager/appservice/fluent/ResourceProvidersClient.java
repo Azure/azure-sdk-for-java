@@ -248,7 +248,7 @@ public interface ResourceProvidersClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AseRegionInner> listAsync();
+    PagedFlux<AseRegionInner> listAseRegionsAsync();
 
     /**
      * Get a list of available ASE regions and its supported Skus.
@@ -264,7 +264,7 @@ public interface ResourceProvidersClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AseRegionInner> list();
+    PagedIterable<AseRegionInner> listAseRegions();
 
     /**
      * Get a list of available ASE regions and its supported Skus.
@@ -282,7 +282,7 @@ public interface ResourceProvidersClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AseRegionInner> list(Context context);
+    PagedIterable<AseRegionInner> listAseRegions(Context context);
 
     /**
      * Gets a list of meters for a given location.
@@ -300,7 +300,7 @@ public interface ResourceProvidersClient {
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BillingMeterInner> listBillingMetersAsync(String billingLocation, String osType);
+    PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType);
 
     /**
      * Gets a list of meters for a given location.
@@ -315,7 +315,7 @@ public interface ResourceProvidersClient {
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BillingMeterInner> listBillingMetersAsync();
+    PagedFlux<BillingMeterInner> listAsync();
 
     /**
      * Gets a list of meters for a given location.
@@ -330,7 +330,7 @@ public interface ResourceProvidersClient {
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingMeterInner> listBillingMeters();
+    PagedIterable<BillingMeterInner> list();
 
     /**
      * Gets a list of meters for a given location.
@@ -349,7 +349,7 @@ public interface ResourceProvidersClient {
      * Description for Gets a list of meters for a given location as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingMeterInner> listBillingMeters(String billingLocation, String osType, Context context);
+    PagedIterable<BillingMeterInner> list(String billingLocation, String osType, Context context);
 
     /**
      * Check if a resource name is available.
@@ -560,7 +560,7 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostNameAsync(NameIdentifier nameIdentifier);
+    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifier nameIdentifier);
 
     /**
      * List all apps that are assigned to a hostname.
@@ -575,7 +575,7 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostName(NameIdentifier nameIdentifier);
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier);
 
     /**
      * List all apps that are assigned to a hostname.
@@ -591,7 +591,7 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostName(NameIdentifier nameIdentifier,
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifier nameIdentifier,
         Context context);
 
     /**

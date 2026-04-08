@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -95,9 +96,11 @@ public class MemorySearchSync {
             firstConversationId = conversation.id();
             System.out.println("Created conversation (id: " + firstConversationId + ")");
 
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference, firstConversationId,
-                ResponseCreateParams.builder().input("I prefer dark roast coffee"));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(firstConversationId)
+                    .input("I prefer dark roast coffee"));
             System.out.println("Response: " + getResponseText(response));
 
             // Wait for memories to be extracted and stored
@@ -109,9 +112,11 @@ public class MemorySearchSync {
             followUpConversationId = newConversation.id();
             System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-            Response followUpResponse = responsesClient.createWithAgentConversation(
-                agentReference, followUpConversationId,
-                ResponseCreateParams.builder().input("Please order my usual coffee"));
+            Response followUpResponse = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(followUpConversationId)
+                    .input("Please order my usual coffee"));
             System.out.println("Response: " + getResponseText(followUpResponse));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

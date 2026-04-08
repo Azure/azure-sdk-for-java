@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -76,9 +77,10 @@ public class McpWithConnectionSync {
             Conversation conversation = conversationService.create();
 
             // Send initial request that triggers the MCP tool
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference, conversation.id(),
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
+                    .conversation(conversation.id())
                     .input("What is my username in GitHub profile?"));
 
             // Process MCP approval requests: approve each one so the agent can proceed
@@ -101,9 +103,10 @@ public class McpWithConnectionSync {
                 System.out.println("Sending " + approvals.size() + " approval(s)...");
 
                 // Send approvals back to continue the agent's work
-                Response followUp = responsesClient.createWithAgentConversation(
-                    agentReference, conversation.id(),
+                Response followUp = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
+                        .conversation(conversation.id())
                         .inputOfResponse(approvals)
                         .previousResponseId(response.id()));
 

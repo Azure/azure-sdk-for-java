@@ -13,5 +13,6 @@ module com.azure.resourcemanager.storage {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.storage.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.storage.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.storage.models to com.azure.core;
 }
