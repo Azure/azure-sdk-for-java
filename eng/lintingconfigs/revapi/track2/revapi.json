@@ -1407,6 +1407,38 @@
             "match": "class com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationListResult|RedisListResult|RedisCacheAccessPolicyAssignmentList|RedisFirewallRuleListResult|RedisPatchScheduleListResult|RedisCacheAccessPolicyList|PrivateLinkResourceListResult|NotificationListResponse|PrivateEndpointConnectionListResult|RedisLinkedServerWithPropertiesList)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.authorization\\.models\\.(ClassicAdministratorListResult|DenyAssignmentListResult|EligibleChildResourcesListResult|PermissionGetResult|ProviderOperationsMetadataListResult|RoleAssignmentListResult|RoleAssignmentScheduleInstanceListResult|RoleAssignmentScheduleListResult|RoleAssignmentScheduleRequestListResult|RoleDefinitionListResult|RoleEligibilityScheduleInstanceListResult|RoleEligibilityScheduleListResult|RoleEligibilityScheduleRequestListResult|RoleManagementPolicyAssignmentListResult|RoleManagementPolicyListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }
       ]
     }
