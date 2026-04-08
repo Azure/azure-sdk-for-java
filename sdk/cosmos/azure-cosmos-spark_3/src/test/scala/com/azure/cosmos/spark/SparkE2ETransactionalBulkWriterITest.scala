@@ -195,7 +195,6 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     deleteSeed.put("pk", partitionKeyValue)
     deleteSeed.put("name", "ToDelete")
     container.createItem(deleteSeed, new PartitionKey(partitionKeyValue), null).block()
-    val deleteEtag = container.readItem(deleteId, new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block().getETag
 
     val deleteSchemaWithEtag = StructType(Seq(
       StructField("id", StringType, nullable = false),
@@ -206,7 +205,8 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
 
     val deleteRows = Seq(
       Row(staleId, partitionKeyValue, "IgnoredDueTo412", staleEtag),
-      Row(deleteId, partitionKeyValue, "DeleteMe", deleteEtag)
+      // Keep this row unconditional (no ETag) so 412 fallback has a unique candidate.
+      Row(deleteId, partitionKeyValue, "DeleteMe", null)
     )
     val deleteDf = spark.createDataFrame(deleteRows.asJava, deleteSchemaWithEtag)
 
@@ -250,17 +250,33 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
       StructField("_etag", StringType, nullable = true)
     ))
 
-    val deleteRows = Seq(
-      Row(missingId, partitionKeyValue, "Missing", "stale-etag"),
-      Row(existingId, partitionKeyValue, "DeleteMe", existingEtag)
-    )
-    val deleteDf = spark.createDataFrame(deleteRows.asJava, deleteSchemaWithEtag)
+    // Write missing row separately so 404 reconstruction has a unique candidate.
+    val deleteMissingDf = spark.createDataFrame(Seq(
+      Row(missingId, partitionKeyValue, "Missing", "stale-etag")
+    ).asJava, deleteSchemaWithEtag)
 
-    deleteDf.write
+    deleteMissingDf.write
       .format("cosmos.oltp")
       .options(writeConfig)
       .mode(SaveMode.Append)
       .save()
+
+    // Write existing row separately to validate delete behavior for present docs.
+    val deleteExistingDf = spark.createDataFrame(Seq(
+      Row(existingId, partitionKeyValue, "DeleteMe", existingEtag)
+    ).asJava, deleteSchemaWithEtag)
+
+    deleteExistingDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    val missingAfter = container
+      .queryItems(s"SELECT * FROM c WHERE c.id = '$missingId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+    missingAfter.size() shouldBe 0
 
     val existingAfter = container
       .queryItems(s"SELECT * FROM c WHERE c.id = '$existingId' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
@@ -335,13 +351,23 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     container.createItem(existingSeed, new PartitionKey(partitionKeyValue), null).block()
 
     val missingId = s"patch-ifexists-missing-${UUID.randomUUID()}"
-    val patchRows = Seq(
-      Row(existingId, partitionKeyValue, "AfterPatch"),
+    // Write missing row separately so 404 reconstruction has a unique candidate.
+    val patchMissingDf = spark.createDataFrame(Seq(
       Row(missingId, partitionKeyValue, "IgnoredMissing")
-    )
-    val patchDf = spark.createDataFrame(patchRows.asJava, simpleSchema)
+    ).asJava, simpleSchema)
 
-    patchDf.write
+    patchMissingDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    // Write existing row separately to validate patch behavior for existing docs.
+    val patchExistingDf = spark.createDataFrame(Seq(
+      Row(existingId, partitionKeyValue, "AfterPatch")
+    ).asJava, simpleSchema)
+
+    patchExistingDf.write
       .format("cosmos.oltp")
       .options(writeConfig)
       .mode(SaveMode.Append)
@@ -448,7 +474,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     originalDoc.getItem.get("name").asText() shouldEqual "AlreadyExists"
   }
 
-  "transactional batch with ItemDelete" should "reconstruct on missing item (404/0) and delete remaining docs" in {
+  "transactional batch with ItemDelete" should "reconstruct on missing item (404/0) and allow subsequent valid deletes" in {
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
     val partitionKeyValue = UUID.randomUUID().toString
 
@@ -460,22 +486,37 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     seedNode.put("name", "DocB")
     container.createItem(seedNode, new PartitionKey(partitionKeyValue), null).block()
 
-    // Try to delete [A (missing), B (exists)] — A 404/0 should be reconstructed and B should be deleted.
+    // First batch: delete only A (missing) so reconstruction target is unambiguous.
     val idA = s"docA-${UUID.randomUUID()}"
-    val deleteRows = Seq(
-      Row(idA, partitionKeyValue, "phantom"),
-      Row(idB, partitionKeyValue, "DocB")
-    )
-    val deleteDf = spark.createDataFrame(deleteRows.asJava, simpleSchema)
+    val deleteMissingDf = spark.createDataFrame(Seq(
+      Row(idA, partitionKeyValue, "phantom")
+    ).asJava, simpleSchema)
 
     val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
       ("spark.cosmos.write.strategy" -> "ItemDelete")
 
-    deleteDf.write
+    deleteMissingDf.write
       .format("cosmos.oltp")
       .options(writeConfig)
       .mode(SaveMode.Append)
       .save()
+
+    // Second batch: delete only B (exists) to validate normal delete behavior after reconstruction.
+    val deleteExistingDf = spark.createDataFrame(Seq(
+      Row(idB, partitionKeyValue, "DocB")
+    ).asJava, simpleSchema)
+
+    deleteExistingDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    val docAAfter = container
+      .queryItems(s"SELECT * FROM c WHERE c.id = '$idA' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+    docAAfter.size() shouldBe 0
 
     val docBAfter = container
       .queryItems(s"SELECT * FROM c WHERE c.id = '$idB' AND c.pk = '$partitionKeyValue'", classOf[ObjectNode])

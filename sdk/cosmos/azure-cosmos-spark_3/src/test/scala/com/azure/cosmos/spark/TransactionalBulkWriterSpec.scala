@@ -1245,6 +1245,28 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     decision should be(Some(1 -> TransactionalBulkWriter.ReconstructionAction.Read))
   }
 
+  it should "select unique delete-if-not-modified 412 candidate when only one row has ETag" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      412,
+      0,
+      Seq((0, true), (1, false)),
+      Set.empty)
+
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Remove))
+  }
+
+  it should "select unique delete-if-not-modified 404 candidate when only one row remains" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      404,
+      0,
+      Seq((0, true)),
+      Set.empty)
+
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Remove))
+  }
+
   it should "skip fallback reconstruction when candidates are ambiguous for delete-if-not-modified remove path" in {
     val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
       ItemWriteStrategy.ItemDeleteIfNotModified,
@@ -1287,6 +1309,17 @@ class TransactionalBulkWriterSpec extends UnitSpec {
       Set.empty)
 
     decision should be(None)
+  }
+
+  it should "select unique patch-if-exists 404 candidate" in {
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemPatchIfExists,
+      404,
+      0,
+      Seq((0, false)),
+      Set.empty)
+
+    decision should be(Some(0 -> TransactionalBulkWriter.ReconstructionAction.Remove))
   }
 
   it should "select deterministic first candidate for append read path when fallback candidates are ambiguous" in {
@@ -1340,6 +1373,28 @@ class TransactionalBulkWriterSpec extends UnitSpec {
 
   it should "skip reconstruction when remove-path candidates are ambiguous" in {
     // cosmosBatchResponse = None + exception 404/0 with two plausible delete candidates
+    val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
+      ItemWriteStrategy.ItemDelete,
+      404,
+      0,
+      Seq((0, false), (1, false)),
+      Set.empty)
+
+    decision should be(None)
+  }
+
+  it should "fail safe for mixed missing+existing ItemDelete fallback ambiguity" in {
+    // Model a mixed delete batch: one missing id + one existing id under exception-only 404/0.
+    // For ItemDelete both indices are plausible candidates, so fallback must not guess.
+    val candidateIndices = TransactionalBulkWriter.getFallbackCandidateIndices(
+      ItemWriteStrategy.ItemDelete,
+      404,
+      0,
+      Seq((0, false), (1, false)),
+      Set.empty)
+
+    candidateIndices should contain theSameElementsInOrderAs Seq(0, 1)
+
     val decision = TransactionalBulkWriter.getFallbackReconstructionDecision(
       ItemWriteStrategy.ItemDelete,
       404,

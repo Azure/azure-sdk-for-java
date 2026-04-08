@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.test.faultinjection._
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SaveMode}
 
@@ -781,8 +782,13 @@ class TransactionalBatchITest extends IntegrationSpec
 
     val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
 
+    // Explicitly cluster + order by partition key so each key is emitted as one contiguous segment per task.
+    val repartitionedDf = operationsDf
+      .repartition(col("pk"))
+      .sortWithinPartitions(col("pk"))
+
     // Execute transactional batch
-    operationsDf.write
+    repartitionedDf.write
       .format("cosmos.oltp")
       .option("spark.cosmos.accountEndpoint", cosmosEndpoint)
       .option("spark.cosmos.accountKey", cosmosMasterKey)
