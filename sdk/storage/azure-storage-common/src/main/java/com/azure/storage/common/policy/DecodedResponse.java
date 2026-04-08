@@ -18,13 +18,11 @@ import java.nio.charset.Charset;
 class DecodedResponse extends HttpResponse {
     private final HttpResponse originalResponse;
     private final Flux<ByteBuffer> decodedBody;
-    private final DecoderState decoderState;
 
-    DecodedResponse(HttpResponse originalResponse, Flux<ByteBuffer> decodedBody, DecoderState decoderState) {
+    DecodedResponse(HttpResponse originalResponse, Flux<ByteBuffer> decodedBody) {
         super(originalResponse.getRequest());
         this.originalResponse = originalResponse;
         this.decodedBody = decodedBody;
-        this.decoderState = decoderState;
     }
 
     @Override
@@ -65,9 +63,5 @@ class DecodedResponse extends HttpResponse {
     @Override
     public void close() {
         originalResponse.close();
-    }
-
-    DecoderState getDecoderState() {
-        return decoderState;
     }
 }

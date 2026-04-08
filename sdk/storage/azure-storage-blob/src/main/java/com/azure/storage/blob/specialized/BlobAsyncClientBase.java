@@ -84,13 +84,9 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
-import com.azure.storage.common.policy.AggregateCrcState;
-import com.azure.storage.common.policy.DecoderState;
-import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -119,8 +115,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
@@ -1280,24 +1274,15 @@ public class BlobAsyncClientBase {
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
-        AtomicReference<DecoderState> decoderStateRef = new AtomicReference<>();
-        AggregateCrcState aggregateCrcState = isStructuredMessageEnabled ? new AggregateCrcState() : null;
-        AtomicLong responseStartOffset = new AtomicLong(0);
-
-        final Context firstRangeContext = DownloadValidationUtils.applyStructuredMessageContext(baseContext, algorithm,
-            decoderStateRef, aggregateCrcState);
+        final Context downloadContext = DownloadValidationUtils.applyStructuredMessageContext(baseContext, algorithm);
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), finalGetMD5,
-            firstRangeContext).map(response -> {
+            downloadContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
                     ModelHelper.getErrorCode(response.getHeaders()));
 
-                /*
-                 * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
-                 * from the response for better book-keeping towards the end.
-                 */
                 long finalCount;
                 long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
@@ -1307,46 +1292,36 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
-                // The resume function takes throwable and offset at the destination.
-                // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
                     if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                         return Mono.error(throwable);
                     }
 
                     try {
-                        if (isStructuredMessageEnabled) {
-                            return retryStructuredDownload(throwable, offset, decoderStateRef, responseStartOffset,
-                                finalCount, initialOffset, firstRangeContext, finalRequestConditions, eTag,
-                                finalGetMD5);
-                        } else {
-                            long newCount = finalCount - offset;
+                        long newCount = finalCount - offset;
 
-                            /*
-                             * It's possible that the network stream will throw an error after emitting all data but
-                             * before completing. Issuing a retry at this stage would leave the download in a bad
-                             * state with incorrect count and offset values. Because we have read the intended amount
-                             * of data, we can ignore the error at the end of the stream.
-                             */
-                            if (newCount == 0) {
-                                LOGGER.warning(
-                                    "Exception encountered in ReliableDownload after all data read from the network "
-                                        + "but before stream signaled completion. Returning success as all data was "
-                                        + "downloaded. Exception message: " + throwable.getMessage());
-                                return Mono.empty();
-                            }
-
-                            BlobRange retryRange = new BlobRange(initialOffset + offset, newCount);
-                            return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5,
-                                firstRangeContext);
+                        /*
+                         * It's possible that the network stream will throw an error after emitting all data but
+                         * before completing. Issuing a retry at this stage would leave the download in a bad
+                         * state with incorrect count and offset values. Because we have read the intended amount
+                         * of data, we can ignore the error at the end of the stream.
+                         */
+                        if (newCount == 0) {
+                            LOGGER.warning(
+                                "Exception encountered in ReliableDownload after all data read from the network "
+                                    + "but before stream signaled completion. Returning success as all data was "
+                                    + "downloaded. Exception message: " + throwable.getMessage());
+                            return Mono.empty();
                         }
+
+                        BlobRange retryRange = new BlobRange(initialOffset + offset, newCount);
+                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, downloadContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
 
-                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions,
-                    decoderStateRef);
+                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
 
     }
@@ -1359,76 +1334,6 @@ public class BlobAsyncClientBase {
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
                 context);
-    }
-
-    private Mono<StreamResponse> retryStructuredDownload(Throwable throwable, long emittedOffset,
-        AtomicReference<DecoderState> decoderStateRef, AtomicLong responseStartOffset, long finalCount,
-        long initialOffset, Context baseRetryContext, BlobRequestConditions conditions, String eTag, Boolean getMD5) {
-
-        long currentResponseOffset = responseStartOffset.get();
-        DecoderState decoderState = decoderStateRef.get();
-
-        long retryStartOffset = resolveStructuredRetryOffset(decoderState, throwable, currentResponseOffset,
-            emittedOffset == 0, emittedOffset);
-        long bytesToSkip = calculateRetryBytesToSkip(emittedOffset, retryStartOffset, currentResponseOffset);
-
-        long remainingCount = finalCount - retryStartOffset;
-        if (remainingCount < 0) {
-            retryStartOffset = Math.min(emittedOffset, finalCount);
-            remainingCount = finalCount - retryStartOffset;
-            bytesToSkip = 0;
-        }
-
-        if (decoderState == null) {
-            decoderStateRef.set(null);
-        }
-
-        Context retryContext = baseRetryContext;
-        if (bytesToSkip > 0) {
-            retryContext
-                = retryContext.addData(Constants.STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY, bytesToSkip);
-        }
-
-        responseStartOffset.set(retryStartOffset);
-        BlobRange retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
-
-        LOGGER.info("Structured message retry: resuming from offset {} (initial={}, decoded={}, remaining={}, skip={})",
-            initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount, bytesToSkip);
-
-        return downloadRange(retryRange, conditions, eTag, getMD5, retryContext);
-    }
-
-    private static long resolveStructuredRetryOffset(DecoderState decoderState, Throwable throwable,
-        long currentResponseOffset, boolean noBytesEmitted, long emittedOffset) {
-
-        long offset = -1;
-
-        long parsedOffset = StorageContentValidationDecoderPolicy
-            .parseRetryStartOffset(throwable != null ? throwable.getMessage() : null);
-        if (parsedOffset >= 0) {
-            offset = currentResponseOffset + parsedOffset;
-        }
-
-        if (decoderState != null) {
-            long boundary = currentResponseOffset + decoderState.getDecodedBytesAtLastCompleteSegment();
-            if (offset < 0 || boundary > offset) {
-                offset = boundary;
-            }
-        }
-
-        if (offset < 0) {
-            offset = noBytesEmitted ? currentResponseOffset : emittedOffset;
-        }
-        return offset;
-    }
-
-    private static long calculateRetryBytesToSkip(long emittedOffset, long retryStartOffset,
-        long currentResponseOffset) {
-        long skip = emittedOffset - retryStartOffset;
-        if (skip < 0) {
-            skip = Math.max(0, emittedOffset - currentResponseOffset);
-        }
-        return skip;
     }
 
     /**

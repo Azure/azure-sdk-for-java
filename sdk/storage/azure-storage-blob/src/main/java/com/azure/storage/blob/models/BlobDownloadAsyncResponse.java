@@ -14,17 +14,14 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResp
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.policy.DecoderState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.channels.AsynchronousByteChannel;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
 /**
@@ -40,15 +37,9 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
             .setAccessor(new BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor() {
                 @Override
                 public BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
-                    BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-                    AtomicReference<DecoderState> decoderStateRef) {
-                    return new BlobDownloadAsyncResponse(sourceResponse, onErrorResume, retryOptions, decoderStateRef);
-                }
-
-                @Override
-                public DecoderState getDecoderState(BlobDownloadAsyncResponse response) {
-                    AtomicReference<DecoderState> ref = response.decoderStateRef;
-                    return ref == null ? null : ref.get();
+                    BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+                    DownloadRetryOptions retryOptions) {
+                    return new BlobDownloadAsyncResponse(sourceResponse, onErrorResume, retryOptions);
                 }
             });
     }
@@ -58,7 +49,6 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private final StreamResponse sourceResponse;
     private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
     private final DownloadRetryOptions retryOptions;
-    private final AtomicReference<DecoderState> decoderStateRef;
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
@@ -75,38 +65,15 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         this.sourceResponse = null;
         this.onErrorResume = null;
         this.retryOptions = null;
-        this.decoderStateRef = null;
     }
 
-    /**
-     * Constructs a {@link BlobDownloadAsyncResponse}.
-     *
-     * @param sourceResponse The initial Stream Response
-     * @param onErrorResume Function used to resume.
-     * @param retryOptions Retry options.
-     */
     BlobDownloadAsyncResponse(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
-        this(sourceResponse, onErrorResume, retryOptions, null);
-    }
-
-    BlobDownloadAsyncResponse(StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<DecoderState> decoderStateRef) {
-        this(sourceResponse, onErrorResume, retryOptions, decoderStateRef, extractHeaders(sourceResponse));
-    }
-
-    private BlobDownloadAsyncResponse(StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<DecoderState> decoderStateRef, BlobDownloadHeaders deserializedHeaders) {
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
-            createResponseFluxWithContentCrc(sourceResponse, onErrorResume, retryOptions, decoderStateRef,
-                deserializedHeaders),
-            deserializedHeaders);
+            createResponseFlux(sourceResponse, onErrorResume, retryOptions), extractHeaders(sourceResponse));
         this.sourceResponse = Objects.requireNonNull(sourceResponse, "'sourceResponse' must not be null");
         this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
-        this.decoderStateRef = decoderStateRef;
     }
 
     private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
@@ -122,28 +89,6 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(StreamResponse::getValue),
                 retryOptions.getMaxRetryRequests())
             .defaultIfEmpty(EMPTY_BUFFER);
-    }
-
-    /**
-     * Builds the response flux and populates ContentCrc64 on the deserialized headers when structured message
-     * decoding completes successfully.
-     */
-    private static Flux<ByteBuffer> createResponseFluxWithContentCrc(StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
-        AtomicReference<DecoderState> decoderStateRef, BlobDownloadHeaders deserializedHeaders) {
-        Flux<ByteBuffer> flux = createResponseFlux(sourceResponse, onErrorResume, retryOptions);
-        if (decoderStateRef != null && deserializedHeaders != null) {
-            flux = flux.doOnComplete(() -> {
-                DecoderState state = decoderStateRef.get();
-                if (state != null && state.isFinalized()) {
-                    long crc = state.getComposedCrc64();
-                    byte[] crcBytes = new byte[8];
-                    ByteBuffer.wrap(crcBytes).order(ByteOrder.LITTLE_ENDIAN).putLong(crc);
-                    deserializedHeaders.setContentCrc64(crcBytes);
-                }
-            });
-        }
-        return flux;
     }
 
     /**

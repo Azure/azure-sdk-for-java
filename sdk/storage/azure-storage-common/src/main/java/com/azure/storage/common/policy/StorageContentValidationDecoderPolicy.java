@@ -18,8 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Pipeline policy that decodes structured messages in storage download responses when
@@ -28,9 +26,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p>The policy is activated by the presence of a boolean context key
  * ({@link Constants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY}). It validates per-segment
- * CRC64 checksums, tracks decoder progress in {@link DecoderState}, and embeds
- * machine-readable retry offsets in exception messages so the caller can resume from the
- * last validated segment boundary.</p>
+ * CRC64 checksums during decoding. Since this policy is placed at the front of the pipeline
+ * (before the retry policy), each retry re-enters the policy with a fresh response body,
+ * so no cross-retry state management is needed.</p>
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
@@ -47,17 +45,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     @Override
     public HttpPipelinePosition getPipelinePosition() {
         return HttpPipelinePosition.PER_RETRY;
-    }
-
-    /**
-     * Parses the retry start offset from an exception message containing the
-     * {@code RETRY-START-OFFSET} token.
-     *
-     * @param message The exception message to parse.
-     * @return The retry start offset, or -1 if not found.
-     */
-    public static long parseRetryStartOffset(String message) {
-        return ContentValidationDecoderUtils.parseRetryStartOffset(message);
     }
 
     @Override
@@ -81,14 +68,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             validateStructuredMessageHeaders(httpResponse);
 
             long expectedLength = contentLength;
-            DecoderState decoderState = createDecoderState(context, expectedLength);
+            StructuredMessageDecoder decoder = new StructuredMessageDecoder(expectedLength);
 
-            Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoderState);
+            Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoder);
 
             LOGGER.atVerbose()
                 .addKeyValue("expectedLength", expectedLength)
                 .log("Returning DecodedResponse with structured message decoding");
-            return new DecodedResponse(httpResponse, decodedStream, decoderState);
+            return new DecodedResponse(httpResponse, decodedStream);
         });
     }
 
@@ -107,41 +94,13 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         }
     }
 
-    private DecoderState createDecoderState(HttpPipelineCallContext context, long expectedLength) {
-        AggregateCrcState aggregateCrcState = context.getData(Constants.STRUCTURED_MESSAGE_AGGREGATE_CRC_CONTEXT_KEY)
-            .filter(AggregateCrcState.class::isInstance)
-            .map(AggregateCrcState.class::cast)
-            .orElse(null);
-
-        DecoderState state = new DecoderState(expectedLength, aggregateCrcState);
-
-        context.getData(Constants.STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY)
-            .filter(Number.class::isInstance)
-            .map(Number.class::cast)
-            .ifPresent(skip -> state.setDecodedBytesToSkip(skip.longValue()));
-
-        getDecoderStateHolder(context).ifPresent(holder -> holder.set(state));
-
-        return state;
+    private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, StructuredMessageDecoder decoder) {
+        return encodedFlux.concatMap(buffer -> decodeBuffer(buffer, decoder))
+            .onErrorResume(throwable -> handleStreamError(throwable, decoder))
+            .concatWith(Mono.defer(() -> handleStreamCompletion(decoder)));
     }
 
-    @SuppressWarnings("unchecked")
-    private Optional<AtomicReference<DecoderState>> getDecoderStateHolder(HttpPipelineCallContext context) {
-        return context.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY)
-            .filter(AtomicReference.class::isInstance)
-            .map(obj -> (AtomicReference<DecoderState>) obj);
-    }
-
-    private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, DecoderState state) {
-        StructuredMessageDecoder decoder = state.getDecoder();
-
-        return encodedFlux.concatMap(buffer -> decodeBuffer(buffer, state, decoder))
-            .onErrorResume(throwable -> handleStreamError(throwable, state, decoder))
-            .concatWith(Mono.defer(() -> handleStreamCompletion(state, decoder)));
-    }
-
-    private Flux<ByteBuffer> decodeBuffer(ByteBuffer buffer, DecoderState state, StructuredMessageDecoder decoder) {
-
+    private Flux<ByteBuffer> decodeBuffer(ByteBuffer buffer, StructuredMessageDecoder decoder) {
         if (decoder.isComplete()) {
             LOGGER.atVerbose()
                 .addKeyValue("bufferLength", buffer == null ? "null" : buffer.remaining())
@@ -170,82 +129,45 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 .addKeyValue("lastCompleteSegment", decoder.getLastCompleteSegmentStart())
                 .log("Decode chunk result");
 
-            state.updateProgress();
-
             switch (result.getStatus()) {
                 case SUCCESS:
                 case NEED_MORE_BYTES:
-                    return handleSuccessOrNeedMore(state, result);
+                    return emitDecodedPayload(result.getDecodedPayload());
 
                 case COMPLETED:
-                    return handleCompleted(state, result);
+                    return emitDecodedPayload(result.getDecodedPayload());
 
                 case INVALID:
-                    return handleInvalid(state, result);
+                    LOGGER.error("Invalid data during decode: {}", result.getMessage());
+                    return Flux.error(new IOException("Failed to decode structured message: " + result.getMessage()));
 
                 default:
                     return Flux.error(new IllegalStateException("Unknown decode status: " + result.getStatus()));
             }
         } catch (Exception e) {
             LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
-            return Flux.error(createRetryableException(state, e.getMessage(), e));
+            return Flux.error(new IOException("Failed to decode structured message chunk: " + e.getMessage(), e));
         }
     }
 
-    private Flux<ByteBuffer> handleSuccessOrNeedMore(DecoderState state, StructuredMessageDecoder.DecodeResult result) {
-        return emitDecodedPayload(state, result.getDecodedPayload());
-    }
-
-    private Flux<ByteBuffer> handleCompleted(DecoderState state, StructuredMessageDecoder.DecodeResult result) {
-        return emitDecodedPayload(state, result.getDecodedPayload());
-    }
-
-    private Flux<ByteBuffer> handleInvalid(DecoderState state, StructuredMessageDecoder.DecodeResult result) {
-        LOGGER.error("Invalid data during decode: {}", result.getMessage());
-        return Flux
-            .error(createRetryableException(state, "Failed to decode structured message: " + result.getMessage()));
-    }
-
-    private Flux<ByteBuffer> handleStreamError(Throwable throwable, DecoderState state,
-        StructuredMessageDecoder decoder) {
-
+    private Flux<ByteBuffer> handleStreamError(Throwable throwable, StructuredMessageDecoder decoder) {
         if (decoder.isComplete()) {
             LOGGER.atInfo().log("Decoder complete; suppressing downstream error and completing successfully");
             return Flux.empty();
         }
-        state.addSegmentsToAggregateIfNeeded();
 
-        if (throwable instanceof IOException
-            && throwable.getMessage() != null
-            && throwable.getMessage().contains(ContentValidationDecoderUtils.RETRY_OFFSET_TOKEN)) {
-            return Flux.error(throwable);
-        }
-
-        return Flux.error(createRetryableException(state, throwable.getMessage(), throwable));
+        return Flux.error(throwable);
     }
 
-    private Mono<ByteBuffer> handleStreamCompletion(DecoderState state, StructuredMessageDecoder decoder) {
+    private Mono<ByteBuffer> handleStreamCompletion(StructuredMessageDecoder decoder) {
         if (!decoder.isComplete()) {
             LOGGER.atInfo()
                 .addKeyValue("messageOffset", decoder.getMessageOffset())
                 .addKeyValue("messageLength", decoder.getMessageLength())
                 .addKeyValue("totalDecodedPayload", decoder.getTotalDecodedPayloadBytes())
                 .addKeyValue("lastCompleteSegment", decoder.getLastCompleteSegmentStart())
-                .log("Stream ended but decode not finalized - throwing retryable exception");
-            return Mono.error(createRetryableException(state,
-                "Stream ended prematurely before structured message decoding completed"));
-        }
-
-        state.addSegmentsToAggregateIfNeeded();
-
-        if (state.aggregateCrcState != null && state.aggregateCrcState.hasSegments()) {
-            long composed = state.aggregateCrcState.composeCrc();
-            long calculated = state.aggregateCrcState.getRunningCrc();
-            if (composed != calculated) {
-                return Mono.error(LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("CRC64 mismatch detected in composed structured message. Expected: "
-                        + composed + ", got: " + calculated)));
-            }
+                .log("Stream ended but decode not finalized");
+            return Mono.error(new IOException("Stream ended prematurely before structured message decoding completed"));
         }
 
         LOGGER.atInfo()
@@ -255,25 +177,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         return Mono.empty();
     }
 
-    private Flux<ByteBuffer> emitDecodedPayload(DecoderState state, ByteBuffer decodedPayload) {
+    private static Flux<ByteBuffer> emitDecodedPayload(ByteBuffer decodedPayload) {
         if (decodedPayload == null || !decodedPayload.hasRemaining()) {
-            return Flux.empty();
-        }
-
-        long skip = state.decodedBytesToSkip.get();
-        if (skip > 0) {
-            if (skip >= decodedPayload.remaining()) {
-                state.decodedBytesToSkip.addAndGet(-decodedPayload.remaining());
-                return Flux.empty();
-            } else {
-                int skipCount = (int) skip;
-                decodedPayload.position(decodedPayload.position() + skipCount);
-                decodedPayload = decodedPayload.slice();
-                state.decodedBytesToSkip.addAndGet(-skipCount);
-            }
-        }
-
-        if (!decodedPayload.hasRemaining()) {
             return Flux.empty();
         }
 
@@ -281,35 +186,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         copy.put(decodedPayload.duplicate());
         copy.flip();
 
-        state.totalBytesDecoded.addAndGet(copy.remaining());
-        if (state.aggregateCrcState != null) {
-            state.aggregateCrcState.appendPayload(copy.asReadOnlyBuffer());
-        }
         return Flux.just(copy);
-    }
-
-    private IOException createRetryableException(DecoderState state, String message) {
-        return createRetryableException(state, message, null);
-    }
-
-    private IOException createRetryableException(DecoderState state, String message, Throwable cause) {
-        StructuredMessageDecoder decoder = state.getDecoder();
-        long retryOffset = state.getRetryOffset();
-        long decodedSoFar = state.totalBytesDecoded.get();
-        long expectedLength = decoder.getMessageLength();
-        String originalMessage = message != null ? message : "";
-        long displayExpected = expectedLength > 0 ? expectedLength : 0;
-
-        String fullMessage
-            = String.format("Incomplete structured message: decoded %d of %d bytes. %s%d. %s", decodedSoFar,
-                displayExpected, ContentValidationDecoderUtils.RETRY_OFFSET_TOKEN, retryOffset, originalMessage);
-
-        LOGGER.atInfo()
-            .addKeyValue("retryOffset", retryOffset)
-            .addKeyValue("decodedSoFar", decodedSoFar)
-            .addKeyValue("expectedLength", expectedLength)
-            .log("Creating retryable exception with offset");
-
-        return cause != null ? new IOException(fullMessage, cause) : new IOException(fullMessage);
     }
 }

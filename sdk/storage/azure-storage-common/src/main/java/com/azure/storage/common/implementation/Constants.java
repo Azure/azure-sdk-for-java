@@ -99,30 +99,6 @@ public final class Constants {
      */
     public static final String STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY = "azure-storage-structured-message-decoding";
 
-    /**
-     * Context key used to signal that structured message decoding should be scoped to a single response.
-     * This is used for parallel range downloads where each response is independently structured-encoded.
-     */
-    public static final String STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY
-        = "azure-storage-structured-message-response-scoped";
-
-    /**
-     * Context key used to pass a mutable holder for decoder state so callers can observe decoder progress.
-     */
-    public static final String STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY
-        = "azure-storage-structured-message-decoder-state-ref";
-
-    /**
-     * Context key used to pass the number of decoded bytes to skip on the next structured message response.
-     */
-    public static final String STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY
-        = "azure-storage-structured-message-decoder-skip-bytes";
-    /**
-     * Context key used to share structured message CRC aggregation state across retries.
-     */
-    public static final String STRUCTURED_MESSAGE_AGGREGATE_CRC_CONTEXT_KEY
-        = "azure-storage-structured-message-aggregate-crc";
-
     private Constants() {
     }
 
