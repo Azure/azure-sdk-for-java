@@ -162,8 +162,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             // but they still block container deletion (409 Conflict). Listing with versions, deleted
             // blobs, and snapshots makes them visible so we can clear policies and delete each one.
             // Multiple passes handle new non-current versions surfaced by prior deletions.
-            ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails()
-                .setRetrieveVersions(true)
+            ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveDeletedBlobsWithVersions(true)
                 .setRetrieveSnapshots(true));
