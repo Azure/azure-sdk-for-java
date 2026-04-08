@@ -1567,7 +1567,7 @@ public class BlobClientBase {
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
         final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
-            = parallelTransferOptions == null ? null : ModelHelper.wrapBlobOptions(parallelTransferOptions);
+            = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
         return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
             .setParallelTransferOptions(finalParallelTransferOptions)
             .setDownloadRetryOptions(downloadRetryOptions)

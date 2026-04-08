@@ -97,6 +97,8 @@ public final class BuilderHelper {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        policies.add(new StorageContentValidationDecoderPolicy());
+
         policies.add(getUserAgentPolicy(configuration, logOptions, clientOptions));
         policies.add(new RequestIdPolicy());
 
@@ -115,8 +117,6 @@ public final class BuilderHelper {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
-
-        policies.add(new StorageContentValidationDecoderPolicy());
 
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));

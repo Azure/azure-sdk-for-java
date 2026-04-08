@@ -2400,6 +2400,8 @@ public class StorageCrc64Calculator {
 
     /**
      * Computes the CRC64 checksum for the given byte array using the Azure Storage CRC64 polynomial.
+     * This method processes the input data in chunks of 32 bytes for efficiency and uses lookup tables
+     * to update the CRC values.
      *
      * @param src the byte array for which the CRC64 checksum is to be computed.
      * @param uCrc the initial CRC value.
@@ -2420,7 +2422,7 @@ public class StorageCrc64Calculator {
      * @return the computed CRC64 checksum.
      */
     public static long compute(byte[] src, int offset, int length, long uCrc) {
-        int pData = 0;
+        int pData = offset;
         long uSize = length;
         long uBytes, uStop;
 
@@ -2437,7 +2439,7 @@ public class StorageCrc64Calculator {
             uSize -= uStop;
             uCrc0 = uCrc;
 
-            ByteBuffer buffer = ByteBuffer.wrap(src, offset, length).order(ByteOrder.LITTLE_ENDIAN);
+            ByteBuffer buffer = ByteBuffer.wrap(src).order(ByteOrder.LITTLE_ENDIAN);
 
             for (; pData < pLast; pData += 32) {
                 long b0 = buffer.getLong(pData) ^ uCrc0;
@@ -2515,7 +2517,7 @@ public class StorageCrc64Calculator {
             }
 
             uCrc = 0;
-            uCrc ^= ByteBuffer.wrap(src, offset + pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc0;
+            uCrc ^= ByteBuffer.wrap(src, pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc0;
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
@@ -2525,7 +2527,7 @@ public class StorageCrc64Calculator {
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
-            uCrc ^= ByteBuffer.wrap(src, offset + pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc1;
+            uCrc ^= ByteBuffer.wrap(src, pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc1;
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
@@ -2535,7 +2537,7 @@ public class StorageCrc64Calculator {
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
-            uCrc ^= ByteBuffer.wrap(src, offset + pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc2;
+            uCrc ^= ByteBuffer.wrap(src, pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc2;
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
@@ -2545,7 +2547,7 @@ public class StorageCrc64Calculator {
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
 
-            uCrc ^= ByteBuffer.wrap(src, offset + pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc3;
+            uCrc ^= ByteBuffer.wrap(src, pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc3;
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
@@ -2559,7 +2561,7 @@ public class StorageCrc64Calculator {
         }
 
         for (uBytes = 0; uBytes < uSize; ++uBytes, ++pData) {
-            uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[offset + pData]) & 0xFF)];
+            uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[pData]) & 0xFF)];
         }
 
         return ~uCrc;

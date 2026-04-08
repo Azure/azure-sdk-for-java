@@ -1575,7 +1575,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
         try {
             final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
-                = parallelTransferOptions == null ? null : ModelHelper.wrapBlobOptions(parallelTransferOptions);
+                = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
             return withContext(
                 context -> downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
                     .setParallelTransferOptions(finalParallelTransferOptions)
@@ -1629,7 +1629,7 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
-        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
@@ -1681,6 +1681,7 @@ public class BlobAsyncClientBase {
                 int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
                     finalParallelTransferOptions.getBlockSizeLong());
 
+                // In case it is an empty blob, this ensures we still actually perform a download operation.
                 numChunks = numChunks == 0 ? 1 : numChunks;
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
@@ -1692,6 +1693,7 @@ public class BlobAsyncClientBase {
                                 progressReporter == null ? null : progressReporter.createChild()).flux()),
                         finalParallelTransferOptions.getMaxConcurrency())
 
+                    // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
             });
     }
