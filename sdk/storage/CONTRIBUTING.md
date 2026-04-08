@@ -9,9 +9,9 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - To make code changes, or contribute something new, please follow the [GitHub Forks / Pull requests model](https://help.github.com/articles/fork-a-repo/): Fork the repo, make the change and propose it back by submitting a pull request.
 
-- Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues) to learn about how Azure SDK for java generates CheckStyle, SpotBugs, Jacoco, and JavaDoc reports.
+- Refer to the [Code Quality guide](../../docs/contributor/code-quality.md) (or [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues)) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, JaCoCo, and JavaDoc reports.
 
-- There are two Maven projects in the repo. Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) to learn about project structure for each.
+- There are two Maven projects in the repo. Refer to the [Building guide](../../docs/contributor/building.md) (or [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml)) to learn about project structure for each.
 
 Pull Requests
 -------------

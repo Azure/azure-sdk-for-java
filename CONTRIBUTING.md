@@ -11,9 +11,9 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - After cloning the repo, copy the [pre-commit hooks file](https://github.com/Azure/azure-sdk-for-java/tree/main/eng/scripts/pre-commit) (located at `eng/scripts/pre-commit`) to your local `.git/hooks/` directory. This will run some validations before your changes are committed.
 
-- Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues) to learn about how Azure SDK for java generates CheckStyle, SpotBugs, Jacoco, and JavaDoc reports.
+- Refer to the [Code Quality guide](docs/contributor/code-quality.md) (or [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues)) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, JaCoCo, and JavaDoc reports.
 
-- There are two Maven projects in the repo. Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) to learn about project structure for each.
+- There are two Maven projects in the repo. Refer to the [Building guide](docs/contributor/building.md) (or [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml)) to learn about project structure for each.
 
 Pull Requests
 -------------
@@ -46,10 +46,12 @@ Merging Pull Requests (for project contributors with write access)
 
 ### Pre-requisites
 
-- Install Java Development Kit 8 or 11
+- Install Java Development Kit 8, 11, 17, or 21 (Java 21 LTS recommended for local development)
   - add `JAVA_HOME` to environment variables
 - Install [Maven](https://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
+
+See [Getting Started](docs/contributor/getting-started.md) for detailed environment setup instructions.
 
 >**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
 1.- Run this as Administrator on a command prompt:<br>
@@ -139,9 +141,11 @@ If you encounter a `401 Unauthorized` error when running Maven commands:
 
 ### Building and Unit Testing
 
-Refer to the [build wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning how to build Java SDKs
-and the [unit testing wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit
-testing.
+Refer to the [Building guide](docs/contributor/building.md) for Maven commands to build the SDK,
+and the [Unit Testing guide](docs/contributor/unit-testing.md) for guidelines on writing and running unit tests.
+
+> Full build and test reference is also available in the [wiki/Building](https://github.com/Azure/azure-sdk-for-java/wiki/Building)
+> and [wiki/Unit-Testing](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) pages.
 
 ### Live testing
 
