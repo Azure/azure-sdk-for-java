@@ -1,0 +1,4 @@
+directory: specification/authorization/resource-manager/Microsoft.Authorization/Authorization
+commit: HEAD
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
