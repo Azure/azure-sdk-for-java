@@ -222,16 +222,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
-    // Temporary workaround: Service Bus enforces a maximum batch payload size of 1 MB that is not
-    // communicated via the AMQP link's max-message-size property. The link reports the per-message
-    // limit (up to 100 MB for Premium partitioned), but the broker rejects batch sends above 1 MB.
-    // This cap is applied only in createMessageBatch(), which is the single enforcement point for
-    // batch size limits. The sendMessages(iterable) and scheduleMessages(iterable) paths use
-    // createMessageBatch() internally and are therefore also capped. Single-message paths
-    // (sendMessage, scheduleMessage) are not capped since individual messages on Premium can
-    // validly exceed 1 MB up to the per-entity limit.
-    // Tracked by: https://github.com/Azure/azure-service-bus/issues/708
-    static final int MAX_BATCH_SIZE_BYTES = 1024 * 1024;
+    // Fallback batch size limit (1 MB) used when the service does not advertise the vendor property
+    // com.microsoft:max-message-batch-size on the AMQP sender link. When the property is present,
+    // its value is used directly. This fallback protects against older service deployments that
+    // do not advertise the property — without it, the SDK would use max-message-size (up to 100 MB
+    // on Premium large-message entities) for batch sizing, and the broker would reject.
+    static final int DEFAULT_MAX_BATCH_SIZE_BYTES = 1024 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
     private static final ServiceBusMessage END = new ServiceBusMessage(new byte[0]);
     private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS = new CreateMessageBatchOptions();
@@ -472,19 +468,24 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final int maxSize = options.getMaximumSizeInBytes();
 
-        return getSendLinkWithRetry("create-batch").flatMap(link -> link.getLinkSize().flatMap(size -> {
-            final int maximumLinkSize = Math.min(size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES, MAX_BATCH_SIZE_BYTES);
-            if (maxSize > maximumLinkSize) {
-                return monoError(logger,
-                    new IllegalArgumentException(String.format(Locale.US,
-                        "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
-                            + " allowed size (%s bytes).",
-                        maxSize, maximumLinkSize)));
-            }
-            final int batchSize = maxSize > 0 ? Math.min(maxSize, maximumLinkSize) : maximumLinkSize;
-            return Mono
-                .just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
-        })).onErrorMap(this::mapError);
+        return getSendLinkWithRetry("create-batch")
+            .flatMap(link -> link.getMaxBatchSize().flatMap(batchSizeFromLink -> {
+                // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
+                // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
+                // last-resort default to prevent oversized batches on broken links.
+                final int maximumLinkSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
+                if (maxSize > maximumLinkSize) {
+                    return monoError(logger,
+                        new IllegalArgumentException(String.format(Locale.US,
+                            "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
+                                + " allowed size (%s bytes).",
+                            maxSize, maximumLinkSize)));
+                }
+                final int batchSize = maxSize > 0 ? Math.min(maxSize, maximumLinkSize) : maximumLinkSize;
+                return Mono.just(
+                    new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
+            }))
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -893,6 +894,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
 
+        // Uses getLinkSize() intentionally — this path is for single-message sends only (sendMessage()).
+        // Single messages should use the full link capacity (up to 100 MB on Premium large-message),
+        // not the batch-size cap. The batch path (sendMessages(Iterable), scheduleMessages(Iterable))
+        // goes through createMessageBatch() which calls getMaxBatchSize() for the vendor-property-based cap.
         final Mono<List<ServiceBusMessageBatch>> batchList
             = getSendLinkWithRetry("send-batches").flatMap(link -> link.getLinkSize().flatMap(size -> {
                 final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;

@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed `ServiceBusMessageBatch` accepting messages beyond the service-enforced batch size limit on
+  Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
+  from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
 ### Other Changes
 
 ## 7.17.17 (2026-01-29)

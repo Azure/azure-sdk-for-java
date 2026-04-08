@@ -75,7 +75,7 @@ import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_BATCH_SIZE_BYTES;
+import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.DEFAULT_MAX_BATCH_SIZE_BYTES;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -178,6 +178,7 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(just(managementNode));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink.getLinkName()).thenReturn(LINK_NAME);
 
         doNothing().when(onClientClose).run();
@@ -249,6 +250,7 @@ class ServiceBusSenderAsyncClientTest {
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(maxLinkSize));
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
@@ -279,6 +281,7 @@ class ServiceBusSenderAsyncClientTest {
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
@@ -304,31 +307,33 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that the batch max size is capped at MAX_BATCH_SIZE_BYTES (1 MB) when the link reports a larger size.
-     * This simulates a Premium partitioned namespace where the link advertises up to 100 MB per-message.
+     * Verifies that the batch max size uses the vendor property (max-message-batch-size) from the link,
+     * which returns 1 MB even when the link's max-message-size reports 100 MB (Premium large-message).
      */
     @ParameterizedTest
     @MethodSource("selectStack")
     void createBatchCappedAtMaxBatchSizeWhenLinkReportsLargerSize(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
-        int largeLinkSize = 100 * 1024 * 1024; // 100 MB
+        int largeLinkSize = 100 * 1024 * 1024; // 100 MB - max-message-size on Premium large-message
+        int vendorBatchSize = 1024 * 1024; // 1 MB - com.microsoft:max-message-batch-size
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
 
         // Act & Assert
         StepVerifier.create(sender.createMessageBatch()).assertNext(batch -> {
-            Assertions.assertEquals(MAX_BATCH_SIZE_BYTES, batch.getMaxSizeInBytes());
+            Assertions.assertEquals(vendorBatchSize, batch.getMaxSizeInBytes());
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     /**
-     * Verifies that the batch max size uses the link size when it is smaller than MAX_BATCH_SIZE_BYTES (1 MB).
-     * This simulates a Standard namespace where the link advertises 256 KB.
+     * Verifies that the batch max size uses the vendor property value when it is smaller than 1 MB.
+     * This simulates a Standard namespace where the link advertises 256 KB for both properties.
      */
     @ParameterizedTest
     @MethodSource("selectStack")
@@ -339,6 +344,7 @@ class ServiceBusSenderAsyncClientTest {
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(smallLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(smallLinkSize));
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
@@ -358,10 +364,12 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         arrangeIfV2(isV2);
         int largeLinkSize = 100 * 1024 * 1024; // 100 MB
-        int requestedBatchSize = 2 * 1024 * 1024; // 2 MB - exceeds 1 MB cap
+        int vendorBatchSize = 1024 * 1024; // 1 MB
+        int requestedBatchSize = 2 * 1024 * 1024; // 2 MB - exceeds vendor property
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
@@ -385,10 +393,12 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         arrangeIfV2(isV2);
         int largeLinkSize = 100 * 1024 * 1024; // 100 MB
+        int vendorBatchSize = 1024 * 1024; // 1 MB
         int requestedBatchSize = 500 * 1024; // 500 KB
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
@@ -416,10 +426,10 @@ class ServiceBusSenderAsyncClientTest {
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(maxLinkSize));
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
-        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessages(messages, instant))
@@ -846,8 +856,8 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that sendMessages(Iterable) internally uses createMessageBatch() which caps at
-     * MAX_BATCH_SIZE_BYTES (1 MB) even when the link reports a much larger size (e.g. 100 MB Premium).
+     * Verifies that sendMessages(Iterable) internally uses createMessageBatch() which reads the vendor
+     * property (1 MB) even when the link's max-message-size reports 100 MB (Premium large-message).
      * The sendIterable → sendNextIterableBatch → createMessageBatch() path is covered.
      */
     @ParameterizedTest
@@ -855,18 +865,20 @@ class ServiceBusSenderAsyncClientTest {
     void sendMessagesIterableWithLargeLinkCapsAt1MB(boolean isV2) {
         // Arrange
         arrangeIfV2(isV2);
-        final int largeLinkSize = 100 * 1024 * 1024; // 100 MB - simulates Premium partitioned namespace
+        final int largeLinkSize = 100 * 1024 * 1024; // 100 MB - max-message-size on Premium large-message
+        final int vendorBatchSize = 1024 * 1024; // 1 MB - com.microsoft:max-message-batch-size
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
-        // Act - sendMessages(Iterable) goes through sendIterable → createMessageBatch() which caps at 1 MB.
-        // Small messages still fit within the 1 MB cap, so operation completes successfully.
+        // Act - sendMessages(Iterable) goes through sendIterable → createMessageBatch() which uses
+        // the vendor property (1 MB). Small messages still fit, so operation completes successfully.
         StepVerifier.create(sender.sendMessages(messages)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
@@ -885,6 +897,7 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
+        when(sendLink.getMaxBatchSize()).thenReturn(linkMaxSize);
 
         // Act & Assert
         StepVerifier.create(sender.sendMessages(messages))
@@ -1001,6 +1014,36 @@ class ServiceBusSenderAsyncClientTest {
         verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
     }
 
+    /**
+     * End-to-end asymmetry test: on the SAME link with max-message-size=100 MB and vendor batch property=1 MB,
+     * verifies that createMessageBatch() caps at 1 MB while sendMessage(single) uses the full 100 MB.
+     * This is the core Premium large-message scenario that this change addresses.
+     */
+    @ParameterizedTest
+    @MethodSource("selectStack")
+    void premiumLargeMessageAsymmetry(boolean isV2) {
+        // Arrange — same link advertises 100 MB max-message-size and 1 MB max-message-batch-size
+        arrangeIfV2(isV2);
+        final int largeLinkSize = 100 * 1024 * 1024; // 100 MB - max-message-size
+        final int vendorBatchSize = 1024 * 1024; // 1 MB - com.microsoft:max-message-batch-size
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
+            eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
+        when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
+
+        // Act & Assert 1: createMessageBatch() uses vendor property → batch capped at 1 MB
+        StepVerifier.create(sender.createMessageBatch()).assertNext(batch -> {
+            Assertions.assertEquals(vendorBatchSize, batch.getMaxSizeInBytes());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
+
+        // Act & Assert 2: sendMessage(single) uses full link size → succeeds (100 MB capacity)
+        StepVerifier.create(sender.sendMessage(testData)).expectComplete().verify(DEFAULT_TIMEOUT);
+        verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
+    }
+
     @ParameterizedTest
     @MethodSource("selectStack")
     void scheduleMessage(boolean isV2) {
@@ -1058,8 +1101,8 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that scheduleMessages(Iterable) internally uses createMessageBatch() which caps at
-     * MAX_BATCH_SIZE_BYTES (1 MB) even when the link reports a much larger size. The capped batch max
+     * Verifies that scheduleMessages(Iterable) internally uses createMessageBatch() which reads the vendor
+     * property (1 MB) even when the link's max-message-size reports 100 MB. The capped batch max
      * size is passed as maxSize to managementNode.schedule(), NOT the raw 100 MB.
      */
     @ParameterizedTest
@@ -1068,6 +1111,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         arrangeIfV2(isV2);
         final int largeLinkSize = 100 * 1024 * 1024; // 100 MB
+        final int vendorBatchSize = 1024 * 1024; // 1 MB - com.microsoft:max-message-batch-size
         final long sequenceNumberReturned = 42L;
         final OffsetDateTime instant = mock(OffsetDateTime.class);
         final int count = 3;
@@ -1076,17 +1120,18 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
-        when(managementNode.schedule(anyList(), eq(instant), eq(MAX_BATCH_SIZE_BYTES), eq(LINK_NAME), isNull()))
+        when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
+        when(managementNode.schedule(anyList(), eq(instant), eq(vendorBatchSize), eq(LINK_NAME), isNull()))
             .thenReturn(Flux.fromStream(IntStream.range(0, count).mapToObj(i -> sequenceNumberReturned + i)));
 
-        // Act & Assert - scheduleMessages(Iterable) → createMessageBatch() caps at 1 MB,
-        // then passes MAX_BATCH_SIZE_BYTES to managementNode.schedule(), NOT the raw 100 MB.
+        // Act & Assert - scheduleMessages(Iterable) → createMessageBatch() reads vendor property (1 MB),
+        // then passes that value to managementNode.schedule(), NOT the raw 100 MB.
         StepVerifier.create(sender.scheduleMessages(messages, instant))
             .expectNextCount(count)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        verify(managementNode).schedule(anyList(), eq(instant), eq(MAX_BATCH_SIZE_BYTES), eq(LINK_NAME), isNull());
+        verify(managementNode).schedule(anyList(), eq(instant), eq(vendorBatchSize), eq(LINK_NAME), isNull());
     }
 
     /**
@@ -1154,8 +1199,8 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sendMessages(Iterable) rejects a single message larger than 1 MB even on a large link.
      * This proves the asymmetry: the same message that succeeds via sendMessage(single) FAILS via
-     * sendMessages(Iterable) because the iterable path goes through createMessageBatch() which caps
-     * the batch at MAX_BATCH_SIZE_BYTES (1 MB).
+     * sendMessages(Iterable) because the iterable path goes through createMessageBatch() which uses
+     * the vendor property (1 MB) for batch sizing.
      */
     @ParameterizedTest
     @MethodSource("selectStack")
@@ -1163,6 +1208,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         arrangeIfV2(isV2);
         final int largeLinkSize = 5 * 1024 * 1024; // 5 MB
+        final int vendorBatchSize = 1024 * 1024; // 1 MB
         // Create a single message with payload > 1 MB.
         final ServiceBusMessage largeMessage = new ServiceBusMessage(BinaryData.fromBytes(new byte[2 * 1024 * 1024]));
         final List<ServiceBusMessage> messages = new ArrayList<>();
@@ -1171,6 +1217,7 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
 
         // Act & Assert - The iterable path uses createMessageBatch() which caps at 1 MB.
         // The 2 MB message cannot fit in the 1 MB-capped batch, so it fails.
@@ -1194,6 +1241,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         arrangeIfV2(isV2);
         final int largeLinkSize = 5 * 1024 * 1024; // 5 MB
+        final int vendorBatchSize = 1024 * 1024; // 1 MB
         final OffsetDateTime instant = mock(OffsetDateTime.class);
         // Create a single message with payload > 1 MB.
         final ServiceBusMessage largeMessage = new ServiceBusMessage(BinaryData.fromBytes(new byte[2 * 1024 * 1024]));
@@ -1203,6 +1251,7 @@ class ServiceBusSenderAsyncClientTest {
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
+        when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
 
         // Act & Assert - The schedule iterable path uses createMessageBatch() which caps at 1 MB.
         // The 2 MB message cannot fit, so it fails with ServiceBusException.
@@ -1214,9 +1263,9 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that createMessageBatch() falls back to MAX_MESSAGE_LENGTH_BYTES when the link reports
-     * size 0. The fallback (256 KB) is smaller than MAX_BATCH_SIZE_BYTES (1 MB), so the batch max
-     * size equals the fallback value.
+     * Verifies that createMessageBatch() falls back to DEFAULT_MAX_BATCH_SIZE_BYTES when the link reports
+     * size 0 from getMaxBatchSize(). This simulates a link where the vendor property is absent and the
+     * remote max-message-size is also unavailable.
      */
     @ParameterizedTest
     @MethodSource("selectStack")
@@ -1225,14 +1274,14 @@ class ServiceBusSenderAsyncClientTest {
         arrangeIfV2(isV2);
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(0)); // Link reports zero
+        when(link.getMaxBatchSize()).thenReturn(Mono.just(0)); // Vendor property also absent
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(),
             eq(CLIENT_IDENTIFIER))).thenReturn(Mono.just(link));
 
-        // Act & Assert - When link size is 0, fallback is MAX_MESSAGE_LENGTH_BYTES (256 KB), then
-        // Math.min(256KB, 1MB) = 256 KB.
+        // Act & Assert - When getMaxBatchSize() is 0, fallback is DEFAULT_MAX_BATCH_SIZE_BYTES (1 MB).
         StepVerifier.create(sender.createMessageBatch()).assertNext(batch -> {
-            Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batch.getMaxSizeInBytes());
+            Assertions.assertEquals(DEFAULT_MAX_BATCH_SIZE_BYTES, batch.getMaxSizeInBytes());
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
