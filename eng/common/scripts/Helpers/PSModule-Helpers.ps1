@@ -47,17 +47,16 @@ function Update-PSModulePathForCI() {
 }
 
 function Get-ModuleRepositories([string]$moduleName) {
-  $DefaultPSRepositoryUrl = "https://www.powershellgallery.com/api/v2"
-  # List of modules+versions we want to replace with internal feed sources for reliability, security, etc.
-  $packageFeedOverrides = @{
-    'powershell-yaml' = 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-tools/nuget/v2'
-  }
+  $InternalPSRepositoryUrl = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-tools/nuget/v2"
+  # All modules should be installed from the internal feed.
+  # Add module-specific overrides here if a module requires a different internal feed.
+  $packageFeedOverrides = @{}
 
   $repoUrls = if ($packageFeedOverrides.Contains("${moduleName}")) {
-    @($packageFeedOverrides["${moduleName}"], $DefaultPSRepositoryUrl)
+    @($packageFeedOverrides["${moduleName}"])
   }
   else {
-    @($DefaultPSRepositoryUrl)
+    @($InternalPSRepositoryUrl)
   }
 
   return $repoUrls
