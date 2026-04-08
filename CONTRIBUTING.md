@@ -125,21 +125,13 @@ For detailed instructions, refer to the [Maven Credential Provider documentation
 
 > **Note:** For Maven Azure DevOps pipeline authentication, use the [MavenAuthenticate@0](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/maven-authenticate-v0) pipeline task.
 
-##### Using the CFS feed locally
+##### Matching CI behavior locally
 
-After setting up the credential provider above, you can route all Maven traffic through the CFS feed locally (matching CI behavior) by copying the mirror settings:
+After setting up the credential provider above, you can route all Maven traffic through the Azure Artifacts feed locally by copying the mirror settings:
 
 ```bash
 cp eng/settings.xml ~/.m2/settings.xml
 ```
-
-Or use `--settings` per invocation without modifying your global settings:
-
-```bash
-mvn --settings eng/settings.xml <goals>
-```
-
-> **Note:** Most local builds work fine against Maven Central without this step. The CFS mirror is mainly needed for accessing snapshot artifacts or replicating CI behavior locally.
 
 ##### Troubleshooting 401 Unauthorized errors
 
