@@ -2426,7 +2426,7 @@ public class StorageCrc64Calculator {
         long uSize = length;
         long uBytes, uStop;
 
-        uCrc = ~uCrc;
+        uCrc = ~uCrc; // Flip all bits of uCrc
 
         uStop = uSize - (uSize % 32);
         if (uStop >= 2 * 32) {
@@ -2442,11 +2442,15 @@ public class StorageCrc64Calculator {
             ByteBuffer buffer = ByteBuffer.wrap(src).order(ByteOrder.LITTLE_ENDIAN);
 
             for (; pData < pLast; pData += 32) {
-                long b0 = buffer.getLong(pData) ^ uCrc0;
-                long b1 = buffer.getLong(pData + 8) ^ uCrc1;
-                long b2 = buffer.getLong(pData + 16) ^ uCrc2;
-                long b3 = buffer.getLong(pData + 24) ^ uCrc3;
+                long b0, b1, b2, b3;
 
+                // Load and XOR data with CRC
+                b0 = buffer.getLong(pData) ^ uCrc0;
+                b1 = buffer.getLong(pData + 8) ^ uCrc1;
+                b2 = buffer.getLong(pData + 16) ^ uCrc2;
+                b3 = buffer.getLong(pData + 24) ^ uCrc3;
+
+                // Unsigned updates using tables and masking
                 uCrc0 = M_U32[7 * 256 + ((int) (b0 & 0xFF))];
                 b0 >>>= 8;
                 uCrc1 = M_U32[7 * 256 + ((int) (b1 & 0xFF))];
@@ -2516,6 +2520,7 @@ public class StorageCrc64Calculator {
                 uCrc3 ^= M_U32[((int) (b3 & 0xFF))];
             }
 
+            // Combine CRC values
             uCrc = 0;
             uCrc ^= ByteBuffer.wrap(src, pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc0;
             uCrc = (uCrc >>> 8) ^ M_U1[(int) (uCrc & 0xFF)];
@@ -2560,11 +2565,12 @@ public class StorageCrc64Calculator {
             pData += 32;
         }
 
+        // Process remaining bytes
         for (uBytes = 0; uBytes < uSize; ++uBytes, ++pData) {
             uCrc = (uCrc >>> 8) ^ M_U1[(int) ((uCrc ^ src[pData]) & 0xFF)];
         }
 
-        return ~uCrc;
+        return ~uCrc; // Flip all bits of uCrc and return as long
     }
 
     /**
