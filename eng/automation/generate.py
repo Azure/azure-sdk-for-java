@@ -359,7 +359,6 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         remove_before_regen=True,
         group_id=GROUP_ID,
         api_version=api_version,
-        generate_beta_sdk=release_beta_sdk,
     )
 
     if succeeded:
