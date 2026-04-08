@@ -36,6 +36,7 @@ If you are a **consumer** of the SDK looking for usage guidance, start at the [U
 | [Deprecation Process](deprecation.md) | Steps to mark a library deprecated and publish a final release |
 | [Release Checklist](release-checklist.md) | What to do before Beta 1, Beta N, and GA |
 | [Credential Scan](credential-scan.md) | Monitor and suppress CredScan warnings |
+| [Agentic Workflows](agentic-workflows.md) | LLM-powered GHA workflows that detect and triage documentation gaps |
 | [SDK Generation Troubleshooting](../../doc/dev/sdk-generation-pipeline-troubleshooting.md) | Diagnose auto-generation pipeline failures |
 | [TypeSpec Client Customizations](../../eng/common/knowledge/customizing-client-tsp.md) | TypeSpec `client.tsp` reference |
 
