@@ -40,7 +40,7 @@ public final class StructuredMessageConstants {
     /**
      * The maximum single part upload size to use CRC64 header.
      */
-    public static final int MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER = 4 * 1024 * 1024; // 4 MiB
+    public static final int MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER = 4 * 1024 * 1024; // 4 MiB
 
     /**
      * The structured body type header value indicating version 1 with CRC64 properties.

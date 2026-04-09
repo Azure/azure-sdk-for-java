@@ -94,6 +94,8 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         Flux<ByteBuffer> originalBody = context.getHttpRequest().getBody();
         return FluxUtil.collectBytesInByteBufferStream(originalBody)
             .flatMap(originalBytes -> Mono.fromCallable(() -> StorageCrc64Calculator.compute(originalBytes, 0))
+                // Run CRC64 on boundedElastic so synchronous work over the full body does not block the reactive
+                // I/O thread (e.g. Netty event loop) that drives the pipeline.
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(contentCRC64 -> {
                     // Restore body for downstream consumers.
@@ -116,23 +118,26 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      * Applies the structured message to the request body.
      *
      * @param context the HTTP pipeline call context
+     * @return a {@link Mono} that completes when the structured message has been applied, or fails if the request is
+     * not valid for structured messaging
      */
     private Mono<Void> applyStructuredMessage(HttpPipelineCallContext context) {
         String contentLengthValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLengthValue == null || contentLengthValue.isEmpty()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Content-Length header is required to apply structured message "
-                    + "and CRC64 encoding, but it was not present on the request."));
+            return FluxUtil.monoError(LOGGER,
+                LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Content-Length header is required to apply structured message "
+                        + "and CRC64 encoding, but it was not present on the request.")));
         }
 
         long parsedContentLength;
         try {
             parsedContentLength = Long.parseLong(contentLengthValue);
         } catch (NumberFormatException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            return FluxUtil.monoError(LOGGER, LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Content-Length header value '" + contentLengthValue
                     + "' is not a valid non-negative integer value required for structured message and CRC64 encoding.",
-                ex));
+                ex)));
         }
 
         int unencodedContentLength = (int) parsedContentLength;

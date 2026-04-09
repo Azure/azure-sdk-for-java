@@ -15,7 +15,7 @@ import reactor.test.StepVerifier;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_MODE_KEY;
-import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -49,7 +49,7 @@ public class ContentValidationModeResolverTests {
 
     @Test
     public void singlePartSmallUploadUsesCrc64Header() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
         assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
             modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64, underThreshold, false));
     }
@@ -57,19 +57,19 @@ public class ContentValidationModeResolverTests {
     @Test
     public void singlePartAtExact4MBBoundaryUsesStructuredMessage() {
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64,
-            MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER, false));
+            MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER, false));
     }
 
     @Test
     public void singlePartLargeUploadUsesStructuredMessage() {
-        long overThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
+        long overThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
             modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64, overThreshold, false));
     }
 
     @Test
     public void singlePartAutoSmallUploadUsesCrc64Header() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
         assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
             modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO, underThreshold, false));
     }
@@ -77,19 +77,19 @@ public class ContentValidationModeResolverTests {
     @Test
     public void singlePartAutoAtExact4MBBoundaryUsesStructuredMessage() {
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO,
-            MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER, false));
+            MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER, false));
     }
 
     @Test
     public void singlePartAutoLargeUploadUsesStructuredMessage() {
-        long overThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
+        long overThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
             modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO, overThreshold, false));
     }
 
     @Test
     public void addContentValidationModeNullContextUsesNone() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
         assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
             modeOnContext(null, ContentValidationAlgorithm.CRC64, underThreshold, false));
     }
@@ -127,7 +127,7 @@ public class ContentValidationModeResolverTests {
 
     @Test
     public void addContentValidationModeMonoWritesReactorContextForCrc64() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
         Mono<String> source = Mono.deferContextual(ctx -> Mono.just(ctx.get(CONTENT_VALIDATION_MODE_KEY)));
         Mono<String> augmented = ContentValidationModeResolver.addContentValidationMode(source,
             ContentValidationAlgorithm.CRC64, underThreshold, false);
@@ -136,7 +136,7 @@ public class ContentValidationModeResolverTests {
 
     @Test
     public void addContentValidationModeMonoWritesReactorContextForAuto() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
         Mono<String> source = Mono.deferContextual(ctx -> Mono.just(ctx.get(CONTENT_VALIDATION_MODE_KEY)));
         Mono<String> augmented = ContentValidationModeResolver.addContentValidationMode(source,
             ContentValidationAlgorithm.AUTO, underThreshold, false);
