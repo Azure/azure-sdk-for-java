@@ -9,6 +9,11 @@ package com.azure.ai.agents.models;
  */
 public enum FoundryFeaturesOptInKeys {
     /**
+     * Enum value Skills=V1Preview.
+     */
+    SKILLS_V1_PREVIEW("Skills=V1Preview"),
+
+    /**
      * Enum value Evaluations=V1Preview.
      */
     EVALUATIONS_V1_PREVIEW("Evaluations=V1Preview"),
@@ -31,7 +36,12 @@ public enum FoundryFeaturesOptInKeys {
     /**
      * Enum value MemoryStores=V1Preview.
      */
-    MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview");
+    MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview"),
+
+    /**
+     * Enum value Toolboxes=V1Preview.
+     */
+    TOOLBOXES_V1_PREVIEW("Toolboxes=V1Preview");
 
     /**
      * The actual serialized value for a FoundryFeaturesOptInKeys instance.
