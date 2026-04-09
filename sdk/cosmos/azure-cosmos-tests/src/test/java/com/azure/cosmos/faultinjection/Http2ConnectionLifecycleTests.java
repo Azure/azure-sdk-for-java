@@ -32,13 +32,21 @@ import org.testng.annotations.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.azure.cosmos.implementation.http.Http2PingHandler;
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http2.Http2MultiplexHandler;
 
 import reactor.core.publisher.Flux;
 
@@ -72,7 +80,6 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
     private TestObject seedItem;
 
-    private static final String TEST_GROUP = "manual-http-network-fault";
     // 3 minutes per test — enough for warmup + delay + retries + cross-region failover + recovery read
     private static final long TEST_TIMEOUT = 180_000;
     // Network interface detected at runtime — eth0 for Docker, or the default route interface on CI VMs.
@@ -86,7 +93,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {TEST_GROUP}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = TIMEOUT)
     public void beforeClass() {
         // Detect whether we're running as root (Docker) or need sudo (CI VM)
         this.sudoPrefix = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
@@ -131,7 +138,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Creates a fresh CosmosAsyncClient and container before each test method, ensuring
      * an isolated connection pool (no parent channels carried over from prior tests).
      */
-    @BeforeMethod(groups = {TEST_GROUP}, timeOut = TIMEOUT)
+    @BeforeMethod(groups = {"manual-http-network-fault"}, timeOut = TIMEOUT)
     public void beforeMethod() {
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
@@ -142,26 +149,36 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Closes the per-test client after each test method, fully disposing the connection pool.
      * Also removes any residual tc netem delay as a safety net.
      */
-    @AfterMethod(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = {"manual-http-network-fault"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
         if (sudoPrefix != null) {
             removeNetworkDelay();
             removePacketDrop();
         }
+        clearAllCosmosSystemProperties();
         safeClose(this.client);
         this.client = null;
         this.cosmosAsyncContainer = null;
         logger.info("Client closed and connection pool disposed after test method.");
     }
 
-    @AfterClass(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"manual-http-network-fault"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         if (sudoPrefix != null) {
             removeNetworkDelay();
             removePacketDrop();
         }
+        clearAllCosmosSystemProperties();
+    }
+
+    private static void clearAllCosmosSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_ENABLED");
         System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
+        System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
+        System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
+        System.clearProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS");
+        System.clearProperty("COSMOS.HTTP2_ENABLED");
     }
 
     // ========================================================================
@@ -370,7 +387,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * 3. The recovery read completes within 10s (allows one 6s ReadTimeout retry + TCP stabilization)
      * 4. The parentChannelId is identical before and after the delay
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectionReuseAfterRealNettyTimeout() throws Exception {
         String h2ParentChannelIdBeforeDelay = establishH2ConnectionAndGetParentChannelId();
 
@@ -434,7 +451,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * still verifies that single channel survives — the multi-parent case is validated when
      * the pool allocates >1.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void multiParentChannelConnectionReuse() throws Exception {
         // Step 1: Force multiple parent H2 channels by saturating the pool.
         // maxConcurrentStreams=30 per parent. To guarantee >1 parent, we need >30 requests
@@ -536,7 +553,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Uses a 25s e2e timeout to allow all 3 retry attempts (6+6+10=22s) to fire
      * before the e2e budget is exhausted.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void retryUsesConsistentParentChannelId() throws Exception {
         // Warmup — establish connection and get baseline parentChannelId
         String warmupParentChannelId = establishH2ConnectionAndGetParentChannelId();
@@ -638,7 +655,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * the H2 parent NioSocketChannel survives. The e2e cancel fires RST_STREAM on the
      * Http2StreamChannel before ReadTimeoutHandler, but the parent TCP connection is unaffected.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectionSurvivesE2ETimeoutWithRealDelay() throws Exception {
         String h2ParentChannelIdBeforeDelay = establishH2ConnectionAndGetParentChannelId();
 
@@ -689,7 +706,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * 4. The recovery read's stream channel ID differs from the warmup stream channel ID
      *    (HTTP/2 streams are never reused — RFC 9113 §5.1.1)
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void parentChannelSurvivesE2ECancelWithoutReadTimeout() throws Exception {
         // Warmup — discover all parent channels currently in the pool by reading multiple times.
         // The pool may already have multiple parents from prior tests. We need the full set
@@ -802,7 +819,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Establishes a connection, captures parentChannelId, waits for the lifetime + background
      * sweep interval to elapse, then performs another read and asserts the parentChannelId changed.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectionRotatedAfterMaxLifetimeExpiry() throws Exception {
         System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
         try {
@@ -845,7 +862,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Creates multiple H2 parent connections via concurrent requests, sets a short maxLifeTime (15s),
      * then observes that connections are evicted at different times.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void perConnectionJitterStaggersEviction() throws Exception {
         System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
         try {
@@ -924,7 +941,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * (PING ACKs are still arriving), the max lifetime eviction still triggers.
      * This is the safety-net — connections shouldn't live forever even if PINGs succeed.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectionEvictedAfterMaxLifetimeEvenWithHealthyPings() throws Exception {
         System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
@@ -992,18 +1009,18 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * 10. Assert the read succeeds (proves new connection went to an available IP)
      * 11. Cleanup: unblockAll
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void dnsRotationAfterMaxLifetimeExpiry() throws Exception {
         System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
         FilterableDnsResolverGroup filterableResolver = new FilterableDnsResolverGroup();
         try {
             // Step 1: Resolve the endpoint hostname to enumerate available IPs
             String endpoint = getEndpoint();
-            java.net.URI endpointUri = new java.net.URI(endpoint);
+            URI endpointUri = new URI(endpoint);
             String hostname = endpointUri.getHost();
-            java.net.InetAddress[] allAddresses = java.net.InetAddress.getAllByName(hostname);
+            InetAddress[] allAddresses = InetAddress.getAllByName(hostname);
             logger.info("Endpoint hostname: {}, resolved IPs: {} (count={})",
-                hostname, java.util.Arrays.toString(allAddresses), allAddresses.length);
+                hostname, Arrays.toString(allAddresses), allAddresses.length);
 
             if (allAddresses.length < 2) {
                 logger.info("SKIP: Account endpoint {} resolves to fewer than 2 IPs — "
@@ -1011,7 +1028,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
                 return;
             }
 
-            java.net.InetAddress ip1 = allAddresses[0];
+            InetAddress ip1 = allAddresses[0];
             logger.info("IP1 (will be blocked after initial workload): {}", ip1.getHostAddress());
 
             // Step 2: Wire the custom resolver into the builder via the accessor
@@ -1081,15 +1098,15 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * 2. PINGs sent count > 0 (proves the handler is actively sending frames)
      * 3. Connection is still alive (parentChannelId unchanged)
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void pingFramesSentAndAcknowledgedOnIdleConnection() throws Exception {
         System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "600");
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
 
         // Reference holder for the Http2PingHandler installed on the parent channel
-        java.util.concurrent.atomic.AtomicReference<com.azure.cosmos.implementation.http.Http2PingHandler> pingHandlerRef =
-            new java.util.concurrent.atomic.AtomicReference<>();
+        AtomicReference<Http2PingHandler> pingHandlerRef =
+            new AtomicReference<>();
 
         try {
             safeClose(this.client);
@@ -1102,12 +1119,12 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             // the handler works when installed on the parent H2 channel.
             ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
                 .setDoOnConnectedCallback(builder, connection -> {
-                    io.netty.channel.Channel ch = connection.channel();
+                    Channel ch = connection.channel();
                     // For H2, the first doOnConnected fires for the parent TCP channel (has Http2MultiplexHandler)
-                    if (ch.pipeline().get(io.netty.handler.codec.http2.Http2MultiplexHandler.class) != null
+                    if (ch.pipeline().get(Http2MultiplexHandler.class) != null
                         && ch.pipeline().get("testPingHandler") == null) {
-                        com.azure.cosmos.implementation.http.Http2PingHandler handler =
-                            new com.azure.cosmos.implementation.http.Http2PingHandler(3);
+                        Http2PingHandler handler =
+                            new Http2PingHandler(3);
                         ch.pipeline().addLast("testPingHandler", handler);
                         pingHandlerRef.compareAndSet(null, handler);
                         logger.info("Test installed Http2PingHandler on H2 parent channel {}", ch.id().asShortText());
@@ -1128,7 +1145,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             // Recovery read — proves connection is still alive
             String recoveryParentChannelId = readAndGetParentChannelId();
 
-            com.azure.cosmos.implementation.http.Http2PingHandler handler = pingHandlerRef.get();
+            Http2PingHandler handler = pingHandlerRef.get();
             int sentCount = handler != null ? handler.getPingsSent() : -1;
             int ackCount = handler != null ? handler.getPingAcksReceived() : -1;
 

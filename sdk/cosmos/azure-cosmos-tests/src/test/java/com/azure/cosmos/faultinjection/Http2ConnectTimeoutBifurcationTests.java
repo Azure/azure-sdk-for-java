@@ -61,7 +61,6 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     private CosmosAsyncContainer cosmosAsyncContainer;
     private TestObject seedItem;
 
-    private static final String TEST_GROUP = "manual-http-network-fault";
     private static final long TEST_TIMEOUT = 180_000;
     // Network interface detected at runtime — eth0 for Docker, or the default route interface on CI VMs.
     private String networkInterface;
@@ -74,7 +73,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {TEST_GROUP}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = TIMEOUT)
     public void beforeClass() {
         // Detect whether we're running as root (Docker) or need sudo (CI VM)
         this.sudoPrefix = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
@@ -98,7 +97,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         logger.info("Seed item read verified — connection is healthy.");
     }
 
-    @AfterClass(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"manual-http-network-fault"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         // Safety: remove any leftover iptables rules
         if (sudoPrefix != null) {
@@ -334,7 +333,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      *
      * The 30s e2e timeout allows multiple 5s connect attempts + SDK retry overhead.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_GwV2_DataPlane_1sFiresOnDroppedSyn() throws Exception {
         // Close and recreate client to ensure no pooled connections exist —
         // we need to force a NEW TCP connection which will hit the iptables DROP.
@@ -398,7 +397,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      *
      * This proves the bifurcation: port 10250 is blocked but port 443 is untouched.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_GwV1_Metadata_UnaffectedByGwV2Drop() throws Exception {
         addIptablesDropOnPort(10250);
         try {
@@ -442,7 +441,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * consume the full 12s e2e budget — and the diagnostics would show 0 completed retries.
      * With 5s CONNECT_TIMEOUT_MILLIS, we expect at least 2 retries within the 12s budget.
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_GwV2_PreciseTiming() throws Exception {
         safeClose(this.client);
         this.client = getClientBuilder().buildAsyncClient();
@@ -527,7 +526,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * 3. Attempt a document read → data plane on port 10250 fails (5s ≥ 5s timeout)
      * 4. Remove delays, verify full recovery
      */
-    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_Bifurcation_DelayBased_MetadataSucceeds_DataPlaneFails() throws Exception {
         // Close existing client to force new TCP connections on next use
         safeClose(this.client);

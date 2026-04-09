@@ -11,6 +11,7 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -149,7 +150,7 @@ public class ReactorNettyClient implements HttpClient {
 
         // Max lifetime: installed via doOnConnected.
         // Applies to ALL connections (H1.1 and H2) for DNS re-resolution.
-        // PING keepalive is handled natively via http2Settings (pingAckTimeout/pingAckDropThreshold).
+        // PING keepalive is handled by Http2PingHandler installed via doOnConnected below.
         boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
         this.httpClient = this.httpClient.doOnConnected(connection -> {
             // Stamp per-connection expiry for ALL connections (H1.1 and H2).
@@ -171,7 +172,7 @@ public class ReactorNettyClient implements HttpClient {
             // and the second fires for stream channels (parent()!=null).
             // We install on the parent channel — detect it via Http2MultiplexHandler in the pipeline.
             if (Configs.isHttp2PingHealthEnabled()
-                && connection.channel().pipeline().get(io.netty.handler.codec.http2.Http2MultiplexHandler.class) != null) {
+                && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
                 int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
                 if (pingIntervalSeconds > 0) {
                     Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds);
@@ -179,7 +180,7 @@ public class ReactorNettyClient implements HttpClient {
             }
 
             // Test hook: allows injection of custom handlers (e.g., PING frame counter)
-            java.util.function.Consumer<reactor.netty.Connection> doOnConnectedCb = ReactorNettyClient.this.httpClientConfig.getDoOnConnectedCallback();
+            java.util.function.Consumer<Connection> doOnConnectedCb = ReactorNettyClient.this.httpClientConfig.getDoOnConnectedCallback();
             if (doOnConnectedCb != null) {
                 doOnConnectedCb.accept(connection);
             }
@@ -481,7 +482,7 @@ public class ReactorNettyClient implements HttpClient {
         public Mono<String> bodyAsString() {
             return  ByteBufFlux
                 .fromInbound(
-                   bodyIntern().doOnDiscard(ByteBuf.class, io.netty.util.ReferenceCountUtil::safeRelease)
+                   bodyIntern().doOnDiscard(ByteBuf.class, ReferenceCountUtil::safeRelease)
                 )
                 .aggregate()
                 .asString()

@@ -16,8 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * with jitter. The eviction predicate in {@link HttpClient#createFixed} reads these
  * attributes to determine when a connection should be closed.
  * <p>
- * PING keepalive is handled natively by reactor-netty's {@code pingAckTimeout} and
- * {@code pingAckDropThreshold} settings in {@link ReactorNettyClient}.
+ * PING keepalive is handled by custom {@link Http2PingHandler} installed on H2 parent
+ * channels via {@code doOnConnected} in {@link ReactorNettyClient}.
  */
 public final class HttpConnectionLifecycleUtil {
 

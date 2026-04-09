@@ -109,10 +109,11 @@ public interface HttpClient {
                     return true;
                 }
 
-                // NOTE: PING keepalive is handled natively by reactor-netty's
-                // pingAckTimeout/pingAckDropThreshold in http2Settings. Connections with
-                // consecutive unanswered PINGs are closed by the framework. Degraded but
-                // responsive connections are handled by the response timeout retry path
+                // NOTE: PING keepalive is handled by custom Http2PingHandler installed
+                // in doOnConnected (ReactorNettyClient). Native pingAckTimeout cannot be
+                // used because reactor-netty 1.2.13 bypasses built-in maxIdleTime handling
+                // when a custom evictionPredicate is configured. Degraded but responsive
+                // connections are handled by the response timeout retry path
                 // (6s/6s/10s escalation → cross-region failover).
 
                 // Phase 2: Per-connection max lifetime with jitter — two-phase eviction.
