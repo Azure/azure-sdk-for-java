@@ -65,6 +65,8 @@ public final class NetworkFaultInjector {
 
     /**
      * Adds a tc netem delay to all outbound traffic on the network interface.
+     * Includes a brief settling period to ensure the qdisc is fully active
+     * before callers send traffic through it.
      *
      * @param delayMs delay in milliseconds
      */
@@ -72,6 +74,14 @@ public final class NetworkFaultInjector {
         String cmd = String.format("%stc qdisc add dev %s root netem delay %dms",
             sudoPrefix, networkInterface, delayMs);
         execOrFail(cmd, "tc add");
+        // Settling delay: tc netem applies asynchronously to the kernel qdisc.
+        // Without this, the first packets may enter the queue before netem is active,
+        // causing the request to complete within the timeout window (flaky test).
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
+        }
         logger.info(">>> Network delay active: {}ms on {}", delayMs, networkInterface);
     }
 
