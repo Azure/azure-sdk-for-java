@@ -17,10 +17,11 @@ public final class ResourcePatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourcePatchRequest model = BinaryData.fromString(
-            "{\"resources\":[{\"name\":\"j\",\"id\":\"uujqgidokgjljyo\",\"type\":\"vcltbgsncgh\",\"resourceId\":\"jeszzhbijhtxfv\",\"notificationSettings\":[{\"destination\":\"fsm\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},{\"name\":\"pvecxgodeb\",\"id\":\"qkkrb\",\"type\":\"ukgri\",\"resourceId\":\"flz\",\"notificationSettings\":[{\"destination\":\"xzpuzycisp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"mgkbrpyydhibn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ik\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"tqagnbuynh\",\"id\":\"jggmebfsiarbu\",\"type\":\"cvpnazzmhjrunmpx\",\"resourceId\":\"tdbhrbnla\",\"notificationSettings\":[{\"destination\":\"myskpbhenbtkcxy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"rsyn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"by\",\"id\":\"czfc\",\"type\":\"aaxdbabphlwrq\",\"resourceId\":\"fkts\",\"notificationSettings\":[{\"destination\":\"ucoc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"zt\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"rq\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"kzywbiex\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}]}")
+            "{\"resources\":[{\"name\":\"l\",\"id\":\"ewpusdsttwvogvb\",\"type\":\"jdcngqqm\",\"resourceId\":\"akufgmjz\",\"notificationSettings\":[{\"destination\":\"dgrtwaenuuzkopbm\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"woyuhhziuief\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"msmlmzq\",\"id\":\"oftrmaequia\",\"type\":\"icslfaoq\",\"resourceId\":\"piyylhalnswhccsp\",\"notificationSettings\":[{\"destination\":\"ivwitqscywugg\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"czbwemhairsbr\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"swe\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}")
             .toObject(ResourcePatchRequest.class);
-        Assertions.assertEquals("jeszzhbijhtxfv", model.resources().get(0).resourceId());
-        Assertions.assertEquals("fsm", model.resources().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("akufgmjz", model.resources().get(0).resourceId());
+        Assertions.assertEquals("dgrtwaenuuzkopbm",
+            model.resources().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.resources().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.resources().get(0).notificationSettings().get(0).language());
         Assertions.assertTrue(model.resources().get(0).notificationSettings().get(0).disabled());
@@ -29,56 +30,34 @@ public final class ResourcePatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourcePatchRequest model = new ResourcePatchRequest().withResources(Arrays.asList(
-            new ScheduledActionResourceInner().withResourceId("jeszzhbijhtxfv")
-                .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("fsm")
-                    .withType(NotificationType.EMAIL)
-                    .withLanguage(Language.EN_US)
-                    .withDisabled(true))),
-            new ScheduledActionResourceInner().withResourceId("flz")
+            new ScheduledActionResourceInner().withResourceId("akufgmjz")
                 .withNotificationSettings(Arrays.asList(
-                    new NotificationProperties().withDestination("xzpuzycisp")
+                    new NotificationProperties().withDestination("dgrtwaenuuzkopbm")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true),
-                    new NotificationProperties().withDestination("mgkbrpyydhibn")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false),
-                    new NotificationProperties().withDestination("ik")
+                    new NotificationProperties().withDestination("woyuhhziuief")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(false))),
-            new ScheduledActionResourceInner().withResourceId("tdbhrbnla")
+            new ScheduledActionResourceInner().withResourceId("piyylhalnswhccsp")
                 .withNotificationSettings(Arrays.asList(
-                    new NotificationProperties().withDestination("myskpbhenbtkcxy")
+                    new NotificationProperties().withDestination("ivwitqscywugg")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(false),
-                    new NotificationProperties().withDestination("rsyn")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false))),
-            new ScheduledActionResourceInner().withResourceId("fkts")
-                .withNotificationSettings(Arrays.asList(
-                    new NotificationProperties().withDestination("ucoc")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false),
-                    new NotificationProperties().withDestination("zt")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false),
-                    new NotificationProperties().withDestination("rq")
+                    new NotificationProperties().withDestination("czbwemhairsbr")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true),
-                    new NotificationProperties().withDestination("kzywbiex")
+                    new NotificationProperties().withDestination("swe")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
-                        .withDisabled(false)))));
+                        .withDisabled(true)))));
         model = BinaryData.fromObject(model).toObject(ResourcePatchRequest.class);
-        Assertions.assertEquals("jeszzhbijhtxfv", model.resources().get(0).resourceId());
-        Assertions.assertEquals("fsm", model.resources().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("akufgmjz", model.resources().get(0).resourceId());
+        Assertions.assertEquals("dgrtwaenuuzkopbm",
+            model.resources().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.resources().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.resources().get(0).notificationSettings().get(0).language());
         Assertions.assertTrue(model.resources().get(0).notificationSettings().get(0).disabled());

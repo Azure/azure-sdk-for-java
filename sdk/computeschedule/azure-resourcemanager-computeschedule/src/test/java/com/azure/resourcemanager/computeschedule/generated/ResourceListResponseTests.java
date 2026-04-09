@@ -14,13 +14,13 @@ public final class ResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"ktwh\",\"id\":\"dxwzywqsmbsurexi\",\"type\":\"ryocfsfksymdd\",\"resourceId\":\"stkiiuxhqyud\",\"notificationSettings\":[{\"destination\":\"rq\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"zvyifqrvkdvj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"vvdfwatkpnpul\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"zwtruwiqzbqjvsov\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"cspkwlhzdobpxjmf\",\"id\":\"bvvnchrkcciw\",\"type\":\"juqk\",\"resourceId\":\"rsa\",\"notificationSettings\":[{\"destination\":\"ku\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ghsauuimjmvxied\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"yjr\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"osvexcsonpclhoc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"ev\",\"id\":\"eggzfb\",\"type\":\"fmvfaxkffeiit\",\"resourceId\":\"lvmezyvshxmzsbbz\",\"notificationSettings\":[{\"destination\":\"igrxwburvjxxjn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}],\"nextLink\":\"koen\"}")
+            "{\"value\":[{\"name\":\"jkniodko\",\"id\":\"ebwnujhe\",\"type\":\"sbvdkcrodtjinfw\",\"resourceId\":\"lfltka\",\"notificationSettings\":[{\"destination\":\"efkdlf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"kfpagao\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"qblylsyxkqj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"vti\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},{\"name\":\"sz\",\"id\":\"e\",\"type\":\"sbzkf\",\"resourceId\":\"beyvpnqicvinvkjj\",\"notificationSettings\":[{\"destination\":\"rbuukzclewyhmlwp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ofncckwyfzqwhxxb\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"zfeqztppri\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}],\"nextLink\":\"altol\"}")
             .toObject(ResourceListResponse.class);
-        Assertions.assertEquals("stkiiuxhqyud", model.value().get(0).resourceId());
-        Assertions.assertEquals("rq", model.value().get(0).notificationSettings().get(0).destination());
+        Assertions.assertEquals("lfltka", model.value().get(0).resourceId());
+        Assertions.assertEquals("efkdlf", model.value().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.value().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.value().get(0).notificationSettings().get(0).language());
         Assertions.assertFalse(model.value().get(0).notificationSettings().get(0).disabled());
-        Assertions.assertEquals("koen", model.nextLink());
+        Assertions.assertEquals("altol", model.nextLink());
     }
 }

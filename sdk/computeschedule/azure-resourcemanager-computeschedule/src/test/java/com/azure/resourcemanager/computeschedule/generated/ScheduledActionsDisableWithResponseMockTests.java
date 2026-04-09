@@ -27,7 +27,7 @@ public final class ScheduledActionsDisableWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.scheduledActions().disableWithResponse("yq", "xzfe", com.azure.core.util.Context.NONE);
+        manager.scheduledActions().disableWithResponse("oepry", "t", com.azure.core.util.Context.NONE);
 
     }
 }

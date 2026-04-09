@@ -16,10 +16,10 @@ public final class ScheduledActionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourceInner model = BinaryData.fromString(
-            "{\"name\":\"ou\",\"id\":\"nvudwtiukb\",\"type\":\"ngkpocipazy\",\"resourceId\":\"o\",\"notificationSettings\":[{\"destination\":\"kgjn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ygevqzntypmrbpiz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"sdpydnfyhxdeoejz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"sjttgzfbish\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}")
+            "{\"name\":\"ncwsob\",\"id\":\"wcsdbnwdcfhucq\",\"type\":\"fuvglsbjjca\",\"resourceId\":\"vxb\",\"notificationSettings\":[{\"destination\":\"udutnco\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"qtvcofudflvkgj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"nnqvsa\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}")
             .toObject(ScheduledActionResourceInner.class);
-        Assertions.assertEquals("o", model.resourceId());
-        Assertions.assertEquals("kgjn", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("vxb", model.resourceId());
+        Assertions.assertEquals("udutnco", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
         Assertions.assertFalse(model.notificationSettings().get(0).disabled());
@@ -27,27 +27,23 @@ public final class ScheduledActionResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionResourceInner model = new ScheduledActionResourceInner().withResourceId("o")
+        ScheduledActionResourceInner model = new ScheduledActionResourceInner().withResourceId("vxb")
             .withNotificationSettings(Arrays.asList(
-                new NotificationProperties().withDestination("kgjn")
+                new NotificationProperties().withDestination("udutnco")
                     .withType(NotificationType.EMAIL)
                     .withLanguage(Language.EN_US)
                     .withDisabled(false),
-                new NotificationProperties().withDestination("ygevqzntypmrbpiz")
+                new NotificationProperties().withDestination("qtvcofudflvkgj")
                     .withType(NotificationType.EMAIL)
                     .withLanguage(Language.EN_US)
-                    .withDisabled(false),
-                new NotificationProperties().withDestination("sdpydnfyhxdeoejz")
+                    .withDisabled(true),
+                new NotificationProperties().withDestination("nnqvsa")
                     .withType(NotificationType.EMAIL)
                     .withLanguage(Language.EN_US)
-                    .withDisabled(false),
-                new NotificationProperties().withDestination("sjttgzfbish")
-                    .withType(NotificationType.EMAIL)
-                    .withLanguage(Language.EN_US)
-                    .withDisabled(true)));
+                    .withDisabled(false)));
         model = BinaryData.fromObject(model).toObject(ScheduledActionResourceInner.class);
-        Assertions.assertEquals("o", model.resourceId());
-        Assertions.assertEquals("kgjn", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("vxb", model.resourceId());
+        Assertions.assertEquals("udutnco", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
         Assertions.assertFalse(model.notificationSettings().get(0).disabled());

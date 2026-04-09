@@ -21,34 +21,35 @@ public final class ScheduledActionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Start\",\"startTime\":\"2021-03-27T22:11:53Z\",\"endTime\":\"2021-09-20T08:20:08Z\",\"schedule\":{\"scheduledTime\":\"phrcgyncoc\",\"timeZone\":\"ecfvmm\",\"requestedWeekDays\":[\"Tuesday\"],\"requestedMonths\":[\"June\",\"June\",\"November\",\"December\"],\"requestedDaysOfTheMonth\":[164546469,1343274314],\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"c\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"kwlzuvccfwnfn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Canceled\"},\"location\":\"x\",\"tags\":{\"bqqwxrj\":\"gtzxdpn\"},\"id\":\"eallnwsubisnj\",\"name\":\"mpmngnzscxaqwoo\",\"type\":\"hcbonqvpkvlr\"},{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Start\",\"startTime\":\"2021-04-17T15:50:50Z\",\"endTime\":\"2021-10-21T11:16:02Z\",\"schedule\":{\"scheduledTime\":\"ipheoflokeyyien\",\"timeZone\":\"bdlwtgrhpdjpj\",\"requestedWeekDays\":[\"All\",\"Thursday\",\"Saturday\",\"All\"],\"requestedMonths\":[\"All\"],\"requestedDaysOfTheMonth\":[958851014,1063088657,184362773,973371108],\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"hejjz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"gwdslfhotwm\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"lbjnpgacftadehx\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":true,\"provisioningState\":\"Failed\"},\"location\":\"suesnzw\",\"tags\":{\"xzdmohctb\":\"bavo\",\"ndnvo\":\"vudwx\",\"lazjdyggdtjixhbk\":\"gujjugwdkcglh\"},\"id\":\"ofqweykhmenevfye\",\"name\":\"fwhybcibvy\",\"type\":\"dcsi\"},{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Hibernate\",\"startTime\":\"2021-05-28T22:29:37Z\",\"endTime\":\"2021-01-25T02:11:12Z\",\"schedule\":{\"scheduledTime\":\"dectehfiqsc\",\"timeZone\":\"eypvhezrkg\",\"requestedWeekDays\":[\"Monday\",\"Sunday\",\"All\"],\"requestedMonths\":[\"May\",\"June\"],\"requestedDaysOfTheMonth\":[450468139,34828913,509090660,668805249],\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"yqjpkcatt\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":false,\"provisioningState\":\"Deleting\"},\"location\":\"qpjhvmda\",\"tags\":{\"q\":\"ysou\",\"yhltrpmopjmcm\":\"canoaeupf\"},\"id\":\"tuo\",\"name\":\"thfuiuaodsfcpkvx\",\"type\":\"dpuozmyz\"}],\"nextLink\":\"agfuaxbezyiu\"}")
+            "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-07-15T10:08:59Z\",\"endTime\":\"2021-10-21T22:30:59Z\",\"schedule\":{\"scheduledTime\":\"jqbjhhy\",\"timeZone\":\"xrwlyc\",\"requestedWeekDays\":[\"Saturday\",\"Monday\"],\"requestedMonths\":[\"March\"],\"requestedDaysOfTheMonth\":[1622537719,1440361385,1546051716,1081662268],\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{}},\"deadlineType\":\"InitiateAt\"},\"notificationSettings\":[{\"destination\":\"xqugjhkycubedd\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"wqm\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"rmnjijpx\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":false,\"provisioningState\":\"Canceled\"},\"location\":\"xbaaabjyv\",\"tags\":{\"nevfdnw\":\"fimrzrtuzqogse\",\"euzsoi\":\"wmewzsyy\",\"thzvaytdwkqbrqu\":\"judpfrxt\",\"xiilivpdtiirqt\":\"paxh\"},\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"}],\"nextLink\":\"wxuqlcvydypatdoo\"}")
             .toObject(ScheduledActionListResult.class);
-        Assertions.assertEquals("x", model.value().get(0).location());
-        Assertions.assertEquals("gtzxdpn", model.value().get(0).tags().get("bqqwxrj"));
+        Assertions.assertEquals("xbaaabjyv", model.value().get(0).location());
+        Assertions.assertEquals("fimrzrtuzqogse", model.value().get(0).tags().get("nevfdnw"));
         Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET,
             model.value().get(0).properties().resourceType());
-        Assertions.assertEquals(ScheduledActionType.START, model.value().get(0).properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T22:11:53Z"),
+        Assertions.assertEquals(ScheduledActionType.DEALLOCATE, model.value().get(0).properties().actionType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T10:08:59Z"),
             model.value().get(0).properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T08:20:08Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T22:30:59Z"),
             model.value().get(0).properties().endTime());
-        Assertions.assertEquals("phrcgyncoc", model.value().get(0).properties().schedule().scheduledTime());
-        Assertions.assertEquals("ecfvmm", model.value().get(0).properties().schedule().timeZone());
-        Assertions.assertEquals(WeekDay.TUESDAY,
+        Assertions.assertEquals("jqbjhhy", model.value().get(0).properties().schedule().scheduledTime());
+        Assertions.assertEquals("xrwlyc", model.value().get(0).properties().schedule().timeZone());
+        Assertions.assertEquals(WeekDay.SATURDAY,
             model.value().get(0).properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.JUNE, model.value().get(0).properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(164546469,
+        Assertions.assertEquals(Month.MARCH, model.value().get(0).properties().schedule().requestedMonths().get(0));
+        Assertions.assertEquals(1622537719,
             model.value().get(0).properties().schedule().requestedDaysOfTheMonth().get(0));
         Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
             model.value().get(0).properties().schedule().executionParameters().optimizationPreference());
-        Assertions.assertEquals(DeadlineType.UNKNOWN, model.value().get(0).properties().schedule().deadlineType());
-        Assertions.assertEquals("c", model.value().get(0).properties().notificationSettings().get(0).destination());
+        Assertions.assertEquals(DeadlineType.INITIATE_AT, model.value().get(0).properties().schedule().deadlineType());
+        Assertions.assertEquals("xqugjhkycubedd",
+            model.value().get(0).properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             model.value().get(0).properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US,
             model.value().get(0).properties().notificationSettings().get(0).language());
         Assertions.assertTrue(model.value().get(0).properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(model.value().get(0).properties().disabled());
-        Assertions.assertEquals("agfuaxbezyiu", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).properties().disabled());
+        Assertions.assertEquals("wxuqlcvydypatdoo", model.nextLink());
     }
 }
