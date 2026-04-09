@@ -985,7 +985,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .addKeyValue(ENTITY_PATH_KEY, entityName)
             .addKeyValue("recoveryKind", kind)
             .addKeyValue("callSite", callSite)
-            .log("Performing {} recovery before retry.", kind);
+            .log("Performing {} recovery before retry.", kind, error);
 
         // Close the operation-scoped send link so the next retry creates a fresh one.
         // Using a per-operation AtomicReference (not a class-level field) prevents concurrent send
