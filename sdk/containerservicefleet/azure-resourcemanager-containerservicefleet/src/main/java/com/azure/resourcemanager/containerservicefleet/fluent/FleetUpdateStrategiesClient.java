@@ -198,6 +198,8 @@ public interface FleetUpdateStrategiesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -205,5 +207,6 @@ public interface FleetUpdateStrategiesClient {
      * @return the response of a FleetUpdateStrategy list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FleetUpdateStrategyInner> listByFleet(String resourceGroupName, String fleetName, Context context);
+    PagedIterable<FleetUpdateStrategyInner> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context);
 }

@@ -202,6 +202,12 @@ public class TenantWorkloadConfig {
     @JsonProperty("connectionSharingAcrossClientsEnabled")
     private Boolean connectionSharingAcrossClientsEnabled;
 
+    @JsonProperty("http2Enabled")
+    private Boolean http2Enabled;
+
+    @JsonProperty("http2MaxConcurrentStreams")
+    private Integer http2MaxConcurrentStreams;
+
     @JsonProperty("preferredRegionsList")
     private String preferredRegionsList;
 
@@ -329,6 +335,12 @@ public class TenantWorkloadConfig {
 
     public ConsistencyLevel getConsistencyLevel() {
         if (consistencyLevel == null) return ConsistencyLevel.SESSION;
+        for (ConsistencyLevel level : ConsistencyLevel.values()) {
+            if (level.toString().equalsIgnoreCase(consistencyLevel)
+                || level.name().equalsIgnoreCase(consistencyLevel)) {
+                return level;
+            }
+        }
         return ConsistencyLevel.valueOf(consistencyLevel.toUpperCase());
     }
 
@@ -336,6 +348,14 @@ public class TenantWorkloadConfig {
 
     public boolean isConnectionSharingAcrossClientsEnabled() {
         return connectionSharingAcrossClientsEnabled != null && connectionSharingAcrossClientsEnabled;
+    }
+
+    public boolean isHttp2Enabled() {
+        return http2Enabled != null && http2Enabled;
+    }
+
+    public Integer getHttp2MaxConcurrentStreams() {
+        return http2MaxConcurrentStreams;
     }
 
     public List<String> getPreferredRegionsList() {
@@ -508,6 +528,10 @@ public class TenantWorkloadConfig {
                     if (overwrite || environment == null) environment = value; break;
                 case "useSync":
                     if (overwrite || useSync == null) useSync = Boolean.parseBoolean(value); break;
+                case "http2Enabled":
+                    if (overwrite || http2Enabled == null) http2Enabled = Boolean.parseBoolean(value); break;
+                case "http2MaxConcurrentStreams":
+                    if (overwrite || http2MaxConcurrentStreams == null) http2MaxConcurrentStreams = Integer.parseInt(value); break;
                 // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
                 // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
                 case "minConnectionPoolSizePerEndpoint":

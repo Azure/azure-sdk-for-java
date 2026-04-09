@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
@@ -23,25 +21,29 @@ final class JsonConfigurationParser {
     private static final ObjectMapper MAPPER = JsonMapper.builder().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS).build();
 
     static boolean isJsonContentType(String contentType) {
-        String acceptedMainType = "application";
-        String acceptedSubType = "json";
-
         if (!StringUtils.hasText(contentType)) {
             return false;
         }
 
-        if (contentType.contains("/")) {
-            String mainType = contentType.split("/")[0];
-            String subType = contentType.split("/")[1];
+        contentType = contentType.strip().toLowerCase();
+        String mimeType = contentType.split(";")[0].strip();
 
-            if (mainType.equalsIgnoreCase(acceptedMainType)) {
-                if (subType.contains("+")) {
-                    List<String> subtypes = Arrays.asList(subType.split("\\+"));
-                    return subtypes.contains(acceptedSubType);
-                } else {
-                    return subType.equalsIgnoreCase(acceptedSubType);
-                }
-            }
+        String[] typeParts = mimeType.split("/");
+        if (typeParts.length != 2) {
+            return false;
+        }
+
+        String mainType = typeParts[0];
+        String subType = typeParts[1];
+        
+        if (!"application".equals(mainType)) {
+            return false;
+        }
+
+        String[] subTypes = subType.split("\\+");
+        // Check if the last part (suffix) is "json"
+        if (subTypes.length > 0 && subTypes[subTypes.length - 1].equals("json")) {
+            return true;
         }
 
         return false;

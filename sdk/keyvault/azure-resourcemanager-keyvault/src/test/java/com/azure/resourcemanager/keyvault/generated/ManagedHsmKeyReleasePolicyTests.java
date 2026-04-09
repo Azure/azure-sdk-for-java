@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedHsmKeyReleasePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedHsmKeyReleasePolicy model
-            = BinaryData.fromString("{\"contentType\":\"ircgpikpz\"}").toObject(ManagedHsmKeyReleasePolicy.class);
-        Assertions.assertEquals("ircgpikpz", model.contentType());
+        ManagedHsmKeyReleasePolicy model = BinaryData.fromString("{\"contentType\":\"hvxndzwmkrefajpj\"}")
+            .toObject(ManagedHsmKeyReleasePolicy.class);
+        Assertions.assertEquals("hvxndzwmkrefajpj", model.contentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedHsmKeyReleasePolicy model = new ManagedHsmKeyReleasePolicy().withContentType("ircgpikpz");
+        ManagedHsmKeyReleasePolicy model = new ManagedHsmKeyReleasePolicy().withContentType("hvxndzwmkrefajpj");
         model = BinaryData.fromObject(model).toObject(ManagedHsmKeyReleasePolicy.class);
-        Assertions.assertEquals("ircgpikpz", model.contentType());
+        Assertions.assertEquals("hvxndzwmkrefajpj", model.contentType());
     }
 }

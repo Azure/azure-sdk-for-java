@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingCustomSearchConfiguration;
 import com.azure.ai.agents.models.BingCustomSearchPreviewTool;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID - The Bing Custom Search project connection ID.</li>
  *   <li>BING_CUSTOM_SEARCH_INSTANCE_NAME - The Bing Custom Search instance name.</li>
  * </ul>
@@ -37,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BingCustomSearchAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String connectionId = Configuration.getGlobalConfiguration().get("BING_CUSTOM_SEARCH_PROJECT_CONNECTION_ID");
         String instanceName = Configuration.getGlobalConfiguration().get("BING_CUSTOM_SEARCH_INSTANCE_NAME");
 
@@ -69,7 +70,8 @@ public class BingCustomSearchAsync {
                 AgentReference agentReference = new AgentReference(agent.getName())
                     .setVersion(agent.getVersion());
 
-                return responsesAsyncClient.createWithAgent(agentReference,
+                return responsesAsyncClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .input("Search for the latest Azure AI documentation"));
             })

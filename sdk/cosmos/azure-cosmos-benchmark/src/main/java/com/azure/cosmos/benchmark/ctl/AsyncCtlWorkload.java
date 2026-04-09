@@ -12,13 +12,18 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -30,6 +35,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +55,7 @@ public class AsyncCtlWorkload implements Benchmark {
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(AsyncCtlWorkload.class);
     private final CosmosAsyncClient cosmosClient;
     private final TenantWorkloadConfig workloadConfig;
     private final Map<String, List<PojoizedJson>> docsToRead = new HashMap<>();
@@ -87,11 +93,17 @@ public class AsyncCtlWorkload implements Benchmark {
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setMaxConnectionPoolSize(workloadCfg.getMaxConnectionPoolSize());
+            if (workloadCfg.isHttp2Enabled()) {
+                Http2ConnectionConfig http2Config = gatewayConnectionConfig.getHttp2ConnectionConfig();
+                http2Config.setEnabled(true);
+                if (workloadCfg.getHttp2MaxConcurrentStreams() != null) {
+                    http2Config.setMaxConcurrentStreams(workloadCfg.getHttp2MaxConcurrentStreams());
+                }
+            }
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         workloadConfig = workloadCfg;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         parsedReadWriteQueryReadManyPct(workloadConfig.getReadWriteQueryReadManyPct());
 
@@ -244,37 +256,47 @@ public class AsyncCtlWorkload implements Benchmark {
 
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
+
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, numberOfPreCreatedDocuments)
+                .map(i -> {
+                    String uId = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
+                        dataFieldValue,
+                        partitionKey,
+                        workloadConfig.getDocumentDataFieldCount());
+                    generatedDocs.add(newDoc);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId));
+                });
+
             AtomicLong successCount = new AtomicLong(0);
             AtomicLong failureCount = new AtomicLong(0);
-            ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
-            for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
-                String uId = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
-                    dataFieldValue,
-                    partitionKey,
-                    workloadConfig.getDocumentDataFieldCount());
+            List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
+            CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            container.executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                .doOnNext(response -> {
+                    if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
+                        successCount.incrementAndGet();
+                    } else {
+                        failureCount.incrementAndGet();
+                        failedResponses.add(response);
+                        logger.debug("Error during pre-populating: {}",
+                            response.getException() != null ? response.getException().getMessage() : "unknown error");
+                    }
+                })
+                .blockLast(Duration.ofMinutes(10));
 
-                Flux<PojoizedJson> obs = container.createItem(newDoc).map(resp -> {
-                    PojoizedJson x =
-                        resp.getItem();
-                    return x;
-                }).onErrorResume(throwable -> {
-                    failureCount.incrementAndGet();
-                    logger.error("Error during pre populating item ", throwable.getMessage());
-                    return Mono.empty();
-                }).doOnSuccess(pojoizedJson -> {
-                    successCount.incrementAndGet();
-                }).flux();
-                createDocumentObservables.add(obs);
-            }
-            docsToRead.put(container.getId(),
-                Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block());
-            logger.info("Finished pre-populating {} documents for container {}",
-                successCount.get() - failureCount.get(), container.getId());
             if (failureCount.get() > 0) {
-                logger.info("Failed pre-populating {} documents for container {}",
-                    failureCount.get(), container.getId());
+                logger.warn("Bulk pre-population encountered {} failures out of {} items for container {}",
+                    failureCount.get(), numberOfPreCreatedDocuments, container.getId());
             }
+
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, container,
+                workloadConfig.getConcurrency());
+
+            docsToRead.put(container.getId(), generatedDocs);
+            logger.info("Finished pre-populating {} documents for container {}",
+                successCount.get(), container.getId());
         }
     }
 

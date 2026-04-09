@@ -38,6 +38,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -521,6 +524,54 @@ public class BuilderHelperTests {
             () -> new BlobServiceClientBuilder().endpoint(ENDPOINT + "?sig=foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
+    }
+
+    @ParameterizedTest
+    @MethodSource("blobAccountNameSupplier")
+    void secondaryIpv6Dualstack(String urlString, String expectedAccountName) throws MalformedURLException {
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(urlString));
+
+        assertEquals("https", blobUrlParts.getScheme());
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+        assertEquals("", blobUrlParts.getBlobContainerName());
+        assertNull(blobUrlParts.getSnapshot());
+        assertEquals("", blobUrlParts.getCommonSasQueryParameters().encode());
+        assertNull(blobUrlParts.getVersionId());
+
+        // Verify the endpoint can be used to reconstruct the original URL
+        String newUri = blobUrlParts.toUrl().toString();
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> blobAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://myaccount.blob.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary.blob.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-dualstack.blob.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-ipv6.blob.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-dualstack.blob.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-ipv6.blob.core.windows.net/", "myaccount"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("blobManagedDiskAccountNameSupplier")
+    void ipv6InternalAccounts(String urlString, String expectedAccountName) throws MalformedURLException {
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(urlString));
+
+        assertEquals("https", blobUrlParts.getScheme());
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+        assertEquals("", blobUrlParts.getBlobContainerName());
+        assertNull(blobUrlParts.getSnapshot());
+        assertEquals("", blobUrlParts.getCommonSasQueryParameters().encode());
+        assertNull(blobUrlParts.getVersionId());
+
+        // Verify the endpoint can be used to reconstruct the original URL
+        String newUri = blobUrlParts.toUrl().toString();
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> blobManagedDiskAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://md-d3rqxhqbxbwq.blob.core.windows.net/", "md-d3rqxhqbxbwq"),
+            Arguments.of("https://md-ssd-bndub02px100c21.blob.core.windows.net/", "md-ssd-bndub02px100c21"));
     }
 
     @Test

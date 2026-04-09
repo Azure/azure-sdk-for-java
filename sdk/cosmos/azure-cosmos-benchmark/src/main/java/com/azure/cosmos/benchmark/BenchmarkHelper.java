@@ -4,9 +4,24 @@
 package com.azure.cosmos.benchmark;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.PartitionKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 public class BenchmarkHelper {
+
+    private static final Logger logger = LoggerFactory.getLogger(BenchmarkHelper.class);
     public static PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey,
                                          int dataFieldCount) {
         PojoizedJson instance = new PojoizedJson();
@@ -29,5 +44,83 @@ public class BenchmarkHelper {
         }
 
         return startTimeMillis + maxDurationTime.toMillis() > System.currentTimeMillis();
+    }
+
+    /**
+     * Retries failed bulk operation responses by falling back to individual createItem calls.
+     * Ignores 409 (Conflict) errors since the document already exists.
+     * Re-throws all other errors after retries are exhausted.
+     *
+     * @param failedResponses list of failed bulk operation responses
+     * @param container the container to retry against
+     * @param retryConcurrency max concurrent retry operations
+     */
+    public static <TContext> void retryFailedBulkOperations(
+        List<CosmosBulkOperationResponse<TContext>> failedResponses,
+        CosmosAsyncContainer container,
+        int retryConcurrency) {
+
+        retryFailedBulkOperations(failedResponses,
+            (item, pk) -> container.createItem(item, pk, null).then(),
+            retryConcurrency);
+    }
+
+    /**
+     * Retries failed bulk operation responses using a custom create function.
+     * Ignores 409 (Conflict) errors since the document already exists.
+     * Re-throws all other non-transient errors after retries are exhausted.
+     *
+     * <p>Retryable status codes (aligned with
+     * <a href="https://github.com/Azure/azure-cosmos-distributed-bulk-sample/blob/main/src/main/java/com/azure/cosmos/samples/distributedbulk/BulkWriter.java">BulkWriter</a>):
+     * 408, 410, 429, 449, 500, 503.</p>
+     *
+     * @param failedResponses list of failed bulk operation responses
+     * @param createFunction a function that creates an item given the item and partition key
+     * @param retryConcurrency max concurrent retry operations
+     */
+    public static <TContext> void retryFailedBulkOperations(
+        List<CosmosBulkOperationResponse<TContext>> failedResponses,
+        BiFunction<PojoizedJson, PartitionKey, Mono<Void>> createFunction,
+        int retryConcurrency) {
+
+        if (failedResponses.isEmpty()) {
+            return;
+        }
+
+        logger.info("Retrying {} failed bulk operations with individual createItem calls", failedResponses.size());
+
+        Flux.fromIterable(failedResponses)
+            .flatMap(failedResponse -> {
+                CosmosItemOperation operation = failedResponse.getOperation();
+                PojoizedJson item = operation.getItem();
+                PartitionKey pk = operation.getPartitionKeyValue();
+
+                return createFunction.apply(item, pk)
+                    .retryWhen(Retry.backoff(5, Duration.ofMillis(100))
+                        .maxBackoff(Duration.ofSeconds(5))
+                        .jitter(0.5)
+                        .filter(error -> {
+                            if (!(error instanceof CosmosException)) {
+                                return false;
+                            }
+                            int statusCode = ((CosmosException) error).getStatusCode();
+                            return statusCode == 408
+                                || statusCode == 410
+                                || statusCode == 429
+                                || statusCode == 449
+                                || statusCode == 500
+                                || statusCode == 503;
+                        }))
+                    .onErrorResume(error -> {
+                        if (error instanceof CosmosException
+                            && ((CosmosException) error).getStatusCode() == 409) {
+                            return Mono.empty();
+                        }
+                        return Mono.error(error);
+                    });
+            }, Math.min(retryConcurrency, 20))
+            .blockLast(Duration.ofMinutes(10));
+
+        logger.info("Finished retrying failed bulk operations");
     }
 }

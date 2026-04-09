@@ -9,7 +9,7 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Certificates_Delete.json
+     * x-ms-original-file: 2025-11-01/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.

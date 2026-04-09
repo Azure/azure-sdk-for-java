@@ -375,19 +375,17 @@ public final class CosmosContainerProperties {
      *
      * @return the FullTextPolicy
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPolicy getFullTextPolicy() {
         return this.documentCollection.getFullTextPolicy();
     }
 
     /**
-     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
+     * Sets the Full Text Policy containing paths for full text search and the language specification for each path.
      * It also contains the default language to be used.
      *
      * @param value the FullTextPolicy.
      * @return the CosmosContainerProperties.
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setFullTextPolicy(CosmosFullTextPolicy value) {
         this.documentCollection.setFullTextPolicy(value);
         return this;

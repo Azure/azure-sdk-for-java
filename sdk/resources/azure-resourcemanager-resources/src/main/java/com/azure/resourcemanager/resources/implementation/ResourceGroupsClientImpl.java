@@ -74,7 +74,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
+    @ServiceInterface(name = "ResourceManagementClientResourceGroups")
     public interface ResourceGroupsService {
         @Headers({ "Content-Type: application/json" })
         @Head("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
@@ -1257,7 +1257,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the resource groups for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1283,7 +1284,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the resource groups for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
