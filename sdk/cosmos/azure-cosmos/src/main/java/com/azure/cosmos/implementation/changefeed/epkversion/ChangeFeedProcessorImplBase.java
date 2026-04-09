@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverFactory;
-import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
 import com.azure.cosmos.implementation.changefeed.HealthMonitor;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.PartitionController;
@@ -23,6 +22,7 @@ import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedContextClientImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.CheckpointFrequencyFactory;
 import com.azure.cosmos.implementation.changefeed.common.CheckpointerObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
@@ -372,7 +372,10 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     abstract boolean canBootstrapFromPkRangeIdVersionLeaseStore();
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        CheckpointerObserverFactory<T> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
+        CheckpointerObserverFactory<T> factory =
+            new CheckpointerObserverFactory<>(
+                this.observerFactory,
+                CheckpointFrequencyFactory.fromOptions(this.changeFeedProcessorOptions));
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
                 this.feedContextClient,

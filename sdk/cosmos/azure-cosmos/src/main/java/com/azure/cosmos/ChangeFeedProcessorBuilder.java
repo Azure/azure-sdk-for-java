@@ -403,6 +403,16 @@ public class ChangeFeedProcessorBuilder {
             //  force a lot of resets and lead to a poor overall performance of ChangeFeedProcessor.
             throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
         }
+
+        ChangeFeedCheckpointStrategy checkpointStrategy = this.changeFeedProcessorOptions.getCheckpointStrategy();
+        if (checkpointStrategy instanceof TimeIntervalCheckpointStrategy) {
+            if (((TimeIntervalCheckpointStrategy)checkpointStrategy).getMaxCheckpointDelay()
+                .compareTo(this.changeFeedProcessorOptions.getLeaseExpirationInterval()) >= 0) {
+                throw new IllegalArgumentException(
+                    "changeFeedProcessorOptions: expecting checkpointStrategy.maxCheckpointDelay less than leaseExpirationInterval");
+            }
+        }
+
         //  Some extra checks for all versions and deletes mode
         if (ChangeFeedMode.FULL_FIDELITY.equals(changeFeedMode)) {
             if (this.changeFeedProcessorOptions.getStartTime() != null) {

@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverFactory;
-import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
 import com.azure.cosmos.implementation.changefeed.HealthMonitor;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.PartitionController;
@@ -21,6 +20,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedContextClientImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.CheckpointFrequencyFactory;
 import com.azure.cosmos.implementation.changefeed.common.CheckpointerObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
@@ -419,7 +419,10 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        CheckpointerObserverFactory<JsonNode> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
+        CheckpointerObserverFactory<JsonNode> factory =
+            new CheckpointerObserverFactory<>(
+                this.observerFactory,
+                CheckpointFrequencyFactory.fromOptions(this.changeFeedProcessorOptions));
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
             this.feedContextClient,

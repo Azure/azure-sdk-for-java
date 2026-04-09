@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ChangeFeedCheckpointStrategy;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import reactor.core.scheduler.Scheduler;
@@ -62,6 +63,7 @@ public final class ChangeFeedProcessorOptions {
 
     private Scheduler scheduler;
     private ThroughputControlGroupConfig feedPollThroughputControlGroupConfig;
+    private ChangeFeedCheckpointStrategy checkpointStrategy;
 
     /**
      * Instantiates a new Change feed processor options.
@@ -79,6 +81,7 @@ public final class ChangeFeedProcessorOptions {
 
         this.scheduler = Schedulers.boundedElastic();
         this.feedPollThroughputControlGroupConfig = null;
+        this.checkpointStrategy = null;
         this.leaseVerificationOnRestartEnabled = DEFAULT_LEASE_VERIFICATION_ON_RESTART_ENABLED;
     }
 
@@ -426,7 +429,7 @@ public final class ChangeFeedProcessorOptions {
      * Please use this config with caution. By default, CFP will try to process the changes as fast as possible,
      * only use this config if you want to limit the RU that can be used for your change feed processing.
      * By using this config, it can slow down the process and cause the lag.
-     * 
+     *
      * For direct mode, please configure the throughput control group with the total RU you would allow for changeFeed processing.
      * For gateway mode, please configure the throughput control group with the total RU you would allow for changeFeed processing / total CFP Instances.
      *
@@ -448,6 +451,29 @@ public final class ChangeFeedProcessorOptions {
      */
     public ThroughputControlGroupConfig getFeedPollThroughputControlGroupConfig() {
         return this.feedPollThroughputControlGroupConfig;
+    }
+
+    /**
+     * Sets the checkpoint strategy for the Change Feed Processor.
+     * <p>
+     * If not set, the default behavior checkpoints after each processed batch.
+     *
+     * @param checkpointStrategy the checkpoint strategy.
+     * @return the {@link ChangeFeedProcessorOptions}.
+     */
+    public ChangeFeedProcessorOptions setCheckpointStrategy(ChangeFeedCheckpointStrategy checkpointStrategy) {
+        checkNotNull(checkpointStrategy, "Argument 'checkpointStrategy' can not be null");
+        this.checkpointStrategy = checkpointStrategy;
+        return this;
+    }
+
+    /**
+     * Gets the configured checkpoint strategy.
+     *
+     * @return the configured checkpoint strategy, or null when default every-batch checkpointing is used.
+     */
+    public ChangeFeedCheckpointStrategy getCheckpointStrategy() {
+        return this.checkpointStrategy;
     }
 
     /**
