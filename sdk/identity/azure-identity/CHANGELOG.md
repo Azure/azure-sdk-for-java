@@ -2,6 +2,10 @@
 
 ## 1.18.7 (2026-10-01)
 
+### Bugs Fixed
+
+- Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
+
 ### Other Changes
 
 #### Dependency Updates
