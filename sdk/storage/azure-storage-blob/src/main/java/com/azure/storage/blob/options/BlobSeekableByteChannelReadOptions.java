@@ -6,7 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 import java.nio.channels.SeekableByteChannel;
 
@@ -19,7 +19,7 @@ public final class BlobSeekableByteChannelReadOptions {
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
-    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
@@ -112,25 +112,25 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
-     * Gets the algorithm to use for transfer content validation on the response. See {@link StorageChecksumAlgorithm}
+     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
      * for more details.
      *
      * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return transferValidationChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for transfer content validation on the response. See {@link StorageChecksumAlgorithm}
+     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
      * for more details.
      *
-     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
     public BlobSeekableByteChannelReadOptions
-        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 /**
  * Extended options that may be passed when downloading blob content (full blob or range in memory).
@@ -18,7 +18,7 @@ public final class BlobDownloadContentOptions {
     private DownloadRetryOptions downloadRetryOptions;
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
-    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobDownloadContentOptions}.
@@ -107,23 +107,23 @@ public final class BlobDownloadContentOptions {
     }
 
     /**
-     * Gets the algorithm to use for transfer content validation. See {@link StorageChecksumAlgorithm} for more details.
+     * Gets the algorithm to use for transfer content validation. See {@link ContentValidationAlgorithm} for more details.
      *
      * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return transferValidationChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for transfer content validation. See {@link StorageChecksumAlgorithm} for more details.
+     * Sets the algorithm to use for transfer content validation. See {@link ContentValidationAlgorithm} for more details.
      *
-     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
     public BlobDownloadContentOptions
-        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

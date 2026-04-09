@@ -181,6 +181,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream() {
         return getBlobOutputStream((AppendBlobRequestConditions) null);
     }
@@ -194,6 +195,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         AppendBlobRequestConditions requestConditions = null;
         if (!overwrite) {
@@ -214,6 +216,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(AppendBlobRequestConditions requestConditions) {
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, requestConditions);
     }
@@ -228,7 +231,7 @@ public final class AppendBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(AppendBlobOutputStreamOptions options) {
         options = options == null ? new AppendBlobOutputStreamOptions() : options;
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options.getRequestConditions(),
-            options.getTransferValidationChecksumAlgorithm());
+            options.getContentValidationAlgorithm());
     }
 
     /**
@@ -535,7 +538,7 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        if (options.getBodyStream() == null) {
+        if (options.getDataStream() == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client."));
         }
@@ -543,12 +546,12 @@ public final class AppendBlobClient extends BlobClientBase {
 
         // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
         // support up to 4MB
-        fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), options.getLength(), getMaxAppendBlockBytes(),
+        fbb = Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(), getMaxAppendBlockBytes(),
             true);
 
         Mono<Response<AppendBlobItem>> response
             = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, options.getLength(), options.getContentMd5(),
-                options.getRequestConditions(), options.getTransferValidationChecksumAlgorithm(), context);
+                options.getRequestConditions(), options.getContentValidationAlgorithm(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

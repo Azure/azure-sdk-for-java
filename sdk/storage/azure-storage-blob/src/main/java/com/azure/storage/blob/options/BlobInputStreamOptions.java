@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -18,7 +18,7 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
-    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobInputStreamOptions}.
@@ -115,25 +115,24 @@ public class BlobInputStreamOptions {
     }
 
     /**
-     * Gets the algorithm to use for transfer content validation on the response. See {@link StorageChecksumAlgorithm}
+     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
      * for more details.
      *
      * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return transferValidationChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for transfer content validation on the response. See {@link StorageChecksumAlgorithm}
+     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
      * for more details.
      *
-     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlobInputStreamOptions
-        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+    public BlobInputStreamOptions setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

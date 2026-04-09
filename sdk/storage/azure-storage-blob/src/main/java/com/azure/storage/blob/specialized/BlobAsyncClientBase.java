@@ -81,7 +81,7 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -1188,8 +1188,7 @@ public class BlobAsyncClientBase {
             BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
-                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getTransferValidationChecksumAlgorithm(),
-                context));
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1242,8 +1241,7 @@ public class BlobAsyncClientBase {
             BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
-                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getTransferValidationChecksumAlgorithm(),
-                context)
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context)
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1260,7 +1258,7 @@ public class BlobAsyncClientBase {
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        StorageChecksumAlgorithm transferValidationChecksumAlgorithm, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         BlobRequestConditions finalRequestConditions
@@ -1549,7 +1547,7 @@ public class BlobAsyncClientBase {
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
-                options.getTransferValidationChecksumAlgorithm(), context))
+                options.getContentValidationAlgorithm(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1564,7 +1562,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        StorageChecksumAlgorithm transferValidationChecksumAlgorithm, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1575,7 +1573,7 @@ public class BlobAsyncClientBase {
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
             = (range, conditions) -> this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, transferValidationChecksumAlgorithm, context);
+                rangeGetContentMd5, contentValidationAlgorithm, context);
 
         return ChunkedDownloadUtils
             .downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions, downloadFunc, true,

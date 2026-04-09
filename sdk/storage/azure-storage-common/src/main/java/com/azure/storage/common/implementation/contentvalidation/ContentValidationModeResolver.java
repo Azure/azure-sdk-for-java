@@ -10,7 +10,7 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +37,7 @@ public final class ContentValidationModeResolver {
      * @param chunkedUpload Whether this request is part of a multi-part upload.
      * @return The context, with {@link StructuredMessageConstants#CONTENT_VALIDATION_MODE_KEY} set when applicable.
      */
-    public static Context addContentValidationMode(Context context, StorageChecksumAlgorithm algorithm,
+    public static Context addContentValidationMode(Context context, ContentValidationAlgorithm algorithm,
         long contentLength, boolean chunkedUpload) {
         Context baseContext = context == null ? Context.NONE : context;
         String mode
@@ -55,7 +55,7 @@ public final class ContentValidationModeResolver {
      * @param <T> The type of the elements in the reactive sequence.
      * @return {@code mono}, possibly augmented with Reactor context writes.
      */
-    public static <T> Mono<T> addContentValidationMode(Mono<T> mono, StorageChecksumAlgorithm algorithm,
+    public static <T> Mono<T> addContentValidationMode(Mono<T> mono, ContentValidationAlgorithm algorithm,
         long contentLength, boolean chunkedUpload) {
         String mode
             = chunkedUpload ? getModeForChunkedUpload(algorithm) : getModeForSinglePartUpload(algorithm, contentLength);
@@ -69,8 +69,8 @@ public final class ContentValidationModeResolver {
      * Mode for a single-part upload. Use CRC64 header when length is less than 4MB, otherwise structured
      * message.
      */
-    private static String getModeForSinglePartUpload(StorageChecksumAlgorithm algorithm, long length) {
-        if (algorithm == StorageChecksumAlgorithm.CRC64 || algorithm == StorageChecksumAlgorithm.AUTO) {
+    private static String getModeForSinglePartUpload(ContentValidationAlgorithm algorithm, long length) {
+        if (algorithm == ContentValidationAlgorithm.CRC64 || algorithm == ContentValidationAlgorithm.AUTO) {
             return length < MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER
                 ? USE_CRC64_CHECKSUM_HEADER_CONTEXT
                 : USE_STRUCTURED_MESSAGE_CONTEXT;
@@ -81,8 +81,8 @@ public final class ContentValidationModeResolver {
     /**
      * Mode for a chunked (multi-part) upload. Always use structured message.
      */
-    private static String getModeForChunkedUpload(StorageChecksumAlgorithm algorithm) {
-        if (algorithm == StorageChecksumAlgorithm.CRC64 || algorithm == StorageChecksumAlgorithm.AUTO) {
+    private static String getModeForChunkedUpload(ContentValidationAlgorithm algorithm) {
+        if (algorithm == ContentValidationAlgorithm.CRC64 || algorithm == ContentValidationAlgorithm.AUTO) {
             return USE_STRUCTURED_MESSAGE_CONTEXT;
         }
         return null;
@@ -90,35 +90,35 @@ public final class ContentValidationModeResolver {
 
     /**
      * Validates transactional checksum options. Throws if {@code contentMd5} and a non-null
-     * {@code transferValidationChecksumAlgorithm} are both set.
+     * {@code contentValidationAlgorithm} are both set.
      * <p>
      * Async clients typically wrap the call in {@code try}/{@code catch} and return
      * {@code com.azure.core.util.FluxUtil.monoError(logger, ex)} so the failure remains a deferred reactive error.
      *
      * @param contentMd5 Caller-provided transactional MD5, if any.
-     * @param transferValidationChecksumAlgorithm Transfer validation checksum algorithm from options.
+     * @param contentValidationAlgorithm Transfer validation checksum algorithm from options.
      * @throws IllegalArgumentException if options conflict.
      */
     public static void validateTransactionalChecksumOptions(byte[] contentMd5,
-        StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
+        ContentValidationAlgorithm contentValidationAlgorithm) {
         if (contentMd5 != null
-            && transferValidationChecksumAlgorithm != null
-            && transferValidationChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
+            && contentValidationAlgorithm != null
+            && contentValidationAlgorithm != ContentValidationAlgorithm.NONE) {
             throw new IllegalArgumentException(CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE);
         }
     }
 
     /**
      * Validates transactional checksum options when MD5 may be SDK-computed. Throws if {@code computeMd5} and a
-     * non-none {@code transferValidationChecksumAlgorithm} are both active.
+     * non-none {@code contentValidationAlgorithm} are both active.
      *
      * @param computeMd5 Whether the SDK will compute transactional MD5.
-     * @param transferValidationChecksumAlgorithm Transfer validation checksum algorithm from options.
+     * @param contentValidationAlgorithm Transfer validation checksum algorithm from options.
      * @throws IllegalArgumentException if options conflict.
      */
     public static void validateTransactionalChecksumOptions(boolean computeMd5,
-        StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        if (computeMd5 && transferValidationChecksumAlgorithm != null) {
+        ContentValidationAlgorithm contentValidationAlgorithm) {
+        if (computeMd5 && contentValidationAlgorithm != null) {
             throw new IllegalArgumentException(CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE);
         }
     }

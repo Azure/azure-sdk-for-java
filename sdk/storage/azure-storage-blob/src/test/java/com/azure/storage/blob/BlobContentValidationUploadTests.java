@@ -23,7 +23,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         = "Only one form of transactional content validation may be used.";
 
     private static final String UPLOAD_FROM_FILE_MD5_NOT_SUPPORTED_MESSAGE
-        = "StorageChecksumAlgorithm.MD5 is not supported for uploadFromFile. Use CRC64 or AUTO instead.";
+        = "ContentValidationAlgorithm.MD5 is not supported for uploadFromFile. Use CRC64 or AUTO instead.";
 
     // ===========================================================================================
     // BlobClient.uploadWithResponse
@@ -71,8 +71,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
      * Single-part upload under 4MB: content validation uses CRC64 header only (no structured message).
      */
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadWithCrc64Header(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadWithCrc64Header(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -82,7 +82,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
@@ -92,8 +92,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
      * Single-part upload >= 4MB: content validation uses structured message.
      */
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadWithStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -103,7 +103,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -114,8 +114,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
      */
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadChunkedWithStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -127,7 +127,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -144,7 +144,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
@@ -165,7 +165,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
             .setComputeMd5(true)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.uploadWithResponse(options, null, Context.NONE));
@@ -177,8 +177,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void blockBlobSimpleUploadWithCrc64Header(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobSimpleUploadWithCrc64Header(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -187,15 +187,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setTransferValidationChecksumAlgorithm(algorithm);
+            = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void blockBlobSimpleUploadWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobSimpleUploadWithStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -204,7 +204,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setTransferValidationChecksumAlgorithm(algorithm);
+            = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -219,8 +219,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
-        BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+        BlockBlobSimpleUploadOptions options
+            = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
@@ -239,7 +239,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data).setContentMd5(md5)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.uploadWithResponse(options, null, Context.NONE));
@@ -251,8 +251,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void stageBlockWithCrc64Header(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void stageBlockWithCrc64Header(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -261,15 +261,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options
-            = new BlockBlobStageBlockOptions(getBlockID(), data).setTransferValidationChecksumAlgorithm(algorithm);
+            = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void stageBlockWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void stageBlockWithStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -278,7 +278,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options
-            = new BlockBlobStageBlockOptions(getBlockID(), data).setTransferValidationChecksumAlgorithm(algorithm);
+            = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -294,7 +294,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasNoContentValidationHeaders(recorded));
@@ -313,7 +313,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data).setContentMd5(md5)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.stageBlockWithResponse(options, null, Context.NONE));
@@ -325,8 +325,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void appendBlockWithCrc64Header(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void appendBlockWithCrc64Header(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         AppendBlobClient client = blobClient.getAppendBlobClient();
@@ -336,15 +336,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setTransferValidationChecksumAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void appendBlockWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void appendBlockWithStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         AppendBlobClient client = blobClient.getAppendBlobClient();
@@ -354,7 +354,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, TEN_MB).setTransferValidationChecksumAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions(data, TEN_MB).setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -371,7 +371,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
@@ -391,7 +391,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setContentMd5(md5)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.appendBlockWithResponse(options, null, Context.NONE));
@@ -407,8 +407,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final int FOUR_MB_PAGE_ALIGNED = (4 * Constants.MB / PAGE_BYTES) * PAGE_BYTES;
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadPagesWithCrc64Header(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadPagesWithCrc64Header(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         PageBlobClient client = blobClient.getPageBlobClient();
@@ -419,15 +419,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
-                .setTransferValidationChecksumAlgorithm(algorithm);
+                .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadPagesWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadPagesWithStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         PageBlobClient client = blobClient.getPageBlobClient();
@@ -438,7 +438,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setTransferValidationChecksumAlgorithm(algorithm);
+                .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -456,7 +456,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
@@ -478,7 +478,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
                 .setContentMd5(md5)
-                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.uploadPagesWithResponse(options, null, Context.NONE));
@@ -490,8 +490,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadFromFileWithCrc64Header(StorageChecksumAlgorithm algorithm) throws IOException {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadFromFileWithCrc64Header(ContentValidationAlgorithm algorithm) throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -499,15 +499,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadFromFileWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws IOException {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadFromFileWithStructuredMessage(ContentValidationAlgorithm algorithm) throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -515,7 +515,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -523,8 +523,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadFromFileChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws IOException {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadFromFileChunkedWithStructuredMessage(ContentValidationAlgorithm algorithm) throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -534,7 +534,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -549,7 +549,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
@@ -562,8 +562,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // --- AppendBlobClient.getBlobOutputStream ---
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void appendBlobOutputStreamWithCrc64Header(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void appendBlobOutputStreamWithCrc64Header(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         AppendBlobClient client = blobClient.getAppendBlobClient();
@@ -571,8 +571,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         byte[] randomData = getRandomByteArray(UNDER_4MB);
 
-        try (BlobOutputStream os = client.getBlobOutputStream(
-            new AppendBlobOutputStreamOptions().setTransferValidationChecksumAlgorithm(algorithm))) {
+        try (BlobOutputStream os = client
+            .getBlobOutputStream(new AppendBlobOutputStreamOptions().setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -580,8 +580,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void appendBlobOutputStreamWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void appendBlobOutputStreamWithStructuredMessage(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         AppendBlobClient client = blobClient.getAppendBlobClient();
@@ -589,8 +589,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         byte[] randomData = getRandomByteArray(TEN_MB);
 
-        try (BlobOutputStream os = client.getBlobOutputStream(
-            new AppendBlobOutputStreamOptions().setTransferValidationChecksumAlgorithm(algorithm))) {
+        try (BlobOutputStream os = client
+            .getBlobOutputStream(new AppendBlobOutputStreamOptions().setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -606,8 +606,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         byte[] randomData = getRandomByteArray(TEN_MB);
 
-        try (BlobOutputStream os = client.getBlobOutputStream(new AppendBlobOutputStreamOptions()
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE))) {
+        try (BlobOutputStream os = client.getBlobOutputStream(
+            new AppendBlobOutputStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE))) {
             os.write(randomData);
         }
 
@@ -617,8 +617,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // --- BlockBlobClient.getBlobOutputStream ---
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void blockBlobOutputStreamWithCrc64Header(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobOutputStreamWithCrc64Header(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -627,7 +627,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
-            .setTransferValidationChecksumAlgorithm(algorithm))) {
+            .setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -635,8 +635,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void blockBlobOutputStreamWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobOutputStreamWithStructuredMessage(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -645,7 +645,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setTransferValidationChecksumAlgorithm(algorithm))) {
+            .setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -654,8 +654,9 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void blockBlobOutputStreamChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobOutputStreamChunkedWithStructuredMessage(ContentValidationAlgorithm algorithm)
+        throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -666,7 +667,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-            .setTransferValidationChecksumAlgorithm(algorithm))) {
+            .setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -683,7 +684,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE))) {
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE))) {
             os.write(randomData);
         }
 
@@ -693,8 +694,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // --- PageBlobClient.getBlobOutputStream ---
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void pageBlobOutputStreamWithCrc64Header(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void pageBlobOutputStreamWithCrc64Header(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         PageBlobClient client = blobClient.getPageBlobClient();
@@ -704,7 +705,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (BlobOutputStream os = client.getBlobOutputStream(
             new PageBlobOutputStreamOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1))
-                .setTransferValidationChecksumAlgorithm(algorithm))) {
+                .setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -712,8 +713,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void pageBlobOutputStreamWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void pageBlobOutputStreamWithStructuredMessage(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         PageBlobClient client = blobClient.getPageBlobClient();
@@ -723,7 +724,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (BlobOutputStream os = client.getBlobOutputStream(
             new PageBlobOutputStreamOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1))
-                .setTransferValidationChecksumAlgorithm(algorithm))) {
+                .setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
 
@@ -741,7 +742,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (BlobOutputStream os = client.getBlobOutputStream(
             new PageBlobOutputStreamOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1))
-                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE))) {
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE))) {
             os.write(randomData);
         }
 
@@ -754,8 +755,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @LiveOnly // Seekable channel staging uses Put Block with random block IDs; not replayable with the test proxy.
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void seekableByteChannelWriteWithCrc64Header(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void seekableByteChannelWriteWithCrc64Header(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -764,7 +765,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (java.nio.channels.SeekableByteChannel channel = client.openSeekableByteChannelWrite(
             new BlockBlobSeekableByteChannelWriteOptions(BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
-                .setTransferValidationChecksumAlgorithm(algorithm))) {
+                .setContentValidationAlgorithm(algorithm))) {
             channel.write(ByteBuffer.wrap(randomData));
         }
 
@@ -773,8 +774,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void seekableByteChannelWriteWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void seekableByteChannelWriteWithStructuredMessage(ContentValidationAlgorithm algorithm) throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -783,7 +784,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (java.nio.channels.SeekableByteChannel channel = client.openSeekableByteChannelWrite(
             new BlockBlobSeekableByteChannelWriteOptions(BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
-                .setTransferValidationChecksumAlgorithm(algorithm))) {
+                .setContentValidationAlgorithm(algorithm))) {
             channel.write(ByteBuffer.wrap(randomData));
         }
 
@@ -801,7 +802,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         try (java.nio.channels.SeekableByteChannel channel = client.openSeekableByteChannelWrite(
             new BlockBlobSeekableByteChannelWriteOptions(BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
-                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.NONE))) {
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE))) {
             channel.write(ByteBuffer.wrap(randomData));
         }
 
@@ -818,8 +819,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final int EXACTLY_4MB = 4 * Constants.MB;
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadAtExactly4MBUsesStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadAtExactly4MBUsesStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -829,15 +830,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) EXACTLY_4MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(algorithm);
+            .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void blockBlobSimpleUploadAtExactly4MBUsesStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobSimpleUploadAtExactly4MBUsesStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -846,15 +847,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setTransferValidationChecksumAlgorithm(algorithm);
+            = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @ParameterizedTest
-    @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void stageBlockAtExactly4MBUsesStructuredMessage(StorageChecksumAlgorithm algorithm) {
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void stageBlockAtExactly4MBUsesStructuredMessage(ContentValidationAlgorithm algorithm) {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -863,7 +864,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options
-            = new BlockBlobStageBlockOptions(getBlockID(), data).setTransferValidationChecksumAlgorithm(algorithm);
+            = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -891,7 +892,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
                 .setProgressListener(progressReported::set))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertEquals(expectedStructuredMessageEncodedLength(TEN_MB), progressReported.get(),
@@ -913,7 +914,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 .setMaxSingleUploadSizeLong(blockSize)
                 .setProgressListener(progressReported::set))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertEquals(expectedStructuredMessageEncodedLengthChunked(TEN_MB, blockSize), progressReported.get(),
@@ -930,7 +931,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
                 .setProgressListener(progressReported::set))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
         assertEquals(expectedStructuredMessageEncodedLength(TEN_MB), progressReported.get(),
@@ -950,7 +951,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
                 .setMaxSingleUploadSizeLong(blockSize)
                 .setProgressListener(progressReported::set))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
         assertEquals(expectedStructuredMessageEncodedLengthChunked(TEN_MB, blockSize), progressReported.get(),
@@ -968,7 +969,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
                 .setProgressListener(progressReported::set))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))) {
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))) {
             os.write(randomData);
         }
 
@@ -990,7 +991,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
                 .setMaxSingleUploadSizeLong(blockSize)
                 .setProgressListener(progressReported::set))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))) {
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))) {
             os.write(randomData);
         }
 
@@ -1016,7 +1017,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadWithResponse(options, null, Context.NONE);
 
@@ -1034,7 +1035,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadWithResponse(options, null, Context.NONE);
 
@@ -1055,7 +1056,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
             .setRequestConditions(new BlobRequestConditions())
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadWithResponse(options, null, Context.NONE);
 
@@ -1072,8 +1073,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
-        BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+        BlockBlobSimpleUploadOptions options
+            = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadWithResponse(options, null, Context.NONE);
 
@@ -1092,7 +1093,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.appendBlockWithResponse(options, null, Context.NONE);
 
@@ -1111,7 +1112,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadPagesWithResponse(options, null, Context.NONE);
 
@@ -1132,7 +1133,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
-            .setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadFromFileWithResponse(options, null, Context.NONE);
 

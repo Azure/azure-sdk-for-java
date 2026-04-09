@@ -7,7 +7,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public class BlockBlobOutputStreamOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobOutputStreamOptions}.
@@ -150,25 +150,25 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the algorithm to use for transfer content validation on the request. See {@link StorageChecksumAlgorithm}
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
      * for more details.
      *
      * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return transferValidationChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for transfer content validation on the request. See {@link StorageChecksumAlgorithm}
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
      * for more details.
      *
-     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
     public BlockBlobOutputStreamOptions
-        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

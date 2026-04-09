@@ -6,7 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import reactor.core.publisher.Flux;
@@ -19,12 +19,12 @@ import java.nio.ByteBuffer;
  */
 @Fluent
 public final class AppendBlobAppendBlockOptions {
-    private final InputStream bodyStream;
-    private final Flux<ByteBuffer> bodyFlux;
+    private final InputStream dataStream;
+    private final Flux<ByteBuffer> dataFlux;
     private final long length;
     private byte[] contentMd5;
     private AppendBlobRequestConditions requestConditions;
-    private StorageChecksumAlgorithm transferValidationChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link AppendBlobAppendBlockOptions} for use with the sync client.
@@ -39,8 +39,8 @@ public final class AppendBlobAppendBlockOptions {
         if (length < 0) {
             throw new IllegalArgumentException("'length' must be >= 0");
         }
-        this.bodyStream = data;
-        this.bodyFlux = null;
+        this.dataStream = data;
+        this.dataFlux = null;
         this.length = length;
     }
 
@@ -57,8 +57,8 @@ public final class AppendBlobAppendBlockOptions {
         if (length < 0) {
             throw new IllegalArgumentException("'length' must be >= 0");
         }
-        this.bodyStream = null;
-        this.bodyFlux = data;
+        this.dataStream = null;
+        this.dataFlux = data;
         this.length = length;
     }
 
@@ -67,8 +67,8 @@ public final class AppendBlobAppendBlockOptions {
      *
      * @return The body stream, or null.
      */
-    public InputStream getBodyStream() {
-        return bodyStream;
+    public InputStream getDataStream() {
+        return dataStream;
     }
 
     /**
@@ -76,8 +76,8 @@ public final class AppendBlobAppendBlockOptions {
      *
      * @return The body flux, or null.
      */
-    public Flux<ByteBuffer> getBodyFlux() {
-        return bodyFlux;
+    public Flux<ByteBuffer> getDataFlux() {
+        return dataFlux;
     }
 
     /**
@@ -130,23 +130,23 @@ public final class AppendBlobAppendBlockOptions {
     }
 
     /**
-     * Gets the algorithm to use for transfer content validation. See {@link StorageChecksumAlgorithm} for more details.
+     * Gets the algorithm to use for transfer content validation. See {@link ContentValidationAlgorithm} for more details.
      *
      * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getTransferValidationChecksumAlgorithm() {
-        return transferValidationChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for transfer content validation. See {@link StorageChecksumAlgorithm} for more details.
+     * Sets the algorithm to use for transfer content validation. See {@link ContentValidationAlgorithm} for more details.
      *
-     * @param transferValidationChecksumAlgorithm The transfer validation checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
     public AppendBlobAppendBlockOptions
-        setTransferValidationChecksumAlgorithm(StorageChecksumAlgorithm transferValidationChecksumAlgorithm) {
-        this.transferValidationChecksumAlgorithm = transferValidationChecksumAlgorithm;
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }
