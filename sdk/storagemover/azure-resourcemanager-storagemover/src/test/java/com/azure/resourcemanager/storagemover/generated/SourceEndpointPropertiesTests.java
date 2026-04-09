@@ -11,12 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class SourceEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SourceEndpointProperties model = BinaryData
-            .fromString(
-                "{\"name\":\"nhijggmebfsi\",\"sourceEndpointResourceId\":\"butr\",\"awsS3BucketId\":\"pnazzm\"}")
+        SourceEndpointProperties model = BinaryData.fromString(
+            "{\"name\":\"avxbniwdjswztsdb\",\"sourceEndpointResourceId\":\"nxytxh\",\"awsS3BucketId\":\"xbzpfzab\"}")
             .toObject(SourceEndpointProperties.class);
-        Assertions.assertEquals("nhijggmebfsi", model.name());
-        Assertions.assertEquals("butr", model.sourceEndpointResourceId());
-        Assertions.assertEquals("pnazzm", model.awsS3BucketId());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.name());
+        Assertions.assertEquals("nxytxh", model.sourceEndpointResourceId());
+        Assertions.assertEquals("xbzpfzab", model.awsS3BucketId());
     }
 }
