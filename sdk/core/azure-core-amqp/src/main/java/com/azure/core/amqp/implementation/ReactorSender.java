@@ -436,12 +436,13 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                         }
                     }
 
-                    // Fall back to the standard max-message-size if the vendor property is absent or
-                    // non-numeric (expected for non-Service Bus brokers and older service deployments).
+                    // Fall back to the standard max-message-size if the vendor property is absent,
+                    // non-numeric, or non-positive (expected for non-Service Bus brokers and older
+                    // service deployments).
                     if (maxBatchSize <= 0) {
                         final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
                         logger.verbose(
-                            "Vendor property '{}' not found or non-numeric on link, "
+                            "Vendor property '{}' not found, non-numeric, or non-positive on link, "
                                 + "falling back to max-message-size: {}.",
                             AmqpConstants.MAX_MESSAGE_BATCH_SIZE, remoteMaxMessageSize);
                         if (remoteMaxMessageSize != null) {
