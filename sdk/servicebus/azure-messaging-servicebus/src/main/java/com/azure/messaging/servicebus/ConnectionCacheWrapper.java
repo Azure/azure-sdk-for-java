@@ -53,9 +53,10 @@ final class ConnectionCacheWrapper {
     }
 
     /**
-     * Marks the current cached connection for invalidation so the next get() closes it and
-     * creates a fresh one. Used for connection-level recovery when the connection is stale
-     * but the cache has not detected it via endpoint state signals.
+     * Invalidates the current cached connection for connection-level recovery when the
+     * connection is stale but the cache has not detected it via endpoint state signals.
+     * On v2, marks the connection for invalidation so the next get() closes it and creates
+     * a fresh one. On v1, force-closes the current channel immediately.
      */
     void invalidateConnection() {
         if (isV2) {
