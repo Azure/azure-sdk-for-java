@@ -22,10 +22,8 @@
 ## Non-Goals
 
 - **PING-based eviction (custom)** — Client-driven connection closure will only be driven
-  by idle timeout and max life of connection. We do not implement custom PING-based eviction
-  in the eviction predicate. However, reactor-netty's native `pingAckDropThreshold` closes
-  connections after consecutive unanswered PINGs — this detects half-open TCP connections
-  and is handled by the framework, not our eviction logic. Degraded but responsive connections
+  by idle timeout and max life of connection. The `Http2PingHandler` provides keepalive
+  only — it does not close connections on missed ACKs. Degraded but responsive connections
   are handled by the existing response timeout retry path (6s/6s/10s escalation → cross-region
   failover).
 
@@ -71,16 +69,19 @@ infrastructure where TCP keepalive alone is insufficient.
    `CONNECTION_EXPIRY_NANOS` attribute apply to all connections in the pool. This ensures
    DNS re-resolution for all operation types, including ChangeFeed (HTTP/1.1).
 
-3. **PING keepalive is HTTP/2 only (native)** — Uses reactor-netty's built-in PING support
-   (`pingAckTimeout` + `pingAckDropThreshold`, available since 1.2.12) configured in
-   `http2Settings`. Native support handles both keepalive (prevents L7 idle reaping) and
-   dead connection detection (closes after consecutive unanswered PINGs). No custom
-   `ChannelHandler` needed. HTTP/1.1 keepalive is a separate future concern (see Future Work).
+3. **PING keepalive is HTTP/2 only (custom handler)** — Uses a custom `Http2PingHandler`
+   (`ChannelDuplexHandler`) installed on H2 parent channels via `doOnConnected`. Native
+   reactor-netty PING (`pingAckTimeout` + `pingAckDropThreshold`, available since 1.2.12)
+   cannot be used because reactor-netty 1.2.13 bypasses built-in `maxIdleTime` handling
+   when a custom `evictionPredicate` is configured. The custom handler provides keepalive
+   only (prevents L7 idle reaping) — it does not close connections on missed ACKs.
+   Connection closure is handled by the eviction predicate. HTTP/1.1 keepalive is a
+   separate future concern (see Future Work).
 
 4. **Max lifetime and PING keepalive are independent features** — Max lifetime is stamped in
    `doOnConnected` via `HttpConnectionLifecycleUtil.stampConnectionExpiry()` for all connections.
-   PING keepalive is configured in `http2Settings` (H2 only). Disabling one does not affect
-   the other.
+   PING keepalive is installed via `Http2PingHandler.installIfAbsent()` in `doOnConnected`
+   (H2 only). Disabling one does not affect the other.
 
 5. **Per-connection jitter (subtractive)** — Each connection gets a deterministic expiry
    stamped once at creation (`CONNECTION_EXPIRY_NANOS` channel attribute). Jitter is
@@ -135,10 +136,10 @@ ConnectionProvider (reactor-netty 1.2.13)
 │  └─ If max lifetime enabled:
 │       HttpConnectionLifecycleUtil.stampConnectionExpiry(channel, base - jitter)
 │       → stamps CONNECTION_EXPIRY_NANOS attribute
-│
-├─ http2Settings (H2 only):
-│    .pingAckTimeout(10s)         ← native PING keepalive + dead conn detection
-│    .pingAckDropThreshold(2)     ← close after 2 consecutive unanswered PINGs
+│  │
+│  └─ If PING keepalive enabled AND H2 parent channel (has Http2MultiplexHandler):
+│       Http2PingHandler.installIfAbsent(channel, pingIntervalSeconds)
+│       → custom ChannelDuplexHandler, keepalive only, no close on missed ACK
 │
 ├─ doOnConnected (H2 only — if H2 enabled):
 │    Http2ResponseHeaderCleanerHandler installation
@@ -160,8 +161,7 @@ All internal — not exposed as public API. System property pattern.
 | Max lifetime | `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS` | `1800` (30 min) | Base lifetime |
 | Jitter range | Compile-time constant | `30s` | Per-connection offset subtracted: `[0s, 30s]` |
 | PING keepalive enabled | `COSMOS.HTTP2_PING_HEALTH_ENABLED` | `true` | Master toggle |
-| PING ACK timeout | `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `10s` | `pingAckTimeout` in `http2Settings` |
-| PING ACK drop threshold | Hard-coded | `2` | Close after 2 consecutive unanswered PINGs |
+| PING interval | `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `10s` | `Http2PingHandler` check interval |
 | Eviction sweep | Derived | `5s` | `clamp(min(thresholds) / 2, 1s, 5s)` |
 | Max evictions/cycle | Hard-coded | `1` | Rate limit (dead channels exempt) |
 
@@ -176,8 +176,7 @@ All internal — not exposed as public API. System property pattern.
 |--------|------|------|
 | Base lifetime | 5 min | 30 min (defensive) |
 | Jitter | Per-pool `[0s, 30s)` | Per-connection `[0s, 30s]` (subtractive) |
-| PING keepalive | No | Yes (native `pingAckTimeout`) |
-| PING-based eviction | No | Yes (native `pingAckDropThreshold` for dead connections) |
+| PING keepalive | No | Yes (custom `Http2PingHandler`) |
 
 ---
 

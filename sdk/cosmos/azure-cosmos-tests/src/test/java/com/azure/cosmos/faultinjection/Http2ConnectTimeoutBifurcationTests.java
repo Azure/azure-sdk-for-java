@@ -62,10 +62,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     private TestObject seedItem;
 
     private static final long TEST_TIMEOUT = 180_000;
-    // Network interface detected at runtime — eth0 for Docker, or the default route interface on CI VMs.
-    private String networkInterface;
-    // Prefix for privileged commands: empty string in Docker (runs as root), "sudo " on CI VMs.
-    private String sudoPrefix;
+    private NetworkFaultInjector networkFaultInjector;
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
     public Http2ConnectTimeoutBifurcationTests(CosmosClientBuilder clientBuilder) {
@@ -75,10 +72,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
 
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        // Detect whether we're running as root (Docker) or need sudo (CI VM)
-        this.sudoPrefix = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
-        this.networkInterface = detectNetworkInterface();
-        logger.info("Network interface: {}, sudo: {}", this.networkInterface, !this.sudoPrefix.isEmpty());
+        this.networkFaultInjector = new NetworkFaultInjector();
 
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         // Use the default THINCLIENT_CONNECTION_TIMEOUT_IN_MS (5000ms) — no override.
@@ -99,9 +93,9 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
 
     @AfterClass(groups = {"manual-http-network-fault"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        // Safety: remove any leftover iptables rules
-        if (sudoPrefix != null) {
-            removeIptablesDropOnPort(10250);
+        if (networkFaultInjector != null) {
+            removePerPortDelay();
+            networkFaultInjector.removeAll();
         }
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         safeClose(this.client);
@@ -123,25 +117,25 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * @param port10250DelayMs delay for port 10250 traffic (thin client data plane)
      */
     private void addPerPortDelay(int port443DelayMs, int port10250DelayMs) {
-        String iface = networkInterface;
+        String iface = networkFaultInjector.getNetworkInterface();
         String[] cmds = {
             // Create root prio qdisc with 3 bands. priomap sends ALL traffic to band 3 (no delay)
             // by default — only explicitly marked packets go to delay bands 1 and 2.
-            sudoPrefix + "tc qdisc add dev " + iface + " root handle 1: prio bands 3 priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
+            networkFaultInjector.getSudoPrefix() + "tc qdisc add dev " + iface + " root handle 1: prio bands 3 priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
             // Band 1 (handle 1:1): delay for port 443
-            String.format("%stc qdisc add dev %s parent 1:1 handle 10: netem delay %dms", sudoPrefix, iface, port443DelayMs),
+            String.format("%stc qdisc add dev %s parent 1:1 handle 10: netem delay %dms", networkFaultInjector.getSudoPrefix(), iface, port443DelayMs),
             // Band 2 (handle 1:2): delay for port 10250
-            String.format("%stc qdisc add dev %s parent 1:2 handle 20: netem delay %dms", sudoPrefix, iface, port10250DelayMs),
+            String.format("%stc qdisc add dev %s parent 1:2 handle 20: netem delay %dms", networkFaultInjector.getSudoPrefix(), iface, port10250DelayMs),
             // Band 3 (handle 1:3): no delay (default for all other traffic)
-            sudoPrefix + "tc qdisc add dev " + iface + " parent 1:3 handle 30: pfifo_fast",
+            networkFaultInjector.getSudoPrefix() + "tc qdisc add dev " + iface + " parent 1:3 handle 30: pfifo_fast",
             // Mark port 443 packets with mark 1
-            sudoPrefix + "iptables -t mangle -A OUTPUT -p tcp --dport 443 -j MARK --set-mark 1",
+            networkFaultInjector.getSudoPrefix() + "iptables -t mangle -A OUTPUT -p tcp --dport 443 -j MARK --set-mark 1",
             // Mark port 10250 packets with mark 2
-            sudoPrefix + "iptables -t mangle -A OUTPUT -p tcp --dport 10250 -j MARK --set-mark 2",
+            networkFaultInjector.getSudoPrefix() + "iptables -t mangle -A OUTPUT -p tcp --dport 10250 -j MARK --set-mark 2",
             // Route mark 1 → band 1 (port 443 delay)
-            sudoPrefix + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 1 handle 1 fw flowid 1:1",
+            networkFaultInjector.getSudoPrefix() + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 1 handle 1 fw flowid 1:1",
             // Route mark 2 → band 2 (port 10250 delay)
-            sudoPrefix + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 2 handle 2 fw flowid 1:2",
+            networkFaultInjector.getSudoPrefix() + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 2 handle 2 fw flowid 1:2",
         };
 
         for (String cmd : cmds) {
@@ -168,29 +162,29 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * @param port10250SynDelayMs SYN delay for port 10250 (thin client data plane)
      */
     private void addPerPortSynDelay(int port443SynDelayMs, int port10250SynDelayMs) {
-        String iface = networkInterface;
+        String iface = networkFaultInjector.getNetworkInterface();
         String[] cmds = {
             // Create root prio qdisc with 3 bands. priomap sends ALL traffic to band 3 (no delay)
             // by default — only explicitly marked SYN packets go to delay bands 1 and 2.
             // Without priomap override, the default TOS-based mapping sends some packets to band 1,
             // accidentally delaying non-SYN traffic and causing metadata fetch failures.
-            sudoPrefix + "tc qdisc add dev " + iface + " root handle 1: prio bands 3 priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
+            networkFaultInjector.getSudoPrefix() + "tc qdisc add dev " + iface + " root handle 1: prio bands 3 priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
             // Band 1 (handle 1:1): delay for port 443 SYN
-            String.format("%stc qdisc add dev %s parent 1:1 handle 10: netem delay %dms", sudoPrefix, iface, port443SynDelayMs),
+            String.format("%stc qdisc add dev %s parent 1:1 handle 10: netem delay %dms", networkFaultInjector.getSudoPrefix(), iface, port443SynDelayMs),
             // Band 2 (handle 1:2): delay for port 10250 SYN
-            String.format("%stc qdisc add dev %s parent 1:2 handle 20: netem delay %dms", sudoPrefix, iface, port10250SynDelayMs),
+            String.format("%stc qdisc add dev %s parent 1:2 handle 20: netem delay %dms", networkFaultInjector.getSudoPrefix(), iface, port10250SynDelayMs),
             // Band 3 (handle 1:3): no delay (default for all other traffic including non-SYN)
-            sudoPrefix + "tc qdisc add dev " + iface + " parent 1:3 handle 30: pfifo_fast",
+            networkFaultInjector.getSudoPrefix() + "tc qdisc add dev " + iface + " parent 1:3 handle 30: pfifo_fast",
             // Mark ONLY SYN packets (initial TCP connect) to port 443 with mark 1
-            sudoPrefix + "iptables -t mangle -A OUTPUT -p tcp --dport 443 --tcp-flags SYN,ACK,FIN,RST SYN -j MARK --set-mark 1",
+            networkFaultInjector.getSudoPrefix() + "iptables -t mangle -A OUTPUT -p tcp --dport 443 --tcp-flags SYN,ACK,FIN,RST SYN -j MARK --set-mark 1",
             // Mark ONLY SYN packets to port 10250 with mark 2
-            sudoPrefix + "iptables -t mangle -A OUTPUT -p tcp --dport 10250 --tcp-flags SYN,ACK,FIN,RST SYN -j MARK --set-mark 2",
+            networkFaultInjector.getSudoPrefix() + "iptables -t mangle -A OUTPUT -p tcp --dport 10250 --tcp-flags SYN,ACK,FIN,RST SYN -j MARK --set-mark 2",
             // Route mark 1 → band 1 (port 443 SYN delay)
-            sudoPrefix + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 1 handle 1 fw flowid 1:1",
+            networkFaultInjector.getSudoPrefix() + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 1 handle 1 fw flowid 1:1",
             // Route mark 2 → band 2 (port 10250 SYN delay)
-            sudoPrefix + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 2 handle 2 fw flowid 1:2",
+            networkFaultInjector.getSudoPrefix() + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 2 handle 2 fw flowid 1:2",
             // CRITICAL: Catch-all filter → band 3 (no delay) for ALL unmarked traffic.
-            sudoPrefix + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 99 u32 match u32 0 0 flowid 1:3",
+            networkFaultInjector.getSudoPrefix() + "tc filter add dev " + iface + " parent 1:0 protocol ip prio 99 u32 match u32 0 0 flowid 1:3",
         };
 
         for (String cmd : cmds) {
@@ -205,10 +199,10 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      * Removes all per-port delay rules (tc qdisc + iptables mangle marks).
      */
     private void removePerPortDelay() {
-        String iface = networkInterface;
+        String iface = networkFaultInjector.getNetworkInterface();
         String[] cmds = {
-            sudoPrefix + "tc qdisc del dev " + iface + " root 2>/dev/null",
-            sudoPrefix + "iptables -t mangle -F OUTPUT 2>/dev/null",
+            networkFaultInjector.getSudoPrefix() + "tc qdisc del dev " + iface + " root 2>/dev/null",
+            networkFaultInjector.getSudoPrefix() + "iptables -t mangle -F OUTPUT 2>/dev/null",
         };
 
         for (String cmd : cmds) {
@@ -245,78 +239,6 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     }
 
     // ========================================================================
-    // iptables helpers — DROP SYN to specific destination port
-    // ========================================================================
-
-    /**
-     * Adds an iptables rule to DROP all outgoing TCP SYN packets (new connections)
-     * to the specified destination port. This prevents the TCP handshake from completing,
-     * causing the client's CONNECT_TIMEOUT_MILLIS to fire.
-     */
-    private void addIptablesDropOnPort(int port) {
-        String cmd = String.format(
-            "%siptables -A OUTPUT -p tcp --dport %d --tcp-flags SYN,ACK,FIN,RST SYN -j DROP", sudoPrefix, port);
-        logger.info(">>> Adding iptables DROP SYN rule: {}", cmd);
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
-            int exit = p.waitFor();
-            if (exit != 0) {
-                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
-                    String errMsg = err.readLine();
-                    logger.warn("iptables add failed (exit={}): {}", exit, errMsg);
-                }
-            } else {
-                logger.info(">>> iptables DROP SYN rule active on port {}", port);
-            }
-        } catch (Exception e) {
-            logger.error("Failed to add iptables rule", e);
-            fail("Could not add iptables rule: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Removes the iptables DROP SYN rule for the specified port.
-     */
-    private void removeIptablesDropOnPort(int port) {
-        String cmd = String.format(
-            "%siptables -D OUTPUT -p tcp --dport %d --tcp-flags SYN,ACK,FIN,RST SYN -j DROP", sudoPrefix, port);
-        logger.info(">>> Removing iptables DROP SYN rule: {}", cmd);
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
-            int exit = p.waitFor();
-            if (exit == 0) {
-                logger.info(">>> iptables DROP SYN rule removed on port {}", port);
-            } else {
-                logger.warn("iptables remove returned exit={} (may already be removed)", exit);
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to remove iptables rule: {}", e.getMessage());
-        }
-    }
-
-    /**
-     * Detects the default-route network interface.
-     * In Docker this is typically eth0. On CI VMs it may be eth0, ens5, etc.
-     * Falls back to "eth0" if detection fails.
-     */
-    private static String detectNetworkInterface() {
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c",
-                "ip route show default | awk '{print $5}' | head -1"});
-            p.waitFor();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
-                String iface = reader.readLine();
-                if (iface != null && !iface.isEmpty() && !iface.contains("@")) {
-                    return iface.trim();
-                }
-            }
-        } catch (Exception e) {
-            // fall through
-        }
-        return "eth0";
-    }
-
-    // ========================================================================
     // Tests
     // ========================================================================
 
@@ -348,7 +270,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
-        addIptablesDropOnPort(10250);
+        networkFaultInjector.addPacketDrop(10250);
         Instant start = Instant.now();
         try {
             this.cosmosAsyncContainer.readItem(
@@ -375,7 +297,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
                 .as("Should be 408 or 503 due to connect timeout / e2e timeout")
                 .isIn(408, 503);
         } finally {
-            removeIptablesDropOnPort(10250);
+            networkFaultInjector.removePacketDrop(10250);
         }
 
         // Recovery: after removing the DROP rule, the next read should succeed
@@ -399,7 +321,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
      */
     @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectTimeout_GwV1_Metadata_UnaffectedByGwV2Drop() throws Exception {
-        addIptablesDropOnPort(10250);
+        networkFaultInjector.addPacketDrop(10250);
         try {
             // Create a new client — its initialization contacts port 443 for account metadata.
             // This should succeed because only port 10250 is blocked.
@@ -420,7 +342,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
                 safeClose(metadataClient);
             }
         } finally {
-            removeIptablesDropOnPort(10250);
+            networkFaultInjector.removePacketDrop(10250);
         }
 
         // After removing the DROP rule, verify full data plane works
@@ -454,7 +376,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
         CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
-        addIptablesDropOnPort(10250);
+        networkFaultInjector.addPacketDrop(10250);
         Instant start = Instant.now();
         CosmosDiagnostics failedDiagnostics = null;
         try {
@@ -492,7 +414,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
                 }
             }
         } finally {
-            removeIptablesDropOnPort(10250);
+            networkFaultInjector.removePacketDrop(10250);
         }
 
         // Recovery
