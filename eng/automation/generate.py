@@ -307,32 +307,38 @@ def infer_sdk_release_type(sdk_root: str, sdk_folder: str, module: str) -> str:
         return "beta"
 
 
-def ensure_revapi_skip(pom_path: str):
-    """Ensure <revapi.skip>true</revapi.skip> is present in pom.xml properties.
+def update_revapi_skip(pom_path: str, beta: bool):
+    """Update revapi.skip property in pom.xml based on release type.
 
-    If <revapi.skip>false</revapi.skip> exists, change it to true.
-    If no revapi.skip property exists, add it before </properties>.
+    beta=True:  ensure <revapi.skip>true</revapi.skip> (add if missing, flip if false)
+    beta=False: flip <revapi.skip>true</revapi.skip> to false if present (skip if absent, as false is default)
     """
     try:
         with open(pom_path, "r") as f:
             content = f.read()
-        if "<revapi.skip>true</revapi.skip>" in content:
-            return
-        if "<revapi.skip>false</revapi.skip>" in content:
-            new_content = content.replace("<revapi.skip>false</revapi.skip>", "<revapi.skip>true</revapi.skip>")
-            logging.info(f"[SelfServe] Changed revapi.skip to true in {pom_path}")
+        if beta:
+            if "<revapi.skip>true</revapi.skip>" in content:
+                return
+            if "<revapi.skip>false</revapi.skip>" in content:
+                new_content = content.replace("<revapi.skip>false</revapi.skip>", "<revapi.skip>true</revapi.skip>")
+                logging.info(f"[SelfServe] Changed revapi.skip to true in {pom_path}")
+            else:
+                new_content = re.sub(
+                    r'([ \t]*)</properties>',
+                    r'\1  <revapi.skip>true</revapi.skip>\n\1</properties>',
+                    content,
+                    count=1,
+                )
+                logging.info(f"[SelfServe] Added revapi.skip=true to {pom_path}")
         else:
-            new_content = re.sub(
-                r'([ \t]*)</properties>',
-                r'\1  <revapi.skip>true</revapi.skip>\n\1</properties>',
-                content,
-                count=1,
-            )
-            logging.info(f"[SelfServe] Added revapi.skip=true to {pom_path}")
+            if "<revapi.skip>true</revapi.skip>" not in content:
+                return
+            new_content = content.replace("<revapi.skip>true</revapi.skip>", "<revapi.skip>false</revapi.skip>")
+            logging.info(f"[SelfServe] Changed revapi.skip to false in {pom_path}")
         with open(pom_path, "w") as f:
             f.write(new_content)
     except Exception as e:
-        logging.warning(f"[SelfServe] Failed to ensure revapi.skip in {pom_path}: {e}")
+        logging.warning(f"[SelfServe] Failed to update revapi.skip in {pom_path}: {e}")
 
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
@@ -378,9 +384,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         output_folder = sdk_folder
         update_version(sdk_root, output_folder)
 
-        # Ensure revapi.skip=true for beta releases
-        if release_beta_sdk:
-            ensure_revapi_skip(os.path.join(sdk_root, output_folder, "pom.xml"))
+        # Update revapi.skip based on release type
+        update_revapi_skip(os.path.join(sdk_root, output_folder, "pom.xml"), beta=release_beta_sdk)
 
         # compile
         succeeded = compile_arm_package(sdk_root, module)
