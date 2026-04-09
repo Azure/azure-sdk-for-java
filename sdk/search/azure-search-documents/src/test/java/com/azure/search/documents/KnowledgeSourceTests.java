@@ -331,7 +331,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         // Sample status payload with nullables for first sync
         String statusJson = "{\"synchronizationStatus\": \"creating\",\"synchronizationInterval\": \"PT24H\","
             + "\"currentSynchronizationState\": null,\"lastSynchronizationState\": null,\"statistics\": {"
-            + "\"totalSynchronization\": 0,\"averageSynchronizationDuration\": \"00:00:00\","
+            + "\"totalSynchronization\": 0,\"averageSynchronizationDuration\": \"PT0S\","
             + "\"averageItemsProcessedPerSynchronization\": 0}}";
 
         try (JsonReader reader = JsonProviders.createReader(statusJson)) {
