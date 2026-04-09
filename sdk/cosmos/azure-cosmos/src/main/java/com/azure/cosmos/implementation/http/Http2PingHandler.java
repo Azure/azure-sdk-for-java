@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.Configs;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -35,13 +36,13 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(Http2PingHandler.class);
 
-    public static final String HANDLER_NAME = "cosmos.http2PingHandler";
+    private static final String HANDLER_NAME = "cosmos.http2PingHandler";
 
     static final AttributeKey<Boolean> PING_HANDLER_INSTALLED =
         AttributeKey.valueOf("cosmos.conn.pingHandlerInstalled");
 
     private final long pingIntervalNanos;
-    private volatile long lastActivityNanos;
+    private long lastActivityNanos;
     private ScheduledFuture<?> pingTask;
     private final AtomicInteger pingsSent = new AtomicInteger(0);
     private final AtomicInteger pingAcksReceived = new AtomicInteger(0);
@@ -99,7 +100,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     }
 
     private void maybeSendPing(ChannelHandlerContext ctx) {
-        if (!ctx.channel().isActive()) {
+        if (!ctx.channel().isActive() || !Configs.isHttp2PingHealthEnabled()) {
             cancelPingTask();
             return;
         }
