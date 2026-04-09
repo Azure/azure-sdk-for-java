@@ -127,7 +127,7 @@ For detailed instructions, refer to the [Maven Credential Provider documentation
 
 ##### Matching CI behavior locally
 
-After setting up the credential provider above, you can route all Maven traffic through the Azure Artifacts feed locally by copying the mirror settings:
+All Maven dependency and artifact resolution already uses the Azure Artifacts feed by default via `<repositories>` declarations in the project POMs. However, Maven plugins and extensions do not honor POM-level repositories. To route plugin traffic through the Azure Artifacts feed as well (matching CI behavior), copy the mirror settings:
 
 ```bash
 cp eng/settings.xml ~/.m2/settings.xml
