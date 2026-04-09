@@ -271,6 +271,16 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: 'packages'
 
+      # TEST: Fail on first run to force a re-run scenario. On re-run, the 'packages' artifact
+      # already exists and the publish-1es-artifact template should skip it instead of erroring.
+      - pwsh: |
+          if ($(System.JobAttempt) -eq 1) {
+            Write-Error "Deliberate failure on first attempt to test re-run artifact publish resilience."
+          } else {
+            Write-Host "Re-run attempt $(System.JobAttempt) — if we got here, the 'packages' artifact publish was skipped successfully. Test PASSED."
+          }
+        displayName: '[TEST] Fail on first run, pass on re-run'
+
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
       # during testing if tests failed, and linting reports.
