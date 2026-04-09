@@ -483,17 +483,17 @@ public class SkillsetManagementTests extends SearchTestBase {
         skillsetsToDelete.add(skillset2.getName());
 
         Set<String> expectedSkillsetNames = new HashSet<>(Arrays.asList(skillset1.getName(), skillset2.getName()));
-        Set<String> actualSkillsetNames
-            = client.listSkillsetNames().stream().collect(Collectors.toSet());
+        Set<String> actualSkillsetNames = client.listSkillsetNames().stream().collect(Collectors.toSet());
 
         assertEquals(expectedSkillsetNames.size(), actualSkillsetNames.size());
         assertTrue(actualSkillsetNames.containsAll(expectedSkillsetNames));
 
         StepVerifier.create(asyncClient.listSkillsetNames().collect(Collectors.toSet()))
             .assertNext(actualSkillsetNamesAsync -> {
-            assertEquals(actualSkillsetNamesAsync.size(), actualSkillsetNames.size());
-            assertTrue(actualSkillsetNamesAsync.containsAll(expectedSkillsetNames));
-        }).verifyComplete();
+                assertEquals(actualSkillsetNamesAsync.size(), actualSkillsetNames.size());
+                assertTrue(actualSkillsetNamesAsync.containsAll(expectedSkillsetNames));
+            })
+            .verifyComplete();
     }
 
     @Test

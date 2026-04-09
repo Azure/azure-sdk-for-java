@@ -495,17 +495,17 @@ public class SynonymMapManagementTests extends SearchTestBase {
         synonymMapsToDelete.add(synonymMap2.getName());
 
         Set<String> expectedSynonymNames = new HashSet<>(Arrays.asList(synonymMap1.getName(), synonymMap2.getName()));
-        Set<String> actualSynonymNames
-            = client.listSynonymMapNames().stream().collect(Collectors.toSet());
+        Set<String> actualSynonymNames = client.listSynonymMapNames().stream().collect(Collectors.toSet());
 
         assertEquals(expectedSynonymNames.size(), actualSynonymNames.size());
         assertTrue(actualSynonymNames.containsAll(expectedSynonymNames));
 
         StepVerifier.create(asyncClient.listSynonymMapNames().collect(Collectors.toSet()))
             .assertNext(actualSynonymNames2 -> {
-            assertEquals(expectedSynonymNames.size(), actualSynonymNames2.size());
-            assertTrue(actualSynonymNames2.containsAll(expectedSynonymNames));
-        }).verifyComplete();
+                assertEquals(expectedSynonymNames.size(), actualSynonymNames2.size());
+                assertTrue(actualSynonymNames2.containsAll(expectedSynonymNames));
+            })
+            .verifyComplete();
     }
 
     @Test

@@ -221,8 +221,8 @@ public final class SearchIndexingBufferedSenderBuilder<T> {
     public SearchIndexingBufferedSenderBuilder<T> maxThrottlingDelay(Duration maxThrottlingDelay) {
         Objects.requireNonNull(maxThrottlingDelay, "'maxThrottlingDelay' cannot be null.");
         if (maxThrottlingDelay.isNegative() || maxThrottlingDelay.isZero()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maxThrottlingDelay' cannot be negative or zero."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'maxThrottlingDelay' cannot be negative or zero."));
         }
         this.maxThrottlingDelay = maxThrottlingDelay;
         return this;
@@ -356,4 +356,3 @@ public final class SearchIndexingBufferedSenderBuilder<T> {
         return this;
     }
 }
-

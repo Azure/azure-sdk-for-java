@@ -95,8 +95,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KnowledgeBaseRetrievalResult>> retrieveWithResponse(String knowledgeBaseName,
         KnowledgeBaseRetrievalOptions retrievalRequest, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.retrieveWithResponseAsync(
-            BinaryData.fromObject(retrievalRequest), requestOptions), KnowledgeBaseRetrievalResult.class);
+        return mapResponse(
+            this.serviceClient.retrieveWithResponseAsync(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalResult.class);
     }
 
     /**
@@ -269,7 +270,6 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBaseRetrievalResult> retrieve(String knowledgeBaseName,
         KnowledgeBaseRetrievalOptions retrievalRequest) {
-        return retrieveWithResponse(knowledgeBaseName, retrievalRequest, new RequestOptions())
-            .map(Response::getValue);
+        return retrieveWithResponse(knowledgeBaseName, retrievalRequest, new RequestOptions()).map(Response::getValue);
     }
 }

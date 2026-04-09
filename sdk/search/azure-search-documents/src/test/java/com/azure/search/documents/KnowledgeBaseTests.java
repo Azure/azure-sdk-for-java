@@ -391,8 +391,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
-        KnowledgeBaseRetrievalResult response
-            = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
@@ -437,8 +436,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
         // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
-        KnowledgeBaseRetrievalResult response
-            = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }

@@ -139,8 +139,7 @@ public class DataSourceTests extends SearchTestBase {
         client.createOrUpdateDataSourceConnectionWithResponse(dataSource2, null);
         dataSourcesToDelete.add(dataSource2.getName());
 
-        Set<String> actualDataSources
-            = client.listDataSourceConnectionNames().stream().collect(Collectors.toSet());
+        Set<String> actualDataSources = client.listDataSourceConnectionNames().stream().collect(Collectors.toSet());
 
         assertEquals(expectedDataSources.size(), actualDataSources.size());
         expectedDataSources.forEach(ds -> assertTrue(actualDataSources.contains(ds), "Missing expected data source."));

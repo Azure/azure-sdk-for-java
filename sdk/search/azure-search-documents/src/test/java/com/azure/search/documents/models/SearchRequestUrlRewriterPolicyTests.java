@@ -198,11 +198,11 @@ public class SearchRequestUrlRewriterPolicyTests {
                 dataSourceUrl),
             Arguments.of(toCallable(() -> indexerClient.createDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourcesUrl),
-            Arguments.of(toCallable(() -> indexerClient.getDataSourceConnectionWithResponse("datasource", null)),
-                dataSourceUrl),
-            Arguments.of(toCallable(indexerClient::listDataSourceConnections), dataSourcesUrl),
             Arguments.of(
-                toCallable(() -> indexerClient.listDataSourceConnectionNames().iterator().hasNext()), dataSourcesUrl),
+                toCallable(() -> indexerClient.getDataSourceConnectionWithResponse("datasource", null)), dataSourceUrl),
+            Arguments.of(toCallable(indexerClient::listDataSourceConnections), dataSourcesUrl),
+            Arguments.of(toCallable(() -> indexerClient.listDataSourceConnectionNames().iterator().hasNext()),
+                dataSourcesUrl),
             Arguments.of(
                 toCallable(() -> indexerClient.deleteDataSourceConnectionWithResponse(dataSource.getName(), null)),
                 dataSourceUrl),

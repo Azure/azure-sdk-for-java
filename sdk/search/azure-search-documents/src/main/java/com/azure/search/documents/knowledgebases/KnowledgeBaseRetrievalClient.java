@@ -92,8 +92,9 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KnowledgeBaseRetrievalResult> retrieveWithResponse(String knowledgeBaseName,
         KnowledgeBaseRetrievalOptions retrievalRequest, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.retrieveWithResponse(
-            BinaryData.fromObject(retrievalRequest), requestOptions), KnowledgeBaseRetrievalResult.class);
+        return convertResponse(
+            this.serviceClient.retrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalResult.class);
     }
 
     /**
