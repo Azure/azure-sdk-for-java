@@ -1031,11 +1031,11 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             InetAddress ip1 = allAddresses[0];
             logger.info("IP1 (will be blocked after initial workload): {}", ip1.getHostAddress());
 
-            // Step 2: Wire the custom resolver into the builder via the accessor
+            // Step 2: Wire the custom resolver into the builder via the interceptor
             safeClose(this.client);
             CosmosClientBuilder builder = getClientBuilder();
-            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
-                .setAddressResolverGroup(builder, filterableResolver);
+            com.azure.cosmos.test.implementation.interceptor.CosmosInterceptorHelper
+                .registerHttpClientInterceptor(builder, filterableResolver, null);
             this.client = builder.buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
@@ -1117,8 +1117,8 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             // and captures a reference to it. This bypasses the production install path
             // which may fire on a different doOnConnected chain, and directly proves
             // the handler works when installed on the parent H2 channel.
-            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
-                .setDoOnConnectedCallback(builder, connection -> {
+            com.azure.cosmos.test.implementation.interceptor.CosmosInterceptorHelper
+                .registerHttpClientInterceptor(builder, null, connection -> {
                     Channel ch = connection.channel();
                     // For H2, the first doOnConnected fires for the parent TCP channel (has Http2MultiplexHandler)
                     if (ch.pipeline().get(Http2MultiplexHandler.class) != null

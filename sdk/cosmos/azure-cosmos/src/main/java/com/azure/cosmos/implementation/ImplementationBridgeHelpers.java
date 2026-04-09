@@ -170,9 +170,7 @@ public class ImplementationBridgeHelpers {
 
             boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
 
-            void setAddressResolverGroup(CosmosClientBuilder builder, io.netty.resolver.AddressResolverGroup<?> resolverGroup);
-
-            void setDoOnConnectedCallback(CosmosClientBuilder builder, java.util.function.Consumer<reactor.netty.Connection> callback);
+            void setHttpClientInterceptor(CosmosClientBuilder builder, com.azure.cosmos.implementation.interceptor.IHttpClientInterceptor interceptor);
         }
     }
 
