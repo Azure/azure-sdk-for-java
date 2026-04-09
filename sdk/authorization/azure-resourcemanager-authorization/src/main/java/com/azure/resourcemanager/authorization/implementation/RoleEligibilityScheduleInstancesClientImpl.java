@@ -114,7 +114,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleEligibilityScheduleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope,
@@ -149,7 +149,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleEligibilityScheduleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, roleEligibilityScheduleInstanceName, accept,
@@ -233,7 +233,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -269,7 +269,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, filter, accept, context)

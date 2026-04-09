@@ -1,14 +1,239 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.54.0-beta.1 (2026-04-09)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PermissionGetResult` was removed
 
-### Other Changes
+#### `models.ProviderOperationsMetadataListResult` was removed
+
+#### `models.RoleEligibilityScheduleListResult` was removed
+
+#### `models.RoleManagementPolicyAssignmentListResult` was removed
+
+#### `models.RoleEligibilityScheduleRequestListResult` was removed
+
+#### `models.RoleAssignmentScheduleListResult` was removed
+
+#### `models.RoleEligibilityScheduleInstanceListResult` was removed
+
+#### `models.EligibleChildResourcesListResult` was removed
+
+#### `models.RoleAssignmentScheduleRequestListResult` was removed
+
+#### `models.DenyAssignmentListResult` was removed
+
+#### `models.RoleAssignmentScheduleInstanceListResult` was removed
+
+#### `models.RoleDefinitionListResult` was removed
+
+#### `models.RoleManagementPolicyListResult` was removed
+
+#### `models.ClassicAdministratorListResult` was removed
+
+#### `models.RoleAssignmentListResult` was removed
+
+#### `models.PolicyAssignmentPropertiesRoleDefinition` was modified
+
+* `PolicyAssignmentPropertiesRoleDefinition()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+
+#### `models.PolicyPropertiesScope` was modified
+
+* `PolicyPropertiesScope()` was changed to private access
+* `withType(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.PolicyAssignmentPropertiesScope` was modified
+
+* `PolicyAssignmentPropertiesScope()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.PolicyProperties` was modified
+
+* `PolicyProperties()` was changed to private access
+
+#### `models.PolicyAssignmentPropertiesPolicy` was modified
+
+* `PolicyAssignmentPropertiesPolicy()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withLastModifiedDateTime(java.time.OffsetDateTime)` was removed
+
+#### `models.ExpandedPropertiesPrincipal` was modified
+
+* `ExpandedPropertiesPrincipal()` was changed to private access
+* `withType(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withEmail(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.ResourceType` was modified
+
+* `ResourceType()` was changed to private access
+* `withOperations(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.PolicyAssignmentProperties` was modified
+
+* `PolicyAssignmentProperties()` was changed to private access
+* `withRoleDefinition(models.PolicyAssignmentPropertiesRoleDefinition)` was removed
+* `withPolicy(models.PolicyAssignmentPropertiesPolicy)` was removed
+* `withScope(models.PolicyAssignmentPropertiesScope)` was removed
+
+#### `models.ExpandedProperties` was modified
+
+* `ExpandedProperties()` was changed to private access
+* `withPrincipal(models.ExpandedPropertiesPrincipal)` was removed
+* `withScope(models.ExpandedPropertiesScope)` was removed
+* `withRoleDefinition(models.ExpandedPropertiesRoleDefinition)` was removed
+
+#### `models.ProviderOperation` was modified
+
+* `ProviderOperation()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
+* `withOrigin(java.lang.String)` was removed
+* `withIsDataAction(java.lang.Boolean)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withProperties(java.lang.Object)` was removed
+
+#### `models.Principal` was modified
+
+* `Principal()` was changed to private access
+* `withType(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withEmail(java.lang.String)` was removed
+
+#### `models.ExpandedPropertiesRoleDefinition` was modified
+
+* `ExpandedPropertiesRoleDefinition()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+
+#### `models.ExpandedPropertiesScope` was modified
+
+* `ExpandedPropertiesScope()` was changed to private access
+* `withType(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.AccessReviewScheduleDefinitionStatus` was added
+
+* `models.OperationDisplay` was added
+
+* `models.DenyAssignmentEffect` was added
+
+* `models.AzureRolesAssignedOutsidePimAlertIncidentProperties` was added
+
+* `models.AccessReviewDecisionInsight` was added
+
+* `models.AccessReviewHistoryDefinitionStatus` was added
+
+* `models.AccessReviewActorIdentityType` was added
+
+* `models.AccessReviewDecisionInsightProperties` was added
+
+* `models.AccessReviewDecisionIdentity` was added
+
+* `models.AttributeNamespaceCreateRequest` was added
+
+* `models.AccessReviewDecisionInsightType` was added
+
+* `models.AccessReviewInstanceStatus` was added
+
+* `models.AccessReviewRecurrencePatternType` was added
+
+* `models.DecisionTargetType` was added
+
+* `models.RecordAllDecisionsResult` was added
+
+* `models.AccessReviewScheduleDefinitionReviewersType` was added
+
+* `models.SettableResource` was added
+
+* `models.AccessRecommendationType` was added
+
+* `models.AzureRolesAssignedOutsidePimAlertConfigurationProperties` was added
+
+* `models.SeverityLevel` was added
+
+* `models.DefaultDecisionType` was added
+
+* `models.TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties` was added
+
+* `models.PIMOnlyModeSettings` was added
+
+* `models.TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties` was added
+
+* `models.UsersOrServicePrincipalSet` was added
+
+* `models.AccessReviewScopePrincipalType` was added
+
+* `models.DenyAssignmentPrincipal` was added
+
+* `models.UsersOrServicePrincipalSetUserType` was added
+
+* `models.RoleManagementPolicyPimOnlyModeRule` was added
+
+* `models.RecordAllDecisionsProperties` was added
+
+* `models.AccessReviewReviewer` was added
+
+* `models.AccessReviewInstanceReviewersType` was added
+
+* `models.AccessReviewResult` was added
+
+* `models.AccessReviewRecurrenceRangeType` was added
+
+* `models.TooManyOwnersAssignedToResourceAlertConfigurationProperties` was added
+
+* `models.AccessReviewReviewerType` was added
+
+* `models.ExcludedPrincipalTypes` was added
+
+* `models.DuplicateRoleCreatedAlertConfigurationProperties` was added
+
+* `models.AccessReviewScopeAssignmentState` was added
+
+* `models.DuplicateRoleCreatedAlertIncidentProperties` was added
+
+* `models.AccessReviewDecisionServicePrincipalIdentity` was added
+
+* `models.PIMOnlyMode` was added
+
+* `models.AccessReviewApplyResult` was added
+
+* `models.AccessReviewDecisionUserSignInInsightProperties` was added
+
+* `models.DecisionResourceType` was added
+
+* `models.AccessReviewDecisionUserIdentity` was added
+
+* `models.AlertIncidentProperties` was added
+
+* `models.AccessReviewDecisionPrincipalResourceMembershipType` was added
+
+* `models.TooManyOwnersAssignedToResourceAlertIncidentProperties` was added
+
+#### `models.RoleManagementPolicyRuleType` was modified
+
+* `ROLE_MANAGEMENT_POLICY_PIM_ONLY_MODE_RULE` was added
+
+#### `models.RoleManagementPolicyExpirationRule` was modified
+
+* `exceptionMembers()` was added
+* `withExceptionMembers(java.util.List)` was added
 
 ## 2.53.8 (2026-03-30)
 
