@@ -990,8 +990,8 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that sendMessage(single) does NOT cap at MAX_BATCH_SIZE_BYTES on a Premium-like link (100 MB).
-     * The single-message path goes through sendFluxInternal → AmqpMessageCollector which bypasses
+     * Verifies that sendMessage(single) does NOT cap at DEFAULT_MAX_BATCH_SIZE_BYTES on a Premium-like link
+     * (100 MB). The single-message path goes through sendFluxInternal → AmqpMessageCollector which bypasses
      * createMessageBatch() and therefore is not subject to the 1 MB batch cap.
      */
     @ParameterizedTest
@@ -1172,8 +1172,8 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sendMessage(single) with a message larger than 1 MB succeeds on a large link.
      * This proves the single-message path (sendFluxInternal -> AmqpMessageCollector) is NOT capped
-     * at MAX_BATCH_SIZE_BYTES (1 MB). On Premium namespaces with large per-entity limits, individual
-     * messages exceeding 1 MB are valid.
+     * at the default 1 MB batch size limit. On Premium namespaces with large per-entity limits,
+     * individual messages exceeding 1 MB are valid.
      */
     @ParameterizedTest
     @MethodSource("selectStack")
