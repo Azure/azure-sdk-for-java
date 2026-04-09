@@ -82,10 +82,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
 
     // 3 minutes per test — enough for warmup + delay + retries + cross-region failover + recovery read
     private static final long TEST_TIMEOUT = 180_000;
-    // Network interface detected at runtime — eth0 for Docker, or the default route interface on CI VMs.
-    private String networkInterface;
-    // Prefix for privileged commands: empty string in Docker (runs as root), "sudo " on CI VMs.
-    private String sudoPrefix;
+    private NetworkFaultInjector networkFaultInjector;
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
     public Http2ConnectionLifecycleTests(CosmosClientBuilder clientBuilder) {
@@ -95,28 +92,8 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        // Detect whether we're running as root (Docker) or need sudo (CI VM)
-        this.sudoPrefix = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
-
-        // Detect the default-route network interface
-        this.networkInterface = detectNetworkInterface();
-        logger.info("Network interface: {}, sudo: {}", this.networkInterface, !this.sudoPrefix.isEmpty());
-
-        // Verify tc (traffic control) is available — fail-fast if not
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", sudoPrefix + "tc qdisc show dev " + networkInterface});
-            int exit = p.waitFor();
-            if (exit != 0) {
-                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
-                    String errMsg = err.readLine();
-                    fail("tc not available on " + networkInterface + " (exit=" + exit + "): " + errMsg);
-                }
-            }
-        } catch (AssertionError e) {
-            throw e;
-        } catch (Exception e) {
-            fail("tc not available: " + e.getMessage());
-        }
+        this.networkFaultInjector = new NetworkFaultInjector();
+        this.networkFaultInjector.verifyTcAvailable();
 
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
@@ -151,9 +128,8 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      */
     @AfterMethod(groups = {"manual-http-network-fault"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
-        if (sudoPrefix != null) {
-            removeNetworkDelay();
-            removePacketDrop();
+        if (networkFaultInjector != null) {
+            networkFaultInjector.removeAll();
         }
         clearAllCosmosSystemProperties();
         safeClose(this.client);
@@ -164,9 +140,8 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
 
     @AfterClass(groups = {"manual-http-network-fault"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        if (sudoPrefix != null) {
-            removeNetworkDelay();
-            removePacketDrop();
+        if (networkFaultInjector != null) {
+            networkFaultInjector.removeAll();
         }
         clearAllCosmosSystemProperties();
     }
@@ -314,64 +289,6 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         }
     }
 
-    /**
-     * Applies a tc netem delay to all outbound traffic on the network interface.
-     * This delays ALL packets (including TCP handshake, HTTP/2 frames, and TLS records) by the
-     * specified duration, causing reactor-netty's ReadTimeoutHandler to fire on H2 stream channels
-     * when the delay exceeds the configured responseTimeout.
-     *
-     * <p>Requires root (Docker with {@code --cap-add=NET_ADMIN}) or passwordless sudo (CI VM).
-     * Fails the test immediately if {@code tc} command fails.</p>
-     *
-     * @param delayMs the delay in milliseconds to inject (e.g., 8000 for an 8-second delay)
-     */
-    private void addNetworkDelay(int delayMs) {
-        String cmd = String.format("%stc qdisc add dev %s root netem delay %dms", sudoPrefix, networkInterface, delayMs);
-        logger.info(">>> Adding network delay: {}", cmd);
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
-            int exit = p.waitFor();
-            if (exit != 0) {
-                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
-                    String errMsg = err.readLine();
-                    fail("tc add failed (exit=" + exit + "): " + errMsg);
-                }
-            } else {
-                logger.info(">>> Network delay active: {}ms on {}", delayMs, networkInterface);
-            }
-        } catch (Exception e) {
-            logger.error("Failed to add network delay", e);
-            fail("Could not add network delay via tc: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Removes any tc netem qdisc from the network interface, restoring
-     * normal network behavior. This is called in {@code finally} blocks after each test and
-     * in {@code @AfterMethod} and {@code @AfterClass} as a safety net.
-     *
-     * <p>Best-effort: logs a warning if the qdisc was already removed or if tc fails.
-     * Does not fail the test on error — the priority is cleanup, not assertion.</p>
-     */
-    private void removeNetworkDelay() {
-        String cmd = String.format("%stc qdisc del dev %s root", sudoPrefix, networkInterface);
-        logger.info(">>> Removing network delay: {}", cmd);
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
-            int exit = p.waitFor();
-            if (exit == 0) {
-                logger.info(">>> Network delay removed");
-            } else {
-                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
-                    String errMsg = err.readLine();
-                    logger.warn("tc del returned exit={}: {} (may already be removed)", exit, errMsg);
-                }
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to remove network delay: {}", e.getMessage());
-        }
-    }
-
     // ========================================================================
     // Tests — each one: warmup read → tc delay → timed-out read → remove → verify
     // ========================================================================
@@ -397,7 +314,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
         CosmosDiagnostics delayedDiagnostics = null;
-        addNetworkDelay(8000);
+        networkFaultInjector.addNetworkDelay(8000);
         try {
             this.cosmosAsyncContainer.readItem(
                 seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
@@ -406,7 +323,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             delayedDiagnostics = e.getDiagnostics();
             logger.info("ReadTimeoutException triggered: statusCode={}, subStatusCode={}", e.getStatusCode(), e.getSubStatusCode());
         } finally {
-            removeNetworkDelay();
+            networkFaultInjector.removeNetworkDelay();
         }
 
         // Assert: the delayed read must have produced a 408/10002
@@ -496,14 +413,14 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
-        addNetworkDelay(8000);
+        networkFaultInjector.addNetworkDelay(8000);
         try {
             this.cosmosAsyncContainer.readItem(
                 seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
         } catch (CosmosException e) {
             logger.info("ReadTimeoutException during delay: statusCode={}", e.getStatusCode());
         } finally {
-            removeNetworkDelay();
+            networkFaultInjector.removeNetworkDelay();
         }
 
         // Step 3: Send concurrent requests again, collect parentChannelIds post-delay
@@ -567,7 +484,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
         CosmosDiagnostics failedDiagnostics = null;
-        addNetworkDelay(8000);
+        networkFaultInjector.addNetworkDelay(8000);
         try {
             // The 25s e2e timeout budget may be exhausted by retries (6+6+10=22s)
             // or the request may succeed if delay propagation is slow. Either way,
@@ -592,7 +509,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         } catch (Exception e) {
             logger.warn("Non-CosmosException caught: {}", e.getClass().getName(), e);
         } finally {
-            removeNetworkDelay();
+            networkFaultInjector.removeNetworkDelay();
         }
 
         // If diagnostics are still null (e2e timeout fired before any retry produced diagnostics),
@@ -664,7 +581,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
-        addNetworkDelay(8000);
+        networkFaultInjector.addNetworkDelay(8000);
         try {
             this.cosmosAsyncContainer.readItem(
                 seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
@@ -673,7 +590,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             logger.info("E2E timeout: statusCode={}, subStatusCode={}", e.getStatusCode(), e.getSubStatusCode());
             logger.info("E2E timeout diagnostics: {}", e.getDiagnostics() != null ? e.getDiagnostics().toString() : "null");
         } finally {
-            removeNetworkDelay();
+            networkFaultInjector.removeNetworkDelay();
         }
 
         String h2ParentChannelIdAfterDelay = readAndGetParentChannelId();
@@ -740,7 +657,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
         CosmosDiagnostics delayedDiagnostics = null;
-        addNetworkDelay(8000);
+        networkFaultInjector.addNetworkDelay(8000);
         try {
             this.cosmosAsyncContainer.readItem(
                 seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
@@ -749,7 +666,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             delayedDiagnostics = e.getDiagnostics();
             logger.info("E2E cancel: statusCode={}, subStatusCode={}", e.getStatusCode(), e.getSubStatusCode());
         } finally {
-            removeNetworkDelay();
+            networkFaultInjector.removeNetworkDelay();
         }
 
         // Assert: NO ReadTimeoutException (408/10002) — only e2e cancel should have fired
@@ -1169,67 +1086,5 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
         }
-    }
-
-    // ========================================================================
-    // iptables helpers for silent degradation (packet drop, no RST)
-    // ========================================================================
-
-    private void addPacketDrop() {
-        String cmd = String.format("%siptables -A OUTPUT -p tcp --dport 10250 -j DROP", sudoPrefix);
-        logger.info(">>> Adding packet drop: {}", cmd);
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
-            int exit = p.waitFor();
-            if (exit != 0) {
-                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
-                    String errMsg = err.readLine();
-                    fail("iptables add failed (exit=" + exit + "): " + errMsg);
-                }
-            } else {
-                logger.info(">>> Packet drop active on port 10250");
-            }
-        } catch (Exception e) {
-            logger.error("Failed to add packet drop", e);
-            fail("Could not add packet drop via iptables: " + e.getMessage());
-        }
-    }
-
-    private void removePacketDrop() {
-        String cmd = String.format("%siptables -D OUTPUT -p tcp --dport 10250 -j DROP", sudoPrefix);
-        logger.info(">>> Removing packet drop: {}", cmd);
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
-            int exit = p.waitFor();
-            if (exit == 0) {
-                logger.info(">>> Packet drop removed");
-            } else {
-                logger.warn("iptables del returned exit={} (may already be removed)", exit);
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to remove packet drop: {}", e.getMessage());
-        }
-    }
-
-    /**
-     * Detects the default-route network interface.
-     * In Docker this is typically eth0. On CI VMs it may be eth0, ens5, etc.
-     * Falls back to "eth0" if detection fails.
-     */
-    private static String detectNetworkInterface() {
-        try {
-            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c",
-                "ip route show default | awk '{print $5}' | head -1"});
-            p.waitFor();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
-                String iface = reader.readLine();
-                if (iface != null && !iface.isEmpty() && !iface.contains("@")) {
-                    return iface.trim();
-                }
-            }
-        } catch (Exception e) {
-            // fall through
-        }
-        return "eth0";
     }
 }
