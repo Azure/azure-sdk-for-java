@@ -301,10 +301,15 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     connectionCacheWrapper.invalidateConnection();
                 }
 
+                // Mono.delay(Duration.ZERO) instead of Mono.empty() — the delay schedules the retry on the
+                // 'parallel' Scheduler, freeing the QPid (proton) thread for other IO. Using Mono.empty() would
+                // block the QPid thread and slow down / block message pumping in other sessions.
                 if (failure instanceof TimeoutException) {
                     return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
+                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
+                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
                     return Mono.delay(Duration.ZERO);
                 } else if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
                     // Link or connection-level error — retry to acquire a fresh link (or connection).
