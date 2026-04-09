@@ -24,13 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Tests {@link SearchAlias}-based operations.
- *
- * NOTE: All tests are currently disabled because SearchAlias functionality requires
- * API version 2026-04-01 which is not yet generally available.
- * TODO: Remove @Disabled annotations when 2026-04-01 becomes GA.
- */
 public class SearchAliasTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME1 = "search-alias-shared-hotel-instance-one";
     private static final String HOTEL_INDEX_NAME2 = "search-alias-shared-hotel-instance-two";
@@ -93,7 +86,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canCreateAndGetAliasSync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1);
         SearchAlias searchAlias = indexClient.createAlias(expectedAlias);
@@ -109,7 +101,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canCreateAliasAsync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1);
 
@@ -126,35 +117,30 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateAliasOnNonExistentIndexSync() {
         assertThrows(HttpResponseException.class,
             () -> indexClient.createAlias(new SearchAlias("my-alias", "index-that-does-not-exist")));
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateAliasOnNonExistentIndexAsync() {
         StepVerifier.create(indexAsyncClient.createAlias(new SearchAlias("my-alias", "index-that-does-not-exist")))
             .verifyError(HttpResponseException.class);
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateAliasWithInvalidNameSync() {
         assertThrows(HttpResponseException.class,
             () -> indexClient.createAlias(new SearchAlias("--invalid--alias-name", HOTEL_INDEX_NAME1)));
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateAliasWithInvalidNameAsync() {
         StepVerifier.create(indexAsyncClient.createAlias(new SearchAlias("--invalid--alias-name", HOTEL_INDEX_NAME1)))
             .verifyError(HttpResponseException.class);
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateMultipleAliasesWithTheSameNameSync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1);
         SearchAlias searchAlias = indexClient.createAlias(expectedAlias);
@@ -168,7 +154,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateMultipleAliasesWithTheSameNameAsync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1);
 
@@ -183,14 +168,12 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateAliasWithMultipleIndexesSync() {
         assertThrows(HttpResponseException.class,
             () -> indexClient.createAlias(new SearchAlias("my-alias", HOTEL_INDEX_NAME1, HOTEL_INDEX_NAME2)));
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotCreateAliasWithMultipleIndexesAsync() {
         StepVerifier
             .create(indexAsyncClient.createAlias(new SearchAlias("my-alias", HOTEL_INDEX_NAME1, HOTEL_INDEX_NAME2)))
@@ -198,7 +181,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canCreateMultipleAliasesReferencingTheSameIndexSync() {
         SearchAlias firstExpectedAlias
             = new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1);
@@ -218,7 +200,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canCreateMultipleAliasesReferencingTheSameIndexAsync() {
         SearchAlias firstExpectedAlias
             = new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1);
@@ -240,7 +221,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canUpdateAliasAfterCreationSync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, HOTEL_INDEX_NAME1));
@@ -254,7 +234,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canUpdateAliasAfterCreationAsync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexAsyncClient.createAlias(new SearchAlias(aliasName, HOTEL_INDEX_NAME1)).block();
@@ -269,7 +248,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canDeleteAliasSync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, HOTEL_INDEX_NAME1));
@@ -283,7 +261,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canDeleteAliasAsync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexAsyncClient.createAlias(new SearchAlias(aliasName, HOTEL_INDEX_NAME1)).block();
@@ -297,7 +274,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void cannotDeleteIndexWithAliasSyncAndAsync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, HOTEL_INDEX_NAME1));
@@ -315,7 +291,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canListAliasesSyncAndAsync() {
         String firstAliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(firstAliasName, HOTEL_INDEX_NAME1));
@@ -344,7 +319,6 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("SearchAlias requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void canInspectAliasUsageInServiceStatisticsSyncAndAsync() {
         aliasesToDelete.add(
             indexClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32), HOTEL_INDEX_NAME1))

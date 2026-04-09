@@ -292,31 +292,15 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("StrictPostFilter mode requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
+    @Disabled("VectorFilterMode.STRICT_POST_FILTER removed in 2026-04-01 API version")
     public void vectorSearchWithStrictPostFilterModeSync() {
-        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
-            .setVectorFilterMode(VectorFilterMode.STRICT_POST_FILTER)
-            .setSelect("HotelId", "HotelName");
-
-        List<SearchResult> results = searchClient.search(searchOptions).stream().collect(Collectors.toList());
-        assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "1");
+        // Disabled: VectorFilterMode.STRICT_POST_FILTER is not supported in the 2026-04-01 API version.
     }
 
     @Test
-    @Disabled("StrictPostFilter mode requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
+    @Disabled("VectorFilterMode.STRICT_POST_FILTER removed in 2026-04-01 API version")
     public void vectorSearchWithStrictPostFilterModeAsync() {
-        SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-
-        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
-            .setVectorFilterMode(VectorFilterMode.STRICT_POST_FILTER)
-            .setSelect("HotelId", "HotelName");
-
-        StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
-                "3", "5", "1"))
-            .verifyComplete();
+        // Disabled: VectorFilterMode.STRICT_POST_FILTER is not supported in the 2026-04-01 API version.
     }
 
     private static VectorQuery createDescriptionVectorQuery() {

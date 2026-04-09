@@ -145,7 +145,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void createKnowledgeBaseSync() {
         // Test creating a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -172,7 +171,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void createKnowledgeBaseAsync() {
         // Test creating a knowledge knowledgebase.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -200,7 +198,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void getKnowledgeBaseSync() {
         // Test getting a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -228,7 +225,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void getKnowledgeBaseAsync() {
         // Test getting a knowledge knowledgebase.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -259,7 +255,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void listKnowledgeBasesSync() {
         // Test listing knowledge knowledgebases.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -282,7 +277,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void listKnowledgeBasesAsync() {
         // Test listing knowledge knowledgebases.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -310,7 +304,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void deleteKnowledgeBaseSync() {
         // Test deleting a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -324,7 +317,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void deleteKnowledgeBaseAsync() {
         // Test deleting a knowledge base.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -345,7 +337,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void updateKnowledgeBaseSync() {
         // Test updating a knowledge base.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -354,13 +345,12 @@ public class KnowledgeBaseTests extends SearchTestBase {
         searchIndexClient.createKnowledgeBase(knowledgeBase);
         String newDescription = "Updated description";
         knowledgeBase.setDescription(newDescription);
-        searchIndexClient.createKnowledgeBase(knowledgeBase);
+        searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
         KnowledgeBase retrieved = searchIndexClient.getKnowledgeBase(knowledgeBase.getName());
         assertEquals(newDescription, retrieved.getDescription());
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void updateKnowledgeBaseAsync() {
         // Test updating a knowledge base.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -369,7 +359,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
         String newDescription = "Updated description";
 
         Mono<KnowledgeBase> createUpdateAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
-            .flatMap(created -> searchIndexClient.createKnowledgeBase(created.setDescription(newDescription)))
+            .flatMap(created -> searchIndexClient.deleteKnowledgeBase(created.getName())
+                .then(searchIndexClient
+                    .createKnowledgeBase(new KnowledgeBase(knowledgeBase.getName(), KNOWLEDGE_SOURCE_REFERENCE)
+                        .setModels(KNOWLEDGE_BASE_MODEL)
+                        .setDescription(newDescription))))
             .flatMap(updated -> searchIndexClient.getKnowledgeBase(updated.getName()));
 
         StepVerifier.create(createUpdateAndGetMono)
@@ -378,7 +372,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void basicRetrievalSync() {
         // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -386,18 +379,18 @@ public class KnowledgeBaseTests extends SearchTestBase {
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
 
         KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
-        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void basicRetrievalAsync() {
         // Test knowledge base retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -407,12 +400,13 @@ public class KnowledgeBaseTests extends SearchTestBase {
         Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
-                    = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
 
                 KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
                     .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
 
-                return knowledgeBaseClient.retrieve(created.getName(), retrievalRequest);
+                return knowledgeBaseClient.retrieve(retrievalRequest);
             });
 
         StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
@@ -422,7 +416,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void basicRetrievalWithReasoningEffortSync() {
         // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -430,19 +423,19 @@ public class KnowledgeBaseTests extends SearchTestBase {
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
 
         KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
         // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
-        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void basicRetrievalWithReasoningEffortAsync() {
         // Test knowledge base retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -452,13 +445,14 @@ public class KnowledgeBaseTests extends SearchTestBase {
         Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
-                    = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
 
                 KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
                     .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"));
                 // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
-                return knowledgeBaseClient.retrieve(created.getName(), retrievalRequest);
+                return knowledgeBaseClient.retrieve(retrievalRequest);
             });
 
         StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
@@ -480,7 +474,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void knowledgeBaseObjectHasNoAgentReferences() throws IOException {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase
@@ -498,7 +491,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void knowledgeBaseEndpointsUseKnowledgeBasesPath() {
         SearchIndexClient client = getSearchIndexClientBuilder(true)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -540,7 +532,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void knowledgeSourcesEndpointUnchanged() {
         SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
 
@@ -559,7 +550,6 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Requires further resource deployment")
     public void knowledgeBaseTypeNamesContainNoAgentReferences() {
         SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
 
