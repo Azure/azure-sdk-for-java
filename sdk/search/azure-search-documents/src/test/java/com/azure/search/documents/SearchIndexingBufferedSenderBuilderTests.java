@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder}.
+ * Tests {@link SearchIndexingBufferedSenderBuilder}.
  */
 @Execution(ExecutionMode.CONCURRENT)
 public class SearchIndexingBufferedSenderBuilderTests {
@@ -25,28 +25,28 @@ public class SearchIndexingBufferedSenderBuilderTests {
 
     @Test
     public void invalidFlushWindowThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
+        SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         Duration interval = FOOL_SPOTBUGS.get("interval");
         assertThrows(NullPointerException.class, () -> options.autoFlushInterval(interval));
     }
 
     @Test
     public void invalidBatchSizeThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
+        SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(IllegalArgumentException.class, () -> options.initialBatchActionCount(0));
         assertThrows(IllegalArgumentException.class, () -> options.initialBatchActionCount(-1));
     }
 
     @Test
     public void invalidMaxRetriesThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
+        SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         assertThrows(IllegalArgumentException.class, () -> options.maxRetriesPerAction(0));
         assertThrows(IllegalArgumentException.class, () -> options.maxRetriesPerAction(-1));
     }
 
     @Test
     public void invalidRetryDelayThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
+        SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         Duration throttlingDelay = FOOL_SPOTBUGS.get("throttlingDelay");
         assertThrows(NullPointerException.class, () -> options.throttlingDelay(throttlingDelay));
         assertThrows(IllegalArgumentException.class, () -> options.throttlingDelay(Duration.ZERO));
@@ -55,7 +55,7 @@ public class SearchIndexingBufferedSenderBuilderTests {
 
     @Test
     public void invalidMaxRetryDelayThrows() {
-        SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
+        SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
         Duration maxThrottlingDelay = FOOL_SPOTBUGS.get("maxThrottlingDelay");
         assertThrows(NullPointerException.class, () -> options.maxThrottlingDelay(maxThrottlingDelay));
         assertThrows(IllegalArgumentException.class, () -> options.maxThrottlingDelay(Duration.ZERO));
@@ -68,7 +68,7 @@ public class SearchIndexingBufferedSenderBuilderTests {
     //        assertThrows(NullPointerException.class, () -> options.setPayloadTooLargeScaleDown(null));
     //    }
 
-    private SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> getBaseOptions() {
+    private SearchIndexingBufferedSenderBuilder<Map<String, Object>> getBaseOptions() {
         return new SearchClientBuilder().bufferedSender(DOCUMENT_TYPE);
     }
 }

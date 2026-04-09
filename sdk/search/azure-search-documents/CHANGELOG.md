@@ -26,9 +26,6 @@
 - Removed `EntityRecognitionSkill`, `EntityRecognitionSkillVersion`, `SentimentSkill`, and `SentimentSkillVersion`
   which were previously deprecated. Use `EntityRecognitionSkillV3` and `SentimentSkillV3` instead.
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 11.8.1 (2026-01-29)
 
@@ -56,7 +53,7 @@
 - Added required `runtime` property to `SearchIndexerStatus` and `indexersRuntime` property to `ServiceStatistics`.
 - Added `product` enum value to `ScoringFunctionAggregation`.
 - Added enhanced knowledge source parameters: `sourceDataFields`, `searchFields`, `semanticConfigurationName` in `SearchIndexKnowledgeSourceParameters`.
-- Added Azure Data Lake Storage Gen2 support with `isADLSGen2` and `ingestionParameters` in `AzureBlobKnowledgeSourceParameters`.
+- Added Azure Data Lake Storage Gen2 support with `isAdlsGen2` and `ingestionParameters` in `AzureBlobKnowledgeSourceParameters`.
 - Added partial content response support (HTTP 206) for knowledge base operations.
 - Added `error` property to `KnowledgeBaseActivityRecord` for enhanced error handling.
 - Added enhanced knowledge source parameters: `includeReferences`, `includeReferenceSourceData`, `alwaysQuerySource`, `rerankerThreshold` in `SearchIndexKnowledgeSourceParams`.

@@ -3,12 +3,11 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.search.documents.SearchClientBuilder;
-
+import com.azure.search.documents.SearchIndexingBufferedSenderBuilder;
 import java.util.function.Consumer;
 
 /**
- * Options passed when {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder#onActionAdded(Consumer)} is
+ * Options passed when {@link SearchIndexingBufferedSenderBuilder#onActionAdded(Consumer)} is
  * called.
  */
 public final class OnActionAddedOptions {

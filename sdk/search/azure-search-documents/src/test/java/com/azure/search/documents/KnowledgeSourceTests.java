@@ -43,6 +43,7 @@ import reactor.util.function.Tuples;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -340,7 +341,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals(KnowledgeSourceSynchronizationStatus.CREATING, status.getSynchronizationStatus());
 
             if (status.getSynchronizationInterval() != null) {
-                assertEquals("PT24H", status.getSynchronizationInterval());
+                assertEquals(Duration.ofHours(24), status.getSynchronizationInterval());
             }
 
             assertNull(status.getCurrentSynchronizationState());
@@ -349,7 +350,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
             // Statistics object exists with actual available fields
             assertNotNull(status.getStatistics());
             assertEquals(0, status.getStatistics().getTotalSynchronization());
-            assertEquals("00:00:00", status.getStatistics().getAverageSynchronizationDuration());
+            assertEquals(Duration.ZERO, status.getStatistics().getAverageSynchronizationDuration());
             assertEquals(0, status.getStatistics().getAverageItemsProcessedPerSynchronization());
         }
     }
