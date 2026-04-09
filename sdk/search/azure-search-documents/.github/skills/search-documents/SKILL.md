@@ -41,7 +41,7 @@ description: 'Post-regeneration customization guide for azure-search-documents S
 ## Service Version Management
 
 <!-- TODO: How SearchServiceVersion enum works. How includeOldApiVersions() customization
-     adds backward-compat versions. Dedup guard needed. -->
+     adds backward-compat versions. Deduplication guard needed. -->
 
 ## Post-Regeneration Customizations
 
