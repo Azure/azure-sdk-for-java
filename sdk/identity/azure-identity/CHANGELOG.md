@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
+- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users. ([#47975](https://github.com/Azure/azure-sdk-for-java/pull/47975))
 
 ### Other Changes
 

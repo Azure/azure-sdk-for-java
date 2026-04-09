@@ -746,17 +746,14 @@ public abstract class IdentityClientBase {
 
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         if (azdCommand.toString().contains("claims")) {
-                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
-                            if (userFriendlyError != null) {
-                                throw LOGGER
-                                    .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
-                            }
+                            throw LOGGER.logExceptionAsError(
+                                new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
                         }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
-                                + " Please run 'azd auth login' to set up account."));
+                            new CredentialUnavailableException(getAzdErrorMessage(redactedOutput)));
                     }
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
+                    throw LOGGER.logExceptionAsError(
+                        new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
                 } else {
                     throw LOGGER.logExceptionAsError(
                         new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
@@ -869,6 +866,12 @@ public abstract class IdentityClientBase {
         }
 
         return redactInfo(messages.get(0));
+    }
+
+    // Gets a user-friendly error message from azd output, with fallback to the raw output
+    String getAzdErrorMessage(String output) {
+        String extracted = extractUserFriendlyErrorFromAzdOutput(output);
+        return extracted != null ? extracted : output;
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
