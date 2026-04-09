@@ -11,7 +11,8 @@ import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -56,48 +57,103 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
-        int pingAckTimeoutSeconds = Configs.getHttp2PingAckTimeoutInSeconds();
-        if (maxLifetimeSeconds > 0 || pingAckTimeoutSeconds > 0) {
-            long baseMaxLifeMs = maxLifetimeSeconds > 0 ? maxLifetimeSeconds * 1000L : 0;
-            int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS; // [1, jitterRange] seconds
+        int maxLifetimeSeconds = Configs.isHttpConnectionMaxLifetimeEnabled()
+            ? Configs.getHttpConnectionMaxLifetimeInSeconds() : 0;
+        if (maxLifetimeSeconds > 0) {
             long maxIdleTimeMs = httpClientConfig.getMaxIdleConnectionTimeout().toMillis();
-            long pingAckTimeoutNanos = pingAckTimeoutSeconds > 0 ? pingAckTimeoutSeconds * 1_000_000_000L : 0;
+
+            // Derive sweep interval: must be less than the smallest eviction threshold,
+            // otherwise we overshoot (a connection sits past its threshold until the next sweep).
+            // Use min(thresholds) / 2, clamped to [1s, 5s] to avoid excessive polling.
+            long minThresholdSeconds = Long.MAX_VALUE;
+            if (maxIdleTimeMs > 0) {
+                minThresholdSeconds = Math.min(minThresholdSeconds, maxIdleTimeMs / 1000);
+            }
+            if (maxLifetimeSeconds > 0) {
+                minThresholdSeconds = Math.min(minThresholdSeconds, maxLifetimeSeconds);
+            }
+            long sweepSeconds = Math.max(1, Math.min(5, minThresholdSeconds / 2));
+            long sweepIntervalNanos = sweepSeconds * 1_000_000_000L;
+
+            // Eviction rate limiter: at most 1 connection evicted per sweep cycle.
+            // Prevents cliff eviction when multiple connections expire in the same window.
+            // Dead channels (Phase 0) are exempt — they're already unusable.
+            final AtomicInteger evictedThisCycle = new AtomicInteger(0);
+            final AtomicLong cycleStartNanos = new AtomicLong(System.nanoTime());
+            final int maxEvictionsPerCycle = 1;
 
             fixedConnectionProviderBuilder.evictionPredicate((connection, metadata) -> {
-                // Phase 0: Dead channel — always evict
+                // Phase 0: Dead channel — always evict (no rate limit, channel is already unusable)
                 if (!connection.channel().isActive()) {
                     return true;
                 }
 
-                // Phase 1: Idle timeout — unchanged from default behavior
+                // Reset eviction counter on new sweep cycle
+                long now = System.nanoTime();
+                long cycleStart = cycleStartNanos.get();
+                if (now - cycleStart > sweepIntervalNanos) {
+                    cycleStartNanos.compareAndSet(cycleStart, now);
+                    evictedThisCycle.set(0);
+                }
+
+                // Rate limit: skip eviction if we've already evicted enough this cycle
+                if (evictedThisCycle.get() >= maxEvictionsPerCycle) {
+                    return false;
+                }
+
+                // Phase 1: Idle timeout — must be in the predicate because a custom evictionPredicate
+                // replaces reactor-netty's built-in maxIdleTime/maxLifeTime handling (1.2.13 docs:
+                // "Otherwise only the custom eviction predicate is invoked").
                 if (maxIdleTimeMs > 0 && metadata.idleTime() > maxIdleTimeMs) {
+                    evictedThisCycle.incrementAndGet();
                     return true;
                 }
 
-                // Phase 2: PING liveness — if PING ACK is stale, connection is silently degraded
-                if (pingAckTimeoutNanos > 0) {
-                    Channel parentChannel = connection.channel();
-                    Long lastAckNanos = parentChannel.hasAttr(Http2PingHealthHandler.LAST_PING_ACK_NANOS)
-                        ? parentChannel.attr(Http2PingHealthHandler.LAST_PING_ACK_NANOS).get()
-                        : null;
-                    if (lastAckNanos != null && System.nanoTime() - lastAckNanos > pingAckTimeoutNanos) {
-                        return true;
-                    }
-                }
+                // NOTE: PING keepalive is handled natively by reactor-netty's
+                // pingAckTimeout/pingAckDropThreshold in http2Settings. Connections with
+                // consecutive unanswered PINGs are closed by the framework. Degraded but
+                // responsive connections are handled by the response timeout retry path
+                // (6s/6s/10s escalation → cross-region failover).
 
-                // Phase 3: Lifetime with jitter — connection exceeded its jittered max lifetime
-                // Jitter is per-evaluation with 1s granularity in [1s, jitterRange]. ThreadLocalRandom
-                // is lock-free and safe for concurrent eviction sweeps across event loops.
-                if (baseMaxLifeMs > 0) {
-                    int connJitterMs = ThreadLocalRandom.current().nextInt(1, jitterRangeSeconds + 1) * 1000;
-                    return metadata.lifeTime() > (baseMaxLifeMs + connJitterMs);
+                // Phase 2: Per-connection max lifetime with jitter — two-phase eviction.
+                // CONNECTION_EXPIRY_NANOS is stamped once per connection in doOnConnected
+                // (via HttpConnectionLifecycleUtil.stampConnectionExpiry) with baseMaxLifetime - random jitter.
+                //
+                // Two-phase: instead of evicting immediately (which RST_STREAMs active H2 streams),
+                // mark the connection as pending eviction. On subsequent sweeps, evict when idle
+                // or after the drain grace period expires.
+                if (maxLifetimeSeconds > 0) {
+                    Channel parentChannel = connection.channel();
+                    Long expiryNanos = parentChannel.hasAttr(HttpConnectionLifecycleUtil.CONNECTION_EXPIRY_NANOS)
+                        ? parentChannel.attr(HttpConnectionLifecycleUtil.CONNECTION_EXPIRY_NANOS).get()
+                        : null;
+                    if (expiryNanos != null && now > expiryNanos) {
+                        // Check if already marked for pending eviction
+                        Long pendingSince = parentChannel.hasAttr(HttpConnectionLifecycleUtil.PENDING_EVICTION_NANOS)
+                            ? parentChannel.attr(HttpConnectionLifecycleUtil.PENDING_EVICTION_NANOS).get()
+                            : null;
+
+                        if (pendingSince == null) {
+                            // First detection — mark as pending, don't evict yet
+                            parentChannel.attr(HttpConnectionLifecycleUtil.PENDING_EVICTION_NANOS).set(now);
+                            return false;
+                        }
+
+                        // Already pending — evict if idle or grace period (10s) expired
+                        long drainGraceNanos = 10_000_000_000L; // 10 seconds
+                        if (metadata.idleTime() > 0 || now - pendingSince > drainGraceNanos) {
+                            evictedThisCycle.incrementAndGet();
+                            return true;
+                        }
+
+                        return false; // active streams — wait for next sweep
+                    }
                 }
 
                 return false;
             });
 
-            fixedConnectionProviderBuilder.evictInBackground(Duration.ofSeconds(5));
+            fixedConnectionProviderBuilder.evictInBackground(Duration.ofSeconds(sweepSeconds));
         }
 
         if (Configs.isNettyHttpClientMetricsEnabled()) {

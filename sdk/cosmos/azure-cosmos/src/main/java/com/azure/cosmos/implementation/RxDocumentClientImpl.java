@@ -1004,6 +1004,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
             .withHttp2ConnectionConfig(this.connectionPolicy.getHttp2ConnectionConfig());
 
+        if (this.connectionPolicy.getAddressResolverGroup() != null) {
+            httpClientConfig.withAddressResolverGroup(this.connectionPolicy.getAddressResolverGroup());
+        }
+
+        if (this.connectionPolicy.getDoOnConnectedCallback() != null) {
+            httpClientConfig.withDoOnConnectedCallback(this.connectionPolicy.getDoOnConnectedCallback());
+        }
+
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {
