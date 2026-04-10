@@ -1362,11 +1362,13 @@ public final class SearchIndexerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request on successful completion of {@link Mono}.
+     * @return all datasources as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListDataSourcesResult> listDataSourceConnections() {
-        return getDataSourceConnections();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections() {
+        return new PagedFlux<>(() -> listDataSourceConnectionsWithResponse(new RequestOptions())
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().getDataSources(), null, null)));
     }
 
     /**
@@ -1391,7 +1393,7 @@ public final class SearchIndexerAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ListDataSourcesResult>> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
+    Mono<Response<ListDataSourcesResult>> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
         return mapResponse(getDataSourceConnectionsWithResponse(requestOptions), ListDataSourcesResult.class);
     }
 
@@ -1622,11 +1624,13 @@ public final class SearchIndexerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request on successful completion of {@link Mono}.
+     * @return all indexers as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListIndexersResult> listIndexers() {
-        return getIndexers();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexer> listIndexers() {
+        return new PagedFlux<>(() -> listIndexersWithResponse(new RequestOptions())
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().getIndexers(), null, null)));
     }
 
     /**
@@ -1651,7 +1655,7 @@ public final class SearchIndexerAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ListIndexersResult>> listIndexersWithResponse(RequestOptions requestOptions) {
+    Mono<Response<ListIndexersResult>> listIndexersWithResponse(RequestOptions requestOptions) {
         return mapResponse(getIndexersWithResponse(requestOptions), ListIndexersResult.class);
     }
 

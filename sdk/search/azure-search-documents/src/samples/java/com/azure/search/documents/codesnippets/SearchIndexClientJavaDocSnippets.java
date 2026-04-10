@@ -148,7 +148,7 @@ public class SearchIndexClientJavaDocSnippets {
     public static void listSynonymMaps() {
         searchIndexClient = createSearchIndexClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps
-        searchIndexClient.listSynonymMaps().getSynonymMaps()
+        searchIndexClient.listSynonymMaps()
             .forEach(synonymMap -> System.out.println(synonymMap.getName()));
         // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps
     }

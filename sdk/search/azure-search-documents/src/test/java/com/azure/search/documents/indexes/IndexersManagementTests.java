@@ -221,10 +221,8 @@ public class IndexersManagementTests extends SearchTestBase {
         expectedIndexers.put(indexer1.getName(), indexer1);
         expectedIndexers.put(indexer2.getName(), indexer2);
 
-        Map<String, SearchIndexer> actualIndexers = searchIndexerClient.listIndexers()
-            .getIndexers()
-            .stream()
-            .collect(Collectors.toMap(SearchIndexer::getName, si -> si));
+        Map<String, SearchIndexer> actualIndexers
+            = searchIndexerClient.listIndexers().stream().collect(Collectors.toMap(SearchIndexer::getName, si -> si));
 
         compareMaps(expectedIndexers, actualIndexers,
             (expected, actual) -> assertObjectEquals(expected, actual, true, "etag"));
@@ -250,8 +248,8 @@ public class IndexersManagementTests extends SearchTestBase {
         expectedIndexers.put(indexer1.getName(), indexer1);
         expectedIndexers.put(indexer2.getName(), indexer2);
 
-        Mono<Map<String, SearchIndexer>> listMono = searchIndexerAsyncClient.listIndexers()
-            .map(result -> result.getIndexers().stream().collect(Collectors.toMap(SearchIndexer::getName, si -> si)));
+        Mono<Map<String, SearchIndexer>> listMono
+            = searchIndexerAsyncClient.listIndexers().collectMap(SearchIndexer::getName, si -> si);
 
         StepVerifier.create(listMono)
             .assertNext(actualIndexers -> compareMaps(expectedIndexers, actualIndexers,

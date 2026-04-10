@@ -6,7 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.ListIndexersResult;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexer;
@@ -57,8 +56,8 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
     public static void listIndexers() {
         searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers
-        searchIndexerAsyncClient.listIndexers().map(ListIndexersResult::getIndexers).subscribe(indexers ->
-            indexers.forEach(indexer -> System.out.printf("Retrieved indexer name: %s%n", indexer.getName())));
+        searchIndexerAsyncClient.listIndexers().subscribe(indexer ->
+            System.out.printf("Retrieved indexer name: %s%n", indexer.getName()));
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers
     }
 

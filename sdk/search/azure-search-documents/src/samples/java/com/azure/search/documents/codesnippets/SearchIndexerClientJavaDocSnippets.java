@@ -52,7 +52,7 @@ public class SearchIndexerClientJavaDocSnippets {
     public static void listIndexers() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers
-        searchIndexerClient.listIndexers().getIndexers()
+        searchIndexerClient.listIndexers()
             .forEach(indexer -> System.out.printf("Retrieved indexer name: %s%n", indexer.getName()));
         // END: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers
     }
