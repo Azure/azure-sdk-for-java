@@ -19,15 +19,11 @@ import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.DataSourceCredentials;
-import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
-import com.azure.search.documents.indexes.models.ListDataSourcesResult;
-import com.azure.search.documents.indexes.models.ListIndexersResult;
-import com.azure.search.documents.indexes.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
+
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchAlias;
@@ -42,7 +38,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SkillNames;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
@@ -990,8 +985,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMaps() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps
-        ListSynonymMapsResult synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps();
-        for (SynonymMap synonymMap: synonymMaps.getSynonymMaps()) {
+        PagedIterable<SynonymMap> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps();
+        for (SynonymMap synonymMap: synonymMaps) {
             System.out.printf("The synonymMap name is %s. The ETag of synonymMap is %s.%n", synonymMap.getName(),
                 synonymMap.getETag());
         }
@@ -1352,9 +1347,9 @@ public class SearchJavaDocCodeSnippets {
     public void listSynonymMapsAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
         SEARCH_INDEX_ASYNC_CLIENT.listSynonymMaps()
-            .subscribe(result -> result.getSynonymMaps().forEach(synonymMap ->
+            .subscribe(synonymMap ->
                 System.out.printf("The synonymMap name is %s. The ETag of synonymMap is %s.%n",
-                    synonymMap.getName(), synonymMap.getETag())));
+                    synonymMap.getName(), synonymMap.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
     }
 
@@ -1522,8 +1517,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexers() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexers
-        ListIndexersResult indexers = SEARCH_INDEXER_CLIENT.listIndexers();
-        for (SearchIndexer indexer: indexers.getIndexers()) {
+        PagedIterable<SearchIndexer> indexers = SEARCH_INDEXER_CLIENT.listIndexers();
+        for (SearchIndexer indexer: indexers) {
             System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexer.getName(),
                 indexer.getETag());
         }
@@ -1692,21 +1687,7 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#resetDocuments(String, Boolean, DocumentKeysOrIds)}
-     */
-    public void resetDocuments() {
-        // resetDocuments removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetDocumentsWithResponse(String, RequestOptions)}
-     */
-    public void resetDocumentsWithResponse() {
-        // resetDocumentsWithResponse removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for creating {@link SearchIndexerClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
+      * Code snippet for creating {@link SearchIndexerClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
      */
     public void createDataSource() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnection#SearchIndexerDataSourceConnection
@@ -1771,8 +1752,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSources() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections
-        ListDataSourcesResult dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnections();
-        for (SearchIndexerDataSourceConnection dataSource: dataSources.getDataSources()) {
+        PagedIterable<SearchIndexerDataSourceConnection> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnections();
+        for (SearchIndexerDataSourceConnection dataSource: dataSources) {
             System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n", dataSource.getName(),
                 dataSource.getETag());
         }
@@ -1946,8 +1927,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillset() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets
-        ListSkillsetsResult indexerSkillsets = SEARCH_INDEXER_CLIENT.listSkillsets();
-        for (SearchIndexerSkillset skillset: indexerSkillsets.getSkillsets()) {
+        PagedIterable<SearchIndexerSkillset> indexerSkillsets = SEARCH_INDEXER_CLIENT.listSkillsets();
+        for (SearchIndexerSkillset skillset: indexerSkillsets) {
             System.out.printf("The skillset name is %s. The ETag of skillset is %s.%n", skillset.getName(),
                 skillset.getETag());
         }
@@ -2122,9 +2103,9 @@ public class SearchJavaDocCodeSnippets {
     public void listIndexersAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
         SEARCH_INDEXER_ASYNC_CLIENT.listIndexers()
-            .subscribe(result -> result.getIndexers().forEach(indexer ->
+            .subscribe(indexer ->
                 System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexer.getName(),
-                    indexer.getETag())));
+                    indexer.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
     }
 
@@ -2266,21 +2247,7 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetDocuments(String, Boolean, DocumentKeysOrIds)}
-     */
-    public void resetDocumentsAsync() {
-        // resetDocuments removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetDocumentsWithResponse(String, RequestOptions)}
-     */
-    public void resetDocumentsWithResponseAsync() {
-        // resetDocumentsWithResponse removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for creating {@link SearchIndexerAsyncClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
+      * Code snippet for creating {@link SearchIndexerAsyncClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
      */
     public void createDataSourceAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection
@@ -2340,9 +2307,9 @@ public class SearchJavaDocCodeSnippets {
     public void listDataSourcesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
         SEARCH_INDEXER_ASYNC_CLIENT.listDataSourceConnections()
-            .subscribe(result -> result.getDataSources().forEach(dataSource ->
+            .subscribe(dataSource ->
                 System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n",
-                    dataSource.getName(), dataSource.getETag())));
+                    dataSource.getName(), dataSource.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
     }
 
@@ -2491,9 +2458,9 @@ public class SearchJavaDocCodeSnippets {
     public void listIndexerSkillsetAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets
         SEARCH_INDEXER_ASYNC_CLIENT.listSkillsets()
-            .subscribe(result -> result.getSkillsets().forEach(skillset ->
+            .subscribe(skillset ->
                 System.out.printf("The skillset name is %s. The ETag of skillset is %s.%n", skillset.getName(),
-                    skillset.getETag())));
+                    skillset.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets
     }
 
@@ -2568,35 +2535,7 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#resetSkills(String, SkillNames)}
-     */
-    public void resetSkills() {
-        // resetSkills removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(String, SkillNames, RequestOptions)}
-     */
-    public void resetSkillsWithResponse() {
-        // resetSkillsWithResponse removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkills(String, SkillNames)}
-     */
-    public void resetSkillsAsync() {
-        // resetSkills removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(String, SkillNames, RequestOptions)}
-     */
-    public void resetSkillsWithResponseAsync() {
-        // resetSkillsWithResponse removed in 2026-04-01 API version.
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createAlias(SearchAlias)}.
+      * Code snippet for {@link SearchIndexAsyncClient#createAlias(SearchAlias)}.
      */
     public void createAliasAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias

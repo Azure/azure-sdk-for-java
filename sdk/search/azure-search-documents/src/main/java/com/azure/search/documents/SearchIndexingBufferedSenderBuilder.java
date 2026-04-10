@@ -3,11 +3,40 @@
 package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.KeyCredentialTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.KeyCredentialPolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.OnActionAddedOptions;
 import com.azure.search.documents.models.OnActionErrorOptions;
@@ -15,6 +44,8 @@ import com.azure.search.documents.models.OnActionSentOptions;
 import com.azure.search.documents.models.OnActionSucceededOptions;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -31,50 +62,59 @@ import java.util.function.Function;
  * @see SearchIndexingBufferedAsyncSender
  */
 @ServiceClientBuilder(serviceClients = { SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class })
-public final class SearchIndexingBufferedSenderBuilder<T> {
+public final class SearchIndexingBufferedSenderBuilder<T> implements HttpTrait<SearchIndexingBufferedSenderBuilder<T>>,
+    ConfigurationTrait<SearchIndexingBufferedSenderBuilder<T>>,
+    TokenCredentialTrait<SearchIndexingBufferedSenderBuilder<T>>,
+    KeyCredentialTrait<SearchIndexingBufferedSenderBuilder<T>>, EndpointTrait<SearchIndexingBufferedSenderBuilder<T>> {
 
     private static final boolean DEFAULT_AUTO_FLUSH = true;
-
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
-
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
-
     private static final int DEFAULT_MAX_RETRIES_PER_ACTION = 3;
-
     private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
-
     private static final Duration DEFAULT_MAX_THROTTLING_DELAY = Duration.ofMinutes(1);
-
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://search.azure.com/.default" };
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-search-documents.properties");
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingBufferedSenderBuilder.class);
 
-    private final SearchClientBuilder clientBuilder;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    // Connection/auth fields
+    private HttpClient httpClient;
+    private HttpPipeline pipeline;
+    private HttpLogOptions httpLogOptions;
+    private ClientOptions clientOptions;
+    private RetryOptions retryOptions;
+    private RetryPolicy retryPolicy;
+    private Configuration configuration;
+    private TokenCredential tokenCredential;
+    private KeyCredential keyCredential;
+    private String endpoint;
+    private String indexName;
+    private SearchServiceVersion serviceVersion;
+    private String[] scopes = DEFAULT_SCOPES;
+
+    // Buffered sender-specific fields
     private Function<Map<String, Object>, String> documentKeyRetriever;
-
     private boolean autoFlush = DEFAULT_AUTO_FLUSH;
-
     private Duration autoFlushInterval = DEFAULT_FLUSH_INTERVAL;
-
     private int initialBatchActionCount = DEFAULT_INITIAL_BATCH_ACTION_COUNT;
-
     private int maxRetriesPerAction = DEFAULT_MAX_RETRIES_PER_ACTION;
-
     private Duration throttlingDelay = DEFAULT_THROTTLING_DELAY;
-
     private Duration maxThrottlingDelay = DEFAULT_MAX_THROTTLING_DELAY;
-
     private JsonSerializer jsonSerializer;
-
     private Consumer<OnActionAddedOptions> onActionAddedConsumer;
-
     private Consumer<OnActionSucceededOptions> onActionSucceededConsumer;
-
     private Consumer<OnActionErrorOptions> onActionErrorConsumer;
-
     private Consumer<OnActionSentOptions> onActionSentConsumer;
 
-    SearchIndexingBufferedSenderBuilder(SearchClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+    /**
+     * Creates a new instance of {@link SearchIndexingBufferedSenderBuilder}.
+     */
+    public SearchIndexingBufferedSenderBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
     }
 
     /**
@@ -88,7 +128,7 @@ public final class SearchIndexingBufferedSenderBuilder<T> {
      */
     public SearchIndexingBufferedSender<T> buildSender() {
         Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
-        SearchClient client = clientBuilder.buildClient();
+        SearchClient client = new SearchClient(buildInnerClient());
         JsonSerializer serializer
             = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchIndexingBufferedSender<>(client, serializer, documentKeyRetriever, autoFlush,
@@ -107,13 +147,163 @@ public final class SearchIndexingBufferedSenderBuilder<T> {
      */
     public SearchIndexingBufferedAsyncSender<T> buildAsyncSender() {
         Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
-        SearchAsyncClient asyncClient = clientBuilder.buildAsyncClient();
+        SearchAsyncClient asyncClient = new SearchAsyncClient(buildInnerClient());
         JsonSerializer serializer
             = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchIndexingBufferedAsyncSender<>(asyncClient, serializer, documentKeyRetriever, autoFlush,
             autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
             onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
     }
+
+    // region Connection/auth builder methods
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
+        pipelinePolicies.add(customPolicy);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> credential(KeyCredential keyCredential) {
+        this.keyCredential = keyCredential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    public SearchIndexingBufferedSenderBuilder<T> endpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Sets the name of the index.
+     *
+     * @param indexName the indexName value.
+     * @return the SearchIndexingBufferedSenderBuilder.
+     */
+    public SearchIndexingBufferedSenderBuilder<T> indexName(String indexName) {
+        this.indexName = indexName;
+        return this;
+    }
+
+    /**
+     * Sets the service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the SearchIndexingBufferedSenderBuilder.
+     */
+    public SearchIndexingBufferedSenderBuilder<T> serviceVersion(SearchServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
+     * Sets the retry policy that will attempt to retry failed requests, if applicable.
+     *
+     * @param retryPolicy the retryPolicy value.
+     * @return the SearchIndexingBufferedSenderBuilder.
+     */
+    public SearchIndexingBufferedSenderBuilder<T> retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Microsoft Entra ID.
+     * <p>
+     * If {@code audience} is null the public cloud audience will be assumed.
+     *
+     * @param audience The Audience to use for authentication with Microsoft Entra ID.
+     * @return The updated SearchIndexingBufferedSenderBuilder object.
+     */
+    public SearchIndexingBufferedSenderBuilder<T> audience(SearchAudience audience) {
+        if (audience == null) {
+            this.scopes = DEFAULT_SCOPES;
+        } else {
+            this.scopes = new String[] { audience.getValue() + "/.default" };
+        }
+        return this;
+    }
+
+    // endregion
+
+    // region Buffered sender-specific builder methods
 
     /**
      * Sets the flag determining whether a buffered sender will automatically flush its document batch based on the
@@ -303,56 +493,62 @@ public final class SearchIndexingBufferedSenderBuilder<T> {
         return this;
     }
 
-    // Retaining this commented out code as it may be added back in a future release.
-    // /**
-    // * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is
-    // returned
-    // * by the service.
-    // * <p>
-    // * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-    // *
-    // * @param scaleDownFunction The batch size scale down function.
-    // * @return The updated SearchIndexingBufferedSenderOptions object.
-    // * @throws NullPointerException If {@code scaleDownFunction} is null.
-    // */
-    // public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
-    // Function<Integer, Integer> scaleDownFunction) {
-    // this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
-    // return this;
-    // }
-    // Retaining this commented out code as it may be added back in a future release.
-    // /**
-    // * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is
-    // returned
-    // * by the service.
-    // * <p>
-    // * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-    // *
-    // * @return The batch size scale down function.
-    // */
-    // public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
-    // return scaleDownFunction;
-    // }
+    // endregion
 
-    /**
-     * Sets the retry options for the builder.
-     *
-     * @param retryOptions The retry options.
-     * @return The updated SearchIndexingBufferedSenderBuilder object.
-     */
-    public SearchIndexingBufferedSenderBuilder<T> retryOptions(RetryOptions retryOptions) {
-        clientBuilder.retryOptions(retryOptions);
-        return this;
+    // region Internal pipeline and client building
+
+    private SearchClientImpl buildInnerClient() {
+        validateClient();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        SearchServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : SearchServiceVersion.getLatest();
+        return new SearchClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint,
+            this.indexName, localServiceVersion);
     }
 
-    /**
-     * Sets the retry policy for the builder.
-     *
-     * @param retryPolicy The retry policy.
-     * @return The updated SearchIndexingBufferedSenderBuilder object.
-     */
-    public SearchIndexingBufferedSenderBuilder<T> retryPolicy(RetryPolicy retryPolicy) {
-        clientBuilder.retryPolicy(retryPolicy);
-        return this;
+    private void validateClient() {
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        Objects.requireNonNull(indexName, "'indexName' cannot be null.");
     }
+
+    private HttpPipeline createHttpPipeline() {
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        if (keyCredential != null) {
+            policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+        }
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, scopes));
+        }
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
+    }
+
+    // endregion
 }

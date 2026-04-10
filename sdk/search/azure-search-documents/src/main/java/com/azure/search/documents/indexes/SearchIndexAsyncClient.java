@@ -1399,11 +1399,13 @@ public final class SearchIndexAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request on successful completion of {@link Mono}.
+     * @return all synonym maps as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListSynonymMapsResult> listSynonymMaps() {
-        return getSynonymMaps();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SynonymMap> listSynonymMaps() {
+        return new PagedFlux<>(() -> listSynonymMapsWithResponse(new RequestOptions())
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().getSynonymMaps(), null, null)));
     }
 
     /**
@@ -1428,7 +1430,7 @@ public final class SearchIndexAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(RequestOptions requestOptions) {
+    Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(RequestOptions requestOptions) {
         return mapResponse(getSynonymMapsWithResponse(requestOptions), ListSynonymMapsResult.class);
     }
 

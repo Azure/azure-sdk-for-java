@@ -106,7 +106,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -143,9 +143,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -284,7 +284,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -404,7 +404,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -477,9 +477,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -654,7 +654,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -760,7 +760,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -872,9 +872,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1088,7 +1088,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1334,11 +1334,15 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request.
+     * @return all datasources as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListDataSourcesResult listDataSourceConnections() {
-        return getDataSourceConnections();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections() {
+        return new PagedIterable<>(() -> {
+            Response<ListDataSourcesResult> response = listDataSourceConnectionsWithResponse(new RequestOptions());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().getDataSources(), null, null);
+        });
     }
 
     /**
@@ -1363,7 +1367,7 @@ public final class SearchIndexerClient {
      * @return response from a List Datasources request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
+    Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
         return convertResponse(getDataSourceConnectionsWithResponse(requestOptions), ListDataSourcesResult.class);
     }
 
@@ -1582,11 +1586,15 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request.
+     * @return all indexers as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListIndexersResult listIndexers() {
-        return getIndexers();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexer> listIndexers() {
+        return new PagedIterable<>(() -> {
+            Response<ListIndexersResult> response = listIndexersWithResponse(new RequestOptions());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().getIndexers(), null, null);
+        });
     }
 
     /**
@@ -1610,7 +1618,7 @@ public final class SearchIndexerClient {
      * @return response from a List Indexers request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
+    Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
         return convertResponse(getIndexersWithResponse(requestOptions), ListIndexersResult.class);
     }
 
@@ -1827,11 +1835,15 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request.
+     * @return all skillsets as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListSkillsetsResult listSkillsets() {
-        return getSkillsets();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexerSkillset> listSkillsets() {
+        return new PagedIterable<>(() -> {
+            Response<ListSkillsetsResult> response = listSkillsetsWithResponse(new RequestOptions());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().getSkillsets(), null, null);
+        });
     }
 
     /**
@@ -1856,7 +1868,7 @@ public final class SearchIndexerClient {
      * @return response from a list skillset request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListSkillsetsResult> listSkillsetsWithResponse(RequestOptions requestOptions) {
+    Response<ListSkillsetsResult> listSkillsetsWithResponse(RequestOptions requestOptions) {
         return convertResponse(getSkillsetsWithResponse(requestOptions), ListSkillsetsResult.class);
     }
 
@@ -2042,7 +2054,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2107,7 +2119,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2144,9 +2156,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2211,7 +2223,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2310,7 +2322,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2383,9 +2395,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2484,7 +2496,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2556,7 +2568,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2694,7 +2706,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2806,9 +2818,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

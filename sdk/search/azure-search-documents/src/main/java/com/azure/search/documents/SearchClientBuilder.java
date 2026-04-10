@@ -36,7 +36,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -389,19 +388,6 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SearchClientBuilder.class);
-
-    /**
-     * Create a new instance of {@link SearchIndexingBufferedSenderBuilder} used to configure {@link
-     * SearchIndexingBufferedSender SearchIndexingBufferedSenders} and {@link SearchIndexingBufferedAsyncSender
-     * SearchIndexingBufferedAsyncSenders}.
-     *
-     * @param documentType The {@link TypeReference} representing the document type associated with the sender.
-     * @param <T> The type of the document that the buffered sender will use.
-     * @return A new instance of {@link SearchIndexingBufferedSenderBuilder}.
-     */
-    public <T> SearchIndexingBufferedSenderBuilder<T> bufferedSender(TypeReference<T> documentType) {
-        return new SearchIndexingBufferedSenderBuilder<>(this);
-    }
 
     @Generated
     private String[] scopes = DEFAULT_SCOPES;
