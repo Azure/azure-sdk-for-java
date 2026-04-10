@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 
 /**
- * Parallel blob upload with {@link com.azure.storage.blob.options.BlobParallelUploadOptions#setRequestChecksumAlgorithm}
+ * Parallel blob upload with {@link com.azure.storage.blob.options.BlobParallelUploadOptions#setContentValidationAlgorithm}
  * enabled. Verifies the correctness of the upload request content via CRC (see {@code BlobContentValidationUploadTests}).
  */
 public class ContentValidationUpload extends BlobScenarioBase<ContentValidationStressOptions> {
@@ -42,7 +42,7 @@ public class ContentValidationUpload extends BlobScenarioBase<ContentValidationS
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             syncClient.uploadWithResponse(new BlobParallelUploadOptions(inputStream)
                 .setParallelTransferOptions(parallelTransferOptions)
-                .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()), null, span);
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()), null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
@@ -53,7 +53,7 @@ public class ContentValidationUpload extends BlobScenarioBase<ContentValidationS
             .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new BlobParallelUploadOptions(byteBufferFlux)
                 .setParallelTransferOptions(parallelTransferOptions)
-                .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

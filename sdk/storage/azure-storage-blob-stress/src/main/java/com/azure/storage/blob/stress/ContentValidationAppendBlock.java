@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 
 /**
- * Append block with {@link AppendBlobAppendBlockOptions#setRequestChecksumAlgorithm}.
+ * Append block with {@link AppendBlobAppendBlockOptions#setContentValidationAlgorithm}.
  */
 public class ContentValidationAppendBlock extends BlobScenarioBase<ContentValidationStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
@@ -43,7 +43,7 @@ public class ContentValidationAppendBlock extends BlobScenarioBase<ContentValida
             AppendBlobClient appendBlobClient = syncClient.getAppendBlobClient();
             appendBlobClient.appendBlockWithResponse(
                 new AppendBlobAppendBlockOptions(inputStream, options.getSize())
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -56,7 +56,7 @@ public class ContentValidationAppendBlock extends BlobScenarioBase<ContentValida
             .convertStreamToByteBuffer();
         return appendBlobAsyncClient.appendBlockWithResponse(
                 new AppendBlobAppendBlockOptions(byteBufferFlux, options.getSize())
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

@@ -51,7 +51,7 @@ public class ContentValidationStageBlock extends BlobScenarioBase<ContentValidat
             BinaryData data = BinaryData.fromStream(inputStream, options.getSize());
             blockBlobClient.stageBlockWithResponse(
                 new BlockBlobStageBlockOptions(blockId, data)
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span);
             blockBlobClientNoFault.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)), null, span);
@@ -70,7 +70,7 @@ public class ContentValidationStageBlock extends BlobScenarioBase<ContentValidat
         return BinaryData.fromFlux(byteBufferFlux, options.getSize(), false)
             .flatMap(binaryData -> blockBlobAsyncClient.stageBlockWithResponse(
                 new BlockBlobStageBlockOptions(blockId, binaryData)
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm())))
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm())))
             .then(blockBlobAsyncClientNoFault.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId))))
             .then(originalContent.checkMatch(byteBufferFlux, span));

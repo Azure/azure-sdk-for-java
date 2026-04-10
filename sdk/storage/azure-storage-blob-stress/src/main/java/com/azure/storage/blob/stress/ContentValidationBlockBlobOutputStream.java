@@ -20,7 +20,7 @@ import java.io.IOException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Block blob output stream with {@link BlockBlobOutputStreamOptions#setRequestChecksumAlgorithm} (sync only).
+ * Block blob output stream with {@link BlockBlobOutputStreamOptions#setContentValidationAlgorithm} (sync only).
  */
 public class ContentValidationBlockBlobOutputStream extends BlobScenarioBase<ContentValidationStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ContentValidationBlockBlobOutputStream.class);
@@ -42,7 +42,7 @@ public class ContentValidationBlockBlobOutputStream extends BlobScenarioBase<Con
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
         BlockBlobOutputStreamOptions streamOptions = new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(parallelTransferOptions)
-            .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm());
+            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
              BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(streamOptions, span)) {

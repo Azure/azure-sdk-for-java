@@ -22,7 +22,7 @@ import java.io.IOException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Page blob output stream with {@link PageBlobOutputStreamOptions#setRequestChecksumAlgorithm} (sync only).
+ * Page blob output stream with {@link PageBlobOutputStreamOptions#setContentValidationAlgorithm} (sync only).
  */
 public class ContentValidationPageBlobOutputStream extends PageBlobScenarioBase<ContentValidationStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ContentValidationPageBlobOutputStream.class);
@@ -48,7 +48,7 @@ public class ContentValidationPageBlobOutputStream extends PageBlobScenarioBase<
         PageBlobClient pageBlobClient = syncClient.getPageBlobClient();
         PageBlobOutputStreamOptions streamOptions = new PageBlobOutputStreamOptions(
             new PageRange().setStart(0).setEnd(options.getSize() - 1))
-            .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm());
+            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
              BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(streamOptions)) {

@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.StorageStressOptions;
 import com.beust.jcommander.Parameter;
 
@@ -18,9 +18,9 @@ public class ContentValidationStressOptions extends StorageStressOptions {
      */
     @Parameter(names = { "--requestChecksumAlgorithm" },
         description = "CRC64 (default), AUTO, NONE, or MD5 (not valid for upload-from-file scenarios)")
-    private StorageChecksumAlgorithm requestChecksumAlgorithm = StorageChecksumAlgorithm.CRC64;
+    private ContentValidationAlgorithm requestChecksumAlgorithm = ContentValidationAlgorithm.CRC64;
 
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return requestChecksumAlgorithm;
     }
 }

@@ -26,7 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 /**
- * Upload from file with {@link BlobUploadFromFileOptions#setRequestChecksumAlgorithm}.
+ * Upload from file with {@link BlobUploadFromFileOptions#setContentValidationAlgorithm}.
  */
 public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentValidationStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ContentValidationUploadFromFile.class);
@@ -58,7 +58,7 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
             syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
                     .setParallelTransferOptions(parallelTransferOptions)
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span);
             syncNoFaultClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(downloadPath.toString()), null, span);
@@ -86,7 +86,7 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
 
         return asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
                 .setParallelTransferOptions(parallelTransferOptions)
-                .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(downloadFilePath.toString())))
             .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(downloadFilePath), span))

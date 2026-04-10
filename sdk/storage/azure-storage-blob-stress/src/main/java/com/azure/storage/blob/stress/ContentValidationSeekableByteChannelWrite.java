@@ -22,7 +22,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE;
 
 /**
- * Block-blob seekable byte channel write with {@link BlockBlobSeekableByteChannelWriteOptions#setRequestChecksumAlgorithm}.
+ * Block-blob seekable byte channel write with {@link BlockBlobSeekableByteChannelWriteOptions#setContentValidationAlgorithm}.
  * Matches {@link com.azure.storage.blob.BlobContentValidationUploadTests} seekable-channel scenarios (sync only).
  */
 public class ContentValidationSeekableByteChannelWrite extends BlobScenarioBase<ContentValidationStressOptions> {
@@ -42,7 +42,7 @@ public class ContentValidationSeekableByteChannelWrite extends BlobScenarioBase<
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
         BlockBlobSeekableByteChannelWriteOptions writeOptions = new BlockBlobSeekableByteChannelWriteOptions(OVERWRITE)
-            .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm());
+            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
 
         try (CrcInputStream crcInput = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             Flux<ByteBuffer> byteBufferFlux = crcInput.convertStreamToByteBuffer();

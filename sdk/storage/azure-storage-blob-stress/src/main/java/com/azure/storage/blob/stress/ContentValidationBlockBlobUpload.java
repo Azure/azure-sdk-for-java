@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Single-shot block blob upload with request content validation
- * ({@link BlockBlobSimpleUploadOptions#setRequestChecksumAlgorithm}).
+ * ({@link BlockBlobSimpleUploadOptions#setContentValidationAlgorithm}).
  */
 public class ContentValidationBlockBlobUpload extends BlobScenarioBase<ContentValidationStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
@@ -40,7 +40,7 @@ public class ContentValidationBlockBlobUpload extends BlobScenarioBase<ContentVa
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             blockBlobClient.uploadWithResponse(
                 new BlockBlobSimpleUploadOptions(inputStream, options.getSize())
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -53,7 +53,7 @@ public class ContentValidationBlockBlobUpload extends BlobScenarioBase<ContentVa
         BlockBlobAsyncClient blockBlobAsyncClient = asyncClient.getBlockBlobAsyncClient();
         return blockBlobAsyncClient.uploadWithResponse(
                 new BlockBlobSimpleUploadOptions(byteBufferFlux, options.getSize())
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

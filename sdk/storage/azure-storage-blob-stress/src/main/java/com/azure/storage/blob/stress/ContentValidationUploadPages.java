@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 
 /**
- * Page blob upload pages with {@link PageBlobUploadPagesOptions#setRequestChecksumAlgorithm}.
+ * Page blob upload pages with {@link PageBlobUploadPagesOptions#setContentValidationAlgorithm}.
  */
 public class ContentValidationUploadPages extends PageBlobScenarioBase<ContentValidationStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
@@ -46,7 +46,7 @@ public class ContentValidationUploadPages extends PageBlobScenarioBase<ContentVa
             PageRange range = new PageRange().setStart(0).setEnd(options.getSize() - 1);
             pageBlobClient.uploadPagesWithResponse(
                 new PageBlobUploadPagesOptions(range, inputStream)
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -60,7 +60,7 @@ public class ContentValidationUploadPages extends PageBlobScenarioBase<ContentVa
         PageRange range = new PageRange().setStart(0).setEnd(options.getSize() - 1);
         return pageBlobAsyncClient.uploadPagesWithResponse(
                 new PageBlobUploadPagesOptions(range, byteBufferFlux)
-                    .setRequestChecksumAlgorithm(options.getRequestChecksumAlgorithm()))
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
