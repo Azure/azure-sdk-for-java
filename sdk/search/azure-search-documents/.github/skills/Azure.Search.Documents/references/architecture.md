@@ -5,7 +5,7 @@
 `azure-search-documents` is the Java client library for [Azure AI Search](https://learn.microsoft.com/azure/search/) (formerly Azure Cognitive Search). It supports querying search indexes, uploading/managing documents, managing indexes, indexers, skillsets, aliases, and knowledge bases.
 
 - **Maven coordinates**: `com.azure:azure-search-documents`
-- **Current version**: `12.0.0-beta.1`
+- **Current version**: `12.0.0`
 - **Java target**: Java 8+ (compiled via `azure-client-sdk-parent`)
 - **Project file**: [pom.xml](../../../../pom.xml)
 

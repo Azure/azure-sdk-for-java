@@ -85,7 +85,7 @@ Update version in `pom.xml` following the `{x-version-update}` marker convention
 - Beta: `X.Y.Z-beta.N`
 
 ```xml
-<version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+<version>12.0.0</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
 ```
 
 ### Phase 7 — Final Validation
