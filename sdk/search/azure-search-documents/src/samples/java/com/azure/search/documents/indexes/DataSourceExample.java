@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
@@ -53,7 +54,8 @@ public class DataSourceExample {
         /*
          * Get all existing data sources; list should include the ones we just created.
          * */
-        for (SearchIndexerDataSourceConnection dataSource : client.listDataSourceConnections()) {
+        ListDataSourcesResult result = client.listDataSourceConnections();
+        for (SearchIndexerDataSourceConnection dataSource : result.getDataSources()) {
             if (names.contains(dataSource.getName())) {
                 System.out.printf("Found data source %s of type %s%n", dataSource.getName(),
                     dataSource.getType().toString());

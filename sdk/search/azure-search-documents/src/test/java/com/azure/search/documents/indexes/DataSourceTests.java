@@ -94,6 +94,7 @@ public class DataSourceTests extends SearchTestBase {
         dataSourcesToDelete.add(dataSource2.getName());
 
         Map<String, SearchIndexerDataSourceConnection> actualDataSources = client.listDataSourceConnections()
+            .getDataSources()
             .stream()
             .collect(Collectors.toMap(SearchIndexerDataSourceConnection::getName, ds -> ds));
 
@@ -113,8 +114,10 @@ public class DataSourceTests extends SearchTestBase {
             = Flux.fromIterable(Arrays.asList(dataSource1, dataSource2))
                 .flatMap(asyncClient::createOrUpdateDataSourceConnection)
                 .doOnNext(ds -> dataSourcesToDelete.add(ds.getName()))
-                .then(asyncClient.listDataSourceConnections()
-                    .collectMap(SearchIndexerDataSourceConnection::getName, ds -> ds));
+                .then(asyncClient.listDataSourceConnections())
+                .map(result -> result.getDataSources()
+                    .stream()
+                    .collect(Collectors.toMap(SearchIndexerDataSourceConnection::getName, ds -> ds)));
 
         StepVerifier.create(listMono)
             .assertNext(actualDataSources -> compareMaps(expectedDataSources, actualDataSources,
