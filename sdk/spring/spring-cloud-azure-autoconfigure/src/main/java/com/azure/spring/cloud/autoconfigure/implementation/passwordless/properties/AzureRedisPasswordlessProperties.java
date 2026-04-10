@@ -6,10 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.passwordless.propert
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Configuration properties for passwordless connections with Azure Redis.
