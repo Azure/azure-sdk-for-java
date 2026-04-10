@@ -1,5 +1,15 @@
 ## Release History
 
+> **Version Guide:** This package maintains multiple version lines for different Spring Boot releases.
+> See the [Spring Boot Version Support](README.md#spring-boot-version-support) section in the README for version mapping.
+>
+> | Version Line | Spring Boot | Status |
+> |---|---|---|
+> | **7.x** | 3.4+ | Current |
+> | **6.x** | 3.3+ | Active |
+> | **5.x** | 3.0+ | Active |
+> | **3.x** | 2.4–2.7 | **End of Life** — Spring Boot 2.x OSS support ended November 2023. Please upgrade to 5.x or later. |
+
 ### 7.2.0-beta.1 (Unreleased)
 
 #### Features Added
