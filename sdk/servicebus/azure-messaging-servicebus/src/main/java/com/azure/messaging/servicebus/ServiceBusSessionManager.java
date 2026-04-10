@@ -325,8 +325,8 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
      * @return A Mono that completes with an unnamed session receiver.
      */
     private Flux<ServiceBusMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
-        return getActiveLink().flatMap(
-            link -> link.getSessionId().map(sessionId -> sessionReceivers.compute(sessionId.toLowerCase(Locale.ROOT), (key, existing) -> {
+        return getActiveLink().flatMap(link -> link.getSessionId()
+            .map(sessionId -> sessionReceivers.compute(sessionId.toLowerCase(Locale.ROOT), (key, existing) -> {
                 if (existing != null) {
                     return existing;
                 }

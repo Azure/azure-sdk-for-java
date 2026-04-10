@@ -464,8 +464,7 @@ public class SessionsMessagePumpIsolatedTest {
         final String acceptedSessionId = "Session-ABC";
         final String messageSessionId = "session-abc";
 
-        final HashMap<Message, ServiceBusReceivedMessage> session1Messages
-            = createMockMessages(messageSessionId, 1);
+        final HashMap<Message, ServiceBusReceivedMessage> session1Messages = createMockMessages(messageSessionId, 1);
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
         final Session session1 = createMockSession(acceptedSessionId, session1Messages, session1EpStates);
