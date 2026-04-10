@@ -302,6 +302,16 @@ public class GlobalEndpointManager implements AutoCloseable {
                 return Mono.empty();
             } else {
                 logger.debug("shouldRefreshEndpoints: false, nothing to do.");
+
+                // Even when no endpoint refresh is needed right now, we must keep the
+                // background refresh timer running so that future topology changes
+                // (e.g., multi-write <-> single-write transitions) are detected.
+                // This aligns with the .NET SDK behavior where the background loop
+                // continues unconditionally as long as the client is alive.
+                if (!this.refreshInBackground.get()) {
+                    this.startRefreshLocationTimerAsync();
+                }
+
                 this.isRefreshing.set(false);
                 return Mono.empty();
             }
