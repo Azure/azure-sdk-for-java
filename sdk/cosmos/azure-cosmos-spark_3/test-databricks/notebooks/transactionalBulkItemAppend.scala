@@ -2,14 +2,14 @@
 // val cosmosEndpoint = "<inserted by environment>"
 // val cosmosMasterKey = "<inserted by environment>"
 
-println("SCENARIO: transactionalBulkItemOverwrite")
+println("SCENARIO: transactionalBulkItemAppend")
 
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
 val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
 val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 
-val transactionalContainerName = s"${cosmosContainerName}_txnBulkItemOverwrite"
+val transactionalContainerName = s"${cosmosContainerName}_txnBulkItemAppend"
 
 val cfg = Map(
   "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -22,7 +22,7 @@ val cfg = Map(
 )
 
 val transactionalWriteCfg = cfg ++ Map(
-  "spark.cosmos.write.strategy" -> "ItemOverwrite",
+  "spark.cosmos.write.strategy" -> "ItemAppend",
   "spark.cosmos.write.bulk.enabled" -> "true",
   "spark.cosmos.write.bulk.transactional" -> "true"
 )
@@ -56,7 +56,6 @@ def toKeyedNameMap(df: org.apache.spark.sql.DataFrame): Map[String, String] = {
 
 // COMMAND ----------
 
-// Create an isolated transactional test container with /pk partition key.
 spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
@@ -70,89 +69,56 @@ spark.sql(
 // COMMAND ----------
 
 try {
-  // Scenario 1: Mixed existing and new items across partitions.
+  // Scenario 1: Create-only insert for new ids across multiple partitions.
   appendRows(Seq(
-    ("existing-1", "pk-A", "Alice-old"),
-    ("existing-2", "pk-A", "Bob-old")
-  ), cfg)
-
-  appendRows(Seq(
-    ("existing-1", "pk-A", "Alice-updated"),
-    ("existing-2", "pk-A", "Bob-updated"),
-    ("new-3", "pk-A", "Charlie"),
-    ("new-4", "pk-B", "Diana"),
-    ("new-5", "pk-B", "Eve")
+    ("append-new-1", "pk-A", "A1"),
+    ("append-new-2", "pk-A", "A2"),
+    ("append-new-3", "pk-B", "B1")
   ), transactionalWriteCfg)
 
   val scenario1 = readRowsForPks(Seq("pk-A", "pk-B"))
   scenario1.show(false)
   val scenario1Map = toKeyedNameMap(scenario1)
-  assert(scenario1.count() == 5, s"Scenario 1 expected 5 docs, got ${scenario1.count()}")
-  assert(scenario1Map.get("pk-A|existing-1").contains("Alice-updated"))
-  assert(scenario1Map.get("pk-A|existing-2").contains("Bob-updated"))
-  assert(scenario1Map.get("pk-A|new-3").contains("Charlie"))
-  assert(scenario1Map.get("pk-B|new-4").contains("Diana"))
-  assert(scenario1Map.get("pk-B|new-5").contains("Eve"))
-  println("PASS: Scenario 1 (mixed overwrite + insert)")
+  assert(scenario1.count() == 3, s"Scenario 1 expected 3 docs, got ${scenario1.count()}")
+  assert(scenario1Map.get("pk-A|append-new-1").contains("A1"))
+  assert(scenario1Map.get("pk-A|append-new-2").contains("A2"))
+  assert(scenario1Map.get("pk-B|append-new-3").contains("B1"))
+  println("PASS: Scenario 1 (create-only new docs)")
 
-  // Scenario 2: Idempotent replay with ItemOverwrite should not grow row count.
-  val replayBatch = Seq(
-    ("replay-1", "pk-C", "One"),
-    ("replay-2", "pk-C", "Two")
-  )
-  appendRows(replayBatch, transactionalWriteCfg)
-  appendRows(replayBatch, transactionalWriteCfg)
+  // Scenario 2: Conflict reconstruction on existing id should keep existing item unchanged and create new item.
+  appendRows(Seq(
+    ("append-existing-1", "pk-C", "Original")
+  ), cfg)
+
+  appendRows(Seq(
+    ("append-existing-1", "pk-C", "ShouldBeIgnored"),
+    ("append-new-4", "pk-C", "Created")
+  ), transactionalWriteCfg)
 
   val scenario2 = readRowsForPks(Seq("pk-C"))
   scenario2.show(false)
   val scenario2Map = toKeyedNameMap(scenario2)
   assert(scenario2.count() == 2, s"Scenario 2 expected 2 docs, got ${scenario2.count()}")
-  assert(scenario2Map.get("pk-C|replay-1").contains("One"))
-  assert(scenario2Map.get("pk-C|replay-2").contains("Two"))
-  println("PASS: Scenario 2 (idempotent replay)")
+  assert(scenario2Map.get("pk-C|append-existing-1").contains("Original"))
+  assert(scenario2Map.get("pk-C|append-new-4").contains("Created"))
+  println("PASS: Scenario 2 (409 conflict ignored, new doc still created)")
 
-  // Scenario 3: Same id in different partition keys is handled independently.
+  // Scenario 3: Same id under different partition keys is allowed.
   appendRows(Seq(
-    ("shared-id", "pk-D", "D-old"),
-    ("shared-id", "pk-E", "E-old")
-  ), cfg)
-
-  appendRows(Seq(
-    ("shared-id", "pk-D", "D-updated"),
-    ("shared-id", "pk-E", "E-updated"),
-    ("shared-id-2", "pk-D", "D-new"),
-    ("shared-id-3", "pk-E", "E-new")
+    ("append-shared-id", "pk-D", "D-value"),
+    ("append-shared-id", "pk-E", "E-value")
   ), transactionalWriteCfg)
 
   val scenario3 = readRowsForPks(Seq("pk-D", "pk-E"))
   scenario3.show(false)
   val scenario3Map = toKeyedNameMap(scenario3)
-  assert(scenario3.count() == 4, s"Scenario 3 expected 4 docs, got ${scenario3.count()}")
-  assert(scenario3Map.get("pk-D|shared-id").contains("D-updated"))
-  assert(scenario3Map.get("pk-E|shared-id").contains("E-updated"))
-  assert(scenario3Map.get("pk-D|shared-id-2").contains("D-new"))
-  assert(scenario3Map.get("pk-E|shared-id-3").contains("E-new"))
+  assert(scenario3.count() == 2, s"Scenario 3 expected 2 docs, got ${scenario3.count()}")
+  assert(scenario3Map.get("pk-D|append-shared-id").contains("D-value"))
+  assert(scenario3Map.get("pk-E|append-shared-id").contains("E-value"))
   println("PASS: Scenario 3 (same id across different pks)")
 
-  // Scenario 4: ItemOverwrite is per-item upsert, not partition replacement.
-  appendRows(Seq(
-    ("stay-1", "pk-F", "Stay-old"),
-    ("replace-1", "pk-F", "Replace-old")
-  ), cfg)
-
-  appendRows(Seq(
-    ("replace-1", "pk-F", "Replace-new")
-  ), transactionalWriteCfg)
-
-  val scenario4 = readRowsForPks(Seq("pk-F"))
-  scenario4.show(false)
-  val scenario4Map = toKeyedNameMap(scenario4)
-  assert(scenario4.count() == 2, s"Scenario 4 expected 2 docs, got ${scenario4.count()}")
-  assert(scenario4Map.get("pk-F|replace-1").contains("Replace-new"))
-  assert(scenario4Map.get("pk-F|stay-1").contains("Stay-old"))
-  println("PASS: Scenario 4 (overwrite updates target item without deleting siblings)")
-
-  println("PASS: transactional ItemOverwrite scenarios completed.")
+  println("PASS: transactional ItemAppend scenarios completed.")
 } finally {
   spark.sql(s"DROP TABLE IF EXISTS cosmosCatalog.${cosmosDatabaseName}.${transactionalContainerName};")
 }
+
