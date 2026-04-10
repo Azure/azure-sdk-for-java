@@ -141,7 +141,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * @return the nextPageParameters value.
      */
     @Generated
-    public SearchRequest getNextPageParameters() {
+    SearchRequest getNextPageParameters() {
         return this.nextPageParameters;
     }
 
@@ -163,7 +163,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * @return the nextLink value.
      */
     @Generated
-    public String getNextLink() {
+    String getNextLink() {
         return this.nextLink;
     }
 
