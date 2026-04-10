@@ -30,12 +30,21 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public abstract class CosmosItemSerializer {
 
+    static { initialize(); }
 
     /**
      * Gets the default Cosmos item serializer. This serializer is used by default when no custom serializer is
      * specified on request options or the {@link CosmosClientBuilder}
      */
-    public final static CosmosItemSerializer DEFAULT_SERIALIZER = DefaultCosmosItemSerializer.DEFAULT_SERIALIZER;
+    public final static CosmosItemSerializer DEFAULT_SERIALIZER =
+        new DefaultCosmosItemSerializer(Utils.getDocumentObjectMapper(Configs.getItemSerializationInclusionMode()));
+
+    // Moved from DefaultCosmosItemSerializer to eliminate concurrent <clinit> deadlock
+    // between parent (CosmosItemSerializer) and child (DefaultCosmosItemSerializer).
+    // Guaranteed to use serialization inclusion mode "Always".
+    // Accessed via CosmosItemSerializerAccessor.getInternalDefaultSerializer().
+    private static final CosmosItemSerializer INTERNAL_DEFAULT_SERIALIZER =
+        new DefaultCosmosItemSerializer(Utils.getSimpleObjectMapper());
 
     private boolean shouldWrapSerializationExceptions;
 
@@ -161,8 +170,11 @@ public abstract class CosmosItemSerializer {
                 public ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer) {
                     return serializer.getItemObjectMapper();
                 }
+
+                @Override
+                public CosmosItemSerializer getInternalDefaultSerializer() {
+                    return INTERNAL_DEFAULT_SERIALIZER;
+                }
             });
     }
-
-    static { initialize(); }
 }

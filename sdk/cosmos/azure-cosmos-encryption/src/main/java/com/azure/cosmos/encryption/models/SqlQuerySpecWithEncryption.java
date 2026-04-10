@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
@@ -86,10 +87,10 @@ public final class SqlQuerySpecWithEncryption {
                                 }
                                 byte[] valueByte =
                                     EncryptionUtils.serializeJsonToByteArray(
-                                        DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer(),
                                         sqlParameter.getValue(Object.class));
                                 JsonNode itemJObj = Utils.parse(
-                                    valueByte, JsonNode.class, DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER);
+                                    valueByte, JsonNode.class, ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer());
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =
                                     EncryptionProcessor.toByteArray(itemJObj);
                                 byte[] cipherText =

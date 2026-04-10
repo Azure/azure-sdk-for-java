@@ -29,8 +29,9 @@ import java.util.UUID;
  * in the Azure Cosmos DB database service.
  */
 public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> implements OverridableRequestOptions {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor diagThresholdsAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
+    }
 
     private ConsistencyLevel consistencyLevel;
     private ReadConsistencyStrategy readConsistencyStrategy;
@@ -373,7 +374,8 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
             return CosmosDiagnosticsThresholds.DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD;
         }
 
-        return thresholdsAccessor.getNonPointReadLatencyThreshold(this.thresholds);
+        return diagThresholdsAccessor()
+            .getNonPointReadLatencyThreshold(this.thresholds);
     }
 
     /**
