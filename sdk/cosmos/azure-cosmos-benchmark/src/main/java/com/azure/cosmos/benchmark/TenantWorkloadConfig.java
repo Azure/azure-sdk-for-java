@@ -208,6 +208,12 @@ public class TenantWorkloadConfig {
     @JsonProperty("http2MaxConcurrentStreams")
     private Integer http2MaxConcurrentStreams;
 
+    @JsonProperty("dnsBlockingEnabled")
+    private Boolean dnsBlockingEnabled;
+
+    @JsonProperty("dnsBlockingCycleMinutes")
+    private Integer dnsBlockingCycleMinutes;
+
     @JsonProperty("preferredRegionsList")
     private String preferredRegionsList;
 
@@ -356,6 +362,14 @@ public class TenantWorkloadConfig {
 
     public Integer getHttp2MaxConcurrentStreams() {
         return http2MaxConcurrentStreams;
+    }
+
+    public boolean isDnsBlockingEnabled() {
+        return dnsBlockingEnabled != null && dnsBlockingEnabled;
+    }
+
+    public int getDnsBlockingCycleMinutes() {
+        return dnsBlockingCycleMinutes != null ? dnsBlockingCycleMinutes : 10;
     }
 
     public List<String> getPreferredRegionsList() {

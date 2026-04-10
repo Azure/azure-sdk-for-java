@@ -26,6 +26,7 @@ import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.test.faultinjection.FilterableDnsResolverGroup;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -138,7 +139,22 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
 
+        // DNS blocking: inject FilterableDnsResolverGroup for IP rotation testing
+        FilterableDnsResolverGroup dnsResolver = null;
+        if (cfg.isDnsBlockingEnabled()) {
+            dnsResolver = new FilterableDnsResolverGroup();
+            com.azure.cosmos.test.implementation.interceptor.CosmosInterceptorHelper
+                .registerHttpClientInterceptor(benchmarkSpecificClientBuilder, dnsResolver, null);
+            logger.info("DNS blocking enabled — FilterableDnsResolverGroup injected, cycle={}min",
+                cfg.getDnsBlockingCycleMinutes());
+        }
+
         benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildAsyncClient();
+
+        // Start DNS blocking scheduler if enabled
+        if (dnsResolver != null) {
+            startDnsBlockingScheduler(dnsResolver, cfg);
+        }
 
         try {
             cosmosAsyncDatabase = benchmarkWorkloadClient.getDatabase(cfg.getDatabaseId());
@@ -408,6 +424,60 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             return Mono.delay(duration);
         }
         return null;
+    }
+
+    private void startDnsBlockingScheduler(FilterableDnsResolverGroup resolver, TenantWorkloadConfig cfg) {
+        int cycleMinutes = cfg.getDnsBlockingCycleMinutes();
+        String endpoint = cfg.getServiceEndpoint();
+        List<String> regions = cfg.getPreferredRegionsList();
+        String preferredRegion = (regions != null && !regions.isEmpty()) ? regions.get(0) : null;
+
+        Thread scheduler = new Thread(() -> {
+            try {
+                // Resolve regional endpoint IPs
+                String host = java.net.URI.create(endpoint).getHost();
+                if (preferredRegion != null) {
+                    host = host.replace(".documents.azure.com",
+                        "-" + preferredRegion.toLowerCase().replace(" ", "") + ".documents.azure.com");
+                }
+                java.net.InetAddress[] allIps = java.net.InetAddress.getAllByName(host);
+                logger.info("[DNS-BLOCKING] Resolved {}: {} IPs", host, allIps.length);
+                for (java.net.InetAddress ip : allIps) {
+                    logger.info("[DNS-BLOCKING]   {}", ip.getHostAddress());
+                }
+
+                if (allIps.length == 0) {
+                    logger.warn("[DNS-BLOCKING] No IPs resolved — scheduler exiting");
+                    return;
+                }
+
+                int ipIndex = 0;
+                while (!Thread.currentThread().isInterrupted()) {
+                    // Phase: normal (all IPs)
+                    logger.info("[DNS-BLOCKING] Phase: NORMAL (all IPs available) for {} min", cycleMinutes);
+                    Thread.sleep(cycleMinutes * 60_000L);
+
+                    // Phase: block one IP
+                    java.net.InetAddress blockIp = allIps[ipIndex % allIps.length];
+                    resolver.blockIp(blockIp);
+                    logger.info("[DNS-BLOCKING] Phase: BLOCKED {} for {} min", blockIp.getHostAddress(), cycleMinutes);
+                    Thread.sleep(cycleMinutes * 60_000L);
+
+                    // Phase: unblock
+                    resolver.unblockAll();
+                    logger.info("[DNS-BLOCKING] Phase: UNBLOCKED all IPs");
+                    ipIndex++;
+                }
+            } catch (InterruptedException e) {
+                logger.info("[DNS-BLOCKING] Scheduler interrupted — stopping");
+                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                logger.error("[DNS-BLOCKING] Scheduler failed", e);
+            }
+        });
+        scheduler.setDaemon(true);
+        scheduler.setName("dns-blocking-scheduler");
+        scheduler.start();
     }
 
 }
