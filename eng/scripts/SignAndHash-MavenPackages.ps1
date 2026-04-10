@@ -151,7 +151,7 @@ foreach ($packageDetail in $packageDetails) {
   $urlOption = "-Durl=$destinationPathUri"
   Write-Host "URL Option is: $urlOption"
 
-  $settingsOption = "--settings=$(Join-Path $PSScriptRoot '..' 'maven.publish.settings.xml' -Resolve)"
+  $settingsOption = "--global-settings=$(Join-Path $PSScriptRoot '..' 'maven.publish.settings.xml' -Resolve)"
   Write-Host "Settings Option is: $settingsOption"
 
   Write-Host ""
