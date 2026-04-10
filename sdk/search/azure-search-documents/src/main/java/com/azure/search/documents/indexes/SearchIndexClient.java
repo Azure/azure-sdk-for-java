@@ -1438,15 +1438,11 @@ public final class SearchIndexClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all synonym maps as paginated response with {@link PagedIterable}.
+     * @return response from a List SynonymMaps request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SynonymMap> listSynonymMaps() {
-        return new PagedIterable<>(() -> {
-            Response<ListSynonymMapsResult> response = listSynonymMapsWithResponse(new RequestOptions());
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().getSynonymMaps(), null, null);
-        });
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListSynonymMapsResult listSynonymMaps() {
+        return getSynonymMaps();
     }
 
     /**
@@ -1470,7 +1466,7 @@ public final class SearchIndexClient {
      * @return response from a List SynonymMaps request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListSynonymMapsResult> listSynonymMapsWithResponse(RequestOptions requestOptions) {
+    public Response<ListSynonymMapsResult> listSynonymMapsWithResponse(RequestOptions requestOptions) {
         return convertResponse(getSynonymMapsWithResponse(requestOptions), ListSynonymMapsResult.class);
     }
 

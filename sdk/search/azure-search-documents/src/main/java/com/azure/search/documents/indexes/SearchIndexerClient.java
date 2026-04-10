@@ -1334,15 +1334,11 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all datasources as paginated response with {@link PagedIterable}.
+     * @return response from a List Datasources request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections() {
-        return new PagedIterable<>(() -> {
-            Response<ListDataSourcesResult> response = listDataSourceConnectionsWithResponse(new RequestOptions());
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().getDataSources(), null, null);
-        });
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListDataSourcesResult listDataSourceConnections() {
+        return getDataSourceConnections();
     }
 
     /**
@@ -1367,7 +1363,7 @@ public final class SearchIndexerClient {
      * @return response from a List Datasources request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
+    public Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
         return convertResponse(getDataSourceConnectionsWithResponse(requestOptions), ListDataSourcesResult.class);
     }
 
@@ -1586,15 +1582,11 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all indexers as paginated response with {@link PagedIterable}.
+     * @return response from a List Indexers request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndexer> listIndexers() {
-        return new PagedIterable<>(() -> {
-            Response<ListIndexersResult> response = listIndexersWithResponse(new RequestOptions());
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue().getIndexers(), null, null);
-        });
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListIndexersResult listIndexers() {
+        return getIndexers();
     }
 
     /**
@@ -1618,7 +1610,7 @@ public final class SearchIndexerClient {
      * @return response from a List Indexers request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
+    public Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
         return convertResponse(getIndexersWithResponse(requestOptions), ListIndexersResult.class);
     }
 

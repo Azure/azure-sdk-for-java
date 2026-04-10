@@ -23,7 +23,9 @@ import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
-
+import com.azure.search.documents.indexes.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.models.ListIndexersResult;
+import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchAlias;
@@ -985,8 +987,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMaps() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps
-        PagedIterable<SynonymMap> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps();
-        for (SynonymMap synonymMap: synonymMaps) {
+        ListSynonymMapsResult synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps();
+        for (SynonymMap synonymMap: synonymMaps.getSynonymMaps()) {
             System.out.printf("The synonymMap name is %s. The ETag of synonymMap is %s.%n", synonymMap.getName(),
                 synonymMap.getETag());
         }
@@ -1347,9 +1349,9 @@ public class SearchJavaDocCodeSnippets {
     public void listSynonymMapsAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
         SEARCH_INDEX_ASYNC_CLIENT.listSynonymMaps()
-            .subscribe(synonymMap ->
+            .subscribe(result -> result.getSynonymMaps().forEach(synonymMap ->
                 System.out.printf("The synonymMap name is %s. The ETag of synonymMap is %s.%n",
-                    synonymMap.getName(), synonymMap.getETag()));
+                    synonymMap.getName(), synonymMap.getETag())));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
     }
 
@@ -1517,8 +1519,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexers() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexers
-        PagedIterable<SearchIndexer> indexers = SEARCH_INDEXER_CLIENT.listIndexers();
-        for (SearchIndexer indexer: indexers) {
+        ListIndexersResult indexers = SEARCH_INDEXER_CLIENT.listIndexers();
+        for (SearchIndexer indexer: indexers.getIndexers()) {
             System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexer.getName(),
                 indexer.getETag());
         }
@@ -1752,8 +1754,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSources() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections
-        PagedIterable<SearchIndexerDataSourceConnection> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnections();
-        for (SearchIndexerDataSourceConnection dataSource: dataSources) {
+        ListDataSourcesResult dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnections();
+        for (SearchIndexerDataSourceConnection dataSource: dataSources.getDataSources()) {
             System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n", dataSource.getName(),
                 dataSource.getETag());
         }
@@ -2103,9 +2105,9 @@ public class SearchJavaDocCodeSnippets {
     public void listIndexersAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
         SEARCH_INDEXER_ASYNC_CLIENT.listIndexers()
-            .subscribe(indexer ->
+            .subscribe(result -> result.getIndexers().forEach(indexer ->
                 System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexer.getName(),
-                    indexer.getETag()));
+                    indexer.getETag())));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
     }
 
@@ -2307,9 +2309,9 @@ public class SearchJavaDocCodeSnippets {
     public void listDataSourcesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
         SEARCH_INDEXER_ASYNC_CLIENT.listDataSourceConnections()
-            .subscribe(dataSource ->
+            .subscribe(result -> result.getDataSources().forEach(dataSource ->
                 System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n",
-                    dataSource.getName(), dataSource.getETag()));
+                    dataSource.getName(), dataSource.getETag())));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
     }
 
