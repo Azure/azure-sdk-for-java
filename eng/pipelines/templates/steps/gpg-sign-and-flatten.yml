@@ -8,6 +8,9 @@ parameters:
   JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
 steps:
+  # Authenticate with Azure Artifacts for the signing maven plugins used
+  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
   - task: PowerShell@2
     displayName: 'Gpg sign and hash packages'
     inputs:
