@@ -13,18 +13,18 @@ public final class ScopeMapInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScopeMapInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"ngmtsavjcb\",\"type\":\"xqpsrknftguv\",\"creationDate\":\"2021-11-24T12:31:24Z\",\"provisioningState\":\"Canceled\",\"actions\":[\"wmdyvxqtay\",\"iwwroyqbexrmc\",\"ibycno\"]},\"id\":\"knme\",\"name\":\"qsgzvahapj\",\"type\":\"zhpvgqzcjrvxd\"}")
+            "{\"properties\":{\"description\":\"pybsrfbjfdtw\",\"type\":\"otftpvjzbexilz\",\"creationDate\":\"2021-02-03T15:32:57Z\",\"provisioningState\":\"Deleting\",\"actions\":[\"vwpm\",\"taruoujmkcj\",\"wqytjrybnwjewgdr\",\"ervnaenqpehi\"]},\"id\":\"oygmift\",\"name\":\"nzdndslgna\",\"type\":\"qig\"}")
             .toObject(ScopeMapInner.class);
-        Assertions.assertEquals("ngmtsavjcb", model.description());
-        Assertions.assertEquals("wmdyvxqtay", model.actions().get(0));
+        Assertions.assertEquals("pybsrfbjfdtw", model.description());
+        Assertions.assertEquals("vwpm", model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeMapInner model = new ScopeMapInner().withDescription("ngmtsavjcb")
-            .withActions(Arrays.asList("wmdyvxqtay", "iwwroyqbexrmc", "ibycno"));
+        ScopeMapInner model = new ScopeMapInner().withDescription("pybsrfbjfdtw")
+            .withActions(Arrays.asList("vwpm", "taruoujmkcj", "wqytjrybnwjewgdr", "ervnaenqpehi"));
         model = BinaryData.fromObject(model).toObject(ScopeMapInner.class);
-        Assertions.assertEquals("ngmtsavjcb", model.description());
-        Assertions.assertEquals("wmdyvxqtay", model.actions().get(0));
+        Assertions.assertEquals("pybsrfbjfdtw", model.description());
+        Assertions.assertEquals("vwpm", model.actions().get(0));
     }
 }

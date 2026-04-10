@@ -291,4 +291,25 @@ public interface NamespaceDevice {
      * @return the refreshed resource.
      */
     NamespaceDevice refresh(Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revoke(DeviceCredentialsRevokeRequest body);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revoke(DeviceCredentialsRevokeRequest body, Context context);
 }

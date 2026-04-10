@@ -9,7 +9,7 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class ApiKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApiKeys_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_CreateOrUpdate.json
      */
     /**
      * Sample code: ApiKeys_CreateOrUpdate.

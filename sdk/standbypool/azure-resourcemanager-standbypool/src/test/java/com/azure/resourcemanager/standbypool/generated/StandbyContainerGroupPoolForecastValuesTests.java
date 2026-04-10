@@ -10,8 +10,8 @@ import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolFor
 public final class StandbyContainerGroupPoolForecastValuesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StandbyContainerGroupPoolForecastValues model = BinaryData.fromString(
-            "{\"instancesRequestedCount\":[5341414855683409251,2512324147575417357,2937936941611488852,265760237696237793]}")
-            .toObject(StandbyContainerGroupPoolForecastValues.class);
+        StandbyContainerGroupPoolForecastValues model
+            = BinaryData.fromString("{\"instancesRequestedCount\":[3745406662060655248,1214389658242460041]}")
+                .toObject(StandbyContainerGroupPoolForecastValues.class);
     }
 }

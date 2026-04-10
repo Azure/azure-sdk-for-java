@@ -5,7 +5,6 @@ package com.azure.ai.agents.agents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -19,10 +18,9 @@ public class DeleteAgent {
                 .endpoint(endpoint)
                 .buildAgentsClient();
 
-        DeleteAgentResponse agent = agentsClient.deleteAgent(agentName);
+        agentsClient.deleteAgent(agentName);
 
         System.out.println("Deleted agent with the following details:");
-        System.out.println("\tAgent Name: " + agent.getName());
-        System.out.println("\tAgent was deleted: " + agent.isDeleted());
+        System.out.println("\tAgent Name: " + agentName);
     }
 }

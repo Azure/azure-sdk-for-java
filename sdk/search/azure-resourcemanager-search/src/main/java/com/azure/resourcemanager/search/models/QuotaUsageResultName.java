@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The name of the SKU supported by Azure AI Search.
+ * The SKU name information, including its identifier and localized display name.
  */
 @Immutable
 public final class QuotaUsageResultName implements JsonSerializable<QuotaUsageResultName> {

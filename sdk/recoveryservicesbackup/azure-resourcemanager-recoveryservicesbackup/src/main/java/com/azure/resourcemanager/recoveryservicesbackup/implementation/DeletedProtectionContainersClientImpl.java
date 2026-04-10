@@ -79,6 +79,22 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProtectionContainerResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ProtectionContainerResourceList> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -101,7 +117,7 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, vaultName, filter, accept, context))
             .<PagedResponse<ProtectionContainerResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -119,7 +135,8 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionContainerResourceInner> listAsync(String resourceGroupName, String vaultName,
         String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, filter));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -135,7 +152,8 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionContainerResourceInner> listAsync(String resourceGroupName, String vaultName) {
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, filter));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -157,7 +175,7 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, vaultName, filter, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -180,7 +198,7 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, vaultName, filter, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -196,7 +214,8 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerResourceInner> list(String resourceGroupName, String vaultName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, filter));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, filter),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -214,6 +233,63 @@ public final class DeletedProtectionContainersClientImpl implements DeletedProte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerResourceInner> list(String resourceGroupName, String vaultName,
         String filter, Context context) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, filter, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, filter, context),
+            nextLink -> listNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ProtectionContainer resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ProtectionContainerResourceInner>> listNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProtectionContainerResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ProtectionContainer resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ProtectionContainerResourceInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ProtectionContainerResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ProtectionContainer resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ProtectionContainerResourceInner> listNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<ProtectionContainerResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

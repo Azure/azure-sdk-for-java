@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class MhsmVirtualNetworkRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MhsmVirtualNetworkRule model = BinaryData.fromString("{\"id\":\"aln\"}").toObject(MhsmVirtualNetworkRule.class);
-        Assertions.assertEquals("aln", model.id());
+        MhsmVirtualNetworkRule model
+            = BinaryData.fromString("{\"id\":\"fdygpfqbuaceopz\"}").toObject(MhsmVirtualNetworkRule.class);
+        Assertions.assertEquals("fdygpfqbuaceopz", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MhsmVirtualNetworkRule model = new MhsmVirtualNetworkRule().withId("aln");
+        MhsmVirtualNetworkRule model = new MhsmVirtualNetworkRule().withId("fdygpfqbuaceopz");
         model = BinaryData.fromObject(model).toObject(MhsmVirtualNetworkRule.class);
-        Assertions.assertEquals("aln", model.id());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.id());
     }
 }

@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureFunctionBinding;
 import com.azure.ai.agents.models.AzureFunctionDefinition;
@@ -33,7 +34,7 @@ import java.util.Map;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>STORAGE_INPUT_QUEUE_NAME - The Azure Storage Queue name for input.</li>
  *   <li>STORAGE_OUTPUT_QUEUE_NAME - The Azure Storage Queue name for output.</li>
  *   <li>STORAGE_QUEUE_SERVICE_ENDPOINT - The Azure Storage Queue service endpoint.</li>
@@ -42,7 +43,7 @@ import java.util.Map;
 public class AzureFunctionSync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String inputQueueName = Configuration.getGlobalConfiguration().get("STORAGE_INPUT_QUEUE_NAME");
         String outputQueueName = Configuration.getGlobalConfiguration().get("STORAGE_OUTPUT_QUEUE_NAME");
         String queueServiceEndpoint = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_SERVICE_ENDPOINT");
@@ -93,8 +94,8 @@ public class AzureFunctionSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(
-                agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .toolChoice(ToolChoiceOptions.REQUIRED)
                     .input("What is the weather in Seattle?"));

@@ -9,7 +9,9 @@
     4. Generate the forward looking BOM file and create a branch for the BOM release.
 #>
 param(
-    [string]$GroupId = "com.azure"
+    [string]$GroupId = "com.azure",
+    # When set, creates patch branches from the current branch instead of remote main.
+    [switch]$UseCurrentBranch
 )
 
 Write-Information "PS Script Root is: $PSScriptRoot"
@@ -57,8 +59,7 @@ UpdateDependencies -ArtifactInfos $ArtifactInfos
 # $AzCoreNettyArtifactId = "azure-core-http-netty"
 # $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
-$AllDependenciesWithVersion = CreateForwardLookingVersions -ArtifactInfos $ArtifactInfos
-FindAllArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos -AllDependenciesWithVersion $AllDependenciesWithVersion
+FindArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos
 $ArtifactsToPatch =  $ArtifactInfos.Keys | Where-Object { $null -ne $ArtifactInfos[$_].FutureReleasePatchVersion } | ForEach-Object {$ArtifactInfos[$_].ArtifactId}
 
 $RemoteName = GetRemoteName
@@ -73,10 +74,25 @@ $bomPatchVersion = GetNextBomVersion
 $bomBranchName = "bom_$bomPatchVersion"
 $ArtifactPatchInfos = @()
 Write-Output "Preparing patch releases for BOM updates."
+
+# Build a map of artifactId → patch version for all artifacts being patched.
+# This is passed to GeneratePatches so changelogs can show the correct version
+# when a sibling dependency is being patched in the same run.
+$PatchVersionOverrides = @{}
+foreach ($artifactId in $ArtifactInfos.Keys) {
+    $patchVersion = $ArtifactInfos[$artifactId].FutureReleasePatchVersion
+    if ($patchVersion) {
+        $PatchVersionOverrides[$artifactId] = $patchVersion
+    } else {
+        $PatchVersionOverrides[$artifactId] = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
+    }
+}
+
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
-    Write-Host "git checkout -b $patchBranchName $RemoteName/main"
-    git checkout -b $patchBranchName $RemoteName/main
+    $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
+    Write-Host "git checkout -b $patchBranchName $base"
+    git checkout -b $patchBranchName $base
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
     foreach ($artifactId in $ArtifactsToPatch) {
@@ -84,7 +100,7 @@ try {
         $patchInfo = [ArtifactPatchInfo]::new()
         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
         $ArtifactPatchInfos += $patchInfo
-        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
+        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
     }
 
     Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $RemoteName $patchBranchName"
@@ -100,7 +116,7 @@ finally {
     $cmdOutput = git checkout $CurrentBranchName
 }
 
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName -UseCurrentBranch $UseCurrentBranch
 GenerateJsonReport -ArtifactPatchInfos $ArtifactPatchInfos -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
 #$orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 #GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName

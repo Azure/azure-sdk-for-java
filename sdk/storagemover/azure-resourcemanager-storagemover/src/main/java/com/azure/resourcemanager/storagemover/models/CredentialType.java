@@ -17,6 +17,11 @@ public final class CredentialType extends ExpandableStringEnum<CredentialType> {
     public static final CredentialType AZURE_KEY_VAULT_SMB = fromString("AzureKeyVaultSmb");
 
     /**
+     * Static value AzureKeyVaultS3WithHMAC for CredentialType.
+     */
+    public static final CredentialType AZURE_KEY_VAULT_S3WITH_HMAC = fromString("AzureKeyVaultS3WithHMAC");
+
+    /**
      * Creates a new instance of CredentialType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

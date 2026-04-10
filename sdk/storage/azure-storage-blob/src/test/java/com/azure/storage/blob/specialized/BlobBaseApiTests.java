@@ -3,10 +3,17 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
 import com.azure.storage.blob.models.BlobQueryArrowSerialization;
@@ -18,7 +25,13 @@ import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -45,9 +58,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.azure.storage.blob.models.ArchiveStatus.REHYDRATE_PENDING_TO_SMART;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -595,7 +610,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             }
 
             long temp = 0;
-            // Make sure theyre all increasingly bigger
+            // Make sure they're all increasingly bigger
             for (long progress : mockReceiver.progressList) {
                 assertTrue(progress >= temp);
                 temp = progress;
@@ -608,7 +623,7 @@ public class BlobBaseApiTests extends BlobTestBase {
                 = new BlobQueryOptions(expression, new ByteArrayOutputStream()).setProgressConsumer(mockReceiver2);
             bc.queryWithResponse(options2, null, null);
 
-            // Make sure theyre all increasingly bigger
+            // Make sure they're all increasingly bigger
             for (long progress : mockReceiver2.progressList) {
                 assertTrue(progress >= temp);
                 temp = progress;
@@ -812,12 +827,114 @@ public class BlobBaseApiTests extends BlobTestBase {
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.copyFromUrl(bc.getBlobUrl()));
 
-        assertTrue(e.getStatusCode() == 401);
+        assertEquals(401, e.getStatusCode());
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage()
             .contains(
                 "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
 
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void startCopyFromURLSmartAccessTier() {
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        BlobBeginCopyOptions options = new BlobBeginCopyOptions(bc.getBlobUrl()).setTier(AccessTier.SMART);
+
+        PollResponse<BlobCopyInfo> operation = destBlob.beginCopy(options).waitForCompletion();
+        assertTrue(operation.getStatus().isComplete());
+
+        Response<BlobProperties> response = destBlob.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void copyFromURLSmartAccessTier() {
+        String srcBlobSas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
+        bc = new BlobClientBuilder().endpoint(bc.getBlobUrl()).sasToken(srcBlobSas).buildClient();
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        BlobCopyFromUrlOptions options
+            = new BlobCopyFromUrlOptions(bc.getBlobUrl() + "?" + srcBlobSas).setTier(AccessTier.SMART);
+
+        destBlob.copyFromUrlWithResponse(options, null, Context.NONE);
+
+        Response<BlobProperties> response = destBlob.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmart() {
+        bc.setAccessTier(AccessTier.SMART);
+
+        Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmartGetBlobs() {
+        String blobName1 = generateBlobName();
+        String blobName2 = generateBlobName();
+        BlobClient blob1 = cc.getBlobClient(blobName1);
+        BlobClient blob2 = cc.getBlobClient(blobName2);
+        blob1.upload(new ByteArrayInputStream(new byte[0]), 0);
+        blob2.upload(new ByteArrayInputStream(new byte[0]), 0);
+
+        blob1.setAccessTier(AccessTier.SMART);
+        blob2.setAccessTier(AccessTier.SMART);
+
+        cc.listBlobs().forEach(blobItem -> {
+            if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
+                assertEquals(AccessTier.SMART, blobItem.getProperties().getAccessTier());
+                assertNotNull(blobItem.getProperties().getSmartAccessTier());
+            }
+        });
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmartRehydrate() {
+        bc.setAccessTier(AccessTier.ARCHIVE);
+
+        BlobSetAccessTierOptions options
+            = new BlobSetAccessTierOptions(AccessTier.SMART).setPriority(RehydratePriority.HIGH);
+        bc.setAccessTierWithResponse(options, null, Context.NONE);
+
+        Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(REHYDRATE_PENDING_TO_SMART, response.getValue().getArchiveStatus());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmartRehydrateGetBlobs() {
+        String blobName1 = generateBlobName();
+        String blobName2 = generateBlobName();
+        BlobClient blob1 = cc.getBlobClient(blobName1);
+        BlobClient blob2 = cc.getBlobClient(blobName2);
+        blob1.upload(new ByteArrayInputStream(new byte[0]), 0);
+        blob2.upload(new ByteArrayInputStream(new byte[0]), 0);
+
+        blob1.setAccessTier(AccessTier.ARCHIVE);
+        blob2.setAccessTier(AccessTier.ARCHIVE);
+
+        BlobSetAccessTierOptions options
+            = new BlobSetAccessTierOptions(AccessTier.SMART).setPriority(RehydratePriority.HIGH);
+        blob1.setAccessTierWithResponse(options, null, Context.NONE);
+        blob2.setAccessTierWithResponse(options, null, Context.NONE);
+
+        cc.listBlobs().forEach(blobItem -> {
+            if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
+                assertEquals(REHYDRATE_PENDING_TO_SMART, blobItem.getProperties().getArchiveStatus());
+            }
+        });
     }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {

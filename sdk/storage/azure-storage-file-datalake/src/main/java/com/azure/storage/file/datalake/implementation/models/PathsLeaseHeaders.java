@@ -17,28 +17,16 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PathsLeaseHeaders {
     /*
-     * The x-ms-version property.
+     * The Date property.
      */
     @Generated
-    private String xMsVersion;
+    private DateTimeRfc1123 date;
 
     /*
      * The ETag property.
      */
     @Generated
     private String eTag;
-
-    /*
-     * The x-ms-lease-time property.
-     */
-    @Generated
-    private String xMsLeaseTime;
-
-    /*
-     * The x-ms-lease-id property.
-     */
-    @Generated
-    private String xMsLeaseId;
 
     /*
      * The Last-Modified property.
@@ -53,16 +41,28 @@ public final class PathsLeaseHeaders {
     private String xMsRequestId;
 
     /*
-     * The Date property.
+     * The x-ms-version property.
      */
     @Generated
-    private DateTimeRfc1123 date;
+    private String xMsVersion;
+
+    /*
+     * The x-ms-lease-id property.
+     */
+    @Generated
+    private String xMsLeaseId;
+
+    /*
+     * The x-ms-lease-time property.
+     */
+    @Generated
+    private String xMsLeaseTime;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_LEASE_TIME = HttpHeaderName.fromString("x-ms-lease-time");
-
     private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+
+    private static final HttpHeaderName X_MS_LEASE_TIME = HttpHeaderName.fromString("x-ms-lease-time");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -71,10 +71,13 @@ public final class PathsLeaseHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsLeaseHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        this.xMsLeaseTime = rawHeaders.getValue(X_MS_LEASE_TIME);
-        this.xMsLeaseId = rawHeaders.getValue(X_MS_LEASE_ID);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
@@ -82,33 +85,37 @@ public final class PathsLeaseHeaders {
             this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsLeaseId = rawHeaders.getValue(X_MS_LEASE_ID);
+        this.xMsLeaseTime = rawHeaders.getValue(X_MS_LEASE_TIME);
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the date property: The Date property.
      * 
-     * @return the xMsVersion value.
+     * @return the date value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the date property: The Date property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param date the date value to set.
      * @return the PathsLeaseHeaders object itself.
      */
     @Generated
-    public PathsLeaseHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public PathsLeaseHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
         return this;
     }
 
@@ -131,50 +138,6 @@ public final class PathsLeaseHeaders {
     @Generated
     public PathsLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseTime property: The x-ms-lease-time property.
-     * 
-     * @return the xMsLeaseTime value.
-     */
-    @Generated
-    public String getXMsLeaseTime() {
-        return this.xMsLeaseTime;
-    }
-
-    /**
-     * Set the xMsLeaseTime property: The x-ms-lease-time property.
-     * 
-     * @param xMsLeaseTime the xMsLeaseTime value to set.
-     * @return the PathsLeaseHeaders object itself.
-     */
-    @Generated
-    public PathsLeaseHeaders setXMsLeaseTime(String xMsLeaseTime) {
-        this.xMsLeaseTime = xMsLeaseTime;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseId property: The x-ms-lease-id property.
-     * 
-     * @return the xMsLeaseId value.
-     */
-    @Generated
-    public String getXMsLeaseId() {
-        return this.xMsLeaseId;
-    }
-
-    /**
-     * Set the xMsLeaseId property: The x-ms-lease-id property.
-     * 
-     * @param xMsLeaseId the xMsLeaseId value to set.
-     * @return the PathsLeaseHeaders object itself.
-     */
-    @Generated
-    public PathsLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
-        this.xMsLeaseId = xMsLeaseId;
         return this;
     }
 
@@ -230,31 +193,68 @@ public final class PathsLeaseHeaders {
     }
 
     /**
-     * Get the date property: The Date property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the date value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the date property: The Date property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param date the date value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the PathsLeaseHeaders object itself.
      */
     @Generated
-    public PathsLeaseHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
+    public PathsLeaseHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseId property: The x-ms-lease-id property.
+     * 
+     * @return the xMsLeaseId value.
+     */
+    @Generated
+    public String getXMsLeaseId() {
+        return this.xMsLeaseId;
+    }
+
+    /**
+     * Set the xMsLeaseId property: The x-ms-lease-id property.
+     * 
+     * @param xMsLeaseId the xMsLeaseId value to set.
+     * @return the PathsLeaseHeaders object itself.
+     */
+    @Generated
+    public PathsLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
+        this.xMsLeaseId = xMsLeaseId;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseTime property: The x-ms-lease-time property.
+     * 
+     * @return the xMsLeaseTime value.
+     */
+    @Generated
+    public String getXMsLeaseTime() {
+        return this.xMsLeaseTime;
+    }
+
+    /**
+     * Set the xMsLeaseTime property: The x-ms-lease-time property.
+     * 
+     * @param xMsLeaseTime the xMsLeaseTime value to set.
+     * @return the PathsLeaseHeaders object itself.
+     */
+    @Generated
+    public PathsLeaseHeaders setXMsLeaseTime(String xMsLeaseTime) {
+        this.xMsLeaseTime = xMsLeaseTime;
         return this;
     }
 }

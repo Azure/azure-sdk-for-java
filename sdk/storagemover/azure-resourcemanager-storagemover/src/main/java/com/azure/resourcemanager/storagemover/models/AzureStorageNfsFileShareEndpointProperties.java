@@ -99,9 +99,19 @@ public final class AzureStorageNfsFileShareEndpointProperties extends EndpointBa
      * {@inheritDoc}
      */
     @Override
+    public AzureStorageNfsFileShareEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
         jsonWriter.writeStringField("fileShareName", this.fileShareName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -127,6 +137,9 @@ public final class AzureStorageNfsFileShareEndpointProperties extends EndpointBa
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureStorageNfsFileShareEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureStorageNfsFileShareEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureStorageNfsFileShareEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

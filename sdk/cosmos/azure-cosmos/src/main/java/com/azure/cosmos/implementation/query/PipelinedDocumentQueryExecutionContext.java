@@ -166,6 +166,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 (continuationToken, documentQueryParams) ->
                     GroupByDocumentQueryExecutionContext.createAsync(createDistinctComponentFunction,
                         continuationToken,
+                        queryInfo.getAggregates(),
                         queryInfo.getGroupByAliasToAggregateType(),
                         queryInfo.getGroupByAliases(),
                         queryInfo.hasSelectValue(),
