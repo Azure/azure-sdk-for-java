@@ -10,7 +10,7 @@ package com.azure.storage.common;
  * Supported in Azure Storage Blob, Data Lake, and File Share packages for methods that use APIs supporting
  * transactional CRC64, or structured message format.
  */
-public enum StorageChecksumAlgorithm {
+public enum ContentValidationAlgorithm {
 
     /**
      * No content validation. This is the default; no checksum is computed or validated.
@@ -19,7 +19,8 @@ public enum StorageChecksumAlgorithm {
 
     /**
      * Allow the SDK to choose the validation algorithm. Currently resolves to CRC64 where supported. Different
-     * library versions may make different choices.
+     * library versions may make different choices. The resolution may change in the future. Please set an
+     * explicit algorithm if you need a specific behavior.
      */
     AUTO,
 

@@ -86,7 +86,7 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -504,7 +504,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
-        final StorageChecksumAlgorithm responseChecksumAlgorithm = options.getResponseChecksumAlgorithm();
+        final ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
             : options.getConsistentReadControl();
@@ -518,7 +518,7 @@ public class BlobClientBase {
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
             = (chunkRange, conditions) -> client.downloadStreamWithResponseInternal(chunkRange, null, conditions, false,
-                responseChecksumAlgorithm, contextFinal);
+                contentValidationAlgorithm, contextFinal);
         return ChunkedDownloadUtils
             .downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
@@ -598,7 +598,7 @@ public class BlobClientBase {
                     .setRange(new BlobRange(initialPosition, (long) initialRange.remaining()))
                     .setRequestConditions(options.getRequestConditions())
                     .setRetrieveContentRangeMd5(false)
-                    .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, context);
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
@@ -1302,7 +1302,7 @@ public class BlobClientBase {
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
-                options.getResponseChecksumAlgorithm(), context)
+                options.getContentValidationAlgorithm(), context)
             .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
                 .thenReturn(new BlobDownloadResponse(response)));
 
@@ -1407,7 +1407,7 @@ public class BlobClientBase {
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
-                options.getResponseChecksumAlgorithm(), context)
+                options.getContentValidationAlgorithm(), context)
             .flatMap(r -> BinaryData.fromFlux(r.getValue())
                 .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
                     data, r.getDeserializedHeaders())))

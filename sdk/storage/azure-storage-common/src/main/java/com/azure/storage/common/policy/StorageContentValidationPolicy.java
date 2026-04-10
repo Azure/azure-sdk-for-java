@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Optional;
 
-import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_MODE_KEY;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
@@ -56,7 +56,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      * @return a {@link Mono} that completes when content validation has been applied to the request body.
      */
     private Mono<Void> applyContentValidation(HttpPipelineCallContext context) {
-        Optional<Object> behaviorOptional = context.getContext().getData(CONTENT_VALIDATION_BEHAVIOR_KEY);
+        Optional<Object> behaviorOptional = context.getContext().getData(CONTENT_VALIDATION_MODE_KEY);
         if (!behaviorOptional.isPresent()) {
             return Mono.empty();
         }
@@ -94,6 +94,8 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         Flux<ByteBuffer> originalBody = context.getHttpRequest().getBody();
         return FluxUtil.collectBytesInByteBufferStream(originalBody)
             .flatMap(originalBytes -> Mono.fromCallable(() -> StorageCrc64Calculator.compute(originalBytes, 0))
+                // Run CRC64 on boundedElastic so synchronous work over the full body does not block the reactive
+                // I/O thread (e.g. Netty event loop) that drives the pipeline.
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(contentCRC64 -> {
                     // Restore body for downstream consumers.
@@ -116,23 +118,26 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      * Applies the structured message to the request body.
      *
      * @param context the HTTP pipeline call context
+     * @return a {@link Mono} that completes when the structured message has been applied, or fails if the request is
+     * not valid for structured messaging
      */
     private Mono<Void> applyStructuredMessage(HttpPipelineCallContext context) {
         String contentLengthValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLengthValue == null || contentLengthValue.isEmpty()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Content-Length header is required to apply structured message "
-                    + "and CRC64 encoding, but it was not present on the request."));
+            return FluxUtil.monoError(LOGGER,
+                LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Content-Length header is required to apply structured message "
+                        + "and CRC64 encoding, but it was not present on the request.")));
         }
 
         long parsedContentLength;
         try {
             parsedContentLength = Long.parseLong(contentLengthValue);
         } catch (NumberFormatException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            return FluxUtil.monoError(LOGGER, LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Content-Length header value '" + contentLengthValue
                     + "' is not a valid non-negative integer value required for structured message and CRC64 encoding.",
-                ex));
+                ex)));
         }
 
         int unencodedContentLength = (int) parsedContentLength;

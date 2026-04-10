@@ -3,194 +3,213 @@
 
 package com.azure.storage.common.implementation.contentvalidation;
 
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.core.util.Context;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_MODE_KEY;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContentValidationModeResolverTests {
 
+    private static String modeOnContext(Context context, ContentValidationAlgorithm algorithm, long contentLength,
+        boolean chunkedUpload) {
+        return ContentValidationModeResolver.addContentValidationMode(context, algorithm, contentLength, chunkedUpload)
+            .getData(CONTENT_VALIDATION_MODE_KEY)
+            .map(Object::toString)
+            .orElse(null);
+    }
+
     // ===========================================================================================
-    // getBehaviorForSinglePartUpload
+    // addContentValidationMode (Context) — single-part
     // ===========================================================================================
 
-    static Stream<Arguments> singlePartReturnsNullSupplier() {
-        return Stream.of(Arguments.of(null, 1024), Arguments.of(StorageChecksumAlgorithm.NONE, 1024),
-            Arguments.of(null, 8 * 1024 * 1024), Arguments.of(StorageChecksumAlgorithm.NONE, 8 * 1024 * 1024));
+    static Stream<Arguments> singlePartDoesNotSetModeSupplier() {
+        return Stream.of(Arguments.of(null, 1024), Arguments.of(ContentValidationAlgorithm.NONE, 1024),
+            Arguments.of(null, 8 * 1024 * 1024), Arguments.of(ContentValidationAlgorithm.NONE, 8 * 1024 * 1024));
     }
 
     @ParameterizedTest
-    @MethodSource("singlePartReturnsNullSupplier")
-    public void singlePartReturnsNullForNonCrc64Algorithms(StorageChecksumAlgorithm algorithm, long length) {
-        assertNull(ContentValidationModeResolver.getBehaviorForSinglePartUpload(algorithm, length));
+    @MethodSource("singlePartDoesNotSetModeSupplier")
+    public void singlePartDoesNotSetModeForNullOrNone(ContentValidationAlgorithm algorithm, long length) {
+        assertEquals(null, modeOnContext(Context.NONE, algorithm, length, false));
     }
 
     @Test
     public void singlePartSmallUploadUsesCrc64Header() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
-        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT, ContentValidationModeResolver
-            .getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.CRC64, underThreshold));
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
+            modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64, underThreshold, false));
     }
 
     @Test
     public void singlePartAtExact4MBBoundaryUsesStructuredMessage() {
-        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver.getBehaviorForSinglePartUpload(
-            StorageChecksumAlgorithm.CRC64, MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER));
+        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64,
+            MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER, false));
     }
 
     @Test
     public void singlePartLargeUploadUsesStructuredMessage() {
-        long overThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
-        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver
-            .getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.CRC64, overThreshold));
+        long overThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
+        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
+            modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64, overThreshold, false));
     }
 
     @Test
     public void singlePartAutoSmallUploadUsesCrc64Header() {
-        long underThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
-        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT, ContentValidationModeResolver
-            .getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.AUTO, underThreshold));
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
+            modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO, underThreshold, false));
     }
 
     @Test
     public void singlePartAutoAtExact4MBBoundaryUsesStructuredMessage() {
-        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, ContentValidationModeResolver.getBehaviorForSinglePartUpload(
-            StorageChecksumAlgorithm.AUTO, MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER));
+        assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT, modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO,
+            MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER, false));
     }
 
     @Test
     public void singlePartAutoLargeUploadUsesStructuredMessage() {
-        long overThreshold = MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
+        long overThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER + 1;
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
-            ContentValidationModeResolver.getBehaviorForSinglePartUpload(StorageChecksumAlgorithm.AUTO, overThreshold));
+            modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO, overThreshold, false));
+    }
+
+    @Test
+    public void addContentValidationModeNullContextUsesNone() {
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        assertEquals(USE_CRC64_CHECKSUM_HEADER_CONTEXT,
+            modeOnContext(null, ContentValidationAlgorithm.CRC64, underThreshold, false));
     }
 
     // ===========================================================================================
-    // getBehaviorForChunkedUpload
+    // addContentValidationMode (Context) — chunked
     // ===========================================================================================
 
-    static Stream<Arguments> chunkedReturnsNullSupplier() {
-        return Stream.of(Arguments.of((StorageChecksumAlgorithm) null), Arguments.of(StorageChecksumAlgorithm.NONE));
+    static Stream<Arguments> chunkedDoesNotSetModeSupplier() {
+        return Stream.of(Arguments.of((ContentValidationAlgorithm) null),
+            Arguments.of(ContentValidationAlgorithm.NONE));
     }
 
     @ParameterizedTest
-    @MethodSource("chunkedReturnsNullSupplier")
-    public void chunkedReturnsNullForNonCrc64Algorithms(StorageChecksumAlgorithm algorithm) {
-        assertNull(ContentValidationModeResolver.getBehaviorForChunkedUpload(algorithm));
+    @MethodSource("chunkedDoesNotSetModeSupplier")
+    public void chunkedDoesNotSetModeForNonCrc64Algorithms(ContentValidationAlgorithm algorithm) {
+        assertEquals(null, modeOnContext(Context.NONE, algorithm, 1024, true));
     }
 
     @Test
     public void chunkedCrc64AlwaysUsesStructuredMessage() {
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
-            ContentValidationModeResolver.getBehaviorForChunkedUpload(StorageChecksumAlgorithm.CRC64));
+            modeOnContext(Context.NONE, ContentValidationAlgorithm.CRC64, 1024, true));
     }
 
     @Test
     public void chunkedAutoAlwaysUsesStructuredMessage() {
         assertEquals(USE_STRUCTURED_MESSAGE_CONTEXT,
-            ContentValidationModeResolver.getBehaviorForChunkedUpload(StorageChecksumAlgorithm.AUTO));
+            modeOnContext(Context.NONE, ContentValidationAlgorithm.AUTO, 1024, true));
     }
 
     // ===========================================================================================
-    // hasConflictingTransactionalContentValidation
+    // addContentValidationMode (Mono)
     // ===========================================================================================
 
     @Test
-    public void noConflictWhenBothNull() {
-        assertFalse(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(null, null));
+    public void addContentValidationModeMonoWritesReactorContextForCrc64() {
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        Mono<String> source = Mono.deferContextual(ctx -> Mono.just(ctx.get(CONTENT_VALIDATION_MODE_KEY)));
+        Mono<String> augmented = ContentValidationModeResolver.addContentValidationMode(source,
+            ContentValidationAlgorithm.CRC64, underThreshold, false);
+        StepVerifier.create(augmented).expectNext(USE_CRC64_CHECKSUM_HEADER_CONTEXT).verifyComplete();
     }
 
     @Test
-    public void noConflictWhenOnlyMd5() {
-        assertFalse(
-            ContentValidationModeResolver.hasConflictingTransactionalContentValidation(new byte[] { 1, 2 }, null));
+    public void addContentValidationModeMonoWritesReactorContextForAuto() {
+        long underThreshold = MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER - 1;
+        Mono<String> source = Mono.deferContextual(ctx -> Mono.just(ctx.get(CONTENT_VALIDATION_MODE_KEY)));
+        Mono<String> augmented = ContentValidationModeResolver.addContentValidationMode(source,
+            ContentValidationAlgorithm.AUTO, underThreshold, false);
+        StepVerifier.create(augmented).expectNext(USE_CRC64_CHECKSUM_HEADER_CONTEXT).verifyComplete();
     }
 
     @Test
-    public void noConflictWhenOnlyCrc64() {
-        assertFalse(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(null,
-            StorageChecksumAlgorithm.CRC64));
-    }
-
-    @Test
-    public void noConflictWhenMd5WithNone() {
-        assertFalse(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(new byte[] { 1, 2 },
-            StorageChecksumAlgorithm.NONE));
-    }
-
-    @Test
-    public void conflictWhenMd5WithCrc64() {
-        assertTrue(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(new byte[] { 1, 2 },
-            StorageChecksumAlgorithm.CRC64));
-    }
-
-    @Test
-    public void conflictWhenMd5WithAuto() {
-        assertTrue(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(new byte[] { 1, 2 },
-            StorageChecksumAlgorithm.AUTO));
+    public void addContentValidationModeMonoLeavesChainUnchangedWhenNoMode() {
+        Mono<String> source = Mono.deferContextual(ctx -> Mono.just("ok"));
+        Mono<String> augmented = ContentValidationModeResolver.addContentValidationMode(source,
+            ContentValidationAlgorithm.NONE, 1024, false);
+        StepVerifier.create(augmented).expectNext("ok").verifyComplete();
     }
 
     // ===========================================================================================
-    // hasConflictingTransactionalContentValidation (computeMd5 overload)
+    // validateTransactionalChecksumOptions (byte[])
     // ===========================================================================================
 
     @Test
-    public void computeMd5NoConflictWhenAlgorithmNull() {
-        assertFalse(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(true, null));
+    public void validateByteArrayPassesForCompatibleOptions() {
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null,
+            ContentValidationAlgorithm.CRC64));
+        assertDoesNotThrow(
+            () -> ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1 }, null));
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1, 2 },
+            ContentValidationAlgorithm.NONE));
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null, null));
     }
 
     @Test
-    public void computeMd5NoConflictWhenAlgorithmNone() {
-        assertFalse(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(true,
-            StorageChecksumAlgorithm.NONE));
-    }
-
-    @Test
-    public void computeMd5ConflictWhenAlgorithmCrc64() {
-        assertTrue(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(true,
-            StorageChecksumAlgorithm.CRC64));
-    }
-
-    @Test
-    public void noComputeMd5NoConflictWithCrc64() {
-        assertFalse(ContentValidationModeResolver.hasConflictingTransactionalContentValidation(false,
-            StorageChecksumAlgorithm.CRC64));
-    }
-
-    // ===========================================================================================
-    // validateTransactionalChecksumOptions (sync)
-    // ===========================================================================================
-
-    @Test
-    public void validateSyncPassesForCompatibleOptions() {
-        ContentValidationModeResolver.validateTransactionalChecksumOptions(null, StorageChecksumAlgorithm.CRC64);
-        ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1 }, null);
-        ContentValidationModeResolver.validateTransactionalChecksumOptions(false, StorageChecksumAlgorithm.AUTO);
-    }
-
-    @Test
-    public void validateSyncThrowsForContentMd5AndAlgorithm() {
+    public void validateByteArrayThrowsForContentMd5AndCrc64() {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1 }, StorageChecksumAlgorithm.CRC64));
+            .validateTransactionalChecksumOptions(new byte[] { 1 }, ContentValidationAlgorithm.CRC64));
         assertEquals(ContentValidationModeResolver.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE,
             ex.getMessage());
     }
 
     @Test
-    public void validateSyncThrowsForComputeMd5AndAlgorithm() {
+    public void validateByteArrayThrowsForContentMd5AndAuto() {
         assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(true, StorageChecksumAlgorithm.AUTO));
+            .validateTransactionalChecksumOptions(new byte[] { 1, 2 }, ContentValidationAlgorithm.AUTO));
+    }
+
+    // ===========================================================================================
+    // validateTransactionalChecksumOptions (boolean computeMd5)
+    // ===========================================================================================
+
+    @Test
+    public void validateComputeMd5PassesForCompatibleOptions() {
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(true, null));
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(false,
+            ContentValidationAlgorithm.AUTO));
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(false,
+            ContentValidationAlgorithm.NONE));
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(false,
+            ContentValidationAlgorithm.CRC64));
+    }
+
+    @Test
+    public void validateComputeMd5ThrowsWhenAlgorithmNone() {
+        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateTransactionalChecksumOptions(true, ContentValidationAlgorithm.NONE));
+    }
+
+    @Test
+    public void validateComputeMd5ThrowsForCrc64() {
+        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateTransactionalChecksumOptions(true, ContentValidationAlgorithm.CRC64));
+    }
+
+    @Test
+    public void validateComputeMd5ThrowsForAuto() {
+        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateTransactionalChecksumOptions(true, ContentValidationAlgorithm.AUTO));
     }
 }

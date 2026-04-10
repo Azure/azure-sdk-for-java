@@ -38,7 +38,7 @@ import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 
@@ -476,12 +476,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             if (options == null) {
                 return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
             }
-            if (options.getBodyFlux() == null) {
+            if (options.getDataFlux() == null) {
                 return monoError(LOGGER, new IllegalArgumentException(
                     "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
             }
-            return withContext(context -> appendBlockWithResponseInternal(options.getBodyFlux(), options.getLength(),
-                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(),
+            return withContext(context -> appendBlockWithResponseInternal(options.getDataFlux(), options.getLength(),
+                options.getContentMd5(), options.getRequestConditions(), options.getContentValidationAlgorithm(),
                 context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -496,21 +496,21 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponseInternal(Flux<ByteBuffer> data, long length,
         byte[] contentMd5, AppendBlobRequestConditions appendBlobRequestConditions,
-        StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
         try {
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5, requestChecksumAlgorithm);
+            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5, contentValidationAlgorithm);
         } catch (IllegalArgumentException ex) {
             return monoError(LOGGER, ex);
         }
 
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
-        context = ContentValidationModeResolver.applyContentValidationBehavior(context, requestChecksumAlgorithm,
-            length, false);
+        context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm, length,
+            false);
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,

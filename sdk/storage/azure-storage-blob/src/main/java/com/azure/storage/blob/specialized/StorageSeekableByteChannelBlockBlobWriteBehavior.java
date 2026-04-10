@@ -12,7 +12,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
     private final WriteMode mode;
     private final List<String> existingBlockIds;
     private final List<String> newBlockIds = new ArrayList<>();
-    private final StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private final ContentValidationAlgorithm contentValidationAlgorithm;
 
     StorageSeekableByteChannelBlockBlobWriteBehavior(BlockBlobClient client, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier, BlobRequestConditions conditions,
@@ -58,7 +58,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
         this.conditions = conditions;
         this.mode = Objects.requireNonNull(mode);
         this.existingBlockIds = existingBlockIds != null ? existingBlockIds : Collections.emptyList();
-        this.requestChecksumAlgorithm = null;
+        this.contentValidationAlgorithm = null;
     }
 
     StorageSeekableByteChannelBlockBlobWriteBehavior(BlockBlobClient client,
@@ -72,7 +72,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
         this.conditions = options.getRequestConditions();
         this.mode = Objects.requireNonNull(mode);
         this.existingBlockIds = existingBlockIds != null ? existingBlockIds : Collections.emptyList();
-        this.requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
+        this.contentValidationAlgorithm = options.getContentValidationAlgorithm();
     }
 
     BlockBlobClient getClient() {
@@ -118,8 +118,8 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
         if (conditions != null) {
             options.setLeaseId(conditions.getLeaseId());
         }
-        if (requestChecksumAlgorithm != null) {
-            options.setRequestChecksumAlgorithm(requestChecksumAlgorithm);
+        if (contentValidationAlgorithm != null) {
+            options.setContentValidationAlgorithm(contentValidationAlgorithm);
         }
 
         client.stageBlockWithResponse(options, null, null);
