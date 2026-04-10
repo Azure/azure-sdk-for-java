@@ -161,8 +161,6 @@ public class ContentValidationModeResolverTests {
             ContentValidationAlgorithm.CRC64));
         assertDoesNotThrow(
             () -> ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1 }, null));
-        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1, 2 },
-            ContentValidationAlgorithm.NONE));
         assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null, null));
     }
 
@@ -178,6 +176,12 @@ public class ContentValidationModeResolverTests {
     public void validateByteArrayThrowsForContentMd5AndAuto() {
         assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
             .validateTransactionalChecksumOptions(new byte[] { 1, 2 }, ContentValidationAlgorithm.AUTO));
+    }
+
+    @Test
+    public void validateByteArrayThrowsForContentMd5AndNone() {
+        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateTransactionalChecksumOptions(new byte[] { 1 }, ContentValidationAlgorithm.NONE));
     }
 
     // ===========================================================================================
