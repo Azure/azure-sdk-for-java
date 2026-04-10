@@ -372,6 +372,10 @@ stages:
 
               - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
+              # maven-authenticate.yml cannot be used here because it overwrites ~/.m2/settings.xml
+              # with eng/settings.xml, which would discard the docs-specific repository config
+              # (e.g. docs-public-packages feed) set up by mvn-linux-repository-settings.yml above.
+              # Instead, we only run MavenAuthenticate to inject credentials into the existing settings.
               - task: MavenAuthenticate@0
                 displayName: 'Maven Authenticate'
                 inputs:
@@ -501,6 +505,10 @@ stages:
 
           - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
+          # maven-authenticate.yml cannot be used here because it overwrites ~/.m2/settings.xml
+          # with eng/settings.xml, which would discard the docs-specific repository config
+          # (e.g. docs-public-packages feed) set up by mvn-linux-repository-settings.yml above.
+          # Instead, we only run MavenAuthenticate to inject credentials into the existing settings.
           - task: MavenAuthenticate@0
             displayName: 'Maven Authenticate'
             inputs:

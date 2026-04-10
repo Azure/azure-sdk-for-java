@@ -17,16 +17,6 @@
             </activation>
             <repositories>
                 <repository>
-                    <id>azure-sdk-for-java</id>
-                    <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                </repository>
-                <repository>
                     <id>docs-public-packages</id>
                     <url>https://docfx.pkgs.visualstudio.com/docfx/_packaging/docs-public-packages/maven/v1</url>
                     <releases>
