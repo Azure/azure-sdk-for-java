@@ -277,17 +277,68 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
     return packages
 
 
-def verify_self_serve_parameters(api_version, sdk_release_type):
-    if sdk_release_type and sdk_release_type not in ["stable", "beta"]:
-        raise ValueError(f"Invalid SDK release type [{sdk_release_type}], only support 'stable' or 'beta'.")
-    if api_version and sdk_release_type:
-        if api_version.endswith("-preview") and sdk_release_type == "stable":
-            raise ValueError(f"SDK release type is [stable], but API version [{api_version}] is preview.")
-        logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
-    elif api_version or sdk_release_type:
-        raise ValueError(
-            "Both [API version] and [SDK release type] parameters are required for self-serve SDK generation."
-        )
+def infer_sdk_release_type(sdk_root: str, sdk_folder: str, module: str) -> str:
+    """Infer SDK release type from the generated metadata JSON.
+
+    Reads {sdk_root}/{sdk_folder}/src/main/resources/META-INF/{module}_metadata.json
+    and inspects the apiVersions values:
+    - All GA (no 'preview' substring) -> 'stable'
+    - Any preview or mixed -> 'beta'
+    - Fallback on error -> 'beta' (safe default)
+    """
+    metadata_path = os.path.join(sdk_root, sdk_folder, "src", "main", "resources", "META-INF", f"{module}_metadata.json")
+    try:
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
+        api_versions = metadata.get("apiVersions", {})
+        if not api_versions:
+            logging.warning(f"[SelfServe] No apiVersions found in {metadata_path}, defaulting to beta.")
+            return "beta"
+
+        has_preview = any("preview" in v.lower() for v in api_versions.values())
+        inferred = "beta" if has_preview else "stable"
+        logging.info(f"[SelfServe] Inferred sdkReleaseType={inferred} from apiVersions: {api_versions}")
+        return inferred
+    except FileNotFoundError:
+        logging.warning(f"[SelfServe] Metadata file not found: {metadata_path}, defaulting to beta.")
+        return "beta"
+    except Exception as e:
+        logging.warning(f"[SelfServe] Failed to read metadata file {metadata_path}: {e}, defaulting to beta.")
+        return "beta"
+
+
+def update_revapi_skip(pom_path: str, beta: bool):
+    """Update revapi.skip property in pom.xml based on release type.
+
+    beta=True:  ensure <revapi.skip>true</revapi.skip> (add if missing, flip if false)
+    beta=False: flip <revapi.skip>true</revapi.skip> to false if present (skip if absent, as false is default)
+    """
+    try:
+        with open(pom_path, "r") as f:
+            content = f.read()
+        if beta:
+            if "<revapi.skip>true</revapi.skip>" in content:
+                return
+            if "<revapi.skip>false</revapi.skip>" in content:
+                new_content = content.replace("<revapi.skip>false</revapi.skip>", "<revapi.skip>true</revapi.skip>")
+                logging.info(f"[SelfServe] Changed revapi.skip to true in {pom_path}")
+            else:
+                new_content = re.sub(
+                    r'([ \t]*)</properties>',
+                    r'\1  <revapi.skip>true</revapi.skip>\n\1</properties>',
+                    content,
+                    count=1,
+                )
+                logging.info(f"[SelfServe] Added revapi.skip=true to {pom_path}")
+        else:
+            if "<revapi.skip>true</revapi.skip>" not in content:
+                return
+            new_content = content.replace("<revapi.skip>true</revapi.skip>", "<revapi.skip>false</revapi.skip>")
+            logging.info(f"[SelfServe] Changed revapi.skip to false in {pom_path}")
+        with open(pom_path, "w") as f:
+            f.write(new_content)
+    except Exception as e:
+        logging.warning(f"[SelfServe] Failed to update revapi.skip in {pom_path}: {e}")
 
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
@@ -299,14 +350,11 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     sdk_release_type: str = config["sdkReleaseType"] if "sdkReleaseType" in config else None
     api_version = config["apiVersion"] if "apiVersion" in config else None
+    # Generate with beta by default; will be corrected after inference if needed
     release_beta_sdk: bool = not sdk_release_type or sdk_release_type == "beta"
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
-    run_mode: str = config["runMode"] if "runMode" in config else None
-
-    if run_mode == "release" or run_mode == "local":
-        verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project,
@@ -317,10 +365,14 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         remove_before_regen=True,
         group_id=GROUP_ID,
         api_version=api_version,
-        generate_beta_sdk=release_beta_sdk,
     )
 
     if succeeded:
+        # Infer sdk release type from generated metadata when not explicitly provided
+        if not sdk_release_type and sdk_folder and module:
+            inferred_type = infer_sdk_release_type(sdk_root, sdk_folder, module)
+            release_beta_sdk = inferred_type == "beta"
+
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
@@ -331,6 +383,9 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, preview=release_beta_sdk)
         output_folder = sdk_folder
         update_version(sdk_root, output_folder)
+
+        # Update revapi.skip based on release type
+        update_revapi_skip(os.path.join(sdk_root, output_folder, "pom.xml"), beta=release_beta_sdk)
 
         # compile
         succeeded = compile_arm_package(sdk_root, module)
