@@ -1,0 +1,36 @@
+# Java Cosmos SDK PR Review Rules
+# Loaded by the PR review agent via the pragentrules-resolver skill.
+# These add Cosmos-specific constraints that the agent cannot infer on its own.
+# Rules starting with "DO" are required checks. "Do NOT" are suppressions.
+
+# --- Preview API Gating (@Beta) ---
+# This is the highest-value rule. PR #47566 merged a new public enum (QuantizerType)
+# without @Beta, even though vector search was preview. The agent can't know which
+# Cosmos features are GA vs preview — this rule makes it ask.
+- DO check whether newly introduced public classes, enums, interfaces, or newly added public methods need the @Beta annotation. Evidence that @Beta is needed includes: sibling types in the same package already annotated with @Beta, the PR description stating the feature is preview, or the feature area being known-preview (e.g., vector search, GenAI, quantizer). ASK the PR author if the underlying Cosmos DB service feature is fully GA and deployed to production. If not GA, the API MUST have @Beta(value = Beta.SinceVersion.V4_XX_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING). Do NOT flag new public APIs for GA features solely because they share a package with preview APIs.
+
+# --- Public Enum Extensibility ---
+- DO scrutinize new public Java enums. If the set of allowed values may grow over time or the feature is preview, flag as a risk — Java enums are closed sets and adding values later is a breaking change for switch statements. Consider whether a string-constant pattern would be more forward-compatible.
+
+# --- Azure SDK Central Guidelines (for new client surface only) ---
+- DO verify Azure SDK Java design conventions (https://azure.github.io/azure-sdk/java_introduction.html) only when a PR introduces a new top-level service client, builder, or primary operation surface. Check @ServiceClient annotation, @ServiceClientBuilder, fluent builder pattern, sync/async client parity, and package placement. Do NOT apply these checks to additive methods on existing types — the agent already reviews those for codebase consistency.
+
+# --- Java 8 Compatibility ---
+- DO verify that new production code remains compatible with the Java 8 baseline. Do NOT introduce Java 9+ APIs, language features (var, records, sealed classes), or java.util.stream collectors that require Java 9+.
+
+# --- Changelog (Suppression) ---
+- Do NOT flag missing per-PR changelog entries. The Java Cosmos SDK updates CHANGELOG.md at release time (batch per release), not per-PR. This differs from some other Azure SDK packages.
+
+# --- API Contract Artifacts (Suppression) ---
+- Do NOT ask for API signature baselines, contract-tracking artifacts, or public API diff files. The Java Cosmos SDK uses APIView and Revapi in CI for API surface validation, not manually maintained contract files.
+
+# --- Checkstyle / SpotBugs (Suppression) ---
+- Do NOT suggest disabling Checkstyle or SpotBugs rules to resolve linting issues. Fix the underlying code issue instead.
+
+# --- Multi-region & Failover (Domain-Specific Emphasis) ---
+# The agent reviews logic generically, but multi-region is a Cosmos-specific critical area
+# where subtle bugs cause customer-visible outages.
+- DO give extra scrutiny to changes in failover, region-routing, or endpoint-management logic. Verify that both single-write-region and multi-write-region account configurations are handled. Behaviors correct for single-write may silently regress multi-write scenarios (e.g., Per Partition Automatic Failover).
+
+# --- Retry & Exception Handling (Domain-Specific Emphasis) ---
+- DO give extra scrutiny to changes in retry policies, timeout configuration, or exception-mapping logic. Review these changes across success, transient-failure, and non-retryable-failure paths. Retry infrastructure changes can cause cascading failures that are hard to detect in unit tests.
