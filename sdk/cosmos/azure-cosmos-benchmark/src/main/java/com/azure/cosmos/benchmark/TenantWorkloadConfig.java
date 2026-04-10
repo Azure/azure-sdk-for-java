@@ -546,6 +546,10 @@ public class TenantWorkloadConfig {
                     if (overwrite || http2Enabled == null) http2Enabled = Boolean.parseBoolean(value); break;
                 case "http2MaxConcurrentStreams":
                     if (overwrite || http2MaxConcurrentStreams == null) http2MaxConcurrentStreams = Integer.parseInt(value); break;
+                case "dnsBlockingEnabled":
+                    if (overwrite || dnsBlockingEnabled == null) dnsBlockingEnabled = Boolean.parseBoolean(value); break;
+                case "dnsBlockingCycleMinutes":
+                    if (overwrite || dnsBlockingCycleMinutes == null) dnsBlockingCycleMinutes = Integer.parseInt(value); break;
                 // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
                 // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
                 case "minConnectionPoolSizePerEndpoint":
