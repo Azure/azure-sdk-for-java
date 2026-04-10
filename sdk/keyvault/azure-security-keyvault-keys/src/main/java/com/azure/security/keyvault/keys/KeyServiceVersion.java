@@ -11,10 +11,6 @@ import com.azure.core.util.ServiceVersion;
 public enum KeyServiceVersion implements ServiceVersion {
 
     /**
-     * Service version {@code 7.0}.
-     */
-    V7_0("7.0"),
-    /**
      * Service version {@code 7.1}.
      */
     V7_1("7.1"),
