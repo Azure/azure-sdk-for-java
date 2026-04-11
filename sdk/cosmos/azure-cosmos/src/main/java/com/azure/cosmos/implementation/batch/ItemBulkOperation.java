@@ -6,11 +6,8 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.models.CosmosItemOperationType;
