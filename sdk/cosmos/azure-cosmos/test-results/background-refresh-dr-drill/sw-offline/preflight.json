@@ -1,0 +1,18 @@
+{
+  "account": "bgrefresh-sw-test-440",
+  "resourceGroup": "rg-bgrefresh-test",
+  "endpoint": "https://bgrefresh-sw-test-440.documents.azure.com:443/",
+  "writeRegion": "East US",
+  "readRegions": [
+    "West US"
+  ],
+  "frontendFederation": "cdb-ms-prod-eastus1-be267.eastus.cloudapp.azure.com",
+  "thinClientSupported": false,
+  "databaseId": "dr-drill-db",
+  "containerId": "dr-drill-coll",
+  "benchmarkJar": "C:\\Users\\abhmohanty\\Documents\\GitHub\\azure-sdk-for-java\\sdk\\cosmos\\azure-cosmos-benchmark\\target\\azure-cosmos-benchmark-4.0.1-beta.1-jar-with-dependencies.jar",
+  "branch": "fix/background-refresh-multi-writer",
+  "commitSha": "2048abeca",
+  "multiWriteEnabled": false,
+  "autoFailoverEnabled": true
+}
