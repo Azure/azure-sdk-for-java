@@ -13,7 +13,6 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -32,7 +31,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     private final AtomicReference<ChangeFeedObserverContext<T>> latestContext;
     private volatile boolean hasUncheckpointedProgress;
     private volatile Disposable intervalCheckpointDisposable;
-    private volatile Instant lastCheckpointTime;
+    private volatile long lastCheckpointNanoTime;
 
     public AutoCheckpointer(CheckpointFrequency checkpointFrequency, ChangeFeedObserver<T> observer) {
         if (checkpointFrequency == null) {
@@ -45,7 +44,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
 
         this.checkpointFrequency = checkpointFrequency;
         this.observer = observer;
-        this.lastCheckpointTime = Instant.now();
+        this.lastCheckpointNanoTime = System.nanoTime();
         this.processedDocCount = new AtomicInteger();
         this.latestProgressVersion = new AtomicLong();
         this.checkpointInProgress = new AtomicReference<>();
@@ -103,9 +102,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
             return false;
         }
 
-        Duration delta = Duration.between(this.lastCheckpointTime, Instant.now());
-
-        return delta.compareTo(interval) >= 0;
+        return this.hasIntervalElapsed(interval);
     }
 
     private boolean isEveryBatchCheckpoint() {
@@ -120,7 +117,11 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
         }
 
         this.intervalCheckpointDisposable = Flux.interval(interval, interval)
-            .concatMap(ignored -> this.checkpointIfIntervalElapsed())
+            .concatMap(ignored -> this.checkpointIfIntervalElapsed()
+                .onErrorResume(throwable -> {
+                    logger.warn("Interval checkpoint attempt failed; will retry on the next interval tick", throwable);
+                    return Mono.empty();
+                }))
             .subscribe(
                 ignored -> {
                 },
@@ -142,7 +143,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
         }
 
         Duration interval = this.checkpointFrequency.getTimeInterval();
-        if (interval == null || Duration.between(this.lastCheckpointTime, Instant.now()).compareTo(interval) < 0) {
+        if (interval == null || !this.hasIntervalElapsed(interval)) {
             return Mono.empty();
         }
 
@@ -175,12 +176,24 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     }
 
     private void onCheckpointSuccess(long checkpointedProgressVersion) {
-        this.lastCheckpointTime = Instant.now();
+        this.lastCheckpointNanoTime = System.nanoTime();
 
         // Keep progress markers if newer batches arrived while this checkpoint was in flight.
         if (this.latestProgressVersion.get() == checkpointedProgressVersion) {
             this.processedDocCount.set(0);
             this.hasUncheckpointedProgress = false;
         }
+    }
+
+    private boolean hasIntervalElapsed(Duration interval) {
+        long intervalNanos;
+        try {
+            intervalNanos = interval.toNanos();
+        } catch (ArithmeticException arithmeticException) {
+            intervalNanos = Long.MAX_VALUE;
+        }
+
+        long elapsedNanos = System.nanoTime() - this.lastCheckpointNanoTime;
+        return elapsedNanos >= intervalNanos;
     }
 }

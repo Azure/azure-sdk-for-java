@@ -18,7 +18,6 @@ import reactor.core.publisher.Sinks;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -103,21 +102,22 @@ public class AutoCheckpointerTests {
 
     @Test(groups = {"unit"})
     @SuppressWarnings("unchecked")
-    public void intervalCheckpointFailureTerminatesIntervalStream() throws InterruptedException {
+    public void intervalCheckpointFailureDoesNotTerminateIntervalStream() throws InterruptedException {
         ChangeFeedObserver<String> observer = Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedObserverContext<String> context = Mockito.mock(ChangeFeedObserverContext.class);
 
         Mockito.when(observer.processChanges(any(), any())).thenReturn(Mono.empty());
-        Mockito.when(context.checkpoint()).thenReturn(Mono.error(new IllegalStateException("checkpoint failure")));
+        Mockito.when(context.checkpoint())
+            .thenReturn(Mono.error(new IllegalStateException("checkpoint failure")), Mono.empty(), Mono.empty());
 
         AutoCheckpointer<String> autoCheckpointer = new AutoCheckpointer<>(
             new CheckpointFrequency().withTimeInterval(Duration.ofMillis(40)), observer);
         autoCheckpointer.open(context);
 
         autoCheckpointer.processChanges(context, Collections.singletonList("doc")).block();
-        Thread.sleep(200);
+        Thread.sleep(240);
 
-        Mockito.verify(context, times(1)).checkpoint();
+        Mockito.verify(context, Mockito.atLeast(2)).checkpoint();
         autoCheckpointer.close(context, ChangeFeedObserverCloseReason.SHUTDOWN);
     }
 
@@ -136,7 +136,7 @@ public class AutoCheckpointerTests {
         AutoCheckpointer<String> autoCheckpointer = new AutoCheckpointer<>(
             new CheckpointFrequency().withTimeInterval(Duration.ofSeconds(1)), observer);
 
-        setField(autoCheckpointer, "lastCheckpointTime", Instant.now().minusSeconds(2));
+        setField(autoCheckpointer, "lastCheckpointNanoTime", System.nanoTime() - Duration.ofSeconds(2).toNanos());
 
         autoCheckpointer.processChanges(context, Collections.singletonList("batch-1")).subscribe();
         autoCheckpointer.processChanges(context, Collections.singletonList("batch-2")).subscribe();
@@ -146,7 +146,7 @@ public class AutoCheckpointerTests {
         firstCheckpoint.tryEmitValue(Mockito.mock(Lease.class));
         Thread.sleep(30);
 
-        setField(autoCheckpointer, "lastCheckpointTime", Instant.now().minusSeconds(2));
+        setField(autoCheckpointer, "lastCheckpointNanoTime", System.nanoTime() - Duration.ofSeconds(2).toNanos());
         invokeCheckpointIfIntervalElapsed(autoCheckpointer).block();
 
         Mockito.verify(context, times(2)).checkpoint();
