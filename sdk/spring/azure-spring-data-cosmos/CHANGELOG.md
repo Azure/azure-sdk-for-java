@@ -8,6 +8,8 @@
 
 #### Bugs Fixed
 
+* Fixed date/time types being serialized as epoch numbers instead of ISO-8601 strings. Disabled `WRITE_DATES_AS_TIMESTAMPS` in the default ObjectMapper configuration so `ZonedDateTime`, `LocalDateTime`, `OffsetDateTime`, and `Instant` are now serialized as ISO-8601 strings. Added tolerant deserializers to maintain backward compatibility with existing data stored as epoch numbers. Extended `toCosmosDbValue()` to handle `LocalDateTime`, `OffsetDateTime`, and `Instant` as ISO strings for query parameters. Fixed typo in `ISO_8601_COMPATIBLE_DATE_PATTERN` (colon before millis replaced with dot). - See [PR #34849](https://github.com/Azure/azure-sdk-for-java/issues/34849).
+
 #### Other Changes
 
 ### 7.1.0 (2026-03-11)

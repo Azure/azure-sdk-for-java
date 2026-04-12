@@ -89,7 +89,7 @@ public final class Constants {
     /**
      * ISO-8601 compatible date pattern.
      */
-    public static final String ISO_8601_COMPATIBLE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss:SSSXXX";
+    public static final String ISO_8601_COMPATIBLE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
     private Constants() {
     }

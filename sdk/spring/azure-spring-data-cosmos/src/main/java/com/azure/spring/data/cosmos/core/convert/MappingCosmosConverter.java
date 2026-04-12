@@ -26,6 +26,9 @@ import org.springframework.data.mapping.model.ConvertingPropertyAccessor;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -324,6 +327,14 @@ public class MappingCosmosConverter
         } else if (fromPropertyValue instanceof ZonedDateTime) {
             fromPropertyValue = ((ZonedDateTime) fromPropertyValue)
                 .format(DateTimeFormatter.ofPattern(ISO_8601_COMPATIBLE_DATE_PATTERN));
+        } else if (fromPropertyValue instanceof LocalDateTime) {
+            fromPropertyValue = ((LocalDateTime) fromPropertyValue)
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } else if (fromPropertyValue instanceof OffsetDateTime) {
+            fromPropertyValue = ((OffsetDateTime) fromPropertyValue)
+                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        } else if (fromPropertyValue instanceof Instant) {
+            fromPropertyValue = ((Instant) fromPropertyValue).toString();
         } else if (fromPropertyValue instanceof Enum) {
             fromPropertyValue = fromPropertyValue.toString();
         } else if (fromPropertyValue instanceof Optional<?>) {
