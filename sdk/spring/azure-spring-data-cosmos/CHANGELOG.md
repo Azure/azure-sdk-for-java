@@ -8,6 +8,8 @@
 
 #### Bugs Fixed
 
+* Fixed `IllegalArgumentException: Entity is null` when using `@Query` with GROUP BY aggregates returning non-entity types (`ObjectNode`, `Map`, custom DTOs) - See [Bug #43912](https://github.com/Azure/azure-sdk-for-java/issues/43912).
+
 #### Other Changes
 
 ### 7.1.0 (2026-03-11)

@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.convert.ObjectMapperFactory;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.azure.spring.data.cosmos.domain.AggregateDto;
 import com.azure.spring.data.cosmos.domain.BigJavaMathTypes;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
@@ -25,6 +26,7 @@ import org.springframework.context.ApplicationContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -176,6 +178,58 @@ public class MappingCosmosConverterUnitTest {
         final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(person);
 
         assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_DEFAULT).asText()).isEqualTo(etagValue);
+    }
+
+    // Tests for GitHub #43912 — GROUP BY aggregates with non-entity return types
+
+    @Test
+    public void readObjectNodeFromJsonNodeSucceeds() {
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put("id_count", 5);
+        objectNode.put("intValue", 42);
+
+        final ObjectNode result = mappingCosmosConverter.read(ObjectNode.class, objectNode);
+
+        assertThat(result).isNotNull();
+        assertThat(result.get("id_count").asInt()).isEqualTo(5);
+        assertThat(result.get("intValue").asInt()).isEqualTo(42);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void readMapFromJsonNodeSucceeds() {
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put("num_ids", 3);
+        objectNode.put("department", "engineering");
+
+        final Map<String, Object> result = mappingCosmosConverter.read(Map.class, objectNode);
+
+        assertThat(result).isNotNull();
+        assertThat(result.get("num_ids")).isEqualTo(3);
+        assertThat(result.get("department")).isEqualTo("engineering");
+    }
+
+    @Test
+    public void readPlainDtoFromJsonNodeSucceeds() {
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put("count", 7);
+        objectNode.put("label", "group-a");
+
+        final AggregateDto result = mappingCosmosConverter.read(AggregateDto.class, objectNode);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getCount()).isEqualTo(7);
+        assertThat(result.getLabel()).isEqualTo("group-a");
+    }
+
+    @Test
+    public void readObjectFromJsonNodeSucceeds() {
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put("key", "value");
+
+        final Object result = mappingCosmosConverter.read(Object.class, objectNode);
+
+        assertThat(result).isNotNull();
     }
 }
 

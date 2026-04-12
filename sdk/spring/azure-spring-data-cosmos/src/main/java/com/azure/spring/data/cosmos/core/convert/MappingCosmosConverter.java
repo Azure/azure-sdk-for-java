@@ -75,7 +75,15 @@ public class MappingCosmosConverter
 
     @Override
     public <R> R read(Class<R> type, JsonNode jsonNode) {
-        final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
+        CosmosPersistentEntity<?> entity = null;
+        try {
+            entity = mappingContext.getPersistentEntity(type);
+        } catch (Exception e) {
+            // Non-entity types (ObjectNode, Map, DTOs) cannot be introspected by the
+            // mapping context. Fall through with null entity to use direct Jackson
+            // deserialization in readInternal. (GitHub #43912)
+            LOGGER.debug("No persistent entity found for type {}, using direct deserialization", type.getName());
+        }
         return readInternal(entity, type, jsonNode);
     }
 
@@ -91,7 +99,12 @@ public class MappingCosmosConverter
                 return objectMapper.treeToValue(jsonNode, type);
             }
 
-            Assert.notNull(entity, "Entity is null.");
+            // When the return type is not a Cosmos-mapped entity (e.g., ObjectNode, Map, DTO),
+            // mappingContext.getPersistentEntity() returns null. Fall back to direct Jackson
+            // deserialization, bypassing entity-specific id/etag remapping. (GitHub #43912)
+            if (entity == null) {
+                return objectMapper.treeToValue(jsonNode, type);
+            }
             final ObjectNode objectNode = jsonNode.deepCopy();
             final CosmosPersistentProperty idProperty = entity.getIdProperty();
             final JsonNode idValue = jsonNode.get("id");
