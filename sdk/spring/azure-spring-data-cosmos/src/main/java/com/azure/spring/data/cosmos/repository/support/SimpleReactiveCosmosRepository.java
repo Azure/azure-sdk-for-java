@@ -13,14 +13,18 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
+import com.azure.spring.data.cosmos.repository.query.CosmosExampleCriteriaBuilder;
 import org.reactivestreams.Publisher;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
 
@@ -281,6 +285,69 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     @Override
     public Mono<Void> deleteAll() {
         return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
+    }
+
+    // --- Reactive Query by Example (QBE) methods ---
+
+    @Override
+    public <S extends T> Mono<S> findOne(Example<S> example) {
+        Assert.notNull(example, "Example must not be null");
+        CosmosQuery query = buildExampleQuery(example);
+        @SuppressWarnings("unchecked")
+        Flux<S> results = (Flux<S>) cosmosOperations.find(query, entityInformation.getJavaType(),
+            entityInformation.getContainerName());
+        return results.collectList().flatMap(list -> {
+            if (list.size() > 1) {
+                return Mono.error(new org.springframework.dao.IncorrectResultSizeDataAccessException(1, list.size()));
+            }
+            return list.isEmpty() ? Mono.empty() : Mono.just(list.get(0));
+        });
+    }
+
+    @Override
+    public <S extends T> Flux<S> findAll(Example<S> example) {
+        Assert.notNull(example, "Example must not be null");
+        CosmosQuery query = buildExampleQuery(example);
+        @SuppressWarnings("unchecked")
+        Flux<S> results = (Flux<S>) cosmosOperations.find(query, entityInformation.getJavaType(),
+            entityInformation.getContainerName());
+        return results;
+    }
+
+    @Override
+    public <S extends T> Flux<S> findAll(Example<S> example, Sort sort) {
+        Assert.notNull(example, "Example must not be null");
+        Assert.notNull(sort, "Sort must not be null");
+        CosmosQuery query = buildExampleQuery(example).with(sort);
+        @SuppressWarnings("unchecked")
+        Flux<S> results = (Flux<S>) cosmosOperations.find(query, entityInformation.getJavaType(),
+            entityInformation.getContainerName());
+        return results;
+    }
+
+    @Override
+    public <S extends T> Mono<Long> count(Example<S> example) {
+        Assert.notNull(example, "Example must not be null");
+        CosmosQuery query = buildExampleQuery(example);
+        return cosmosOperations.count(query, entityInformation.getContainerName());
+    }
+
+    @Override
+    public <S extends T> Mono<Boolean> exists(Example<S> example) {
+        return count(example).map(count -> count > 0);
+    }
+
+    @Override
+    public <S extends T, R, P extends Publisher<R>> P findBy(Example<S> example,
+                                           Function<FluentQuery.ReactiveFluentQuery<S>, P> queryFunction) {
+        throw new UnsupportedOperationException(
+            "findBy with FluentQuery is not supported. Use findAll(Example) or findOne(Example) instead.");
+    }
+
+    private <S extends T> CosmosQuery buildExampleQuery(Example<S> example) {
+        Criteria criteria = CosmosExampleCriteriaBuilder.buildCriteria(example,
+            cosmosOperations.getConverter().getMappingContext());
+        return new CosmosQuery(criteria);
     }
 
 }

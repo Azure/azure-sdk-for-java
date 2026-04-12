@@ -8,6 +8,7 @@ import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
+import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
@@ -17,7 +18,8 @@ import reactor.core.publisher.Mono;
  * @param <K> the type of the id of the entity the repository manages.
  */
 @NoRepositoryBean
-public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepository<T, K>, ReactiveCrudRepository<T, K> {
+public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepository<T, K>, ReactiveCrudRepository<T, K>,
+    ReactiveQueryByExampleExecutor<T> {
 
     /**
      * Retrieves an entity by its id and partition key.

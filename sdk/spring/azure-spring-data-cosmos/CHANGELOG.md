@@ -3,6 +3,7 @@
 ### 7.2.0-beta.1 (Unreleased)
 
 #### Features Added
+- Added Query by Example (QBE) support. `CosmosRepository` now extends `QueryByExampleExecutor<T>` and `ReactiveCosmosRepository` now extends `ReactiveQueryByExampleExecutor<T>`, enabling dynamic queries via probe entities and `ExampleMatcher`. Supports string matching modes (exact, containing, starts with, ends with), case-insensitive matching, null handling, and ignored paths. ([#45919](https://github.com/Azure/azure-sdk-for-java/issues/45919))
 
 #### Breaking Changes
 

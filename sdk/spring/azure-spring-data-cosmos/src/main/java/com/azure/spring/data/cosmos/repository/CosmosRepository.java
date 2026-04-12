@@ -9,6 +9,7 @@ import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -22,7 +23,7 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 public interface CosmosRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID>,
-    CrudRepository<T, ID> {
+    CrudRepository<T, ID>, QueryByExampleExecutor<T> {
 
     /**
      * Retrieves an entity by its id.

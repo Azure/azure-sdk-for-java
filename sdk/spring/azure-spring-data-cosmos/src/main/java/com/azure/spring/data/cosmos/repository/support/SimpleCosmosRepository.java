@@ -13,9 +13,12 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
+import com.azure.spring.data.cosmos.repository.query.CosmosExampleCriteriaBuilder;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -24,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
@@ -335,5 +339,79 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     @Override
     public Iterable<T> findAll(PartitionKey partitionKey) {
         return operation.findAll(partitionKey, information.getJavaType());
+    }
+
+    // --- Query by Example (QBE) methods ---
+
+    @Override
+    public <S extends T> Optional<S> findOne(Example<S> example) {
+        Assert.notNull(example, "Example must not be null");
+        CosmosQuery query = buildExampleQuery(example);
+        @SuppressWarnings("unchecked")
+        Iterable<S> results = (Iterable<S>) operation.find(query, information.getJavaType(),
+            information.getContainerName());
+        List<S> list = new ArrayList<>();
+        results.forEach(list::add);
+        if (list.size() > 1) {
+            throw new org.springframework.dao.IncorrectResultSizeDataAccessException(1, list.size());
+        }
+        return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+
+    @Override
+    public <S extends T> Iterable<S> findAll(Example<S> example) {
+        Assert.notNull(example, "Example must not be null");
+        CosmosQuery query = buildExampleQuery(example);
+        @SuppressWarnings("unchecked")
+        Iterable<S> results = (Iterable<S>) operation.find(query, information.getJavaType(),
+            information.getContainerName());
+        return results;
+    }
+
+    @Override
+    public <S extends T> Iterable<S> findAll(Example<S> example, Sort sort) {
+        Assert.notNull(example, "Example must not be null");
+        Assert.notNull(sort, "Sort must not be null");
+        CosmosQuery query = buildExampleQuery(example).with(sort);
+        @SuppressWarnings("unchecked")
+        Iterable<S> results = (Iterable<S>) operation.find(query, information.getJavaType(),
+            information.getContainerName());
+        return results;
+    }
+
+    @Override
+    public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
+        Assert.notNull(example, "Example must not be null");
+        Assert.notNull(pageable, "Pageable must not be null");
+        CosmosQuery query = buildExampleQuery(example).with(pageable);
+        @SuppressWarnings("unchecked")
+        Page<S> page = (Page<S>) operation.paginationQuery(query, information.getJavaType(),
+            information.getContainerName());
+        return page;
+    }
+
+    @Override
+    public <S extends T> long count(Example<S> example) {
+        Assert.notNull(example, "Example must not be null");
+        CosmosQuery query = buildExampleQuery(example);
+        return operation.count(query, information.getContainerName());
+    }
+
+    @Override
+    public <S extends T> boolean exists(Example<S> example) {
+        return count(example) > 0;
+    }
+
+    @Override
+    public <S extends T, R> R findBy(Example<S> example,
+                                     Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        throw new UnsupportedOperationException(
+            "findBy with FluentQuery is not supported. Use findAll(Example) or findOne(Example) instead.");
+    }
+
+    private <S extends T> CosmosQuery buildExampleQuery(Example<S> example) {
+        Criteria criteria = CosmosExampleCriteriaBuilder.buildCriteria(example,
+            operation.getConverter().getMappingContext());
+        return new CosmosQuery(criteria);
     }
 }
