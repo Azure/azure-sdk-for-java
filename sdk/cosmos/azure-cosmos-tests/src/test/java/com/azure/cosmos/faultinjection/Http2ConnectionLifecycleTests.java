@@ -153,7 +153,6 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
         System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
         System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
-        System.clearProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS");
         System.clearProperty("COSMOS.HTTP2_ENABLED");
     }
 
@@ -869,7 +868,6 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     public void connectionEvictedAfterMaxLifetimeEvenWithHealthyPings() throws Exception {
         System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
-        System.setProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS", "60");
         try {
             safeClose(this.client);
             this.client = getClientBuilder().buildAsyncClient();
@@ -906,7 +904,6 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         } finally {
             System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
-            System.clearProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS");
         }
     }
 

@@ -4,7 +4,7 @@
 
 #### Features Added
 * Added HTTP connection max lifetime with per-connection jitter for periodic DNS re-resolution, ensuring traffic distribution across Cosmos DB frontend IPs during failover and scaling events. Applies to both HTTP/1.1 and HTTP/2 connections. - See [PR 48420](https://github.com/Azure/azure-sdk-for-java/pull/48420)
-* Added HTTP/2 PING keepalive using reactor-netty's native `pingAckTimeout` and `pingAckDropThreshold` to prevent L7 middleboxes (NAT gateways, firewalls, load balancers) from silently reaping idle HTTP/2 connections. - See [PR 48420](https://github.com/Azure/azure-sdk-for-java/pull/48420)
+* Added HTTP/2 PING keepalive using a custom `Http2PingHandler` to prevent L7 middleboxes (NAT gateways, firewalls, load balancers) from silently reaping idle HTTP/2 connections. - See [PR 48420](https://github.com/Azure/azure-sdk-for-java/pull/48420)
 
 #### Breaking Changes
 

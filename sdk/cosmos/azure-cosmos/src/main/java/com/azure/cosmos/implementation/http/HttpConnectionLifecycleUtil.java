@@ -62,7 +62,8 @@ public final class HttpConnectionLifecycleUtil {
         Channel targetChannel = channel.parent() != null ? channel.parent() : channel;
 
         if (!targetChannel.hasAttr(CONNECTION_EXPIRY_NANOS)) {
-            long jitterMs = ThreadLocalRandom.current().nextLong(0, jitterRangeMs + 1);
+            long effectiveJitterMs = Math.min(jitterRangeMs, baseMaxLifetimeMs);
+            long jitterMs = ThreadLocalRandom.current().nextLong(0, effectiveJitterMs + 1);
             long expiryNanos = System.nanoTime() + (baseMaxLifetimeMs - jitterMs) * 1_000_000L;
             targetChannel.attr(CONNECTION_EXPIRY_NANOS).set(expiryNanos);
 
