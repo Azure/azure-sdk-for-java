@@ -316,6 +316,10 @@ public class Configs {
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE = "COSMOS_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
+    private static final boolean DEFAULT_HUB_REGION_PROCESSING_ENABLED = false;
+    private static final String HUB_REGION_PROCESSING_ENABLED = "COSMOS.HUB_REGION_PROCESSING_ENABLED";
+    private static final String HUB_REGION_PROCESSING_ENABLED_VARIABLE = "COSMOS_HUB_REGION_PROCESSING_ENABLED";
+
     private static final boolean DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = true;
     private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
     private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED_VARIABLE = "COSMOS_IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
@@ -1446,5 +1450,15 @@ public class Configs {
                 String.valueOf(DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED)));
 
         return Boolean.parseBoolean(isNonParseableDocumentLoggingEnabledAsString);
+    }
+
+    public static boolean isHubRegionProcessingEnabled() {
+        String isHubRegionProcessingEnabledAsString = System.getProperty(
+            HUB_REGION_PROCESSING_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HUB_REGION_PROCESSING_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HUB_REGION_PROCESSING_ENABLED)));
+
+        return Boolean.parseBoolean(isHubRegionProcessingEnabledAsString);
     }
 }

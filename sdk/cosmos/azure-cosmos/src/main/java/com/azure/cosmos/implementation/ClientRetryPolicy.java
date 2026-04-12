@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
+import com.azure.cosmos.implementation.hubRegionRouting.GlobalPartitionEndpointManagerForHubRegionRouting;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final FaultInjectionRequestContext faultInjectionRequestContext;
     private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+    private final GlobalPartitionEndpointManagerForHubRegionRouting globalPartitionEndpointManagerForHubRegionRouting;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
@@ -62,6 +64,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                              ThrottlingRetryOptions throttlingRetryOptions,
                              GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                              GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                             GlobalPartitionEndpointManagerForHubRegionRouting globalPartitionEndpointManagerForHubRegionRouting,
                              boolean disableRetryForThrottledBatchRequest) {
 
         this.globalEndpointManager = globalEndpointManager;
@@ -81,6 +84,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker = globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover = globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+        this.globalPartitionEndpointManagerForHubRegionRouting = globalPartitionEndpointManagerForHubRegionRouting;
     }
 
     @Override
@@ -108,6 +112,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
+
+            // Handle 403/3 on read path for hub region routing discovery.
+            // Non-hub regions return 403/3 (WriteForbidden) when hub region processing header is set.
+            // The SDK advances to the next region in the discovery chain.
+            if (this.isReadRequest && this.globalPartitionEndpointManagerForHubRegionRouting.isHubRegionRoutingActive(this.request)) {
+
+                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
+                    = this.request.requestContext != null ? this.request.requestContext.getCrossRegionAvailabilityContext() : null;
+
+                if (crossRegionAvailabilityContext != null && crossRegionAvailabilityContext.shouldAddHubRegionProcessingOnlyHeader()) {
+                    logger.info("Received 403/3 on read path during hub region discovery. Advancing to next region.");
+
+                    // Invalidate any stale cached hub for this partition
+                    this.globalPartitionEndpointManagerForHubRegionRouting.invalidateCachedHubRegion(this.request);
+
+                    // Continue hub region discovery via failover to next region
+                    return this.shouldRetryOnEndpointFailureAsync(true, false, true);
+                }
+            }
 
             this.setPerPartitionAutomaticFailoverOverrideForReads(this.request, true);
             if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(
@@ -279,7 +302,21 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                                 = request.requestContext.getCrossRegionAvailabilityContext();
 
                             if (crossRegionAvailabilityContext != null && this.sessionTokenRetryCount == 2) {
-                                crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
+
+                                // Hub region processing: on 2nd consecutive 404/1002, set the hub header
+                                // so the next retry discovers the hub region through the 403/3 chain.
+                                // Only activate if hub region processing feature flag is enabled.
+                                if (this.globalPartitionEndpointManagerForHubRegionRouting.isHubRegionRoutingActive(request)) {
+
+                                    // Warm path: if we already have a cached hub for this partition,
+                                    // route directly to the cached hub instead of discovery chain
+                                    if (this.globalPartitionEndpointManagerForHubRegionRouting.hasCachedHubRegion(request)) {
+                                        logger.info("Hub region cache hit for partition — routing directly to cached hub.");
+                                        // The routing override happens in onBeforeSendRequest via tryRouteToCachedHubRegion
+                                    }
+
+                                    crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
+                                }
                             }
                         }
                     }
@@ -548,6 +585,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.regionalRoutingContext);
+        }
+
+        // Warm path: if hub region is cached for this partition, route directly to the cached hub
+        if (this.globalPartitionEndpointManagerForHubRegionRouting.tryRouteToCachedHubRegion(request)) {
+            this.regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
         }
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request

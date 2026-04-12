@@ -51,6 +51,7 @@ import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.hubRegionRouting.GlobalPartitionEndpointManagerForHubRegionRouting;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
@@ -271,6 +272,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final GlobalEndpointManager globalEndpointManager;
     private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+    private final GlobalPartitionEndpointManagerForHubRegionRouting globalPartitionEndpointManagerForHubRegionRouting;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
@@ -670,6 +672,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, false);
 
+            this.globalPartitionEndpointManagerForHubRegionRouting
+                = new GlobalPartitionEndpointManagerForHubRegionRouting(this.globalEndpointManager);
+
             this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
 
             this.retryPolicy = new RetryPolicy(
@@ -677,7 +682,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.connectionPolicy,
                 this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                this.globalPartitionEndpointManagerForHubRegionRouting);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();
@@ -2863,6 +2869,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
 
                 this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetEndToEndTimeoutErrorCountIfPossible(succeededRequest);
+
+                // On successful response, cache the hub region for this partition
+                // if hub region processing header was set during the request
+                if (succeededRequest.requestContext != null) {
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest hubContext
+                        = succeededRequest.requestContext.getCrossRegionAvailabilityContext();
+                    if (hubContext != null && hubContext.shouldAddHubRegionProcessingOnlyHeader()) {
+                        this.globalPartitionEndpointManagerForHubRegionRouting.cacheHubRegionForPartition(succeededRequest);
+                    }
+                }
             })
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {

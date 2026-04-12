@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
+import com.azure.cosmos.implementation.hubRegionRouting.GlobalPartitionEndpointManagerForHubRegionRouting;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import org.assertj.core.api.Assertions;
@@ -211,6 +212,7 @@ public class ApplicableRegionEvaluatorTest {
                 new ThrottlingRetryOptions(),
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                Mockito.mock(GlobalPartitionEndpointManagerForHubRegionRouting.class),
                 false);
 
             for (int i = 0; i < expectedApplicableRegionalRoutingContexts.size(); i++) {
