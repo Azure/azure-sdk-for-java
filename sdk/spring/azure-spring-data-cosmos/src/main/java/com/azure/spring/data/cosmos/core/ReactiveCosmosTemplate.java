@@ -48,6 +48,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
+import org.springframework.data.auditing.ReactiveIsNewAwareAuditingHandler;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -83,6 +84,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final int maxBufferedItemCount;
     private final int responseContinuationTokenLimitInKb;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
+    private final ReactiveIsNewAwareAuditingHandler reactiveCosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
     private boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
@@ -99,7 +101,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public ReactiveCosmosTemplate(CosmosAsyncClient client, String databaseName,
                                   CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter,
                                   IsNewAwareAuditingHandler cosmosAuditingHandler) {
-        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler, null);
     }
 
     /**
@@ -112,7 +114,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     public ReactiveCosmosTemplate(CosmosAsyncClient client, String databaseName,
                                   CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
-        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter, null);
+        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter, null, null);
     }
 
     /**
@@ -127,6 +129,23 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                   CosmosConfig cosmosConfig,
                                   MappingCosmosConverter mappingCosmosConverter,
                                   IsNewAwareAuditingHandler cosmosAuditingHandler) {
+        this(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler, null);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param cosmosFactory the cosmos db factory
+     * @param cosmosConfig the cosmos config
+     * @param mappingCosmosConverter the mappingCosmosConverter
+     * @param cosmosAuditingHandler the blocking auditing handler, can be {@literal null}
+     * @param reactiveCosmosAuditingHandler the reactive auditing handler, can be {@literal null}
+     */
+    public ReactiveCosmosTemplate(CosmosFactory cosmosFactory,
+                                  CosmosConfig cosmosConfig,
+                                  MappingCosmosConverter mappingCosmosConverter,
+                                  IsNewAwareAuditingHandler cosmosAuditingHandler,
+                                  ReactiveIsNewAwareAuditingHandler reactiveCosmosAuditingHandler) {
         Assert.notNull(cosmosFactory, "CosmosFactory must not be null!");
         Assert.notNull(cosmosConfig, "CosmosConfig must not be null!");
         Assert.notNull(mappingCosmosConverter, "MappingCosmosConverter must not be null!");
@@ -140,6 +159,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         this.maxBufferedItemCount = cosmosConfig.getMaxBufferedItemCount();
         this.responseContinuationTokenLimitInKb = cosmosConfig.getResponseContinuationTokenLimitInKb();
         this.cosmosAuditingHandler = cosmosAuditingHandler;
+        this.reactiveCosmosAuditingHandler = reactiveCosmosAuditingHandler;
         this.databaseThroughputConfig = cosmosConfig.getDatabaseThroughputConfig();
     }
 
@@ -153,7 +173,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public ReactiveCosmosTemplate(CosmosFactory cosmosFactory,
                                   CosmosConfig cosmosConfig,
                                   MappingCosmosConverter mappingCosmosConverter) {
-        this(cosmosFactory, cosmosConfig, mappingCosmosConverter, null);
+        this(cosmosFactory, cosmosConfig, mappingCosmosConverter, null, null);
     }
 
     private String getDatabaseName() {
@@ -447,35 +467,37 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                               PartitionKey partitionKey) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
-        containerName = getContainerNameOverride(containerName);
-        final Class<T> domainType = (Class<T>) objectToSave.getClass();
-        markAuditedIfConfigured(objectToSave);
-        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave, null);
-        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
-        JsonNode originalItem;
-        if (!transientFields.isEmpty()) {
-            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, transientFields);
-            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(objectToSave, transientFields);
-        } else {
-            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
-        }
-        Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
-        final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        //  if the partition key is null, SDK will get the partitionKey from the object
-        return this.getCosmosAsyncClient()
-            .getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .createItem(originalItem, partitionKey, options)
-            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
-                    this.responseDiagnosticsProcessor))
-            .flatMap(cosmosItemResponse -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null);
-                return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
-                    cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
+        final String finalContainerName = getContainerNameOverride(containerName);
+        return markAuditedIfConfigured(objectToSave)
+            .flatMap(audited -> {
+                final Class<T> domainType = (Class<T>) audited.getClass();
+                generateIdIfNullAndAutoGenerationEnabled(audited, domainType);
+                List<String> transientFields = mappingCosmosConverter.getTransientFields(audited, null);
+                Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+                JsonNode originalItem;
+                if (!transientFields.isEmpty()) {
+                    originalItem = mappingCosmosConverter.writeJsonNode(audited, transientFields);
+                    transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(audited, transientFields);
+                } else {
+                    originalItem = mappingCosmosConverter.writeJsonNode(audited);
+                }
+                Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
+                final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+                //  if the partition key is null, SDK will get the partitionKey from the object
+                return this.getCosmosAsyncClient()
+                    .getDatabase(this.getDatabaseName())
+                    .getContainer(finalContainerName)
+                    .createItem(originalItem, partitionKey, options)
+                    .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                    .onErrorResume(throwable ->
+                        CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
+                            this.responseDiagnosticsProcessor))
+                    .flatMap(cosmosItemResponse -> {
+                        CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                            cosmosItemResponse.getDiagnostics(), null);
+                        return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
+                            cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
+                    });
             });
     }
 
@@ -519,25 +541,25 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         String containerName = entityInformation.getContainerName();
         Class<T> domainType = entityInformation.getJavaType();
         Map<String, Map<Field, Object>> mapOfTransientFieldValuesMaps = new HashMap<>();
-        Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
-            markAuditedIfConfigured(entity);
-            generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity, entityInformation);
-            JsonNode originalItem;
-            if (!transientFields.isEmpty()) {
-                originalItem = mappingCosmosConverter.writeJsonNode(entity, transientFields);
-                Map<Field, Object> transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(entity, transientFields);
-                mapOfTransientFieldValuesMaps.put(originalItem.get("id").asText(), transientFieldValuesMap);
+        Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.flatMap(entity ->
+            markAuditedIfConfigured(entity).map(audited -> {
+                generateIdIfNullAndAutoGenerationEnabled(audited, domainType);
+                List<String> transientFields = mappingCosmosConverter.getTransientFields(audited, entityInformation);
+                JsonNode originalItem;
+                if (!transientFields.isEmpty()) {
+                    originalItem = mappingCosmosConverter.writeJsonNode(audited, transientFields);
+                    Map<Field, Object> transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(audited, transientFields);
+                    mapOfTransientFieldValuesMaps.put(originalItem.get("id").asText(), transientFieldValuesMap);
 
-            } else {
-                originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            }
+                } else {
+                    originalItem = mappingCosmosConverter.writeJsonNode(audited);
+                }
 
-            PartitionKey partitionKey = getPartitionKeyFromValue(entityInformation, entity);
-            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
-            applyBulkVersioning(domainType, originalItem, options);
-            return CosmosBulkOperations.getUpsertItemOperation(originalItem, partitionKey, options);
-        });
+                PartitionKey partitionKey = getPartitionKeyFromValue(entityInformation, audited);
+                final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+                applyBulkVersioning(domainType, originalItem, options);
+                return CosmosBulkOperations.getUpsertItemOperation(originalItem, partitionKey, options);
+            }));
 
         // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
         // allows it to start at 1 and increase until it finds the appropriate batch size.
@@ -654,35 +676,37 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Mono<T> upsert(String containerName, T object) {
-        containerName = getContainerNameOverride(containerName);
-        final Class<T> domainType = (Class<T>) object.getClass();
-        markAuditedIfConfigured(object);
-        List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
-        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
-        JsonNode originalItem;
-        if (!transientFields.isEmpty()) {
-            originalItem = mappingCosmosConverter.writeJsonNode(object, transientFields);
-            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(object, transientFields);
-        } else {
-            originalItem = mappingCosmosConverter.writeJsonNode(object);
-        }
-        Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
-        final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        applyVersioning(object.getClass(), originalItem, options);
+        final String finalContainerName = getContainerNameOverride(containerName);
+        return markAuditedIfConfigured(object)
+            .flatMap(audited -> {
+                final Class<T> domainType = (Class<T>) audited.getClass();
+                List<String> transientFields = mappingCosmosConverter.getTransientFields(audited, null);
+                Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+                JsonNode originalItem;
+                if (!transientFields.isEmpty()) {
+                    originalItem = mappingCosmosConverter.writeJsonNode(audited, transientFields);
+                    transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(audited, transientFields);
+                } else {
+                    originalItem = mappingCosmosConverter.writeJsonNode(audited);
+                }
+                Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
+                final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+                applyVersioning(audited.getClass(), originalItem, options);
 
-        return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-                                .getContainer(containerName)
-                                .upsertItem(originalItem, options)
-                                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
-                                .flatMap(cosmosItemResponse -> {
-                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                                        cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
-                                        cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
-                                })
-                                .onErrorResume(throwable ->
-                                    CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
-                                        this.responseDiagnosticsProcessor));
+                return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
+                                        .getContainer(finalContainerName)
+                                        .upsertItem(originalItem, options)
+                                        .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                                        .flatMap(cosmosItemResponse -> {
+                                            CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                                cosmosItemResponse.getDiagnostics(), null);
+                                            return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
+                                                cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
+                                        })
+                                        .onErrorResume(throwable ->
+                                            CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
+                                                this.responseDiagnosticsProcessor));
+            });
     }
 
     /**
@@ -1059,10 +1083,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return containerName;
     }
 
-    private void markAuditedIfConfigured(Object object) {
+    @SuppressWarnings("unchecked")
+    private <T> Mono<T> markAuditedIfConfigured(T object) {
+        if (reactiveCosmosAuditingHandler != null) {
+            return reactiveCosmosAuditingHandler.markAudited(object)
+                .map(audited -> (T) audited);
+        }
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
         }
+        return Mono.just(object);
     }
 
     private <T> Flux<JsonNode> findItems(@NonNull CosmosQuery query,

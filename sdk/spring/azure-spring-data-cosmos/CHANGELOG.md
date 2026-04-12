@@ -4,6 +4,8 @@
 
 #### Features Added
 
+* Added `@EnableReactiveCosmosAuditing` annotation for reactive auditing support with `ReactiveAuditorAware`. This enables proper Reactor context propagation for `@CreatedBy` and `@LastModifiedBy` fields in Spring WebFlux applications. The new annotation can coexist with the existing `@EnableCosmosAuditing` for imperative use cases - See [PR #42115](https://github.com/Azure/azure-sdk-for-java/issues/42115).
+
 #### Breaking Changes
 
 #### Bugs Fixed

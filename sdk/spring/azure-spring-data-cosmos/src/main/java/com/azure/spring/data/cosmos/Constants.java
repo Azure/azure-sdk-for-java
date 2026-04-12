@@ -87,6 +87,11 @@ public final class Constants {
     public static final String AUDITING_HANDLER_BEAN_NAME = "cosmosAuditingHandler";
 
     /**
+     * Reactive auditing handler bean name.
+     */
+    public static final String REACTIVE_AUDITING_HANDLER_BEAN_NAME = "reactiveCosmosAuditingHandler";
+
+    /**
      * ISO-8601 compatible date pattern.
      */
     public static final String ISO_8601_COMPATIBLE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss:SSSXXX";

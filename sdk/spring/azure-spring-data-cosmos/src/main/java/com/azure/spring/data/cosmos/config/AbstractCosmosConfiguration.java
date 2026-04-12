@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
+import org.springframework.data.auditing.ReactiveIsNewAwareAuditingHandler;
 
 /**
  * To configure cosmos with client, cosmos factory and template
@@ -71,6 +72,10 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     @Autowired(required = false)
     private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
+    @Qualifier(Constants.REACTIVE_AUDITING_HANDLER_BEAN_NAME)
+    @Autowired(required = false)
+    private ReactiveIsNewAwareAuditingHandler reactiveCosmosAuditingHandler;
+
     /**
      * Declare CosmosTemplate bean.
      *
@@ -98,7 +103,8 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     public ReactiveCosmosTemplate reactiveCosmosTemplate(CosmosFactory cosmosFactory,
                                                          CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter,
+            cosmosAuditingHandler, reactiveCosmosAuditingHandler);
     }
 
     /**
