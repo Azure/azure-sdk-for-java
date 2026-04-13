@@ -323,3 +323,135 @@ matrix:
       uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
+
+    # --- Content validation decoder (ContentValidationDownload*/OpenInputStream/ByteChannelRead;
+    # default CRC64). Scenario keys are short: K8s label
+    # testInstance = "{Scenario}-{BaseName}-{revision}" must be <= 63 chars.
+
+    cv-downloadstream-sm:
+      testScenario: contentvalidationdownloadstream
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-downloadstream-lg:
+      testScenario: contentvalidationdownloadstream
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-downloadstream-async-sm:
+      testScenario: contentvalidationdownloadstream
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-downloadstream-async-lg:
+      testScenario: contentvalidationdownloadstream
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-downloadcontent-sm:
+      testScenario: contentvalidationdownloadcontent
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-downloadcontent-lg:
+      testScenario: contentvalidationdownloadcontent
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-downloadcontent-async-sm:
+      testScenario: contentvalidationdownloadcontent
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-downloadcontent-async-lg:
+      testScenario: contentvalidationdownloadcontent
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-downloadtofile-sm:
+      testScenario: contentvalidationdownloadtofile
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-downloadtofile-lg:
+      testScenario: contentvalidationdownloadtofile
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-downloadtofile-async-sm:
+      testScenario: contentvalidationdownloadtofile
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-downloadtofile-async-lg:
+      testScenario: contentvalidationdownloadtofile
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-openinputstream-sm:
+      testScenario: contentvalidationopeninputstream
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-openinputstream-lg:
+      testScenario: contentvalidationopeninputstream
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    cv-bytechannelread-sm:
+      testScenario: contentvalidationopenseekablebytechannelread
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    cv-bytechannelread-lg:
+      testScenario: contentvalidationopenseekablebytechannelread
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
