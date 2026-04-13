@@ -7,7 +7,6 @@ import com.azure.compute.batch.implementation.BatchClientImpl;
 import com.azure.compute.batch.implementation.BatchSharedKeyCredentialsPolicy;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureNamedKeyCredentialTrait; // Custom import for AzureNamedKeyCredentialTrait
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
@@ -47,8 +46,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = { BatchClient.class, BatchAsyncClient.class })
 public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, ConfigurationTrait<BatchClientBuilder>,
-    TokenCredentialTrait<BatchClientBuilder>, EndpointTrait<BatchClientBuilder>,
-    AzureNamedKeyCredentialTrait<BatchClientBuilder> {
+    TokenCredentialTrait<BatchClientBuilder>, EndpointTrait<BatchClientBuilder>{
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -207,7 +205,6 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
      * @param azureNamedKeyCredential the AzureNamedKeyCredential.
      * @return the credential.
      */
-    @Override
     public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential) {
         this.azureNamedKeyCredential
             = Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
