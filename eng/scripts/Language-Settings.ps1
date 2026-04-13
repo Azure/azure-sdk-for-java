@@ -5,8 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
-$PackageRepositoryUri = "https://repo1.maven.org/maven2"
-$MavenMirrorUri = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+$PackageRepositoryUri = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 . "$PSScriptRoot/docs/Docs-Onboarding.ps1"
@@ -273,13 +272,13 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
   return $uniqueResultSet
 }
 
-# Returns the maven publish status of a package id and version by checking the internal
+# Returns the maven publish status of a package id and version by checking the 
 # Azure Artifacts feed which the release pipeline publishes to alongside Maven Central.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+  # Use the Azure Artifacts feed instead of repo1.maven.org because the public
   # Maven Central endpoint is blocked on the build agent network.
-  $uri = "$MavenMirrorUri/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  $uri = "$PackageRepositoryUri/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
 
   $attempt = 1
   while ($attempt -le 3)
