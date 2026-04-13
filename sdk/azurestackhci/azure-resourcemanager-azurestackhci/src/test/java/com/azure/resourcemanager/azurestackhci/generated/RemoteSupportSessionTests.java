@@ -11,7 +11,7 @@ public final class RemoteSupportSessionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoteSupportSession model = BinaryData.fromString(
-            "{\"sessionId\":\"i\",\"sessionStartTime\":\"2021-05-19T03:14:53Z\",\"sessionEndTime\":\"2021-06-11T14:56:28Z\",\"accessLevel\":\"Diagnostics\",\"transcriptLocation\":\"wmozqvbub\"}")
+            "{\"sessionId\":\"owsaaelcattcjuh\",\"sessionStartTime\":\"2021-11-04T20:37:23Z\",\"sessionEndTime\":\"2021-06-16T22:43:51Z\",\"accessLevel\":\"DiagnosticsAndRepair\",\"transcriptLocation\":\"wmj\"}")
             .toObject(RemoteSupportSession.class);
     }
 }
