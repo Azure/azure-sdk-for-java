@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
+import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.{SparkBridgeInternal}
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 import java.util
@@ -111,5 +112,111 @@ object CosmosItemsDataSource {
       }))
 
     readManyReader.readMany(df.rdd, readManyFilterExtraction)
+  }
+
+  def readManyByPartitionKey(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
+    readManyByPartitionKey(df, userConfig, null)
+  }
+
+  def readManyByPartitionKey(
+    df: DataFrame,
+    userConfig: java.util.Map[String, String],
+    userProvidedSchema: StructType): DataFrame = {
+
+    val readManyReader = new CosmosReadManyByPartitionKeyReader(
+      userProvidedSchema,
+      userConfig.asScala.toMap)
+
+    // Option 1: Look for the _partitionKeyIdentity column (produced by GetCosmosPartitionKeyValue UDF)
+    val pkIdentityFieldExtraction = df
+      .schema
+      .find(field => field.name.equals(CosmosConstants.Properties.PartitionKeyIdentity) && field.dataType.equals(StringType))
+      .map(field => (row: Row) =>
+        CosmosPartitionKeyHelper.tryParsePartitionKey(row.getString(row.fieldIndex(field.name))).get)
+
+    // Option 2: Detect PK columns by matching the container's partition key paths against the DataFrame schema
+    val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
+      None // no need to resolve PK paths - _partitionKeyIdentity column takes precedence
+    } else {
+      val effectiveConfig = CosmosConfig.getEffectiveConfig(
+        databaseName = None,
+        containerName = None,
+        userConfig.asScala.toMap)
+      val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveConfig)
+      val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveConfig)
+      val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(None)
+      val calledFrom = s"CosmosItemsDataSource.readManyByPartitionKey"
+
+      val pkPathsOpt = Loan(
+        List[Option[CosmosClientCacheItem]](
+          Some(
+            CosmosClientCache(
+              CosmosClientConfiguration(
+                effectiveConfig,
+                readConsistencyStrategy = readConfig.readConsistencyStrategy,
+                sparkEnvironmentInfo),
+              None,
+              calledFrom)),
+          ThroughputControlHelper.getThroughputControlClientCacheItem(
+            effectiveConfig,
+            calledFrom,
+            None,
+            sparkEnvironmentInfo)
+        ))
+        .to(clientCacheItems => {
+          val container =
+            ThroughputControlHelper.getContainer(
+              effectiveConfig,
+              containerConfig,
+              clientCacheItems(0).get,
+              clientCacheItems(1))
+
+          val pkDefinition = SparkBridgeInternal
+            .getContainerPropertiesFromCollectionCache(container)
+            .getPartitionKeyDefinition
+
+          pkDefinition.getPaths.asScala.map(_.stripPrefix("/")).toList
+        })
+
+      // Check if ALL PK path columns exist in the DataFrame schema
+      val dfFieldNames = df.schema.fieldNames.toSet
+      val allPkColumnsPresent = pkPathsOpt.forall(path => dfFieldNames.contains(path))
+
+      if (allPkColumnsPresent && pkPathsOpt.nonEmpty) {
+        val pkPaths = pkPathsOpt
+        Some((row: Row) => {
+          if (pkPaths.size == 1) {
+            // Single partition key
+            new PartitionKey(row.getAs[Any](pkPaths.head))
+          } else {
+            // Hierarchical partition key — build level by level
+            val builder = new PartitionKeyBuilder()
+            for (path <- pkPaths) {
+              val value = row.getAs[Any](path)
+              value match {
+                case s: String => builder.add(s)
+                case n: Number => builder.add(n.doubleValue())
+                case b: Boolean => builder.add(b)
+                case null => builder.addNoneValue()
+                case other => builder.add(other.toString)
+              }
+            }
+            builder.build()
+          }
+        })
+      } else {
+        None
+      }
+    }
+
+    val pkExtraction = pkIdentityFieldExtraction
+      .orElse(pkColumnExtraction)
+      .getOrElse(
+        throw new IllegalArgumentException(
+          "Cannot determine partition key extraction from the input DataFrame. " +
+            "Either add a '_partitionKeyIdentity' column (using the GetCosmosPartitionKeyValue UDF) " +
+            "or ensure the DataFrame contains columns matching the container's partition key paths."))
+
+    readManyReader.readManyByPartitionKey(df.rdd, pkExtraction)
   }
 }

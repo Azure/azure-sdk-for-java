@@ -4367,6 +4367,233 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             );
     }
 
+    @Override
+    public <T> Flux<FeedResponse<T>> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        String collectionLink,
+        QueryFeedOperationState state,
+        Class<T> klass) {
+
+        checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
+        checkArgument(!partitionKeys.isEmpty(), "Argument 'partitionKeys' must not be empty.");
+
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
+        state.registerDiagnosticsFactory(
+            () -> {}, // we never want to reset in readManyByPartitionKey
+            (ctx) -> diagnosticsFactory.merge(ctx)
+        );
+
+        String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
+            OperationType.Query,
+            ResourceType.Document,
+            collectionLink, null
+        );
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            collectionCache.resolveCollectionAsync(null, request);
+
+        return collectionObs
+            .flatMapMany(documentCollectionResourceResponse -> {
+                final DocumentCollection collection = documentCollectionResourceResponse.v;
+                if (collection == null) {
+                    return Flux.error(new IllegalStateException("Collection cannot be null"));
+                }
+
+                final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
+
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
+                    .tryLookupAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collection.getResourceId(),
+                        null,
+                        null);
+
+                // Validate custom query if provided
+                Mono<Void> queryValidationMono;
+                if (customQuery != null) {
+                    queryValidationMono = validateCustomQueryForReadManyByPartitionKey(
+                        customQuery, resourceLink, state.getQueryOptions());
+                } else {
+                    queryValidationMono = Mono.empty();
+                }
+
+                return Mono.zip(valueHolderMono, queryValidationMono.then(Mono.just(true)))
+                    .flatMapMany(tuple -> {
+                        CollectionRoutingMap routingMap = tuple.getT1().v;
+                        if (routingMap == null) {
+                            return Flux.error(new IllegalStateException("Failed to get routing map."));
+                        }
+
+                        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap =
+                            groupPartitionKeysByPhysicalPartition(partitionKeys, pkDefinition, routingMap);
+
+                        List<String> partitionKeySelectors = createPkSelectors(pkDefinition);
+
+                        String baseQueryText;
+                        List<SqlParameter> baseParameters;
+                        if (customQuery != null) {
+                            baseQueryText = customQuery.getQueryText();
+                            baseParameters = customQuery.getParameters() != null
+                                ? new ArrayList<>(customQuery.getParameters())
+                                : new ArrayList<>();
+                        } else {
+                            baseQueryText = "SELECT * FROM c";
+                            baseParameters = new ArrayList<>();
+                        }
+
+                        // Build per-physical-partition batched queries.
+                        // Each physical partition may have many PKs — split into batches
+                        // to avoid oversized SQL queries. Batch size is configurable via
+                        // system property COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE (default 1000).
+                        int maxPksPerPartitionQuery = Configs.getReadManyByPkMaxBatchSize();
+
+                        // Build batches per partition as a list of lists (one inner list per partition).
+                        // Then interleave in round-robin order so that concurrent execution
+                        // prefers different physical partitions over multiple batches of the same partition.
+                        List<List<Map<PartitionKeyRange, SqlQuerySpec>>> batchesPerPartition = new ArrayList<>();
+                        int maxBatchesPerPartition = 0;
+
+                        for (Map.Entry<PartitionKeyRange, List<PartitionKey>> entry : partitionRangePkMap.entrySet()) {
+                            List<PartitionKey> allPks = entry.getValue();
+                            if (allPks.isEmpty()) {
+                                continue;
+                            }
+                            List<Map<PartitionKeyRange, SqlQuerySpec>> partitionBatches = new ArrayList<>();
+                            for (int i = 0; i < allPks.size(); i += maxPksPerPartitionQuery) {
+                                List<PartitionKey> batch = allPks.subList(
+                                    i, Math.min(i + maxPksPerPartitionQuery, allPks.size()));
+                                SqlQuerySpec querySpec = ReadManyByPartitionKeyQueryHelper
+                                    .createReadManyByPkQuerySpec(
+                                        baseQueryText, baseParameters, batch,
+                                        partitionKeySelectors, pkDefinition);
+                                partitionBatches.add(
+                                    Collections.singletonMap(entry.getKey(), querySpec));
+                            }
+                            batchesPerPartition.add(partitionBatches);
+                            maxBatchesPerPartition = Math.max(maxBatchesPerPartition, partitionBatches.size());
+                        }
+
+                        if (batchesPerPartition.isEmpty()) {
+                            return Flux.empty();
+                        }
+
+                        // Round-robin interleave: [batch0-p1, batch0-p2, ..., batch0-pN, batch1-p1, batch1-p2, ...]
+                        // This ensures that with bounded concurrency, different partitions are
+                        // preferred over sequential batches of the same partition.
+                        List<Map<PartitionKeyRange, SqlQuerySpec>> interleavedBatches = new ArrayList<>();
+                        for (int batchIdx = 0; batchIdx < maxBatchesPerPartition; batchIdx++) {
+                            for (List<Map<PartitionKeyRange, SqlQuerySpec>> partitionBatches : batchesPerPartition) {
+                                if (batchIdx < partitionBatches.size()) {
+                                    interleavedBatches.add(partitionBatches.get(batchIdx));
+                                }
+                            }
+                        }
+
+                        // Execute all batches with bounded concurrency.
+                        List<Flux<FeedResponse<T>>> queryFluxes = interleavedBatches
+                            .stream()
+                            .map(batchMap -> queryForReadMany(
+                                diagnosticsFactory,
+                                resourceLink,
+                                new SqlQuerySpec(DUMMY_SQL_QUERY),
+                                state.getQueryOptions(),
+                                klass,
+                                ResourceType.Document,
+                                collection,
+                                Collections.unmodifiableMap(batchMap)))
+                            .collect(Collectors.toList());
+
+                        int fluxConcurrency = Math.min(queryFluxes.size(),
+                            Math.max(Configs.getCPUCnt(), 1));
+
+                        return Flux.mergeSequential(queryFluxes, fluxConcurrency, 1);
+                    });
+            });
+    }
+
+    private Mono<Void> validateCustomQueryForReadManyByPartitionKey(
+        SqlQuerySpec customQuery,
+        String resourceLink,
+        CosmosQueryRequestOptions queryRequestOptions) {
+
+        IDocumentQueryClient queryClient = documentQueryClientImpl(
+            RxDocumentClientImpl.this, getOperationContextAndListenerTuple(queryRequestOptions));
+
+        return DocumentQueryExecutionContextFactory
+            .fetchQueryPlanForValidation(this, queryClient, customQuery, resourceLink, queryRequestOptions)
+            .flatMap(queryPlan -> {
+                QueryInfo queryInfo = queryPlan.getQueryInfo();
+
+                if (queryInfo.hasAggregates()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain aggregates."));
+                }
+                if (queryInfo.hasOrderBy()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain ORDER BY."));
+                }
+                if (queryInfo.hasDistinct()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain DISTINCT."));
+                }
+                if (queryInfo.hasGroupBy()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain GROUP BY."));
+                }
+                if (queryInfo.hasDCount()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain DCOUNT."));
+                }
+                if (queryInfo.hasNonStreamingOrderBy()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain non-streaming ORDER BY."));
+                }
+                if (queryPlan.hasHybridSearchQueryInfo()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain hybrid/vector/full-text search."));
+                }
+
+                return Mono.empty();
+            });
+    }
+
+    private Map<PartitionKeyRange, List<PartitionKey>> groupPartitionKeysByPhysicalPartition(
+        List<PartitionKey> partitionKeys,
+        PartitionKeyDefinition pkDefinition,
+        CollectionRoutingMap routingMap) {
+
+        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap = new HashMap<>();
+
+        for (PartitionKey pk : partitionKeys) {
+            PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
+            int componentCount = pkInternal.getComponents().size();
+            int definedPathCount = pkDefinition.getPaths().size();
+
+            List<PartitionKeyRange> targetRanges;
+
+            if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && componentCount < definedPathCount) {
+                // Partial HPK — compute EPK prefix range and find all overlapping physical partitions
+                Range<String> epkRange = PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(
+                    pkInternal, pkDefinition);
+                targetRanges = routingMap.getOverlappingRanges(epkRange);
+            } else {
+                // Full PK — maps to exactly one physical partition
+                String effectivePartitionKeyString = PartitionKeyInternalHelper
+                    .getEffectivePartitionKeyString(pkInternal, pkDefinition);
+                PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                targetRanges = Collections.singletonList(range);
+            }
+
+            for (PartitionKeyRange range : targetRanges) {
+                partitionRangePkMap.computeIfAbsent(range, k -> new ArrayList<>()).add(pk);
+            }
+        }
+
+        return partitionRangePkMap;
+    }
+
     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
         Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap,
         PartitionKeyDefinition partitionKeyDefinition) {

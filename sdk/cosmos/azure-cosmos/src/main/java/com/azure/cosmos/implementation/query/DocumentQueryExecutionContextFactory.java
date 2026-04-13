@@ -324,6 +324,17 @@ public class DocumentQueryExecutionContextFactory {
         return feedRanges;
     }
 
+    public static Mono<PartitionedQueryExecutionInfo> fetchQueryPlanForValidation(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient queryClient,
+        SqlQuerySpec sqlQuerySpec,
+        String resourceLink,
+        CosmosQueryRequestOptions queryRequestOptions) {
+
+        return QueryPlanRetriever.getQueryPlanThroughGatewayAsync(
+            diagnosticsClientContext, queryClient, sqlQuerySpec, resourceLink, queryRequestOptions);
+    }
+
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,

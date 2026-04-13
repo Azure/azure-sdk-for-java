@@ -541,6 +541,73 @@ public class CosmosContainer {
     }
 
     /**
+     * Reads many documents matching the provided partition key values.
+     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
+     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
+     * as the base query.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param classType   class type
+     * @return a {@link CosmosPagedIterable} containing the results
+     */
+    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        Class<T> classType) {
+
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, classType));
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values.
+     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
+     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
+     * as the base query.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param requestOptions the optional request options
+     * @param classType   class type
+     * @return a {@link CosmosPagedIterable} containing the results
+     */
+    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        CosmosReadManyRequestOptions requestOptions,
+        Class<T> classType) {
+
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, requestOptions, classType));
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query — aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     * @param requestOptions the optional request options
+     * @param classType   class type
+     * @return a {@link CosmosPagedIterable} containing the results
+     */
+    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        CosmosReadManyRequestOptions requestOptions,
+        Class<T> classType) {
+
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, customQuery, requestOptions, classType));
+    }
+
+    /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
      * <!-- src_embed com.azure.cosmos.CosmosContainer.readAllItems -->
      * <pre>

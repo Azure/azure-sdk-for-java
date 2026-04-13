@@ -248,6 +248,11 @@ public class Configs {
     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
     public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
 
+    // readManyByPartitionKey: max number of PK values per query per physical partition
+    private static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    private static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    private static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 1000;
+
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
     public static final int DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY = 1;
@@ -814,6 +819,20 @@ public class Configs {
         }
 
         return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+    }
+
+    public static int getReadManyByPkMaxBatchSize() {
+        String valueFromSystemProperty = System.getProperty(READ_MANY_BY_PK_MAX_BATCH_SIZE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Math.max(1, Integer.parseInt(valueFromSystemProperty));
+        }
+
+        String valueFromEnvVariable = System.getenv(READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Math.max(1, Integer.parseInt(valueFromEnvVariable));
+        }
+
+        return DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE;
     }
 
     public static int getMaxBulkMicroBatchConcurrency() {
