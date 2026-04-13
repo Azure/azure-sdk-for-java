@@ -1,42 +1,20 @@
 # Release History
 
-## 2.54.0-beta.1 (2026-04-13)
-
-### Breaking Changes
-
-#### `models.ZoneListResult` was removed
-
-#### `models.RecordSetListResult` was removed
-
-#### `models.DnsResourceReference` was modified
-
-* `DnsResourceReference()` was changed to private access
-* `withDnsResources(java.util.List)` was removed
-* `withTargetResource(com.azure.core.management.SubResource)` was removed
+## 2.54.0-beta.1 (Unreleased)
 
 ### Features Added
 
-* `models.TlsaRecord` was added
+- Added `models.TlsaRecord`, `models.DsRecord`, `models.NaptrRecord` for new DNS record types.
+- Added `models.DelegationSignerInfo`, `models.SigningKey`, `models.Digest` for DNSSEC support.
+- Added `models.RecordSetsCreateOrUpdateHeaders`, `models.RecordSetsCreateOrUpdateResponse`.
+- Added `DnssecConfigs` client for DNSSEC configuration management.
+- Added `TLSA`, `DS`, `NAPTR` values to `models.RecordType`.
 
-* `models.RecordSetsCreateOrUpdateHeaders` was added
+### Breaking Changes
 
-* `models.NaptrRecord` was added
-
-* `models.DelegationSignerInfo` was added
-
-* `models.RecordSetsCreateOrUpdateResponse` was added
-
-* `models.SigningKey` was added
-
-* `models.Digest` was added
-
-* `models.DsRecord` was added
-
-#### `models.RecordType` was modified
-
-* `TLSA` was added
-* `DS` was added
-* `NAPTR` was added
+- Removed `models.ZoneListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
+- Removed `models.RecordSetListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
+- Changed `models.DnsResourceReference` to be an immutable output-only model: constructor is now private, and `withDnsResources()` and `withTargetResource()` setters are removed.
 
 ## 2.53.7 (2026-03-30)
 
