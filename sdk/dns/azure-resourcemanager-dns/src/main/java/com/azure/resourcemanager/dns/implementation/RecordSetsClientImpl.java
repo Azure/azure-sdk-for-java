@@ -32,7 +32,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dns.fluent.RecordSetsClient;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.dns.implementation.models.RecordSetListResult;
-import com.azure.resourcemanager.dns.models.RecordSetsCreateOrUpdateResponse;
 import com.azure.resourcemanager.dns.models.RecordType;
 import reactor.core.publisher.Mono;
 
@@ -81,7 +80,7 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<RecordSetsCreateOrUpdateResponse> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<RecordSetInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("zoneName") String zoneName,
             @PathParam(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName,
@@ -328,12 +327,12 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS record set (a collection of DNS records with the same name and type) on successful
-     * completion of {@link Mono}.
+     * @return describes a DNS record set (a collection of DNS records with the same name and type) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordSetsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
+    public Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String zoneName,
+        String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
         String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -388,12 +387,12 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS record set (a collection of DNS records with the same name and type) on successful
-     * completion of {@link Mono}.
+     * @return describes a DNS record set (a collection of DNS records with the same name and type) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecordSetsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String zoneName, String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
+    private Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String zoneName,
+        String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
         String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -471,10 +470,11 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS record set (a collection of DNS records with the same name and type).
+     * @return describes a DNS record set (a collection of DNS records with the same name and type) along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordSetsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String zoneName,
+    public Response<RecordSetInner> createOrUpdateWithResponse(String resourceGroupName, String zoneName,
         String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
         String ifNoneMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, relativeRecordSetName, recordType,

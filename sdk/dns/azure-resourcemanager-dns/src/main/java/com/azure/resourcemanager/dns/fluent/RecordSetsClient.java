@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
-import com.azure.resourcemanager.dns.models.RecordSetsCreateOrUpdateResponse;
 import com.azure.resourcemanager.dns.models.RecordType;
 import reactor.core.publisher.Mono;
 
@@ -99,11 +98,11 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS record set (a collection of DNS records with the same name and type) on successful
-     * completion of {@link Mono}.
+     * @return describes a DNS record set (a collection of DNS records with the same name and type) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecordSetsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName, String zoneName,
+    Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String zoneName,
         String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
         String ifNoneMatch);
 
@@ -143,10 +142,11 @@ public interface RecordSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS record set (a collection of DNS records with the same name and type).
+     * @return describes a DNS record set (a collection of DNS records with the same name and type) along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecordSetsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String zoneName,
+    Response<RecordSetInner> createOrUpdateWithResponse(String resourceGroupName, String zoneName,
         String relativeRecordSetName, RecordType recordType, RecordSetInner parameters, String ifMatch,
         String ifNoneMatch, Context context);
 
