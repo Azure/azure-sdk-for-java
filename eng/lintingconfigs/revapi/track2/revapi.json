@@ -1636,6 +1636,30 @@
           "code": "java.class.removed",
           "old" : "class com.azure.resourcemanager.servicebus.models.SqlRuleAction",
           "justification": "SqlRuleAction was a redundant Swagger allOf wrapper around Action with no extra properties. TypeSpec correctly simplified to single Action model."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.msi\\.models\\..*(ListResult|List)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
         }
       ]
     }

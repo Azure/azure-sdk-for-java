@@ -65,6 +65,11 @@ stages:
             displayName: 'Download Signed Artifacts'
             artifact: packages-signed
 
+          # Setup Maven mirror settings and authenticate with Azure Artifacts
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
           # gpg-sign and create the flattened directory for ESRP bulk publish
           # Note: The maven release requires the files to be local GPG signed
           # Dev feed publishes use the gpg-sign-and-deply to do it in one step
@@ -260,6 +265,9 @@ stages:
             - download: current
               displayName: 'Download Artifacts'
               artifact: packages-signed
+            - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+              parameters:
+                SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
             - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
             - ${{ if ne(parameters.PublicFeedUrl, 'maven.org') }}:
@@ -364,6 +372,15 @@ stages:
 
               - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
+              # maven-authenticate.yml cannot be used here because it overwrites ~/.m2/settings.xml
+              # with eng/settings.xml, which would discard the docs-specific repository config
+              # (e.g. docs-public-packages feed) set up by mvn-linux-repository-settings.yml above.
+              # Instead, we only run MavenAuthenticate to inject credentials into the existing settings.
+              - task: MavenAuthenticate@0
+                displayName: 'Maven Authenticate'
+                inputs:
+                  artifactsFeeds: 'azure-sdk-for-java'
+
               - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
               - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
@@ -453,6 +470,9 @@ stages:
 
           displayName: Setup TargetFeed
 
+        - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+          parameters:
+            SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
         - ${{ each artifact in parameters.Artifacts }}:
@@ -484,6 +504,15 @@ stages:
             displayName: Show visible artifacts
 
           - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+          # maven-authenticate.yml cannot be used here because it overwrites ~/.m2/settings.xml
+          # with eng/settings.xml, which would discard the docs-specific repository config
+          # (e.g. docs-public-packages feed) set up by mvn-linux-repository-settings.yml above.
+          # Instead, we only run MavenAuthenticate to inject credentials into the existing settings.
+          - task: MavenAuthenticate@0
+            displayName: 'Maven Authenticate'
+            inputs:
+              artifactsFeeds: 'azure-sdk-for-java'
 
           - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 

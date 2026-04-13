@@ -1,9 +1,12 @@
+parameters:
+  SourceDirectory: $(Build.SourcesDirectory)
+
 steps:
   # Copy mirror settings to default Maven location so all requests go through CFS
   - pwsh: |
       $m2Dir = if ($env:USERPROFILE) { "$env:USERPROFILE\.m2" } else { "$HOME/.m2" }
       New-Item -ItemType Directory -Force -Path $m2Dir | Out-Null
-      Copy-Item -Path "$(Build.SourcesDirectory)/eng/settings.xml" -Destination "$m2Dir/settings.xml"
+      Copy-Item -Path "${{ parameters.SourceDirectory }}/eng/settings.xml" -Destination "$m2Dir/settings.xml"
     displayName: 'Setup Maven mirror settings'
 
   # Authenticate with Azure Artifacts feeds
