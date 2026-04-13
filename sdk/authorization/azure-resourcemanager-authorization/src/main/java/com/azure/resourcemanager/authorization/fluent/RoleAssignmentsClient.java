@@ -207,7 +207,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter, String tenantId, String skipToken);
@@ -219,7 +219,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope);
@@ -231,7 +231,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listForScope(String scope);
@@ -250,7 +250,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listForScope(String scope, String filter, String tenantId, String skipToken,
@@ -266,7 +266,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listAsync(String filter, String tenantId);
@@ -276,7 +276,7 @@ public interface RoleAssignmentsClient
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listAsync();
@@ -286,7 +286,7 @@ public interface RoleAssignmentsClient
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> list();
@@ -302,7 +302,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> list(String filter, String tenantId, Context context);
@@ -318,7 +318,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter, String tenantId);
@@ -330,7 +330,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName);
@@ -342,7 +342,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName);
@@ -359,7 +359,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName, String filter, String tenantId,
@@ -379,7 +379,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace,
@@ -395,7 +395,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
+     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace,
@@ -411,7 +411,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace,
@@ -432,7 +432,7 @@ public interface RoleAssignmentsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
+     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace,

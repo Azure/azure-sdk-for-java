@@ -18,7 +18,7 @@ public interface ScopeAccessReviewInstanceDecisionsClient {
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -35,7 +35,7 @@ public interface ScopeAccessReviewInstanceDecisionsClient {
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +49,7 @@ public interface ScopeAccessReviewInstanceDecisionsClient {
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +63,7 @@ public interface ScopeAccessReviewInstanceDecisionsClient {
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
