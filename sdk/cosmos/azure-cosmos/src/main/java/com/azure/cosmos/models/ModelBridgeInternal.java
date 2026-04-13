@@ -136,12 +136,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setGlobalSecondaryIndexDefinitionSourceCollectionRid(
-        CosmosGlobalSecondaryIndexDefinition definition, String sourceCollectionRid) {
-        definition.setSourceContainerRidInternal(sourceCollectionRid);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosContainerProperties> getCosmosContainerPropertiesFromV2Results(List<DocumentCollection> results) {
         return CosmosContainerProperties.getFromV2Results(results);
     }
@@ -771,5 +765,6 @@ public final class ModelBridgeInternal {
         CosmosClientTelemetryConfig.initialize();
         CosmosContainerIdentity.initialize();
         PriorityLevel.initialize();
+        CosmosGlobalSecondaryIndexDefinition.initialize();
     }
 }

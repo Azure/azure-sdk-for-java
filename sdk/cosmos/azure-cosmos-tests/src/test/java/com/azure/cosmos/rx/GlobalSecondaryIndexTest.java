@@ -94,7 +94,9 @@ public class GlobalSecondaryIndexTest {
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
-        ModelBridgeInternal.setGlobalSecondaryIndexDefinitionSourceCollectionRid(definition, "TughAMEOdUI=");
+        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
+            .getCosmosGlobalSecondaryIndexDefinitionAccessor()
+            .setSourceCollectionRid(definition, "TughAMEOdUI=");
 
         containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition);
 
@@ -161,7 +163,9 @@ public class GlobalSecondaryIndexTest {
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
-        ModelBridgeInternal.setGlobalSecondaryIndexDefinitionSourceCollectionRid(definition, "TughAMEOdUI=");
+        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
+            .getCosmosGlobalSecondaryIndexDefinitionAccessor()
+            .setSourceCollectionRid(definition, "TughAMEOdUI=");
 
         original.setCosmosGlobalSecondaryIndexDefinition(definition);
 

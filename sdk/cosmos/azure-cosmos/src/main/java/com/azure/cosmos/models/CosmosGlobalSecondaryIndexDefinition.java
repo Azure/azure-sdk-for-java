@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +25,13 @@ public final class CosmosGlobalSecondaryIndexDefinition {
 
     private final JsonSerializable jsonSerializable;
 
+    static {
+        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
+            .setCosmosGlobalSecondaryIndexDefinitionAccessor(
+                CosmosGlobalSecondaryIndexDefinition::setSourceContainerRidInternal
+            );
+    }
+
     /**
      * Constructor
      */
@@ -34,7 +42,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     /**
      * Constructor.
      *
-     * @param objectNode the {@link ObjectNode} that represents the global secondary index definition.
+     * @param objectNode the {@link ObjectNode} that represents the GlobalSecondaryIndex definition.
      */
     CosmosGlobalSecondaryIndexDefinition(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
@@ -50,7 +58,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Sets the source container id for the global secondary index.
+     * Sets the source container id for the GlobalSecondaryIndex.
      * The SDK will automatically resolve this container id to its resource id (RID)
      * during container creation.
      *
@@ -67,7 +75,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Gets the source container resource id (RID) for the global secondary index as returned by the server.
+     * Gets the source container resource id (RID) for the GlobalSecondaryIndex as returned by the server.
      * This is a read-only field populated from server responses.
      *
      * @return the source container resource id.
@@ -77,7 +85,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Gets the build status of the global secondary index as returned by the server.
+     * Gets the build status of the GlobalSecondaryIndex as returned by the server.
      * This is a read-only field populated from server responses.
      *
      * @return the GlobalSecondaryIndex build status.
@@ -96,7 +104,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     /**
-     * Sets the query definition for the global secondary index.
+     * Sets the query definition for the GlobalSecondaryIndex.
      *
      * @param definition the query definition (e.g. {@code "SELECT c.customerId, c.emailAddress FROM c"}).
      * @return CosmosGlobalSecondaryIndexDefinition
@@ -121,5 +129,9 @@ public final class CosmosGlobalSecondaryIndexDefinition {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert object to string", e);
         }
+    }
+
+    static void initialize() {
+        // no-op, will trigger static initializer which will register the accessor
     }
 }
