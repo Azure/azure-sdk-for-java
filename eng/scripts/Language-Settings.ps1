@@ -280,6 +280,12 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
   # Maven Central endpoint is blocked on the build agent network.
   $uri = "$PackageRepositoryUri/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
 
+  $headers = @{ "Content-signal" = "search=yes,ai-train=no" }
+  # Azure DevOps feeds require authentication; use SYSTEM_ACCESSTOKEN if available.
+  if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+    $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+  }
+
   $attempt = 1
   while ($attempt -le 3)
   {
@@ -290,7 +296,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
       }
 
       Write-Host "Checking published package at $uri"
-      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck -UserAgent "azure-sdk-for-java" -Headers $headers
 
       if ($response.BaseResponse.IsSuccessStatusCode)
       {
