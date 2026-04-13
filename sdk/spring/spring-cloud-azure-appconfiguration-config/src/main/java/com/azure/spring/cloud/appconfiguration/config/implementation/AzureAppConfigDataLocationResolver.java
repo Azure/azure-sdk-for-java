@@ -128,7 +128,7 @@ public class AzureAppConfigDataLocationResolver
 
         for (ConfigStore store : properties.getStores()) {
             locations.add(
-                new AzureAppConfigDataResource(properties.isEnabled(), store, profiles, START_UP.get(), properties.getRefreshInterval()));
+                new AzureAppConfigDataResource(properties.isEnabled(), store, profiles, START_UP.get(), properties.getRefreshInterval(), properties.getStartupTimeout()));
         }
         START_UP.set(false);
         return locations;
