@@ -916,6 +916,32 @@
           "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
         },
         {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.dns\\.models\\.(RecordSetListResult|ZoneListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.dns\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.dns\\.models\\.DnsResourceReference\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
           "code" : "java.field.addedStaticField",
           "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
           "justification" : "Not a break."

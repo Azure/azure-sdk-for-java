@@ -1,0 +1,4 @@
+directory: specification/dns/resource-manager/Microsoft.Network/Dns
+commit: HEAD
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
