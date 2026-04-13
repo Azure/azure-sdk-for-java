@@ -7,8 +7,14 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where change feed with `startFrom` point-in-time returned `400` on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability.
 
 #### Other Changes
+
+### 4.79.1 (2026-04-06)
+
+#### Bugs Fixed
+* Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
 
 ### 4.79.0 (2026-03-27)
 

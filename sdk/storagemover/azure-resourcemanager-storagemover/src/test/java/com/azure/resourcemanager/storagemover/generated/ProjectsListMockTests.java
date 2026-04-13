@@ -22,7 +22,7 @@ public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"zev\",\"provisioningState\":\"Failed\"},\"id\":\"wpusdsttwvogv\",\"name\":\"bejdcn\",\"type\":\"qqmoaku\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"gicccnxqhuex\",\"provisioningState\":\"Deleting\"},\"id\":\"lstvlzywe\",\"name\":\"hz\",\"type\":\"ncsdtclusiyp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,8 @@ public final class ProjectsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Project> response
-            = manager.projects().list("r", "kdsnfdsdoakgtdl", com.azure.core.util.Context.NONE);
+        PagedIterable<Project> response = manager.projects().list("rgzdwmsweyp", "w", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zev", response.iterator().next().description());
+        Assertions.assertEquals("gicccnxqhuex", response.iterator().next().description());
     }
 }
