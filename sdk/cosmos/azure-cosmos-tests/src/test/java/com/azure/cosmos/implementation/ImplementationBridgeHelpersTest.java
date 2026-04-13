@@ -286,15 +286,19 @@ public class ImplementationBridgeHelpersTest {
     }
 
     /**
-     * Enforces that every {@code *Helper} inner class in
-     * {@link ImplementationBridgeHelpers} registers its accessor during {@code <clinit>}
-     * (i.e., has a {@code static { initialize(); }} block).
+     * Verifies that every {@code *Helper} inner class in
+     * {@link ImplementationBridgeHelpers} has a resolvable accessor — i.e., calling
+     * {@code getXxxAccessor()} returns a non-null value in a clean JVM.
      * <p>
-     * Verification is behavioral, not source-based: a forked child JVM iterates every
-     * {@code *Helper} inner class, calls each {@code getXxxAccessor()} getter (which
-     * lazily resolves the accessor), and checks the accessor is non-null via reflection.
-     * If a class is missing {@code static { initialize(); }}, the accessor remains null
-     * and this test fails.
+     * A forked child JVM iterates every {@code *Helper} inner class, calls each
+     * {@code getXxxAccessor()} getter, and checks the accessor is non-null via reflection.
+     * <p>
+     * Note: the getter falls back to {@code initializeAllAccessors()} when the accessor
+     * is not yet set, so this test validates that every accessor is <em>resolvable</em>
+     * (either via the class's own {@code static { initialize(); }} or the bulk fallback),
+     * not that each class independently registers its accessor during {@code <clinit>}.
+     * The structural contract (no static/final accessor fields in consuming classes) is
+     * enforced separately by {@link #noStaticOrInstanceAccessorFieldsInConsumingClasses}.
      */
     @Test(groups = { "unit" })
     public void allAccessorClassesMustHaveStaticInitializerBlock() throws Exception {
