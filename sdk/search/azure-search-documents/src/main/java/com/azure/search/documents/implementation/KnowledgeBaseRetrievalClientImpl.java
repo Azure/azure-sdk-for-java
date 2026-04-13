@@ -45,12 +45,12 @@ public final class KnowledgeBaseRetrievalClientImpl {
     private final KnowledgeBaseRetrievalClientService service;
 
     /**
-     * Service host.
+     * The endpoint URL of the search service.
      */
     private final String endpoint;
 
     /**
-     * Gets Service host.
+     * Gets The endpoint URL of the search service.
      * 
      * @return the endpoint value.
      */
@@ -103,7 +103,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
     /**
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(String endpoint, SearchServiceVersion serviceVersion) {
@@ -115,7 +115,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -128,7 +128,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -148,7 +148,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "KnowledgeBaseRetrievalClient")
     public interface KnowledgeBaseRetrievalClientService {
-        @Post("/retrieve/{knowledgeBaseName}")
+        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -159,7 +159,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
             @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
 
-        @Post("/retrieve/{knowledgeBaseName}")
+        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -173,48 +173,25 @@ public final class KnowledgeBaseRetrievalClientImpl {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     maxOutputSizeInTokens: Integer (Optional)
      *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
      *         }
      *     ]
@@ -239,7 +216,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/modelQueryPlanning/modelAnswerSynthesis/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -262,7 +239,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -297,48 +274,25 @@ public final class KnowledgeBaseRetrievalClientImpl {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     maxOutputSizeInTokens: Integer (Optional)
      *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
      *         }
      *     ]
@@ -363,7 +317,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/modelQueryPlanning/modelAnswerSynthesis/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -386,7 +340,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {

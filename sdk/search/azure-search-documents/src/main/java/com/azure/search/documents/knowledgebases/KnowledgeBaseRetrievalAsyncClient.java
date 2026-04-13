@@ -12,7 +12,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -75,36 +74,6 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *
      * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -154,48 +123,25 @@ public final class KnowledgeBaseRetrievalAsyncClient {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     messages (Optional): [
-     *          (Optional){
-     *             role: String (Optional)
-     *             content (Required): [
-     *                  (Required){
-     *                     type: String(text/image) (Required)
-     *                 }
-     *             ]
-     *         }
-     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
+     *     maxOutputSizeInTokens: Integer (Optional)
      *     includeActivity: Boolean (Optional)
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
-     *             alwaysQuerySource: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
      *         }
      *     ]
@@ -220,7 +166,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/modelQueryPlanning/modelAnswerSynthesis/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -243,7 +189,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {

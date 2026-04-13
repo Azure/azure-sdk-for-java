@@ -5,12 +5,10 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -31,46 +29,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
      */
     @Generated
     private final String uri;
-
-    /*
-     * The headers required to make the http request.
-     */
-    @Generated
-    private WebApiHttpHeaders httpHeaders;
-
-    /*
-     * The method for the http request.
-     */
-    @Generated
-    private String httpMethod;
-
-    /*
-     * The desired timeout for the request. Default is 30 seconds.
-     */
-    @Generated
-    private Duration timeout;
-
-    /*
-     * The desired batch size which indicates number of documents.
-     */
-    @Generated
-    private Integer batchSize;
-
-    /*
-     * If set, the number of parallel calls that can be made to the Web API.
-     */
-    @Generated
-    private Integer degreeOfParallelism;
-
-    /*
-     * Applies to custom skills that connect to external code in an Azure function or some other application that
-     * provides the transformations. This value should be the application ID created for the function or app when it was
-     * registered with Azure Active Directory. When specified, the custom skill connects to the function or app using a
-     * managed ID (either system or user-assigned) of the search service and the access token of the function or app,
-     * using this value as the resource id for creating the scope of the access token.
-     */
-    @Generated
-    private String authResourceId;
 
     /*
      * The user-assigned managed identity used for outbound connections. If an authResourceId is provided and it's not
@@ -143,146 +101,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
     @Generated
     public String getUri() {
         return this.uri;
-    }
-
-    /**
-     * Get the httpHeaders property: The headers required to make the http request.
-     *
-     * @return the httpHeaders value.
-     */
-    @Generated
-    public WebApiHttpHeaders getHttpHeaders() {
-        return this.httpHeaders;
-    }
-
-    /**
-     * Set the httpHeaders property: The headers required to make the http request.
-     *
-     * @param httpHeaders the httpHeaders value to set.
-     * @return the ChatCompletionSkill object itself.
-     */
-    @Generated
-    public ChatCompletionSkill setHttpHeaders(WebApiHttpHeaders httpHeaders) {
-        this.httpHeaders = httpHeaders;
-        return this;
-    }
-
-    /**
-     * Get the httpMethod property: The method for the http request.
-     *
-     * @return the httpMethod value.
-     */
-    @Generated
-    public String getHttpMethod() {
-        return this.httpMethod;
-    }
-
-    /**
-     * Set the httpMethod property: The method for the http request.
-     *
-     * @param httpMethod the httpMethod value to set.
-     * @return the ChatCompletionSkill object itself.
-     */
-    @Generated
-    public ChatCompletionSkill setHttpMethod(String httpMethod) {
-        this.httpMethod = httpMethod;
-        return this;
-    }
-
-    /**
-     * Get the timeout property: The desired timeout for the request. Default is 30 seconds.
-     *
-     * @return the timeout value.
-     */
-    @Generated
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
-     *
-     * @param timeout the timeout value to set.
-     * @return the ChatCompletionSkill object itself.
-     */
-    @Generated
-    public ChatCompletionSkill setTimeout(Duration timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-    /**
-     * Get the batchSize property: The desired batch size which indicates number of documents.
-     *
-     * @return the batchSize value.
-     */
-    @Generated
-    public Integer getBatchSize() {
-        return this.batchSize;
-    }
-
-    /**
-     * Set the batchSize property: The desired batch size which indicates number of documents.
-     *
-     * @param batchSize the batchSize value to set.
-     * @return the ChatCompletionSkill object itself.
-     */
-    @Generated
-    public ChatCompletionSkill setBatchSize(Integer batchSize) {
-        this.batchSize = batchSize;
-        return this;
-    }
-
-    /**
-     * Get the degreeOfParallelism property: If set, the number of parallel calls that can be made to the Web API.
-     *
-     * @return the degreeOfParallelism value.
-     */
-    @Generated
-    public Integer getDegreeOfParallelism() {
-        return this.degreeOfParallelism;
-    }
-
-    /**
-     * Set the degreeOfParallelism property: If set, the number of parallel calls that can be made to the Web API.
-     *
-     * @param degreeOfParallelism the degreeOfParallelism value to set.
-     * @return the ChatCompletionSkill object itself.
-     */
-    @Generated
-    public ChatCompletionSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
-        this.degreeOfParallelism = degreeOfParallelism;
-        return this;
-    }
-
-    /**
-     * Get the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for the
-     * function or app when it was registered with Azure Active Directory. When specified, the custom skill connects to
-     * the function or app using a managed ID (either system or user-assigned) of the search service and the access
-     * token of the function or app, using this value as the resource id for creating the scope of the access token.
-     *
-     * @return the authResourceId value.
-     */
-    @Generated
-    public String getAuthResourceId() {
-        return this.authResourceId;
-    }
-
-    /**
-     * Set the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for the
-     * function or app when it was registered with Azure Active Directory. When specified, the custom skill connects to
-     * the function or app using a managed ID (either system or user-assigned) of the search service and the access
-     * token of the function or app, using this value as the resource id for creating the scope of the access token.
-     *
-     * @param authResourceId the authResourceId value to set.
-     * @return the ChatCompletionSkill object itself.
-     */
-    @Generated
-    public ChatCompletionSkill setAuthResourceId(String authResourceId) {
-        this.authResourceId = authResourceId;
-        return this;
     }
 
     /**
@@ -478,12 +296,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeJsonField("httpHeaders", this.httpHeaders);
-        jsonWriter.writeStringField("httpMethod", this.httpMethod);
-        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
-        jsonWriter.writeNumberField("batchSize", this.batchSize);
-        jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
-        jsonWriter.writeStringField("authResourceId", this.authResourceId);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeJsonField("commonModelParameters", this.commonModelParameters);
@@ -514,12 +326,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
             String context = null;
             String uri = null;
             String odataType = "#Microsoft.Skills.Custom.ChatCompletionSkill";
-            WebApiHttpHeaders httpHeaders = null;
-            String httpMethod = null;
-            Duration timeout = null;
-            Integer batchSize = null;
-            Integer degreeOfParallelism = null;
-            String authResourceId = null;
             SearchIndexerDataIdentity authIdentity = null;
             String apiKey = null;
             ChatCompletionCommonModelParameters commonModelParameters = null;
@@ -543,18 +349,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
                     uri = reader.getString();
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
-                } else if ("httpHeaders".equals(fieldName)) {
-                    httpHeaders = WebApiHttpHeaders.fromJson(reader);
-                } else if ("httpMethod".equals(fieldName)) {
-                    httpMethod = reader.getString();
-                } else if ("timeout".equals(fieldName)) {
-                    timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("batchSize".equals(fieldName)) {
-                    batchSize = reader.getNullable(JsonReader::getInt);
-                } else if ("degreeOfParallelism".equals(fieldName)) {
-                    degreeOfParallelism = reader.getNullable(JsonReader::getInt);
-                } else if ("authResourceId".equals(fieldName)) {
-                    authResourceId = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
                     authIdentity = SearchIndexerDataIdentity.fromJson(reader);
                 } else if ("apiKey".equals(fieldName)) {
@@ -576,12 +370,6 @@ public final class ChatCompletionSkill extends SearchIndexerSkill {
             deserializedChatCompletionSkill.setDescription(description);
             deserializedChatCompletionSkill.setContext(context);
             deserializedChatCompletionSkill.odataType = odataType;
-            deserializedChatCompletionSkill.httpHeaders = httpHeaders;
-            deserializedChatCompletionSkill.httpMethod = httpMethod;
-            deserializedChatCompletionSkill.timeout = timeout;
-            deserializedChatCompletionSkill.batchSize = batchSize;
-            deserializedChatCompletionSkill.degreeOfParallelism = degreeOfParallelism;
-            deserializedChatCompletionSkill.authResourceId = authResourceId;
             deserializedChatCompletionSkill.authIdentity = authIdentity;
             deserializedChatCompletionSkill.apiKey = apiKey;
             deserializedChatCompletionSkill.commonModelParameters = commonModelParameters;
