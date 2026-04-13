@@ -274,9 +274,11 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
 }
 
 # Returns the maven publish status of a package id and version by checking the internal
-# Azure Artifacts feed which release pipeline publishes to as well as maven central feed.
+# Azure Artifacts feed which the release pipeline publishes to alongside Maven Central.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
+  # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+  # Maven Central endpoint is blocked on the build agent network.
   $uri = "$MavenMirrorUri/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
 
   $attempt = 1
