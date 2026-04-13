@@ -217,6 +217,12 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     return dbAccount;
                 }).flatMap(dbAccount -> {
+                    // After a force-refresh (e.g., 403/3 driven), restart the background
+                    // timer if it's not already running. Without this, the timer stays dead
+                    // after MW→SW transitions and the SDK never detects MW re-enablement.
+                    if (!this.refreshInBackground.get()) {
+                        this.startRefreshLocationTimerAsync();
+                    }
                     return Mono.empty();
                 });
             }
