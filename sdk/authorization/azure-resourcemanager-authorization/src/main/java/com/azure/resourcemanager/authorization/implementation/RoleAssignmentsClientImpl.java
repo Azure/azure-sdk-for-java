@@ -75,9 +75,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("tenantId") String tenantId,
             @PathParam(value = "roleAssignmentName", encoded = true) String roleAssignmentName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("tenantId") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({ 200, 201 })
@@ -94,9 +93,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentInner>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("tenantId") String tenantId,
             @PathParam(value = "roleAssignmentName", encoded = true) String roleAssignmentName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("tenantId") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments")
@@ -226,8 +224,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, tenantId,
-                roleAssignmentName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, roleAssignmentName,
+                tenantId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -260,7 +258,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, scope, tenantId, roleAssignmentName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, scope, roleAssignmentName, tenantId, accept, context);
     }
 
     /**
@@ -473,8 +471,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, scope, tenantId,
-                roleAssignmentName, accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, scope, roleAssignmentName,
+                tenantId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -507,7 +505,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, scope, tenantId, roleAssignmentName, accept,
+        return service.delete(this.client.getEndpoint(), apiVersion, scope, roleAssignmentName, tenantId, accept,
             context);
     }
 
@@ -575,8 +573,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForScopeSinglePageAsync(String scope, String filter,
@@ -612,8 +610,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForScopeSinglePageAsync(String scope, String filter,
@@ -647,7 +645,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter, String tenantId,
@@ -663,7 +661,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope) {
@@ -688,7 +686,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter, String tenantId,
@@ -704,7 +702,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForScope(String scope) {
@@ -728,7 +726,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForScope(String scope, String filter, String tenantId,
@@ -746,8 +744,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listSinglePageAsync(String filter, String tenantId) {
@@ -780,8 +778,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listSinglePageAsync(String filter, String tenantId,
@@ -814,7 +812,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listAsync(String filter, String tenantId) {
@@ -827,7 +825,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listAsync() {
@@ -848,7 +846,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentInner> listAsync(String filter, String tenantId, Context context) {
@@ -861,7 +859,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> list() {
@@ -881,7 +879,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> list(String filter, String tenantId, Context context) {
@@ -899,8 +897,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -939,8 +937,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -978,7 +976,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter,
@@ -994,7 +992,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1016,7 +1014,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter,
@@ -1032,7 +1030,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName) {
@@ -1053,7 +1051,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName, String filter,
@@ -1075,8 +1073,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForResourceSinglePageAsync(String resourceGroupName,
@@ -1129,8 +1127,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForResourceSinglePageAsync(String resourceGroupName,
@@ -1182,7 +1180,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName,
@@ -1201,7 +1199,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName,
@@ -1227,7 +1225,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedFlux}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName,
@@ -1249,7 +1247,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForResource(String resourceGroupName,
@@ -1275,7 +1273,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result as paginated response with {@link PagedIterable}.
+     * @return the response of a RoleAssignment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForResource(String resourceGroupName,
@@ -1647,8 +1645,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForScopeNextSinglePageAsync(String nextLink) {
@@ -1675,8 +1673,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForScopeNextSinglePageAsync(String nextLink, Context context) {
@@ -1701,8 +1699,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForSubscriptionNextSinglePageAsync(String nextLink) {
@@ -1730,8 +1728,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForSubscriptionNextSinglePageAsync(String nextLink,
@@ -1757,8 +1755,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1786,8 +1784,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForResourceGroupNextSinglePageAsync(String nextLink,
@@ -1813,8 +1811,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForResourceNextSinglePageAsync(String nextLink) {
@@ -1841,8 +1839,8 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a RoleAssignment list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentInner>> listForResourceNextSinglePageAsync(String nextLink,

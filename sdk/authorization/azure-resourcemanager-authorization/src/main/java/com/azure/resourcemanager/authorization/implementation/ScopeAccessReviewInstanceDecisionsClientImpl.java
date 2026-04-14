@@ -67,7 +67,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewDecisionListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
@@ -83,7 +83,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -125,7 +125,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -167,7 +167,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -188,7 +188,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +206,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -228,7 +228,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is

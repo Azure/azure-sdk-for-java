@@ -63,16 +63,15 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> stop(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
-            Context context);
+            @PathParam("scope") String scope, @PathParam("scheduleDefinitionId") String scheduleDefinitionId,
+            @PathParam("id") String id, Context context);
 
         @Headers({ "Accept: application/json;q=0.9" })
         @Post("/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/recordAllDecisions")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> recordAllDecisions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") RecordAllDecisionsProperties properties, Context context);
@@ -82,7 +81,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> resetDecisions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             Context context);
 
@@ -91,7 +90,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> applyDecisions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             Context context);
 
@@ -100,7 +99,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> sendReminders(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             Context context);
     }
@@ -108,7 +107,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +140,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -175,7 +174,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +190,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -208,7 +207,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,7 +222,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -265,7 +264,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -307,7 +306,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -326,7 +325,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -345,7 +344,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -362,7 +361,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,7 +395,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -430,7 +429,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +445,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -464,7 +463,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,7 +478,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -513,7 +512,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -547,7 +546,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -563,7 +562,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -581,7 +580,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -596,7 +595,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,7 +629,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -664,7 +663,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -680,7 +679,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -698,7 +697,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope The scope of the resource.
+     * @param scope undefined.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
