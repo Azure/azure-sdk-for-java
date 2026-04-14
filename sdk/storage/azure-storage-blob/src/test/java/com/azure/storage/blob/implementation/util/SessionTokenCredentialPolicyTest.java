@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +78,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyRefreshesNearExpiryWithoutBlockingSyncRequests() {
-        policy = new SessionTokenCredentialPolicy(sessionClient, Duration.ofMinutes(5));
-        StorageSessionCredential nearExpiry = credentialWithToken(FIRST_TOKEN, OffsetDateTime.now().plusMinutes(1));
+        StorageSessionCredential nearExpiry = credentialWithToken(FIRST_TOKEN, OffsetDateTime.now().plusSeconds(2));
         StorageSessionCredential refreshed = credentialWithToken(SECOND_TOKEN);
 
         when(sessionClient.createSessionSync()).thenReturn(nearExpiry);
@@ -153,7 +152,9 @@ public class SessionTokenCredentialPolicyTest {
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(initialResponse));
         when(retryNext.process()).thenReturn(Mono.just(retriedResponse));
-        when(initialResponse.getStatusCode()).thenReturn(403);
+        when(initialResponse.getStatusCode()).thenReturn(401);
+        when(initialResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Session error=session_expired");
         when(retriedResponse.getStatusCode()).thenReturn(200);
 
         HttpResponse actualResponse = policy.process(context, next).block();
@@ -181,6 +182,8 @@ public class SessionTokenCredentialPolicyTest {
         when(next.processSync()).thenReturn(initialResponse);
         when(retryNext.processSync()).thenReturn(retriedResponse);
         when(initialResponse.getStatusCode()).thenReturn(401);
+        when(initialResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Session error=session_token_invalid");
         when(retriedResponse.getStatusCode()).thenReturn(200);
 
         HttpResponse actualResponse = policy.processSync(context, next);
@@ -206,8 +209,12 @@ public class SessionTokenCredentialPolicyTest {
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(initialResponse));
         when(retryNext.process()).thenReturn(Mono.just(retriedResponse));
-        when(initialResponse.getStatusCode()).thenReturn(403);
-        when(retriedResponse.getStatusCode()).thenReturn(403);
+        when(initialResponse.getStatusCode()).thenReturn(401);
+        when(initialResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Session error=session_expired");
+        when(retriedResponse.getStatusCode()).thenReturn(401);
+        when(retriedResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Session error=session_expired");
 
         HttpResponse actualResponse = policy.process(context, next).block();
 
