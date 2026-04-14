@@ -28,9 +28,10 @@ final class BlobSessionClient {
     private final String accountName;
     private final String containerName;
 
-    BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
+    BlobSessionClient(HttpPipeline bearerPipeline, String serviceEndpoint, BlobServiceVersion serviceVersion,
         String containerName) {
-        this(bearerPipeline, url, serviceVersion, BlobUrlParts.parse(url).getAccountName(), containerName);
+        this(bearerPipeline, serviceEndpoint, serviceVersion, BlobUrlParts.parse(serviceEndpoint).getAccountName(),
+            containerName);
     }
 
     BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName,
