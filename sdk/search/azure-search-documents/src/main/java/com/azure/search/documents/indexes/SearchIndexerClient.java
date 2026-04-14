@@ -22,9 +22,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept33;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept40;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept46;
 import com.azure.search.documents.indexes.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.ListIndexersResult;
 import com.azure.search.documents.indexes.models.ListSkillsetsResult;
@@ -32,15 +29,6 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept32;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept34;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept35;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept36;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept39;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept41;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept42;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept45;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept47;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -97,8 +85,6 @@ public final class SearchIndexerClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -106,7 +92,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -143,9 +129,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -242,8 +228,6 @@ public final class SearchIndexerClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -275,16 +259,8 @@ public final class SearchIndexerClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -341,14 +317,6 @@ public final class SearchIndexerClient {
 
     /**
      * Resets the change tracking state associated with an indexer.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -366,14 +334,6 @@ public final class SearchIndexerClient {
 
     /**
      * Runs an indexer on-demand.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -395,8 +355,6 @@ public final class SearchIndexerClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -404,7 +362,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -477,9 +435,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -612,8 +570,6 @@ public final class SearchIndexerClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -645,16 +601,8 @@ public final class SearchIndexerClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -751,8 +699,6 @@ public final class SearchIndexerClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -760,7 +706,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -872,9 +818,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1046,8 +992,6 @@ public final class SearchIndexerClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1079,16 +1023,8 @@ public final class SearchIndexerClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2045,16 +1981,8 @@ public final class SearchIndexerClient {
 
     /**
      * Retrieves a datasource definition.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2110,16 +2038,8 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new datasource.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2156,9 +2076,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2214,16 +2134,8 @@ public final class SearchIndexerClient {
 
     /**
      * Retrieves an indexer definition.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2313,16 +2225,8 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new indexer.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2395,9 +2299,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2487,16 +2391,8 @@ public final class SearchIndexerClient {
 
     /**
      * Returns the current status and execution history of an indexer.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2559,16 +2455,8 @@ public final class SearchIndexerClient {
 
     /**
      * Retrieves a skillset in a search service.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2697,16 +2585,8 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new skillset in a search service.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2818,9 +2698,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2948,35 +2828,8 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Retrieves a datasource definition.
-     *
-     * @param name The name of the datasource.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection getDataSourceConnection(String name,
-        CreateOrUpdateRequestAccept32 accept) {
-        // Generated convenience method for hiddenGeneratedGetDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedGetDataSourceConnectionWithResponse(name, requestOptions).getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
-    }
-
-    /**
      * Lists all datasources available for a search service.
      *
-     * @param accept The Accept header.
      * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
      * property names, or '*' for all properties. The default is all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2989,12 +2842,9 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListDataSourcesResult getDataSourceConnections(CreateOrUpdateRequestAccept33 accept, List<String> select) {
+    ListDataSourcesResult getDataSourceConnections(List<String> select) {
         // Generated convenience method for getDataSourceConnectionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
         if (select != null) {
             requestOptions.addQueryParam("$select",
                 select.stream()
@@ -3006,105 +2856,8 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Creates a new datasource.
-     *
-     * @param dataSourceConnection The definition of the datasource to create.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection createDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSourceConnection, CreateOrUpdateRequestAccept34 accept) {
-        // Generated convenience method for hiddenGeneratedCreateDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedCreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
-            requestOptions).getValue().toObject(SearchIndexerDataSourceConnection.class);
-    }
-
-    /**
-     * Resets the change tracking state associated with an indexer.
-     *
-     * @param name The name of the indexer.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetIndexer(String name, CreateOrUpdateRequestAccept35 accept) {
-        // Generated convenience method for resetIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        resetIndexerWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Runs an indexer on-demand.
-     *
-     * @param name The name of the indexer.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runIndexer(String name, CreateOrUpdateRequestAccept36 accept) {
-        // Generated convenience method for runIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        runIndexerWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Retrieves an indexer definition.
-     *
-     * @param name The name of the indexer.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexer getIndexer(String name, CreateOrUpdateRequestAccept39 accept) {
-        // Generated convenience method for hiddenGeneratedGetIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedGetIndexerWithResponse(name, requestOptions).getValue().toObject(SearchIndexer.class);
-    }
-
-    /**
      * Lists all indexers available for a search service.
      *
-     * @param accept The Accept header.
      * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
      * property names, or '*' for all properties. The default is all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3117,12 +2870,9 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListIndexersResult getIndexers(CreateOrUpdateRequestAccept40 accept, List<String> select) {
+    ListIndexersResult getIndexers(List<String> select) {
         // Generated convenience method for getIndexersWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
         if (select != null) {
             requestOptions.addQueryParam("$select",
                 select.stream()
@@ -3134,84 +2884,8 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Creates a new indexer.
-     *
-     * @param indexer The definition of the indexer to create.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexer createIndexer(SearchIndexer indexer, CreateOrUpdateRequestAccept41 accept) {
-        // Generated convenience method for hiddenGeneratedCreateIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedCreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions).getValue()
-            .toObject(SearchIndexer.class);
-    }
-
-    /**
-     * Returns the current status and execution history of an indexer.
-     *
-     * @param name The name of the indexer.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the current status and execution history of an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerStatus getIndexerStatus(String name, CreateOrUpdateRequestAccept42 accept) {
-        // Generated convenience method for hiddenGeneratedGetIndexerStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedGetIndexerStatusWithResponse(name, requestOptions).getValue()
-            .toObject(SearchIndexerStatus.class);
-    }
-
-    /**
-     * Retrieves a skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of skills.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerSkillset getSkillset(String name, CreateOrUpdateRequestAccept45 accept) {
-        // Generated convenience method for hiddenGeneratedGetSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedGetSkillsetWithResponse(name, requestOptions).getValue()
-            .toObject(SearchIndexerSkillset.class);
-    }
-
-    /**
      * List all skillsets in a search service.
      *
-     * @param accept The Accept header.
      * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
      * property names, or '*' for all properties. The default is all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3224,12 +2898,9 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSkillsetsResult getSkillsets(CreateOrUpdateRequestAccept46 accept, List<String> select) {
+    ListSkillsetsResult getSkillsets(List<String> select) {
         // Generated convenience method for getSkillsetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
         if (select != null) {
             requestOptions.addQueryParam("$select",
                 select.stream()
@@ -3238,30 +2909,5 @@ public final class SearchIndexerClient {
                 false);
         }
         return getSkillsetsWithResponse(requestOptions).getValue().toObject(ListSkillsetsResult.class);
-    }
-
-    /**
-     * Creates a new skillset in a search service.
-     *
-     * @param skillset The skillset containing one or more skills to create in a search service.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of skills.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset, CreateOrUpdateRequestAccept47 accept) {
-        // Generated convenience method for hiddenGeneratedCreateSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedCreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions).getValue()
-            .toObject(SearchIndexerSkillset.class);
     }
 }

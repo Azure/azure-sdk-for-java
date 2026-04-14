@@ -175,9 +175,9 @@ public final class KnowledgeBaseRetrievalClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> retrieve(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String knowledgeBaseName,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData retrievalRequest,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
@@ -186,21 +186,13 @@ public final class KnowledgeBaseRetrievalClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> retrieveSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String knowledgeBaseName,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData retrievalRequest,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
     }
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -292,22 +284,15 @@ public final class KnowledgeBaseRetrievalClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retrieveWithResponseAsync(BinaryData retrievalRequest,
         RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.retrieve(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.retrieve(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
                 this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, context));
     }
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -397,8 +382,9 @@ public final class KnowledgeBaseRetrievalClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveWithResponse(BinaryData retrievalRequest, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, Context.NONE);
     }
 }

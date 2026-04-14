@@ -12,7 +12,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -21,7 +20,6 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept48;
 
 /**
  * Initializes a new instance of the synchronous KnowledgeBaseRetrievalClient type.
@@ -99,14 +97,6 @@ public final class KnowledgeBaseRetrievalClient {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
-     * "application/json;odata.metadata=minimal".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -199,32 +189,6 @@ public final class KnowledgeBaseRetrievalClient {
     Response<BinaryData> hiddenGeneratedRetrieveWithResponse(BinaryData retrievalRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.retrieveWithResponse(retrievalRequest, requestOptions);
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @param accept The Accept header.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
-        CreateOrUpdateRequestAccept48 accept) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (accept != null) {
-            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
-        }
-        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
-            .toObject(KnowledgeBaseRetrievalResult.class);
     }
 
     /**

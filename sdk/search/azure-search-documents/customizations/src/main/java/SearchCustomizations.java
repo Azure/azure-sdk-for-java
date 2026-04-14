@@ -46,6 +46,10 @@ public class SearchCustomizations extends Customization {
         removeGetApis(searchClient);
         removeGetApis(searchAsyncClient);
 
+        hideSearchDocumentsResultInternalProperties(
+            libraryCustomization.getPackage("com.azure.search.documents.models")
+                .getClass("SearchDocumentsResult"));
+
         hideWithResponseBinaryDataApis(searchClient);
         hideWithResponseBinaryDataApis(searchAsyncClient);
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexClient"));
@@ -169,5 +173,16 @@ public class SearchCustomizations extends Customization {
                     method.remove();
                 }
             })));
+    }
+
+    // @@access on model properties is not supported by the Java TypeSpec emitter — it only works on whole models and
+    // operations. This customization makes getNextLink() and getNextPageParameters() package-private since they are
+    // internal continuation details not meant for public consumption.
+    private static void hideSearchDocumentsResultInternalProperties(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            for (String methodName : Arrays.asList("getNextLink", "getNextPageParameters")) {
+                clazz.getMethodsByName(methodName).forEach(MethodDeclaration::setModifiers);
+            }
+        }));
     }
 }
