@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,11 @@ public final class RefreshExternalGovernanceStatusOperationResultMIInner extends
      * Resource properties.
      */
     private RefreshExternalGovernanceStatusOperationResultPropertiesMI innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -50,6 +56,15 @@ public final class RefreshExternalGovernanceStatusOperationResultMIInner extends
      */
     private RefreshExternalGovernanceStatusOperationResultPropertiesMI innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -184,6 +199,9 @@ public final class RefreshExternalGovernanceStatusOperationResultMIInner extends
                 } else if ("properties".equals(fieldName)) {
                     deserializedRefreshExternalGovernanceStatusOperationResultMIInner.innerProperties
                         = RefreshExternalGovernanceStatusOperationResultPropertiesMI.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRefreshExternalGovernanceStatusOperationResultMIInner.systemData
+                        = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
