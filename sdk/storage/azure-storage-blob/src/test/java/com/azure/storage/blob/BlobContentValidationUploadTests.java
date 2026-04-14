@@ -1086,6 +1086,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             "Downloaded data must match uploaded data (random size CRC64 header path, size=" + size + ")");
     }
 
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void uploadWithRandomSizeStructuredMessageRoundTripDataIntegrity() {
         int size = randomIntFromNamer(EXACTLY_4MB, 48 * Constants.MB + 1);
@@ -1133,6 +1134,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 + ")");
     }
 
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void blockBlobSimpleUploadRandomSizeRoundTripDataIntegrity() {
         int size = randomIntFromNamer(Constants.KB, 48 * Constants.MB + 1);
@@ -1152,6 +1154,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             "Downloaded data must match uploaded data (random block blob simple upload, size=" + size + ")");
     }
 
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void stageBlockRandomSizeRoundTripDataIntegrity() {
         int size = randomIntFromNamer(Constants.KB, 40 * Constants.MB + 1);
@@ -1173,6 +1176,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             "Downloaded data must match staged block (random size, size=" + size + ")");
     }
 
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void appendBlockRandomSizeRoundTripDataIntegrity() {
         int size = randomIntFromNamer(Constants.KB, 80 * Constants.MB + 1);
