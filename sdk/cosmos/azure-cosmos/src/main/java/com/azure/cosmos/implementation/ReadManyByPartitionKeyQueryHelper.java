@@ -20,6 +20,8 @@ import java.util.List;
 public class ReadManyByPartitionKeyQueryHelper {
 
     private static final String DEFAULT_TABLE_ALIAS = "c";
+    // Internal parameter prefix — uses double-underscore to avoid collisions with user-provided parameters
+    private static final String PK_PARAM_PREFIX = "@__rmPk_";
 
     public static SqlQuerySpec createReadManyByPkQuerySpec(
         String baseQueryText,
@@ -33,12 +35,12 @@ public class ReadManyByPartitionKeyQueryHelper {
 
         StringBuilder pkFilter = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>(baseParameters);
-        int paramCount = baseParameters.size();
+        int paramCount = 0;
 
         boolean isSinglePathPk = partitionKeySelectors.size() == 1;
 
         if (isSinglePathPk && pkDefinition.getKind() != PartitionKind.MULTI_HASH) {
-            // Single PK path — use IN clause: alias["pkPath"] IN (@pk0, @pk1, ...)
+            // Single PK path — use IN clause: alias["pkPath"] IN (@__rmPk_0, @__rmPk_1, ...)
             pkFilter.append(" ");
             pkFilter.append(tableAlias);
             pkFilter.append(partitionKeySelectors.get(0));
@@ -46,7 +48,7 @@ public class ReadManyByPartitionKeyQueryHelper {
             for (int i = 0; i < pkValues.size(); i++) {
                 PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
                 Object[] pkComponents = pkInternal.toObjectArray();
-                String pkParamName = "@pkParam" + paramCount;
+                String pkParamName = PK_PARAM_PREFIX + paramCount;
                 parameters.add(new SqlParameter(pkParamName, pkComponents[0]));
                 paramCount++;
 
@@ -65,7 +67,7 @@ public class ReadManyByPartitionKeyQueryHelper {
 
                 pkFilter.append("(");
                 for (int j = 0; j < pkComponents.length; j++) {
-                    String pkParamName = "@pkParam" + paramCount;
+                    String pkParamName = PK_PARAM_PREFIX + paramCount;
                     parameters.add(new SqlParameter(pkParamName, pkComponents[j]));
                     paramCount++;
 

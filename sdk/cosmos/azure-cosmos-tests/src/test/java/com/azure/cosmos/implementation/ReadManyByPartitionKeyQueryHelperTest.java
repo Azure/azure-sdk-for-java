@@ -37,7 +37,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
 
         assertThat(result.getQueryText()).contains("SELECT * FROM c WHERE");
         assertThat(result.getQueryText()).contains("IN (");
-        assertThat(result.getQueryText()).contains("@pkParam0");
+        assertThat(result.getQueryText()).contains("@__rmPk_0");
         assertThat(result.getParameters()).hasSize(1);
         assertThat(result.getParameters().get(0).getValue(Object.class)).isEqualTo("pk1");
     }
@@ -55,9 +55,9 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
 
         assertThat(result.getQueryText()).contains("IN (");
-        assertThat(result.getQueryText()).contains("@pkParam0");
-        assertThat(result.getQueryText()).contains("@pkParam1");
-        assertThat(result.getQueryText()).contains("@pkParam2");
+        assertThat(result.getQueryText()).contains("@__rmPk_0");
+        assertThat(result.getQueryText()).contains("@__rmPk_1");
+        assertThat(result.getQueryText()).contains("@__rmPk_2");
         assertThat(result.getParameters()).hasSize(3);
     }
 
@@ -89,7 +89,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         // Should AND the PK filter to the existing WHERE clause
         assertThat(result.getQueryText()).contains("WHERE (c.age > @minAge) AND (");
         assertThat(result.getQueryText()).contains("IN (");
-        assertThat(result.getParameters()).hasSize(2); // @minAge + @pkParam1
+        assertThat(result.getParameters()).hasSize(2); // @minAge + @__rmPk_0
         assertThat(result.getParameters().get(0).getName()).isEqualTo("@minAge");
     }
 
@@ -111,9 +111,9 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         assertThat(result.getQueryText()).contains("SELECT * FROM c WHERE");
         // Should use OR/AND pattern, not IN
         assertThat(result.getQueryText()).doesNotContain("IN (");
-        assertThat(result.getQueryText()).contains("c[\"city\"] = @pkParam0");
+        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
         assertThat(result.getQueryText()).contains("AND");
-        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @pkParam1");
+        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_1");
         assertThat(result.getParameters()).hasSize(2);
         assertThat(result.getParameters().get(0).getValue(Object.class)).isEqualTo("Redmond");
         assertThat(result.getParameters().get(1).getValue(Object.class)).isEqualTo("98052");
@@ -132,10 +132,10 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
 
         assertThat(result.getQueryText()).contains("OR");
-        assertThat(result.getQueryText()).contains("c[\"city\"] = @pkParam0");
-        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @pkParam1");
-        assertThat(result.getQueryText()).contains("c[\"city\"] = @pkParam2");
-        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @pkParam3");
+        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
+        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_1");
+        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_2");
+        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_3");
         assertThat(result.getParameters()).hasSize(4);
     }
 
@@ -151,7 +151,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
             "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
 
-        assertThat(result.getQueryText()).contains("c[\"city\"] = @pkParam0");
+        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
         // Should NOT include zipcode or areaCode since it's partial
         assertThat(result.getQueryText()).doesNotContain("zipcode");
         assertThat(result.getQueryText()).doesNotContain("areaCode");
@@ -170,8 +170,8 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
             "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
 
-        assertThat(result.getQueryText()).contains("c[\"city\"] = @pkParam0");
-        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @pkParam1");
+        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
+        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_1");
         assertThat(result.getQueryText()).doesNotContain("areaCode");
         assertThat(result.getParameters()).hasSize(2);
     }
@@ -191,7 +191,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             "SELECT c.name FROM c WHERE c.status = @status", baseParams, pkValues, selectors, pkDef);
 
         assertThat(result.getQueryText()).contains("WHERE (c.status = @status) AND (");
-        assertThat(result.getQueryText()).contains("c[\"city\"] = @pkParam1");
+        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
         assertThat(result.getParameters()).hasSize(3); // @status + 2 pk params
     }
 
@@ -277,8 +277,8 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
             "SELECT r.name FROM root r", new ArrayList<>(), pkValues, selectors, pkDef);
 
-        assertThat(result.getQueryText()).contains("r[\"city\"] = @pkParam0");
-        assertThat(result.getQueryText()).contains("r[\"zipcode\"] = @pkParam1");
+        assertThat(result.getQueryText()).contains("r[\"city\"] = @__rmPk_0");
+        assertThat(result.getQueryText()).contains("r[\"zipcode\"] = @__rmPk_1");
         assertThat(result.getQueryText()).doesNotContain("c[\"");
     }
 
