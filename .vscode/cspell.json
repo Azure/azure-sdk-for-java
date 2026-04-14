@@ -1577,6 +1577,7 @@
       "filename": "sdk/eventgrid/**",
       "words": [
         "mqtt",
+        "BSUID",
         "rservice", // appears in the name SignalRService
         "gcch",
         "updation" // current typo in a swagger
