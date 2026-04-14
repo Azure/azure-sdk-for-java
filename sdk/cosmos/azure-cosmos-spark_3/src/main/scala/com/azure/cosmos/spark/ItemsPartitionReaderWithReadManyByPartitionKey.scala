@@ -118,7 +118,14 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
   readManyOptionsImpl
     .setCustomItemSerializer(
       new CosmosItemSerializerNoExceptionWrapping {
-        override def serialize[T](item: T): util.Map[String, AnyRef] = ???
+        override def serialize[T](item: T): util.Map[String, AnyRef] = {
+          throw new UnsupportedOperationException(
+            s"Serialization is not supported by the custom item serializer in " +
+              s"ItemsPartitionReaderWithReadManyByPartitionKey; this serializer is intended " +
+              s"for deserializing read-many responses into SparkRowItem only. " +
+              s"Unexpected item type: ${if (item == null) "null" else item.getClass.getName}"
+          )
+        }
 
         override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
           if (jsonNodeMap == null) {
