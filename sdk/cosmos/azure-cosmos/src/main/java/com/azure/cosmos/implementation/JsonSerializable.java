@@ -55,10 +55,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
  */
 public class JsonSerializable {
-    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
+
+    private static CosmosItemSerializer internalDefaultSerializer() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer();
+    }
+
+    private static final ObjectMapper OBJECT_MAPPER= Utils.getSimpleObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializable.class);
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
 
@@ -247,7 +253,7 @@ public class JsonSerializable {
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public <T> void set(String propertyName, T value) {
-        set(propertyName, value, DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, false);
+        set(propertyName, value, internalDefaultSerializer(), false);
     }
 
     /**
@@ -281,7 +287,7 @@ public class JsonSerializable {
         } else {
             // Arrays, POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string
-            Map<String, Object> jsonTreeMap = itemSerializerAccessor.serializeSafe(itemSerializer, value);
+            Map<String, Object> jsonTreeMap = itemSerializerAccessor().serializeSafe(itemSerializer, value);
             if (jsonTreeMap instanceof ObjectNodeMap) {
                 this.propertyBag.set(propertyName, ((ObjectNodeMap) jsonTreeMap).getObjectNode());
             } else if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {

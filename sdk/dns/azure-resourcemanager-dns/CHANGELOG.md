@@ -4,11 +4,17 @@
 
 ### Features Added
 
+- Added `models.TlsaRecord`, `models.DsRecord`, `models.NaptrRecord` for new DNS record types.
+- Added `models.DelegationSignerInfo`, `models.SigningKey`, `models.Digest` for DNSSEC support.
+- Added `models.RecordSetsCreateOrUpdateHeaders`, `models.RecordSetsCreateOrUpdateResponse`.
+- Added `DnssecConfigs` client for DNSSEC configuration management.
+- Added `TLSA`, `DS`, `NAPTR` values to `models.RecordType`.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Removed `models.ZoneListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
+- Removed `models.RecordSetListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
+- Changed `models.DnsResourceReference` to be an immutable output-only model: constructor is now private, and `withDnsResources()` and `withTargetResource()` setters are removed.
 
 ## 2.53.7 (2026-03-30)
 

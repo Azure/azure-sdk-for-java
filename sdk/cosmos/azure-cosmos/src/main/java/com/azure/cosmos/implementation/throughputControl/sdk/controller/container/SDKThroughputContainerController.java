@@ -55,6 +55,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * 3. Start throughput refresh task if necessary
  */
 public class SDKThroughputContainerController implements IThroughputContainerController {
+    private static ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor databaseAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(SDKThroughputContainerController.class);
 
     private static final Duration DEFAULT_THROUGHPUT_REFRESH_INTERVAL = Duration.ofMinutes(15);
@@ -236,7 +240,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
         // use https://github.com/Azure/azure-sdk-for-java/issues/18776 to keep track for possible future work.
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
         QueryFeedOperationState state = new QueryFeedOperationState(
-            ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor().getCosmosAsyncClient(this.targetContainer.getDatabase()),
+            databaseAccessor().getCosmosAsyncClient(this.targetContainer.getDatabase()),
             "resolveThroughputByResourceId",
             this.targetContainer.getDatabase().getId(),
             this.targetContainer.getId(),
