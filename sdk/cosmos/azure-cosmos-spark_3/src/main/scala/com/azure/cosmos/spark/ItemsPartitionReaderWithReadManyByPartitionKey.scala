@@ -170,41 +170,66 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
       .enable(true)
       .build
 
+  private trait CloseableSparkRowItemIterator {
+    def hasNext: Boolean
+    def next(): SparkRowItem
+    def close(): Unit
+  }
+
+  private object EmptySparkRowItemIterator extends CloseableSparkRowItemIterator {
+    override def hasNext: Boolean = false
+
+    override def next(): SparkRowItem = {
+      throw new java.util.NoSuchElementException("No items available for empty partition-key list.")
+    }
+
+    override def close(): Unit = {}
+  }
+
   // Single iterator over all PKs — the SDK handles per-physical-partition batching
   // internally to avoid oversized SQL queries.
-  private lazy val iterator = new TransientIOErrorsRetryingIterator[SparkRowItem](
-    continuationToken => {
-      val options = new CosmosReadManyRequestOptions()
-      val optionsImpl = ImplementationBridgeHelpers
-        .CosmosReadManyRequestOptionsHelper
-        .getCosmosReadManyRequestOptionsAccessor
-        .getImpl(options)
+  // Short-circuit empty PK lists locally because the SDK rejects empty partition-key lists.
+  private lazy val iterator: CloseableSparkRowItemIterator =
+    if (pkList.isEmpty) {
+      EmptySparkRowItemIterator
+    } else {
+      new CloseableSparkRowItemIterator {
+        private val delegate = new TransientIOErrorsRetryingIterator[SparkRowItem](
+          continuationToken => {
+            val options = new CosmosReadManyRequestOptions()
+            val optionsImpl = ImplementationBridgeHelpers
+              .CosmosReadManyRequestOptionsHelper
+              .getCosmosReadManyRequestOptionsAccessor
+              .getImpl(options)
 
-      ThroughputControlHelper.populateThroughputControlGroupName(optionsImpl, readConfig.throughputControlConfig)
+            ThroughputControlHelper.populateThroughputControlGroupName(optionsImpl, readConfig.throughputControlConfig)
 
-      if (operationContextAndListenerTuple.isDefined) {
-        optionsImpl.setOperationContextAndListenerTuple(operationContextAndListenerTuple.get)
+            if (operationContextAndListenerTuple.isDefined) {
+              optionsImpl.setOperationContextAndListenerTuple(operationContextAndListenerTuple.get)
+            }
+
+            optionsImpl.setCustomItemSerializer(readManyOptionsImpl.getCustomItemSerializer)
+
+            readConfig.customQuery match {
+              case Some(query) =>
+                cosmosAsyncContainer.readManyByPartitionKey(pkList, query.toSqlQuerySpec, options, classOf[SparkRowItem])
+              case None =>
+                cosmosAsyncContainer.readManyByPartitionKey(pkList, options, classOf[SparkRowItem])
+            }
+          },
+          readConfig.maxItemCount,
+          readConfig.prefetchBufferSize,
+          operationContextAndListenerTuple,
+          None
+        )
+
+        override def hasNext: Boolean = delegate.hasNext
+
+        override def next(): SparkRowItem = delegate.next()
+
+        override def close(): Unit = delegate.close()
       }
-
-      optionsImpl.setCustomItemSerializer(readManyOptionsImpl.getCustomItemSerializer)
-
-      if (pkList.isEmpty) {
-        cosmosAsyncContainer.readManyByPartitionKey(
-          new java.util.ArrayList[PartitionKey](), options, classOf[SparkRowItem])
-      } else {
-        readConfig.customQuery match {
-          case Some(query) =>
-            cosmosAsyncContainer.readManyByPartitionKey(pkList, query.toSqlQuerySpec, options, classOf[SparkRowItem])
-          case None =>
-            cosmosAsyncContainer.readManyByPartitionKey(pkList, options, classOf[SparkRowItem])
-        }
-      }
-    },
-    readConfig.maxItemCount,
-    readConfig.prefetchBufferSize,
-    operationContextAndListenerTuple,
-    None
-  )
+    }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
