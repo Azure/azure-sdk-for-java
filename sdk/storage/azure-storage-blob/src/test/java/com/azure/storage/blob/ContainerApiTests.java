@@ -2128,4 +2128,6 @@ public class ContainerApiTests extends BlobTestBase {
     //        then:
     //        assertThrows(BlobStorageException.class, () ->
     //    }
+
+    // Need to create a container client test here to test that sessions have been enabled and used
 }
