@@ -10,8 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.implementation.models.AuthenticationType;
-import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
@@ -2130,20 +2128,4 @@ public class ContainerApiTests extends BlobTestBase {
     //        then:
     //        assertThrows(BlobStorageException.class, () ->
     //    }
-
-    @Test
-    //    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
-    public void createSessionReturnsTokenAndKey() {
-        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
-        Response<CreateSessionResponse> response = oauthCc.createSessionWithResponse(null, null);
-
-        assertResponseStatusCode(response, 201);
-        CreateSessionResponse session = response.getValue();
-        assertNotNull(session.getId());
-        assertNotNull(session.getExpiration());
-        assertNotNull(session.getCredentials());
-        assertNotNull(session.getCredentials().getSessionToken());
-        assertNotNull(session.getCredentials().getSessionKey());
-        assertEquals(AuthenticationType.HMAC, session.getAuthenticationType());
-    }
 }

@@ -2144,22 +2144,4 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
     }
-
-    @Test
-    //    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
-    public void createSessionReturnsTokenAndKey() {
-        BlobContainerAsyncClient oauthCcAsync
-            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-
-        StepVerifier.create(oauthCcAsync.createSessionWithResponse()).assertNext(response -> {
-            assertEquals(201, response.getStatusCode());
-            CreateSessionResponse session = response.getValue();
-            assertNotNull(session.getId());
-            assertNotNull(session.getExpiration());
-            assertNotNull(session.getCredentials());
-            assertNotNull(session.getCredentials().getSessionToken());
-            assertNotNull(session.getCredentials().getSessionKey());
-            assertEquals(AuthenticationType.HMAC, session.getAuthenticationType());
-        }).verifyComplete();
-    }
 }

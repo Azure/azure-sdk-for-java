@@ -5,6 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
@@ -18,6 +19,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BlobSessionClientTests extends BlobTestBase {
+
+    @Test
+    public void createSessionReturnsTokenAndKey() {
+        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
+        BlobSessionClient sessionClient = new BlobSessionClient(oauthCc.getHttpPipeline(),
+            oauthCc.getBlobContainerUrl(), BlobServiceVersion.getLatest(), cc.getBlobContainerName());
+
+        StorageSessionCredential credential = sessionClient.createSessionSync();
+
+        assertNotNull(credential);
+        assertNotNull(credential.getSessionToken());
+        assertNotNull(credential.getSessionKey());
+        assertNotNull(credential.getExpiration());
+        assertEquals(false, credential.isExpired());
+    }
+
+    @Test
+    public void createSessionAsyncReturnsTokenAndKey() {
+        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(ccAsync.getBlobContainerName());
+        BlobSessionClient sessionClient = new BlobSessionClient(oauthCc.getHttpPipeline(),
+            oauthCc.getBlobContainerUrl(), BlobServiceVersion.getLatest(), ccAsync.getBlobContainerName());
+
+        StepVerifier.create(sessionClient.createSessionAsync()).assertNext(credential -> {
+            assertNotNull(credential);
+            assertNotNull(credential.getSessionToken());
+            assertNotNull(credential.getSessionKey());
+            assertNotNull(credential.getExpiration());
+            assertEquals(false, credential.isExpired());
+        }).verifyComplete();
+    }
 
     @Test
     public void createSessionSyncUsesProvidedHttpPipeline() {
@@ -47,6 +78,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             assertNotNull(credential.getSessionToken());
             assertNotNull(credential.getSessionKey());
             assertNotNull(credential.getExpiration());
+            //            assertEquals(AuthenticationType.HMAC, session.getAuthenticationType());
         }).verifyComplete();
 
         assertEquals(1, policyInvocationCount.get());
