@@ -17,6 +17,7 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationRes
 import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.TrafficManagerNameAvailabilityInner;
 import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
+import com.azure.resourcemanager.trafficmanager.models.ProfileUpdate;
 import reactor.core.publisher.Mono;
 
 /**
@@ -151,8 +152,8 @@ public interface ProfilesClient extends InnerSupportsGet<ProfileInner>, InnerSup
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProfileInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
-        ProfileInner parameters);
+    Mono<Response<ProfileInner>> updateV2WithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpdate parameters);
 
     /**
      * Update a Traffic Manager profile.
@@ -166,7 +167,7 @@ public interface ProfilesClient extends InnerSupportsGet<ProfileInner>, InnerSup
      * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters);
+    Mono<ProfileInner> updateV2Async(String resourceGroupName, String profileName, ProfileUpdate parameters);
 
     /**
      * Update a Traffic Manager profile.
@@ -181,7 +182,7 @@ public interface ProfilesClient extends InnerSupportsGet<ProfileInner>, InnerSup
      * @return class representing a Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProfileInner> updateWithResponse(String resourceGroupName, String profileName, ProfileInner parameters,
+    Response<ProfileInner> updateV2WithResponse(String resourceGroupName, String profileName, ProfileUpdate parameters,
         Context context);
 
     /**
@@ -196,7 +197,7 @@ public interface ProfilesClient extends InnerSupportsGet<ProfileInner>, InnerSup
      * @return class representing a Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters);
+    ProfileInner updateV2(String resourceGroupName, String profileName, ProfileUpdate parameters);
 
     /**
      * Deletes a Traffic Manager profile.

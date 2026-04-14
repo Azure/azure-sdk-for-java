@@ -1,8 +1,48 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.1 (2026-04-14)
 
-### Other Changes
+### Breaking Changes
+
+#### `models.ProfileListResult` was removed
+
+#### `models.TrafficFlow` was modified
+
+* `TrafficFlow()` was changed to private access
+* `withQueryExperiences(java.util.List)` was removed
+* `withLongitude(java.lang.Double)` was removed
+* `withLatitude(java.lang.Double)` was removed
+* `withSourceIp(java.lang.String)` was removed
+
+#### `models.QueryExperience` was modified
+
+* `QueryExperience()` was changed to private access
+* `withLatency(java.lang.Double)` was removed
+* `withQueryCount(int)` was removed
+* `withEndpointId(int)` was removed
+
+#### `models.HeatMapEndpoint` was modified
+
+* `HeatMapEndpoint()` was changed to private access
+* `withResourceId(java.lang.String)` was removed
+* `withEndpointId(java.lang.Integer)` was removed
+
+#### `models.Region` was modified
+
+* `Region()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+* `withRegions(java.util.List)` was removed
+
+### Features Added
+
+* `models.EndpointUpdate` was added
+
+* `models.ProfilePropertiesUpdate` was added
+
+* `models.RecordType` was added
+
+* `models.ProfileUpdate` was added
 
 ## 2.53.7 (2026-03-30)
 

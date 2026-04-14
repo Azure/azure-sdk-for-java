@@ -39,6 +39,7 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.TrafficManagerNameAvailabilityInner;
 import com.azure.resourcemanager.trafficmanager.implementation.models.ProfileListResult;
 import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelativeDnsNameAvailabilityParameters;
+import com.azure.resourcemanager.trafficmanager.models.ProfileUpdate;
 import reactor.core.publisher.Mono;
 
 /**
@@ -94,11 +95,11 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileInner>> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<ProfileInner>> updateV2(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") ProfileInner parameters, Context context);
+            @BodyParam("application/json") ProfileUpdate parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
@@ -432,8 +433,8 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProfileInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
-        ProfileInner parameters) {
+    public Mono<Response<ProfileInner>> updateV2WithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -456,7 +457,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+        return FluxUtil.withContext(context -> service.updateV2(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, profileName, contentType, accept, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -475,8 +476,8 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProfileInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
-        ProfileInner parameters, Context context) {
+    private Mono<Response<ProfileInner>> updateV2WithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -500,7 +501,7 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.updateV2(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, profileName, contentType, accept, parameters, context);
     }
 
@@ -516,8 +517,8 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return updateWithResponseAsync(resourceGroupName, profileName, parameters)
+    public Mono<ProfileInner> updateV2Async(String resourceGroupName, String profileName, ProfileUpdate parameters) {
+        return updateV2WithResponseAsync(resourceGroupName, profileName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -534,9 +535,9 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @return class representing a Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> updateWithResponse(String resourceGroupName, String profileName,
-        ProfileInner parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
+    public Response<ProfileInner> updateV2WithResponse(String resourceGroupName, String profileName,
+        ProfileUpdate parameters, Context context) {
+        return updateV2WithResponseAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
@@ -551,8 +552,8 @@ public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>,
      * @return class representing a Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return updateWithResponse(resourceGroupName, profileName, parameters, Context.NONE).getValue();
+    public ProfileInner updateV2(String resourceGroupName, String profileName, ProfileUpdate parameters) {
+        return updateV2WithResponse(resourceGroupName, profileName, parameters, Context.NONE).getValue();
     }
 
     /**

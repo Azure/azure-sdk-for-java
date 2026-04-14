@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
+import com.azure.resourcemanager.trafficmanager.models.EndpointUpdate;
 import reactor.core.publisher.Mono;
 
 /**
@@ -166,8 +167,8 @@ public interface EndpointsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
-        EndpointTypes endpointType, String endpointName, EndpointInner parameters);
+    Mono<Response<EndpointInner>> updateV2WithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointUpdate parameters);
 
     /**
      * Update a Traffic Manager endpoint.
@@ -183,8 +184,8 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EndpointInner> updateAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
-        String endpointName, EndpointInner parameters);
+    Mono<EndpointInner> updateV2Async(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointUpdate parameters);
 
     /**
      * Update a Traffic Manager endpoint.
@@ -201,8 +202,8 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointInner> updateWithResponse(String resourceGroupName, String profileName, EndpointTypes endpointType,
-        String endpointName, EndpointInner parameters, Context context);
+    Response<EndpointInner> updateV2WithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointUpdate parameters, Context context);
 
     /**
      * Update a Traffic Manager endpoint.
@@ -218,8 +219,8 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointInner update(String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName,
-        EndpointInner parameters);
+    EndpointInner updateV2(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointUpdate parameters);
 
     /**
      * Deletes a Traffic Manager endpoint.
