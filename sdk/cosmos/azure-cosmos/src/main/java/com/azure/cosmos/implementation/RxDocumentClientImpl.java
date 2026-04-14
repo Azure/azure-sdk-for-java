@@ -4508,7 +4508,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         int fluxConcurrency = Math.min(queryFluxes.size(),
                             Math.max(Configs.getCPUCnt(), 1));
 
-                        return Flux.mergeSequential(queryFluxes, fluxConcurrency, 1);
+                        return Flux.merge(queryFluxes, fluxConcurrency, 1);
                     });
             });
     }
