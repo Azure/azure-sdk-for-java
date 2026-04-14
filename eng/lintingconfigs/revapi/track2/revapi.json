@@ -1686,6 +1686,14 @@
             "match": "method .* com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:with.*\\(.*\\).*"
           },
           "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.privatedns\\.models\\.(PrivateZoneListResult|RecordSetListResult|VirtualNetworkLinkListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }
       ]
     }
