@@ -1,14 +1,14 @@
 # Release History
 
-## 2.54.0-beta.1 (2026-04-14)
+## 2.54.0-beta.1 (Unreleased)
+
+### Features Added
 
 ### Breaking Changes
 
-#### `models.VirtualNetworkLinkListResult` was removed
+### Bugs Fixed
 
-#### `models.PrivateZoneListResult` was removed
-
-#### `models.RecordSetListResult` was removed
+### Other Changes
 
 ## 2.53.7 (2026-03-30)
 
