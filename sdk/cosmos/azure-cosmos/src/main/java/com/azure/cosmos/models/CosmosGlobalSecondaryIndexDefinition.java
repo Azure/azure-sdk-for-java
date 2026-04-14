@@ -25,13 +25,6 @@ public final class CosmosGlobalSecondaryIndexDefinition {
 
     private final JsonSerializable jsonSerializable;
 
-    static {
-        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
-            .setCosmosGlobalSecondaryIndexDefinitionAccessor(
-                CosmosGlobalSecondaryIndexDefinition::setSourceContainerRidInternal
-            );
-    }
-
     /**
      * Constructor
      */
@@ -132,6 +125,9 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     }
 
     static void initialize() {
-        // no-op, will trigger static initializer which will register the accessor
+        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
+            .setCosmosGlobalSecondaryIndexDefinitionAccessor(
+                (definition, sourceCollectionRid) -> definition.setSourceContainerRidInternal(sourceCollectionRid)
+            );
     }
 }
