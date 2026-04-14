@@ -86,7 +86,7 @@ public class IndexManagementTests extends SearchTestBase {
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
-        sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
+        sharedSynonymMap = sharedIndexClient.createOrUpdateSynonymMap(sharedSynonymMap);
     }
 
     @AfterAll

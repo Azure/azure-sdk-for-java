@@ -432,7 +432,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             return next.process();
         });
 
-        SearchAsyncClient client = clientBuilder.buildAsyncClient();
+        SearchAsyncClient client = builder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
             = getSenderBuilder().documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlushInterval(Duration.ofSeconds(5))
