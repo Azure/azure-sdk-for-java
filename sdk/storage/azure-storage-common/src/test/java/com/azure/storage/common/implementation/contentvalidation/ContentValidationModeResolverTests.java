@@ -4,7 +4,9 @@
 package com.azure.storage.common.implementation.contentvalidation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ParallelTransferOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -215,5 +217,58 @@ public class ContentValidationModeResolverTests {
     public void validateComputeMd5ThrowsForAuto() {
         assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
             .validateTransactionalChecksumOptions(true, ContentValidationAlgorithm.AUTO));
+    }
+
+    // ===========================================================================================
+    // validateProgressWithContentValidation
+    // ===========================================================================================
+
+    @Test
+    public void validateProgressWithContentValidationPassesWhenNoProgress() {
+        assertDoesNotThrow(() -> ContentValidationModeResolver
+            .validateProgressWithContentValidation((ProgressListener) null, ContentValidationAlgorithm.CRC64));
+        assertDoesNotThrow(() -> ContentValidationModeResolver
+            .validateProgressWithContentValidation((ProgressListener) null, ContentValidationAlgorithm.AUTO));
+    }
+
+    @Test
+    public void validateProgressWithContentValidationPassesWhenNoneOrNullAlgorithm() {
+        ProgressListener listener = l -> {
+        };
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateProgressWithContentValidation(listener, null));
+        assertDoesNotThrow(() -> ContentValidationModeResolver.validateProgressWithContentValidation(listener,
+            ContentValidationAlgorithm.NONE));
+    }
+
+    @Test
+    public void validateProgressWithContentValidationPassesWhenParallelOptionsNull() {
+        assertDoesNotThrow(() -> ContentValidationModeResolver
+            .validateProgressWithContentValidation((ParallelTransferOptions) null, ContentValidationAlgorithm.CRC64));
+    }
+
+    @Test
+    public void validateProgressWithContentValidationThrowsForCrc64() {
+        ProgressListener listener = l -> {
+        };
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateProgressWithContentValidation(listener, ContentValidationAlgorithm.CRC64));
+        assertEquals(ContentValidationModeResolver.PROGRESS_CONFLICTS_TRANSFER_CONTENT_VALIDATION_MESSAGE,
+            ex.getMessage());
+    }
+
+    @Test
+    public void validateProgressWithContentValidationThrowsForAuto() {
+        ProgressListener listener = l -> {
+        };
+        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateProgressWithContentValidation(listener, ContentValidationAlgorithm.AUTO));
+    }
+
+    @Test
+    public void validateProgressWithContentValidationParallelOptionsDelegatesToListener() {
+        ParallelTransferOptions opts = new ParallelTransferOptions().setProgressListener(l -> {
+        });
+        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
+            .validateProgressWithContentValidation(opts, ContentValidationAlgorithm.CRC64));
     }
 }

@@ -86,6 +86,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1534,6 +1535,8 @@ public class BlobAsyncClientBase {
         BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
         final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        ContentValidationModeResolver.validateProgressWithContentValidation(finalParallelTransferOptions,
+            options.getContentValidationAlgorithm());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 

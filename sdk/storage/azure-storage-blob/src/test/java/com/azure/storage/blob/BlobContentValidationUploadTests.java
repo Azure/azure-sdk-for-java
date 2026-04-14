@@ -24,6 +24,7 @@ import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
@@ -40,8 +41,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -879,132 +880,44 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     // ===========================================================================================
-    // Progress reporting tests with content validation (structured message)
-    //
-    // ProgressListener receives the byte count of the wire payload (structured message), not raw content length.
-    // Expected values match {@link StructuredMessageEncoder} with segment size
-    // {@link StructuredMessageConstants#V1_DEFAULT_SEGMENT_CONTENT_LENGTH}, as in {@code StorageContentValidationPolicy}.
-    // Only APIs that accept ParallelTransferOptions (and thus setProgressListener) are tested here.
-    // The pre-encoded byte count is difficult if not impossible to compute without subclassing ProgressListener.
+    // Progress reporting (transfer validation must be NONE/null when a progress listener is set)
     // ===========================================================================================
 
-    @Test
-    public void uploadProgressReportsEncodedBytes() {
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadWithProgressAndNonNoneContentValidationThrows(ContentValidationAlgorithm algorithm) {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         InputStream data = new ByteArrayInputStream(randomData);
-        AtomicLong progressReported = new AtomicLong(0);
 
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
-                .setProgressListener(progressReported::set))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data).setParallelTransferOptions(
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB).setProgressListener(l -> {
+            })).setRequestConditions(new BlobRequestConditions()).setContentValidationAlgorithm(algorithm);
 
-        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
-        assertEquals(expectedStructuredMessageEncodedLength(TEN_MB), progressReported.get(),
-            "Progress should report encoded (structured message) byte count");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> client.uploadWithResponse(options, null, Context.NONE));
+        assertEquals(ContentValidationModeResolver.PROGRESS_CONFLICTS_TRANSFER_CONTENT_VALIDATION_MESSAGE,
+            ex.getMessage());
     }
 
-    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
-    @Test
-    public void uploadChunkedProgressReportsEncodedBytes() {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-
-        byte[] randomData = getRandomByteArray(TEN_MB);
-        InputStream data = new ByteArrayInputStream(randomData);
-        long blockSize = 2L * Constants.MB;
-        AtomicLong progressReported = new AtomicLong(0);
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                .setMaxSingleUploadSizeLong(blockSize)
-                .setProgressListener(progressReported::set))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
-        assertEquals(expectedStructuredMessageEncodedLengthChunked(TEN_MB, blockSize), progressReported.get(),
-            "Progress should report encoded (structured message) byte count");
-    }
-
-    @Test
-    public void uploadFromFileProgressReportsEncodedBytes() throws IOException {
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadFromFileWithProgressAndNonNoneContentValidationThrows(ContentValidationAlgorithm algorithm)
+        throws IOException {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
 
         File tempFile = getRandomFile(TEN_MB);
-        AtomicLong progressReported = new AtomicLong(0);
 
-        BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
-                .setProgressListener(progressReported::set))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        BlobUploadFromFileOptions options
+            = new BlobUploadFromFileOptions(tempFile.getAbsolutePath()).setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB).setProgressListener(l -> {
+                })).setContentValidationAlgorithm(algorithm);
 
-        assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
-        assertEquals(expectedStructuredMessageEncodedLength(TEN_MB), progressReported.get(),
-            "Progress should report encoded (structured message) byte count");
-    }
-
-    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
-    @Test
-    public void uploadFromFileChunkedProgressReportsEncodedBytes() throws IOException {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-
-        File tempFile = getRandomFile(TEN_MB);
-        long blockSize = 2L * Constants.MB;
-        AtomicLong progressReported = new AtomicLong(0);
-
-        BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                .setMaxSingleUploadSizeLong(blockSize)
-                .setProgressListener(progressReported::set))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
-        assertEquals(expectedStructuredMessageEncodedLengthChunked(TEN_MB, blockSize), progressReported.get(),
-            "Progress should report encoded (structured message) byte count");
-    }
-
-    @Test
-    public void blockBlobOutputStreamProgressReportsEncodedBytes() throws Exception {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        BlockBlobClient client = blobClient.getBlockBlobClient();
-
-        byte[] randomData = getRandomByteArray(TEN_MB);
-        AtomicLong progressReported = new AtomicLong(0);
-
-        try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
-                .setProgressListener(progressReported::set))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))) {
-            os.write(randomData);
-        }
-
-        assertEquals(expectedStructuredMessageEncodedLength(TEN_MB), progressReported.get(),
-            "Progress should report encoded (structured message) byte count");
-    }
-
-    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
-    @Test
-    public void blockBlobOutputStreamChunkedProgressReportsEncodedBytes() throws Exception {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        BlockBlobClient client = blobClient.getBlockBlobClient();
-
-        byte[] randomData = getRandomByteArray(TEN_MB);
-        long blockSize = 2L * Constants.MB;
-        AtomicLong progressReported = new AtomicLong(0);
-
-        try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                .setMaxSingleUploadSizeLong(blockSize)
-                .setProgressListener(progressReported::set))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))) {
-            os.write(randomData);
-        }
-
-        assertEquals(expectedStructuredMessageEncodedLengthChunked(TEN_MB, blockSize), progressReported.get(),
-            "Progress should report encoded (structured message) byte count");
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> client.uploadFromFileWithResponse(options, null, Context.NONE));
+        assertEquals(ContentValidationModeResolver.PROGRESS_CONFLICTS_TRANSFER_CONTENT_VALIDATION_MESSAGE,
+            ex.getMessage());
     }
 
     // ===========================================================================================
@@ -1155,8 +1068,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadWithRandomSizeCrc64HeaderRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int size = r.nextInt(Constants.KB, EXACTLY_4MB);
+        int size = randomIntFromNamer(Constants.KB, EXACTLY_4MB);
 
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
         byte[] randomData = getRandomByteArray(size);
@@ -1176,8 +1088,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadWithRandomSizeStructuredMessageRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int size = r.nextInt(EXACTLY_4MB, 48 * Constants.MB + 1);
+        int size = randomIntFromNamer(EXACTLY_4MB, 48 * Constants.MB + 1);
 
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
         byte[] randomData = getRandomByteArray(size);
@@ -1198,11 +1109,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadChunkedRandomSizesRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
+        Random rnd = newRandomFromNamer();
         long[] blockSizeChoices = { Constants.MB, 2L * Constants.MB, 4L * Constants.MB, 8L * Constants.MB };
-        long blockSize = blockSizeChoices[r.nextInt(blockSizeChoices.length)];
+        long blockSize = blockSizeChoices[rnd.nextInt(blockSizeChoices.length)];
         int minTotal = (int) Math.max(24L * Constants.MB, 2 * blockSize);
-        int totalSize = r.nextInt(minTotal, 80 * Constants.MB + 1);
+        int totalSize = minTotal + rnd.nextInt(80 * Constants.MB + 1 - minTotal);
 
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
         byte[] randomData = getRandomByteArray(totalSize);
@@ -1224,8 +1135,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void blockBlobSimpleUploadRandomSizeRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int size = r.nextInt(Constants.KB, 48 * Constants.MB + 1);
+        int size = randomIntFromNamer(Constants.KB, 48 * Constants.MB + 1);
 
         BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -1244,8 +1154,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void stageBlockRandomSizeRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int size = r.nextInt(Constants.KB, 40 * Constants.MB + 1);
+        int size = randomIntFromNamer(Constants.KB, 40 * Constants.MB + 1);
 
         BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
         BlockBlobClient client = blobClient.getBlockBlobClient();
@@ -1266,8 +1175,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void appendBlockRandomSizeRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int size = r.nextInt(Constants.KB, 80 * Constants.MB + 1);
+        int size = randomIntFromNamer(Constants.KB, 80 * Constants.MB + 1);
 
         BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
         AppendBlobClient client = blobClient.getAppendBlobClient();
@@ -1288,10 +1196,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadPagesRandomAlignedSizeRoundTripDataIntegrity() {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int minPages = (EXACTLY_4MB + PAGE_BYTES - 1) / PAGE_BYTES;
-        int maxPages = (16 * Constants.MB) / PAGE_BYTES;
-        int numPages = r.nextInt(minPages, maxPages + 1);
+        // Put Page allows at most 4 MiB per request; keep one uploadPages call within that limit.
+        int minPages = 1;
+        int maxPages = FOUR_MB_PAGE_ALIGNED / PAGE_BYTES;
+        int numPages = randomIntFromNamer(minPages, maxPages + 1);
         int sizeBytes = numPages * PAGE_BYTES;
 
         BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
@@ -1320,8 +1228,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadFromFileLargeBlobChunkedWithConcurrency(ContentValidationAlgorithm algorithm) throws IOException {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
-        int sizeBytes = (int) r.nextLong(LARGE_UPLOAD_MIN_BYTES, LARGE_UPLOAD_MAX_BYTES + 1);
+        int sizeBytes = (int) randomLongFromNamer(LARGE_UPLOAD_MIN_BYTES, LARGE_UPLOAD_MAX_BYTES + 1);
         File sourceFile = getRandomFile(sizeBytes);
         File outFile = Files.createTempFile("blob-cv-large-dl", ".bin").toFile();
         outFile.deleteOnExit();
