@@ -1511,34 +1511,4 @@ public final class BlobContainerClient {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
-
-    /**
-     * Creates a session scoped to this container. The session provides temporary credentials (a session token and
-     * session key) that can be used to sign subsequent requests using the Shared Key protocol.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link CreateSessionResponse} with session credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateSessionResponse> createSessionWithResponse(Duration timeout, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        CreateSessionConfiguration config
-            = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
-        Callable<Response<CreateSessionResponse>> operation = () -> this.azureBlobStorage.getContainers()
-            .createSessionWithResponse(containerName, config, null, null, finalContext);
-        return sendRequest(operation, timeout, BlobStorageException.class);
-    }
-
-    /**
-     * Creates a session scoped to this container. The session provides temporary credentials (a session token and
-     * session key) that can be used to sign subsequent requests using the Shared Key protocol.
-     *
-     * @return The {@link CreateSessionResponse} with session credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateSessionResponse createSession() {
-        return createSessionWithResponse(null, Context.NONE).getValue();
-    }
-
 }
