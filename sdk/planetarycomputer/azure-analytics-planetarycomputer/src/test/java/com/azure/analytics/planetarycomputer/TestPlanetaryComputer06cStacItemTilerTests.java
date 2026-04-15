@@ -33,8 +33,8 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         CropGeoJsonOptions options
             = new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData
-            = dataClient.cropGeoJsonWithDimensions(collectionId, itemId, 512, 512, "png", options, feature, null);
+        BinaryData imageData = dataClient.cropGeoJsonWithDimensions(collectionId, itemId, 512, 512, "png", options,
+            feature, CropGeoJsonWithDimensionsContentType.IMAGE_PNG);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -87,7 +87,8 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         GetPartOptions options
             = new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData = dataClient.getPart(collectionId, itemId, minx, miny, maxx, maxy, "png", options, null);
+        BinaryData imageData = dataClient.getPart(collectionId, itemId, minx, miny, maxx, maxy, "png", options,
+            GetPartContentType.IMAGE_PNG);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -110,7 +111,7 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
             = new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
         BinaryData imageData = dataClient.getPartWithDimensions(collectionId, itemId, minx, miny, maxx, maxy, 256, 256,
-            "png", options, null);
+            "png", options, GetPartWithDimensionsContentType.IMAGE_PNG);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };

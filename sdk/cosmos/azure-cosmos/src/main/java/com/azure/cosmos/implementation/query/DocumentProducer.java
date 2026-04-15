@@ -50,9 +50,9 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
-
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
     private int retries;
@@ -164,7 +164,7 @@ class DocumentProducer<T> {
         this.correlatedActivityId = correlatedActivityId;
 
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null
-            ? qryOptionsAccessor.clone(cosmosQueryRequestOptions)
+            ? qryOptionsAccessor().clone(cosmosQueryRequestOptions)
             : new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
 
@@ -208,8 +208,8 @@ class DocumentProducer<T> {
                         top,
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
-                        qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                        qryOptionsAccessor().getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+                        qryOptionsAccessor().getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
                         client.getGlobalEndpointManager(),
                         client.getGlobalPartitionEndpointManagerForCircuitBreaker()
                 )
@@ -332,7 +332,7 @@ class DocumentProducer<T> {
             collectionRid,
             range,
             true,
-            qryOptionsAccessor.getProperties(cosmosQueryRequestOptions));
+            qryOptionsAccessor().getProperties(cosmosQueryRequestOptions));
     }
 
     private boolean isSplitOrMerge(CosmosException e) {

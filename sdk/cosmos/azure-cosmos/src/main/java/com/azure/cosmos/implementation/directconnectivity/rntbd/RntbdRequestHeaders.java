@@ -49,6 +49,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @JsonFilter("RntbdToken")
 final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
+    private static ImplementationBridgeHelpers.PriorityLevelHelper.PriorityLevelAccessor priorityLevelAccessor() {
+        return ImplementationBridgeHelpers.PriorityLevelHelper.getPriorityLevelAccessor();
+    }
+
     // region Fields
 
     private static final String URL_TRIM = "/";
@@ -793,9 +797,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             }
 
             this.getPriorityLevel().setValue(
-                ImplementationBridgeHelpers
-                    .PriorityLevelHelper
-                    .getPriorityLevelAccessor()
+                priorityLevelAccessor()
                     .getPriorityValue(priorityLevel)
             );
         }
