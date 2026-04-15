@@ -294,7 +294,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void rejectsGroupByQuery() {
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
-        SqlQuerySpec groupByQuery = new SqlQuerySpec("SELECT c.mypk, COUNT(1) as cnt FROM c GROUP BY c.mypk");
+        SqlQuerySpec groupByQuery = new SqlQuerySpec("SELECT c.mypk FROM c GROUP BY c.mypk");
 
         try {
             singlePkContainer.readManyByPartitionKey(pkValues, groupByQuery, null, ObjectNode.class)
@@ -302,6 +302,20 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             fail("Should have thrown IllegalArgumentException for GROUP BY query");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).contains("GROUP BY");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void rejectsGroupByWithAggregateQuery() {
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
+        SqlQuerySpec groupByWithAggregateQuery = new SqlQuerySpec("SELECT c.mypk, COUNT(1) as cnt FROM c GROUP BY c.mypk");
+
+        try {
+            singlePkContainer.readManyByPartitionKey(pkValues, groupByWithAggregateQuery, null, ObjectNode.class)
+                .stream().collect(Collectors.toList());
+            fail("Should have thrown IllegalArgumentException for GROUP BY with aggregate query");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("aggregates");
         }
     }
 
