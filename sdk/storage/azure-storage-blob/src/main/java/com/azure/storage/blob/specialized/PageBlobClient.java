@@ -189,6 +189,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(PageRange pageRange) {
         return getBlobOutputStream(pageRange, null);
     }
@@ -205,6 +206,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions) {
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, requestConditions);
     }
@@ -222,7 +224,7 @@ public final class PageBlobClient extends BlobClientBase {
             throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
         }
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, options.getPageRange(),
-            options.getRequestConditions(), options.getRequestChecksumAlgorithm());
+            options.getRequestConditions(), options.getContentValidationAlgorithm());
     }
 
     /**
@@ -573,15 +575,15 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> uploadPagesWithResponse(PageBlobUploadPagesOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        if (options.getBodyStream() == null) {
+        if (options.getDataStream() == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "PageBlobUploadPagesOptions must be constructed with InputStream for sync client."));
         }
         final long length = options.getPageRange().getEnd() - options.getPageRange().getStart() + 1;
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(options.getBodyStream(), length, PAGE_BYTES, true);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(options.getDataStream(), length, PAGE_BYTES, true);
         Mono<Response<PageBlobItem>> response
             = pageBlobAsyncClient.uploadPagesWithResponseInternal(options.getPageRange(), fbb, options.getContentMd5(),
-                options.getRequestConditions(), options.getRequestChecksumAlgorithm(), context);
+                options.getRequestConditions(), options.getContentValidationAlgorithm(), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
