@@ -90,17 +90,17 @@ extends:
         groupId: com.azure
         safeName: azuresdktemplate
         releaseInBatch: ${{ parameters.release_azuresdktemplate }}
-        skipPublishDocMs: false
+        skipPublishDocMs: true
       - name: azure-sdk-template-two
         groupId: com.azure
         safeName: azuresdktemplatetwo
         releaseInBatch: ${{ parameters.release_azuresdktemplatetwo }}
-        skipPublishDocMs: false
+        skipPublishDocMs: true
       - name: azure-sdk-template-three
         groupId: com.azure
         safeName: azuresdktemplatethree
         releaseInBatch: ${{ parameters.release_azuresdktemplatethree }}
-        skipPublishDocMs: false
+        skipPublishDocMs: true
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
