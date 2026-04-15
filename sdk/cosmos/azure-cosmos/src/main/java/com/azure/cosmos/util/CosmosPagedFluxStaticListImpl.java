@@ -18,9 +18,11 @@ import java.util.function.Consumer;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseHlp() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFluxStaticListImpl.class);
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseHlp =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
 
     private static final int DEFAULT_PAGE_SIZE = 100;
 
@@ -75,12 +77,12 @@ final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
         List<FeedResponse<T>> pages = new ArrayList<>();
         if (i >= this.items.size()) {
             if (!this.isChangeFeed) {
-                pages.add(feedResponseHlp.createNonServiceFeedResponse(
+                pages.add(feedResponseHlp().createNonServiceFeedResponse(
                     new ArrayList<>(),
                     false,
                     false));
             } else {
-                pages.add(feedResponseHlp.createNonServiceFeedResponse(
+                pages.add(feedResponseHlp().createNonServiceFeedResponse(
                     new ArrayList<>(),
                     true,
                     true));
@@ -97,14 +99,14 @@ final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
                 itemsForPage.add(this.items.get(i));
             }
 
-            pages.add(feedResponseHlp.createNonServiceFeedResponse(
+            pages.add(feedResponseHlp().createNonServiceFeedResponse(
                 new ArrayList<>(),
                 this.isChangeFeed,
                 false));
         }
 
         if (this.isChangeFeed) {
-            pages.add(feedResponseHlp.createNonServiceFeedResponse(
+            pages.add(feedResponseHlp().createNonServiceFeedResponse(
                 new ArrayList<>(),
                 true,
                 true));

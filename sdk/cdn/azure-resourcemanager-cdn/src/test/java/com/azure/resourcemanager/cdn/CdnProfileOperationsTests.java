@@ -20,7 +20,6 @@ import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestHeaderAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
 import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HeaderAction;
 import com.azure.resourcemanager.cdn.models.HeaderActionParameters;
@@ -119,7 +118,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         cdnProfile.update()
             .defineAfdEndpoint(cdnEndpointName)
             .withEnabledState(EnabledState.ENABLED)
-            .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
             .defineOriginGroup("originGroup1")
             .withLoadBalancingSettings(
@@ -144,7 +142,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         Assertions.assertNotNull(cdnEndpoint);
         Assertions.assertEquals(EnabledState.ENABLED, cdnEndpoint.enabledState());
-        Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
 
         OriginGroup originGroup = cdnProfile.originGroups().get("originGroup1");
         Assertions.assertNotNull(originGroup);
@@ -176,7 +173,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
             .defineAfdEndpoint(cdnEndpointName)
             .withEnabledState(EnabledState.ENABLED)
-            .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
             .defineOriginGroup("originGroup1")
             .withLoadBalancingSettings(
@@ -205,7 +201,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         AfdEndpoint cdnEndpoint = cdnEndpointMap.get(cdnEndpointName);
         Assertions.assertNotNull(cdnEndpoint);
         Assertions.assertEquals(EnabledState.ENABLED, cdnEndpoint.enabledState());
-        Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
 
         // verify origin group
         OriginGroup originGroup1 = cdnProfile.originGroups().get("originGroup1");
@@ -229,7 +224,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         cdnProfile.update()
             .updateAfdEndpoint(cdnEndpointName)
             .withEnabledState(EnabledState.DISABLED)
-            .withEnforceMtls(EnforceMtlsEnabledState.DISABLED)
             .parent()
             .updateOriginGroup("originGroup1")
             .withSessionAffinityState(EnabledState.DISABLED)
@@ -244,7 +238,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         cdnEndpoint.refresh();
         Assertions.assertEquals(EnabledState.DISABLED, cdnEndpoint.enabledState());
-        Assertions.assertEquals(EnforceMtlsEnabledState.DISABLED, cdnEndpoint.enforceMtls());
 
         originGroup1.refresh();
         Assertions.assertEquals(EnabledState.DISABLED, originGroup1.sessionAffinityState());
