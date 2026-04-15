@@ -4524,6 +4524,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .flatMap(queryPlan -> {
                 QueryInfo queryInfo = queryPlan.getQueryInfo();
 
+                if (queryInfo.hasGroupBy()) {
+                    return Mono.error(new IllegalArgumentException(
+                        "Custom query for readMany by partition key must not contain GROUP BY."));
+                }
                 if (queryInfo.hasAggregates()) {
                     return Mono.error(new IllegalArgumentException(
                         "Custom query for readMany by partition key must not contain aggregates."));
@@ -4535,10 +4539,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (queryInfo.hasDistinct()) {
                     return Mono.error(new IllegalArgumentException(
                         "Custom query for readMany by partition key must not contain DISTINCT."));
-                }
-                if (queryInfo.hasGroupBy()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain GROUP BY."));
                 }
                 if (queryInfo.hasDCount()) {
                     return Mono.error(new IllegalArgumentException(

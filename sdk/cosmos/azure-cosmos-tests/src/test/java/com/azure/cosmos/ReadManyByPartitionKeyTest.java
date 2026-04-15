@@ -315,7 +315,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for GROUP BY with aggregate query");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage()).contains("aggregates");
+            assertThat(e.getMessage()).contains("GROUP BY");
         }
     }
 
