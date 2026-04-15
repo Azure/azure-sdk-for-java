@@ -381,6 +381,13 @@ stages:
                 inputs:
                   artifactsFeeds: 'azure-sdk-for-java'
 
+              # java2docfx internally runs 'mvn help:effective-pom' using the short 'help' prefix.
+              # Azure Artifacts feed metadata may not contain prefix-to-artifactId mappings for
+              # plugins that haven't been requested before. This fully-qualified invocation forces
+              # the feed to cache maven-help-plugin so the 'help' prefix resolves in java2docfx.
+              - script: mvn org.apache.maven.plugins:maven-help-plugin:help -q 2>/dev/null || true
+                displayName: 'Warm maven-help-plugin feed cache'
+
               - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
               - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
@@ -513,6 +520,13 @@ stages:
             displayName: 'Maven Authenticate'
             inputs:
               artifactsFeeds: 'azure-sdk-for-java'
+
+          # java2docfx internally runs 'mvn help:effective-pom' using the short 'help' prefix.
+          # Azure Artifacts feed metadata may not contain prefix-to-artifactId mappings for
+          # plugins that haven't been requested before. This fully-qualified invocation forces
+          # the feed to cache maven-help-plugin so the 'help' prefix resolves in java2docfx.
+          - script: mvn org.apache.maven.plugins:maven-help-plugin:help -q 2>/dev/null || true
+            displayName: 'Warm maven-help-plugin feed cache'
 
           - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
