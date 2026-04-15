@@ -72,8 +72,14 @@ function UpdateDependencies($ArtifactInfos) {
         $deps = @{}
         $sdkVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         $groupPath = $ArtifactInfos[$artifactId].GroupId -replace '\.', '/'
-        $pomFileUri = "https://repo1.maven.org/maven2/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
-        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+        # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+        # Maven Central endpoint is blocked on the build agent network.
+        $pomFileUri = "$PackageRepositoryUri/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
+        $headers = @{}
+        if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+          $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+        }
+        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers $headers
         $dependencies = ([xml]$webResponseObj.Content).project.dependencies.dependency | Where-Object { (([String]::IsNullOrWhiteSpace($_.scope)) -or ($_.scope -eq 'compile')) }
         $dependencies | ForEach-Object { $deps[$_.artifactId] = $_.version }
         $ArtifactInfos[$artifactId].Dependencies = $deps

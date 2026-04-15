@@ -63,6 +63,8 @@ extends:
                   arguments: >
                     -SourcesDirectory .
                     -PackagesYmlPath eng/pipelines/patch-release.yml
+                env:
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
               # Create a PR with the patches prepared
               - template: /eng/common/pipelines/templates/steps/create-pull-request.yml

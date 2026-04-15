@@ -130,8 +130,14 @@ function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
 # Get version info for an artifact.
 function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$ArtifactId) {
   $groupPath = $GroupId -replace '\.', '/'
-  $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
-  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+  # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+  # Maven Central endpoint is blocked on the build agent network.
+  $mavenMetadataUrl = "$PackageRepositoryUri/$groupPath/$($ArtifactId)/maven-metadata.xml"
+  $headers = @{}
+  if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+    $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+  }
+  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers $headers
   $versions = ([xml]$webResponseObj.Content).metadata.versioning.versions.version
   $semVersions = $versions | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
   $sortedVersions = [AzureEngSemanticVersion]::SortVersions($semVersions)
