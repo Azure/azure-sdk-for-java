@@ -1680,10 +1680,10 @@ public class CosmosAsyncContainer {
         return (pagedFluxOptions -> {
             CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
                 ? new CosmosQueryRequestOptions()
-                : queryOptionsAccessor.clone(readManyOptionsAccessor.getImpl(requestOptions));
+                : queryOptionsAccessor().clone(readManyOptionsAccessor().getImpl(requestOptions));
             queryRequestOptions.setMaxDegreeOfParallelism(-1);
             queryRequestOptions.setQueryName("readManyByPartitionKey");
-            CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor.getImpl(queryRequestOptions);
+            CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
             applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyItemsSpanName);
 
             QueryFeedOperationState state = new QueryFeedOperationState(
@@ -1693,7 +1693,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Document,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(queryRequestOptions, this.readManyItemsSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyItemsSpanName),
                 queryRequestOptions,
                 pagedFluxOptions
             );
