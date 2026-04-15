@@ -550,27 +550,6 @@ Debug by inspecting the generated file after customization is applied. The custo
 
 ---
 
-## Differences from .NET Customizations
-
-If you are familiar with the .NET SDK's customization approach, here are the key differences:
-
-| .NET approach | Java approach |
-|---|---|
-| `partial class` — split type across multiple files | Not available in Java; single file per class |
-| `[CodeGenType("Old")]` — rename a type | TypeSpec `@@clientName` or AST rename in `SearchCustomizations.java` |
-| `[CodeGenMember("Old")]` — rename a property | TypeSpec `@@clientName` or AST manipulation |
-| `[CodeGenSuppress("Member")]` — suppress a member | AST manipulation to remove or hide the member |
-| `[CodeGenSerialization]` — custom JSON key | Not available; use TypeSpec `@@encodedName` or `@JsonProperty` |
-| `[EditorBrowsable(Never)]` — hide from IntelliSense | Not available in Java; use `@Deprecated` or make package-private |
-| `[ForwardsClientCalls]` — forwarding overloads | No equivalent; manually add convenience methods |
-| `SearchModelFactory` — test/mock factory | Not used in Java SDK |
-| `ApiCompatBaseline.txt` — API compat suppressions | Not used in Java SDK |
-| `api/*.cs` — public API snapshots | Not used in Java SDK |
-| `dotnet build` | `mvn clean compile` |
-| `dotnet test` | `mvn test` |
-| `Export-API.ps1` | No equivalent |
-
----
 
 ## Quick-Reference Checklist: After a Regeneration
 

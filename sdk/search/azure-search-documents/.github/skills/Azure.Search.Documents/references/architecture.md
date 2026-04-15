@@ -74,7 +74,7 @@ src/main/java/
     │       ├── AutocompletePostRequest.java
     │       ├── SearchPostRequest.java
     │       ├── SuggestPostRequest.java
-    │       └── CountRequestAccept*.java / CreateOrUpdateRequestAccept*.java
+    │       └── ...
     │
     ├── models/                           # Public document operation models (GENERATED)
     │   ├── SearchOptions.java
@@ -85,7 +85,6 @@ src/main/java/
     │   ├── IndexDocumentsBatch.java / IndexAction.java
     │   ├── VectorQuery.java / VectorizedQuery.java / VectorizableTextQuery.java
     │   ├── FacetResult.java
-    │   ├── CountRequestAccept.java / CreateOrUpdateRequestAccept*.java  # Optional header models
     │   └── ...
     │
     ├── indexes/                          # Index & indexer management clients
@@ -255,9 +254,6 @@ Old API versions are added by `SearchCustomizations.includeOldApiVersions()` dur
 
 ## Known Generated Artifacts
 
-### Optional header models (`CountRequestAccept*`, `CreateOrUpdateRequestAccept*`)
-
-The TypeSpec spec declares optional `Accept` headers with single-value enums. The Java generator creates a model class for each one, resulting in many `CountRequestAccept*.java` and `CreateOrUpdateRequestAccept*.java` files in `models/` and `implementation/models/`. These are generated artifacts — they are wire-compatible and functional but verbose. This is tracked as a known generator issue.
 
 ### `@Generated` annotation
 
