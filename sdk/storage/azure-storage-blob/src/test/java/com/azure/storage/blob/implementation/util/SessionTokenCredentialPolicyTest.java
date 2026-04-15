@@ -272,6 +272,82 @@ public class SessionTokenCredentialPolicyTest {
         assertEquals(SECOND_TOKEN, nextSession.getSessionToken());
     }
 
+    @Test
+    public void policyFallsToBearerOn503SessionUnavailableAsync() {
+        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
+        HttpResponse unavailableResponse = mock(HttpResponse.class);
+        HttpResponse bearerResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.process()).thenReturn(Mono.just(unavailableResponse));
+        when(retryNext.process()).thenReturn(Mono.just(bearerResponse));
+        when(unavailableResponse.getStatusCode()).thenReturn(503);
+        when(unavailableResponse.getHeaderValue(HttpHeaderName.fromString("x-ms-error-code")))
+            .thenReturn("SessionOperationsTemporarilyUnavailable");
+        when(bearerResponse.getStatusCode()).thenReturn(200);
+
+        HttpResponse actualResponse = policy.process(context, next).block();
+
+        assertEquals(bearerResponse, actualResponse);
+        verify(unavailableResponse, times(1)).close();
+        verify(retryNext, times(1)).process();
+        // Authorization header should have been stripped so bearer policy can add its own
+        String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+        assertTrue(authHeader == null || !authHeader.startsWith("Session"),
+            "Session auth should have been stripped but was: " + authHeader);
+    }
+
+    @Test
+    public void policyFallsToBearerOn503SessionUnavailableSync() {
+        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
+        HttpResponse unavailableResponse = mock(HttpResponse.class);
+        HttpResponse bearerResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionSync()).thenReturn(credentialWithToken(FIRST_TOKEN));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.processSync()).thenReturn(unavailableResponse);
+        when(retryNext.processSync()).thenReturn(bearerResponse);
+        when(unavailableResponse.getStatusCode()).thenReturn(503);
+        when(unavailableResponse.getHeaderValue(HttpHeaderName.fromString("x-ms-error-code")))
+            .thenReturn("SessionOperationsTemporarilyUnavailable");
+        when(bearerResponse.getStatusCode()).thenReturn(200);
+
+        HttpResponse actualResponse = policy.processSync(context, next);
+
+        assertEquals(bearerResponse, actualResponse);
+        verify(unavailableResponse, times(1)).close();
+        verify(retryNext, times(1)).processSync();
+        String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+        assertTrue(authHeader == null || !authHeader.startsWith("Session"),
+            "Session auth should have been stripped but was: " + authHeader);
+    }
+
+    @Test
+    public void policyReturns503ServerBusyWithoutBearerFallback() {
+        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
+        HttpResponse busyResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.process()).thenReturn(Mono.just(busyResponse));
+        when(busyResponse.getStatusCode()).thenReturn(503);
+        when(busyResponse.getHeaderValue(HttpHeaderName.fromString("x-ms-error-code"))).thenReturn("ServerBusy");
+
+        HttpResponse actualResponse = policy.process(context, next).block();
+
+        // ServerBusy 503 is not session-specific — return as-is for retry policy to handle
+        assertEquals(busyResponse, actualResponse);
+        verify(retryNext, times(0)).process();
+        verify(busyResponse, times(0)).close();
+    }
+
     private static StorageSessionCredential credentialWithToken(String token) {
         return credentialWithToken(token, OffsetDateTime.now().plusHours(1));
     }
