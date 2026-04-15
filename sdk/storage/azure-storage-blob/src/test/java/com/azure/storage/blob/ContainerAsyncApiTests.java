@@ -2145,7 +2145,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
     }
 
-
     // Need to create a container client test here to test that sessions have been enabled and used
 
 }
