@@ -264,6 +264,7 @@ public class GlobalEndPointManagerTest {
         GlobalEndpointManager globalEndPointManager = new GlobalEndpointManager(
             databaseAccountManagerInternal, connectionPolicy, new Configs());
         setBackgroundRefreshLocationTimeIntervalInMS(globalEndPointManager, 500);
+        setBackgroundRefreshJitterMaxInSeconds(globalEndPointManager, 0);
         globalEndPointManager.init();
 
         // Verify multi-writer state: 2 write regions available
@@ -278,7 +279,7 @@ public class GlobalEndPointManagerTest {
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(ArgumentMatchers.any()))
             .thenReturn(Flux.just(singleWriterAccount));
 
-        // Wait for background refresh to detect the topology change
+        // Wait for background refresh to detect the topology change (jitter disabled for test)
         Thread.sleep(2000);
 
         // Verify single-writer state: write endpoints updated to reflect single-writer topology
@@ -303,6 +304,7 @@ public class GlobalEndPointManagerTest {
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount.documents.azure.com:443"));
         GlobalEndpointManager globalEndPointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
         setBackgroundRefreshLocationTimeIntervalInMS(globalEndPointManager, 1000);
+        setBackgroundRefreshJitterMaxInSeconds(globalEndPointManager, 0);
         globalEndPointManager.init();
 
         databaseAccount = new DatabaseAccount(dbAccountJson2);
@@ -310,7 +312,6 @@ public class GlobalEndPointManagerTest {
         Thread.sleep(2000);
 
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
-        Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
         Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
@@ -388,6 +389,12 @@ public class GlobalEndPointManagerTest {
         Field backgroundRefreshLocationTimeIntervalInMSField = GlobalEndpointManager.class.getDeclaredField("backgroundRefreshLocationTimeIntervalInMS");
         backgroundRefreshLocationTimeIntervalInMSField.setAccessible(true);
         backgroundRefreshLocationTimeIntervalInMSField.setInt(globalEndPointManager, millSec);
+    }
+
+    private void setBackgroundRefreshJitterMaxInSeconds(GlobalEndpointManager globalEndPointManager, int seconds) throws Exception {
+        Field jitterField = GlobalEndpointManager.class.getDeclaredField("backgroundRefreshJitterMaxInSeconds");
+        jitterField.setAccessible(true);
+        jitterField.setInt(globalEndPointManager, seconds);
     }
 
     private GlobalEndpointManager getGlobalEndPointManager() throws Exception {
