@@ -183,7 +183,7 @@ public class SessionTokenCredentialPolicyTest {
         when(retryNext.processSync()).thenReturn(retriedResponse);
         when(initialResponse.getStatusCode()).thenReturn(401);
         when(initialResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
-            .thenReturn("Session error=session_token_invalid");
+            .thenReturn("Session error=session_expired");
         when(retriedResponse.getStatusCode()).thenReturn(200);
 
         HttpResponse actualResponse = policy.processSync(context, next);
@@ -221,6 +221,55 @@ public class SessionTokenCredentialPolicyTest {
         assertEquals(retriedResponse, actualResponse);
         verify(retryNext, times(1)).process();
         verify(sessionClient, times(2)).createSessionAsync();
+    }
+
+    @Test
+    public void policyReturns403WithoutRetry() {
+        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
+        HttpResponse forbiddenResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.process()).thenReturn(Mono.just(forbiddenResponse));
+        when(forbiddenResponse.getStatusCode()).thenReturn(403);
+
+        HttpResponse actualResponse = policy.process(context, next).block();
+
+        assertEquals(forbiddenResponse, actualResponse);
+        verify(next, times(1)).process();
+        verify(retryNext, times(0)).process();
+        verify(forbiddenResponse, times(0)).close();
+        verify(sessionClient, times(1)).createSessionAsync();
+    }
+
+    @Test
+    public void policyReturnsSessionTokenInvalidWithoutRetryButInvalidatesSession() {
+        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
+        HttpResponse invalidResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)))
+            .thenReturn(Mono.just(credentialWithToken(SECOND_TOKEN)));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.process()).thenReturn(Mono.just(invalidResponse));
+        when(invalidResponse.getStatusCode()).thenReturn(401);
+        when(invalidResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
+            .thenReturn("Session error=session_token_invalid");
+
+        HttpResponse actualResponse = policy.process(context, next).block();
+
+        // Returns the 401 as-is — no retry
+        assertEquals(invalidResponse, actualResponse);
+        verify(next, times(1)).process();
+        verify(retryNext, times(0)).process();
+        verify(invalidResponse, times(0)).close();
+
+        // But the session was invalidated so the next request gets a fresh session
+        StorageSessionCredential nextSession = policy.getValidSessionAsync().block();
+        assertEquals(SECOND_TOKEN, nextSession.getSessionToken());
     }
 
     private static StorageSessionCredential credentialWithToken(String token) {
