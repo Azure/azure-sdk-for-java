@@ -23,6 +23,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String SESSION_EXPIRING = "session_expiring";
     private static final String SESSION_EXPIRED = "session_expired";
     private static final String SESSION_TOKEN_INVALID = "session_token_invalid";
+    private static final String SESSION_OPS_UNAVAILABLE = "SessionOperationsTemporarilyUnavailable";
 
     private final StorageSessionCredentialCache sessionCredentialCache;
 
@@ -44,7 +45,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             return next.process().flatMap(response -> {
                 handleSessionExpiringHeader(response);
 
-                if (isSessionAuthResponse(response)) {
+                if (isSessionCredentialRejected(response)) {
                     invalidateSession(session);
                 }
 
@@ -55,6 +56,13 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
                         signRequest(context, refreshed);
                         return retryNext.process();
                     });
+                }
+
+                if (shouldFallBackToBearer(context, response)) {
+                    response.close();
+                    context.setData(RETRY_CONTEXT_KEY, true);
+                    context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+                    return retryNext.process();
                 }
 
                 return Mono.just(response);
@@ -71,7 +79,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         HttpResponse response = next.processSync();
         handleSessionExpiringHeader(response);
 
-        if (isSessionAuthResponse(response)) {
+        if (isSessionCredentialRejected(response)) {
             invalidateSession(session);
         }
 
@@ -81,6 +89,13 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
             StorageSessionCredential refreshed = getValidSessionSync();
             signRequest(context, refreshed);
+            return retryNext.processSync();
+        }
+
+        if (shouldFallBackToBearer(context, response)) {
+            response.close();
+            context.setData(RETRY_CONTEXT_KEY, true);
+            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             return retryNext.processSync();
         }
 
@@ -113,10 +128,10 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Returns true for any 401 that the session service issued (expired or invalid token).
+     * Returns true for any 401 where the session service rejected the credential (expired or invalid token).
      * Used to decide whether to invalidate the cached session.
      */
-    private static boolean isSessionAuthResponse(HttpResponse response) {
+    private static boolean isSessionCredentialRejected(HttpResponse response) {
         if (response.getStatusCode() != 401) {
             return false;
         }
@@ -145,5 +160,26 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         return isRetryableSessionFailure(response);
+    }
+
+    /**
+     * Returns true for 503 with SessionOperationsTemporarilyUnavailable error code.
+     * The session infrastructure is temporarily down, so we strip session auth and let
+     * the downstream BearerTokenPolicy handle the request with a bearer token.
+     */
+    private static boolean shouldFallBackToBearer(HttpPipelineCallContext context, HttpResponse response) {
+        if (Boolean.TRUE.equals(context.getData(RETRY_CONTEXT_KEY).orElse(false))) {
+            return false;
+        }
+
+        return isSessionUnavailable(response);
+    }
+
+    private static boolean isSessionUnavailable(HttpResponse response) {
+        if (response.getStatusCode() != 503) {
+            return false;
+        }
+        String errorCode = response.getHeaderValue(HttpHeaderName.fromString("x-ms-error-code"));
+        return SESSION_OPS_UNAVAILABLE.equals(errorCode);
     }
 }
