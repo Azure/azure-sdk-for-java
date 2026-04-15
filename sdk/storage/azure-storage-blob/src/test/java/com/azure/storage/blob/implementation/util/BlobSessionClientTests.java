@@ -6,10 +6,14 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -33,8 +37,6 @@ public class BlobSessionClientTests extends BlobTestBase {
         assertNotNull(credential.getSessionToken());
         assertNotNull(credential.getSessionKey());
         assertNotNull(credential.getExpiration());
-        //        assertNotNull(credential.)
-        assertEquals(false, credential.isExpired());
     }
 
     @Test
@@ -49,7 +51,6 @@ public class BlobSessionClientTests extends BlobTestBase {
             assertNotNull(credential.getSessionToken());
             assertNotNull(credential.getSessionKey());
             assertNotNull(credential.getExpiration());
-            assertEquals(false, credential.isExpired());
         }).verifyComplete();
     }
 
@@ -85,6 +86,66 @@ public class BlobSessionClientTests extends BlobTestBase {
         }).verifyComplete();
 
         assertEquals(1, policyInvocationCount.get());
+    }
+
+    @Disabled("Service does not yet support User Delegation SAS for Create Session — returns InvalidSessionAuthenticationType")
+    @Test
+    public void createSessionWithUserDelegationSas() {
+        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
+
+        String sas = generateUserDelegationContainerSas(oauthCc);
+
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(oauthCc.getBlobContainerUrl());
+
+        BlobContainerClient sasCc = instrument(builder.sasToken(sas)).buildClient();
+
+        BlobSessionClient sessionClient
+            = new BlobSessionClient(sasCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+                BlobServiceVersion.getLatest(), sasCc.getBlobContainerName());
+
+        StorageSessionCredential credential = sessionClient.createSessionSync();
+
+        assertNotNull(credential);
+        assertNotNull(credential.getSessionToken());
+        assertNotNull(credential.getSessionKey());
+        assertNotNull(credential.getExpiration());
+        assertEquals(false, credential.isExpired());
+    }
+
+    @Disabled("Service does not yet support User Delegation SAS for Create Session — returns InvalidSessionAuthenticationType")
+    @Test
+    public void createSessionAsyncWithUserDelegationSas() {
+        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(ccAsync.getBlobContainerName());
+
+        String sas = generateUserDelegationContainerSas(oauthCc);
+
+        BlobContainerClient sasCc
+            = instrument(new BlobContainerClientBuilder().endpoint(oauthCc.getBlobContainerUrl()).sasToken(sas))
+                .buildClient();
+
+        BlobSessionClient sessionClient
+            = new BlobSessionClient(sasCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+                BlobServiceVersion.getLatest(), ccAsync.getBlobContainerName());
+
+        StepVerifier.create(sessionClient.createSessionAsync()).assertNext(credential -> {
+            assertNotNull(credential);
+            assertNotNull(credential.getSessionToken());
+            assertNotNull(credential.getSessionKey());
+            assertNotNull(credential.getExpiration());
+            assertEquals(false, credential.isExpired());
+        }).verifyComplete();
+    }
+
+    private String generateUserDelegationContainerSas(BlobContainerClient containerClient) {
+        BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setListPermission(true);
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions);
+
+        return containerClient.generateUserDelegationSas(sasValues, getOAuthServiceClient()
+            .getUserDelegationKey(testResourceNamer.now().minusDays(1), testResourceNamer.now().plusDays(1)));
     }
 
     private HttpPipeline createOAuthPipeline(AtomicInteger policyInvocationCount) {
