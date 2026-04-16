@@ -196,25 +196,11 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
       new CloseableSparkRowItemIterator {
         private val delegate = new TransientIOErrorsRetryingIterator[SparkRowItem](
           continuationToken => {
-            val options = new CosmosReadManyRequestOptions()
-            val optionsImpl = ImplementationBridgeHelpers
-              .CosmosReadManyRequestOptionsHelper
-              .getCosmosReadManyRequestOptionsAccessor
-              .getImpl(options)
-
-            ThroughputControlHelper.populateThroughputControlGroupName(optionsImpl, readConfig.throughputControlConfig)
-
-            if (operationContextAndListenerTuple.isDefined) {
-              optionsImpl.setOperationContextAndListenerTuple(operationContextAndListenerTuple.get)
-            }
-
-            optionsImpl.setCustomItemSerializer(readManyOptionsImpl.getCustomItemSerializer)
-
             readConfig.customQuery match {
               case Some(query) =>
-                cosmosAsyncContainer.readManyByPartitionKey(pkList, query.toSqlQuerySpec, options, classOf[SparkRowItem])
+                cosmosAsyncContainer.readManyByPartitionKey(pkList, query.toSqlQuerySpec, readManyOptions, classOf[SparkRowItem])
               case None =>
-                cosmosAsyncContainer.readManyByPartitionKey(pkList, options, classOf[SparkRowItem])
+                cosmosAsyncContainer.readManyByPartitionKey(pkList, readManyOptions, classOf[SparkRowItem])
             }
           },
           readConfig.maxItemCount,

@@ -4417,9 +4417,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     queryValidationMono = Mono.empty();
                 }
 
-                return Mono.zip(valueHolderMono, queryValidationMono.then(Mono.just(true)))
-                    .flatMapMany(tuple -> {
-                        CollectionRoutingMap routingMap = tuple.getT1().v;
+                return valueHolderMono
+                    .delayUntil(ignored -> queryValidationMono)
+                    .flatMapMany(routingMapHolder -> {
+                        CollectionRoutingMap routingMap = routingMapHolder.v;
                         if (routingMap == null) {
                             return Flux.error(new IllegalStateException("Failed to get routing map."));
                         }

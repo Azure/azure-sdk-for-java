@@ -165,6 +165,7 @@ public class CosmosAsyncContainer {
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String readManyItemsSpanName;
+    private final String readManyByPartitionKeyItemsSpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
     private final String queryChangeFeedSpanName;
@@ -198,6 +199,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.readManyItemsSpanName = "readManyItems." + this.id;
+        this.readManyByPartitionKeyItemsSpanName = "readManyByPartitionKeyItems." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -1691,16 +1693,16 @@ public class CosmosAsyncContainer {
             queryRequestOptions.setMaxDegreeOfParallelism(-1);
             queryRequestOptions.setQueryName("readManyByPartitionKey");
             CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
-            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyItemsSpanName);
+            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeyItemsSpanName);
 
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
-                this.readManyItemsSpanName,
+                this.readManyByPartitionKeyItemsSpanName,
                 database.getId(),
                 this.getId(),
                 ResourceType.Document,
                 OperationType.Query,
-                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyItemsSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeyItemsSpanName),
                 queryRequestOptions,
                 pagedFluxOptions
             );

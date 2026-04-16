@@ -148,6 +148,3 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
   }
 }
 
-private object CosmosReadManyByPartitionKeyHelper {
-  val FullRangeFeedRange: NormalizedRange = NormalizedRange("", "FF")
-}

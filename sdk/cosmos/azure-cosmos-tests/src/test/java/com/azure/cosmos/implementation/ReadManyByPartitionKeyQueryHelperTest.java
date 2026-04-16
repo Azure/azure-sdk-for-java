@@ -318,6 +318,83 @@ public class ReadManyByPartitionKeyQueryHelperTest {
 
     //endregion
 
+
+    //region String literal handling tests (#1)
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresWhereInsideStringLiteral() {
+        // WHERE inside a string literal should be ignored
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT * FROM c WHERE c.msg = 'use WHERE clause here'");
+        // Should find the outer WHERE at position 16, not the one inside the string
+        assertThat(idx).isEqualTo(16);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresParenthesesInsideStringLiteral() {
+        // Parentheses inside string literal should not affect depth tracking
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT * FROM c WHERE c.name = 'foo(bar)' AND c.x = 1");
+        assertThat(idx).isEqualTo(16);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_handlesUnbalancedParenInStringLiteral() {
+        // Unbalanced paren inside string literal must not corrupt depth
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT * FROM c WHERE c.val = 'open(' AND c.active = true");
+        assertThat(idx).isEqualTo(16);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_handlesStringLiteralBeforeWhere() {
+        // String literal in SELECT before WHERE
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT 'WHERE' as label FROM c WHERE c.id = '1'");
+        // The WHERE inside quotes should be ignored; the real WHERE is further along
+        assertThat(idx).isGreaterThan(30);
+    }
+
+    @Test(groups = { "unit" })
+    public void singlePk_customQuery_withStringLiteralContainingParens() {
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
+
+        List<SqlParameter> baseParams = new ArrayList<>();
+        baseParams.add(new SqlParameter("@msg", "hello"));
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c WHERE c.msg = 'test(value)WHERE'", baseParams, pkValues, selectors, pkDef);
+
+        // Should correctly AND the PK filter to the real WHERE clause
+        assertThat(result.getQueryText()).contains("WHERE (c.msg = 'test(value)WHERE') AND (");
+    }
+
+    //endregion
+
+    //region OFFSET/LIMIT/HAVING alias detection tests (#9)
+
+    @Test(groups = { "unit" })
+    public void extractAlias_containerWithOffset() {
+        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
+            "SELECT * FROM c OFFSET 10 LIMIT 5")).isEqualTo("c");
+    }
+
+    @Test(groups = { "unit" })
+    public void extractAlias_containerWithLimit() {
+        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
+            "SELECT * FROM c LIMIT 10")).isEqualTo("c");
+    }
+
+    @Test(groups = { "unit" })
+    public void extractAlias_containerWithHaving() {
+        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
+            "SELECT c.status, COUNT(1) FROM c GROUP BY c.status HAVING COUNT(1) > 1")).isEqualTo("c");
+    }
+
+    //endregion
+
     //region helpers
 
     private PartitionKeyDefinition createSinglePkDefinition(String path) {

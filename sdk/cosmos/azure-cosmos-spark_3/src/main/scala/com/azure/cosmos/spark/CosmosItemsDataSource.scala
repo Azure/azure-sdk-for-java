@@ -147,7 +147,7 @@ object CosmosItemsDataSource {
       val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(None)
       val calledFrom = s"CosmosItemsDataSource.readManyByPartitionKey"
 
-      val pkPathsOpt = Loan(
+      val pkPaths = Loan(
         List[Option[CosmosClientCacheItem]](
           Some(
             CosmosClientCache(
@@ -180,10 +180,10 @@ object CosmosItemsDataSource {
 
       // Check if ALL PK path columns exist in the DataFrame schema
       val dfFieldNames = df.schema.fieldNames.toSet
-      val allPkColumnsPresent = pkPathsOpt.forall(path => dfFieldNames.contains(path))
+      val allPkColumnsPresent = pkPaths.forall(path => dfFieldNames.contains(path))
 
-      if (allPkColumnsPresent && pkPathsOpt.nonEmpty) {
-        val pkPaths = pkPathsOpt
+      if (allPkColumnsPresent && pkPaths.nonEmpty) {
+        // pkPaths already defined above
         Some((row: Row) => {
           if (pkPaths.size == 1) {
             // Single partition key

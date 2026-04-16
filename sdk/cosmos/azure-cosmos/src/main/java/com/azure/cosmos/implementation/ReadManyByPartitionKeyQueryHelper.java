@@ -140,12 +140,15 @@ public class ReadManyByPartitionKeyQueryHelper {
         // Check if there's an alias after the container name (before WHERE or end)
         if (afterFrom < queryText.length()) {
             char nextChar = Character.toUpperCase(queryText.charAt(afterFrom));
-            // If the next token is a keyword (WHERE, ORDER, GROUP, JOIN) or end, containerName IS the alias
-            if (nextChar == 'W' || nextChar == 'O' || nextChar == 'G' || nextChar == 'J') {
+            // If the next token is a keyword (WHERE, ORDER, GROUP, JOIN, OFFSET, LIMIT, HAVING) or end, containerName IS the alias
+            if (nextChar == 'W' || nextChar == 'O' || nextChar == 'G' || nextChar == 'J'
+                || nextChar == 'L' || nextChar == 'H') {
                 // Check if it's actually a keyword
                 String remaining = upper.substring(afterFrom);
                 if (remaining.startsWith("WHERE") || remaining.startsWith("ORDER")
-                    || remaining.startsWith("GROUP") || remaining.startsWith("JOIN")) {
+                    || remaining.startsWith("GROUP") || remaining.startsWith("JOIN")
+                    || remaining.startsWith("OFFSET") || remaining.startsWith("LIMIT")
+                    || remaining.startsWith("HAVING")) {
                     return containerName;
                 }
             }
@@ -167,7 +170,7 @@ public class ReadManyByPartitionKeyQueryHelper {
 
     /**
      * Finds the index of a top-level SQL keyword in the query text (case-insensitive),
-     * ignoring occurrences inside parentheses.
+     * ignoring occurrences inside parentheses or string literals.
      */
     static int findTopLevelKeywordIndex(String queryText, String keyword) {
         String queryTextUpper = queryText.toUpperCase();
@@ -176,6 +179,14 @@ public class ReadManyByPartitionKeyQueryHelper {
         int keyLen = keywordUpper.length();
         for (int i = 0; i <= queryTextUpper.length() - keyLen; i++) {
             char ch = queryTextUpper.charAt(i);
+            // Skip string literals enclosed in single quotes
+            if (queryText.charAt(i) == '\'') {
+                i++;
+                while (i < queryText.length() && queryText.charAt(i) != '\'') {
+                    i++;
+                }
+                continue;
+            }
             if (ch == '(') {
                 depth++;
             } else if (ch == ')') {

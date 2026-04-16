@@ -76,6 +76,18 @@ class CosmosPartitionKeyHelperSpec extends UnitSpec {
     pk.get shouldEqual new PartitionKey("value")
   }
 
+
+  it should "return None for malformed JSON inside pk() wrapper" in {
+    // Invalid JSON that would cause JsonProcessingException
+    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk({invalid json})")
+    pk.isDefined shouldBe false
+  }
+
+  it should "return None for truncated JSON inside pk() wrapper" in {
+    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk(["unterminated)")
+    pk.isDefined shouldBe false
+  }
+
   //scalastyle:on multiple.string.literals
   //scalastyle:on magic.number
 }

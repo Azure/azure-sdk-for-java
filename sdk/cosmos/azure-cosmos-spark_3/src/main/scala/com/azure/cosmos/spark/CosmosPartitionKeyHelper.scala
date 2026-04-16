@@ -30,15 +30,14 @@ private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
   def tryParsePartitionKey(cosmosPartitionKeyString: String): Option[PartitionKey] = {
     cosmosPartitionKeyString match {
       case cosmosPartitionKeyStringRegx(pkValue) =>
-        val partitionKeyValue = Utils.parse(pkValue, classOf[Object])
-        partitionKeyValue match {
-          case arrayList: util.ArrayList[Object] =>
+        scala.util.Try(Utils.parse(pkValue, classOf[Object])).toOption.flatMap {
+          case arrayList: util.ArrayList[Object @unchecked] =>
             Some(
               ImplementationBridgeHelpers
                 .PartitionKeyHelper
                 .getPartitionKeyAccessor
                 .toPartitionKey(PartitionKeyInternal.fromObjectArray(arrayList.toArray, false)))
-          case _ => Some(new PartitionKey(partitionKeyValue))
+          case other => Some(new PartitionKey(other))
         }
       case _ => None
     }

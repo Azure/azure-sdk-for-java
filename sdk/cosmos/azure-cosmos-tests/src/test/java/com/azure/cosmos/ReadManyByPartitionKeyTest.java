@@ -332,6 +332,73 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
     //endregion
 
+
+    //region Batch size tests (#10)
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_readManyByPartitionKey_withSmallBatchSize() {
+        // Temporarily set batch size to 2 to exercise the batching/interleaving logic
+        String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+        try {
+            System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "2");
+
+            // Create items across 4 PKs (more than the batch size of 2)
+            List<ObjectNode> items = createSinglePkItems("batchPk1", 2);
+            items.addAll(createSinglePkItems("batchPk2", 2));
+            items.addAll(createSinglePkItems("batchPk3", 2));
+            items.addAll(createSinglePkItems("batchPk4", 2));
+
+            // Read all 4 PKs — should be split into batches of 2
+            List<PartitionKey> pkValues = Arrays.asList(
+                new PartitionKey("batchPk1"),
+                new PartitionKey("batchPk2"),
+                new PartitionKey("batchPk3"),
+                new PartitionKey("batchPk4"));
+
+            CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+            List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+
+            assertThat(resultList).hasSize(8); // 2 items per PK * 4 PKs
+            resultList.forEach(item -> {
+                String pk = item.get("mypk").asText();
+                assertThat(pk).isIn("batchPk1", "batchPk2", "batchPk3", "batchPk4");
+            });
+
+            cleanupContainer(singlePkContainer);
+        } finally {
+            if (originalValue != null) {
+                System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", originalValue);
+            } else {
+                System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+            }
+        }
+    }
+
+    //endregion
+
+    //region Custom serializer regression tests (#5)
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_readManyByPartitionKey_withRequestOptions() {
+        // This test ensures that request options (like throughput control settings)
+        // are properly propagated through the readManyByPartitionKey path.
+        // It acts as a regression test for the redundant options construction bug.
+        List<ObjectNode> items = createSinglePkItems("pkOpts", 3);
+
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkOpts"));
+        com.azure.cosmos.models.CosmosReadManyRequestOptions options = new com.azure.cosmos.models.CosmosReadManyRequestOptions();
+
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
+            pkValues, options, ObjectNode.class);
+        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+
+        assertThat(resultList).hasSize(3);
+
+        cleanupContainer(singlePkContainer);
+    }
+
+    //endregion
+
     //region helper methods
 
     private List<ObjectNode> createSinglePkItems(String pkValue, int count) {
