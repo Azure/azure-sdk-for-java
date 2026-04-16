@@ -94,6 +94,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -905,6 +907,37 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected File getRandomFile(int size) throws IOException {
         return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
+    }
+
+    /**
+     * Pseudorandom {@link Random} seeded from {@code testResourceNamer.randomUuid()} so values replay in playback
+     * mode (unlike {@link java.util.concurrent.ThreadLocalRandom}).
+     */
+    protected Random newRandomFromNamer() {
+        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
+        return new Random(seed);
+    }
+
+    /**
+     * Pseudorandom int in {@code [origin, bound)} from the namer. Consumes one recorded UUID.
+     */
+    protected int randomIntFromNamer(int origin, int bound) {
+        int span = bound - origin;
+        if (span <= 0) {
+            throw new IllegalArgumentException("bound must be greater than origin");
+        }
+        return origin + newRandomFromNamer().nextInt(span);
+    }
+
+    /**
+     * Pseudorandom long in {@code [origin, bound)} from the namer. Consumes one recorded UUID.
+     */
+    protected long randomLongFromNamer(long origin, long bound) {
+        long span = bound - origin;
+        if (span <= 0) {
+            throw new IllegalArgumentException("bound must be greater than origin");
+        }
+        return origin + Math.floorMod(newRandomFromNamer().nextLong(), span);
     }
 
     /*https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy#creating-or-modifying-a-stored-access-policy

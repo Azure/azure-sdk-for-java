@@ -10,7 +10,9 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Mono;
 
 /**
@@ -27,6 +29,14 @@ public final class ContentValidationModeResolver {
 
     public static final String CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE
         = "Individual MD5 option and checksum algorithm option bag are both used. Only one form of transactional content validation may be used.";
+
+    /**
+     * Progress reporting counts bytes on the wire; transfer validation (CRC64/AUTO) may use structured messages, so the
+     * two cannot be combined. Use {@link ContentValidationAlgorithm#NONE} or null, or omit the progress listener.
+     */
+    public static final String PROGRESS_CONFLICTS_TRANSFER_CONTENT_VALIDATION_MESSAGE
+        = "Progress reporting cannot be combined with ContentValidationAlgorithm.CRC64 or ContentValidationAlgorithm.AUTO. "
+            + "Set ContentValidationAlgorithm to NONE or null, or remove the progress listener.";
 
     /**
      * Resolves content validation mode and adds it to the Azure {@link Context} when non-null.
@@ -118,6 +128,45 @@ public final class ContentValidationModeResolver {
         ContentValidationAlgorithm contentValidationAlgorithm) {
         if (computeMd5 && contentValidationAlgorithm != null) {
             throw new IllegalArgumentException(CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE);
+        }
+    }
+
+    /**
+     * @return {@code true} when {@code contentValidationAlgorithm} enables CRC64 or AUTO transfer validation (not
+     * {@code null} and not {@link ContentValidationAlgorithm#NONE}).
+     */
+    public static boolean isContentValidationAlgorithmPresent(ContentValidationAlgorithm contentValidationAlgorithm) {
+        return contentValidationAlgorithm != null && contentValidationAlgorithm != ContentValidationAlgorithm.NONE;
+    }
+
+    /**
+     * Validates that parallel transfer progress reporting is not combined with CRC64/AUTO content validation.
+     *
+     * @param parallelTransferOptions May be {@code null}.
+     * @param contentValidationAlgorithm Transfer validation algorithm from options.
+     * @throws IllegalArgumentException if a progress listener is set and {@link #isCrc64OrAutoContentValidation} is true.
+     */
+    public static void validateProgressWithContentValidation(ParallelTransferOptions parallelTransferOptions,
+        ContentValidationAlgorithm contentValidationAlgorithm) {
+        if (parallelTransferOptions == null) {
+            return;
+        }
+        validateProgressWithContentValidation(parallelTransferOptions.getProgressListener(),
+            contentValidationAlgorithm);
+    }
+
+    /**
+     * Validates that progress reporting is not combined with CRC64/AUTO content validation.
+     *
+     * @param progressListener Progress listener from {@link ParallelTransferOptions} or equivalent; may be null.
+     * @param contentValidationAlgorithm Transfer validation algorithm from options.
+     * @throws IllegalArgumentException if {@code progressListener} is non-null and {@link #isContentValidationAlgorithmPresent}
+     * is true.
+     */
+    public static void validateProgressWithContentValidation(ProgressListener progressListener,
+        ContentValidationAlgorithm contentValidationAlgorithm) {
+        if (progressListener != null && isContentValidationAlgorithmPresent(contentValidationAlgorithm)) {
+            throw new IllegalArgumentException(PROGRESS_CONFLICTS_TRANSFER_CONTENT_VALIDATION_MESSAGE);
         }
     }
 }

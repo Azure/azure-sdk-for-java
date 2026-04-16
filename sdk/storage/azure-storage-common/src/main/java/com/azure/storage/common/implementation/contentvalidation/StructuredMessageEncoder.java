@@ -145,6 +145,7 @@ public class StructuredMessageEncoder {
             }
 
             // Emit buffers lazily to avoid materializing full encoded output in memory
+            // Could be swapped to Flux.generate if performance is impacted and we're eagerly pushing a lot of data.
             return Flux.create(sink -> {
                 // if we are at the beginning of the message, encode message header and emit it
                 if (currentContentOffset == 0) {

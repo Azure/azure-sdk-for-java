@@ -97,7 +97,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
                 // Run CRC64 on boundedElastic so synchronous work over the full body does not block the reactive
                 // I/O thread (e.g. Netty event loop) that drives the pipeline.
                 .subscribeOn(Schedulers.boundedElastic())
-                .doOnNext(contentCRC64 -> {
+                .flatMap(contentCRC64 -> {
                     // Restore body for downstream consumers.
                     context.getHttpRequest().setBody(Flux.just(ByteBuffer.wrap(originalBytes)));
 
@@ -110,8 +110,8 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
                     // Base64 encode the binary representation.
                     String encodedCRC64 = Base64.getEncoder().encodeToString(crc64Bytes);
                     context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, encodedCRC64);
-                })
-                .then());
+                    return Mono.empty();
+                }));
     }
 
     /**

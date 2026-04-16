@@ -702,6 +702,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             final ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
 
             ContentValidationModeResolver.validateTransactionalChecksumOptions(computeMd5, contentValidationAlgorithm);
+            ContentValidationModeResolver.validateProgressWithContentValidation(
+                parallelTransferOptions.getProgressListener(), contentValidationAlgorithm);
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
@@ -981,6 +983,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
 
         try {
+            ContentValidationModeResolver.validateProgressWithContentValidation(
+                finalParallelTransferOptions.getProgressListener(), contentValidationAlgorithm);
+
             Path filePath = Paths.get(options.getFilePath());
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
             // This will retrieve file length but won't read file body.
