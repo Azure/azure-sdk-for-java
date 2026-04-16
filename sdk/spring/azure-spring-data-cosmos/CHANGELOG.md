@@ -1,6 +1,6 @@
 ## Release History
 
-### 7.2.0-beta.1 (Unreleased)
+### 7.2.0 (Unreleased)
 
 #### Features Added
 
