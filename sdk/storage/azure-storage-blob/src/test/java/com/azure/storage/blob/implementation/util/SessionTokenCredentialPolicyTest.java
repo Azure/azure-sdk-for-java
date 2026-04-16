@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.storage.blob.models.SessionMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -29,6 +30,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -41,6 +43,7 @@ public class SessionTokenCredentialPolicyTest {
 
     private static final String FIRST_TOKEN = "first-session-token";
     private static final String SECOND_TOKEN = "second-session-token";
+    HttpHeaderName authHeaderName = HttpHeaderName.AUTHORIZATION;
 
     private BlobSessionClient sessionClient;
     private SessionTokenCredentialPolicy policy;
@@ -48,7 +51,7 @@ public class SessionTokenCredentialPolicyTest {
     @BeforeEach
     public void beforeEach() {
         sessionClient = mock(BlobSessionClient.class);
-        policy = new SessionTokenCredentialPolicy(sessionClient);
+        policy = createPolicy(SessionMode.ALWAYS);
     }
 
     @Test
@@ -122,7 +125,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policySignsRequestWithSessionCredential() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpResponse response = mock(HttpResponse.class);
 
@@ -141,7 +144,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyInvalidatesSessionAndRetriesOnceAsync() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse initialResponse = mock(HttpResponse.class);
@@ -170,7 +173,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyInvalidatesSessionAndRetriesOnceSync() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
         HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
         HttpResponse initialResponse = mock(HttpResponse.class);
@@ -198,7 +201,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyOnlyRetriesOncePerRequest() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse initialResponse = mock(HttpResponse.class);
@@ -225,7 +228,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyReturns403WithoutRetry() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse forbiddenResponse = mock(HttpResponse.class);
@@ -246,7 +249,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyReturnsSessionTokenInvalidWithoutRetryButInvalidatesSession() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse invalidResponse = mock(HttpResponse.class);
@@ -274,7 +277,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyFallsToBearerOn503SessionUnavailableAsync() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse unavailableResponse = mock(HttpResponse.class);
@@ -302,7 +305,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyFallsToBearerOn503SessionUnavailableSync() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
         HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
         HttpResponse unavailableResponse = mock(HttpResponse.class);
@@ -329,7 +332,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void policyReturns503ServerBusyWithoutBearerFallback() {
-        HttpPipelineCallContext context = createContext("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse busyResponse = mock(HttpResponse.class);
@@ -357,9 +360,10 @@ public class SessionTokenCredentialPolicyTest {
             SessionTestHelper.TEST_ACCOUNT_NAME);
     }
 
-    private static HttpPipelineCallContext createContext(String url) {
+    private static HttpPipelineCallContext createContext() {
         HttpPipelineCallContext context = mock(HttpPipelineCallContext.class);
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob");
         Map<String, Object> data = new ConcurrentHashMap<>();
 
         when(context.getHttpRequest()).thenReturn(request);
