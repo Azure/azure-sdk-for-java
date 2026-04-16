@@ -75,3 +75,4 @@ steps:
       key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "$(ProjectListSha256)" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
       path: $(MAVEN_CACHE_FOLDER)
     displayName: Cache Maven local repo
+    condition: false
