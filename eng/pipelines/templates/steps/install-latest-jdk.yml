@@ -11,7 +11,7 @@ steps:
       key: 'jdk | "1.${{ parameters.LatestJdkFeatureVersion }}" | "$(CacheSalt)" | "$(Agent.OS)"'
       path: $(Agent.BuildDirectory)/jdk-${{ parameters.LatestJdkFeatureVersion }}
     displayName: 'Cache Latest JDK'
-    condition: eq(variables['IsLatestNonLtsJdk'], 'true')
+    condition: false #eq(variables['IsLatestNonLtsJdk'], 'true')
 
   - task: PowerShell@2
     displayName: 'Install Latest JDK'
