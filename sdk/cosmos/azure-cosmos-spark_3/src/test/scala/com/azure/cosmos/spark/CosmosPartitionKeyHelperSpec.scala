@@ -84,7 +84,7 @@ class CosmosPartitionKeyHelperSpec extends UnitSpec {
   }
 
   it should "return None for truncated JSON inside pk() wrapper" in {
-    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk(["unterminated)")
+    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"unterminated)")
     pk.isDefined shouldBe false
   }
 
