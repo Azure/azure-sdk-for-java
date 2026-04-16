@@ -1965,6 +1965,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String readConsistencyStrategyName = readConsistencyStrategy.toString();
             this.validateReadConsistencyStrategy(readConsistencyStrategy);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When RCS is set, remove
+            // consistency-level — RCS takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options == null) {
@@ -2012,6 +2016,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When RCS is set, remove
+            // consistency-level — RCS takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options.getConsistencyLevel() != null) {
