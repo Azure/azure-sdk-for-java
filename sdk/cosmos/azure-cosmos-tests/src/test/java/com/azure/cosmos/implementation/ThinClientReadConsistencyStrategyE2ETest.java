@@ -65,7 +65,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         database = client.getDatabase(databaseId);
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/pk");
-        database.createContainerIfNotExists(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+        database.createContainerIfNotExists(containerProperties).block();
         container = database.getContainer(containerId);
 
         logger.info("Created test database {} and container {}", databaseId, containerId);
