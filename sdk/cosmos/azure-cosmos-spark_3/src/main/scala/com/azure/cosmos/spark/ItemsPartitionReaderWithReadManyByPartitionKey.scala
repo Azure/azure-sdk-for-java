@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
-import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -188,27 +188,22 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
     override def close(): Unit = {}
   }
 
-  // Single iterator over all PKs — the SDK handles per-physical-partition batching
-  // internally to avoid oversized SQL queries.
-  // Short-circuit empty PK lists locally because the SDK rejects empty partition-key lists.
+  // Batch partition keys and retry each batch independently on transient I/O errors.
+  // This avoids the continuation-token problem with TransientIOErrorsRetryingIterator
+  // where a retry would re-read all data from scratch, causing silent data duplication.
   private lazy val iterator: CloseableSparkRowItemIterator =
     if (pkList.isEmpty) {
       EmptySparkRowItemIterator
     } else {
       new CloseableSparkRowItemIterator {
-        private val delegate = new TransientIOErrorsRetryingIterator[SparkRowItem](
-          continuationToken => {
-            readConfig.customQuery match {
-              case Some(query) =>
-                cosmosAsyncContainer.readManyByPartitionKey(pkList, query.toSqlQuerySpec, readManyOptions, classOf[SparkRowItem])
-              case None =>
-                cosmosAsyncContainer.readManyByPartitionKey(pkList, readManyOptions, classOf[SparkRowItem])
-            }
-          },
+        private val delegate = new TransientIOErrorsRetryingReadManyByPartitionKeyIterator[SparkRowItem](
+          cosmosAsyncContainer,
+          pkList,
+          readConfig.customQuery.map(_.toSqlQuerySpec),
+          readManyOptions,
           readConfig.maxItemCount,
-          readConfig.prefetchBufferSize,
           operationContextAndListenerTuple,
-          None
+          classOf[SparkRowItem]
         )
 
         override def hasNext: Boolean = delegate.hasNext
