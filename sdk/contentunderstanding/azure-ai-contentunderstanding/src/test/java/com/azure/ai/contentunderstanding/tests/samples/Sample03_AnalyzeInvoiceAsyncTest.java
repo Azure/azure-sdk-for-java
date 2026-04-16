@@ -15,9 +15,9 @@ import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.UsageDetails;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,7 +57,10 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         // In a real application, you would use subscribe() instead of block()
         ContentAnalyzerAnalyzeOperationStatus operationStatus = operation.last().map(pollResponse -> {
             if (!pollResponse.getStatus().isComplete()) {
-                throw new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus());
+                throw new RuntimeException("Polling did not complete: " + pollResponse.getStatus());
+            }
+            if (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                throw new RuntimeException("Operation failed with status: " + pollResponse.getStatus());
             }
             return pollResponse.getValue();
         }).block(); // block() is used here for testing; in production, use subscribe()
