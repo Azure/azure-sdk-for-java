@@ -351,6 +351,132 @@ public class SessionTokenCredentialPolicyTest {
         verify(busyResponse, times(0)).close();
     }
 
+    @Test
+    public void noneModeAlwaysPassesThrough() {
+        SessionTokenCredentialPolicy nonePolicy = createPolicy(SessionMode.NONE);
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+
+        HttpResponse actualResponse = nonePolicy.process(context, next).block();
+
+        assertEquals(response, actualResponse);
+        verify(next, times(1)).process();
+        verify(sessionClient, times(0)).createSessionAsync();
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
+    }
+
+    @Test
+    public void noneModeSyncAlwaysPassesThrough() {
+        SessionTokenCredentialPolicy nonePolicy = createPolicy(SessionMode.NONE);
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.processSync()).thenReturn(response);
+        when(response.getStatusCode()).thenReturn(200);
+
+        HttpResponse actualResponse = nonePolicy.processSync(context, next);
+
+        assertEquals(response, actualResponse);
+        verify(next, times(1)).processSync();
+        verify(sessionClient, times(0)).createSessionSync();
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
+    }
+
+    @Test
+    public void alwaysModeSignsFirstRequest() {
+        // The default `policy` in setUp is ALWAYS — verify it signs the very first request
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+
+        policy.process(context, next).block();
+
+        assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+        verify(sessionClient, times(1)).createSessionAsync();
+    }
+
+    @Test
+    public void autoModePassesThroughFirstRequestThenSignsSecond() {
+        SessionTokenCredentialPolicy autoPolicy = createPolicy(SessionMode.AUTO);
+        HttpResponse firstResponse = mock(HttpResponse.class);
+        HttpResponse secondResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(firstResponse.getStatusCode()).thenReturn(200);
+        when(secondResponse.getStatusCode()).thenReturn(200);
+
+        // First request — should pass through without session
+        HttpPipelineCallContext context1 = createContext();
+        HttpPipelineNextPolicy next1 = mock(HttpPipelineNextPolicy.class);
+        when(next1.process()).thenReturn(Mono.just(firstResponse));
+
+        HttpResponse actual1 = autoPolicy.process(context1, next1).block();
+
+        assertEquals(firstResponse, actual1);
+        verify(sessionClient, times(0)).createSessionAsync();
+        assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+
+        // Second request — should use session
+        HttpPipelineCallContext context2 = createContext();
+        HttpPipelineNextPolicy next2 = mock(HttpPipelineNextPolicy.class);
+        when(next2.clone()).thenReturn(next2);
+        when(next2.process()).thenReturn(Mono.just(secondResponse));
+
+        HttpResponse actual2 = autoPolicy.process(context2, next2).block();
+
+        assertEquals(secondResponse, actual2);
+        verify(sessionClient, times(1)).createSessionAsync();
+        assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+    }
+
+    @Test
+    public void autoModeSyncPassesThroughFirstRequestThenSignsSecond() {
+        SessionTokenCredentialPolicy autoPolicy = createPolicy(SessionMode.AUTO);
+        HttpResponse firstResponse = mock(HttpResponse.class);
+        HttpResponse secondResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionSync()).thenReturn(credentialWithToken(FIRST_TOKEN));
+        when(firstResponse.getStatusCode()).thenReturn(200);
+        when(secondResponse.getStatusCode()).thenReturn(200);
+
+        // First request — pass through
+        HttpPipelineCallContext context1 = createContext();
+        HttpPipelineNextSyncPolicy next1 = mock(HttpPipelineNextSyncPolicy.class);
+        when(next1.processSync()).thenReturn(firstResponse);
+
+        HttpResponse actual1 = autoPolicy.processSync(context1, next1);
+
+        assertEquals(firstResponse, actual1);
+        verify(sessionClient, times(0)).createSessionSync();
+        assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+
+        // Second request — session signed
+        HttpPipelineCallContext context2 = createContext();
+        HttpPipelineNextSyncPolicy next2 = mock(HttpPipelineNextSyncPolicy.class);
+        when(next2.clone()).thenReturn(next2);
+        when(next2.processSync()).thenReturn(secondResponse);
+
+        HttpResponse actual2 = autoPolicy.processSync(context2, next2);
+
+        assertEquals(secondResponse, actual2);
+        verify(sessionClient, times(1)).createSessionSync();
+        assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+    }
+
+    private SessionTokenCredentialPolicy createPolicy(SessionMode mode) {
+        return new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), mode);
+    }
+
     private static StorageSessionCredential credentialWithToken(String token) {
         return credentialWithToken(token, OffsetDateTime.now().plusHours(1));
     }
