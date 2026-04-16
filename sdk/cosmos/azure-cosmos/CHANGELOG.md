@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
+* Added RNTBD header encoding for `ReadConsistencyStrategy` to enable thin client (Gateway V2) and compute gateway (Gateway V1) propagation. `ReadConsistencyStrategy` is now supported in all connection modes (direct, gateway, thin client). Also added client-side validation for `GLOBAL_STRONG` on non-Strong consistency accounts. - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
 
 #### Breaking Changes
 

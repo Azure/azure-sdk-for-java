@@ -139,6 +139,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addThroughputBucket(headers);
         this.addPopulateQueryAdvice(headers);
         this.addHubRegionProcessingOnly(headers);
+        this.addReadConsistencyStrategy(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -825,6 +826,18 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         if (StringUtils.isNotEmpty(value)) {
             final boolean hubRegionProcessingOnly = Boolean.parseBoolean(value);
             this.getHubRegionProcessingOnly().setValue(hubRegionProcessingOnly);
+        }
+    }
+
+    private RntbdToken getReadConsistencyStrategy() {
+        return this.get(RntbdRequestHeader.ReadConsistencyStrategy);
+    }
+
+    private void addReadConsistencyStrategy(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.READ_CONSISTENCY_STRATEGY);
+
+        if (StringUtils.isNotEmpty(value)) {
+            this.getReadConsistencyStrategy().setValue(value);
         }
     }
 
