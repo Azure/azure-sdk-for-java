@@ -3,6 +3,7 @@
 ### 4.47.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 
 #### Breaking Changes
 
