@@ -155,6 +155,15 @@ public abstract class HttpResponse implements Closeable {
     }
 
     /**
+     * Gets the response content as an {@link InputStream}.
+     *
+     * @return The response content as an {@link InputStream}.
+     */
+    public InputStream getBodyStream() {
+        return new FluxInputStream(getBody());
+    }
+
+    /**
      * Gets the {@link HttpRequest request} which resulted in this response.
      *
      * @return The {@link HttpRequest request} which resulted in this response.
