@@ -18,6 +18,7 @@ library for Java, please refer to the [README.md][README] rather than this guide
     - [Send events to an Event Hub](#send-events-to-an-event-hub)
     - [Receiving events from all partitions](#receiving-events-from-all-partitions)
     - [Receive events from a single partition](#receive-events-from-a-single-partition)
+    - [Migrating from `InMemoryCheckpointManager` and `InMemoryLeaseManager`](#migrating-from-inmemorycheckpointmanager-and-inmemoryleasemanager)
   - [Additional samples](#additional-samples)
 
 ## Migration benefits
@@ -441,6 +442,49 @@ private static void onEvent(EventContext eventContext) {
 }
 ```
 
+### Migrating from `InMemoryCheckpointManager` and `InMemoryLeaseManager`
+
+In v3, `InMemoryCheckpointManager` and `InMemoryLeaseManager` were provided as in-memory implementations for
+checkpoint and lease management. These were removed in v5 as a conscious design decision because in-memory stores
+caused real production issues for users who inadvertently used them in deployed environments:
+
+- Checkpoints are not persisted across application restarts, so events were reprocessed from the beginning after every
+  restart.
+- Partition ownership cannot be shared across multiple application instances, preventing load balancing from working
+  correctly.
+
+For **production** use, [BlobCheckpointStore][BlobCheckpointStore] from the [azure-messaging-eventhubs-checkpointstore-blob][azure-messaging-eventhubs-checkpointstore-blob] package is the recommended checkpoint store. It provides durable, cross-instance checkpoint and partition ownership tracking using Azure Blob Storage.
+
+For **testing and development** scenarios where a durable store is not needed, a custom in-memory [CheckpointStore][CheckpointStore] can be implemented. A [SampleCheckpointStore][SampleCheckpointStore] is available in the samples to demonstrate this. Note that this is suitable only for single-instance, non-production use.
+
+In v3:
+
+```java
+EventProcessorHost processor = EventProcessorHost.EventProcessorHostBuilder
+        .newBuilder("a-processor-name", "my-consumer-group")
+        .useEventHubConnectionString("connection-string-for-an-event-hub")
+        .build(new InMemoryCheckpointManager(), new InMemoryLeaseManager());
+
+processor.registerEventProcessor(MyEventProcessor.class).get();
+```
+
+In v5, using `BlobCheckpointStore` for production:
+
+```java
+BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
+        .connectionString("storage-connection-string")
+        .containerName("storage-container-name")
+        .buildAsyncClient();
+
+EventProcessorClient processor = new EventProcessorClientBuilder()
+        .connectionString("connection-string-for-an-event-hub")
+        .consumerGroup("my-consumer-group")
+        .checkpointStore(new BlobCheckpointStore(blobClient))
+        .processEvent(eventContext -> { /* process event */ })
+        .processError(context -> { /* handle error */ })
+        .buildEventProcessorClient();
+```
+
 ## Additional samples
 
 More examples can be found at:
@@ -450,6 +494,7 @@ More examples can be found at:
 
 <!-- Links -->
 [azure-messaging-eventhubs-checkpointstore-blob]: https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob
+[BlobCheckpointStore]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs-checkpointstore-blob/latest/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStore.html
 [CheckpointStore]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/CheckpointStore.html
 [CreateBatchOptions]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/models/CreateBatchOptions.html
 [EventData]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventData.html
@@ -470,6 +515,7 @@ More examples can be found at:
 [README-Samples-Blobs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/src/samples/README.md
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md
+[SampleCheckpointStore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/SampleCheckpointStore.java
 
 
 
