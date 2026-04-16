@@ -453,9 +453,7 @@ caused real production issues for users who inadvertently used them in deployed 
 - Partition ownership cannot be shared across multiple application instances, preventing load balancing from working
   correctly.
 
-For **production** use, [BlobCheckpointStore][BlobCheckpointStore] from the [azure-messaging-eventhubs-checkpointstore-blob][azure-messaging-eventhubs-checkpointstore-blob] package is the recommended checkpoint store. It provides durable, cross-instance checkpoint and partition ownership tracking using Azure Blob Storage.
-
-For **testing and development** scenarios where a durable store is not needed, a custom in-memory [CheckpointStore][CheckpointStore] can be implemented. A [SampleCheckpointStore][SampleCheckpointStore] is available in the samples to demonstrate this. Note that this is suitable only for single-instance, non-production use.
+[BlobCheckpointStore][BlobCheckpointStore] from the [azure-messaging-eventhubs-checkpointstore-blob][azure-messaging-eventhubs-checkpointstore-blob] package is the recommended replacement for all scenarios, including testing. It provides durable, cross-instance checkpoint and partition ownership tracking using Azure Blob Storage. Using `BlobCheckpointStore` in tests ensures that your test environment closely mirrors production behavior.
 
 In v3:
 
@@ -468,7 +466,7 @@ EventProcessorHost processor = EventProcessorHost.EventProcessorHostBuilder
 processor.registerEventProcessor(MyEventProcessor.class).get();
 ```
 
-In v5, using `BlobCheckpointStore` for production:
+In v5, using `BlobCheckpointStore`:
 
 ```java
 BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
@@ -515,7 +513,6 @@ More examples can be found at:
 [README-Samples-Blobs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/src/samples/README.md
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md
-[SampleCheckpointStore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/SampleCheckpointStore.java
 
 
 
