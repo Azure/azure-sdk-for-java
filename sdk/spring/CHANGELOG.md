@@ -1,4 +1,30 @@
 # Release History
+## 7.2.0 (2026-04-17)
+- This release is compatible with Spring Boot 4.0.5.
+- This release is compatible with Spring Cloud 2025.1.1.
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.6.
+
+### Spring Cloud Azure App Configuration Config
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Features Added
+
+- Added `startup-timeout` configuration option that enables automatic retry with backoff when transient failures occur during application startup. The provider will continue retrying until the timeout expires (default: 100 seconds).
+
+#### Bugs Fixed
+
+- Fixes a bug where ';' was ignored in JSON content type checking.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#720-2026-04-17) for more details.
+
 # (Unreleased)
 Upgrade Spring Boot dependencies version to 4.0.5 and Spring Cloud dependencies version to 2025.1.1
 Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
