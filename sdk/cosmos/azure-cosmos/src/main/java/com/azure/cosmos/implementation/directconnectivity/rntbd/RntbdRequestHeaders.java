@@ -837,7 +837,22 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.READ_CONSISTENCY_STRATEGY);
 
         if (StringUtils.isNotEmpty(value)) {
-            this.getReadConsistencyStrategy().setValue(value);
+            switch (value) {
+                case "Eventual":
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.Eventual.id());
+                    break;
+                case "Session":
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.Session.id());
+                    break;
+                case "LatestCommitted":
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.LatestCommitted.id());
+                    break;
+                case "GlobalStrong":
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.GlobalStrong.id());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

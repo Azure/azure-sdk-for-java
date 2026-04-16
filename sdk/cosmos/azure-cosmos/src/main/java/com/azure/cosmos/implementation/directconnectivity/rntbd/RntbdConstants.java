@@ -27,6 +27,24 @@ public final class RntbdConstants {
         public static final String SuccessValue = "Success";
     }
 
+    public enum RntbdReadConsistencyStrategy {
+
+        Eventual((byte) 0x01),
+        Session((byte) 0x02),
+        LatestCommitted((byte) 0x03),
+        GlobalStrong((byte) 0x04);
+
+        private final byte id;
+
+        RntbdReadConsistencyStrategy(final byte id) {
+            this.id = id;
+        }
+
+        public byte id() {
+            return this.id;
+        }
+    }
+
     public enum RntbdConsistencyLevel {
 
         Strong((byte) 0x00),
@@ -600,7 +618,7 @@ public final class RntbdConstants {
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
         PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
-        ReadConsistencyStrategy((short)0x00F0, RntbdTokenType.String, false);
+        ReadConsistencyStrategy((short)0x00F0, RntbdTokenType.Byte, false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
