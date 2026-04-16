@@ -981,8 +981,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
-        boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(this.gatewayServiceConfigurationReader,
-            request) == ReadConsistencyStrategy.SESSION);
+        // Use a copy of the headers to prevent the side-effect of
+        // RequestHelper.getReadConsistencyStrategyToUse() rewriting x-ms-consistency-level.
+        // In gateway mode, x-ms-consistency-level must stay as the original account/client level —
+        // only x-ms-cosmos-read-consistency-strategy carries the RCS intent to the gateway/proxy.
+        boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(
+            new HashMap<>(request.getHeaders()),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null,
+            this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel())
+                == ReadConsistencyStrategy.SESSION);
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (!sessionConsistency ||
