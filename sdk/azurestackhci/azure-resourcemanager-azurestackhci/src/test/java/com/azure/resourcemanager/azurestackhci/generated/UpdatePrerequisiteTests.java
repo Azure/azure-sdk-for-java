@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdatePrerequisiteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdatePrerequisite model = BinaryData
-            .fromString("{\"updateType\":\"gn\",\"version\":\"xsjxtelexhvuqboz\",\"packageName\":\"lzqocark\"}")
+        UpdatePrerequisite model = BinaryData.fromString(
+            "{\"updateType\":\"yrilmhxdqaolf\",\"version\":\"nkkbjpjvlywltmfw\",\"packageName\":\"bjwhlwyjfnqzocr\"}")
             .toObject(UpdatePrerequisite.class);
-        Assertions.assertEquals("gn", model.updateType());
-        Assertions.assertEquals("xsjxtelexhvuqboz", model.version());
-        Assertions.assertEquals("lzqocark", model.packageName());
+        Assertions.assertEquals("yrilmhxdqaolf", model.updateType());
+        Assertions.assertEquals("nkkbjpjvlywltmfw", model.version());
+        Assertions.assertEquals("bjwhlwyjfnqzocr", model.packageName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdatePrerequisite model
-            = new UpdatePrerequisite().withUpdateType("gn").withVersion("xsjxtelexhvuqboz").withPackageName("lzqocark");
+        UpdatePrerequisite model = new UpdatePrerequisite().withUpdateType("yrilmhxdqaolf")
+            .withVersion("nkkbjpjvlywltmfw")
+            .withPackageName("bjwhlwyjfnqzocr");
         model = BinaryData.fromObject(model).toObject(UpdatePrerequisite.class);
-        Assertions.assertEquals("gn", model.updateType());
-        Assertions.assertEquals("xsjxtelexhvuqboz", model.version());
-        Assertions.assertEquals("lzqocark", model.packageName());
+        Assertions.assertEquals("yrilmhxdqaolf", model.updateType());
+        Assertions.assertEquals("nkkbjpjvlywltmfw", model.version());
+        Assertions.assertEquals("bjwhlwyjfnqzocr", model.packageName());
     }
 }

@@ -13,22 +13,22 @@ public final class SdnIntegrationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SdnIntegration model = BinaryData.fromString(
-            "{\"networkController\":{\"macAddressPoolStart\":\"khly\",\"macAddressPoolStop\":\"hdgqggeb\",\"networkVirtualizationEnabled\":false}}")
+            "{\"networkController\":{\"macAddressPoolStart\":\"yhpluodpvruudlgz\",\"macAddressPoolStop\":\"thost\",\"networkVirtualizationEnabled\":true}}")
             .toObject(SdnIntegration.class);
-        Assertions.assertEquals("khly", model.networkController().macAddressPoolStart());
-        Assertions.assertEquals("hdgqggeb", model.networkController().macAddressPoolStop());
-        Assertions.assertFalse(model.networkController().networkVirtualizationEnabled());
+        Assertions.assertEquals("yhpluodpvruudlgz", model.networkController().macAddressPoolStart());
+        Assertions.assertEquals("thost", model.networkController().macAddressPoolStop());
+        Assertions.assertTrue(model.networkController().networkVirtualizationEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SdnIntegration model
-            = new SdnIntegration().withNetworkController(new NetworkController().withMacAddressPoolStart("khly")
-                .withMacAddressPoolStop("hdgqggeb")
-                .withNetworkVirtualizationEnabled(false));
+        SdnIntegration model = new SdnIntegration()
+            .withNetworkController(new NetworkController().withMacAddressPoolStart("yhpluodpvruudlgz")
+                .withMacAddressPoolStop("thost")
+                .withNetworkVirtualizationEnabled(true));
         model = BinaryData.fromObject(model).toObject(SdnIntegration.class);
-        Assertions.assertEquals("khly", model.networkController().macAddressPoolStart());
-        Assertions.assertEquals("hdgqggeb", model.networkController().macAddressPoolStop());
-        Assertions.assertFalse(model.networkController().networkVirtualizationEnabled());
+        Assertions.assertEquals("yhpluodpvruudlgz", model.networkController().macAddressPoolStart());
+        Assertions.assertEquals("thost", model.networkController().macAddressPoolStop());
+        Assertions.assertTrue(model.networkController().networkVirtualizationEnabled());
     }
 }

@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class UpdatesPutSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutUpdates.json
+     * x-ms-original-file: 2026-04-01-preview/PutUpdates.json
      */
     /**
      * Sample code: Put a specific update.
