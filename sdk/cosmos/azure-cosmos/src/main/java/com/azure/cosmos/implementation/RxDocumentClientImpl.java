@@ -2022,7 +2022,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
-        if (options.getConsistencyLevel() != null) {
+        if (options.getConsistencyLevel() != null
+            && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
+            // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
+            // RCS takes precedence — setting both causes gateway rejection.
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 

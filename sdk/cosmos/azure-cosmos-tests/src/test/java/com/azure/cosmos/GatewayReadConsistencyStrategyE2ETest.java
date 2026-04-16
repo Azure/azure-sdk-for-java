@@ -320,6 +320,52 @@ public class GatewayReadConsistencyStrategyE2ETest {
         }
     }
 
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void gateway_requestLevel_bothClAndRcs_rcsWins() {
+        // Request-level contention: options set both ConsistencyLevel and RCS.
+        // RCS should win — gateway must not reject with dual-header error.
+        String id = UUID.randomUUID().toString();
+        createAndInsertDocument(id);
+
+        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+            .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        CosmosItemResponse<ObjectNode> response =
+            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void gateway_requestLevelRcs_overridesClientLevelRcs() {
+        // Request-level RCS should override client-level RCS.
+        CosmosAsyncClient clientWithClientRcs = null;
+        try {
+            clientWithClientRcs = createGatewayBuilder()
+                .readConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL)
+                .buildAsyncClient();
+            CosmosAsyncContainer containerWithRcs = clientWithClientRcs.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(containerWithRcs, id);
+
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+            CosmosItemResponse<ObjectNode> response =
+                containerWithRcs.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        } finally {
+            safeClose(clientWithClientRcs);
+        }
+    }
+
     // endregion
 
     // region Helpers

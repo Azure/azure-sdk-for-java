@@ -348,6 +348,54 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         }
     }
 
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_requestLevel_bothClAndRcs_rcsWins() {
+        // Request-level contention: options set both ConsistencyLevel and RCS.
+        // RCS should win — proxy must not reject with dual-header error.
+        String id = UUID.randomUUID().toString();
+        createAndInsertDocument(id);
+
+        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+            .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        CosmosItemResponse<ObjectNode> response =
+            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertThinClientEndpointUsed(response.getDiagnostics());
+    }
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_requestLevelRcs_overridesClientLevelRcs() {
+        // Request-level RCS should override client-level RCS.
+        CosmosAsyncClient clientWithClientRcs = null;
+        try {
+            clientWithClientRcs = createThinClientBuilder()
+                .readConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL)
+                .buildAsyncClient();
+            CosmosAsyncContainer containerWithRcs = clientWithClientRcs.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(containerWithRcs, id);
+
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+            CosmosItemResponse<ObjectNode> response =
+                containerWithRcs.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertThinClientEndpointUsed(response.getDiagnostics());
+        } finally {
+            safeClose(clientWithClientRcs);
+        }
+    }
+
     // endregion
 
     // region Helpers
