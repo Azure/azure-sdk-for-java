@@ -17,8 +17,6 @@ import java.io.InputStream;
  */
 final class AzureHttpResponseAdapter implements HttpResponse {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureHttpResponseAdapter.class);
-
     private final com.azure.core.http.HttpResponse azureResponse;
 
     /**
