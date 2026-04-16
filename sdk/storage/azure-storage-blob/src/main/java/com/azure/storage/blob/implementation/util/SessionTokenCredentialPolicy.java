@@ -9,9 +9,11 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.blob.models.SessionMode;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Policy that acquires container-scoped session credentials and signs requests using the Session auth scheme.
@@ -26,19 +28,27 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String SESSION_OPS_UNAVAILABLE = "SessionOperationsTemporarilyUnavailable";
 
     private final StorageSessionCredentialCache sessionCredentialCache;
+    private final SessionMode mode;
+    private final AtomicBoolean autoActivated = new AtomicBoolean(false);
 
     SessionTokenCredentialPolicy(BlobSessionClient sessionClient) {
-        this(new StorageSessionCredentialCache(
-            Objects.requireNonNull(sessionClient, "'sessionClient' cannot be null.")));
+        this(
+            new StorageSessionCredentialCache(Objects.requireNonNull(sessionClient, "'sessionClient' cannot be null.")),
+            SessionMode.AUTO);
     }
 
-    SessionTokenCredentialPolicy(StorageSessionCredentialCache sessionCredentialCache) {
+    SessionTokenCredentialPolicy(StorageSessionCredentialCache sessionCredentialCache, SessionMode mode) {
         this.sessionCredentialCache
             = Objects.requireNonNull(sessionCredentialCache, "'sessionCredentialCache' cannot be null.");
+        this.mode = Objects.requireNonNull(mode, "'mode' cannot be null.");
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (!shouldUseSession()) {
+            return next.process();
+        }
+
         HttpPipelineNextPolicy retryNext = next.clone();
         return getValidSessionAsync().flatMap(session -> {
             signRequest(context, session);
@@ -72,6 +82,10 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        if (!shouldUseSession()) {
+            return next.processSync();
+        }
+
         HttpPipelineNextSyncPolicy retryNext = next.clone();
         StorageSessionCredential session = getValidSessionSync();
         signRequest(context, session);
@@ -104,6 +118,30 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     Mono<StorageSessionCredential> getValidSessionAsync() {
         return sessionCredentialCache.getValidSessionAsync();
+    }
+
+    /**
+     * Determines whether this request should use session auth based on the configured mode.
+     * <ul>
+     *   <li>{@link SessionMode#NONE}: always returns false — passthrough to bearer.</li>
+     *   <li>{@link SessionMode#ALWAYS}: always returns true — session from first request.</li>
+     *   <li>{@link SessionMode#AUTO}: returns false for the first request (bearer), true thereafter.</li>
+     * </ul>
+     */
+    private boolean shouldUseSession() {
+        switch (mode) {
+            case NONE:
+                return false;
+
+            case ALWAYS:
+                return true;
+
+            case AUTO:
+                return autoActivated.getAndSet(true);
+
+            default:
+                return true;
+        }
     }
 
     StorageSessionCredential getValidSessionSync() {
