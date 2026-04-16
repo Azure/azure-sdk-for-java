@@ -88,7 +88,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     }
 
     // ------------------------------------------------------------------
-    // Read GSI container
+    // Read GlobalSecondaryIndex container
     // ------------------------------------------------------------------
 
     @Test(groups = {"gsi"}, timeOut = TIMEOUT)
