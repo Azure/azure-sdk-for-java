@@ -32,9 +32,9 @@ public class FluxInputStream extends InputStream {
 
     private ByteArrayInputStream buffer;
 
-    private boolean subscribed;
-    private boolean fluxComplete;
-    private boolean waitingForData;
+    private volatile boolean subscribed;
+    private volatile boolean fluxComplete;
+    private volatile boolean waitingForData;
 
     /* The following lock and condition variable is to synchronize access between the reader and the
         reactor thread asynchronously reading data from the Flux. If no data is available, the reader
@@ -64,7 +64,7 @@ public class FluxInputStream extends InputStream {
     public int read() throws IOException {
         byte[] ret = new byte[1];
         int count = read(ret, 0, 1);
-        return count == -1 ? -1 : ret[0];
+        return count == -1 ? -1 : (ret[0] & 0xFF);
     }
 
     @Override
@@ -123,7 +123,10 @@ public class FluxInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
-        subscription.cancel();
+        if (subscription != null) {
+            subscription.cancel();
+        }
+
         if (this.buffer != null) {
             this.buffer.close();
         }
@@ -153,6 +156,7 @@ public class FluxInputStream extends InputStream {
                     try {
                         dataAvailable.await();
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
                 }
@@ -165,6 +169,7 @@ public class FluxInputStream extends InputStream {
     /**
      * Subscribes to the data with a special subscriber.
      */
+    @SuppressWarnings("deprecation")
     private void subscribeToData() {
         this.data.filter(Buffer::hasRemaining) /* Filter to make sure only non empty byte buffers are emitted. */
             .onBackpressureBuffer()
