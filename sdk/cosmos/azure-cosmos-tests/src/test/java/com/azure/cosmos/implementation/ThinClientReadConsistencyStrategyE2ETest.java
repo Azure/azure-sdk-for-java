@@ -12,15 +12,18 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -31,6 +34,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -40,12 +44,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * Verifies that the RNTBD header 0x00F0 (ReadConsistencyStrategy) is correctly
  * sent to the proxy and that the proxy applies the strategy server-side.
  *
+ * Covers all request option types that expose ReadConsistencyStrategy:
+ * - CosmosItemRequestOptions (point reads)
+ * - CosmosQueryRequestOptions (queries)
+ * - CosmosChangeFeedRequestOptions (change feed)
+ * - CosmosReadManyRequestOptions (read many)
+ * - CosmosClientBuilder (client-level default)
+ *
  * Requires a thin-client-enabled account configured via TestConfigurations.
  * Run with test group "thinclient".
  */
 public class ThinClientReadConsistencyStrategyE2ETest {
     private static final Logger logger = LoggerFactory.getLogger(ThinClientReadConsistencyStrategyE2ETest.class);
-    private static final String thinClientEndpointIndicator = ":10250/";
+    private static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private CosmosAsyncClient client;
@@ -58,7 +69,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
     public void beforeClass() {
         client = createThinClientBuilder().buildAsyncClient();
 
-        databaseId = "rcs-thinclient-test-" + UUID.randomUUID().toString().substring(0, 8);
+        databaseId = "rcs-tc-" + UUID.randomUUID().toString().substring(0, 8);
         containerId = "testcontainer";
 
         client.createDatabaseIfNotExists(databaseId).block();
@@ -84,11 +95,12 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         safeClose(client);
     }
 
+    // region ItemRequestOptions
+
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void thinClient_readItem_withLatestCommitted() {
         String id = UUID.randomUUID().toString();
-        ObjectNode doc = createDocument(id);
-        container.createItem(doc, new PartitionKey(id), null).block();
+        createAndInsertDocument(id);
 
         CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
@@ -98,16 +110,52 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
-            .isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(response.getDiagnostics());
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_readItem_withEventual() {
+        String id = UUID.randomUUID().toString();
+        createAndInsertDocument(id);
+
+        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+
+        CosmosItemResponse<ObjectNode> response =
+            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.EVENTUAL);
+        assertThinClientEndpointUsed(response.getDiagnostics());
+    }
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_readItem_withSession() {
+        String id = UUID.randomUUID().toString();
+        createAndInsertDocument(id);
+
+        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+
+        CosmosItemResponse<ObjectNode> response =
+            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.SESSION);
+        assertThinClientEndpointUsed(response.getDiagnostics());
+    }
+
+    // endregion
+
+    // region QueryRequestOptions
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void thinClient_queryItems_withLatestCommitted() {
         String id = UUID.randomUUID().toString();
-        ObjectNode doc = createDocument(id);
-        container.createItem(doc, new PartitionKey(id), null).block();
+        createAndInsertDocument(id);
 
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
             .setPartitionKey(new PartitionKey(id))
@@ -123,47 +171,73 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getResults()).isNotNull();
+        assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(response.getCosmosDiagnostics());
     }
 
+    // endregion
+
+    // region ChangeFeedRequestOptions
+
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_readItem_withEventual() {
-        String id = UUID.randomUUID().toString();
-        ObjectNode doc = createDocument(id);
-        container.createItem(doc, new PartitionKey(id), null).block();
+    public void thinClient_changeFeed_withLatestCommitted() {
+        String pkValue = UUID.randomUUID().toString();
+        createAndInsertDocument(pkValue);
 
-        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
-            .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+        CosmosChangeFeedRequestOptions cfOptions = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(
+                FeedRange.forLogicalPartition(new PartitionKey(pkValue)))
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
-        CosmosItemResponse<ObjectNode> response =
-            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+        List<FeedResponse<ObjectNode>> pages = container
+            .queryChangeFeed(cfOptions, ObjectNode.class)
+            .byPage()
+            .collectList()
+            .block();
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
-            .isEqualTo(ReadConsistencyStrategy.EVENTUAL);
+        assertThat(pages).isNotNull();
+        assertThat(pages.isEmpty()).isFalse();
+
+        FeedResponse<ObjectNode> firstPage = pages.get(0);
+        assertEffectiveRcs(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertThinClientEndpointUsed(firstPage.getCosmosDiagnostics());
     }
 
+    // endregion
+
+    // region ReadManyRequestOptions
+
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_readItem_withSession() {
-        String id = UUID.randomUUID().toString();
-        ObjectNode doc = createDocument(id);
-        container.createItem(doc, new PartitionKey(id), null).block();
+    public void thinClient_readMany_withLatestCommitted() {
+        String pkValue = UUID.randomUUID().toString();
+        String id1 = UUID.randomUUID().toString();
+        String id2 = UUID.randomUUID().toString();
+        createAndInsertDocument(id1, pkValue);
+        createAndInsertDocument(id2, pkValue);
 
-        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
-            .setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+        List<CosmosItemIdentity> identities = Arrays.asList(
+            new CosmosItemIdentity(new PartitionKey(pkValue), id1),
+            new CosmosItemIdentity(new PartitionKey(pkValue), id2));
 
-        CosmosItemResponse<ObjectNode> response =
-            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+        CosmosReadManyRequestOptions readManyOptions = new CosmosReadManyRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        FeedResponse<ObjectNode> response =
+            container.readMany(identities, readManyOptions, ObjectNode.class).block();
 
         assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
-            .isEqualTo(ReadConsistencyStrategy.SESSION);
+        assertThat(response.getResults()).isNotNull();
+        assertThat(response.getResults().size()).isEqualTo(2);
+        assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertThinClientEndpointUsed(response.getCosmosDiagnostics());
     }
 
+    // endregion
+
+    // region Client-level RCS
+
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_readItem_clientLevel_latestCommitted() {
+    public void thinClient_clientLevel_latestCommitted_readItem() {
         CosmosAsyncClient clientWithRcs = null;
         try {
             clientWithRcs = createThinClientBuilder()
@@ -172,20 +246,55 @@ public class ThinClientReadConsistencyStrategyE2ETest {
             CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
-            ObjectNode doc = createDocument(id);
-            containerWithRcs.createItem(doc, new PartitionKey(id), null).block();
+            createAndInsertDocument(containerWithRcs, id);
 
             CosmosItemResponse<ObjectNode> response =
                 containerWithRcs.readItem(id, new PartitionKey(id), ObjectNode.class).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
-                .isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertThinClientEndpointUsed(response.getDiagnostics());
         } finally {
             safeClose(clientWithRcs);
         }
     }
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_clientLevel_latestCommitted_query() {
+        CosmosAsyncClient clientWithRcs = null;
+        try {
+            clientWithRcs = createThinClientBuilder()
+                .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
+                .buildAsyncClient();
+            CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(containerWithRcs, id);
+
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
+                .setPartitionKey(new PartitionKey(id));
+
+            SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c WHERE c.id=@id");
+            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", id)));
+
+            FeedResponse<ObjectNode> response = containerWithRcs
+                .queryItems(querySpec, queryOptions, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getResults()).isNotNull();
+            assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+        } finally {
+            safeClose(clientWithRcs);
+        }
+    }
+
+    // endregion
+
+    // region Write operations — RCS forced to DEFAULT
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void thinClient_writeItem_rcsIgnored() {
@@ -204,12 +313,44 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(201);
-            assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
-                .isEqualTo(ReadConsistencyStrategy.DEFAULT);
+            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.DEFAULT);
         } finally {
             safeClose(clientWithRcs);
         }
     }
+
+    // endregion
+
+    // region Both ConsistencyLevel and RCS — RCS wins
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_bothConsistencyLevelAndRcs_rcsWins() {
+        CosmosAsyncClient clientWithBoth = null;
+        try {
+            clientWithBoth = createThinClientBuilder()
+                .consistencyLevel(ConsistencyLevel.EVENTUAL)
+                .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
+                .buildAsyncClient();
+            CosmosAsyncContainer containerWithBoth = clientWithBoth.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(containerWithBoth, id);
+
+            CosmosItemResponse<ObjectNode> response =
+                containerWithBoth.readItem(id, new PartitionKey(id), ObjectNode.class).block();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertThinClientEndpointUsed(response.getDiagnostics());
+        } finally {
+            safeClose(clientWithBoth);
+        }
+    }
+
+    // endregion
+
+    // region Helpers
 
     private CosmosClientBuilder createThinClientBuilder() {
         return new CosmosClientBuilder()
@@ -220,10 +361,35 @@ public class ThinClientReadConsistencyStrategyE2ETest {
     }
 
     private ObjectNode createDocument(String id) {
+        return createDocument(id, id);
+    }
+
+    private ObjectNode createDocument(String id, String pk) {
         ObjectNode doc = OBJECT_MAPPER.createObjectNode();
         doc.put("id", id);
-        doc.put("pk", id);
+        doc.put("pk", pk);
         return doc;
+    }
+
+    private void createAndInsertDocument(String id) {
+        createAndInsertDocument(id, id);
+    }
+
+    private void createAndInsertDocument(String id, String pk) {
+        ObjectNode doc = createDocument(id, pk);
+        container.createItem(doc, new PartitionKey(pk), null).block();
+    }
+
+    private void createAndInsertDocument(CosmosAsyncContainer targetContainer, String id) {
+        ObjectNode doc = createDocument(id);
+        targetContainer.createItem(doc, new PartitionKey(id), null).block();
+    }
+
+    private static void assertEffectiveRcs(CosmosDiagnostics diagnostics, ReadConsistencyStrategy expected) {
+        assertThat(diagnostics).isNotNull();
+        assertThat(diagnostics.getDiagnosticsContext()).isNotNull();
+        assertThat(diagnostics.getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(expected);
     }
 
     private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
@@ -237,20 +403,22 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
             logger.info("Endpoint: {}, RequestType: {}", requestInfo.getEndpoint(), requestInfo.getRequestType());
-            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
+            if (requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
                 return;
             }
         }
         org.assertj.core.api.Assertions.fail("Expected at least one request to use thin client endpoint (:10250/)");
     }
 
-    private static void safeClose(CosmosAsyncClient client) {
-        if (client != null) {
+    private static void safeClose(CosmosAsyncClient clientToClose) {
+        if (clientToClose != null) {
             try {
-                client.close();
+                clientToClose.close();
             } catch (Exception e) {
                 logger.warn("Failed to close client", e);
             }
         }
     }
+
+    // endregion
 }
