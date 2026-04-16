@@ -43,7 +43,7 @@ import java.util.Arrays;
  */
 public final class DeploymentSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutDeploymentSettingsWithADLess.json
+     * x-ms-original-file: 2026-04-01-preview/PutDeploymentSettingsWithADLess.json
      */
     /**
      * Sample code: Create Deployment Settings Without Active Directory Integration.
@@ -156,7 +156,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-02-01/PutDeploymentSettings.json
+     * x-ms-original-file: 2026-04-01-preview/PutDeploymentSettings.json
      */
     /**
      * Sample code: Create Deployment Settings.

@@ -12,21 +12,21 @@ public final class NetworkControllerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkController model = BinaryData.fromString(
-            "{\"macAddressPoolStart\":\"g\",\"macAddressPoolStop\":\"qidbqfatpxllrxcy\",\"networkVirtualizationEnabled\":false}")
+            "{\"macAddressPoolStart\":\"tvdxeclzedqb\",\"macAddressPoolStop\":\"hzlhplodqkdlww\",\"networkVirtualizationEnabled\":false}")
             .toObject(NetworkController.class);
-        Assertions.assertEquals("g", model.macAddressPoolStart());
-        Assertions.assertEquals("qidbqfatpxllrxcy", model.macAddressPoolStop());
+        Assertions.assertEquals("tvdxeclzedqb", model.macAddressPoolStart());
+        Assertions.assertEquals("hzlhplodqkdlww", model.macAddressPoolStop());
         Assertions.assertFalse(model.networkVirtualizationEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkController model = new NetworkController().withMacAddressPoolStart("g")
-            .withMacAddressPoolStop("qidbqfatpxllrxcy")
+        NetworkController model = new NetworkController().withMacAddressPoolStart("tvdxeclzedqb")
+            .withMacAddressPoolStop("hzlhplodqkdlww")
             .withNetworkVirtualizationEnabled(false);
         model = BinaryData.fromObject(model).toObject(NetworkController.class);
-        Assertions.assertEquals("g", model.macAddressPoolStart());
-        Assertions.assertEquals("qidbqfatpxllrxcy", model.macAddressPoolStop());
+        Assertions.assertEquals("tvdxeclzedqb", model.macAddressPoolStart());
+        Assertions.assertEquals("hzlhplodqkdlww", model.macAddressPoolStop());
         Assertions.assertFalse(model.networkVirtualizationEnabled());
     }
 }

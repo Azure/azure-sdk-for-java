@@ -11,6 +11,6 @@ public final class HciHardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciHardwareProfile model
-            = BinaryData.fromString("{\"processorType\":\"jj\"}").toObject(HciHardwareProfile.class);
+            = BinaryData.fromString("{\"processorType\":\"ukvhd\"}").toObject(HciHardwareProfile.class);
     }
 }
