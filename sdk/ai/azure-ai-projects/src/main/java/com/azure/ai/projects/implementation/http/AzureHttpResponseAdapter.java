@@ -5,7 +5,6 @@ package com.azure.ai.projects.implementation.http;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.util.logging.ClientLogger;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpResponse;
 
