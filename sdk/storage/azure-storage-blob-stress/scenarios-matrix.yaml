@@ -391,22 +391,6 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
-    cv-blockbloboutputstream-async-sm:
-      testScenario: contentvalidationblockbloboutputstream
-      sync: false
-      sizeBytes: 1024
-      uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    cv-blockbloboutputstream-async-lg:
-      testScenario: contentvalidationblockbloboutputstream
-      sync: false
-      sizeBytes: "26214400"
-      uploadFaults: true
-      durationMin: 60
-      imageBuildDir: "../../.."
-
     cv-blockbloboutputstream-sm:
       testScenario: contentvalidationblockbloboutputstream
       sync: true
