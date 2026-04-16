@@ -1,15 +1,12 @@
 ## Release History
 
-### 4.47.0-beta.1 (Unreleased)
+### 4.47.0 (2026-04-16)
 
 #### Features Added
-
-#### Breaking Changes
+* Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability in the azure-cosmos SDK. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
 
 #### Bugs Fixed
 * Fixed an issue where `readContainerThroughput` was always called even when `targetThroughput` is explicitly configured, requiring unnecessary `throughputSettings/read` permission for AAD principals. - See [PR 48800](https://github.com/Azure/azure-sdk-for-java/pull/48800)
-
-#### Other Changes
 
 ### 4.46.0 (2026-03-27)
 
