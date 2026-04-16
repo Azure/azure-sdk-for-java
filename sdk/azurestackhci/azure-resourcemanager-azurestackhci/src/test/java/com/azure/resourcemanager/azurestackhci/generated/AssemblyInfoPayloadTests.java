@@ -10,8 +10,9 @@ import com.azure.resourcemanager.azurestackhci.models.AssemblyInfoPayload;
 public final class AssemblyInfoPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssemblyInfoPayload model = BinaryData.fromString(
-            "{\"identifier\":\"uzqogsexnevf\",\"hash\":\"wnwmewzs\",\"fileName\":\"ceuzsoibjudpfr\",\"url\":\"rthzvaytdwkqbrqu\"}")
+        AssemblyInfoPayload model = BinaryData
+            .fromString(
+                "{\"identifier\":\"qubkw\",\"hash\":\"enr\",\"fileName\":\"utujba\",\"url\":\"juohminyflnorw\"}")
             .toObject(AssemblyInfoPayload.class);
     }
 }
