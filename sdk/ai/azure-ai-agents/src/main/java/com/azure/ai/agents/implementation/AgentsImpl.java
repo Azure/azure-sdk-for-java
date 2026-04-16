@@ -457,6 +457,28 @@ public final class AgentsImpl {
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Get("/agents/{agent_name}/versions/{agent_version}/sessions/{session_id}:logstream")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getSessionLogStream(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @PathParam("session_id") String sessionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/versions/{agent_version}/sessions/{session_id}:logstream")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSessionLogStreamSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @PathParam("session_id") String sessionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
         @Get("/openai/v1/conversations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -3863,6 +3885,144 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSessions(String agentName, RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listSessionsSinglePage(agentName, requestOptions));
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session
+     * as a Server-Sent Events (SSE) stream.
+     * 
+     * Each SSE frame contains:
+     * - `event`: always `"log"`
+     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
+     * is not contractual and may include additional keys or change format
+     * over time — clients should treat it as an opaque string)
+     * 
+     * Example SSE frames:
+     * ```
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
+     * 8088"}
+     * 
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
+     * 
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
+     * 
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
+     * ```
+     * 
+     * The stream remains open until the client disconnects or the server
+     * terminates the connection. Clients should handle reconnection as needed.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     event: String(log) (Required)
+     *     data: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
+     * 
+     * Each frame contains an `event` field identifying the event type and a `data`
+     * field carrying the payload as plain text along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSessionLogStreamWithResponseAsync(String agentName, String agentVersion,
+        String sessionId, RequestOptions requestOptions) {
+        final String accept = "text/event-stream";
+        return FluxUtil.withContext(context -> service.getSessionLogStream(this.client.getEndpoint(), agentName,
+            agentVersion, sessionId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session
+     * as a Server-Sent Events (SSE) stream.
+     * 
+     * Each SSE frame contains:
+     * - `event`: always `"log"`
+     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
+     * is not contractual and may include additional keys or change format
+     * over time — clients should treat it as an opaque string)
+     * 
+     * Example SSE frames:
+     * ```
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
+     * 8088"}
+     * 
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
+     * 
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
+     * 
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
+     * ```
+     * 
+     * The stream remains open until the client disconnects or the server
+     * terminates the connection. Clients should handle reconnection as needed.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     event: String(log) (Required)
+     *     data: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
+     * 
+     * Each frame contains an `event` field identifying the event type and a `data`
+     * field carrying the payload as plain text along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getSessionLogStreamWithResponse(String agentName, String agentVersion, String sessionId,
+        RequestOptions requestOptions) {
+        final String accept = "text/event-stream";
+        return service.getSessionLogStreamSync(this.client.getEndpoint(), agentName, agentVersion, sessionId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**

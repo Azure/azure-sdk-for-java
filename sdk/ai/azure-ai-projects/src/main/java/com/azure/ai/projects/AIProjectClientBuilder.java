@@ -61,6 +61,7 @@ import java.util.Objects;
         EvaluatorsClient.class,
         InsightsClient.class,
         SchedulesClient.class,
+        SkillsClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
@@ -70,7 +71,8 @@ import java.util.Objects;
         EvaluationTaxonomiesAsyncClient.class,
         EvaluatorsAsyncClient.class,
         InsightsAsyncClient.class,
-        SchedulesAsyncClient.class })
+        SchedulesAsyncClient.class,
+        SkillsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -580,4 +582,24 @@ public final class AIProjectClientBuilder
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AIProjectClientBuilder.class);
+
+    /**
+     * Builds an instance of SkillsAsyncClient class.
+     *
+     * @return an instance of SkillsAsyncClient.
+     */
+    @Generated
+    public SkillsAsyncClient buildSkillsAsyncClient() {
+        return new SkillsAsyncClient(buildInnerClient().getSkills());
+    }
+
+    /**
+     * Builds an instance of SkillsClient class.
+     *
+     * @return an instance of SkillsClient.
+     */
+    @Generated
+    public SkillsClient buildSkillsClient() {
+        return new SkillsClient(buildInnerClient().getSkills());
+    }
 }

@@ -53,8 +53,12 @@ import java.util.Objects;
     serviceClients = {
         AgentsClient.class,
         MemoryStoresClient.class,
+        ToolboxesClient.class,
+        AgentSessionFilesClient.class,
         AgentsAsyncClient.class,
-        MemoryStoresAsyncClient.class })
+        MemoryStoresAsyncClient.class,
+        ToolboxesAsyncClient.class,
+        AgentSessionFilesAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -425,5 +429,45 @@ public final class AgentsClientBuilder
     @Generated
     public AgentsClient buildAgentsClient() {
         return new AgentsClient(buildInnerClient().getAgents());
+    }
+
+    /**
+     * Builds an instance of ToolboxesAsyncClient class.
+     *
+     * @return an instance of ToolboxesAsyncClient.
+     */
+    @Generated
+    public ToolboxesAsyncClient buildToolboxesAsyncClient() {
+        return new ToolboxesAsyncClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of AgentSessionFilesAsyncClient class.
+     *
+     * @return an instance of AgentSessionFilesAsyncClient.
+     */
+    @Generated
+    public AgentSessionFilesAsyncClient buildAgentSessionFilesAsyncClient() {
+        return new AgentSessionFilesAsyncClient(buildInnerClient().getAgentSessionFiles());
+    }
+
+    /**
+     * Builds an instance of ToolboxesClient class.
+     *
+     * @return an instance of ToolboxesClient.
+     */
+    @Generated
+    public ToolboxesClient buildToolboxesClient() {
+        return new ToolboxesClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of AgentSessionFilesClient class.
+     *
+     * @return an instance of AgentSessionFilesClient.
+     */
+    @Generated
+    public AgentSessionFilesClient buildAgentSessionFilesClient() {
+        return new AgentSessionFilesClient(buildInnerClient().getAgentSessionFiles());
     }
 }

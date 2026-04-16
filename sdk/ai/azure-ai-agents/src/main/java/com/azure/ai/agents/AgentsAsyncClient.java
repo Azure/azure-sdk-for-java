@@ -22,6 +22,7 @@ import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PatchAgentObjectPatchRequest;
+import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -2653,5 +2654,184 @@ public final class AgentsAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session
+     * as a Server-Sent Events (SSE) stream.
+     *
+     * Each SSE frame contains:
+     * - `event`: always `"log"`
+     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
+     * is not contractual and may include additional keys or change format
+     * over time — clients should treat it as an opaque string)
+     *
+     * Example SSE frames:
+     * ```
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
+     * 8088"}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
+     * ```
+     *
+     * The stream remains open until the client disconnects or the server
+     * terminates the connection. Clients should handle reconnection as needed.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     event: String(log) (Required)
+     *     data: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
+     *
+     * Each frame contains an `event` field identifying the event type and a `data`
+     * field carrying the payload as plain text along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSessionLogStreamWithResponse(String agentName, String agentVersion,
+        String sessionId, RequestOptions requestOptions) {
+        return this.serviceClient.getSessionLogStreamWithResponseAsync(agentName, agentVersion, sessionId,
+            requestOptions);
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session
+     * as a Server-Sent Events (SSE) stream.
+     *
+     * Each SSE frame contains:
+     * - `event`: always `"log"`
+     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
+     * is not contractual and may include additional keys or change format
+     * over time — clients should treat it as an opaque string)
+     *
+     * Example SSE frames:
+     * ```
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
+     * 8088"}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
+     * ```
+     *
+     * The stream remains open until the client disconnects or the server
+     * terminates the connection. Clients should handle reconnection as needed.
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
+     *
+     * Each frame contains an `event` field identifying the event type and a `data`
+     * field carrying the payload as plain text on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
+        AgentDefinitionOptInKeys foundryFeatures) {
+        // Generated convenience method for getSessionLogStreamWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session
+     * as a Server-Sent Events (SSE) stream.
+     *
+     * Each SSE frame contains:
+     * - `event`: always `"log"`
+     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
+     * is not contractual and may include additional keys or change format
+     * over time — clients should treat it as an opaque string)
+     *
+     * Example SSE frames:
+     * ```
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
+     * 8088"}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
+     *
+     * event: log
+     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
+     * ```
+     *
+     * The stream remains open until the client disconnects or the server
+     * terminates the connection. Clients should handle reconnection as needed.
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
+     *
+     * Each frame contains an `event` field identifying the event type and a `data`
+     * field carrying the payload as plain text on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
+        // Generated convenience method for getSessionLogStreamWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 }
