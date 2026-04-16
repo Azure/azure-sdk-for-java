@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
+import com.azure.ai.agents.implementation.SessionLogServerSentEvents;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -42,6 +43,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.models.conversations.Conversation;
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
@@ -59,7 +61,7 @@ public final class AgentsAsyncClient {
     /**
      * Retrieves the agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -162,7 +164,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -182,9 +184,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -308,7 +310,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -478,7 +480,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -534,9 +536,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -640,7 +642,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -660,9 +662,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -793,7 +795,7 @@ public final class AgentsAsyncClient {
     /**
      * Creates an agent from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -809,9 +811,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -908,7 +910,7 @@ public final class AgentsAsyncClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -923,9 +925,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1022,7 +1024,7 @@ public final class AgentsAsyncClient {
     /**
      * Create a new agent version from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1037,9 +1039,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1263,7 +1265,7 @@ public final class AgentsAsyncClient {
     /**
      * Retrieves a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1472,7 +1474,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1628,7 +1630,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1799,7 +1801,7 @@ public final class AgentsAsyncClient {
     /**
      * Deletes an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1827,7 +1829,7 @@ public final class AgentsAsyncClient {
     /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1867,7 +1869,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1909,9 +1911,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2018,7 +2020,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2029,9 +2031,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2079,7 +2081,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2175,7 +2177,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2694,7 +2696,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2765,22 +2767,20 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     *
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text on successful completion of {@link Mono}.
+     * @return a {@link Flux} of {@link SessionLogEvent} parsed from the SSE stream.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
         AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for getSessionLogStreamWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
         return getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
-            .flatMap(FluxUtil::toMono);
+            .flatMapMany(response -> {
+                Flux<ByteBuffer> sseStream = response.getValue().toFluxByteBuffer();
+                return new SessionLogServerSentEvents(sseStream).getEvents();
+            });
     }
 
     /**
@@ -2821,17 +2821,10 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     *
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text on successful completion of {@link Mono}.
+     * @return a {@link Flux} of {@link SessionLogEvent} parsed from the SSE stream.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
-        // Generated convenience method for getSessionLogStreamWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
-            .flatMap(FluxUtil::toMono);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
+        return getSessionLogStream(agentName, agentVersion, sessionId, null);
     }
 }

@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
+import com.azure.ai.agents.implementation.SessionLogServerSentEvents;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -38,8 +39,11 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
+import java.nio.ByteBuffer;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 
 /**
  * Initializes a new instance of the synchronous AgentsClient type.
@@ -53,7 +57,7 @@ public final class AgentsClient {
     /**
      * Retrieves the agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -156,7 +160,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -176,9 +180,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -300,7 +304,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -445,7 +449,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -501,9 +505,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -607,7 +611,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -627,9 +631,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -760,7 +764,7 @@ public final class AgentsClient {
     /**
      * Creates an agent from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -776,9 +780,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -874,7 +878,7 @@ public final class AgentsClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -889,9 +893,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -988,7 +992,7 @@ public final class AgentsClient {
     /**
      * Create a new agent version from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1003,9 +1007,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1222,7 +1226,7 @@ public final class AgentsClient {
     /**
      * Retrieves a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1408,7 +1412,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1563,7 +1567,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1710,7 +1714,7 @@ public final class AgentsClient {
     /**
      * Deletes an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1738,7 +1742,7 @@ public final class AgentsClient {
     /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1778,7 +1782,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1820,9 +1824,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1929,7 +1933,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1940,9 +1944,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1990,7 +1994,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2086,7 +2090,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2568,7 +2572,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2638,21 +2642,20 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     *
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text.
+     * @return an {@link IterableStream} of {@link SessionLogEvent} parsed from the SSE stream.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionLogEvent getSessionLogStream(String agentName, String agentVersion, String sessionId,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
         AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for getSessionLogStreamWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue();
+        Flux<ByteBuffer> sseStream
+            = getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue()
+                .toFluxByteBuffer();
+        SessionLogServerSentEvents processor = new SessionLogServerSentEvents(sseStream);
+        return new IterableStream<>(processor.getEvents());
     }
 
     /**
@@ -2693,16 +2696,11 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     *
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text.
+     * @return an {@link IterableStream} of {@link SessionLogEvent} parsed from the SSE stream.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionLogEvent getSessionLogStream(String agentName, String agentVersion, String sessionId) {
-        // Generated convenience method for getSessionLogStreamWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion,
+        String sessionId) {
+        return getSessionLogStream(agentName, agentVersion, sessionId, null);
     }
 }
