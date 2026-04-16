@@ -88,6 +88,17 @@ class CosmosPartitionKeyHelperSpec extends UnitSpec {
     pk.isDefined shouldBe false
   }
 
+  it should "produce different partition keys for addNullValue vs addNoneValue in HPK" in {
+    // addNullValue represents an explicit JSON null for a field that exists with value null
+    val pkWithNull = new PartitionKeyBuilder().add("Redmond").addNullValue().build()
+
+    // addNoneValue represents PartitionKey.NONE, meaning the field is absent/undefined
+    val pkWithNone = new PartitionKeyBuilder().add("Redmond").addNoneValue().build()
+
+    // These MUST produce different partition key hashes and route to different physical partitions
+    pkWithNull should not equal pkWithNone
+  }
+
   //scalastyle:on multiple.string.literals
   //scalastyle:on magic.number
 }

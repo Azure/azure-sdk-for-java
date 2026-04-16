@@ -170,6 +170,8 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
       .enable(true)
       .build
 
+  readManyOptionsImpl.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
+
   private trait CloseableSparkRowItemIterator {
     def hasNext: Boolean
     def next(): SparkRowItem

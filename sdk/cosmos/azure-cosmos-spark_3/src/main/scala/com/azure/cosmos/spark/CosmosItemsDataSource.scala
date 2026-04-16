@@ -146,6 +146,7 @@ object CosmosItemsDataSource {
       val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveConfig)
       val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(None)
       val calledFrom = s"CosmosItemsDataSource.readManyByPartitionKey"
+      val treatNullAsNone = readConfig.readManyByPkTreatNullAsNone
 
       val pkPaths = Loan(
         List[Option[CosmosClientCacheItem]](
@@ -197,7 +198,9 @@ object CosmosItemsDataSource {
                 case s: String => builder.add(s)
                 case n: Number => builder.add(n.doubleValue())
                 case b: Boolean => builder.add(b)
-                case null => builder.addNoneValue()
+                case null =>
+                  if (treatNullAsNone) builder.addNoneValue()
+                  else builder.addNullValue()
                 case other => builder.add(other.toString)
               }
             }
