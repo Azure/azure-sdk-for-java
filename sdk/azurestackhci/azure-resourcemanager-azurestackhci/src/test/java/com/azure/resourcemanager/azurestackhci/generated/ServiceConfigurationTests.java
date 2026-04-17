@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceConfiguration model = BinaryData.fromString("{\"serviceName\":\"WAC\",\"port\":9010569490634453588}")
+        ServiceConfiguration model = BinaryData.fromString("{\"serviceName\":\"WAC\",\"port\":7090482226070156086}")
             .toObject(ServiceConfiguration.class);
         Assertions.assertEquals(ServiceName.WAC, model.serviceName());
-        Assertions.assertEquals(9010569490634453588L, model.port());
+        Assertions.assertEquals(7090482226070156086L, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceConfiguration model
-            = new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(9010569490634453588L);
+            = new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(7090482226070156086L);
         model = BinaryData.fromObject(model).toObject(ServiceConfiguration.class);
         Assertions.assertEquals(ServiceName.WAC, model.serviceName());
-        Assertions.assertEquals(9010569490634453588L, model.port());
+        Assertions.assertEquals(7090482226070156086L, model.port());
     }
 }

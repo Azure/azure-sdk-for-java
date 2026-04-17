@@ -1,5 +1,354 @@
 # Release History
 
+## 1.1.0-beta.1 (2026-04-14)
+
+- Azure Resource Manager Azure Stack Hci client library for Java. This package contains Microsoft Azure SDK for Azure Stack Hci Management SDK. Azure Stack HCI service. Package api-version 2026-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ClusterJob$UpdateStages` was added
+
+* `models.StorageConfiguration` was added
+
+* `models.HciJobType` was added
+
+* `models.IgvmStatusDetail` was added
+
+* `models.RemoteSupportProvisioningState` was added
+
+* `models.ProvisionOsJobProperties` was added
+
+* `models.DevicePool$Definition` was added
+
+* `models.EdgeMachinePatch` was added
+
+* `models.ClusterBillingProperties` was added
+
+* `models.DevicePool` was added
+
+* `models.EdgeDeviceDisks` was added
+
+* `models.DownloadRequest` was added
+
+* `models.ClusterJobProperties` was added
+
+* `models.UpdateContent` was added
+
+* `models.ProvisionOsReportedProperties` was added
+
+* `models.SecretType` was added
+
+* `models.PlatformUpdateProperties` was added
+
+* `models.SanAdapterProperties` was added
+
+* `models.EdgeMachineProperties` was added
+
+* `models.EdgeMachineJob` was added
+
+* `models.StorageS2dConfig` was added
+
+* `models.HciConfigureSdnIntegrationJobProperties` was added
+
+* `models.ClusterJob` was added
+
+* `models.DevicePools` was added
+
+* `models.UpdateContents` was added
+
+* `models.ContentPayload` was added
+
+* `models.ValidateOwnershipVouchersRequest` was added
+
+* `models.TimeConfiguration` was added
+
+* `models.EdgeMachineJobProperties` was added
+
+* `models.EdgeMachineRemoteSupportJobProperties` was added
+
+* `models.EdgeMachines` was added
+
+* `models.SanNetworks` was added
+
+* `models.DevicePoolPatch` was added
+
+* `models.EdgeMachine$Definition` was added
+
+* `models.PlatformPayload` was added
+
+* `models.ConfidentialVmProfile` was added
+
+* `models.ConfidentialVmIntent` was added
+
+* `models.StorageType` was added
+
+* `models.OsImages` was added
+
+* `models.EdgeMachineJobs` was added
+
+* `models.IpAddressRange` was added
+
+* `models.ClusterJobs` was added
+
+* `models.OSOperationType` was added
+
+* `models.KubernetesVersion` was added
+
+* `models.EdgeMachine$DefinitionStages` was added
+
+* `models.StorageSanConfig` was added
+
+* `models.ClusterJob$Update` was added
+
+* `models.OsImageProperties` was added
+
+* `models.EdgeMachineJob$DefinitionStages` was added
+
+* `models.EdgeMachineRemoteSupportJobReportedProperties` was added
+
+* `models.DownloadOsJobProperties` was added
+
+* `models.HciConfigureCvmJobProperties` was added
+
+* `models.EdgeMachineJob$Definition` was added
+
+* `models.DevicePool$DefinitionStages` was added
+
+* `models.OnboardingConfiguration` was added
+
+* `models.ReleaseDeviceRequest` was added
+
+* `models.PlatformUpdates` was added
+
+* `models.SanClusterNetworkConfig` was added
+
+* `models.ClusterSdnProperties` was added
+
+* `models.KubernetesVersions` was added
+
+* `models.ClusterJob$Definition` was added
+
+* `models.EdgeMachineNicDetail` was added
+
+* `models.OnboardingResourceType` was added
+
+* `models.UpdateSummariesOperationGroups` was added
+
+* `models.EdgeMachine` was added
+
+* `models.OverprovisioningRatio` was added
+
+* `models.UpdateContentProperties` was added
+
+* `models.EdgeMachineKind` was added
+
+* `models.OwnershipVoucherValidationStatus` was added
+
+* `models.SdnStatus` was added
+
+* `models.OwnershipVoucherDetails` was added
+
+* `models.OsProvisionProfile` was added
+
+* `models.SiteDetails` was added
+
+* `models.ValidateOwnershipVouchersResponse` was added
+
+* `models.IgvmStatus` was added
+
+* `models.UserDetails` was added
+
+* `models.TargetDeviceConfiguration` was added
+
+* `models.IpAssignmentType` was added
+
+* `models.ClusterJob$DefinitionStages` was added
+
+* `models.JobReportedProperties` was added
+
+* `models.ChangeRingRequestProperties` was added
+
+* `models.NetworkConfiguration` was added
+
+* `models.ProvisioningRequest` was added
+
+* `models.DownloadOsProfile` was added
+
+* `models.PlatformUpdateDetails` was added
+
+* `models.OsImage` was added
+
+* `models.DevicePool$UpdateStages` was added
+
+* `models.ConfidentialVmProperties` was added
+
+* `models.EdgeMachineReportedProperties` was added
+
+* `models.SdnIntegrationIntent` was added
+
+* `models.EdgeMachineRemoteSupportNodeSettings` was added
+
+* `models.OwnershipVoucherValidationDetails` was added
+
+* `models.NetworkAdapter` was added
+
+* `models.KubernetesVersionProperties` was added
+
+* `models.ProvisioningOsType` was added
+
+* `models.Publisher` was added
+
+* `models.VolumeType` was added
+
+* `models.EdgeMachineJob$Update` was added
+
+* `models.EdgeMachine$UpdateStages` was added
+
+* `models.EdgeMachineJobType` was added
+
+* `models.SanAdapterIPConfig` was added
+
+* `models.OwnerKeyType` was added
+
+* `models.EdgeMachineCollectLogJobReportedProperties` was added
+
+* `models.OperationDetail` was added
+
+* `models.StorageProfile` was added
+
+* `models.HardwareProfile` was added
+
+* `models.Publishers` was added
+
+* `models.EdgeMachineConnectivityStatus` was added
+
+* `models.NextBillingModel` was added
+
+* `models.OwnershipVouchers` was added
+
+* `models.ClaimDeviceRequest` was added
+
+* `models.EdgeMachineCollectLogJobProperties` was added
+
+* `models.EdgeMachineState` was added
+
+* `models.WebProxyConfiguration` was added
+
+* `models.SdnProperties` was added
+
+* `models.EdgeMachineJob$UpdateStages` was added
+
+* `models.ChangeRingRequest` was added
+
+* `models.ProvisioningDetails` was added
+
+* `models.EdgeMachine$Update` was added
+
+* `models.DevicePoolProperties` was added
+
+* `models.OsProfile` was added
+
+* `models.PlatformUpdate` was added
+
+* `models.ConfidentialVmStatus` was added
+
+* `models.DevicePool$Update` was added
+
+* `models.EdgeMachineNetworkProfile` was added
+
+* `models.DeviceDetail` was added
+
+* `models.CheckUpdatesRequest` was added
+
+#### `models.Updates` was modified
+
+* `prepare(java.lang.String,java.lang.String,java.lang.String)` was added
+* `prepare(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.HciReportedProperties` was modified
+
+* `confidentialVmProfile()` was added
+* `lastSyncTimestamp()` was added
+
+#### `models.Clusters` was modified
+
+* `changeRing(java.lang.String,java.lang.String,models.ChangeRingRequest)` was added
+* `changeRing(java.lang.String,java.lang.String,models.ChangeRingRequest,com.azure.core.util.Context)` was added
+
+#### `models.Storage` was modified
+
+* `s2d()` was added
+* `withStorageType(models.StorageType)` was added
+* `storageType()` was added
+* `withS2d(models.StorageS2dConfig)` was added
+* `withSan(models.StorageSanConfig)` was added
+* `san()` was added
+
+#### `models.DeploymentSettingHostNetwork` was modified
+
+* `withSanNetworks(models.SanNetworks)` was added
+* `sanNetworks()` was added
+
+#### `models.Cluster` was modified
+
+* `ring()` was added
+* `confidentialVmProperties()` was added
+* `kind()` was added
+* `changeRing(models.ChangeRingRequest,com.azure.core.util.Context)` was added
+* `storageType()` was added
+* `sdnProperties()` was added
+* `billingProperties()` was added
+* `changeRing(models.ChangeRingRequest)` was added
+
+#### `models.HciStorageProfile` was modified
+
+* `disks()` was added
+
+#### `models.HciNetworkProfile` was modified
+
+* `sdnProperties()` was added
+
+#### `models.PerNodeRemoteSupportSession` was modified
+
+* `transcriptLocation()` was added
+
+#### `models.ReportedProperties` was modified
+
+* `lastSyncTimestamp()` was added
+* `confidentialVmProfile()` was added
+
+#### `models.RemoteSupportProperties` was modified
+
+* `remoteSupportProvisioningState()` was added
+
+#### `models.State` was modified
+
+* `PENDING_OEMVALIDATION` was added
+* `HEALTH_CHECK_EXPIRED` was added
+
+#### `models.HciUpdate` was modified
+
+* `prepare(com.azure.core.util.Context)` was added
+* `prepare()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withKind(java.lang.String)` was added
+
+#### `AzureStackHciManager` was modified
+
+* `clusterJobs()` was added
+* `updateContents()` was added
+* `osImages()` was added
+* `publishers()` was added
+* `edgeMachineJobs()` was added
+* `platformUpdates()` was added
+* `kubernetesVersions()` was added
+* `devicePools()` was added
+* `updateSummariesOperationGroups()` was added
+* `edgeMachines()` was added
+* `ownershipVouchers()` was added
+
 ## 1.0.0 (2026-04-01)
 
 - Azure Resource Manager Azure Stack Hci client library for Java. This package contains Microsoft Azure SDK for Azure Stack Hci Management SDK. Azure Stack HCI service. Package api-version 2026-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

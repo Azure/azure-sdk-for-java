@@ -21,7 +21,7 @@ public final class ProjectsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"kdwbwhkszz\",\"provisioningState\":\"Canceled\"},\"id\":\"exztvbtq\",\"name\":\"sfraoyzko\",\"type\":\"wtl\"}";
+            = "{\"properties\":{\"description\":\"zqhof\",\"provisioningState\":\"Deleting\"},\"id\":\"equi\",\"name\":\"hxicslfaoqz\",\"type\":\"iyylhalnswhccsp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ProjectsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .getWithResponse("p", "doamciodhkha", "xkhnzbonlwnto", com.azure.core.util.Context.NONE)
+            .getWithResponse("zkopb", "inrfdwoyu", "hziuiefozbhdms", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kdwbwhkszz", response.description());
+        Assertions.assertEquals("zqhof", response.description());
     }
 }

@@ -916,6 +916,32 @@
           "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
         },
         {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.dns\\.models\\.(RecordSetListResult|ZoneListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.dns\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.dns\\.models\\.DnsResourceReference\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
           "code" : "java.field.addedStaticField",
           "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
           "justification" : "Not a break."
@@ -1340,6 +1366,54 @@
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(.*(Result|List)(s)?|ApplicationGatewayAvailableSslPredefinedPolicies)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.TrackedResource"
+          },
+          "justification": "Common types now sourced from azure-core or ARM common types."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\.EffectiveNetworkSecurityGroup\\:\\:tagMap\\(\\)"
+          },
+          "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
           "justification": "Output-only immutable models constructors are now private."
@@ -1405,6 +1479,219 @@
           "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationListResult|RedisListResult|RedisCacheAccessPolicyAssignmentList|RedisFirewallRuleListResult|RedisPatchScheduleListResult|RedisCacheAccessPolicyList|PrivateLinkResourceListResult|NotificationListResponse|PrivateEndpointConnectionListResult|RedisLinkedServerWithPropertiesList)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.sql\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.sql\\.models\\.(AdministratorListResult|AzureADOnlyAuthListResult|BackupShortTermRetentionPolicyListResult|DatabaseAdvancedThreatProtectionListResult|DatabaseBlobAuditingPolicyListResult|DatabaseColumnListResult|DatabaseListResult|DatabaseOperationListResult|DatabaseSchemaListResult|DatabaseSecurityAlertListResult|DatabaseTableListResult|DatabaseUsageListResult|DatabaseVulnerabilityAssessmentListResult|DatabaseVulnerabilityAssessmentListResultAutoGenerated|DataMaskingRuleListResult|DataWarehouseUserActivitiesListResult|DeletedServerListResult|DistributedAvailabilityGroupsListResult|ElasticPoolListResult|ElasticPoolOperationListResult|EncryptionProtectorListResult|EndpointCertificateListResult|ExtendedDatabaseBlobAuditingPolicyListResult|ExtendedServerBlobAuditingPolicyListResult|FailoverGroupListResult|FirewallRuleListResult|GeoBackupPolicyListResult|ImportExportExtensionsOperationListResult|InstanceFailoverGroupListResult|InstancePoolListResult|IPv6FirewallRuleListResult|JobAgentListResult|JobCredentialListResult|JobExecutionListResult|JobListResult|JobStepListResult|JobTargetGroupListResult|JobVersionListResult|LedgerDigestUploadsListResult|LogicalDatabaseTransparentDataEncryptionListResult|LogicalServerAdvancedThreatProtectionListResult|LogicalServerSecurityAlertPolicyListResult|LongTermRetentionBackupListResult|LongTermRetentionPolicyListResult|ManagedBackupShortTermRetentionPolicyListResult|ManagedDatabaseListResult|ManagedDatabaseSecurityAlertPolicyListResult|ManagedInstanceAdministratorListResult|ManagedInstanceAzureADOnlyAuthListResult|ManagedInstanceEncryptionProtectorListResult|ManagedInstanceKeyListResult|ManagedInstanceListResult|ManagedInstanceLongTermRetentionBackupListResult|ManagedInstanceLongTermRetentionPolicyListResult|ManagedInstanceOperationListResult|ManagedInstancePrivateEndpointConnectionListResult|ManagedInstancePrivateLinkListResult|ManagedInstanceQueryStatistics|ManagedInstanceVulnerabilityAssessmentListResult|ManagedServerDnsAliasListResult|ManagedServerSecurityAlertPolicyListResult|ManagedTransparentDataEncryptionListResult|OperationListResult|OutboundEnvironmentEndpointCollection|OutboundFirewallRuleListResult|PrivateEndpointConnectionListResult|PrivateLinkResourceListResult|RecoverableDatabaseListResult|RecoverableManagedDatabaseListResult|ReplicationLinkListResult|RestorableDroppedDatabaseListResult|RestorableDroppedManagedDatabaseListResult|RestorePointListResult|SecurityEventCollection|SensitivityLabelListResult|ServerBlobAuditingPolicyListResult|ServerConnectionPolicyListResult|ServerDevOpsAuditSettingsListResult|ServerDnsAliasListResult|ServerKeyListResult|ServerListResult|ServerOperationListResult|ServerTrustCertificatesListResult|ServerTrustGroupListResult|ServerUsageListResult|ServerVulnerabilityAssessmentListResult|SubscriptionUsageListResult|SyncAgentLinkedDatabaseListResult|SyncAgentListResult|SyncDatabaseIdListResult|SyncFullSchemaPropertiesListResult|SyncGroupListResult|SyncGroupLogListResult|SyncMemberListResult|TimeZoneListResult|TopQueriesListResult|UsageListResult|VirtualClusterListResult|VirtualNetworkRuleListResult|VulnerabilityAssessmentScanRecordListResult|WorkloadClassifierListResult|WorkloadGroupListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.sql.models.SecurityAlertPolicyNameAutoGenerated",
+          "justification": "Renamed to SecurityAlertPolicyName."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old": "class com\\.azure\\.resourcemanager\\.sql\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.class.kindChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.sql\\.models\\.(DataMaskingFunction|DataMaskingRuleState)"
+          },
+          "justification": "Enum changed to ExpandableStringEnum."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old" : {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.sql\\.models\\.(DataMaskingFunction|DataMaskingRuleState)"
+          },
+          "justification": "Enum changed to ExpandableStringEnum."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old" : {
+            "matcher": "regex",
+            "match": "(enum|class) com\\.azure\\.resourcemanager\\.sql\\.models\\.(DataMaskingFunction|DataMaskingRuleState)"
+          },
+          "justification": "Enum changed to ExpandableStringEnum."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(removed|visibilityIncreased|returnTypeChanged)",
+          "old": ".* @ com\\.azure\\.resourcemanager\\.sql\\.models\\.(DataMaskingFunction|DataMaskingRuleState)",
+          "justification": "Enum changed to ExpandableStringEnum."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(removed|visibilityIncreased|returnTypeChanged)",
+          "old": ".* com\\.azure\\.resourcemanager\\.sql\\.models\\.(DataMaskingFunction|DataMaskingRuleState)::.*",
+          "justification": "Enum changed to ExpandableStringEnum."
+        },
+        {
+          "regex": true,
+          "code": "java\\.field\\.enumConstantOrderChanged",
+          "old": "field com\\.azure\\.resourcemanager\\.sql\\.models\\.SecurityAlertPolicyState\\.(DISABLED|ENABLED)",
+          "justification": "Enum constant order changed due to TypeSpec generation."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours::fromInt(int)",
+          "justification": "Custom factory method removed in TypeSpec migration."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.Boolean com.azure.resourcemanager.sql.models.ManagedInstanceEditionCapability::zoneRedundant()",
+          "justification": "Property removed from API spec."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState",
+          "justification": "Replaced by ProvisioningState."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState com.azure.resourcemanager.sql.models.ManagedInstanceUpdate::provisioningState()",
+          "justification": "ManagedInstancePropertiesProvisioningState replaced by ProvisioningState."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.sql.models.VirtualClusterUpdate::family()",
+          "justification": "Property removed from API spec."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.sql.models.VirtualClusterUpdate::maintenanceConfigurationId()",
+          "justification": "Property removed from API spec."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.authorization\\.models\\.(ClassicAdministratorListResult|DenyAssignmentListResult|EligibleChildResourcesListResult|PermissionGetResult|ProviderOperationsMetadataListResult|RoleAssignmentListResult|RoleAssignmentScheduleInstanceListResult|RoleAssignmentScheduleListResult|RoleAssignmentScheduleRequestListResult|RoleDefinitionListResult|RoleEligibilityScheduleInstanceListResult|RoleEligibilityScheduleListResult|RoleEligibilityScheduleRequestListResult|RoleManagementPolicyAssignmentListResult|RoleManagementPolicyListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.servicebus\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.servicebus\\.models\\.PrivateLinkResource\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.servicebus\\.models\\.(SBNamespaceListResult|SBTopicListResult|ArmDisasterRecoveryListResult|SBSubscriptionListResult|SBAuthorizationRuleListResult|PrivateEndpointConnectionListResult|RuleListResult|OperationListResult|MigrationConfigListResult|NetworkRuleSetListResult|SBQueueListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.servicebus.models.Action",
+          "justification": "Action no longer has subclass after TypeSpec migration. SqlRuleAction was a redundant allOf wrapper with identical fields."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.servicebus.models.SqlRuleAction",
+          "justification": "SqlRuleAction was a redundant Swagger allOf wrapper around Action with no extra properties. TypeSpec correctly simplified to single Action model."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.msi\\.models\\..*(ListResult|List)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.privatedns\\.models\\.(PrivateZoneListResult|RecordSetListResult|VirtualNetworkLinkListResult)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }

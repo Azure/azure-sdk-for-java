@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsPerformMaintenanceSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.
@@ -29,7 +29,7 @@ public final class VirtualMachineScaleSetsPerformMaintenanceSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.

@@ -1651,6 +1651,7 @@ public interface AsyncDocumentClient {
      */
     void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
+    
     /***
      * Enable server throughput control group.
      *
