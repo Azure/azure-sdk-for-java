@@ -131,8 +131,13 @@ object CosmosItemsDataSource {
     val pkIdentityFieldExtraction = df
       .schema
       .find(field => field.name.equals(CosmosConstants.Properties.PartitionKeyIdentity) && field.dataType.equals(StringType))
-      .map(field => (row: Row) =>
-        CosmosPartitionKeyHelper.tryParsePartitionKey(row.getString(row.fieldIndex(field.name))).get)
+      .map(field => (row: Row) => {
+        val rawValue = row.getString(row.fieldIndex(field.name))
+        CosmosPartitionKeyHelper.tryParsePartitionKey(rawValue)
+          .getOrElse(throw new IllegalArgumentException(
+            s"Invalid _partitionKeyIdentity value in row: '$rawValue'. " +
+              "Expected format: pk([...json...])"))
+      })
 
     // Option 2: Detect PK columns by matching the container's partition key paths against the DataFrame schema
     val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
