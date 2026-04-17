@@ -19,7 +19,7 @@ public final class UsersOrServicePrincipalSet implements JsonSerializable<UsersO
     /*
      * The type of user.
      */
-    private CommonUserType type;
+    private UsersOrServicePrincipalSetUserType type;
 
     /*
      * The object id of the entity.
@@ -42,7 +42,7 @@ public final class UsersOrServicePrincipalSet implements JsonSerializable<UsersO
      * 
      * @return the type value.
      */
-    public CommonUserType type() {
+    public UsersOrServicePrincipalSetUserType type() {
         return this.type;
     }
 
@@ -52,7 +52,7 @@ public final class UsersOrServicePrincipalSet implements JsonSerializable<UsersO
      * @param type the type value to set.
      * @return the UsersOrServicePrincipalSet object itself.
      */
-    public UsersOrServicePrincipalSet withType(CommonUserType type) {
+    public UsersOrServicePrincipalSet withType(UsersOrServicePrincipalSetUserType type) {
         this.type = type;
         return this;
     }
@@ -133,7 +133,8 @@ public final class UsersOrServicePrincipalSet implements JsonSerializable<UsersO
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedUsersOrServicePrincipalSet.type = CommonUserType.fromString(reader.getString());
+                    deserializedUsersOrServicePrincipalSet.type
+                        = UsersOrServicePrincipalSetUserType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     deserializedUsersOrServicePrincipalSet.id = reader.getString();
                 } else if ("displayName".equals(fieldName)) {

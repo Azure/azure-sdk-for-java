@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachinesAttachDetachDataDisksSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.
@@ -38,7 +38,7 @@ public final class VirtualMachinesAttachDetachDataDisksSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.

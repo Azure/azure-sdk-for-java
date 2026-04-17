@@ -134,7 +134,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
             return Mono.error(
                 new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, roleManagementPolicyName,
@@ -168,7 +168,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
             return Mono.error(
                 new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, roleManagementPolicyName, accept, context);
@@ -251,7 +251,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -291,7 +291,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -375,7 +375,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
             return Mono.error(
                 new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil.withContext(
             context -> service.delete(this.client.getEndpoint(), apiVersion, scope, roleManagementPolicyName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -406,7 +406,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
             return Mono.error(
                 new IllegalArgumentException("Parameter roleManagementPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, scope, roleManagementPolicyName, context);
     }
@@ -475,7 +475,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -504,7 +504,7 @@ public final class RoleManagementPoliciesClientImpl implements InnerSupportsDele
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context)

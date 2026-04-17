@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ResourceIdOptionsForGetCapacityR
  */
 public final class CapacityReservationGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
      */
     /**
      * Sample code: List capacity reservation groups in subscription.
@@ -29,7 +29,7 @@ public final class CapacityReservationGroupsListSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
+     * 2025-11-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
      */
     /**
      * Sample code: List capacity reservation groups with resource Ids only in subscription.

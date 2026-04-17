@@ -118,8 +118,8 @@ public interface GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript);
+    PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptInner galleryScript);
 
     /**
      * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
@@ -136,8 +136,8 @@ public interface GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript);
+    SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptInner galleryScript);
 
     /**
      * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
@@ -155,8 +155,8 @@ public interface GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript, Context context);
+    SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptInner galleryScript, Context context);
 
     /**
      * Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of common
@@ -173,7 +173,7 @@ public interface GalleryScriptsClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
+    Mono<GalleryScriptInner> createOrUpdateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript);
 
     /**
@@ -187,9 +187,10 @@ public interface GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
+    GalleryScriptInner createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript);
 
     /**
@@ -204,9 +205,10 @@ public interface GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
+    GalleryScriptInner createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript, Context context);
 
     /**
@@ -240,8 +242,8 @@ public interface GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript);
+    PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdateAsync(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript);
 
     /**
      * Update a gallery Script Definition.
@@ -257,8 +259,8 @@ public interface GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript);
+    SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript);
 
     /**
      * Update a gallery Script Definition.
@@ -275,8 +277,8 @@ public interface GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript, Context context);
+    SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript, Context context);
 
     /**
      * Update a gallery Script Definition.
@@ -292,7 +294,7 @@ public interface GalleryScriptsClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
+    Mono<GalleryScriptInner> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript);
 
     /**
@@ -305,9 +307,10 @@ public interface GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String galleryName, String galleryScriptName,
+    GalleryScriptInner update(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript);
 
     /**
@@ -321,9 +324,10 @@ public interface GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String galleryName, String galleryScriptName,
+    GalleryScriptInner update(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript, Context context);
 
     /**

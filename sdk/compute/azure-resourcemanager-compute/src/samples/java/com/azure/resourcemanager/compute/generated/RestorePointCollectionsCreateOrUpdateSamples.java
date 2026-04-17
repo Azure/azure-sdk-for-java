@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class RestorePointCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
      */
     /**
      * Sample code: Create or update a restore point collection for cross region copy.
@@ -34,7 +34,7 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a restore point collection.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get a virtual machine scale set placed on a dedicated host group through automatic placement.
@@ -28,7 +28,7 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
      */
     /**
      * Sample code: Get a virtual machine scale set.
@@ -43,7 +43,7 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
      */
     /**
      * Sample code: Get a virtual machine scale set with UserData.
@@ -60,7 +60,7 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
      */
     /**
      * Sample code: Get VM scale set VM with Disk Controller Type.
