@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Pipeline policy that decodes structured messages in storage download responses when
- * CRC64-based content validation is active (i.e., when {@code StorageChecksumAlgorithm}
+ * CRC64-based content validation is active (i.e., when {@link com.azure.storage.common.ContentValidationAlgorithm}
  * is {@code CRC64} or {@code AUTO}).
  *
  * <p>The policy is activated by the presence of a boolean context key

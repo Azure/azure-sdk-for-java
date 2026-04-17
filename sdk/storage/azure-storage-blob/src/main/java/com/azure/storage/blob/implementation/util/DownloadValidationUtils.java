@@ -4,13 +4,14 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.Context;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 
 /**
- * Centralizes download content validation decisions based on {@link StorageChecksumAlgorithm}.
+ * Centralizes download content validation decisions based on {@link ContentValidationAlgorithm}.
  * <p>
- * Mirrors the pattern established by {@code ContentValidationModeResolver} for uploads.
+ * Mirrors the pattern established by {@link ContentValidationModeResolver} for uploads.
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
@@ -22,15 +23,15 @@ public final class DownloadValidationUtils {
     /**
      * Whether the algorithm requires structured message decoding (CRC64 / AUTO).
      */
-    public static boolean isStructuredMessageAlgorithm(StorageChecksumAlgorithm algorithm) {
-        return algorithm == StorageChecksumAlgorithm.CRC64 || algorithm == StorageChecksumAlgorithm.AUTO;
+    public static boolean isStructuredMessageAlgorithm(ContentValidationAlgorithm algorithm) {
+        return ContentValidationModeResolver.isCrc64OrAuto(algorithm);
     }
 
     /**
      * Resolves the effective algorithm, defaulting null to NONE.
      */
-    public static StorageChecksumAlgorithm resolveAlgorithm(StorageChecksumAlgorithm algorithm) {
-        return algorithm != null ? algorithm : StorageChecksumAlgorithm.NONE;
+    public static ContentValidationAlgorithm resolveAlgorithm(ContentValidationAlgorithm algorithm) {
+        return algorithm != null ? algorithm : ContentValidationAlgorithm.NONE;
     }
 
     /**
@@ -40,7 +41,7 @@ public final class DownloadValidationUtils {
      * @param algorithm The resolved checksum algorithm.
      * @return The augmented context.
      */
-    public static Context applyStructuredMessageContext(Context context, StorageChecksumAlgorithm algorithm) {
+    public static Context applyStructuredMessageContext(Context context, ContentValidationAlgorithm algorithm) {
         Context base = context == null ? Context.NONE : context;
         if (!isStructuredMessageAlgorithm(algorithm)) {
             return base;

@@ -12,7 +12,7 @@ import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -60,7 +60,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         syncClient.downloadStreamWithResponse(outputStream,
-            new BlobDownloadStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64), null,
+            new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null,
             Context.NONE);
 
         TestUtils.assertArraysEqual(data, outputStream.toByteArray());
@@ -79,8 +79,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         byte[] result
             = syncClient
                 .downloadContentWithResponse(
-                    new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64), null,
-                    Context.NONE)
+                    new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+                    null, Context.NONE)
                 .getValue()
                 .toBytes();
 
@@ -106,7 +106,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) blockSize);
         BlobDownloadToFileOptions options
             = new BlobDownloadToFileOptions(tempFile.toString()).setParallelTransferOptions(parallelOptions)
-                .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try {
             assertNotNull(downloadClient.downloadToFileWithResponse(options, null, Context.NONE).getValue());
@@ -127,7 +127,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         BlobClient syncClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
 
         try (BlobInputStream blobInputStream = syncClient.openInputStream(
-            new BlobInputStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64), Context.NONE)) {
+            new BlobInputStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+            Context.NONE)) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buf = new byte[4096];
             int n;
@@ -149,7 +150,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         BlobClient syncClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
 
         try (SeekableByteChannel channel = syncClient.openSeekableByteChannelRead(
-            new BlobSeekableByteChannelReadOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64),
+            new BlobSeekableByteChannelReadOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
             Context.NONE).getChannel()) {
             ByteBuffer buf = ByteBuffer.allocate(data.length + 100);
             int totalRead = 0;

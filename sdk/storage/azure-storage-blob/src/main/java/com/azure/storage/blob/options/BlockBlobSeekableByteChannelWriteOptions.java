@@ -6,7 +6,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 import java.util.Collection;
 import java.util.Map;
@@ -61,7 +61,7 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions conditions;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Options constructor.
@@ -202,25 +202,25 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
-     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated instance.
      */
     public BlockBlobSeekableByteChannelWriteOptions
-        setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

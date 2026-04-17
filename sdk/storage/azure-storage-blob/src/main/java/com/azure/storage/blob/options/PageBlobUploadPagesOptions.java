@@ -7,8 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -20,11 +21,11 @@ import java.nio.ByteBuffer;
 @Fluent
 public final class PageBlobUploadPagesOptions {
     private final PageRange pageRange;
-    private final Flux<ByteBuffer> bodyFlux;
-    private final InputStream bodyStream;
+    private final Flux<ByteBuffer> dataFlux;
+    private final InputStream dataStream;
     private byte[] contentMd5;
     private PageBlobRequestConditions requestConditions;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link PageBlobUploadPagesOptions}.
@@ -37,8 +38,8 @@ public final class PageBlobUploadPagesOptions {
         StorageImplUtils.assertNotNull("pageRange", pageRange);
         StorageImplUtils.assertNotNull("body", body);
         this.pageRange = pageRange;
-        this.bodyFlux = body;
-        this.bodyStream = null;
+        this.dataFlux = body;
+        this.dataStream = null;
     }
 
     /**
@@ -52,8 +53,8 @@ public final class PageBlobUploadPagesOptions {
         StorageImplUtils.assertNotNull("pageRange", pageRange);
         StorageImplUtils.assertNotNull("body", body);
         this.pageRange = pageRange;
-        this.bodyFlux = null;
-        this.bodyStream = body;
+        this.dataFlux = null;
+        this.dataStream = body;
     }
 
     /**
@@ -70,8 +71,8 @@ public final class PageBlobUploadPagesOptions {
      *
      * @return The body flux, or null.
      */
-    public Flux<ByteBuffer> getBodyFlux() {
-        return bodyFlux;
+    public Flux<ByteBuffer> getDataFlux() {
+        return dataFlux;
     }
 
     /**
@@ -79,8 +80,8 @@ public final class PageBlobUploadPagesOptions {
      *
      * @return The body stream, or null.
      */
-    public InputStream getBodyStream() {
-        return bodyStream;
+    public InputStream getDataStream() {
+        return dataStream;
     }
 
     /**
@@ -124,24 +125,25 @@ public final class PageBlobUploadPagesOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO},
-     * {@link StorageChecksumAlgorithm#CRC64}, or {@link StorageChecksumAlgorithm#MD5}, the SDK will compute and send
-     * checksums for upload validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public PageBlobUploadPagesOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+    public PageBlobUploadPagesOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

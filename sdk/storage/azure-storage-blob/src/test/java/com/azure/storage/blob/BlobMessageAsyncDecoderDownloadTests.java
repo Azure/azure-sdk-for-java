@@ -14,7 +14,7 @@ import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
@@ -73,7 +73,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         StepVerifier
             .create(downloadClient
                 .downloadStreamWithResponse(
-                    new BlobDownloadStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                    new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
@@ -92,7 +92,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(downloadClient.downloadContentWithResponse(
-                new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64)))
+                new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
     }
@@ -117,7 +117,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) blockSize);
         BlobDownloadToFileOptions options
             = new BlobDownloadToFileOptions(tempFile.toString()).setParallelTransferOptions(parallelOptions)
-                .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try {
             StepVerifier.create(downloadClient.downloadToFileWithResponse(options))
@@ -150,7 +150,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         StepVerifier
             .create(downloadClient
                 .downloadStreamWithResponse(
-                    new BlobDownloadStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                    new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()).map(bytes -> Tuples.of(r, bytes))))
             .assertNext(tuple -> {
                 TestUtils.assertArraysEqual(data, tuple.getT2());
@@ -201,7 +201,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         StepVerifier
             .create(downloadClient
                 .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDownloadRetryOptions(retryOptions)
-                    .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(randomData, result))
             .verifyComplete();
@@ -228,7 +228,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         StepVerifier
             .create(downloadClient
                 .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDownloadRetryOptions(retryOptions)
-                    .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(randomData, result))
             .verifyComplete();
@@ -255,7 +255,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         StepVerifier
             .create(downloadClient
                 .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDownloadRetryOptions(retryOptions)
-                    .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .doFinally(
                     signalType -> assertTrue(mockPolicy.getHits() > 0, "Mock interruption policy was not invoked"))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
@@ -290,7 +290,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier.create(downloadClient
             .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDownloadRetryOptions(retryOptions)
-                .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
                 assertEquals(dataSize, result.length, "Decoded data should have exactly " + dataSize + " bytes");
                 TestUtils.assertArraysEqual(randomData, result);
@@ -318,7 +318,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
             .create(oldVersionClient
                 .downloadStreamWithResponse(
                     new BlobDownloadStreamOptions().setRange(new BlobRange(0, (long) (10 * 1024 * 1024)))
-                        .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .verifyError(BlobStorageException.class);
     }
@@ -339,24 +339,6 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     }
 
     /**
-     * MD5 on downloadStream: MD5 transactional validation path.
-     */
-    @Test
-    public void downloadStreamWithMd5() {
-        byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
-
-        StepVerifier
-            .create(bc
-                .downloadStreamWithResponse(
-                    new BlobDownloadStreamOptions().setRange(new BlobRange(0, (long) data.length))
-                        .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.MD5))
-                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
-            .assertNext(result -> TestUtils.assertArraysEqual(data, result))
-            .verifyComplete();
-    }
-
-    /**
      * AUTO on downloadStream resolves to CRC64 behavior.
      */
     @Test
@@ -370,7 +352,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
         StepVerifier
             .create(downloadClient
                 .downloadStreamWithResponse(
-                    new BlobDownloadStreamOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.AUTO))
+                    new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
@@ -386,7 +368,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.downloadContentWithResponse(
-                new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.NONE)))
+                new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
     }
@@ -404,7 +386,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(downloadClient.downloadContentWithResponse(
-                new BlobDownloadContentOptions().setResponseChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)))
+                new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
     }
