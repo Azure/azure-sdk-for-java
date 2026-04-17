@@ -10,6 +10,7 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
+import com.azure.resourcemanager.monitor.models.AlertRuleAnyOfOrLeafCondition;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
@@ -80,9 +81,9 @@ class ActivityLogAlertImpl
     public Mono<ActivityLogAlert> createResourceAsync() {
         this.innerModel().withLocation("global");
         ActivityLogAlertAllOfCondition condition = new ActivityLogAlertAllOfCondition();
-        condition.withAllOf(new ArrayList<ActivityLogAlertLeafCondition>());
+        condition.withAllOf(new ArrayList<>());
         for (Map.Entry<String, String> cds : conditions.entrySet()) {
-            ActivityLogAlertLeafCondition alalc = new ActivityLogAlertLeafCondition();
+            AlertRuleAnyOfOrLeafCondition alalc = new AlertRuleAnyOfOrLeafCondition();
             alalc.withField(cds.getKey());
             alalc.withEquals(cds.getValue());
             condition.allOf().add(alalc);
