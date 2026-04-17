@@ -7,9 +7,9 @@ package com.azure.resourcemanager.monitor.generated;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
 
 /**
- * Samples for ScheduledQueryRulesOperation Update.
+ * Samples for ScheduledQueryRules Update.
  */
-public final class ScheduledQueryRulesOperationUpdateSamples {
+public final class ScheduledQueryRulesUpdateSamples {
     /*
      * x-ms-original-file: 2025-01-01-preview/patchScheduledQueryRule.json
      */
@@ -20,7 +20,7 @@ public final class ScheduledQueryRulesOperationUpdateSamples {
      */
     public static void createOrUpdateAScheduledQueryRule(com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .updateWithResponse("QueryResourceGroupName", "heartbeat",
                 new ScheduledQueryRuleResourcePatch().withEnabled(false), com.azure.core.util.Context.NONE);
     }

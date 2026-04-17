@@ -9,226 +9,340 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.monitor.fluent.models.NetworkSecurityPerimeterConfigurationInner;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
+import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourceInner;
+import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in ScheduledQueryRulesClient.
  */
-public interface ScheduledQueryRulesClient {
+public interface ScheduledQueryRulesClient extends InnerSupportsGet<ScheduledQueryRuleResourceInner>,
+    InnerSupportsListing<ScheduledQueryRuleResourceInner>, InnerSupportsDelete<Void> {
     /**
-     * Gets a network security perimeter configuration.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getNSPWithResponseAsync(String resourceGroupName,
-        String ruleName, String networkSecurityPerimeterConfigurationName);
+    Mono<Response<ScheduledQueryRuleResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ruleName);
 
     /**
-     * Gets a network security perimeter configuration.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration on successful completion of {@link Mono}.
+     * @return the scheduled query rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkSecurityPerimeterConfigurationInner> getNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName);
+    Mono<ScheduledQueryRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName);
 
     /**
-     * Gets a network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkSecurityPerimeterConfigurationInner> getNSPWithResponse(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context);
-
-    /**
-     * Gets a network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSecurityPerimeterConfigurationInner getNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName);
-
-    /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkSecurityPerimeterConfigurationInner> listNSPAsync(String resourceGroupName, String ruleName);
-
-    /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkSecurityPerimeterConfigurationInner> listNSP(String resourceGroupName, String ruleName);
-
-    /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedIterable}.
+     * @return the scheduled query rule resource along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkSecurityPerimeterConfigurationInner> listNSP(String resourceGroupName, String ruleName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduledQueryRuleResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String ruleName,
         Context context);
 
     /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledQueryRuleResourceInner getByResourceGroup(String resourceGroupName, String ruleName);
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ScheduledQueryRuleResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String ruleName, ScheduledQueryRuleResourceInner parameters);
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ScheduledQueryRuleResourceInner> createOrUpdateAsync(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourceInner parameters);
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduledQueryRuleResourceInner> createOrUpdateWithResponse(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourceInner parameters, Context context);
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledQueryRuleResourceInner createOrUpdate(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourceInner parameters);
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ScheduledQueryRuleResourceInner>> updateWithResponseAsync(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters);
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ScheduledQueryRuleResourceInner> updateAsync(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters);
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduledQueryRuleResourceInner> updateWithResponse(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters, Context context);
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledQueryRuleResourceInner update(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters);
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> reconcileNSPWithResponseAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName);
 
     /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
+     * Deletes a scheduled query rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginReconcileNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName);
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReconcileNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName);
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReconcileNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context);
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reconcileNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName);
+    Mono<Void> deleteAsync(String resourceGroupName, String ruleName);
 
     /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
+     * Deletes a scheduled query rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void reconcileNSP(String resourceGroupName, String ruleName, String networkSecurityPerimeterConfigurationName);
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String ruleName, Context context);
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reconcileNSP(String resourceGroupName, String ruleName, String networkSecurityPerimeterConfigurationName,
-        Context context);
+    void delete(String resourceGroupName, String ruleName);
+
+    /**
+     * Retrieve scheduled query rule definitions in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ScheduledQueryRuleResourceInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Retrieve scheduled query rule definitions in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledQueryRuleResourceInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Retrieve scheduled query rule definitions in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledQueryRuleResourceInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ScheduledQueryRuleResourceInner> listAsync();
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledQueryRuleResourceInner> list();
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.monitor.models.ErrorContractException thrown if the request is rejected by
+     * server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledQueryRuleResourceInner> list(Context context);
 }

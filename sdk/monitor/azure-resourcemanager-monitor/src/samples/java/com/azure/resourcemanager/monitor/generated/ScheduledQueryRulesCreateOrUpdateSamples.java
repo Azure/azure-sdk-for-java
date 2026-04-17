@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for ScheduledQueryRulesOperation CreateOrUpdate.
+ * Samples for ScheduledQueryRules CreateOrUpdate.
  */
-public final class ScheduledQueryRulesOperationCreateOrUpdateSamples {
+public final class ScheduledQueryRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file: 2025-01-01-preview/createOrUpdateSimpleLogAlertScheduledQueryRule.json
      */
@@ -38,7 +38,7 @@ public final class ScheduledQueryRulesOperationCreateOrUpdateSamples {
     public static void createOrUpdateASimpleLogAlertScheduledQueryRuleOnSubscription(
         com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .createOrUpdateWithResponse("QueryResourceGroupName", "perf", new ScheduledQueryRuleResourceInner()
                 .withLocation("eastus")
                 .withKind(Kind.SIMPLE_LOG_ALERT)
@@ -69,7 +69,7 @@ public final class ScheduledQueryRulesOperationCreateOrUpdateSamples {
     public static void
         createOrUpdateAScheduledQueryRuleOnSubscription(com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .createOrUpdateWithResponse("QueryResourceGroupName", "perf",
                 new ScheduledQueryRuleResourceInner().withLocation("eastus")
                     .withDescription("Performance rule")
@@ -119,7 +119,7 @@ public final class ScheduledQueryRulesOperationCreateOrUpdateSamples {
     public static void createOrUpdateDynamicThresholdScheduledQueryRuleOnSubscription(
         com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .createOrUpdateWithResponse("QueryResourceGroupName", "perf", new ScheduledQueryRuleResourceInner()
                 .withLocation("eastus")
                 .withDescription("Performance rule")
@@ -165,7 +165,7 @@ public final class ScheduledQueryRulesOperationCreateOrUpdateSamples {
     public static void
         createOrUpdateAScheduledQueryRuleOnResourceGroupS(com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .createOrUpdateWithResponse("QueryResourceGroupName", "heartbeat", new ScheduledQueryRuleResourceInner()
                 .withLocation("eastus")
                 .withDescription("Health check rule")
@@ -207,7 +207,7 @@ public final class ScheduledQueryRulesOperationCreateOrUpdateSamples {
     public static void
         createOrUpdateAScheduledQueryRuleForSingleResource(com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .createOrUpdateWithResponse("QueryResourceGroupName", "perf", new ScheduledQueryRuleResourceInner()
                 .withLocation("eastus")
                 .withDescription("Performance rule")

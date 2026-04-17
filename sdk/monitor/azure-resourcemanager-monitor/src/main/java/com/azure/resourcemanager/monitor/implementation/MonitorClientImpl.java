@@ -25,6 +25,7 @@ import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
 import com.azure.resourcemanager.monitor.fluent.MetricNamespacesClient;
 import com.azure.resourcemanager.monitor.fluent.MetricsClient;
 import com.azure.resourcemanager.monitor.fluent.MonitorClient;
+import com.azure.resourcemanager.monitor.fluent.NspScheduledQueryRulesClient;
 import com.azure.resourcemanager.monitor.fluent.PredictiveMetricsClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkResourcesClient;
@@ -32,7 +33,6 @@ import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopeOperationStatusC
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopedResourcesClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopesClient;
 import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesClient;
-import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesOperationsClient;
 import com.azure.resourcemanager.monitor.fluent.ServiceDiagnosticSettingsOperationsClient;
 import com.azure.resourcemanager.monitor.fluent.TenantActivityLogsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -153,20 +153,6 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
      */
     public DataCollectionEndpointsClient getDataCollectionEndpoints() {
         return this.dataCollectionEndpoints;
-    }
-
-    /**
-     * The ScheduledQueryRulesClient object to access its operations.
-     */
-    private final ScheduledQueryRulesClient scheduledQueryRules;
-
-    /**
-     * Gets the ScheduledQueryRulesClient object to access its operations.
-     * 
-     * @return the ScheduledQueryRulesClient object.
-     */
-    public ScheduledQueryRulesClient getScheduledQueryRules() {
-        return this.scheduledQueryRules;
     }
 
     /**
@@ -436,17 +422,17 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
     }
 
     /**
-     * The ScheduledQueryRulesOperationsClient object to access its operations.
+     * The ScheduledQueryRulesClient object to access its operations.
      */
-    private final ScheduledQueryRulesOperationsClient scheduledQueryRulesOperations;
+    private final ScheduledQueryRulesClient scheduledQueryRules;
 
     /**
-     * Gets the ScheduledQueryRulesOperationsClient object to access its operations.
+     * Gets the ScheduledQueryRulesClient object to access its operations.
      * 
-     * @return the ScheduledQueryRulesOperationsClient object.
+     * @return the ScheduledQueryRulesClient object.
      */
-    public ScheduledQueryRulesOperationsClient getScheduledQueryRulesOperations() {
-        return this.scheduledQueryRulesOperations;
+    public ScheduledQueryRulesClient getScheduledQueryRules() {
+        return this.scheduledQueryRules;
     }
 
     /**
@@ -478,6 +464,20 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
     }
 
     /**
+     * The NspScheduledQueryRulesClient object to access its operations.
+     */
+    private final NspScheduledQueryRulesClient nspScheduledQueryRules;
+
+    /**
+     * Gets the NspScheduledQueryRulesClient object to access its operations.
+     * 
+     * @return the NspScheduledQueryRulesClient object.
+     */
+    public NspScheduledQueryRulesClient getNspScheduledQueryRules() {
+        return this.nspScheduledQueryRules;
+    }
+
+    /**
      * Initializes an instance of MonitorClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -498,7 +498,6 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.dataCollectionEndpoints = new DataCollectionEndpointsClientImpl(this);
-        this.scheduledQueryRules = new ScheduledQueryRulesClientImpl(this);
         this.dataCollectionRuleAssociations = new DataCollectionRuleAssociationsClientImpl(this);
         this.dataCollectionRules = new DataCollectionRulesClientImpl(this);
         this.privateLinkScopes = new PrivateLinkScopesClientImpl(this);
@@ -518,8 +517,9 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         this.activityLogAlerts = new ActivityLogAlertsClientImpl(this);
         this.metricAlerts = new MetricAlertsClientImpl(this);
         this.metricAlertsStatus = new MetricAlertsStatusClientImpl(this);
-        this.scheduledQueryRulesOperations = new ScheduledQueryRulesOperationsClientImpl(this);
+        this.scheduledQueryRules = new ScheduledQueryRulesClientImpl(this);
         this.baselines = new BaselinesClientImpl(this);
         this.actionGroups = new ActionGroupsClientImpl(this);
+        this.nspScheduledQueryRules = new NspScheduledQueryRulesClientImpl(this);
     }
 }

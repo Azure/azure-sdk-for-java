@@ -61,13 +61,6 @@ public interface MonitorClient {
     DataCollectionEndpointsClient getDataCollectionEndpoints();
 
     /**
-     * Gets the ScheduledQueryRulesClient object to access its operations.
-     * 
-     * @return the ScheduledQueryRulesClient object.
-     */
-    ScheduledQueryRulesClient getScheduledQueryRules();
-
-    /**
      * Gets the DataCollectionRuleAssociationsClient object to access its operations.
      * 
      * @return the DataCollectionRuleAssociationsClient object.
@@ -201,11 +194,11 @@ public interface MonitorClient {
     MetricAlertsStatusClient getMetricAlertsStatus();
 
     /**
-     * Gets the ScheduledQueryRulesOperationsClient object to access its operations.
+     * Gets the ScheduledQueryRulesClient object to access its operations.
      * 
-     * @return the ScheduledQueryRulesOperationsClient object.
+     * @return the ScheduledQueryRulesClient object.
      */
-    ScheduledQueryRulesOperationsClient getScheduledQueryRulesOperations();
+    ScheduledQueryRulesClient getScheduledQueryRules();
 
     /**
      * Gets the BaselinesClient object to access its operations.
@@ -220,4 +213,11 @@ public interface MonitorClient {
      * @return the ActionGroupsClient object.
      */
     ActionGroupsClient getActionGroups();
+
+    /**
+     * Gets the NspScheduledQueryRulesClient object to access its operations.
+     * 
+     * @return the NspScheduledQueryRulesClient object.
+     */
+    NspScheduledQueryRulesClient getNspScheduledQueryRules();
 }

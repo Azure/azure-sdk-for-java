@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.monitor.generated;
 
 /**
- * Samples for ScheduledQueryRulesOperation GetByResourceGroup.
+ * Samples for ScheduledQueryRules GetByResourceGroup.
  */
-public final class ScheduledQueryRulesOperationGetByResourceGroupSamples {
+public final class ScheduledQueryRulesGetByResourceGroupSamples {
     /*
      * x-ms-original-file: 2025-01-01-preview/getScheduledQueryRule.json
      */
@@ -19,7 +19,7 @@ public final class ScheduledQueryRulesOperationGetByResourceGroupSamples {
     public static void
         getAScheduledQueryRuleForSingleResource(com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .getByResourceGroupWithResponse("QueryResourceGroupName", "perf", com.azure.core.util.Context.NONE);
     }
 }

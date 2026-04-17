@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.monitor.generated;
 
 /**
- * Samples for ScheduledQueryRulesOperation List.
+ * Samples for ScheduledQueryRules List.
  */
-public final class ScheduledQueryRulesOperationListSamples {
+public final class ScheduledQueryRulesListSamples {
     /*
      * x-ms-original-file: 2025-01-01-preview/listScheduledQueryRulesBySubscription.json
      */
@@ -17,6 +17,6 @@ public final class ScheduledQueryRulesOperationListSamples {
      * @param manager Entry point to MonitorManager.
      */
     public static void listScheduledQueryRulesBySubscription(com.azure.resourcemanager.monitor.MonitorManager manager) {
-        manager.serviceClient().getScheduledQueryRulesOperations().list(com.azure.core.util.Context.NONE);
+        manager.serviceClient().getScheduledQueryRules().list(com.azure.core.util.Context.NONE);
     }
 }

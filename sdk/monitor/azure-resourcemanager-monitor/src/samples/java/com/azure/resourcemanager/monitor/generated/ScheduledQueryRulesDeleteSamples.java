@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.monitor.generated;
 
 /**
- * Samples for ScheduledQueryRulesOperation Delete.
+ * Samples for ScheduledQueryRules Delete.
  */
-public final class ScheduledQueryRulesOperationDeleteSamples {
+public final class ScheduledQueryRulesDeleteSamples {
     /*
      * x-ms-original-file: 2025-01-01-preview/deleteScheduledQueryRule.json
      */
@@ -18,7 +18,7 @@ public final class ScheduledQueryRulesOperationDeleteSamples {
      */
     public static void deleteAScheduledQueryRule(com.azure.resourcemanager.monitor.MonitorManager manager) {
         manager.serviceClient()
-            .getScheduledQueryRulesOperations()
+            .getScheduledQueryRules()
             .deleteWithResponse("QueryResourceGroupName", "heartbeat", com.azure.core.util.Context.NONE);
     }
 }

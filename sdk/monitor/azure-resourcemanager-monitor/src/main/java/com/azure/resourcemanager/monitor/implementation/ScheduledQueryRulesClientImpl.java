@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,23 +26,23 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesClient;
-import com.azure.resourcemanager.monitor.fluent.models.NetworkSecurityPerimeterConfigurationInner;
-import com.azure.resourcemanager.monitor.implementation.models.NetworkSecurityPerimeterConfigurationListResult;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
+import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourceInner;
+import com.azure.resourcemanager.monitor.implementation.models.ScheduledQueryRuleResourceCollection;
+import com.azure.resourcemanager.monitor.models.ErrorContractException;
+import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in ScheduledQueryRulesClient.
  */
-public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesClient {
+public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<ScheduledQueryRuleResourceInner>,
+    InnerSupportsListing<ScheduledQueryRuleResourceInner>, InnerSupportsDelete<Void>, ScheduledQueryRulesClient {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -69,58 +72,88 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
     @ServiceInterface(name = "MonitorClientScheduledQueryRules")
     public interface ScheduledQueryRulesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}")
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getNSP(@HostParam("endpoint") String endpoint,
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
-            @PathParam("networkSecurityPerimeterConfigurationName") String networkSecurityPerimeterConfigurationName,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityPerimeterConfigurationListResult>> listNSP(@HostParam("endpoint") String endpoint,
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ScheduledQueryRuleResourceInner parameters, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ScheduledQueryRuleResourcePatch parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> reconcileNSP(@HostParam("endpoint") String endpoint,
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
-            @PathParam("networkSecurityPerimeterConfigurationName") String networkSecurityPerimeterConfigurationName,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceCollection>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/scheduledQueryRules")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceCollection>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkSecurityPerimeterConfigurationListResult>> listNSPNext(
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceCollection>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<ScheduledQueryRuleResourceCollection>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Gets a network security perimeter configuration.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getNSPWithResponseAsync(String resourceGroupName,
-        String ruleName, String networkSecurityPerimeterConfigurationName) {
+    public Mono<Response<ScheduledQueryRuleResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ruleName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -136,35 +169,28 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        if (networkSecurityPerimeterConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2025-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getNSP(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, accept, context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ruleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a network security perimeter configuration.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getNSPWithResponseAsync(String resourceGroupName,
-        String ruleName, String networkSecurityPerimeterConfigurationName, Context context) {
+    private Mono<Response<ScheduledQueryRuleResourceInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String ruleName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -180,86 +206,75 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        if (networkSecurityPerimeterConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2025-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getNSP(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            ruleName, networkSecurityPerimeterConfigurationName, accept, context);
+        return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, ruleName, accept, context);
     }
 
     /**
-     * Gets a network security perimeter configuration.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration on successful completion of {@link Mono}.
+     * @return the scheduled query rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkSecurityPerimeterConfigurationInner> getNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
-        return getNSPWithResponseAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName)
+    public Mono<ScheduledQueryRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets a network security perimeter configuration.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration along with {@link Response}.
+     * @return the scheduled query rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkSecurityPerimeterConfigurationInner> getNSPWithResponse(String resourceGroupName,
-        String ruleName, String networkSecurityPerimeterConfigurationName, Context context) {
-        return getNSPWithResponseAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, context)
-            .block();
+    public Response<ScheduledQueryRuleResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String ruleName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName, context).block();
     }
 
     /**
-     * Gets a network security perimeter configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network security perimeter configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkSecurityPerimeterConfigurationInner getNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
-        return getNSPWithResponse(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
+     * Retrieve an scheduled query rule definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the scheduled query rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>
-        listNSPSinglePageAsync(String resourceGroupName, String ruleName) {
+    public ScheduledQueryRuleResourceInner getByResourceGroup(String resourceGroupName, String ruleName) {
+        return getByResourceGroupWithResponse(resourceGroupName, ruleName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ScheduledQueryRuleResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String ruleName, ScheduledQueryRuleResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -275,32 +290,35 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-01-01-preview";
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNSP(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, ruleName, accept, context))
-            .<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>map(
-                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                    res.getValue().value(), res.getValue().nextLink(), null))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ruleName, contentType, accept, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
+     * Creates or updates a scheduled query rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>
-        listNSPSinglePageAsync(String resourceGroupName, String ruleName, Context context) {
+    private Mono<Response<ScheduledQueryRuleResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String ruleName, ScheduledQueryRuleResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -316,102 +334,469 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-01-01-preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, ruleName, contentType, accept, parameters, context);
+    }
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ScheduledQueryRuleResourceInner> createOrUpdateAsync(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourceInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduledQueryRuleResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String ruleName, ScheduledQueryRuleResourceInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters, context).block();
+    }
+
+    /**
+     * Creates or updates a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduledQueryRuleResourceInner createOrUpdate(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourceInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, ruleName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ScheduledQueryRuleResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String ruleName, ScheduledQueryRuleResourcePatch parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-01-01-preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ruleName, contentType, accept, parameters, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ScheduledQueryRuleResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String ruleName, ScheduledQueryRuleResourcePatch parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-01-01-preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            ruleName, contentType, accept, parameters, context);
+    }
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ScheduledQueryRuleResourceInner> updateAsync(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters) {
+        return updateWithResponseAsync(resourceGroupName, ruleName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduledQueryRuleResourceInner> updateWithResponse(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, ruleName, parameters, context).block();
+    }
+
+    /**
+     * Update a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param parameters The parameters of the rule to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled query rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScheduledQueryRuleResourceInner update(String resourceGroupName, String ruleName,
+        ScheduledQueryRuleResourcePatch parameters) {
+        return updateWithResponse(resourceGroupName, ruleName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-01-01-preview";
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ruleName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ruleName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-01-01-preview";
+        context = this.client.mergeContext(context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            ruleName, context);
+    }
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String ruleName) {
+        return deleteWithResponseAsync(resourceGroupName, ruleName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String ruleName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, ruleName, context).block();
+    }
+
+    /**
+     * Deletes a scheduled query rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String ruleName) {
+        deleteWithResponse(resourceGroupName, ruleName, Context.NONE);
+    }
+
+    /**
+     * Retrieve scheduled query rule definitions in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-01-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<ScheduledQueryRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve scheduled query rule definitions in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNSP(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                ruleName, accept, context)
+            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
+     * Retrieve scheduled query rule definitions in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedFlux}.
+     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkSecurityPerimeterConfigurationInner> listNSPAsync(String resourceGroupName,
-        String ruleName) {
-        return new PagedFlux<>(() -> listNSPSinglePageAsync(resourceGroupName, ruleName),
-            nextLink -> listNSPNextSinglePageAsync(nextLink));
+    public PagedFlux<ScheduledQueryRuleResourceInner> listByResourceGroupAsync(String resourceGroupName) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
+     * Retrieve scheduled query rule definitions in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedFlux}.
+     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkSecurityPerimeterConfigurationInner> listNSPAsync(String resourceGroupName,
-        String ruleName, Context context) {
-        return new PagedFlux<>(() -> listNSPSinglePageAsync(resourceGroupName, ruleName, context),
-            nextLink -> listNSPNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listNSP(String resourceGroupName,
-        String ruleName) {
-        return new PagedIterable<>(listNSPAsync(resourceGroupName, ruleName));
-    }
-
-    /**
-     * Gets a list of NSP configurations for specified scheduled query rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listNSP(String resourceGroupName, String ruleName,
+    private PagedFlux<ScheduledQueryRuleResourceInner> listByResourceGroupAsync(String resourceGroupName,
         Context context) {
-        return new PagedIterable<>(listNSPAsync(resourceGroupName, ruleName, context));
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
+     * Retrieve scheduled query rule definitions in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ScheduledQueryRuleResourceInner> listByResourceGroup(String resourceGroupName) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+    }
+
+    /**
+     * Retrieve scheduled query rule definitions in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ScheduledQueryRuleResourceInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> reconcileNSPWithResponseAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -420,242 +805,126 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        final String apiVersion = "2025-01-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<ScheduledQueryRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>> listSinglePageAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
-        }
-        if (networkSecurityPerimeterConfigurationName == null) {
+        if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
-                "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2025-01-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ScheduledQueryRuleResourceInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ScheduledQueryRuleResourceInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ScheduledQueryRuleResourceInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Retrieve a scheduled query rule definitions in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ScheduledQueryRuleResourceInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.reconcileNSP(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reconcileNSPWithResponseAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ruleName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
-        }
-        if (networkSecurityPerimeterConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-10-01";
-        context = this.client.mergeContext(context);
-        return service.reconcileNSP(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, context);
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginReconcileNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = reconcileNSPWithResponseAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReconcileNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = reconcileNSPWithResponseAsync(resourceGroupName, ruleName,
-            networkSecurityPerimeterConfigurationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReconcileNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
-        return this.beginReconcileNSPAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReconcileNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context) {
-        return this
-            .beginReconcileNSPAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reconcileNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
-        return beginReconcileNSPAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reconcileNSPAsync(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context) {
-        return beginReconcileNSPAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reconcileNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName) {
-        reconcileNSPAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName).block();
-    }
-
-    /**
-     * Reconcile network security perimeter configuration for ScheduledQueryRule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reconcileNSP(String resourceGroupName, String ruleName,
-        String networkSecurityPerimeterConfigurationName, Context context) {
-        reconcileNSPAsync(resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>
-        listNSPNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNSPNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>map(
-                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                    res.getValue().value(), res.getValue().nextLink(), null))
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ScheduledQueryRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -665,13 +934,13 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for specified scheduled query rule along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>> listNSPNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -682,7 +951,64 @@ public final class ScheduledQueryRulesClientImpl implements ScheduledQueryRulesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNSPNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ScheduledQueryRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ScheduledQueryRuleResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
