@@ -20,7 +20,7 @@ public final class GuestSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"vtz\",\"name\":\"kufubljo\",\"type\":\"xqeofjaeqjhqjba\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"wzwbnguitn\",\"name\":\"uizga\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class GuestSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GuestSubscription response = manager.guestSubscriptions()
-            .getWithResponse("hungbwjzrnf", "gxg", com.azure.core.util.Context.NONE)
+            .getWithResponse("tbvpysszdnru", "qguhmuo", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
