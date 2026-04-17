@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DedicatedHostGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_Delete_MaximumSet_Gen.
@@ -23,7 +23,7 @@ public final class DedicatedHostGroupsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_Delete_MinimumSet_Gen.

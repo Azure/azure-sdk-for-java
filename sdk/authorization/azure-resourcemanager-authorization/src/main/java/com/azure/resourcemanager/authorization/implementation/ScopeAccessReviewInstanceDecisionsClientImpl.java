@@ -67,7 +67,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewDecisionListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
@@ -83,7 +83,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -112,7 +112,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id,
@@ -125,7 +125,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -155,7 +155,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -167,7 +167,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -188,7 +188,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +206,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
@@ -228,7 +228,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
     /**
      * Get access review instance decisions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineRunCommandsGetByVirtualMachineSamples {
     /*
-     * x-ms-original-file: 2025-04-01/runCommandExamples/VirtualMachineRunCommand_Get.json
+     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Get.json
      */
     /**
      * Sample code: Get a run command.

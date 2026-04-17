@@ -61,6 +61,13 @@ public interface ComputeManagementClient {
     VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions();
 
     /**
+     * Gets the VirtualMachineScaleSetLifeCycleHookEventsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetLifeCycleHookEventsClient object.
+     */
+    VirtualMachineScaleSetLifeCycleHookEventsClient getVirtualMachineScaleSetLifeCycleHookEvents();
+
+    /**
      * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
      * 
      * @return the VirtualMachineScaleSetVMExtensionsClient object.

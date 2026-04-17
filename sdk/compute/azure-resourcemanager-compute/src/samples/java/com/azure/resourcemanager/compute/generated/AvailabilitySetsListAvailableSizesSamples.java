@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class AvailabilitySetsListAvailableSizesSamples {
     /*
-     * x-ms-original-file: 2025-04-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.
@@ -24,7 +24,7 @@ public final class AvailabilitySetsListAvailableSizesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.
