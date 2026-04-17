@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.fluent.models.HeatMapModelInner;
-import com.azure.resourcemanager.trafficmanager.models.HeatMapType;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +21,6 @@ public interface HeatMapsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param heatMapType The type of the heatmap.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
      * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,28 +31,26 @@ public interface HeatMapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<HeatMapModelInner>> getWithResponseAsync(String resourceGroupName, String profileName,
-        HeatMapType heatMapType, List<Double> topLeft, List<Double> botRight);
+        List<Double> topLeft, List<Double> botRight);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param heatMapType The type of the heatmap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest heatmap for Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName, HeatMapType heatMapType);
+    Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param heatMapType The type of the heatmap.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
      * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @param context The context to associate with this operation.
@@ -64,20 +60,19 @@ public interface HeatMapsClient {
      * @return latest heatmap for Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HeatMapModelInner> getWithResponse(String resourceGroupName, String profileName, HeatMapType heatMapType,
-        List<Double> topLeft, List<Double> botRight, Context context);
+    Response<HeatMapModelInner> getWithResponse(String resourceGroupName, String profileName, List<Double> topLeft,
+        List<Double> botRight, Context context);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param heatMapType The type of the heatmap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest heatmap for Traffic Manager profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HeatMapModelInner get(String resourceGroupName, String profileName, HeatMapType heatMapType);
+    HeatMapModelInner get(String resourceGroupName, String profileName);
 }

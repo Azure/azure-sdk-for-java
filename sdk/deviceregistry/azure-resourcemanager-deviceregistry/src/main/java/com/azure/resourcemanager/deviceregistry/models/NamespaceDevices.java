@@ -91,6 +91,34 @@ public interface NamespaceDevices {
     PagedIterable<NamespaceDevice> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
 
     /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revoke(String resourceGroupName, String namespaceName, String deviceName, DeviceCredentialsRevokeRequest body);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revoke(String resourceGroupName, String namespaceName, String deviceName, DeviceCredentialsRevokeRequest body,
+        Context context);
+
+    /**
      * Get a NamespaceDevice.
      * 
      * @param id the resource ID.

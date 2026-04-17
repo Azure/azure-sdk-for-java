@@ -125,6 +125,14 @@ For detailed instructions, refer to the [Maven Credential Provider documentation
 
 > **Note:** For Maven Azure DevOps pipeline authentication, use the [MavenAuthenticate@0](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/maven-authenticate-v0) pipeline task.
 
+##### Matching CI behavior locally
+
+All Maven dependency and artifact resolution already uses the Azure Artifacts feed by default via `<repositories>` declarations in the project POMs. However, Maven plugins and extensions do not honor POM-level repositories. To route plugin traffic through the Azure Artifacts feed as well (matching CI behavior), copy the mirror settings:
+
+```bash
+cp eng/settings.xml ~/.m2/settings.xml
+```
+
 ##### Troubleshooting 401 Unauthorized errors
 
 If you encounter a `401 Unauthorized` error when running Maven commands:

@@ -675,8 +675,7 @@ public final class LoadTestAdministrationClientImpl {
         Mono<Response<BinaryData>> cloneTest(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testId") String testId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData cloneTestRequest1, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData cloneTestRequest, RequestOptions requestOptions, Context context);
 
         @Post("/tests/{testId}:clone")
         @ExpectedResponses({ 202 })
@@ -687,8 +686,7 @@ public final class LoadTestAdministrationClientImpl {
         Response<BinaryData> cloneTestSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testId") String testId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData cloneTestRequest1, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData cloneTestRequest, RequestOptions requestOptions, Context context);
 
         @Post("/tests/{testId}:generateTestPlanRecommendations")
         @ExpectedResponses({ 202 })
@@ -4656,7 +4654,7 @@ public final class LoadTestAdministrationClientImpl {
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4666,13 +4664,13 @@ public final class LoadTestAdministrationClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> cloneTestWithResponseAsync(String testId, BinaryData cloneTestRequest1,
+    private Mono<Response<BinaryData>> cloneTestWithResponseAsync(String testId, BinaryData cloneTestRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cloneTest(this.getEndpoint(), this.getServiceVersion().getVersion(), testId,
-                contentType, accept, cloneTestRequest1, requestOptions, context));
+                contentType, accept, cloneTestRequest, requestOptions, context));
     }
 
     /**
@@ -4707,7 +4705,7 @@ public final class LoadTestAdministrationClientImpl {
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4716,12 +4714,12 @@ public final class LoadTestAdministrationClientImpl {
      * @return provides status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cloneTestWithResponse(String testId, BinaryData cloneTestRequest1,
+    private Response<BinaryData> cloneTestWithResponse(String testId, BinaryData cloneTestRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.cloneTestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testId, contentType,
-            accept, cloneTestRequest1, requestOptions, Context.NONE);
+            accept, cloneTestRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -4756,7 +4754,7 @@ public final class LoadTestAdministrationClientImpl {
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4766,9 +4764,9 @@ public final class LoadTestAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<OperationStatus, LoadTest> beginCloneTestWithModelAsync(String testId,
-        BinaryData cloneTestRequest1, RequestOptions requestOptions) {
+        BinaryData cloneTestRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.cloneTestWithResponseAsync(testId, cloneTestRequest1, requestOptions),
+            () -> this.cloneTestWithResponseAsync(testId, cloneTestRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -4810,7 +4808,7 @@ public final class LoadTestAdministrationClientImpl {
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4819,10 +4817,10 @@ public final class LoadTestAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, LoadTest> beginCloneTestWithModel(String testId, BinaryData cloneTestRequest1,
+    public SyncPoller<OperationStatus, LoadTest> beginCloneTestWithModel(String testId, BinaryData cloneTestRequest,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.cloneTestWithResponse(testId, cloneTestRequest1, requestOptions),
+            () -> this.cloneTestWithResponse(testId, cloneTestRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -4864,7 +4862,7 @@ public final class LoadTestAdministrationClientImpl {
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4873,10 +4871,10 @@ public final class LoadTestAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCloneTestAsync(String testId, BinaryData cloneTestRequest1,
+    public PollerFlux<BinaryData, BinaryData> beginCloneTestAsync(String testId, BinaryData cloneTestRequest,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.cloneTestWithResponseAsync(testId, cloneTestRequest1, requestOptions),
+            () -> this.cloneTestWithResponseAsync(testId, cloneTestRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -4918,7 +4916,7 @@ public final class LoadTestAdministrationClientImpl {
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4927,10 +4925,10 @@ public final class LoadTestAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCloneTest(String testId, BinaryData cloneTestRequest1,
+    public SyncPoller<BinaryData, BinaryData> beginCloneTest(String testId, BinaryData cloneTestRequest,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.cloneTestWithResponse(testId, cloneTestRequest1, requestOptions),
+            () -> this.cloneTestWithResponse(testId, cloneTestRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null

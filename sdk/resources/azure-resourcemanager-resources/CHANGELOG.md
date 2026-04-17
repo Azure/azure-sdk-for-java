@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.54.0 (2026-03-19)
+
+### Other Changes
+
+- Updated `api-version` of policy to `2025-03-01`.
 
 ## 2.53.6 (2026-01-29)
 

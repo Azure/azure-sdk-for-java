@@ -34,6 +34,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final GoneRetryPolicy goneRetryPolicy;
     private final RetryWithRetryPolicy retryWithRetryPolicy;
@@ -43,9 +47,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
     private volatile RetryWithException lastRetryWithException;
     private RetryContext retryContext;
     private static final ThreadLocalRandom random = ThreadLocalRandom.current();
-
-    private static final ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionsAccessor
-        = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
@@ -212,7 +213,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
                 // wrapping this is as a 408 doesn't affect retry semantics in ClientRetryPolicy layer for writes
                 // this will also allow PPAF to mark such a partitionKeyRange as unavailable for that region
-                exceptionToThrow = cosmosExceptionsAccessor.createCosmosException(HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
+                exceptionToThrow = cosmosExceptionAccessor().createCosmosException(HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
 
                 GoneException goneException = Utils.as(exception, GoneException.class);
                 BridgeInternal.setSubStatusCode(exceptionToThrow, goneException.getSubStatusCode());
@@ -221,7 +222,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount.get())));
             } else if (exception instanceof LeaseNotFoundException) {
 
-                exceptionToThrow = cosmosExceptionsAccessor.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
+                exceptionToThrow = cosmosExceptionAccessor().createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
                 LeaseNotFoundException leaseNotFoundException = Utils.as(exception, LeaseNotFoundException.class);
 
                 BridgeInternal.setSubStatusCode(exceptionToThrow, leaseNotFoundException.getSubStatusCode());
@@ -322,7 +323,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
         private final int waitTimeInSeconds;
         private final RetryContext retryContext;
-
 
         public RetryWithRetryPolicy(Integer waitTimeInSeconds, RetryContext retryContext) {
             this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;

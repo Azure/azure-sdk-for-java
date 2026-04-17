@@ -66,6 +66,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer {
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
@@ -616,9 +620,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     }
                 }
 
-                ImplementationBridgeHelpers
-                    .CosmosExceptionHelper
-                    .getCosmosExceptionAccessor()
+                cosmosExceptionAccessor()
                     .setRequestUri(dce, Uri.create(httpRequest.uri().toString()));
 
                 if (request.requestContext.cosmosDiagnostics != null) {
@@ -626,17 +628,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
                         BridgeInternal.setRequestTimeline(dce, reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                        ImplementationBridgeHelpers
-                            .CosmosExceptionHelper
-                            .getCosmosExceptionAccessor()
+                        cosmosExceptionAccessor()
                             .setFaultInjectionRuleId(
                                 dce,
                                 request.faultInjectionRequestContext
                                     .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
 
-                        ImplementationBridgeHelpers
-                            .CosmosExceptionHelper
-                            .getCosmosExceptionAccessor()
+                        cosmosExceptionAccessor()
                             .setFaultInjectionEvaluationResults(
                                 dce,
                                 request.faultInjectionRequestContext
@@ -668,9 +666,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                     // Always set the request URI so endpoint is captured in diagnostics on cancellation.
                     // The endpoint is known at request-send time and should not be lost on cancellation.
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
+                    cosmosExceptionAccessor()
                         .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
 
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
@@ -682,17 +678,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                            ImplementationBridgeHelpers
-                                .CosmosExceptionHelper
-                                .getCosmosExceptionAccessor()
+                            cosmosExceptionAccessor()
                                 .setFaultInjectionRuleId(
                                     oce,
                                     request.faultInjectionRequestContext
                                         .getFaultInjectionRuleId(transportRequestId));
 
-                            ImplementationBridgeHelpers
-                                .CosmosExceptionHelper
-                                .getCosmosExceptionAccessor()
+                            cosmosExceptionAccessor()
                                 .setFaultInjectionEvaluationResults(
                                     oce,
                                     request.faultInjectionRequestContext
@@ -969,7 +961,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                null
             )
             .flatMap(collectionRoutingMapValueHolder -> {
-
 
            PartitionKeyRange range =
                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(pkRangeId.getPartitionKeyRangeId());

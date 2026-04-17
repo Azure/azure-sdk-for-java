@@ -36,29 +36,26 @@ public class RegionalRoutingContext {
         return this.thinclientRegionalEndpoint;
     }
 
+    // equals, hashCode and toString should only take dependency on gatewayRegionalEndpoint
+    // because map lookups (including CaseInsensitiveMap which keys on toString()) are done
+    // on RegionalRoutingContext with only the gateway regional endpoint.
+    // thinclientRegionalEndpoint is set after construction via a mutable setter and must not
+    // participate in identity or toString -- otherwise CaseInsensitiveMap keys change after insertion.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegionalRoutingContext that = (RegionalRoutingContext) o;
-        if (this.thinclientRegionalEndpoint != null) {
-            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint) &&
-                this.thinclientRegionalEndpoint.equals(that.thinclientRegionalEndpoint);
-        } else {
-            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
-        }
+        return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.gatewayRegionalEndpoint, this.thinclientRegionalEndpoint);
+        return Objects.hash(this.gatewayRegionalEndpoint);
     }
 
     @Override
     public String toString() {
-        return "RegionalRoutingContext{" +
-            "gatewayRegionalEndpoint=" + gatewayRegionalEndpointAsString +
-            ", thinclientRegionalEndpoint=" + thinclientRegionalEndpointAsString +
-            '}';
+        return gatewayRegionalEndpointAsString;
     }
 }

@@ -64,6 +64,7 @@ public final class SecretsModelsUtils {
         SecretPropertiesHelper.setId(secretProperties, secretBundle.getId());
         SecretPropertiesHelper.setKeyId(secretProperties, secretBundle.getKid());
         SecretPropertiesHelper.setManaged(secretProperties, secretBundle.isManaged());
+        SecretPropertiesHelper.setPreviousVersion(secretProperties, secretBundle.getPreviousVersion());
 
         SecretAttributes secretAttributes = secretBundle.getAttributes();
         if (secretAttributes != null) {
@@ -130,6 +131,7 @@ public final class SecretsModelsUtils {
         DeletedSecretHelper.setId(deletedSecret, deletedSecretBundle.getId());
         DeletedSecretHelper.setKeyId(deletedSecret, deletedSecretBundle.getKid());
         DeletedSecretHelper.setManaged(deletedSecret, deletedSecretBundle.isManaged());
+        DeletedSecretHelper.setPreviousVersion(deletedSecret, deletedSecretBundle.getPreviousVersion());
 
         SecretAttributes secretAttributes = deletedSecretBundle.getAttributes();
 

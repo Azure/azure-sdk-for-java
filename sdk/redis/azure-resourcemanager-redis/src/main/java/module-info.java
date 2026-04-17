@@ -13,4 +13,5 @@ module com.azure.resourcemanager.redis {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.redis.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.redis.models to com.azure.core;
+    opens com.azure.resourcemanager.redis.implementation.models to com.azure.core;
 }

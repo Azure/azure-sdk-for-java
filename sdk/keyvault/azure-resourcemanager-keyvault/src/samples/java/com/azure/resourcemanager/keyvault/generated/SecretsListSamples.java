@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class SecretsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/listSecrets.json
+     * x-ms-original-file: 2026-02-01/listSecrets.json
      */
     /**
      * Sample code: List secrets in the vault.

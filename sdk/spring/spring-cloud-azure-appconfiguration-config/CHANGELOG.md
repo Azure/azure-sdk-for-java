@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Added `startup-timeout` configuration option that enables automatic retry with backoff when transient failures occur during application startup. The provider will continue retrying until the timeout expires (default: 100 seconds).
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixes a bug where ';' was ignored in JSON content type checking.
 
 ### Other Changes
 

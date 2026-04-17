@@ -23,7 +23,7 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wjmy\",\"provisioningState\":\"Canceled\"},\"location\":\"slswtm\",\"tags\":{\"yqsemwa\":\"iofz\",\"tshhszhedp\":\"n\",\"k\":\"vwiwubmwmbesld\"},\"id\":\"wtppjflcxogaoko\",\"name\":\"z\",\"type\":\"nsikvmkqzeqqkdl\"}";
+            = "{\"properties\":{\"description\":\"iysui\",\"provisioningState\":\"Deleting\"},\"location\":\"ked\",\"tags\":{\"pyy\":\"rwyhqmibzyhwitsm\",\"mwzn\":\"pcdpumnz\",\"rgjhxb\":\"abikns\"},\"id\":\"dtlwwrlkd\",\"name\":\"tncvokot\",\"type\":\"lxdy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageMover response = manager.storageMovers()
-            .define("hqlkthumaqo")
-            .withRegion("y")
-            .withExistingResourceGroup("ynduha")
-            .withTags(mapOf("mdnbbglzpswiy", "olpsslqlf", "mnvdfzn", "mcwyhzdxssadb"))
-            .withDescription("ycduier")
+            .define("e")
+            .withRegion("hqkvpuvksgplsak")
+            .withExistingResourceGroup("jfqka")
+            .withTags(mapOf("odlqiyntor", "fsynljphuop"))
+            .withDescription("pfpubjibww")
             .create();
 
-        Assertions.assertEquals("slswtm", response.location());
-        Assertions.assertEquals("iofz", response.tags().get("yqsemwa"));
-        Assertions.assertEquals("wjmy", response.description());
+        Assertions.assertEquals("ked", response.location());
+        Assertions.assertEquals("rwyhqmibzyhwitsm", response.tags().get("pyy"));
+        Assertions.assertEquals("iysui", response.description());
     }
 
     // Use "Map.of" if available

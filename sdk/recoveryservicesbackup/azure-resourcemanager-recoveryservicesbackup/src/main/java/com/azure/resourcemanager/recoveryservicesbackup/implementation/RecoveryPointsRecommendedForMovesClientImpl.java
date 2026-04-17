@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
@@ -86,6 +87,21 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
             @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
             @PathParam("protectedItemName") String protectedItemName, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ListRecoveryPointsRecommendedForMoveRequest parameters, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RecoveryPointResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RecoveryPointResourceList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -113,7 +129,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
                 this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName,
                 protectedItemName, accept, parameters, context))
             .<PagedResponse<RecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -136,7 +152,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
         String fabricName, String containerName, String protectedItemName,
         ListRecoveryPointsRecommendedForMoveRequest parameters) {
         return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters));
+            protectedItemName, parameters), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -162,7 +178,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
             containerName, protectedItemName, accept, parameters, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -189,7 +205,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
             containerName, protectedItemName, accept, parameters, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -210,7 +226,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
     public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters) {
         return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters));
+            protectedItemName, parameters), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -233,6 +249,62 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
         String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters,
         Context context) {
         return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters, context));
+            protectedItemName, parameters, context), nextLink -> listNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecoveryPointResourceInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<RecoveryPointResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecoveryPointResourceInner> listNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<RecoveryPointResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

@@ -34,27 +34,13 @@ public final class InputItemImageGenToolCall extends InputItem {
      * The status of the image generation call.
      */
     @Generated
-    private final OutputItemImageGenToolCallStatus status;
+    private final ItemResourceImageGenToolCallStatus status;
 
     /*
      * The result property.
      */
     @Generated
     private final String result;
-
-    /**
-     * Creates an instance of InputItemImageGenToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param result the result value to set.
-     */
-    @Generated
-    public InputItemImageGenToolCall(String id, OutputItemImageGenToolCallStatus status, String result) {
-        this.id = id;
-        this.status = status;
-        this.result = result;
-    }
 
     /**
      * Get the type property: The type property.
@@ -83,7 +69,7 @@ public final class InputItemImageGenToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemImageGenToolCallStatus getStatus() {
+    public ItemResourceImageGenToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -124,7 +110,7 @@ public final class InputItemImageGenToolCall extends InputItem {
     public static InputItemImageGenToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            OutputItemImageGenToolCallStatus status = null;
+            ItemResourceImageGenToolCallStatus status = null;
             String result = null;
             InputItemType type = InputItemType.IMAGE_GENERATION_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -133,7 +119,7 @@ public final class InputItemImageGenToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemImageGenToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceImageGenToolCallStatus.fromString(reader.getString());
                 } else if ("result".equals(fieldName)) {
                     result = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -147,5 +133,19 @@ public final class InputItemImageGenToolCall extends InputItem {
             deserializedInputItemImageGenToolCall.type = type;
             return deserializedInputItemImageGenToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemImageGenToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param result the result value to set.
+     */
+    @Generated
+    public InputItemImageGenToolCall(String id, ItemResourceImageGenToolCallStatus status, String result) {
+        this.id = id;
+        this.status = status;
+        this.result = result;
     }
 }
