@@ -188,21 +188,12 @@ object CosmosItemsDataSource {
         Some((row: Row) => {
           if (pkPaths.size == 1) {
             // Single partition key
-            new PartitionKey(row.getAs[Any](pkPaths.head))
+            buildPartitionKey(row.getAs[Any](pkPaths.head), treatNullAsNone)
           } else {
             // Hierarchical partition key — build level by level
             val builder = new PartitionKeyBuilder()
             for (path <- pkPaths) {
-              val value = row.getAs[Any](path)
-              value match {
-                case s: String => builder.add(s)
-                case n: Number => builder.add(n.doubleValue())
-                case b: Boolean => builder.add(b)
-                case null =>
-                  if (treatNullAsNone) builder.addNoneValue()
-                  else builder.addNullValue()
-                case other => builder.add(other.toString)
-              }
+              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone)
             }
             builder.build()
           }
@@ -221,5 +212,23 @@ object CosmosItemsDataSource {
             "or ensure the DataFrame contains columns matching the container's partition key paths."))
 
     readManyReader.readManyByPartitionKey(df.rdd, pkExtraction)
+  }
+
+  private def addPartitionKeyComponent(builder: PartitionKeyBuilder, value: Any, treatNullAsNone: Boolean): Unit = {
+    value match {
+      case s: String => builder.add(s)
+      case n: Number => builder.add(n.doubleValue())
+      case b: Boolean => builder.add(b)
+      case null =>
+        if (treatNullAsNone) builder.addNoneValue()
+        else builder.addNullValue()
+      case other => builder.add(other.toString)
+    }
+  }
+
+  private def buildPartitionKey(value: Any, treatNullAsNone: Boolean): PartitionKey = {
+    val builder = new PartitionKeyBuilder()
+    addPartitionKeyComponent(builder, value, treatNullAsNone)
+    builder.build()
   }
 }
