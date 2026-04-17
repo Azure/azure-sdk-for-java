@@ -14,21 +14,21 @@ public final class HciCollectLogJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciCollectLogJobProperties model = BinaryData.fromString(
-            "{\"jobType\":\"CollectLog\",\"fromDate\":\"2021-09-04T01:06:25Z\",\"toDate\":\"2021-12-03T01:40:51Z\",\"lastLogGenerated\":\"2021-05-06T08:51:47Z\",\"reportedProperties\":{\"percentComplete\":569330196,\"validationStatus\":{\"status\":\"wdaomdjvlpjxxkzb\",\"steps\":[{\"name\":\"eivsiykzkdnc\",\"description\":\"xonbzoggculapz\",\"fullStepIndex\":\"rpgogtqxep\",\"startTimeUtc\":\"lbfu\",\"endTimeUtc\":\"lyjt\",\"status\":\"of\",\"steps\":[{},{},{}],\"exception\":[\"cib\",\"fmo\",\"uxrkjp\",\"dwxf\"]},{\"name\":\"iivwzjbhyzsxjrka\",\"description\":\"trnegvmnvuqeqvld\",\"fullStepIndex\":\"astjbkkdmflvestm\",\"startTimeUtc\":\"xrrilozapee\",\"endTimeUtc\":\"hpxlktwkuziycs\",\"status\":\"vu\",\"steps\":[{},{}],\"exception\":[\"ktyhjt\",\"edcg\"]}]},\"deploymentStatus\":{\"status\":\"wmmrq\",\"steps\":[{\"name\":\"jvpglydzgk\",\"description\":\"qeevt\",\"fullStepIndex\":\"pryu\",\"startTimeUtc\":\"wytpzdmovz\",\"endTimeUtc\":\"va\",\"status\":\"zqadf\",\"steps\":[{}],\"exception\":[\"iglaecx\",\"dticokpvzml\"]}]},\"logCollectionSessionDetails\":[{\"startTime\":\"dgxobfircl\",\"endTime\":\"kciayzri\",\"timeCollected\":\"hya\",\"logSize\":47458099,\"status\":\"Succeeded\",\"correlationId\":\"oxqvkjlmxhomdynh\"},{\"startTime\":\"digumbnr\",\"endTime\":\"uzzptjazysdz\",\"timeCollected\":\"zwwva\",\"logSize\":129407729,\"status\":\"Running\",\"correlationId\":\"fonkphhqyikvyla\"},{\"startTime\":\"avluwmncs\",\"endTime\":\"ijf\",\"timeCollected\":\"vpo\",\"logSize\":576086700,\"status\":\"Failed\",\"correlationId\":\"gbdhuzqgnjdg\"}]},\"deploymentMode\":\"Deploy\",\"provisioningState\":\"Disconnected\",\"jobId\":\"i\",\"startTimeUtc\":\"2021-01-20T15:31:21Z\",\"endTimeUtc\":\"2021-01-28T11:51:13Z\",\"status\":\"Canceled\"}")
+            "{\"jobType\":\"CollectLog\",\"fromDate\":\"2021-08-19T12:15:22Z\",\"toDate\":\"2021-06-18T23:45:26Z\",\"lastLogGenerated\":\"2020-12-22T22:10:13Z\",\"reportedProperties\":{\"percentComplete\":1914058756,\"validationStatus\":{\"status\":\"clj\",\"steps\":[{\"name\":\"xa\",\"description\":\"uy\",\"fullStepIndex\":\"p\",\"startTimeUtc\":\"sdaultxij\",\"endTimeUtc\":\"mfqwa\",\"status\":\"nqnm\",\"steps\":[{}],\"exception\":[\"qdqx\",\"bjwgnyfus\"]},{\"name\":\"svtui\",\"description\":\"hajqglcfh\",\"fullStepIndex\":\"rqryxynqn\",\"startTimeUtc\":\"dpsovwxznptgo\",\"endTimeUtc\":\"ybbabpfhvfsl\",\"status\":\"ntjlr\",\"steps\":[{},{}],\"exception\":[\"kyrioovzid\"]}]},\"deploymentStatus\":{\"status\":\"aabzmif\",\"steps\":[{\"name\":\"nmmaxrizkzob\",\"description\":\"pxl\",\"fullStepIndex\":\"lnelxieixynl\",\"startTimeUtc\":\"ecwcrojphslhcawj\",\"endTimeUtc\":\"i\",\"status\":\"wfmvigorqjbt\",\"steps\":[{}],\"exception\":[\"glka\",\"honqjujeickpz\",\"cpopmxel\"]},{\"name\":\"clt\",\"description\":\"edexxmlfm\",\"fullStepIndex\":\"scazuawxtzxpu\",\"startTimeUtc\":\"wabzxrvxcushsp\",\"endTimeUtc\":\"ivmxyasfl\",\"status\":\"sgzwywakoihknsm\",\"steps\":[{},{},{},{}],\"exception\":[\"jhlnymzotqyryu\",\"cbm\",\"qvx\"]},{\"name\":\"wfgtayxonsup\",\"description\":\"jlzqnhc\",\"fullStepIndex\":\"ql\",\"startTimeUtc\":\"zoibgsxg\",\"endTimeUtc\":\"fyq\",\"status\":\"mpqoxw\",\"steps\":[{},{},{},{}],\"exception\":[\"xiqxeiiqbimh\",\"mwwinhehfqpofv\",\"bcblemb\",\"kbwvqvxkdiv\"]},{\"name\":\"heb\",\"description\":\"swbzuwfmdurage\",\"fullStepIndex\":\"zvcjfelisdjubggb\",\"startTimeUtc\":\"gkxkbsazgakg\",\"endTimeUtc\":\"yrcmjdmspofap\",\"status\":\"hryl\",\"steps\":[{},{}],\"exception\":[\"zgb\"]}]},\"logCollectionSessionDetails\":[{\"startTime\":\"mstk\",\"endTime\":\"l\",\"timeCollected\":\"bcuiiz\",\"logSize\":1363158856,\"status\":\"Succeeded\",\"correlationId\":\"nsnvpd\"}]},\"deploymentMode\":\"Validate\",\"provisioningState\":\"NotSpecified\",\"jobId\":\"stbz\",\"startTimeUtc\":\"2021-05-18T23:48Z\",\"endTimeUtc\":\"2021-11-09T06:15:16Z\",\"status\":\"Failed\"}")
             .toObject(HciCollectLogJobProperties.class);
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.deploymentMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T01:06:25Z"), model.fromDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T01:40:51Z"), model.toDate());
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.deploymentMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T12:15:22Z"), model.fromDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T23:45:26Z"), model.toDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HciCollectLogJobProperties model = new HciCollectLogJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
-            .withFromDate(OffsetDateTime.parse("2021-09-04T01:06:25Z"))
-            .withToDate(OffsetDateTime.parse("2021-12-03T01:40:51Z"));
+        HciCollectLogJobProperties model = new HciCollectLogJobProperties().withDeploymentMode(DeploymentMode.VALIDATE)
+            .withFromDate(OffsetDateTime.parse("2021-08-19T12:15:22Z"))
+            .withToDate(OffsetDateTime.parse("2021-06-18T23:45:26Z"));
         model = BinaryData.fromObject(model).toObject(HciCollectLogJobProperties.class);
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.deploymentMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T01:06:25Z"), model.fromDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T01:40:51Z"), model.toDate());
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.deploymentMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T12:15:22Z"), model.fromDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T23:45:26Z"), model.toDate());
     }
 }

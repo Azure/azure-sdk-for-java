@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ClustersCreateIdentitySamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateClusterIdentity.json
+     * x-ms-original-file: 2026-04-01-preview/CreateClusterIdentity.json
      */
     /**
      * Sample code: Create cluster Identity.

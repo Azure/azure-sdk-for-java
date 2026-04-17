@@ -22,6 +22,21 @@ public final class Storage implements JsonSerializable<Storage> {
      */
     private String configurationMode;
 
+    /*
+     * Storage type for the HCI Cluster. Allowed values are 'S2D', 'SAN', 'SANS2D'.
+     */
+    private StorageType storageType;
+
+    /*
+     * S2D (Storage Spaces Direct) configuration. Applicable when StorageType is 'S2D' or 'SANS2D'.
+     */
+    private StorageS2dConfig s2d;
+
+    /*
+     * SAN (Storage Area Network) configuration. Applicable when StorageType is 'SAN' or 'SANS2D'.
+     */
+    private StorageSanConfig san;
+
     /**
      * Creates an instance of Storage class.
      */
@@ -53,12 +68,77 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
+     * Get the storageType property: Storage type for the HCI Cluster. Allowed values are 'S2D', 'SAN', 'SANS2D'.
+     * 
+     * @return the storageType value.
+     */
+    public StorageType storageType() {
+        return this.storageType;
+    }
+
+    /**
+     * Set the storageType property: Storage type for the HCI Cluster. Allowed values are 'S2D', 'SAN', 'SANS2D'.
+     * 
+     * @param storageType the storageType value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withStorageType(StorageType storageType) {
+        this.storageType = storageType;
+        return this;
+    }
+
+    /**
+     * Get the s2d property: S2D (Storage Spaces Direct) configuration. Applicable when StorageType is 'S2D' or
+     * 'SANS2D'.
+     * 
+     * @return the s2d value.
+     */
+    public StorageS2dConfig s2d() {
+        return this.s2d;
+    }
+
+    /**
+     * Set the s2d property: S2D (Storage Spaces Direct) configuration. Applicable when StorageType is 'S2D' or
+     * 'SANS2D'.
+     * 
+     * @param s2d the s2d value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withS2d(StorageS2dConfig s2d) {
+        this.s2d = s2d;
+        return this;
+    }
+
+    /**
+     * Get the san property: SAN (Storage Area Network) configuration. Applicable when StorageType is 'SAN' or 'SANS2D'.
+     * 
+     * @return the san value.
+     */
+    public StorageSanConfig san() {
+        return this.san;
+    }
+
+    /**
+     * Set the san property: SAN (Storage Area Network) configuration. Applicable when StorageType is 'SAN' or 'SANS2D'.
+     * 
+     * @param san the san value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withSan(StorageSanConfig san) {
+        this.san = san;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("configurationMode", this.configurationMode);
+        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        jsonWriter.writeJsonField("s2d", this.s2d);
+        jsonWriter.writeJsonField("san", this.san);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,6 +159,12 @@ public final class Storage implements JsonSerializable<Storage> {
 
                 if ("configurationMode".equals(fieldName)) {
                     deserializedStorage.configurationMode = reader.getString();
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedStorage.storageType = StorageType.fromString(reader.getString());
+                } else if ("s2d".equals(fieldName)) {
+                    deserializedStorage.s2d = StorageS2dConfig.fromJson(reader);
+                } else if ("san".equals(fieldName)) {
+                    deserializedStorage.san = StorageSanConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

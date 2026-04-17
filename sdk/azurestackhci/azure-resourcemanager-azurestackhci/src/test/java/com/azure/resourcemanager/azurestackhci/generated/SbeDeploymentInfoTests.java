@@ -13,27 +13,27 @@ public final class SbeDeploymentInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SbeDeploymentInfo model = BinaryData.fromString(
-            "{\"version\":\"jhemms\",\"family\":\"dkcrodt\",\"publisher\":\"nfwjlfltkacjvefk\",\"sbeManifestSource\":\"foakgg\",\"sbeManifestCreationDate\":\"2021-01-22T11:21:37Z\"}")
+            "{\"version\":\"hvcyyysfg\",\"family\":\"tcubiipuipwoqonm\",\"publisher\":\"jeknizshq\",\"sbeManifestSource\":\"impevf\",\"sbeManifestCreationDate\":\"2021-01-08T13:16:44Z\"}")
             .toObject(SbeDeploymentInfo.class);
-        Assertions.assertEquals("jhemms", model.version());
-        Assertions.assertEquals("dkcrodt", model.family());
-        Assertions.assertEquals("nfwjlfltkacjvefk", model.publisher());
-        Assertions.assertEquals("foakgg", model.sbeManifestSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T11:21:37Z"), model.sbeManifestCreationDate());
+        Assertions.assertEquals("hvcyyysfg", model.version());
+        Assertions.assertEquals("tcubiipuipwoqonm", model.family());
+        Assertions.assertEquals("jeknizshq", model.publisher());
+        Assertions.assertEquals("impevf", model.sbeManifestSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T13:16:44Z"), model.sbeManifestCreationDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SbeDeploymentInfo model = new SbeDeploymentInfo().withVersion("jhemms")
-            .withFamily("dkcrodt")
-            .withPublisher("nfwjlfltkacjvefk")
-            .withSbeManifestSource("foakgg")
-            .withSbeManifestCreationDate(OffsetDateTime.parse("2021-01-22T11:21:37Z"));
+        SbeDeploymentInfo model = new SbeDeploymentInfo().withVersion("hvcyyysfg")
+            .withFamily("tcubiipuipwoqonm")
+            .withPublisher("jeknizshq")
+            .withSbeManifestSource("impevf")
+            .withSbeManifestCreationDate(OffsetDateTime.parse("2021-01-08T13:16:44Z"));
         model = BinaryData.fromObject(model).toObject(SbeDeploymentInfo.class);
-        Assertions.assertEquals("jhemms", model.version());
-        Assertions.assertEquals("dkcrodt", model.family());
-        Assertions.assertEquals("nfwjlfltkacjvefk", model.publisher());
-        Assertions.assertEquals("foakgg", model.sbeManifestSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T11:21:37Z"), model.sbeManifestCreationDate());
+        Assertions.assertEquals("hvcyyysfg", model.version());
+        Assertions.assertEquals("tcubiipuipwoqonm", model.family());
+        Assertions.assertEquals("jeknizshq", model.publisher());
+        Assertions.assertEquals("impevf", model.sbeManifestSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T13:16:44Z"), model.sbeManifestCreationDate());
     }
 }

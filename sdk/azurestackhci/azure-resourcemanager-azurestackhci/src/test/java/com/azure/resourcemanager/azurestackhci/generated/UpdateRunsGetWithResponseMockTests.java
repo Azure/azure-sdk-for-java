@@ -22,7 +22,7 @@ public final class UpdateRunsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"timeStarted\":\"2021-05-08T11:55:38Z\",\"lastUpdatedTime\":\"2021-07-09T12:40:55Z\",\"duration\":\"xluea\",\"state\":\"Unknown\",\"progress\":{\"name\":\"gsimwe\",\"description\":\"wbkbpjzobdwb\",\"errorMessage\":\"ra\",\"status\":\"kuhydtnaczkfwfat\",\"startTimeUtc\":\"2021-10-07T13:25:20Z\",\"endTimeUtc\":\"2021-08-29T20:06:23Z\",\"lastUpdatedTimeUtc\":\"2021-01-16T22:55:43Z\",\"expectedExecutionTime\":\"ivdwgtqc\",\"steps\":[{\"name\":\"saaqgoq\",\"description\":\"iuycsbskowk\",\"errorMessage\":\"hzhrbkhtm\",\"status\":\"wiuasfg\",\"startTimeUtc\":\"2021-08-04T06:23:44Z\",\"endTimeUtc\":\"2021-10-22T15:42:28Z\",\"lastUpdatedTimeUtc\":\"2021-07-23T07:28:01Z\",\"expectedExecutionTime\":\"imqvdruoz\",\"steps\":[{},{},{},{}]},{\"name\":\"peoehg\",\"description\":\"qmskkixv\",\"errorMessage\":\"jxplh\",\"status\":\"vasyntv\",\"startTimeUtc\":\"2021-06-01T03:16:25Z\",\"endTimeUtc\":\"2021-10-18T04:19:50Z\",\"lastUpdatedTimeUtc\":\"2021-09-26T05:26:39Z\",\"expectedExecutionTime\":\"rvvbqvknmpecqxg\",\"steps\":[{}]},{\"name\":\"ifubnsnstlpwqp\",\"description\":\"xjkhtupsv\",\"errorMessage\":\"uweuiy\",\"status\":\"wkztsmsfbevyl\",\"startTimeUtc\":\"2021-09-12T13:45:39Z\",\"endTimeUtc\":\"2021-03-19T19:57:21Z\",\"lastUpdatedTimeUtc\":\"2021-03-27T20:53:42Z\",\"expectedExecutionTime\":\"tkztadopgfzdgj\",\"steps\":[{}]},{\"name\":\"rsvloy\",\"description\":\"igqkzjuqwqa\",\"errorMessage\":\"uzxp\",\"status\":\"hyoipnfdbgso\",\"startTimeUtc\":\"2021-06-23T06:34:56Z\",\"endTimeUtc\":\"2021-07-08T00:51:12Z\",\"lastUpdatedTimeUtc\":\"2021-02-22T00:55:50Z\",\"expectedExecutionTime\":\"vbennmfkbpjnrt\",\"steps\":[{}]}]}},\"location\":\"nthropmdudsyiu\",\"id\":\"tvktjhffecqko\",\"name\":\"youergaghp\",\"type\":\"zxkpyehhfdyld\"}";
+            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"timeStarted\":\"2021-03-22T17:22:44Z\",\"lastUpdatedTime\":\"2021-10-14T17:57:40Z\",\"duration\":\"wxqd\",\"state\":\"Failed\",\"progress\":{\"name\":\"xwdjoxwkb\",\"description\":\"sobvcnsb\",\"errorMessage\":\"eznl\",\"status\":\"nfzxtfzqyugt\",\"startTimeUtc\":\"2021-03-17T15:44:51Z\",\"endTimeUtc\":\"2021-11-26T13:23:18Z\",\"lastUpdatedTimeUtc\":\"2021-05-09T05:50:45Z\",\"expectedExecutionTime\":\"nlrlcm\",\"steps\":[{\"name\":\"ywwwvnhwwkr\",\"description\":\"evrhhafqfu\",\"errorMessage\":\"yziruqvgnjxiakg\",\"status\":\"mzbmxgikyluyu\",\"startTimeUtc\":\"2021-01-30T18:39:54Z\",\"endTimeUtc\":\"2021-08-16T15:10:21Z\",\"lastUpdatedTimeUtc\":\"2021-07-07T16:44:42Z\",\"expectedExecutionTime\":\"loxtvq\",\"steps\":[{},{}]},{\"name\":\"yhmmglvnbenkps\",\"description\":\"kkyankxv\",\"errorMessage\":\"tfgfbhnkxasomaf\",\"status\":\"a\",\"startTimeUtc\":\"2021-02-25T05:00:41Z\",\"endTimeUtc\":\"2021-01-21T01:23:47Z\",\"lastUpdatedTimeUtc\":\"2021-03-31T08:16:45Z\",\"expectedExecutionTime\":\"pautfz\",\"steps\":[{},{},{}]},{\"name\":\"dzytrtffvp\",\"description\":\"xcyu\",\"errorMessage\":\"nbqvpr\",\"status\":\"voqatdjkaldpmec\",\"startTimeUtc\":\"2021-02-21T03:27:50Z\",\"endTimeUtc\":\"2021-05-24T08:06:45Z\",\"lastUpdatedTimeUtc\":\"2021-02-06T21:01:36Z\",\"expectedExecutionTime\":\"emq\",\"steps\":[{}]},{\"name\":\"pg\",\"description\":\"ssdquupirnbnlqyv\",\"errorMessage\":\"q\",\"status\":\"jwdzpvirzyudrqu\",\"startTimeUtc\":\"2021-02-12T21:43:05Z\",\"endTimeUtc\":\"2021-05-18T11:29:05Z\",\"lastUpdatedTimeUtc\":\"2021-07-11T02:09:14Z\",\"expectedExecutionTime\":\"ouqps\",\"steps\":[{},{}]}]}},\"location\":\"db\",\"id\":\"rrhyjxcqcaczzvwa\",\"name\":\"ztt\",\"type\":\"jqyfy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,30 +32,31 @@ public final class UpdateRunsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UpdateRun response = manager.updateRuns()
-            .getWithResponse("gufy", "fdk", "iyvndjokgwes", "mzqhrqp", com.azure.core.util.Context.NONE)
+            .getWithResponse("mvwnbunsodtevzsh", "ykebmpshaez", "ldkckrno", "qdmhcejstfs",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nthropmdudsyiu", response.location());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-08T11:55:38Z"), response.timeStarted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T12:40:55Z"), response.lastUpdatedTime());
-        Assertions.assertEquals("xluea", response.duration());
-        Assertions.assertEquals(UpdateRunPropertiesState.UNKNOWN, response.state());
-        Assertions.assertEquals("gsimwe", response.namePropertiesName());
-        Assertions.assertEquals("wbkbpjzobdwb", response.description());
-        Assertions.assertEquals("ra", response.errorMessage());
-        Assertions.assertEquals("kuhydtnaczkfwfat", response.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T13:25:20Z"), response.startTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T20:06:23Z"), response.endTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T22:55:43Z"), response.lastUpdatedTimeUtc());
-        Assertions.assertEquals("ivdwgtqc", response.expectedExecutionTime());
-        Assertions.assertEquals("saaqgoq", response.steps().get(0).name());
-        Assertions.assertEquals("iuycsbskowk", response.steps().get(0).description());
-        Assertions.assertEquals("hzhrbkhtm", response.steps().get(0).errorMessage());
-        Assertions.assertEquals("wiuasfg", response.steps().get(0).status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T06:23:44Z"), response.steps().get(0).startTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T15:42:28Z"), response.steps().get(0).endTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T07:28:01Z"),
+        Assertions.assertEquals("db", response.location());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T17:22:44Z"), response.timeStarted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T17:57:40Z"), response.lastUpdatedTime());
+        Assertions.assertEquals("wxqd", response.duration());
+        Assertions.assertEquals(UpdateRunPropertiesState.FAILED, response.state());
+        Assertions.assertEquals("xwdjoxwkb", response.namePropertiesName());
+        Assertions.assertEquals("sobvcnsb", response.description());
+        Assertions.assertEquals("eznl", response.errorMessage());
+        Assertions.assertEquals("nfzxtfzqyugt", response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T15:44:51Z"), response.startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T13:23:18Z"), response.endTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T05:50:45Z"), response.lastUpdatedTimeUtc());
+        Assertions.assertEquals("nlrlcm", response.expectedExecutionTime());
+        Assertions.assertEquals("ywwwvnhwwkr", response.steps().get(0).name());
+        Assertions.assertEquals("evrhhafqfu", response.steps().get(0).description());
+        Assertions.assertEquals("yziruqvgnjxiakg", response.steps().get(0).errorMessage());
+        Assertions.assertEquals("mzbmxgikyluyu", response.steps().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T18:39:54Z"), response.steps().get(0).startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T15:10:21Z"), response.steps().get(0).endTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T16:44:42Z"),
             response.steps().get(0).lastUpdatedTimeUtc());
-        Assertions.assertEquals("imqvdruoz", response.steps().get(0).expectedExecutionTime());
+        Assertions.assertEquals("loxtvq", response.steps().get(0).expectedExecutionTime());
     }
 }
