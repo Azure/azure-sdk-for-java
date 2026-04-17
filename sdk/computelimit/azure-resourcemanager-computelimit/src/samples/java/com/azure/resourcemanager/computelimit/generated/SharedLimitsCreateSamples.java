@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computelimit.models.SharedLimitProperties;
  */
 public final class SharedLimitsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-15/SharedLimits_Create.json
+     * x-ms-original-file: 2026-04-30/SharedLimits_Create.json
      */
     /**
      * Sample code: Create a shared limit.
