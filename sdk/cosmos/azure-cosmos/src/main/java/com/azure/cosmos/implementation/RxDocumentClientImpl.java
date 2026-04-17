@@ -4382,6 +4382,62 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (ctx) -> diagnosticsFactory.merge(ctx)
         );
 
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            queryOptionsAccessor().getProperties(state.getQueryOptions()),
+            queryOptionsAccessor().getHeaders(state.getQueryOptions()),
+            this.sessionContainer,
+            diagnosticsFactory,
+            ResourceType.Document
+        );
+
+        return ObservableHelper
+            .fluxInlineIfPossibleAsObs(
+                () -> readManyByPartitionKey(
+                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, klass),
+                staleResourceRetryPolicy
+            )
+            .onErrorMap(throwable -> {
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) throwable;
+                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+                    if (diagnostics != null) {
+                        state.mergeDiagnosticsContext();
+                        CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                        if (ctx != null) {
+                            ctxAccessor().recordOperation(
+                                ctx,
+                                cosmosException.getStatusCode(),
+                                cosmosException.getSubStatusCode(),
+                                0,
+                                cosmosException.getRequestCharge(),
+                                diagnostics,
+                                throwable
+                            );
+                            diagAccessor()
+                                .setDiagnosticsContext(
+                                    diagnostics,
+                                    state.getDiagnosticsContextSnapshot());
+                        }
+                    }
+
+                    return cosmosException;
+                }
+
+                return throwable;
+            });
+    }
+
+    private <T> Flux<FeedResponse<T>> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        String collectionLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        Class<T> klass) {
+
         String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
             OperationType.Query,
