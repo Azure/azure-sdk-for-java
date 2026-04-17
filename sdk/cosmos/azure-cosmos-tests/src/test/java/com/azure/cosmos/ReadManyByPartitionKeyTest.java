@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -230,38 +232,30 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     @SuppressWarnings("deprecation")
     public void hpk_readManyByPartitionKey_withNoneComponent() {
-        // Regression test for hierarchical partition key routing with PartitionKey.NONE / addNoneValue()
-        // at a trailing position. Some documents omit the last PK path (areaCode); they must be
-        // routed via the NOT IS_DEFINED(c["areaCode"]) predicate and returned only when the caller
-        // requests that slice via addNoneValue().
-        createHpkItems();
-        // Insert 3 documents where areaCode is undefined (NONE) under Redmond/98053
-        for (int i = 0; i < 3; i++) {
+        try {
+            createHpkItems();
+
             ObjectNode item = com.azure.cosmos.implementation.Utils.getSimpleObjectMapper().createObjectNode();
             item.put("id", UUID.randomUUID().toString());
             item.put("city", "Redmond");
             item.put("zipcode", "98053");
-            // deliberately omit areaCode
-            multiHashContainer.createItem(item);
+
+            try {
+                multiHashContainer.createItem(item);
+                fail("Should have thrown CosmosException for HPK item with missing trailing partition key component");
+            } catch (CosmosException e) {
+                assertThat(e.getMessage()).contains("wrong-pk-value");
+            }
+
+            try {
+                new PartitionKeyBuilder().add("Redmond").add("98053").addNoneValue().build();
+                fail("Should have thrown IllegalStateException for HPK addNoneValue");
+            } catch (IllegalStateException e) {
+                assertThat(e.getMessage()).contains("PartitionKey.None can't be used with multiple paths");
+            }
+        } finally {
+            cleanupContainer(multiHashContainer);
         }
-
-        // Request the NONE slice: Redmond/98053/<undefined>
-        List<PartitionKey> pkValues = Collections.singletonList(
-            new PartitionKeyBuilder().add("Redmond").add("98053").addNoneValue().build());
-
-        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
-        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
-
-        // Only the 3 documents without areaCode should come back — the pre-existing items in
-        // createHpkItems() all have areaCode defined and live in a different physical partition slice.
-        assertThat(resultList).hasSize(3);
-        resultList.forEach(item -> {
-            assertThat(item.get("city").asText()).isEqualTo("Redmond");
-            assertThat(item.get("zipcode").asText()).isEqualTo("98053");
-            assertThat(item.has("areaCode")).isFalse();
-        });
-
-        cleanupContainer(multiHashContainer);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -367,6 +361,22 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             .stream().collect(Collectors.toList());
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void rejectsOffsetQuery() {
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
+        SqlQuerySpec offsetQuery = new SqlQuerySpec("SELECT * FROM c OFFSET 0 LIMIT 10");
+
+        try {
+            singlePkContainer.readManyByPartitionKey(pkValues, offsetQuery, null, ObjectNode.class)
+                .stream().collect(Collectors.toList());
+            fail("Should have thrown IllegalArgumentException for OFFSET query");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("OFFSET");
+        }
+    }
+
+
+
     //endregion
 
 
@@ -393,9 +403,14 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
                 new PartitionKey("batchPk4"));
 
             CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
-            List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+            List<FeedResponse<ObjectNode>> pages = new ArrayList<>();
+            results.iterableByPage().forEach(pages::add);
+            List<ObjectNode> resultList = pages.stream()
+                .flatMap(page -> page.getResults().stream())
+                .collect(Collectors.toList());
 
             assertThat(resultList).hasSize(8); // 2 items per PK * 4 PKs
+            assertThat(pages.size()).isGreaterThan(1);
             resultList.forEach(item -> {
                 String pk = item.get("mypk").asText();
                 assertThat(pk).isIn("batchPk1", "batchPk2", "batchPk3", "batchPk4");
@@ -417,19 +432,31 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void singlePk_readManyByPartitionKey_withRequestOptions() {
-        // This test ensures that request options (like throughput control settings)
-        // are properly propagated through the readManyByPartitionKey path.
-        // It acts as a regression test for the redundant options construction bug.
         List<ObjectNode> items = createSinglePkItems("pkOpts", 3);
 
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkOpts"));
         com.azure.cosmos.models.CosmosReadManyRequestOptions options = new com.azure.cosmos.models.CosmosReadManyRequestOptions();
+        AtomicInteger deserializeCount = new AtomicInteger();
+        options.setCustomItemSerializer(new CosmosItemSerializerNoExceptionWrapping() {
+            @Override
+            public <T> Map<String, Object> serialize(T item) {
+                return CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
+            }
 
-        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
-            pkValues, options, ObjectNode.class);
-        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+            @Override
+            public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                deserializeCount.incrementAndGet();
+                return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, classType);
+            }
+        });
+
+        CosmosPagedIterable<ReadManyByPartitionKeyPojo> results = singlePkContainer.readManyByPartitionKey(
+            pkValues, options, ReadManyByPartitionKeyPojo.class);
+        List<ReadManyByPartitionKeyPojo> resultList = results.stream().collect(Collectors.toList());
 
         assertThat(resultList).hasSize(3);
+        assertThat(deserializeCount.get()).isEqualTo(3);
+        assertThat(resultList.stream().map(item -> item.mypk)).containsOnly("pkOpts");
 
         cleanupContainer(singlePkContainer);
     }
@@ -493,6 +520,11 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
                 // ignore cleanup failures
             }
         });
+    }
+
+    private static class ReadManyByPartitionKeyPojo {
+        public String id;
+        public String mypk;
     }
 
     //endregion

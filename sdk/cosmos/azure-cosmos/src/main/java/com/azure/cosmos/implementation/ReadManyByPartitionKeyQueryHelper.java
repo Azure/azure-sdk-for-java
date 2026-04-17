@@ -12,6 +12,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Helper for constructing SqlQuerySpec instances for readManyByPartitionKey operations.
@@ -158,6 +159,16 @@ public class ReadManyByPartitionKeyQueryHelper {
         }
 
         return new SqlQuerySpec(finalQuery, parameters);
+    }
+
+    static List<String> createPkSelectors(PartitionKeyDefinition partitionKeyDefinition) {
+        return partitionKeyDefinition.getPaths()
+            .stream()
+            .map(PathParser::getPathParts)
+            .map(pathParts -> pathParts.stream()
+                .map(pathPart -> "[\"" + pathPart.replace("\"", "\\") + "\"]")
+                .collect(Collectors.joining()))
+            .collect(Collectors.toList());
     }
 
     /**

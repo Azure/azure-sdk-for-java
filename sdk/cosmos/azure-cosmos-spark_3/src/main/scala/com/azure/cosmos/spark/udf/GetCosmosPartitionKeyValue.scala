@@ -12,8 +12,9 @@ class GetCosmosPartitionKeyValue extends UDF1[Object, String] {
   // single-level partition key with a JSON null component; parsing that string back via
   // CosmosPartitionKeyHelper.tryParsePartitionKey yields a PartitionKey built with
   // addNullValue(). If the caller instead wants PartitionKey.NONE semantics (absent PK
-  // field) they should filter the null row before calling this UDF and use the
-  // schema-matched readManyByPartitionKey path with readManyByPk.nullHandling=None.
+  // field) they should filter the null row before calling this UDF and use the schema-matched
+  // readManyByPartitionKey path with readManyByPk.nullHandling=None. That None mode is only
+  // supported for single-path partition keys; hierarchical partition keys reject it.
   override def call(partitionKeyValue: Object): String = {
     partitionKeyValue match {
       case null =>

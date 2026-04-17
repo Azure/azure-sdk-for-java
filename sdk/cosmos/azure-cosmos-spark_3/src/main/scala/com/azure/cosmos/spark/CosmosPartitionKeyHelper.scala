@@ -15,6 +15,20 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
+  private[spark] val HierarchicalPartitionKeyNoneHandlingErrorMessage =
+    s"The configuration '${CosmosConfigNames.ReadManyByPkNullHandling}=None' is not supported for " +
+      "hierarchical partition keys because PartitionKey.NONE can't be used with multiple paths. " +
+      "Use 'Null' for explicit JSON null values, filter out rows with missing partition key " +
+      "components, or provide fully-defined hierarchical partition keys."
+
+  private[spark] def validateNoneHandlingForPartitionKeyComponentCount(
+    componentCount: Int,
+    treatNullAsNone: Boolean): Unit = {
+    if (treatNullAsNone && componentCount > 1) {
+      throw new IllegalArgumentException(HierarchicalPartitionKeyNoneHandlingErrorMessage)
+    }
+  }
+
   // pattern will be recognized
   // pk(partitionKeyValue)
   //
@@ -47,6 +61,7 @@ private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
           case arrayList: util.ArrayList[Object @unchecked] =>
             val components = arrayList.toArray
             if (components.exists(_ == null)) {
+              validateNoneHandlingForPartitionKeyComponentCount(components.length, treatNullAsNone)
               // Build via PartitionKeyBuilder so nulls can be disambiguated between
               // JSON-null (addNullValue) and undefined (addNoneValue) based on config.
               val builder = new PartitionKeyBuilder()

@@ -20,8 +20,8 @@ and additional filters. The SDK appends the auto-generated PK WHERE clause to it
 | Partial HPK | Supported from the start; prefix PKs fan out via `getOverlappingRanges` |
 | PK deduplication | Done at Spark layer only, not in the SDK |
 | Spark UDF | New `GetCosmosPartitionKeyValue` UDF |
-| Custom query validation | Gateway query plan; reject aggregates/ORDER BY/DISTINCT/GROUP BY/DCount/non-streaming ORDER BY/vector/fulltext |
-| PK list size | No hard upper-bound enforced; SDK batches internally per physical partition (default 1000 PKs per batch, configurable via `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE`) |
+| Custom query validation | Gateway query plan via the standard SDK query-plan retrieval path; reject aggregates/ORDER BY/DISTINCT/GROUP BY/DCount/OFFSET/LIMIT/non-streaming ORDER BY/vector/fulltext |
+| PK list size | No hard upper-bound enforced; SDK batches internally per physical partition (default 100 PKs per batch, configurable via `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE`) |
 | Eager validation | Null and empty PK list rejected eagerly (not lazily in reactive chain) |
 | Telemetry | Separate span name `readManyByPartitionKeyItems.<containerId>` (distinct from existing `readManyItems`) |
 | Query construction | Table alias auto-detected from FROM clause; string literals and subqueries handled correctly |
@@ -52,14 +52,14 @@ Same signatures returning `CosmosPagedIterable<T>`, delegating to the async cont
 ### Step 3: Internal orchestration (RxDocumentClientImpl)
 
 1. Resolve collection metadata + PK definition from cache.
-2. Fetch routing map from `partitionKeyRangeCache` **in parallel with** custom query validation (Step 4).
+2. Fetch routing map from `partitionKeyRangeCache`.
 3. For each `PartitionKey`:
    - Compute effective partition key (EPK).
    - Full PK → `getRangeByEffectivePartitionKey()` (single range).
    - Partial HPK → compute EPK prefix range → `getOverlappingRanges()` (multiple ranges).
      **Note:** partial HPK intentionally fans out to multiple physical partitions.
 4. Group PK values by `PartitionKeyRange`.
-5. Per physical partition → split PKs into batches of `maxPksPerPartitionQuery` (configurable, default 1000).
+5. Per physical partition → split PKs into batches of `maxPksPerPartitionQuery` (configurable, default 100).
 6. Per batch → build `SqlQuerySpec` with PK WHERE clause (Step 5).
 7. Interleave batches across physical partitions in round-robin order so that bounded concurrency prefers different physical partitions over sequential batches of the same partition.
 8. Execute queries via `queryForReadMany()` with bounded concurrency (`Math.min(batchCount, cpuCount)`).
@@ -67,7 +67,7 @@ Same signatures returning `CosmosPagedIterable<T>`, delegating to the async cont
 
 ### Step 4: Custom query validation
 
-One-time call per invocation (existing query plan caching applies). Runs **in parallel** with routing map lookup to minimize latency:
+One-time call per invocation using the same query-plan retrieval path and cacheability rules as regular SDK queries.
 
 - `QueryPlanRetriever.getQueryPlanThroughGatewayAsync()` for the user query.
 - Reject (`IllegalArgumentException`) if:
@@ -76,8 +76,11 @@ One-time call per invocation (existing query plan caching applies). Runs **in pa
   - `queryInfo.hasOrderBy()`
   - `queryInfo.hasDistinct()`
   - `queryInfo.hasDCount()`
+  - `queryInfo.hasOffset()`
+  - `queryInfo.hasLimit()`
   - `queryInfo.hasNonStreamingOrderBy()`
   - `partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()`
+  - query plan details are unavailable (`queryInfo == null`)
 
 ### Step 5: Query construction
 
@@ -115,7 +118,7 @@ New method `readManyByPartitionKey` added directly to `AsyncDocumentClient` inte
 
 ### Step 7: Configuration
 
-New configurable batch size via system property `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE` or environment variable `COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE` (default: 1000, minimum: 1). Follows existing `Configs` patterns.
+New configurable batch size via system property `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE` or environment variable `COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE` (default: 100, minimum: 1). Follows existing `Configs` patterns.
 
 ## Phase 2 — Spark Connector (`azure-cosmos-spark_3`)
 
@@ -123,13 +126,14 @@ New configurable batch size via system property `COSMOS.READ_MANY_BY_PK_MAX_BATC
 
 - Input: partition key value (single value or Seq for hierarchical PKs).
 - Output: serialized PK string in format `pk([...json...])`.
-- **Null handling:** Throws on null input (Scala convention; callers should filter nulls upstream).
+- **Null handling:** Null input is serialized as a JSON-null partition key component. If callers need `PartitionKey.NONE` semantics they must use the schema-matched path with `spark.cosmos.read.readManyByPk.nullHandling=None`, which is only supported for single-path partition keys.
 
 ### Step 9: PK-only serialization helper
 
 `CosmosPartitionKeyHelper`:
 - `getCosmosPartitionKeyValueString(pkValues: List[Object]): String` — serialize to `pk([...])` format.
 - `tryParsePartitionKey(serialized: String): Option[PartitionKey]` — deserialize; returns `None` for malformed input including invalid JSON (wrapped in `scala.util.Try`).
+- When `spark.cosmos.read.readManyByPk.nullHandling=None` is used, hierarchical partition keys with null components are rejected with a clear error because `PartitionKey.NONE` cannot be used with multiple paths.
 
 ### Step 10: `CosmosItemsDataSource.readManyByPartitionKey`
 
@@ -137,11 +141,13 @@ Static entry points that accept a DataFrame and Cosmos config. PK extraction sup
 1. **UDF-produced column**: DataFrame contains `_partitionKeyIdentity` column (from `GetCosmosPartitionKeyValue` UDF).
 2. **Schema-matched columns**: DataFrame columns match the container's PK paths.
 
+Nested partition key paths are not resolved automatically from DataFrame columns and must use the UDF-produced `_partitionKeyIdentity` column.
+
 Falls back with `IllegalArgumentException` if neither mode is possible.
 
 ### Step 11: `CosmosReadManyByPartitionKeyReader`
 
-Orchestrator that resolves schema, initializes and broadcasts client state to executors, then maps each Spark partition to an `ItemsPartitionReaderWithReadManyByPartitionKey`.
+Orchestrator that resolves schema, initializes and broadcasts client state to executors, then maps each Spark partition to an `ItemsPartitionReaderWithReadManyByPartitionKey`. The wrapper iterator closes the reader deterministically on exhaustion, on failures, and via Spark task-completion callbacks.
 
 ### Step 12: `ItemsPartitionReaderWithReadManyByPartitionKey`
 
@@ -166,4 +172,5 @@ Spark `PartitionReader[InternalRow]` that:
 - Batch size validation: temporarily lowered batch size to exercise batching/interleaving logic.
 - Null/empty PK list rejection (eager validation).
 - Spark connector: `ItemsPartitionReaderWithReadManyByPartitionKey` with known PK values and non-existent PKs.
+- Spark public API: nested partition key containers require `_partitionKeyIdentity` and succeed when populated via `GetCosmosPartitionKeyValue`.
 - `CosmosPartitionKeyHelper`: single/HPK roundtrip, case insensitivity, malformed input.

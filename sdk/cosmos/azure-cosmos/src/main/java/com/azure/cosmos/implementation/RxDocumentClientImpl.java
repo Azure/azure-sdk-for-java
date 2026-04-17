@@ -4485,7 +4485,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap =
                             groupPartitionKeysByPhysicalPartition(partitionKeys, pkDefinition, routingMap);
 
-                        List<String> partitionKeySelectors = createPkSelectors(pkDefinition);
+                        List<String> partitionKeySelectors = ReadManyByPartitionKeyQueryHelper.createPkSelectors(pkDefinition);
 
                         String baseQueryText;
                         List<SqlParameter> baseParameters;
@@ -4502,7 +4502,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         // Build per-physical-partition batched queries.
                         // Each physical partition may have many PKs - split into batches
                         // to avoid oversized SQL queries. Batch size is configurable via
-                        // system property COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE (default 1000).
+                        // system property COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE (default 100).
                         int maxPksPerPartitionQuery = Configs.getReadManyByPkMaxBatchSize();
 
                         // Build batches per partition as a list of lists (one inner list per partition).
@@ -4577,41 +4577,62 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentClientImpl.this, getOperationContextAndListenerTuple(queryRequestOptions));
 
         return DocumentQueryExecutionContextFactory
-            .fetchQueryPlanForValidation(this, queryClient, customQuery, resourceLink, queryRequestOptions)
-            .flatMap(queryPlan -> {
-                QueryInfo queryInfo = queryPlan.getQueryInfo();
+            .fetchQueryPlanForValidation(
+                this,
+                queryClient,
+                customQuery,
+                resourceLink,
+                queryRequestOptions,
+                Configs.isQueryPlanCachingEnabled(),
+                this.getQueryPlanCache())
+            .doOnNext(RxDocumentClientImpl::validateQueryPlanForReadManyByPartitionKey)
+            .then();
+    }
 
-                if (queryInfo.hasGroupBy()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain GROUP BY."));
-                }
-                if (queryInfo.hasAggregates()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain aggregates."));
-                }
-                if (queryInfo.hasOrderBy()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain ORDER BY."));
-                }
-                if (queryInfo.hasDistinct()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain DISTINCT."));
-                }
-                if (queryInfo.hasDCount()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain DCOUNT."));
-                }
-                if (queryInfo.hasNonStreamingOrderBy()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain non-streaming ORDER BY."));
-                }
-                if (queryPlan.hasHybridSearchQueryInfo()) {
-                    return Mono.error(new IllegalArgumentException(
-                        "Custom query for readMany by partition key must not contain hybrid/vector/full-text search."));
-                }
+    static void validateQueryPlanForReadManyByPartitionKey(PartitionedQueryExecutionInfo queryPlan) {
+        if (queryPlan.hasHybridSearchQueryInfo()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain hybrid/vector/full-text search.");
+        }
 
-                return Mono.empty();
-            });
+        QueryInfo queryInfo = queryPlan.getQueryInfo();
+        if (queryInfo == null) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key is not supported because query plan details are unavailable.");
+        }
+
+        if (queryInfo.hasGroupBy()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain GROUP BY.");
+        }
+        if (queryInfo.hasAggregates()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain aggregates.");
+        }
+        if (queryInfo.hasOrderBy()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain ORDER BY.");
+        }
+        if (queryInfo.hasDistinct()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain DISTINCT.");
+        }
+        if (queryInfo.hasDCount()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain DCOUNT.");
+        }
+        if (queryInfo.hasOffset()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain OFFSET.");
+        }
+        if (queryInfo.hasLimit()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain LIMIT.");
+        }
+        if (queryInfo.hasNonStreamingOrderBy()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain non-streaming ORDER BY.");
+        }
     }
 
     private Map<PartitionKeyRange, List<PartitionKey>> groupPartitionKeysByPhysicalPartition(
@@ -4665,7 +4686,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
 
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
-        List<String> partitionKeySelectors = createPkSelectors(partitionKeyDefinition);
+        List<String> partitionKeySelectors = ReadManyByPartitionKeyQueryHelper.createPkSelectors(partitionKeyDefinition);
 
         for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
             SqlQuerySpec sqlQuerySpec;
@@ -4757,15 +4778,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         queryStringBuilder.append(" )");
 
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
-    }
-
-    private List<String> createPkSelectors(PartitionKeyDefinition partitionKeyDefinition) {
-        return partitionKeyDefinition.getPaths()
-            .stream()
-            .map(pathPart -> StringUtils.substring(pathPart, 1)) // skip starting /
-            .map(pathPart -> StringUtils.replace(pathPart, "\"", "\\")) // escape quote
-            .map(part -> "[\"" + part + "\"]")
-            .collect(Collectors.toList());
     }
 
     private <T> Flux<FeedResponse<T>> queryForReadMany(
@@ -5289,7 +5301,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
-            List<String> partitionKeySelectors = createPkSelectors(pkDefinition);
+            List<String> partitionKeySelectors = ReadManyByPartitionKeyQueryHelper.createPkSelectors(pkDefinition);
             SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, partitionKeySelectors);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);

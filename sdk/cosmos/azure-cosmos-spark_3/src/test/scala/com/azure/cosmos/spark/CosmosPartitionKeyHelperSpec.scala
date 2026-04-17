@@ -88,15 +88,28 @@ class CosmosPartitionKeyHelperSpec extends UnitSpec {
     pk.isDefined shouldBe false
   }
 
-  it should "produce different partition keys for addNullValue vs addNoneValue in HPK" in {
-    // addNullValue represents an explicit JSON null for a field that exists with value null
-    val pkWithNull = new PartitionKeyBuilder().add("Redmond").addNullValue().build()
+  it should "parse single-path null as PartitionKey.NONE when treatNullAsNone is true" in {
+    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk([null])", treatNullAsNone = true)
 
-    // addNoneValue represents PartitionKey.NONE, meaning the field is absent/undefined
-    val pkWithNone = new PartitionKeyBuilder().add("Redmond").addNoneValue().build()
+    pk.isDefined shouldBe true
+    pk.get shouldEqual PartitionKey.NONE
+  }
 
-    // These MUST produce different partition key hashes and route to different physical partitions
-    pkWithNull should not equal pkWithNone
+  it should "throw a clear error when None nullHandling is used for hierarchical partition keys" in {
+    val error = the[IllegalArgumentException] thrownBy {
+      CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"Redmond\",null])", treatNullAsNone = true)
+    }
+
+    error.getMessage should include(CosmosConfigNames.ReadManyByPkNullHandling)
+    error.getMessage should include("hierarchical partition keys")
+  }
+
+  it should "reject addNoneValue in hierarchical partition keys" in {
+    val error = the[IllegalStateException] thrownBy {
+      new PartitionKeyBuilder().add("Redmond").addNoneValue().build()
+    }
+
+    error.getMessage should include("PartitionKey.None can't be used with multiple paths")
   }
 
   //scalastyle:on multiple.string.literals

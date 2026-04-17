@@ -138,6 +138,7 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
           logInfo(s"Creating an ItemsPartitionReaderWithReadManyByPartitionKey for Activity $correlationActivityId to read for "
             + s"input partition [$partitionIndex] ${tableName}")
 
+          val taskContext = TaskContext.get
           val reader = new ItemsPartitionReaderWithReadManyByPartitionKey(
             effectiveUserConfig,
             CosmosReadManyHelper.FullRangeFeedRange,
@@ -146,13 +147,46 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             clientStates,
             DiagnosticsConfig.parseDiagnosticsConfig(effectiveUserConfig),
             sparkEnvironmentInfo,
-            TaskContext.get,
+            taskContext,
             pkIterator)
 
           new Iterator[Row] {
-            override def hasNext: Boolean = reader.next()
+            private var isClosed = false
 
-            override def next(): Row = reader.getCurrentRow()
+            private def closeReader(): Unit = {
+              if (!isClosed) {
+                isClosed = true
+                reader.close()
+              }
+            }
+
+            if (taskContext != null) {
+              taskContext.addTaskCompletionListener[Unit](_ => closeReader())
+            }
+
+            override def hasNext: Boolean = {
+              try {
+                val hasMore = reader.next()
+                if (!hasMore) {
+                  closeReader()
+                }
+                hasMore
+              } catch {
+                case error: Throwable =>
+                  closeReader()
+                  throw error
+              }
+            }
+
+            override def next(): Row = {
+              try {
+                reader.getCurrentRow()
+              } catch {
+                case error: Throwable =>
+                  closeReader()
+                  throw error
+              }
+            }
           }
         },
         preservesPartitioning = true

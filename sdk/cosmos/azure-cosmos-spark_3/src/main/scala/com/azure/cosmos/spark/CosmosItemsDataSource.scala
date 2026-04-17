@@ -212,7 +212,7 @@ object CosmosItemsDataSource {
             // Hierarchical partition key - build level by level
             val builder = new PartitionKeyBuilder()
             for (path <- pkPaths) {
-              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone)
+              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone, pkPaths.size)
             }
             builder.build()
           }
@@ -233,12 +233,19 @@ object CosmosItemsDataSource {
     readManyReader.readManyByPartitionKey(df.rdd, pkExtraction)
   }
 
-  private def addPartitionKeyComponent(builder: PartitionKeyBuilder, value: Any, treatNullAsNone: Boolean): Unit = {
+  private def addPartitionKeyComponent(
+    builder: PartitionKeyBuilder,
+    value: Any,
+    treatNullAsNone: Boolean,
+    partitionKeyComponentCount: Int): Unit = {
     value match {
       case s: String => builder.add(s)
       case n: Number => builder.add(n.doubleValue())
       case b: Boolean => builder.add(b)
       case null =>
+        CosmosPartitionKeyHelper.validateNoneHandlingForPartitionKeyComponentCount(
+          partitionKeyComponentCount,
+          treatNullAsNone)
         if (treatNullAsNone) builder.addNoneValue()
         else builder.addNullValue()
       case other =>
@@ -255,7 +262,7 @@ object CosmosItemsDataSource {
 
   private def buildPartitionKey(value: Any, treatNullAsNone: Boolean): PartitionKey = {
     val builder = new PartitionKeyBuilder()
-    addPartitionKeyComponent(builder, value, treatNullAsNone)
+    addPartitionKeyComponent(builder, value, treatNullAsNone, 1)
     builder.build()
   }
 }

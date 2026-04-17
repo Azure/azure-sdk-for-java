@@ -21,6 +21,7 @@ import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
 import java.util
+import java.util.concurrent.atomic.AtomicBoolean
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -195,31 +196,41 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
 
   // Pass the full PK list to the SDK (which batches per physical partition internally).
   // On transient I/O failures the retry iterator tracks pages already emitted upstream
-  // and skips them on replay; if a failure occurs mid-page (after items from that page
-  // have been emitted) the task fails rather than risking row duplication.
-  private lazy val iterator: CloseableSparkRowItemIterator =
-    if (pkList.isEmpty) {
-      EmptySparkRowItemIterator
-    } else {
-      new CloseableSparkRowItemIterator {
-        private val delegate = new TransientIOErrorsRetryingReadManyByPartitionKeyIterator[SparkRowItem](
-          cosmosAsyncContainer,
-          pkList,
-          readConfig.customQuery.map(_.toSqlQuerySpec),
-          readManyOptions,
-          readConfig.maxItemCount,
-          readConfig.prefetchBufferSize,
-          operationContextAndListenerTuple,
-          classOf[SparkRowItem]
-        )
+  // and skips them on replay; if a failure occurs mid-page (after items from that page have been
+  // emitted) the task fails rather than risking row duplication.
+  private val isClosed = new AtomicBoolean(false)
+  private var iteratorOpt: Option[CloseableSparkRowItemIterator] = None
 
-        override def hasNext: Boolean = delegate.hasNext
+  private def getOrCreateIterator: CloseableSparkRowItemIterator = iteratorOpt match {
+    case Some(existing) => existing
+    case None =>
+      val created =
+        if (pkList.isEmpty) {
+          EmptySparkRowItemIterator
+        } else {
+          new CloseableSparkRowItemIterator {
+            private val delegate = new TransientIOErrorsRetryingReadManyByPartitionKeyIterator[SparkRowItem](
+              cosmosAsyncContainer,
+              pkList,
+              readConfig.customQuery.map(_.toSqlQuerySpec),
+              readManyOptions,
+              readConfig.maxItemCount,
+              readConfig.prefetchBufferSize,
+              operationContextAndListenerTuple,
+              classOf[SparkRowItem]
+            )
 
-        override def next(): SparkRowItem = delegate.next()
+            override def hasNext: Boolean = delegate.hasNext
 
-        override def close(): Unit = delegate.close()
-      }
-    }
+            override def next(): SparkRowItem = delegate.next()
+
+            override def close(): Unit = delegate.close()
+          }
+        }
+
+      iteratorOpt = Some(created)
+      created
+  }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
@@ -236,20 +247,23 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
     }
   }
 
-  override def next(): Boolean = iterator.hasNext
+  override def next(): Boolean = getOrCreateIterator.hasNext
 
   override def get(): InternalRow = {
-    cosmosRowConverter.fromRowToInternalRow(iterator.next().row, rowSerializer)
+    cosmosRowConverter.fromRowToInternalRow(getOrCreateIterator.next().row, rowSerializer)
   }
 
-  def getCurrentRow(): Row = iterator.next().row
+  def getCurrentRow(): Row = getOrCreateIterator.next().row
 
   override def close(): Unit = {
-    this.iterator.close()
-    RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
-    clientCacheItem.close()
-    if (throughputControlClientCacheItemOpt.isDefined) {
-      throughputControlClientCacheItemOpt.get.close()
+    if (isClosed.compareAndSet(false, true)) {
+      iteratorOpt.foreach(_.close())
+      iteratorOpt = None
+      RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
+      clientCacheItem.close()
+      if (throughputControlClientCacheItemOpt.isDefined) {
+        throughputControlClientCacheItemOpt.get.close()
+      }
     }
   }
 }
