@@ -1,4 +1,4 @@
 directory: specification/computelimit/resource-manager/Microsoft.ComputeLimit/ComputeLimit
-commit: ea59de0de01a84fdea241f85e3cb518c0339c9ba
+commit: fecd9f0cc1b1589c66295932e97f18226f51a28b
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
