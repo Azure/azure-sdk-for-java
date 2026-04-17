@@ -77,6 +77,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.ShowQueryMode;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -1893,6 +1894,8 @@ public class ImplementationBridgeHelpers {
             void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
             ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
             CosmosItemSerializer getInternalDefaultSerializer();
+            void setCanSerialize(CosmosItemSerializer serializer, boolean canSerialize);
+            boolean canSerialize(CosmosItemSerializer serializer);
         }
     }
 
@@ -1932,6 +1935,74 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
                 ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
+        }
+    }
+
+    public static final class SqlQuerySpecHelper {
+        private static final AtomicReference<SqlQuerySpecAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean sqlQuerySpecClassLoaded = new AtomicBoolean(false);
+
+        private SqlQuerySpecHelper() {}
+
+        public static void setSqlQuerySpecAccessor(final SqlQuerySpecAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("SqlQuerySpecAccessor already initialized!");
+            } else {
+                logger.debug("Setting SqlQuerySpecAccessor...");
+                sqlQuerySpecClassLoaded.set(true);
+            }
+        }
+
+        public static SqlQuerySpecAccessor getSqlQuerySpecAccessor() {
+            if (!sqlQuerySpecClassLoaded.get()) {
+                logger.debug("Initializing SqlQuerySpecAccessor...");
+                initializeAllAccessors();
+            }
+
+            SqlQuerySpecAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("SqlQuerySpecAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface SqlQuerySpecAccessor {
+            void applySerializerToParameters(SqlQuerySpec sqlQuerySpec, CosmosItemSerializer serializer);
+        }
+    }
+
+    public static final class SqlParameterHelper {
+        private static final AtomicReference<SqlParameterAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean sqlParameterClassLoaded = new AtomicBoolean(false);
+
+        private SqlParameterHelper() {}
+
+        public static void setSqlParameterAccessor(final SqlParameterAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("SqlParameterAccessor already initialized!");
+            } else {
+                logger.debug("Setting SqlParameterAccessor...");
+                sqlParameterClassLoaded.set(true);
+            }
+        }
+
+        public static SqlParameterAccessor getSqlParameterAccessor() {
+            if (!sqlParameterClassLoaded.get()) {
+                logger.debug("Initializing SqlParameterAccessor...");
+                initializeAllAccessors();
+            }
+
+            SqlParameterAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("SqlParameterAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface SqlParameterAccessor {
+            SqlParameter createCopy(SqlParameter original);
         }
     }
 }
