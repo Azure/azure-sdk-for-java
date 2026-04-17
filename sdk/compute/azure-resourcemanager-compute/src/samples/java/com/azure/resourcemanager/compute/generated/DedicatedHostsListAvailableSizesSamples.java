@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DedicatedHostsListAvailableSizesSamples {
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHost_ListAvailableSizes.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHost_ListAvailableSizes.json
      */
     /**
      * Sample code: Get Available Dedicated Host Sizes.

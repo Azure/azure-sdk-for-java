@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ProximityPlacementGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a proximity placement group.
