@@ -24,7 +24,7 @@ public final class EndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"iilivpdtiirqtd\",\"endpointKind\":\"Target\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"zfgs\",\"tenantId\":\"yfxrx\",\"type\":\"None\",\"userAssignedIdentities\":{\"atdooaojkniod\":{\"principalId\":\"ramxjezwlwnw\",\"clientId\":\"qlcvydy\"},\"infwjlfltkacjve\":{\"principalId\":\"oebwnujhemms\",\"clientId\":\"dkcrodt\"}}},\"id\":\"dlfoakggkfp\",\"name\":\"gaowpulpqblylsyx\",\"type\":\"qjnsjervtia\"}]}";
+            = "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"tzpofncckwyfzq\",\"endpointKind\":\"Source\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"qa\",\"tenantId\":\"feqztppriol\",\"type\":\"None\",\"userAssignedIdentities\":{\"wdcfhucqdpfuv\":{\"principalId\":\"lt\",\"clientId\":\"mncwsobqwcsdb\"},\"t\":{\"principalId\":\"sbjjc\",\"clientId\":\"vxb\"},\"kgjubgdknnqvsazn\":{\"principalId\":\"dut\",\"clientId\":\"ormrlxqtvcofudfl\"}}},\"id\":\"tor\",\"name\":\"dsg\",\"type\":\"a\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +34,10 @@ public final class EndpointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Endpoint> response
-            = manager.endpoints().list("thzvaytdwkqbrqu", "paxh", com.azure.core.util.Context.NONE);
+            = manager.endpoints().list("jjxd", "rbuukzclewyhmlwp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iilivpdtiirqtd", response.iterator().next().properties().description());
-        Assertions.assertEquals(EndpointKind.TARGET, response.iterator().next().properties().endpointKind());
+        Assertions.assertEquals("tzpofncckwyfzq", response.iterator().next().properties().description());
+        Assertions.assertEquals(EndpointKind.SOURCE, response.iterator().next().properties().endpointKind());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

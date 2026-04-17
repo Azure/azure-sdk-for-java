@@ -31,7 +31,8 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         GetPreviewOptions options
             = new GetPreviewOptions().setWidth(512).setHeight(512).setAssets(Arrays.asList("image"));
 
-        BinaryData imageData = dataClient.getPreviewWithFormat(collectionId, itemId, "jpg", options, "image/jpeg");
+        BinaryData imageData = dataClient.getPreviewWithFormat(collectionId, itemId, "jpg", options,
+            GetPreviewWithFormatContentType.IMAGE_JPEG);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] jpegMagic = new byte[] { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF };
@@ -75,7 +76,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
 
         // Tile coordinates matching the recording
         BinaryData imageData = dataClient.getTile(collectionId, itemId, "WebMercatorQuad", 13, 2341, 3133, 1, "png",
-            options, "image/png");
+            options, GetTileContentType.IMAGE_PNG);
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };

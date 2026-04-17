@@ -5,20 +5,19 @@
 package com.azure.resourcemanager.deviceregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * A Credential Policy.
  */
 @Fluent
-public final class PolicyInner extends Resource {
+public final class PolicyInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
@@ -113,28 +112,8 @@ public final class PolicyInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public PolicyInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PolicyInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", location());
-        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -161,11 +140,6 @@ public final class PolicyInner extends Resource {
                     deserializedPolicyInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedPolicyInner.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedPolicyInner.withLocation(reader.getString());
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPolicyInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedPolicyInner.properties = PolicyProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

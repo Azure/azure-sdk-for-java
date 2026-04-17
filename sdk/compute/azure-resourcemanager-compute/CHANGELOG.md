@@ -6,9 +6,30 @@
 
 ### Breaking Changes
 
+#### Changes to `ComputeManagementClient` Class
+
+- Moved `ComputeManager.serviceClient().getCloudServiceRoleInstances()` to `ComputeManager.cloudServiceClient().getCloudServiceRoleInstances()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceRoles()` to `ComputeManager.cloudServiceClient().getCloudServiceRoles()`.
+- Moved `ComputeManager.serviceClient().getCloudServices()` to `ComputeManager.cloudServiceClient().getCloudServices()`.
+- Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.cloudServiceClient().getCloudServicesUpdateDomains()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.cloudServiceClient().getCloudServiceOperatingSystems()`.
+
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.56.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.7` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.4`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.7`.
+- Upgraded `azure-resourcemanager-network` from `2.58.0` to version `2.58.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.53.6` to version `2.54.0`.
+
 
 ## 2.56.2 (2026-02-26)
 
