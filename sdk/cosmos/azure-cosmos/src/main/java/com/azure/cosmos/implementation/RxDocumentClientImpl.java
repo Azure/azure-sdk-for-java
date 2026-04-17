@@ -4623,7 +4623,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         for (PartitionKey pk : partitionKeys) {
             PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
-            int componentCount = pkInternal.getComponents().size();
+
+            // PartitionKey.NONE wraps NonePartitionKey which has components = null.
+            // For routing purposes, treat NONE as UndefinedPartitionKey — documents ingested
+            // without a partition key path are stored with the undefined EPK.
+            PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
+                ? PartitionKeyInternal.UndefinedPartitionKey
+                : pkInternal;
+
+            int componentCount = effectivePkInternal.getComponents().size();
             int definedPathCount = pkDefinition.getPaths().size();
 
             List<PartitionKeyRange> targetRanges;
@@ -4631,12 +4639,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && componentCount < definedPathCount) {
                 // Partial HPK — compute EPK prefix range and find all overlapping physical partitions
                 Range<String> epkRange = PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(
-                    pkInternal, pkDefinition);
+                    effectivePkInternal, pkDefinition);
                 targetRanges = routingMap.getOverlappingRanges(epkRange);
             } else {
                 // Full PK — maps to exactly one physical partition
                 String effectivePartitionKeyString = PartitionKeyInternalHelper
-                    .getEffectivePartitionKeyString(pkInternal, pkDefinition);
+                    .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
                 PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                 targetRanges = Collections.singletonList(range);
             }

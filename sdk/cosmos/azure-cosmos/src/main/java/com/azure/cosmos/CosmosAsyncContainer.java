@@ -1673,6 +1673,12 @@ public class CosmosAsyncContainer {
         if (partitionKeys.isEmpty()) {
             throw new IllegalArgumentException("Argument 'partitionKeys' must not be empty.");
         }
+        for (PartitionKey pk : partitionKeys) {
+            if (pk == null) {
+                throw new IllegalArgumentException(
+                    "Argument 'partitionKeys' must not contain null elements.");
+            }
+        }
 
         return UtilBridgeInternal.createCosmosPagedFlux(
             readManyByPartitionKeyInternalFunc(partitionKeys, customQuery, requestOptions, classType));

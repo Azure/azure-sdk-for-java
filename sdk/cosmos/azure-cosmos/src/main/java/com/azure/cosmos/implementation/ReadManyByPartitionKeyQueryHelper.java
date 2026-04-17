@@ -40,24 +40,54 @@ public class ReadManyByPartitionKeyQueryHelper {
         boolean isSinglePathPk = partitionKeySelectors.size() == 1;
 
         if (isSinglePathPk && pkDefinition.getKind() != PartitionKind.MULTI_HASH) {
-            // Single PK path — use IN clause: alias["pkPath"] IN (@__rmPk_0, @__rmPk_1, ...)
-            pkFilter.append(" ");
-            pkFilter.append(tableAlias);
-            pkFilter.append(partitionKeySelectors.get(0));
-            pkFilter.append(" IN ( ");
-            for (int i = 0; i < pkValues.size(); i++) {
-                PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
-                Object[] pkComponents = pkInternal.toObjectArray();
-                String pkParamName = PK_PARAM_PREFIX + paramCount;
-                parameters.add(new SqlParameter(pkParamName, pkComponents[0]));
-                paramCount++;
-
-                pkFilter.append(pkParamName);
-                if (i < pkValues.size() - 1) {
-                    pkFilter.append(", ");
+            // Single PK path — use IN clause for normal values, OR NOT IS_DEFINED for NONE
+            // First, separate NONE PKs from normal PKs
+            boolean hasNone = false;
+            List<PartitionKey> normalPkValues = new ArrayList<>();
+            for (PartitionKey pk : pkValues) {
+                PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
+                if (pkInternal.getComponents() == null) {
+                    hasNone = true;
+                } else {
+                    normalPkValues.add(pk);
                 }
             }
-            pkFilter.append(" )");
+
+            pkFilter.append(" ");
+            boolean hasNormalValues = !normalPkValues.isEmpty();
+            if (hasNormalValues && hasNone) {
+                pkFilter.append("(");
+            }
+            if (hasNormalValues) {
+                pkFilter.append(tableAlias);
+                pkFilter.append(partitionKeySelectors.get(0));
+                pkFilter.append(" IN ( ");
+                for (int i = 0; i < normalPkValues.size(); i++) {
+                    PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(normalPkValues.get(i));
+                    Object[] pkComponents = pkInternal.toObjectArray();
+                    String pkParamName = PK_PARAM_PREFIX + paramCount;
+                    parameters.add(new SqlParameter(pkParamName, pkComponents[0]));
+                    paramCount++;
+
+                    pkFilter.append(pkParamName);
+                    if (i < normalPkValues.size() - 1) {
+                        pkFilter.append(", ");
+                    }
+                }
+                pkFilter.append(" )");
+            }
+            if (hasNone) {
+                if (hasNormalValues) {
+                    pkFilter.append(" OR ");
+                }
+                pkFilter.append("NOT IS_DEFINED(");
+                pkFilter.append(tableAlias);
+                pkFilter.append(partitionKeySelectors.get(0));
+                pkFilter.append(")");
+            }
+            if (hasNormalValues && hasNone) {
+                pkFilter.append(")");
+            }
         } else {
             // Multiple PK paths (HPK) or MULTI_HASH — use OR of AND clauses
             pkFilter.append(" ");
@@ -65,21 +95,36 @@ public class ReadManyByPartitionKeyQueryHelper {
                 PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
                 Object[] pkComponents = pkInternal.toObjectArray();
 
-                pkFilter.append("(");
-                for (int j = 0; j < pkComponents.length; j++) {
-                    String pkParamName = PK_PARAM_PREFIX + paramCount;
-                    parameters.add(new SqlParameter(pkParamName, pkComponents[j]));
-                    paramCount++;
-
-                    if (j > 0) {
-                        pkFilter.append(" AND ");
+                // PartitionKey.NONE — generate NOT IS_DEFINED for all PK paths
+                if (pkComponents == null) {
+                    pkFilter.append("(");
+                    for (int j = 0; j < partitionKeySelectors.size(); j++) {
+                        if (j > 0) {
+                            pkFilter.append(" AND ");
+                        }
+                        pkFilter.append("NOT IS_DEFINED(");
+                        pkFilter.append(tableAlias);
+                        pkFilter.append(partitionKeySelectors.get(j));
+                        pkFilter.append(")");
                     }
-                    pkFilter.append(tableAlias);
-                    pkFilter.append(partitionKeySelectors.get(j));
-                    pkFilter.append(" = ");
-                    pkFilter.append(pkParamName);
+                    pkFilter.append(")");
+                } else {
+                    pkFilter.append("(");
+                    for (int j = 0; j < pkComponents.length; j++) {
+                        String pkParamName = PK_PARAM_PREFIX + paramCount;
+                        parameters.add(new SqlParameter(pkParamName, pkComponents[j]));
+                        paramCount++;
+
+                        if (j > 0) {
+                            pkFilter.append(" AND ");
+                        }
+                        pkFilter.append(tableAlias);
+                        pkFilter.append(partitionKeySelectors.get(j));
+                        pkFilter.append(" = ");
+                        pkFilter.append(pkParamName);
+                    }
+                    pkFilter.append(")");
                 }
-                pkFilter.append(")");
 
                 if (i < pkValues.size() - 1) {
                     pkFilter.append(" OR ");
