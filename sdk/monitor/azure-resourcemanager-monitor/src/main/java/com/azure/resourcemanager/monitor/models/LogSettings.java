@@ -23,6 +23,12 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
     private String category;
 
     /*
+     * Name of a Diagnostic Log category group for a resource type this setting is applied to. To obtain the list of
+     * Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation.
+     */
+    private String categoryGroup;
+
+    /*
      * a value indicating whether this log is enabled.
      */
     private boolean enabled;
@@ -57,6 +63,30 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      */
     public LogSettings withCategory(String category) {
         this.category = category;
+        return this;
+    }
+
+    /**
+     * Get the categoryGroup property: Name of a Diagnostic Log category group for a resource type this setting is
+     * applied to. To obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic
+     * settings operation.
+     * 
+     * @return the categoryGroup value.
+     */
+    public String categoryGroup() {
+        return this.categoryGroup;
+    }
+
+    /**
+     * Set the categoryGroup property: Name of a Diagnostic Log category group for a resource type this setting is
+     * applied to. To obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic
+     * settings operation.
+     * 
+     * @param categoryGroup the categoryGroup value to set.
+     * @return the LogSettings object itself.
+     */
+    public LogSettings withCategoryGroup(String categoryGroup) {
+        this.categoryGroup = categoryGroup;
         return this;
     }
 
@@ -119,6 +149,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("categoryGroup", this.categoryGroup);
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
@@ -143,6 +174,8 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
                     deserializedLogSettings.enabled = reader.getBoolean();
                 } else if ("category".equals(fieldName)) {
                     deserializedLogSettings.category = reader.getString();
+                } else if ("categoryGroup".equals(fieldName)) {
+                    deserializedLogSettings.categoryGroup = reader.getString();
                 } else if ("retentionPolicy".equals(fieldName)) {
                     deserializedLogSettings.retentionPolicy = RetentionPolicy.fromJson(reader);
                 } else {

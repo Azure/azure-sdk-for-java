@@ -6,7 +6,6 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,12 +24,18 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
     private Duration timeGrain;
 
     /*
-     * a value indicating whether this timegrain is enabled.
+     * Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of
+     * Diagnostic metric categories for a resource, first perform a GET diagnostic settings operation.
+     */
+    private String category;
+
+    /*
+     * a value indicating whether this category is enabled.
      */
     private boolean enabled;
 
     /*
-     * the retention policy for this timegrain.
+     * the retention policy for this category.
      */
     private RetentionPolicy retentionPolicy;
 
@@ -61,7 +66,31 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
     }
 
     /**
-     * Get the enabled property: a value indicating whether this timegrain is enabled.
+     * Get the category property: Name of a Diagnostic Metric category for a resource type this setting is applied to.
+     * To obtain the list of Diagnostic metric categories for a resource, first perform a GET diagnostic settings
+     * operation.
+     * 
+     * @return the category value.
+     */
+    public String category() {
+        return this.category;
+    }
+
+    /**
+     * Set the category property: Name of a Diagnostic Metric category for a resource type this setting is applied to.
+     * To obtain the list of Diagnostic metric categories for a resource, first perform a GET diagnostic settings
+     * operation.
+     * 
+     * @param category the category value to set.
+     * @return the MetricSettings object itself.
+     */
+    public MetricSettings withCategory(String category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
+     * Get the enabled property: a value indicating whether this category is enabled.
      * 
      * @return the enabled value.
      */
@@ -70,7 +99,7 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
     }
 
     /**
-     * Set the enabled property: a value indicating whether this timegrain is enabled.
+     * Set the enabled property: a value indicating whether this category is enabled.
      * 
      * @param enabled the enabled value to set.
      * @return the MetricSettings object itself.
@@ -81,7 +110,7 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
     }
 
     /**
-     * Get the retentionPolicy property: the retention policy for this timegrain.
+     * Get the retentionPolicy property: the retention policy for this category.
      * 
      * @return the retentionPolicy value.
      */
@@ -90,7 +119,7 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
     }
 
     /**
-     * Set the retentionPolicy property: the retention policy for this timegrain.
+     * Set the retentionPolicy property: the retention policy for this category.
      * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the MetricSettings object itself.
@@ -106,16 +135,10 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeGrain() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property timeGrain in model MetricSettings"));
-        }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MetricSettings.class);
 
     /**
      * {@inheritDoc}
@@ -123,8 +146,9 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timeGrain", CoreUtils.durationToStringWithDays(this.timeGrain));
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("timeGrain", CoreUtils.durationToStringWithDays(this.timeGrain));
+        jsonWriter.writeStringField("category", this.category);
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
@@ -145,11 +169,13 @@ public final class MetricSettings implements JsonSerializable<MetricSettings> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("timeGrain".equals(fieldName)) {
+                if ("enabled".equals(fieldName)) {
+                    deserializedMetricSettings.enabled = reader.getBoolean();
+                } else if ("timeGrain".equals(fieldName)) {
                     deserializedMetricSettings.timeGrain
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("enabled".equals(fieldName)) {
-                    deserializedMetricSettings.enabled = reader.getBoolean();
+                } else if ("category".equals(fieldName)) {
+                    deserializedMetricSettings.category = reader.getString();
                 } else if ("retentionPolicy".equals(fieldName)) {
                     deserializedMetricSettings.retentionPolicy = RetentionPolicy.fromJson(reader);
                 } else {
