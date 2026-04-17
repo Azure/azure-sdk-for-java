@@ -183,11 +183,6 @@ to use the same version of Scala that Spark was compiled for.
 | 4.43.1    | 3.5.0                    | [17]                  | 2.13                      | 16.4 LTS                      | TBD                       |
 | 4.43.0    | 3.5.0                    | [17]                  | 2.13                      | 16.4 LTS                      | TBD                       |
 
-### Known Issues
-
-#### Spark Structured Streaming does not work with Databricks Runtime 17.3
-Databricks Runtime 17.3 LTS includes internal API changes from Spark 4.1 (specifically the removal of `org.apache.spark.sql.execution.streaming.MetadataVersionUtil$`) while still reporting Spark 4.0.0 compatibility. This causes a `java.lang.NoClassDefFoundError` when using Spark Structured Streaming with the Cosmos DB change feed on DBR 17.3. We recommend remaining on a previous Databricks LTS version until Databricks 18 LTS releases, at which point the Spark 4.1-compatible connector can be used.
-
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime from Maven:
