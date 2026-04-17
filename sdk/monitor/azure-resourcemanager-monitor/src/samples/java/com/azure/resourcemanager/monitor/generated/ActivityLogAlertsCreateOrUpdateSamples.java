@@ -9,7 +9,7 @@ import com.azure.resourcemanager.monitor.models.ActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
-import com.azure.resourcemanager.monitor.models.AlertRuleAnyOfOrLeafCondition;
+import com.azure.resourcemanager.monitor.models.AlertRuleLeafCondition;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +35,8 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                     .withLocation("Global")
                     .withScopes(Arrays.asList("subscriptions/187f412d-1758-44d9-b052-169e2564721d"))
                     .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays.asList(
-                        new AlertRuleAnyOfOrLeafCondition().withField("category").withEquals("ServiceHealth"),
-                        new AlertRuleAnyOfOrLeafCondition()
+                        new ActivityLogAlertLeafCondition().withField("category").withEquals("ServiceHealth"),
+                        new ActivityLogAlertLeafCondition()
                             .withField("properties.impactedServices[*].ImpactedRegions[*].RegionName")
                             .withContainsAny(Arrays.asList("North Europe", "West Europe")))))
                     .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
@@ -66,7 +66,7 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                     .withLocation("Global")
                     .withTenantScope("72f988bf-86f1-41af-91ab-2d7cd011db47")
                     .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays
-                        .asList(new AlertRuleAnyOfOrLeafCondition().withField("category").withEquals("ServiceHealth"))))
+                        .asList(new ActivityLogAlertLeafCondition().withField("category").withEquals("ServiceHealth"))))
                     .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
                         .withActionGroupId(
                             "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
@@ -95,11 +95,10 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                     .withLocation("Global")
                     .withScopes(Arrays.asList("subscriptions/187f412d-1758-44d9-b052-169e2564721d"))
                     .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays.asList(
-                        new AlertRuleAnyOfOrLeafCondition().withField("category").withEquals("ServiceHealth"),
-                        new AlertRuleAnyOfOrLeafCondition().withAnyOf(Arrays.asList(
-                            new ActivityLogAlertLeafCondition().withField("properties.incidentType")
-                                .withEquals("Incident"),
-                            new ActivityLogAlertLeafCondition().withField("properties.incidentType")
+                        new ActivityLogAlertLeafCondition().withField("category").withEquals("ServiceHealth"),
+                        new ActivityLogAlertLeafCondition().withAnyOf(Arrays.asList(
+                            new AlertRuleLeafCondition().withField("properties.incidentType").withEquals("Incident"),
+                            new AlertRuleLeafCondition().withField("properties.incidentType")
                                 .withEquals("Maintenance"))))))
                     .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
                         .withActionGroupId(
@@ -127,8 +126,8 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                     .withLocation("Global")
                     .withScopes(Arrays.asList("/subscriptions/187f412d-1758-44d9-b052-169e2564721d"))
                     .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays.asList(
-                        new AlertRuleAnyOfOrLeafCondition().withField("category").withEquals("Administrative"),
-                        new AlertRuleAnyOfOrLeafCondition().withField("level").withEquals("Error"))))
+                        new ActivityLogAlertLeafCondition().withField("category").withEquals("Administrative"),
+                        new ActivityLogAlertLeafCondition().withField("level").withEquals("Error"))))
                     .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
                         .withActionGroupId(
                             "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")

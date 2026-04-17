@@ -21,7 +21,7 @@ public final class ActivityLogAlertAllOfCondition implements JsonSerializable<Ac
     /*
      * The list of Activity Log Alert rule conditions.
      */
-    private List<AlertRuleAnyOfOrLeafCondition> allOf;
+    private List<ActivityLogAlertLeafCondition> allOf;
 
     /**
      * Creates an instance of ActivityLogAlertAllOfCondition class.
@@ -34,7 +34,7 @@ public final class ActivityLogAlertAllOfCondition implements JsonSerializable<Ac
      * 
      * @return the allOf value.
      */
-    public List<AlertRuleAnyOfOrLeafCondition> allOf() {
+    public List<ActivityLogAlertLeafCondition> allOf() {
         return this.allOf;
     }
 
@@ -44,7 +44,7 @@ public final class ActivityLogAlertAllOfCondition implements JsonSerializable<Ac
      * @param allOf the allOf value to set.
      * @return the ActivityLogAlertAllOfCondition object itself.
      */
-    public ActivityLogAlertAllOfCondition withAllOf(List<AlertRuleAnyOfOrLeafCondition> allOf) {
+    public ActivityLogAlertAllOfCondition withAllOf(List<ActivityLogAlertLeafCondition> allOf) {
         this.allOf = allOf;
         return this;
     }
@@ -94,8 +94,8 @@ public final class ActivityLogAlertAllOfCondition implements JsonSerializable<Ac
                 reader.nextToken();
 
                 if ("allOf".equals(fieldName)) {
-                    List<AlertRuleAnyOfOrLeafCondition> allOf
-                        = reader.readArray(reader1 -> AlertRuleAnyOfOrLeafCondition.fromJson(reader1));
+                    List<ActivityLogAlertLeafCondition> allOf
+                        = reader.readArray(reader1 -> ActivityLogAlertLeafCondition.fromJson(reader1));
                     deserializedActivityLogAlertAllOfCondition.allOf = allOf;
                 } else {
                     reader.skipChildren();

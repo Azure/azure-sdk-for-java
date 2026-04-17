@@ -6,37 +6,27 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * An Activity Log Alert rule condition that is met by comparing the field and value of an Activity Log event.
- * This condition must contain 'field' and either 'equals' or 'containsAny'.
+ * An Activity Log Alert rule condition that is met when all its member conditions are met.
+ * Each condition can be of one of the following types:
+ * __Important__: Each type has its unique subset of properties. Properties from different types CANNOT exist in one
+ * condition.
+ * * __Leaf Condition -__ must contain 'field' and either 'equals' or 'containsAny'.
+ * _Please note, 'anyOf' should __not__ be set in a Leaf Condition._
+ * * __AnyOf Condition -__ must contain __only__ 'anyOf' (which is an array of Leaf Conditions).
+ * _Please note, 'field', 'equals' and 'containsAny' should __not__ be set in an AnyOf Condition._.
  */
 @Fluent
-public class ActivityLogAlertLeafCondition implements JsonSerializable<ActivityLogAlertLeafCondition> {
+public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition {
     /*
-     * The name of the Activity Log event's field that this condition will examine.
-     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
-     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
-     * beginning with 'properties'.
+     * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
      */
-    private String field;
-
-    /*
-     * The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is
-     * met.
-     */
-    private String equals;
-
-    /*
-     * The value of the event's field will be compared to the values in this array (case-insensitive) to determine if
-     * the condition is met.
-     */
-    private List<String> containsAny;
+    private List<AlertRuleLeafCondition> anyOf;
 
     /**
      * Creates an instance of ActivityLogAlertLeafCondition class.
@@ -45,72 +35,51 @@ public class ActivityLogAlertLeafCondition implements JsonSerializable<ActivityL
     }
 
     /**
-     * Get the field property: The name of the Activity Log event's field that this condition will examine.
-     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
-     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
-     * beginning with 'properties'.
+     * Get the anyOf property: An Activity Log Alert rule condition that is met when at least one of its member leaf
+     * conditions are met.
      * 
-     * @return the field value.
+     * @return the anyOf value.
      */
-    public String field() {
-        return this.field;
+    public List<AlertRuleLeafCondition> anyOf() {
+        return this.anyOf;
     }
 
     /**
-     * Set the field property: The name of the Activity Log event's field that this condition will examine.
-     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
-     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
-     * beginning with 'properties'.
+     * Set the anyOf property: An Activity Log Alert rule condition that is met when at least one of its member leaf
+     * conditions are met.
      * 
-     * @param field the field value to set.
+     * @param anyOf the anyOf value to set.
      * @return the ActivityLogAlertLeafCondition object itself.
      */
+    public ActivityLogAlertLeafCondition withAnyOf(List<AlertRuleLeafCondition> anyOf) {
+        this.anyOf = anyOf;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ActivityLogAlertLeafCondition withField(String field) {
-        this.field = field;
+        super.withField(field);
         return this;
     }
 
     /**
-     * Get the equals property: The value of the event's field will be compared to this value (case-insensitive) to
-     * determine if the condition is met.
-     * 
-     * @return the equals value.
+     * {@inheritDoc}
      */
-    public String equals() {
-        return this.equals;
-    }
-
-    /**
-     * Set the equals property: The value of the event's field will be compared to this value (case-insensitive) to
-     * determine if the condition is met.
-     * 
-     * @param equals the equals value to set.
-     * @return the ActivityLogAlertLeafCondition object itself.
-     */
+    @Override
     public ActivityLogAlertLeafCondition withEquals(String equals) {
-        this.equals = equals;
+        super.withEquals(equals);
         return this;
     }
 
     /**
-     * Get the containsAny property: The value of the event's field will be compared to the values in this array
-     * (case-insensitive) to determine if the condition is met.
-     * 
-     * @return the containsAny value.
+     * {@inheritDoc}
      */
-    public List<String> containsAny() {
-        return this.containsAny;
-    }
-
-    /**
-     * Set the containsAny property: The value of the event's field will be compared to the values in this array
-     * (case-insensitive) to determine if the condition is met.
-     * 
-     * @param containsAny the containsAny value to set.
-     * @return the ActivityLogAlertLeafCondition object itself.
-     */
+    @Override
     public ActivityLogAlertLeafCondition withContainsAny(List<String> containsAny) {
-        this.containsAny = containsAny;
+        super.withContainsAny(containsAny);
         return this;
     }
 
@@ -119,7 +88,11 @@ public class ActivityLogAlertLeafCondition implements JsonSerializable<ActivityL
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        if (anyOf() != null) {
+            anyOf().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -128,9 +101,10 @@ public class ActivityLogAlertLeafCondition implements JsonSerializable<ActivityL
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("field", this.field);
-        jsonWriter.writeStringField("equals", this.equals);
-        jsonWriter.writeArrayField("containsAny", this.containsAny, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("field", field());
+        jsonWriter.writeStringField("equals", equals());
+        jsonWriter.writeArrayField("containsAny", containsAny(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("anyOf", this.anyOf, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -151,12 +125,16 @@ public class ActivityLogAlertLeafCondition implements JsonSerializable<ActivityL
                 reader.nextToken();
 
                 if ("field".equals(fieldName)) {
-                    deserializedActivityLogAlertLeafCondition.field = reader.getString();
+                    deserializedActivityLogAlertLeafCondition.withField(reader.getString());
                 } else if ("equals".equals(fieldName)) {
-                    deserializedActivityLogAlertLeafCondition.equals = reader.getString();
+                    deserializedActivityLogAlertLeafCondition.withEquals(reader.getString());
                 } else if ("containsAny".equals(fieldName)) {
                     List<String> containsAny = reader.readArray(reader1 -> reader1.getString());
-                    deserializedActivityLogAlertLeafCondition.containsAny = containsAny;
+                    deserializedActivityLogAlertLeafCondition.withContainsAny(containsAny);
+                } else if ("anyOf".equals(fieldName)) {
+                    List<AlertRuleLeafCondition> anyOf
+                        = reader.readArray(reader1 -> AlertRuleLeafCondition.fromJson(reader1));
+                    deserializedActivityLogAlertLeafCondition.anyOf = anyOf;
                 } else {
                     reader.skipChildren();
                 }
