@@ -1,14 +1,439 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
-
-### Features Added
+## 2.54.0-beta.2 (2026-04-17)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationDisplay` was removed
 
-### Other Changes
+#### `models.AlertRuleLeafCondition` was removed
+
+#### `models.OnboardingStatus` was removed
+
+#### `models.DataCollectionRuleAssociationProxyOnlyResourceListResult` was removed
+
+#### `models.DataCollectionEndpointResourceListResult` was removed
+
+#### `models.EventCategoryCollection` was removed
+
+#### `models.ScopedResourceListResult` was removed
+
+#### `models.DataContainer` was removed
+
+#### `models.Operation` was removed
+
+#### `models.MetricAlertResourceCollection` was removed
+
+#### `models.DataStatus` was removed
+
+#### `models.WorkspaceInfo` was removed
+
+#### `models.DataCollectionRuleResourceListResult` was removed
+
+#### `models.MetricDefinitionCollection` was removed
+
+#### `models.MetricAlertStatus` was removed
+
+#### `models.SubscriptionScopeMetricDefinitionCollection` was removed
+
+#### `models.LogProfileCollection` was removed
+
+#### `models.ActionGroupList` was removed
+
+#### `models.MetricBaselinesResponse` was removed
+
+#### `models.MetricNamespaceCollection` was removed
+
+#### `models.AzureMonitorPrivateLinkScopeListResult` was removed
+
+#### `models.ScheduledQueryRuleResourceCollection` was removed
+
+#### `models.IncidentListResult` was removed
+
+#### `models.AlertRuleList` was removed
+
+#### `models.EventDataCollection` was removed
+
+#### `models.AutoscaleSettingResourceCollection` was removed
+
+#### `models.IngestionQuotas` was modified
+
+* `models.IngestionQuotas withLogs(models.IngestionQuotasLogs)` -> `models.IngestionQuotas withLogs(models.IngestionQuotasLogs)`
+
+#### `models.IdentityType` was modified
+
+* `SYSTEM_ASSIGNED_1` was removed
+* `SYSTEM_ASSIGNED_USER_ASSIGNED` was removed
+* `NONE_1` was removed
+* `USER_ASSIGNED_1` was removed
+
+#### `models.AutoscaleNotification` was modified
+
+* `java.lang.String operation()` -> `models.OperationType operation()`
+
+#### `models.DataCollectionEndpointResourceIdentity` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.DataCollectionRuleMetadata` was modified
+
+* `DataCollectionRuleMetadata()` was changed to private access
+
+#### `models.MetricValue` was modified
+
+* `MetricValue()` was changed to private access
+* `withAverage(java.lang.Double)` was removed
+* `withMinimum(java.lang.Double)` was removed
+* `withCount(java.lang.Double)` was removed
+* `timestamp()` was removed
+* `withTotal(java.lang.Double)` was removed
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+* `withMaximum(java.lang.Double)` was removed
+
+#### `models.DataCollectionEndpointMetadata` was modified
+
+* `DataCollectionEndpointMetadata()` was changed to private access
+
+#### `models.SubscriptionScopeMetricsRequestBodyParameters` was modified
+
+* `java.time.Duration interval()` -> `java.lang.String interval()`
+* `withInterval(java.time.Duration)` was removed
+
+#### `models.IngestionQuotasLogs` was modified
+
+* `IngestionQuotasLogs()` was changed to private access
+* `withMaxRequestsPerMinute(java.lang.String)` was removed
+* `withMaxSizePerMinuteInGB(java.lang.String)` was removed
+
+#### `models.ConditionOperator` was modified
+
+* `models.ConditionOperator[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
+#### `models.BaselineMetadata` was modified
+
+* `BaselineMetadata()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.HttpRequestInfo` was modified
+
+* `HttpRequestInfo()` was changed to private access
+* `withMethod(java.lang.String)` was removed
+* `withUri(java.lang.String)` was removed
+* `withClientIpAddress(java.lang.String)` was removed
+* `withClientRequestId(java.lang.String)` was removed
+
+#### `models.DataCollectionRuleResourceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.SingleBaseline` was modified
+
+* `SingleBaseline()` was changed to private access
+* `withHighThresholds(java.util.List)` was removed
+* `withLowThresholds(java.util.List)` was removed
+* `withSensitivity(models.BaselineSensitivity)` was removed
+
+#### `models.FailoverConfigurationSpec` was modified
+
+* `models.FailoverConfigurationSpec withActiveLocation(java.lang.String)` -> `models.FailoverConfigurationSpec withActiveLocation(java.lang.String)`
+* `models.FailoverConfigurationSpec withLocations(java.util.List)` -> `models.FailoverConfigurationSpec withLocations(java.util.List)`
+
+#### `models.DataCollectionRuleEndpoints` was modified
+
+* `DataCollectionRuleEndpoints()` was changed to private access
+
+#### `models.LogsQuotaSpec` was modified
+
+* `models.LogsQuotaSpec withMaxSizePerMinuteInGB(java.lang.String)` -> `models.LogsQuotaSpec withMaxSizePerMinuteInGB(java.lang.String)`
+* `models.LogsQuotaSpec withMaxRequestsPerMinute(java.lang.String)` -> `models.LogsQuotaSpec withMaxRequestsPerMinute(java.lang.String)`
+
+#### `models.SenderAuthorization` was modified
+
+* `SenderAuthorization()` was changed to private access
+* `withScope(java.lang.String)` was removed
+* `withRole(java.lang.String)` was removed
+* `withAction(java.lang.String)` was removed
+
+#### `models.MetricAvailability` was modified
+
+* `MetricAvailability()` was changed to private access
+* `withTimeGrain(java.time.Duration)` was removed
+* `withRetention(java.time.Duration)` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.TimeSeriesBaseline` was modified
+
+* `TimeSeriesBaseline()` was changed to private access
+* `withAggregation(java.lang.String)` was removed
+* `withMetadataValues(java.util.List)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withTimestamps(java.util.List)` was removed
+* `withData(java.util.List)` was removed
+
+#### `models.ActivityLogAlertLeafCondition` was modified
+
+* `withEquals(java.lang.String)` was removed
+* `withContainsAny(java.util.List)` was removed
+* `anyOf()` was removed
+* `withAnyOf(java.util.List)` was removed
+* `withField(java.lang.String)` was removed
+
+#### `models.DataCollectionRuleAssociationMetadata` was modified
+
+* `DataCollectionRuleAssociationMetadata()` was changed to private access
+
+#### `models.MetricAlertAction` was modified
+
+* `withWebhookProperties(java.util.Map)` was removed
+* `webhookProperties()` was removed
+
+#### `models.MetricNamespaceName` was modified
+
+* `MetricNamespaceName()` was changed to private access
+* `withMetricNamespaceName(java.lang.String)` was removed
+
+#### `models.MetricSingleDimension` was modified
+
+* `MetricSingleDimension()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.DataCollectionRuleIngestionQuotas` was modified
+
+* `DataCollectionRuleIngestionQuotas()` was changed to private access
+* `withLogs(models.IngestionQuotasLogs)` was removed
+
+#### `models.PrivateLinkScopedResource` was modified
+
+* `PrivateLinkScopedResource()` was changed to private access
+* `withScopeId(java.lang.String)` was removed
+* `withResourceId(java.lang.String)` was removed
+
+#### `models.MetricAlertStatusProperties` was modified
+
+* `MetricAlertStatusProperties()` was changed to private access
+* `withDimensions(java.util.Map)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+
+#### `models.PredictiveValue` was modified
+
+* `PredictiveValue()` was changed to private access
+* `withTimestamp(java.time.OffsetDateTime)` was removed
+* `withValue(double)` was removed
+* `timestamp()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.TimeSeriesElement` was modified
+
+* `TimeSeriesElement()` was changed to private access
+* `withData(java.util.List)` was removed
+* `withMetadatavalues(java.util.List)` was removed
+
+#### `models.ResourceForUpdateIdentity` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.Context` was modified
+
+* `Context()` was changed to private access
+* `withNotificationSource(java.lang.String)` was removed
+* `withContextType(java.lang.String)` was removed
+
+#### `models.ActionDetail` was modified
+
+* `ActionDetail()` was changed to private access
+* `withSubState(java.lang.String)` was removed
+* `withStatus(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withSendTime(java.lang.String)` was removed
+* `withDetail(java.lang.String)` was removed
+* `withMechanismType(java.lang.String)` was removed
+
+#### `models.DataCollectionEndpointFailoverConfiguration` was modified
+
+* `DataCollectionEndpointFailoverConfiguration()` was changed to private access
+* `withActiveLocation(java.lang.String)` was removed
+* `withLocations(java.util.List)` was removed
+
+#### `models.LocationSpec` was modified
+
+* `LocationSpec()` was changed to private access
+* `withProvisioningStatus(models.KnownLocationSpecProvisioningStatus)` was removed
+* `withLocation(java.lang.String)` was removed
+
+### Features Added
+
+* `models.OperationType` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.ServiceDiagnosticSettingsResourcePatch` was added
+
+* `models.ScopedResourceKind` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.NetworkSecurityProfile` was added
+
+* `models.AlertRuleAnyOfOrLeafCondition` was added
+
+* `models.Severity` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.IncidentReceiver` was added
+
+* `models.AccessRuleProperties` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.PrivateLinkScopeProvisioningState` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.AccessRule` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.ErrorContract` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.IncidentManagementService` was added
+
+* `models.ErrorContractException` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.IssueType` was added
+
+* `models.IncidentServiceConnection` was added
+
+* `models.ScopedResourceProvisioningState` was added
+
+#### `models.AutoscaleNotification` was modified
+
+* `withOperation(models.OperationType)` was added
+
+#### `models.ActivityLogAlertActionGroup` was modified
+
+* `withActionProperties(java.util.Map)` was added
+* `actionProperties()` was added
+
+#### `models.MetricValue` was modified
+
+* `timeStamp()` was added
+
+#### `models.WebhookReceiver` was modified
+
+* `managedIdentity()` was added
+* `withManagedIdentity(java.lang.String)` was added
+
+#### `models.SubscriptionScopeMetricsRequestBodyParameters` was modified
+
+* `withInterval(java.lang.String)` was added
+
+#### `models.IngestionQuotasLogs` was modified
+
+* `maxSizePerMinuteInGB()` was added
+* `maxRequestsPerMinute()` was added
+
+#### `models.ConditionOperator` was modified
+
+* `ConditionOperator()` was added
+* `GREATER_OR_LESS_THAN` was added
+
+#### `models.AutomationRunbookReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `models.AzureFunctionReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `MonitorManager` was modified
+
+* `alertRuleClient()` was added
+
+#### `models.NotificationRequestBody` was modified
+
+* `incidentReceivers()` was added
+* `withIncidentReceivers(java.util.List)` was added
+
+#### `models.ActivityLogAlertLeafCondition` was modified
+
+* `equals()` was added
+* `field()` was added
+* `containsAny()` was added
+
+#### `models.MetricAlertAction` was modified
+
+* `webHookProperties()` was added
+* `withWebHookProperties(java.util.Map)` was added
+
+#### `models.Kind` was modified
+
+* `SIMPLE_LOG_ALERT` was added
+
+#### `models.DataCollectionRuleIngestionQuotas` was modified
+
+* `logs()` was added
+
+#### `models.Condition` was modified
+
+* `withMinRecurrenceCount(java.lang.Long)` was added
+* `withAlertSensitivity(java.lang.String)` was added
+* `withCriterionType(models.CriterionType)` was added
+* `withIgnoreDataBefore(java.time.OffsetDateTime)` was added
+* `criterionType()` was added
+* `ignoreDataBefore()` was added
+* `alertSensitivity()` was added
+* `minRecurrenceCount()` was added
+
+#### `models.EventHubReceiver` was modified
+
+* `withManagedIdentity(java.lang.String)` was added
+* `managedIdentity()` was added
+
+#### `models.PredictiveValue` was modified
+
+* `timeStamp()` was added
+
+#### `models.DataCollectionEndpointFailoverConfiguration` was modified
+
+* `activeLocation()` was added
+* `locations()` was added
+
+#### `models.LogicAppReceiver` was modified
+
+* `managedIdentity()` was added
+* `withManagedIdentity(java.lang.String)` was added
+
+#### `models.ActionGroupPatchBody` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
 
 ## 2.53.7 (2026-03-30)
 
