@@ -584,7 +584,34 @@ public class CosmosContainer {
      * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
      * The SDK will automatically append partition key filtering to the custom query.
      * <p>
-     * The custom query must be a simple streamable query — aggregates, ORDER BY, DISTINCT,
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     * @param classType   class type
+     * @return a {@link CosmosPagedIterable} containing the results
+     */
+    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        Class<T> classType) {
+
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, customQuery, classType));
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
      * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
      * rejected.
      * <p>

@@ -121,6 +121,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -4512,9 +4513,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         for (Map.Entry<PartitionKeyRange, List<PartitionKey>> entry : partitionRangePkMap.entrySet()) {
                             List<PartitionKey> allPks = entry.getValue();
-                            if (allPks.isEmpty()) {
-                                continue;
-                            }
                             List<Map<PartitionKeyRange, SqlQuerySpec>> partitionBatches = new ArrayList<>();
                             for (int i = 0; i < allPks.size(); i += maxPksPerPartitionQuery) {
                                 List<PartitionKey> batch = allPks.subList(
@@ -4621,7 +4619,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         PartitionKeyDefinition pkDefinition,
         CollectionRoutingMap routingMap) {
 
-        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap = new HashMap<>();
+        // Use LinkedHashMap so the downstream round-robin interleave is deterministic and the iteration
+        // order follows insertion order of partition keys (i.e. the order the caller provided).
+        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap = new LinkedHashMap<>();
 
         for (PartitionKey pk : partitionKeys) {
             PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);

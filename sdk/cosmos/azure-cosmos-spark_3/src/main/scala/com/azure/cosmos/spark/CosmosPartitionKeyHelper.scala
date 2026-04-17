@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.util
@@ -27,16 +27,45 @@ private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
     s"pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
   }
 
-  def tryParsePartitionKey(cosmosPartitionKeyString: String): Option[PartitionKey] = {
+  def tryParsePartitionKey(cosmosPartitionKeyString: String): Option[PartitionKey] =
+    tryParsePartitionKey(cosmosPartitionKeyString, treatNullAsNone = false)
+
+  /**
+   * Parses a pk(...) string into a [[PartitionKey]].
+   *
+   * When treatNullAsNone is true, any JSON null components in the serialized array are mapped to
+   * [[PartitionKeyBuilder.addNoneValue()]] (meaning the document field is absent/undefined).
+   * When false, they are mapped to [[PartitionKeyBuilder.addNullValue()]] (JSON null value).
+   * This matches the spark.cosmos.read.readManyByPk.nullHandling config for the non-UDF column path.
+   */
+  def tryParsePartitionKey(
+                            cosmosPartitionKeyString: String,
+                            treatNullAsNone: Boolean): Option[PartitionKey] = {
     cosmosPartitionKeyString match {
       case cosmosPartitionKeyStringRegx(pkValue) =>
         scala.util.Try(Utils.parse(pkValue, classOf[Object])).toOption.flatMap {
           case arrayList: util.ArrayList[Object @unchecked] =>
-            Some(
-              ImplementationBridgeHelpers
-                .PartitionKeyHelper
-                .getPartitionKeyAccessor
-                .toPartitionKey(PartitionKeyInternal.fromObjectArray(arrayList.toArray, false)))
+            val components = arrayList.toArray
+            if (components.exists(_ == null)) {
+              // Build via PartitionKeyBuilder so nulls can be disambiguated between
+              // JSON-null (addNullValue) and undefined (addNoneValue) based on config.
+              val builder = new PartitionKeyBuilder()
+              components.foreach {
+                case null =>
+                  if (treatNullAsNone) builder.addNoneValue() else builder.addNullValue()
+                case s: String => builder.add(s)
+                case n: java.lang.Number => builder.add(n.doubleValue())
+                case b: java.lang.Boolean => builder.add(b.booleanValue())
+                case other => builder.add(other.toString)
+              }
+              Some(builder.build())
+            } else {
+              Some(
+                ImplementationBridgeHelpers
+                  .PartitionKeyHelper
+                  .getPartitionKeyAccessor
+                  .toPartitionKey(PartitionKeyInternal.fromObjectArray(components, false)))
+            }
           case other => Some(new PartitionKey(other))
         }
       case _ => None

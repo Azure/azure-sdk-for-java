@@ -165,7 +165,7 @@ public class CosmosAsyncContainer {
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String readManyItemsSpanName;
-    private final String readManyByPartitionKeyItemsSpanName;
+    private final String readManyByPartitionKeySpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
     private final String queryChangeFeedSpanName;
@@ -199,7 +199,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.readManyItemsSpanName = "readManyItems." + this.id;
-        this.readManyByPartitionKeyItemsSpanName = "readManyByPartitionKeyItems." + this.id;
+        this.readManyByPartitionKeySpanName = "readManyByPartitionKey." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -1647,7 +1647,34 @@ public class CosmosAsyncContainer {
      * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
      * The SDK will automatically append partition key filtering to the custom query.
      * <p>
-     * The custom query must be a simple streamable query — aggregates, ORDER BY, DISTINCT,
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKey(partitionKeys, customQuery, null, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
      * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
      * rejected.
      * <p>
@@ -1696,19 +1723,24 @@ public class CosmosAsyncContainer {
             CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
                 ? new CosmosQueryRequestOptions()
                 : queryOptionsAccessor().clone(readManyOptionsAccessor().getImpl(requestOptions));
-            queryRequestOptions.setMaxDegreeOfParallelism(-1);
+            // Honor any caller-provided MaxDegreeOfParallelism; only default to the "unbounded" sentinel
+            // (-1) when the value is still at the default (0). CosmosReadManyRequestOptions currently does not
+            // expose MDOP, so this branch is defensive in case it is plumbed through in the future.
+            if (queryRequestOptions.getMaxDegreeOfParallelism() == 0) {
+                queryRequestOptions.setMaxDegreeOfParallelism(-1);
+            }
             queryRequestOptions.setQueryName("readManyByPartitionKey");
             CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
-            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeyItemsSpanName);
+            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeySpanName);
 
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
-                this.readManyByPartitionKeyItemsSpanName,
+                this.readManyByPartitionKeySpanName,
                 database.getId(),
                 this.getId(),
                 ResourceType.Document,
                 OperationType.Query,
-                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeyItemsSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeySpanName),
                 queryRequestOptions,
                 pagedFluxOptions
             );

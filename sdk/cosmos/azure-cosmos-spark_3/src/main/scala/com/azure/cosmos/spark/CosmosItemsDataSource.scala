@@ -127,13 +127,21 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
+    // Resolve the null-handling config up front so both the UDF path and the PK-column path honor it.
+    val sharedEffectiveConfig = CosmosConfig.getEffectiveConfig(
+      databaseName = None,
+      containerName = None,
+      userConfig.asScala.toMap)
+    val sharedReadConfig = CosmosReadConfig.parseCosmosReadConfig(sharedEffectiveConfig)
+    val sharedTreatNullAsNone = sharedReadConfig.readManyByPkTreatNullAsNone
+
     // Option 1: Look for the _partitionKeyIdentity column (produced by GetCosmosPartitionKeyValue UDF)
     val pkIdentityFieldExtraction = df
       .schema
       .find(field => field.name.equals(CosmosConstants.Properties.PartitionKeyIdentity) && field.dataType.equals(StringType))
       .map(field => (row: Row) => {
         val rawValue = row.getString(row.fieldIndex(field.name))
-        CosmosPartitionKeyHelper.tryParsePartitionKey(rawValue)
+        CosmosPartitionKeyHelper.tryParsePartitionKey(rawValue, sharedTreatNullAsNone)
           .getOrElse(throw new IllegalArgumentException(
             s"Invalid _partitionKeyIdentity value in row: '$rawValue'. " +
               "Expected format: pk([...json...])"))
@@ -143,11 +151,8 @@ object CosmosItemsDataSource {
     val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
       None // no need to resolve PK paths - _partitionKeyIdentity column takes precedence
     } else {
-      val effectiveConfig = CosmosConfig.getEffectiveConfig(
-        databaseName = None,
-        containerName = None,
-        userConfig.asScala.toMap)
-      val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveConfig)
+      val effectiveConfig = sharedEffectiveConfig
+      val readConfig = sharedReadConfig
       val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveConfig)
       val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(None)
       val calledFrom = s"CosmosItemsDataSource.readManyByPartitionKey"

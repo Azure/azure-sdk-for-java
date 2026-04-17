@@ -196,17 +196,19 @@ public class ReadManyByPartitionKeyQueryHelper {
 
         // Check if there's an alias after the container name (before WHERE or end)
         if (afterFrom < queryText.length()) {
-            char nextChar = Character.toUpperCase(queryText.charAt(afterFrom));
-            // If the next token is a keyword (WHERE, ORDER, GROUP, JOIN, OFFSET, LIMIT, HAVING) or end, containerName IS the alias
-            if (nextChar == 'W' || nextChar == 'O' || nextChar == 'G' || nextChar == 'J'
-                || nextChar == 'L' || nextChar == 'H') {
-                // Check if it's actually a keyword
-                String remaining = upper.substring(afterFrom);
-                if (remaining.startsWith("WHERE") || remaining.startsWith("ORDER")
-                    || remaining.startsWith("GROUP") || remaining.startsWith("JOIN")
-                    || remaining.startsWith("OFFSET") || remaining.startsWith("LIMIT")
-                    || remaining.startsWith("HAVING")) {
-                    return containerName;
+            String remaining = upper.substring(afterFrom);
+            // Reserved keywords that terminate the FROM clause - when the next token is one of these,
+            // containerName itself IS the alias used throughout the rest of the query.
+            if (isFollowedByReservedKeyword(remaining)) {
+                return containerName;
+            }
+            // Handle optional AS: "FROM root AS r" -> alias is "r"
+            if (remaining.startsWith("AS")
+                && (remaining.length() == 2 || !Character.isLetterOrDigit(remaining.charAt(2)))) {
+                afterFrom += 2; // skip AS
+                while (afterFrom < queryText.length()
+                    && Character.isWhitespace(queryText.charAt(afterFrom))) {
+                    afterFrom++;
                 }
             }
             // Otherwise the next token is the alias ("FROM root r" -> alias is "r")
@@ -225,6 +227,18 @@ public class ReadManyByPartitionKeyQueryHelper {
         return containerName;
     }
 
+    private static boolean isFollowedByReservedKeyword(String remainingUpper) {
+        String[] keywords = { "WHERE", "ORDER", "GROUP", "JOIN", "OFFSET", "LIMIT", "HAVING" };
+        for (String kw : keywords) {
+            if (remainingUpper.startsWith(kw)
+                && (remainingUpper.length() == kw.length()
+                    || !Character.isLetterOrDigit(remainingUpper.charAt(kw.length())))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Finds the index of a top-level SQL keyword in the query text (case-insensitive),
      * ignoring occurrences inside parentheses or string literals.
@@ -234,14 +248,33 @@ public class ReadManyByPartitionKeyQueryHelper {
         String keywordUpper = keyword.toUpperCase();
         int depth = 0;
         int keyLen = keywordUpper.length();
-        for (int i = 0; i <= queryTextUpper.length() - keyLen; i++) {
-            char ch = queryTextUpper.charAt(i);
+        int len = queryTextUpper.length();
+        for (int i = 0; i <= len - keyLen; i++) {
+            char ch = queryText.charAt(i);
+            // Skip single-line comments: -- ... end-of-line
+            if (ch == '-' && i + 1 < len && queryText.charAt(i + 1) == '-') {
+                i += 2;
+                while (i < len && queryText.charAt(i) != '\n' && queryText.charAt(i) != '\r') {
+                    i++;
+                }
+                continue;
+            }
+            // Skip block comments: /* ... */
+            if (ch == '/' && i + 1 < len && queryText.charAt(i + 1) == '*') {
+                i += 2;
+                while (i + 1 < len
+                    && !(queryText.charAt(i) == '*' && queryText.charAt(i + 1) == '/')) {
+                    i++;
+                }
+                i++; // position on the '/'; loop post-increment moves past it
+                continue;
+            }
             // Skip string literals enclosed in single quotes (handle '' escape)
-            if (queryText.charAt(i) == '\'') {
+            if (ch == '\'') {
                 i++;
-                while (i < queryText.length()) {
+                while (i < len) {
                     if (queryText.charAt(i) == '\'') {
-                        if (i + 1 < queryText.length() && queryText.charAt(i + 1) == '\'') {
+                        if (i + 1 < len && queryText.charAt(i + 1) == '\'') {
                             i += 2; // escaped quote - skip both
                             continue;
                         }
@@ -251,11 +284,12 @@ public class ReadManyByPartitionKeyQueryHelper {
                 }
                 continue;
             }
-            if (ch == '(') {
+            char upperCh = queryTextUpper.charAt(i);
+            if (upperCh == '(') {
                 depth++;
-            } else if (ch == ')') {
+            } else if (upperCh == ')') {
                 depth--;
-            } else if (depth == 0 && ch == keywordUpper.charAt(0)
+            } else if (depth == 0 && upperCh == keywordUpper.charAt(0)
                 && queryTextUpper.startsWith(keywordUpper, i)
                 && (i == 0 || !Character.isLetterOrDigit(queryTextUpper.charAt(i - 1)))
                 && (i + keyLen >= queryTextUpper.length() || !Character.isLetterOrDigit(queryTextUpper.charAt(i + keyLen)))) {

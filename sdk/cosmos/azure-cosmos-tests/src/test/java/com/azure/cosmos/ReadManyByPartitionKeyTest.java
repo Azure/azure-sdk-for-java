@@ -228,6 +228,43 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @SuppressWarnings("deprecation")
+    public void hpk_readManyByPartitionKey_withNoneComponent() {
+        // Regression test for hierarchical partition key routing with PartitionKey.NONE / addNoneValue()
+        // at a trailing position. Some documents omit the last PK path (areaCode); they must be
+        // routed via the NOT IS_DEFINED(c["areaCode"]) predicate and returned only when the caller
+        // requests that slice via addNoneValue().
+        createHpkItems();
+        // Insert 3 documents where areaCode is undefined (NONE) under Redmond/98053
+        for (int i = 0; i < 3; i++) {
+            ObjectNode item = com.azure.cosmos.implementation.Utils.getSimpleObjectMapper().createObjectNode();
+            item.put("id", UUID.randomUUID().toString());
+            item.put("city", "Redmond");
+            item.put("zipcode", "98053");
+            // deliberately omit areaCode
+            multiHashContainer.createItem(item);
+        }
+
+        // Request the NONE slice: Redmond/98053/<undefined>
+        List<PartitionKey> pkValues = Collections.singletonList(
+            new PartitionKeyBuilder().add("Redmond").add("98053").addNoneValue().build());
+
+        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+
+        // Only the 3 documents without areaCode should come back — the pre-existing items in
+        // createHpkItems() all have areaCode defined and live in a different physical partition slice.
+        assertThat(resultList).hasSize(3);
+        resultList.forEach(item -> {
+            assertThat(item.get("city").asText()).isEqualTo("Redmond");
+            assertThat(item.get("zipcode").asText()).isEqualTo("98053");
+            assertThat(item.has("areaCode")).isFalse();
+        });
+
+        cleanupContainer(multiHashContainer);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void hpk_readManyByPartitionKey_withProjection() {
         createHpkItems();
 
