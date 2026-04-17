@@ -1,4 +1,0 @@
-directory: specification/monitor/resource-manager/Microsoft.Insights/Insights
-commit: HEAD
-repo: Azure/azure-rest-api-specs
-additionalDirectories: 
