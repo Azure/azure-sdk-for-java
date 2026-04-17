@@ -1,7 +1,15 @@
 # Release History
 # (Unreleased)
+
 Upgrade Spring Boot dependencies version to 4.0.5 and Spring Cloud dependencies version to 2025.1.1
-Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+
+- Fixed Bug: AzureRedisPasswordlessProperties uses invalid wildcard scope for AZURE_CHINA, causing ManagedIdentityCredential failure ([#48680](https://github.com/Azure/azure-sdk-for-java/issues/48680)).
 
 ## 6.2.0 (2026-03-25)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)

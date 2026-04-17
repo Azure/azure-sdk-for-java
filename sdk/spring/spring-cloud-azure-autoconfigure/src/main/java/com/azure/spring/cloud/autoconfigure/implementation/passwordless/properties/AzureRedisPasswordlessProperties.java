@@ -6,10 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.passwordless.propert
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Configuration properties for passwordless connections with Azure Redis.
@@ -17,16 +13,6 @@ import java.util.Map;
 public class AzureRedisPasswordlessProperties implements PasswordlessProperties {
 
     private static final String REDIS_SCOPE_AZURE = "https://redis.azure.com/.default";
-    private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
-
-    private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
-        {
-            put(AzureProfileOptionsProvider.CloudType.AZURE, REDIS_SCOPE_AZURE);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, REDIS_SCOPE_AZURE_CHINA);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, REDIS_SCOPE_AZURE_US_GOVERNMENT);
-        }
-    };
 
     private AzureProfileProperties profile = new AzureProfileProperties();
 
@@ -48,7 +34,7 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
      */
     @Override
     public String getScopes() {
-        return this.scopes == null ? getDefaultScopes() : this.scopes;
+        return this.scopes == null ? REDIS_SCOPE_AZURE : this.scopes;
     }
 
     /**
@@ -80,10 +66,6 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
     @Override
     public void setPasswordlessEnabled(boolean passwordlessEnabled) {
         this.passwordlessEnabled = passwordlessEnabled;
-    }
-
-    private String getDefaultScopes() {
-        return REDIS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), REDIS_SCOPE_AZURE);
     }
 
     /**
