@@ -46,4 +46,4 @@ Question: "Create these reference files now (recommended), edit first, or skip?"
 
 ---
 ## → Next: Phase 3 — Validate
-Read [phases/03-validate.md](phases/03-validate.md) and begin immediately.
+Read [03-validate.md](03-validate.md) and begin immediately.

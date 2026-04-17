@@ -92,4 +92,4 @@ If confirmed, create the skill directory and SKILL.md file.
 
 ---
 ## → Next: Phase 2 — Generate References
-Read [phases/02-generate-references.md](phases/02-generate-references.md) and begin immediately.
+Read [02-generate-references.md](02-generate-references.md) and begin immediately.

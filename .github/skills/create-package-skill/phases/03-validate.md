@@ -43,4 +43,4 @@ Question: "These issues need fixing. Fix now, or skip validation?"
 
 ---
 ## → Next: Phase 4 — Register
-Read [phases/04-register.md](phases/04-register.md) and begin immediately.
+Read [04-register.md](04-register.md) and begin immediately.

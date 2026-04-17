@@ -60,4 +60,4 @@ Question: "Does this profile look right? Anything to add or correct?"
 
 ---
 ## → Next: Phase 1 — Scaffold SKILL.md
-Read [phases/01-scaffold-skill.md](phases/01-scaffold-skill.md) and begin immediately.
+Read [01-scaffold-skill.md](01-scaffold-skill.md) and begin immediately.
