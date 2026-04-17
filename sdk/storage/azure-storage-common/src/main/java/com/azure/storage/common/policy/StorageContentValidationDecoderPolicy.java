@@ -112,7 +112,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             return Flux.empty();
         }
 
-        LOGGER.atInfo()
+        LOGGER.atVerbose()
             .addKeyValue("newBytes", buffer.remaining())
             .addKeyValue("decoderOffset", decoder.getMessageOffset())
             .addKeyValue("lastCompleteSegment", decoder.getLastCompleteSegmentStart())
@@ -122,7 +122,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         try {
             StructuredMessageDecoder.DecodeResult result = decoder.decodeChunk(buffer);
 
-            LOGGER.atInfo()
+            LOGGER.atVerbose()
                 .addKeyValue("status", result.getStatus())
                 .addKeyValue("bytesConsumed", result.getBytesConsumed())
                 .addKeyValue("decoderOffset", decoder.getMessageOffset())
@@ -130,7 +130,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 .log("Decode chunk result");
 
             switch (result.getStatus()) {
-                case SUCCESS:
                 case NEED_MORE_BYTES:
                     return emitDecodedPayload(result.getDecodedPayload());
 
@@ -152,7 +151,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     private Flux<ByteBuffer> handleStreamError(Throwable throwable, StructuredMessageDecoder decoder) {
         if (decoder.isComplete()) {
-            LOGGER.atInfo().log("Decoder complete; suppressing downstream error and completing successfully");
+            LOGGER.atVerbose().log("Decoder complete; suppressing downstream error and completing successfully");
             return Flux.empty();
         }
 
@@ -161,7 +160,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     private Mono<ByteBuffer> handleStreamCompletion(StructuredMessageDecoder decoder) {
         if (!decoder.isComplete()) {
-            LOGGER.atInfo()
+            LOGGER.atVerbose()
                 .addKeyValue("messageOffset", decoder.getMessageOffset())
                 .addKeyValue("messageLength", decoder.getMessageLength())
                 .addKeyValue("totalDecodedPayload", decoder.getTotalDecodedPayloadBytes())
@@ -170,7 +169,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             return Mono.error(new IOException("Stream ended prematurely before structured message decoding completed"));
         }
 
-        LOGGER.atInfo()
+        LOGGER.atVerbose()
             .addKeyValue("messageOffset", decoder.getMessageOffset())
             .addKeyValue("totalDecodedPayload", decoder.getTotalDecodedPayloadBytes())
             .log("Stream complete and decode finalized successfully");
