@@ -222,7 +222,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                     "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/webtests/component-example")
                     .withComponentId(
                         "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/components/webtest-name-example")
-                    .withFailedLocationCount(2.0))
+                    .withFailedLocationCount(2f))
                 .withActions(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
@@ -255,8 +255,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
                         .withDimensions(Arrays.asList())
                         .withOperator(DynamicThresholdOperator.GREATER_OR_LESS_THAN)
                         .withAlertSensitivity(DynamicThresholdSensitivity.MEDIUM)
-                        .withFailingPeriods(new DynamicThresholdFailingPeriods().withNumberOfEvaluationPeriods(4.0)
-                            .withMinFailingPeriodsToAlert(4.0))
+                        .withFailingPeriods(new DynamicThresholdFailingPeriods().withNumberOfEvaluationPeriods(4f)
+                            .withMinFailingPeriodsToAlert(4f))
                         .withIgnoreDataBefore(OffsetDateTime.parse("2019-04-04T21:00:00.000Z")))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
@@ -446,8 +446,8 @@ public final class MetricAlertsCreateOrUpdateSamples {
                         .withDimensions(Arrays.asList())
                         .withOperator(DynamicThresholdOperator.GREATER_OR_LESS_THAN)
                         .withAlertSensitivity(DynamicThresholdSensitivity.MEDIUM)
-                        .withFailingPeriods(new DynamicThresholdFailingPeriods().withNumberOfEvaluationPeriods(4.0)
-                            .withMinFailingPeriodsToAlert(4.0)))))
+                        .withFailingPeriods(new DynamicThresholdFailingPeriods().withNumberOfEvaluationPeriods(4f)
+                            .withMinFailingPeriodsToAlert(4f)))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")

@@ -20,12 +20,12 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
      * The number of aggregated lookback points. The lookback time window is calculated based on the aggregation
      * granularity (windowSize) and the selected number of aggregated points.
      */
-    private double numberOfEvaluationPeriods;
+    private float numberOfEvaluationPeriods;
 
     /*
      * The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
      */
-    private double minFailingPeriodsToAlert;
+    private float minFailingPeriodsToAlert;
 
     /**
      * Creates an instance of DynamicThresholdFailingPeriods class.
@@ -39,7 +39,7 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
      * 
      * @return the numberOfEvaluationPeriods value.
      */
-    public double numberOfEvaluationPeriods() {
+    public float numberOfEvaluationPeriods() {
         return this.numberOfEvaluationPeriods;
     }
 
@@ -50,7 +50,7 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
      * @param numberOfEvaluationPeriods the numberOfEvaluationPeriods value to set.
      * @return the DynamicThresholdFailingPeriods object itself.
      */
-    public DynamicThresholdFailingPeriods withNumberOfEvaluationPeriods(double numberOfEvaluationPeriods) {
+    public DynamicThresholdFailingPeriods withNumberOfEvaluationPeriods(float numberOfEvaluationPeriods) {
         this.numberOfEvaluationPeriods = numberOfEvaluationPeriods;
         return this;
     }
@@ -61,7 +61,7 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
      * 
      * @return the minFailingPeriodsToAlert value.
      */
-    public double minFailingPeriodsToAlert() {
+    public float minFailingPeriodsToAlert() {
         return this.minFailingPeriodsToAlert;
     }
 
@@ -72,7 +72,7 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
      * @param minFailingPeriodsToAlert the minFailingPeriodsToAlert value to set.
      * @return the DynamicThresholdFailingPeriods object itself.
      */
-    public DynamicThresholdFailingPeriods withMinFailingPeriodsToAlert(double minFailingPeriodsToAlert) {
+    public DynamicThresholdFailingPeriods withMinFailingPeriodsToAlert(float minFailingPeriodsToAlert) {
         this.minFailingPeriodsToAlert = minFailingPeriodsToAlert;
         return this;
     }
@@ -91,8 +91,8 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("numberOfEvaluationPeriods", this.numberOfEvaluationPeriods);
-        jsonWriter.writeDoubleField("minFailingPeriodsToAlert", this.minFailingPeriodsToAlert);
+        jsonWriter.writeFloatField("numberOfEvaluationPeriods", this.numberOfEvaluationPeriods);
+        jsonWriter.writeFloatField("minFailingPeriodsToAlert", this.minFailingPeriodsToAlert);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,9 +114,9 @@ public final class DynamicThresholdFailingPeriods implements JsonSerializable<Dy
                 reader.nextToken();
 
                 if ("numberOfEvaluationPeriods".equals(fieldName)) {
-                    deserializedDynamicThresholdFailingPeriods.numberOfEvaluationPeriods = reader.getDouble();
+                    deserializedDynamicThresholdFailingPeriods.numberOfEvaluationPeriods = reader.getFloat();
                 } else if ("minFailingPeriodsToAlert".equals(fieldName)) {
-                    deserializedDynamicThresholdFailingPeriods.minFailingPeriodsToAlert = reader.getDouble();
+                    deserializedDynamicThresholdFailingPeriods.minFailingPeriodsToAlert = reader.getFloat();
                 } else {
                     reader.skipChildren();
                 }

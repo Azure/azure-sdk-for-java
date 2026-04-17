@@ -36,7 +36,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     /*
      * The number of failed locations.
      */
-    private double failedLocationCount;
+    private float failedLocationCount;
 
     /**
      * Creates an instance of WebtestLocationAvailabilityCriteria class.
@@ -100,7 +100,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
      * 
      * @return the failedLocationCount value.
      */
-    public double failedLocationCount() {
+    public float failedLocationCount() {
         return this.failedLocationCount;
     }
 
@@ -110,7 +110,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
      * @param failedLocationCount the failedLocationCount value to set.
      * @return the WebtestLocationAvailabilityCriteria object itself.
      */
-    public WebtestLocationAvailabilityCriteria withFailedLocationCount(double failedLocationCount) {
+    public WebtestLocationAvailabilityCriteria withFailedLocationCount(float failedLocationCount) {
         this.failedLocationCount = failedLocationCount;
         return this;
     }
@@ -144,7 +144,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("webTestId", this.webTestId);
         jsonWriter.writeStringField("componentId", this.componentId);
-        jsonWriter.writeDoubleField("failedLocationCount", this.failedLocationCount);
+        jsonWriter.writeFloatField("failedLocationCount", this.failedLocationCount);
         jsonWriter.writeStringField("odata.type", this.odataType == null ? null : this.odataType.toString());
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
@@ -177,7 +177,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
                 } else if ("componentId".equals(fieldName)) {
                     deserializedWebtestLocationAvailabilityCriteria.componentId = reader.getString();
                 } else if ("failedLocationCount".equals(fieldName)) {
-                    deserializedWebtestLocationAvailabilityCriteria.failedLocationCount = reader.getDouble();
+                    deserializedWebtestLocationAvailabilityCriteria.failedLocationCount = reader.getFloat();
                 } else if ("odata.type".equals(fieldName)) {
                     deserializedWebtestLocationAvailabilityCriteria.odataType
                         = Odatatype.fromString(reader.getString());
