@@ -14,7 +14,9 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.models.ExternalHealthPolicy;
 import com.azure.resourcemanager.compute.models.HighSpeedInterconnectPlacement;
+import com.azure.resourcemanager.compute.models.LifecycleHooksProfile;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Placement;
 import com.azure.resourcemanager.compute.models.Plan;
@@ -79,8 +81,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private String etag;
 
     /*
-     * Placement section specifies the user-defined constraints for virtual machine scale set hardware placement. This
-     * property cannot be changed once VMSS is provisioned. Minimum api-version: 2025-04-01.
+     * Placement section specifies the user-defined constraints for virtual machine scale set hardware placement.
+     * Minimum api-version: 2025-04-01.
      */
     private Placement placement;
 
@@ -239,8 +241,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Get the placement property: Placement section specifies the user-defined constraints for virtual machine scale
-     * set hardware placement. This property cannot be changed once VMSS is provisioned. Minimum api-version:
-     * 2025-04-01.
+     * set hardware placement. Minimum api-version: 2025-04-01.
      * 
      * @return the placement value.
      */
@@ -250,8 +251,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Set the placement property: Placement section specifies the user-defined constraints for virtual machine scale
-     * set hardware placement. This property cannot be changed once VMSS is provisioned. Minimum api-version:
-     * 2025-04-01.
+     * set hardware placement. Minimum api-version: 2025-04-01.
      * 
      * @param placement the placement value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -858,6 +858,52 @@ public final class VirtualMachineScaleSetInner extends Resource {
             this.innerProperties = new VirtualMachineScaleSetProperties();
         }
         this.innerProperties().withHighSpeedInterconnectPlacement(highSpeedInterconnectPlacement);
+        return this;
+    }
+
+    /**
+     * Get the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @return the lifecycleHooksProfile value.
+     */
+    public LifecycleHooksProfile lifecycleHooksProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().lifecycleHooksProfile();
+    }
+
+    /**
+     * Set the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @param lifecycleHooksProfile the lifecycleHooksProfile value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withLifecycleHooksProfile(LifecycleHooksProfile lifecycleHooksProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withLifecycleHooksProfile(lifecycleHooksProfile);
+        return this;
+    }
+
+    /**
+     * Get the externalHealthPolicy property: Specifies the external health policy for the virtual machine scale set.
+     * 
+     * @return the externalHealthPolicy value.
+     */
+    public ExternalHealthPolicy externalHealthPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalHealthPolicy();
+    }
+
+    /**
+     * Set the externalHealthPolicy property: Specifies the external health policy for the virtual machine scale set.
+     * 
+     * @param externalHealthPolicy the externalHealthPolicy value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withExternalHealthPolicy(ExternalHealthPolicy externalHealthPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withExternalHealthPolicy(externalHealthPolicy);
         return this;
     }
 

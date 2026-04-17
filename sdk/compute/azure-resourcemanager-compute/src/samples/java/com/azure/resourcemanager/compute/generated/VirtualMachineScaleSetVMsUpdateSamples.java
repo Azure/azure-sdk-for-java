@@ -87,7 +87,7 @@ import java.util.Map;
  */
 public final class VirtualMachineScaleSetVMsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_Update_MaximumSet_Gen.
@@ -285,7 +285,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_Update_MinimumSet_Gen.

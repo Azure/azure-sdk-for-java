@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
  */
 public final class DedicatedHostsGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHost_Get.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHost_Get.json
      */
     /**
      * Sample code: Get a dedicated host.

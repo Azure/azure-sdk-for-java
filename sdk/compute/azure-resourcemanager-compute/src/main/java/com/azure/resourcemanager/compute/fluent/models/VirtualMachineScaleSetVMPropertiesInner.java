@@ -142,6 +142,12 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      */
     private OffsetDateTime timeCreated;
 
+    /*
+     * Specifies the ARM resource ID of the standalone virtual machine associated with this VMSS VM. This property is
+     * only applicable to Virtual Machine Scale Sets with Flexible orchestration mode. Minimum api-version: 2025-11-01.
+     */
+    private String virtualMachineResourceId;
+
     /**
      * Creates an instance of VirtualMachineScaleSetVMPropertiesInner class.
      */
@@ -505,6 +511,17 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     }
 
     /**
+     * Get the virtualMachineResourceId property: Specifies the ARM resource ID of the standalone virtual machine
+     * associated with this VMSS VM. This property is only applicable to Virtual Machine Scale Sets with Flexible
+     * orchestration mode. Minimum api-version: 2025-11-01.
+     * 
+     * @return the virtualMachineResourceId value.
+     */
+    public String virtualMachineResourceId() {
+        return this.virtualMachineResourceId;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -631,6 +648,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMPropertiesInner.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("virtualMachineResourceId".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.virtualMachineResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineImagesEdgeZoneListOffersSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.json
+     * 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListOffers_MaximumSet_Gen.
@@ -27,7 +27,7 @@ public final class VirtualMachineImagesEdgeZoneListOffersSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MinimumSet_Gen.json
+     * 2025-11-01/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListOffers_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListOffers_MinimumSet_Gen.

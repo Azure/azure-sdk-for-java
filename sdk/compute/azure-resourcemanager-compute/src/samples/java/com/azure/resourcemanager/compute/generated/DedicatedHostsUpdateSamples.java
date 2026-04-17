@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class DedicatedHostsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHost_Update_Resize.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHost_Update_Resize.json
      */
     /**
      * Sample code: DedicatedHost_Update_Resize.
@@ -30,7 +30,7 @@ public final class DedicatedHostsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHost_Update_MaximumSet_Gen.
@@ -49,7 +49,7 @@ public final class DedicatedHostsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHost_Update_MinimumSet_Gen.

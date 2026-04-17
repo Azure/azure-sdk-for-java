@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
  */
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get a virtual machine with VM Size Properties.
@@ -26,7 +26,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get a virtual machine placed on a dedicated host group through automatic placement.
@@ -41,7 +41,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
      */
     /**
      * Sample code: Get a virtual machine with Disk Controller Type Properties.
@@ -57,7 +57,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Get.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Get.json
      */
     /**
      * Sample code: Get a Virtual Machine.
