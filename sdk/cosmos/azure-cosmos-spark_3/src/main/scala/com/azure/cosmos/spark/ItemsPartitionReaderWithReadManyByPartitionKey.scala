@@ -202,6 +202,7 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
           readConfig.customQuery.map(_.toSqlQuerySpec),
           readManyOptions,
           readConfig.maxItemCount,
+          readConfig.prefetchBufferSize,
           operationContextAndListenerTuple,
           classOf[SparkRowItem]
         )
