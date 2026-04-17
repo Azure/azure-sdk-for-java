@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -26,6 +27,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +107,13 @@ class QueryPlanRetriever {
                                                                                  resourceLink,
                                                                                  requestHeaders);
         queryPlanRequest.useGatewayMode = true;
-        queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
+
+        // Create a defensive copy to prevent concurrent modification of the shared
+        // SqlQuerySpec's internal ObjectNode when multiple threads retrieve the query
+        // plan simultaneously. Each copy has its own property bag, avoiding the race
+        // condition on the non-thread-safe ObjectNode/LinkedHashMap backing store.
+        SqlQuerySpec querySpecCopy = copyQuerySpec(sqlQuerySpec);
+        queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpecCopy));
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = queryOptionsAccessor()
             .getImpl(nonNullRequestOptions)
@@ -161,5 +169,11 @@ class QueryPlanRetriever {
 
                 return throwable;
             });
+    }
+
+    private static SqlQuerySpec copyQuerySpec(SqlQuerySpec original) {
+        List<SqlParameter> params = original.getParameters();
+        List<SqlParameter> copiedParams = params != null ? new ArrayList<>(params) : null;
+        return new SqlQuerySpec(original.getQueryText(), copiedParams);
     }
 }
