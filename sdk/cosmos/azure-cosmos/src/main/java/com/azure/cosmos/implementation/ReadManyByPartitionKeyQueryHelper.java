@@ -224,10 +224,17 @@ public class ReadManyByPartitionKeyQueryHelper {
         int keyLen = keywordUpper.length();
         for (int i = 0; i <= queryTextUpper.length() - keyLen; i++) {
             char ch = queryTextUpper.charAt(i);
-            // Skip string literals enclosed in single quotes
+            // Skip string literals enclosed in single quotes (handle '' escape)
             if (queryText.charAt(i) == '\'') {
                 i++;
-                while (i < queryText.length() && queryText.charAt(i) != '\'') {
+                while (i < queryText.length()) {
+                    if (queryText.charAt(i) == '\'') {
+                        if (i + 1 < queryText.length() && queryText.charAt(i + 1) == '\'') {
+                            i += 2; // escaped quote — skip both
+                            continue;
+                        }
+                        break; // end of string literal
+                    }
                     i++;
                 }
                 continue;
