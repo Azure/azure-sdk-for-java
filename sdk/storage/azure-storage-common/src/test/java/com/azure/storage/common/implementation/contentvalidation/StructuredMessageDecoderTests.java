@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation.contentvalidation;
 
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -25,13 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class StructuredMessageDecoderTests {
 
     private static ByteBuffer collectFlux(Flux<ByteBuffer> flux) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        flux.toIterable().forEach(buf -> {
-            byte[] bytes = new byte[buf.remaining()];
-            buf.get(bytes);
-            out.write(bytes, 0, bytes.length);
-        });
-        return ByteBuffer.wrap(out.toByteArray()).order(ByteOrder.LITTLE_ENDIAN);
+        return ByteBuffer.wrap(FluxUtil.collectBytesInByteBufferStream(flux).block()).order(ByteOrder.LITTLE_ENDIAN);
     }
 
     @Test
@@ -127,9 +122,6 @@ public class StructuredMessageDecoderTests {
     public void handlesZeroLengthSegment() throws IOException {
         // Test: Zero-length segment should decode correctly
         // Note: Zero-length segments are valid in the format
-        byte[] originalData = new byte[0];
-
-        // For zero-length data, encoder behavior varies - let's test with minimal data
         byte[] minimalData = new byte[1];
         ThreadLocalRandom.current().nextBytes(minimalData);
 

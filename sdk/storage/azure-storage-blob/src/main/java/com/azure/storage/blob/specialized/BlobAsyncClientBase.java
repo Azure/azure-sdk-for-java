@@ -1283,6 +1283,10 @@ public class BlobAsyncClientBase {
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
                     ModelHelper.getErrorCode(response.getHeaders()));
 
+                /*
+                 * If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+                 * from the response for better book-keeping towards the end.
+                 */
                 long finalCount;
                 long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
@@ -1292,6 +1296,8 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
+                // The resume function takes throwable and offset at the destination.
+                // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
                     if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                         return Mono.error(throwable);
@@ -1539,6 +1545,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
+        // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
         if (openOptions == null) {
             openOptions = DEFAULT_OPEN_OPTIONS_SET;

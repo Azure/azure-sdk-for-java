@@ -252,15 +252,13 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
 
         DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
 
-        StepVerifier.create(downloadClient
-            .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDownloadRetryOptions(retryOptions)
-                .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
-            .doFinally(signalType -> {
-                System.out.println("[MockPartialResponsePolicy] hits=" + mockPolicy.getHits() + ", triesRemaining="
-                    + mockPolicy.getTriesRemaining() + ", ranges=" + mockPolicy.getRangeHeaders());
-                assertTrue(mockPolicy.getHits() > 0, "Mock interruption policy was not invoked");
-            })
-            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+        StepVerifier
+            .create(downloadClient
+                .downloadStreamWithResponse(new BlobDownloadStreamOptions().setDownloadRetryOptions(retryOptions)
+                    .setResponseChecksumAlgorithm(StorageChecksumAlgorithm.CRC64))
+                .doFinally(
+                    signalType -> assertTrue(mockPolicy.getHits() > 0, "Mock interruption policy was not invoked"))
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(randomData, result))
             .verifyComplete();
 
