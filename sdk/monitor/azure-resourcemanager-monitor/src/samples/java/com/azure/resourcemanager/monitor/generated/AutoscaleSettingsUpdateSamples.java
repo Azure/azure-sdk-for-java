@@ -12,7 +12,6 @@ import com.azure.resourcemanager.monitor.models.ComparisonOperationType;
 import com.azure.resourcemanager.monitor.models.EmailNotification;
 import com.azure.resourcemanager.monitor.models.MetricStatisticType;
 import com.azure.resourcemanager.monitor.models.MetricTrigger;
-import com.azure.resourcemanager.monitor.models.OperationType;
 import com.azure.resourcemanager.monitor.models.PredictiveAutoscalePolicy;
 import com.azure.resourcemanager.monitor.models.PredictiveAutoscalePolicyScaleMode;
 import com.azure.resourcemanager.monitor.models.Recurrence;
@@ -118,7 +117,7 @@ public final class AutoscaleSettingsUpdateSamples {
                                 .withDays(Arrays.asList("1"))
                                 .withHours(Arrays.asList(5))
                                 .withMinutes(Arrays.asList(15))))))
-                .withNotifications(Arrays.asList(new AutoscaleNotification().withOperation(OperationType.SCALE)
+                .withNotifications(Arrays.asList(new AutoscaleNotification()
                     .withEmail(new EmailNotification().withSendToSubscriptionAdministrator(true)
                         .withSendToSubscriptionCoAdministrators(true)
                         .withCustomEmails(Arrays.asList("gu@ms.com", "ge@ns.net")))

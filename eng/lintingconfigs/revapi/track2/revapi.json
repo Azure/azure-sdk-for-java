@@ -1787,16 +1787,7 @@
           "old" : "parameter com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::withAllOf(===java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition>===)",
           "justification": "TypeSpec migration: withAllOf() parameter type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
         },
-        {
-          "code": "java.method.returnTypeChanged",
-          "old" : "method java.lang.String com.azure.resourcemanager.monitor.models.AutoscaleNotification::operation()",
-          "justification": "TypeSpec migration: operation() return type changed from String to OperationType."
-        },
-        {
-          "code": "java.method.parameterTypeChanged",
-          "old" : "parameter com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(===java.lang.String===)",
-          "justification": "TypeSpec migration: withOperation() parameter type changed from String to OperationType."
-        },
+
         {
           "code": "java.method.visibilityIncreased",
           "old" : "method void com.azure.resourcemanager.monitor.models.ConditionOperator::<init>(java.lang.String)",

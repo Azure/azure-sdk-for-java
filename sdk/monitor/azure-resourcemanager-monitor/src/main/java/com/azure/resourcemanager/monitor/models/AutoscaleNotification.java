@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,7 +20,7 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
     /*
      * the operation associated with the notification and its value must be "scale"
      */
-    private OperationType operation;
+    private final String operation = "Scale";
 
     /*
      * the email notification.
@@ -44,19 +43,8 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
      * 
      * @return the operation value.
      */
-    public OperationType operation() {
+    public String operation() {
         return this.operation;
-    }
-
-    /**
-     * Set the operation property: the operation associated with the notification and its value must be "scale".
-     * 
-     * @param operation the operation value to set.
-     * @return the AutoscaleNotification object itself.
-     */
-    public AutoscaleNotification withOperation(OperationType operation) {
-        this.operation = operation;
-        return this;
     }
 
     /**
@@ -105,11 +93,6 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (operation() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property operation in model AutoscaleNotification"));
-        }
         if (email() != null) {
             email().validate();
         }
@@ -118,15 +101,13 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AutoscaleNotification.class);
-
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
+        jsonWriter.writeStringField("operation", this.operation);
         jsonWriter.writeJsonField("email", this.email);
         jsonWriter.writeArrayField("webhooks", this.webhooks, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -148,9 +129,7 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("operation".equals(fieldName)) {
-                    deserializedAutoscaleNotification.operation = OperationType.fromString(reader.getString());
-                } else if ("email".equals(fieldName)) {
+                if ("email".equals(fieldName)) {
                     deserializedAutoscaleNotification.email = EmailNotification.fromJson(reader);
                 } else if ("webhooks".equals(fieldName)) {
                     List<WebhookNotification> webhooks
