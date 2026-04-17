@@ -16,28 +16,28 @@ public final class ElasticVolumeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"filePath\":\"uwasqvd\",\"size\":160464775696634400,\"exportPolicy\":{\"rules\":[{},{},{},{}]},\"protocolTypes\":[\"NFSv4\",\"SMB\",\"NFSv4\"],\"provisioningState\":\"Failed\",\"availabilityStatus\":\"Online\",\"snapshotResourceId\":\"bezkgimsidxasic\",\"mountTargets\":[{\"ipAddress\":\"vjskgfmoc\",\"smbServerFqdn\":\"hpqgatjeaahhvj\"},{\"ipAddress\":\"na\",\"smbServerFqdn\":\"ybbjjidjksyx\"},{\"ipAddress\":\"xvxevblbjednljla\",\"smbServerFqdn\":\"uaulxunsm\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"ppxynenls\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"izzgwkln\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"feycxcktp\"}},\"snapshotDirectoryVisibility\":\"Visible\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"eammxqiekkkzddr\",\"restorationState\":\"Restored\"},\"eTag\":\"ojbmxv\",\"zones\":[\"efdeesve\",\"uij\"],\"location\":\"txsu\",\"tags\":{\"ibabxvititvtzeex\":\"tujwsawdd\",\"tfgle\":\"vo\",\"pypqtgsfj\":\"dmdqb\",\"db\":\"cbslhhx\"},\"id\":\"vodhtn\",\"name\":\"irudh\",\"type\":\"m\"},{\"properties\":{\"filePath\":\"sckdlp\",\"size\":9125844466274989029,\"exportPolicy\":{\"rules\":[{}]},\"protocolTypes\":[\"SMB\",\"SMB\"],\"provisioningState\":\"Deleting\",\"availabilityStatus\":\"Online\",\"snapshotResourceId\":\"m\",\"mountTargets\":[{\"ipAddress\":\"dfgsftufqobrj\",\"smbServerFqdn\":\"acgcckknhx\"},{\"ipAddress\":\"zvytnrzvuljraaer\",\"smbServerFqdn\":\"okqgukkjq\"},{\"ipAddress\":\"broyla\",\"smbServerFqdn\":\"ulcdisdosf\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"vgjrwhr\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"cytdclxgccknfnwm\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"pdvjdhttzaefedx\"}},\"snapshotDirectoryVisibility\":\"Hidden\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"k\",\"restorationState\":\"Restoring\"},\"eTag\":\"dqns\",\"zones\":[\"pbgtgkylkdghrj\",\"uutlwxezwzhok\",\"bwnhhtql\"],\"location\":\"hgppipifhpfeoa\",\"tags\":{\"heafidlt\":\"cxtxjc\",\"oiftxfkfwegprh\":\"gsresmkssj\"},\"id\":\"tillucbiqtg\",\"name\":\"q\",\"type\":\"hm\"}],\"nextLink\":\"sldrizetpwbral\"}")
+            "{\"value\":[{\"properties\":{\"filePath\":\"tvqcttadijaeu\",\"size\":8092412337575637077,\"exportPolicy\":{\"rules\":[{},{}]},\"protocolTypes\":[\"NFSv3\",\"SMB\",\"NFSv3\",\"SMB\"],\"provisioningState\":\"Creating\",\"availabilityStatus\":\"Offline\",\"snapshotResourceId\":\"udqmeqwigpibudq\",\"mountTargets\":[{\"ipAddress\":\"beybpmzznrtffyaq\",\"smbServerFqdn\":\"mhh\"},{\"ipAddress\":\"oqaqhvseufuq\",\"smbServerFqdn\":\"xpdlcgqlsis\"},{\"ipAddress\":\"qfrddgam\",\"smbServerFqdn\":\"hiosrsjuiv\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"syirnx\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"zexrxzbujrt\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"wrevkhgnlnzon\"}},\"snapshotDirectoryVisibility\":\"Visible\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"wncvjtszcofiz\",\"restorationState\":\"Restored\"},\"eTag\":\"hgbjkvrelje\",\"zones\":[\"rvzmlovuana\",\"hcxlpm\",\"erbdk\",\"lvidizozs\"],\"location\":\"ccxjm\",\"tags\":{\"uqj\":\"dgnwncypuuwwlt\",\"if\":\"tzenk\",\"xcudchxgsr\":\"zhmkdasvflyh\",\"lvizb\":\"oldforobw\"},\"id\":\"hfovvacqpbtu\",\"name\":\"dxe\",\"type\":\"zab\"},{\"properties\":{\"filePath\":\"l\",\"size\":741706840028604356,\"exportPolicy\":{\"rules\":[{},{}]},\"protocolTypes\":[\"SMB\",\"SMB\",\"NFSv3\",\"NFSv3\"],\"provisioningState\":\"Moving\",\"availabilityStatus\":\"Online\",\"snapshotResourceId\":\"cqucwyhahnom\",\"mountTargets\":[{\"ipAddress\":\"wuhpsvfuur\",\"smbServerFqdn\":\"lwexxwl\"},{\"ipAddress\":\"niexzsrzpgepq\",\"smbServerFqdn\":\"bb\"},{\"ipAddress\":\"pgdakchzyvli\",\"smbServerFqdn\":\"nrkcxkj\"}],\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"mysu\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"qrntv\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"psttexoq\"}},\"snapshotDirectoryVisibility\":\"Visible\",\"smbProperties\":{\"smbEncryption\":\"Disabled\"},\"backupResourceId\":\"fmhruncuwm\",\"restorationState\":\"Restoring\"},\"eTag\":\"cdqzhlctddu\",\"zones\":[\"dyfpchrqbnj\"],\"location\":\"cgegydcwbo\",\"tags\":{\"raiouaubrjtl\":\"mvqqolih\"},\"id\":\"qxfuojrngif\",\"name\":\"rzpasccbiuimzdly\",\"type\":\"dfqwmkyoq\"}],\"nextLink\":\"dvruzslzojhpctf\"}")
             .toObject(ElasticVolumeListResult.class);
-        Assertions.assertEquals("txsu", model.value().get(0).location());
-        Assertions.assertEquals("tujwsawdd", model.value().get(0).tags().get("ibabxvititvtzeex"));
-        Assertions.assertEquals("uwasqvd", model.value().get(0).properties().filePath());
-        Assertions.assertEquals(160464775696634400L, model.value().get(0).properties().size());
-        Assertions.assertEquals(ElasticProtocolType.NFSV4, model.value().get(0).properties().protocolTypes().get(0));
-        Assertions.assertEquals("bezkgimsidxasic", model.value().get(0).properties().snapshotResourceId());
-        Assertions.assertEquals("ppxynenls",
+        Assertions.assertEquals("ccxjm", model.value().get(0).location());
+        Assertions.assertEquals("dgnwncypuuwwlt", model.value().get(0).tags().get("uqj"));
+        Assertions.assertEquals("tvqcttadijaeu", model.value().get(0).properties().filePath());
+        Assertions.assertEquals(8092412337575637077L, model.value().get(0).properties().size());
+        Assertions.assertEquals(ElasticProtocolType.NFSV3, model.value().get(0).properties().protocolTypes().get(0));
+        Assertions.assertEquals("udqmeqwigpibudq", model.value().get(0).properties().snapshotResourceId());
+        Assertions.assertEquals("syirnx",
             model.value().get(0).properties().dataProtection().snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("izzgwkln",
+        Assertions.assertEquals("zexrxzbujrt",
             model.value().get(0).properties().dataProtection().backup().elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED,
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED,
             model.value().get(0).properties().dataProtection().backup().policyEnforcement());
-        Assertions.assertEquals("feycxcktp",
+        Assertions.assertEquals("wrevkhgnlnzon",
             model.value().get(0).properties().dataProtection().backup().elasticBackupVaultResourceId());
         Assertions.assertEquals(SnapshotDirectoryVisibility.VISIBLE,
             model.value().get(0).properties().snapshotDirectoryVisibility());
         Assertions.assertEquals(ElasticSmbEncryption.DISABLED,
             model.value().get(0).properties().smbProperties().smbEncryption());
-        Assertions.assertEquals("eammxqiekkkzddr", model.value().get(0).properties().backupResourceId());
-        Assertions.assertEquals("efdeesve", model.value().get(0).zones().get(0));
-        Assertions.assertEquals("sldrizetpwbral", model.nextLink());
+        Assertions.assertEquals("wncvjtszcofiz", model.value().get(0).properties().backupResourceId());
+        Assertions.assertEquals("rvzmlovuana", model.value().get(0).zones().get(0));
+        Assertions.assertEquals("dvruzslzojhpctf", model.nextLink());
     }
 }

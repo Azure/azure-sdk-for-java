@@ -14,22 +14,22 @@ public final class MhsmPrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmPrivateLinkServiceConnectionState model
-            = BinaryData.fromString("{\"status\":\"Approved\",\"description\":\"wptfdy\",\"actionsRequired\":\"None\"}")
+            = BinaryData.fromString("{\"status\":\"Rejected\",\"description\":\"tdo\",\"actionsRequired\":\"None\"}")
                 .toObject(MhsmPrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("wptfdy", model.description());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("tdo", model.description());
         Assertions.assertEquals(ActionsRequired.NONE, model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MhsmPrivateLinkServiceConnectionState model
-            = new MhsmPrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                .withDescription("wptfdy")
+            = new MhsmPrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                .withDescription("tdo")
                 .withActionsRequired(ActionsRequired.NONE);
         model = BinaryData.fromObject(model).toObject(MhsmPrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("wptfdy", model.description());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("tdo", model.description());
         Assertions.assertEquals(ActionsRequired.NONE, model.actionsRequired());
     }
 }

@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckElasticResourceAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckElasticResourceAvailabilityResponseInner model = BinaryData
-            .fromString("{\"isAvailable\":\"False\",\"reason\":\"Invalid\",\"message\":\"fonkphhqyikvyla\"}")
-            .toObject(CheckElasticResourceAvailabilityResponseInner.class);
-        Assertions.assertEquals(CheckElasticResourceAvailabilityStatus.FALSE, model.isAvailable());
+        CheckElasticResourceAvailabilityResponseInner model
+            = BinaryData.fromString("{\"isAvailable\":\"True\",\"reason\":\"Invalid\",\"message\":\"ft\"}")
+                .toObject(CheckElasticResourceAvailabilityResponseInner.class);
+        Assertions.assertEquals(CheckElasticResourceAvailabilityStatus.TRUE, model.isAvailable());
         Assertions.assertEquals(CheckElasticResourceAvailabilityReason.INVALID, model.reason());
-        Assertions.assertEquals("fonkphhqyikvyla", model.message());
+        Assertions.assertEquals("ft", model.message());
     }
 }

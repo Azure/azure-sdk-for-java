@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ApplicationsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/ApplicationPatchOperation_example.json
+     * x-ms-original-file: 2026-02-01/ApplicationPatchOperation_example.json
      */
     /**
      * Sample code: Patch an application.

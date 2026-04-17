@@ -26,7 +26,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
     private static final ClientLogger LOGGER = new ClientLogger(FakeTaskSubmitter.class); // <-- add this
 
     private final Set<String> clientErrorIds;
-    private final Map<String, Integer> serverFailuresBeforeSuccess;
+    private final ConcurrentHashMap<String, Integer> serverFailuresBeforeSuccess;
     private final int groupSizeLimitFor413;
 
     /**
@@ -79,8 +78,9 @@ public final class FakeTaskSubmitter implements TaskSubmitter {
     public FakeTaskSubmitter(Set<String> clientErrorIds, Map<String, Integer> serverFailuresBeforeSuccess,
         int groupSizeLimitFor413) {
         this.clientErrorIds = clientErrorIds == null ? Collections.emptySet() : new HashSet<>(clientErrorIds);
-        this.serverFailuresBeforeSuccess
-            = serverFailuresBeforeSuccess == null ? new HashMap<>() : new HashMap<>(serverFailuresBeforeSuccess);
+        this.serverFailuresBeforeSuccess = serverFailuresBeforeSuccess == null
+            ? new ConcurrentHashMap<>()
+            : new ConcurrentHashMap<>(serverFailuresBeforeSuccess);
         this.groupSizeLimitFor413 = groupSizeLimitFor413;
     }
 

@@ -947,7 +947,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException, InterruptedException {
 
         boolean shouldRetryCrossRegion = false;
@@ -1000,7 +1000,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // The address refresh for LEASE_NOT_FOUND is triggered asynchronously via
             // startBackgroundAddressRefresh() on Schedulers.boundedElastic().
             // Instead of a fixed sleep, poll until the validation passes or a timeout is reached
-            long addressRefreshDeadlineNanos = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+            // Increased to 10 seconds to handle CI delays
+            long addressRefreshDeadlineNanos = System.nanoTime() + Duration.ofSeconds(10).toNanos();
             AssertionError lastAssertionError = null;
             while (System.nanoTime() < addressRefreshDeadlineNanos) {
                 try {

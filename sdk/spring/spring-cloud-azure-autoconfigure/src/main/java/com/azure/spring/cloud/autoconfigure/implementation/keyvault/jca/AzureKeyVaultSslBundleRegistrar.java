@@ -137,7 +137,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         configureJcaKeyStoreSystemProperties(jcaVaultProperties, keyStoreProperties, resourceLoader);
         if (providerConfigured.compareAndSet(false, true)) {
             Security.removeProvider(KeyVaultJcaProvider.PROVIDER_NAME);
-            Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+            Security.addProvider(new KeyVaultJcaProvider());
         }
         KeyStore azureKeyVaultKeyStore;
         try {

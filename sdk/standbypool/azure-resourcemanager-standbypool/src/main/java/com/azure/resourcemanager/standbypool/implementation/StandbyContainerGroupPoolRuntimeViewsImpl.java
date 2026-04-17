@@ -31,12 +31,8 @@ public final class StandbyContainerGroupPoolRuntimeViewsImpl implements StandbyC
         String standbyContainerGroupPoolName, String runtimeView, Context context) {
         Response<StandbyContainerGroupPoolRuntimeViewResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, standbyContainerGroupPoolName, runtimeView, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StandbyContainerGroupPoolRuntimeViewResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StandbyContainerGroupPoolRuntimeViewResourceImpl(inner.getValue(), this.manager()));
     }
 
     public StandbyContainerGroupPoolRuntimeViewResource get(String resourceGroupName,

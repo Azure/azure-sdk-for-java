@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-10-07)
+## 1.0.0-beta.2 (Unreleased)
 
 - Azure Resource Manager Trusted Signing client library for Java. This package contains Microsoft Azure SDK for Trusted Signing Management SDK. Code Signing resource provider api. Package api-version 2025-10-13. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 

@@ -45,11 +45,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Perform read and delete databases, update database throughput, and perform operations on child resources
  */
 public class CosmosAsyncDatabase {
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
     private final CosmosAsyncClient client;
     private final String id;
@@ -637,9 +639,7 @@ public class CosmosAsyncDatabase {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllContainers." + this.getId();
             CosmosAsyncClient client = this.getClient();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
+            String operationId = queryOptionsAccessor()
                 .getQueryNameOrDefault(requestOptions, spanName);
 
             QueryFeedOperationState state = new QueryFeedOperationState(
@@ -649,7 +649,7 @@ public class CosmosAsyncDatabase {
                 null,
                 ResourceType.DocumentCollection,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(requestOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(requestOptions, spanName),
                 requestOptions,
                 pagedFluxOptions
             );
@@ -657,7 +657,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setFeedOperationState(state);
 
             return getDocClientWrapper().readCollections(getLink(), state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     response.getCosmosDiagnostics()));
@@ -957,7 +957,7 @@ public class CosmosAsyncDatabase {
                 null,
                 ResourceType.User,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -965,7 +965,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setFeedOperationState(state);
 
             return getDocClientWrapper().readUsers(getLink(), state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
                         .getResponseHeaders(),
                     response.getCosmosDiagnostics()));
@@ -1020,7 +1020,7 @@ public class CosmosAsyncDatabase {
                 null,
                 ResourceType.ClientEncryptionKey,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -1028,7 +1028,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setFeedOperationState(state);
 
             return getDocClientWrapper().readClientEncryptionKeys(getLink(), state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()), response
                         .getResponseHeaders(),
                     response.getCosmosDiagnostics()));
@@ -1121,7 +1121,7 @@ public class CosmosAsyncDatabase {
                 null,
                 ResourceType.ClientEncryptionKey,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -1305,7 +1305,7 @@ public class CosmosAsyncDatabase {
                 null,
                 ResourceType.DocumentCollection,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -1313,7 +1313,7 @@ public class CosmosAsyncDatabase {
             pagedFluxOptions.setFeedOperationState(state);
 
             return getDocClientWrapper().queryCollections(getLink(), querySpec, state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     response.getCosmosDiagnostics()));
@@ -1333,7 +1333,7 @@ public class CosmosAsyncDatabase {
                 null,
                 ResourceType.User,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -1609,9 +1609,7 @@ public class CosmosAsyncDatabase {
             null,
             OperationType.Read,
             ResourceType.Offer,
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
+            queryOptionsAccessor()
                 .toRequestOptions(qryOptions));
     }
 

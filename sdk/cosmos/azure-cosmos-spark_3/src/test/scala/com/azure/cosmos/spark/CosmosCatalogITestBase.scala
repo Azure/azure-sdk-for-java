@@ -158,12 +158,13 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 7
+    tblProperties should have size 8
 
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
@@ -196,7 +197,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     var tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 7
+    tblProperties should have size 8
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
@@ -214,7 +215,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 7
+    tblProperties should have size 8
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
@@ -252,13 +253,14 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 7
+    tblProperties should have size 8
 
     // tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "3000000"
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\",\"version\":2}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
@@ -300,12 +302,13 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 7
+    tblProperties should have size 8
 
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "2"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
@@ -426,12 +429,13 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
 
-    tblProperties should have size 7
+    tblProperties should have size 8
 
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
 
     // indexPolicyJson will be normalized by the backend - so not be the same as the input json
     // for the purpose of this test I just want to make sure that the custom indexing options
@@ -478,6 +482,81 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
     tblProperties("DefaultTtlInSeconds") shouldEqual "5"
+  }
+
+  it can "create a table with vector embedding policy" in {
+    val databaseName = getAutoCleanableDatabaseName
+    val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    cleanupDatabaseLater(databaseName)
+
+    val vectorEmbeddingPolicyJson =
+      raw"""{"vectorEmbeddings":[{"path":"/vector1","dataType":"float32","distanceFunction":"cosine","dimensions":500}]}"""
+
+    val indexingPolicyJson =
+      raw"""{"indexingMode":"consistent","automatic":true,"includedPaths":[{"path":"\/mypk\/?"}],""" +
+        raw""""excludedPaths":[{"path":"\/*"}],"vectorIndexes":[{"path":"\/vector1","type":"flat"}]}"""
+
+    spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    
+    spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', " +
+      s"indexingPolicy = '$indexingPolicyJson', " +
+      s"vectorEmbeddingPolicy = '$vectorEmbeddingPolicyJson')")
+
+    val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+    containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))
+
+    // validate vector embedding policy
+    val vectorEmbeddingPolicy = containerProperties.getVectorEmbeddingPolicy
+    vectorEmbeddingPolicy should not be null
+    vectorEmbeddingPolicy.getVectorEmbeddings should have size 1
+    val embedding = vectorEmbeddingPolicy.getVectorEmbeddings.get(0)
+    embedding.getPath shouldEqual "/vector1"
+    embedding.getDataType.toString shouldEqual "float32"
+    embedding.getDistanceFunction.toString shouldEqual "cosine"
+    embedding.getEmbeddingDimensions shouldEqual 500
+
+    // validate vector indexes are in indexing policy
+    val vectorIndexes = containerProperties.getIndexingPolicy.getVectorIndexes
+    vectorIndexes should have size 1
+    vectorIndexes.get(0).getPath shouldEqual "/vector1"
+    vectorIndexes.get(0).getType shouldEqual "flat"
+
+    // validate throughput
+    val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+    throughput.getManualThroughput shouldEqual 1100
+
+    val tblProperties = getTblProperties(spark, databaseName, containerName)
+
+    tblProperties should have size 8
+
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
+    tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
+
+    // validate vector embedding policy is in table properties (structured check)
+    val vepObjectMapper = Utils.getSimpleObjectMapper
+    val vepNode = vepObjectMapper.readTree(tblProperties("VectorEmbeddingPolicy"))
+    val vepEmbeddings = vepNode.get("vectorEmbeddings")
+    vepEmbeddings.size() shouldEqual 1
+    vepEmbeddings.get(0).get("path").asText() shouldEqual "/vector1"
+    vepEmbeddings.get(0).get("dataType").asText() shouldEqual "float32"
+    vepEmbeddings.get(0).get("distanceFunction").asText() shouldEqual "cosine"
+
+    // validate vector indexes are in indexing policy (structured check)
+    val ipNode = vepObjectMapper.readTree(tblProperties("IndexingPolicy"))
+    val vectorIndexesNode = ipNode.get("vectorIndexes")
+    vectorIndexesNode.size() shouldEqual 1
+    vectorIndexesNode.get(0).get("path").asText() shouldEqual "/vector1"
+    vectorIndexesNode.get(0).get("type").asText() shouldEqual "flat"
+
+    // would look like Manual|RUProvisioned|LastOfferModification
+    // - last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("ProvisionedThroughput").startsWith("Manual|1100|") shouldEqual true
+    tblProperties("ProvisionedThroughput").length shouldEqual 32
+
+    // last modified as iso datetime like 2021-12-07T10:33:44Z
+    tblProperties("LastModified").length shouldEqual 20
   }
 
   it can "select from a catalog table with default TBLPROPERTIES" in {

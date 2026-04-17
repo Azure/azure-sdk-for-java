@@ -20,7 +20,7 @@ public final class ArtifactsListDownloadUriWithResponseMockTests {
     @Test
     public void testListDownloadUriWithResponse() throws Exception {
         String responseStr
-            = "{\"provisioningState\":\"Failed\",\"artifactOrder\":1096221203,\"title\":\"yyvxyqjpkcattpn\",\"description\":\"jcrcczsqpjhvmda\",\"size\":8436976750184221107,\"downloadLink\":\"sounqecanoaeu\",\"linkExpiry\":\"2021-10-06T07:30:47Z\"}";
+            = "{\"provisioningState\":\"Canceled\",\"artifactOrder\":258578871,\"title\":\"pfza\",\"description\":\"glcuhxwtctyqi\",\"size\":8355520612424913730,\"downloadLink\":\"ovplw\",\"linkExpiry\":\"2021-08-16T02:09:31Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ArtifactsListDownloadUriWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ArtifactDownloadResult response = manager.artifacts()
-            .listDownloadUriWithResponse("ectehf", "qsc", "eypvhezrkg", "hcjrefovgmk", com.azure.core.util.Context.NONE)
+            .listDownloadUriWithResponse("ux", "hdwbavxbniwdjs", "zt", "dbpgnxytxhp", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

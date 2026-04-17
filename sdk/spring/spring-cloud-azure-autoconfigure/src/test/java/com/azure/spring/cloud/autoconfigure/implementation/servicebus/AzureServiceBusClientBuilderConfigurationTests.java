@@ -7,6 +7,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
@@ -31,7 +32,7 @@ class AzureServiceBusClientBuilderConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     void connectionStringProvidedShouldConfigure() {
         contextRunner
             .withPropertyValues(
@@ -89,12 +90,39 @@ class AzureServiceBusClientBuilderConfigurationTests {
             });
     }
 
+    @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    void connectionDetailsRegistersStaticProvider() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "details-namespace");
+        this.contextRunner
+            .withBean(AzureServiceBusConnectionDetails.class, () -> new TestConnectionDetails(connectionString))
+            .run(context -> {
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                StaticConnectionStringProvider provider = context.getBean(StaticConnectionStringProvider.class);
+                assertThat(provider.getConnectionString()).isEqualTo(connectionString);
+                assertThat(provider.getServiceType()).isEqualTo(AzureServiceType.SERVICE_BUS);
+            });
+    }
+
     private static class ServiceBusBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder> {
 
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    private static final class TestConnectionDetails implements AzureServiceBusConnectionDetails {
+        private final String connectionString;
+
+        TestConnectionDetails(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.connectionString;
+        }
     }
 
 }

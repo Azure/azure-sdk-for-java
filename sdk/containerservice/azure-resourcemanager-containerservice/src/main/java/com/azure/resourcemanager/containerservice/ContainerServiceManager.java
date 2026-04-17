@@ -6,8 +6,12 @@ package com.azure.resourcemanager.containerservice;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.OrchestratorManagementClient;
 import com.azure.resourcemanager.containerservice.implementation.ContainerServiceManagementClientBuilder;
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
+import com.azure.resourcemanager.containerservice.implementation.OpenShiftManagementClientBuilder;
+import com.azure.resourcemanager.containerservice.implementation.OrchestratorManagementClientBuilder;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
@@ -21,6 +25,8 @@ import java.util.Objects;
 public final class ContainerServiceManager extends Manager<ContainerServiceManagementClient> {
     // The service managers
     private KubernetesClustersImpl kubernetesClusters;
+    private final OrchestratorManagementClient orchestratorManagementClient;
+    private final OpenShiftManagementClient openShiftManagementClient;
 
     /**
      * Get a Configurable instance that can be used to create ContainerServiceManager with optional configuration.
@@ -85,6 +91,16 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
+        this.orchestratorManagementClient
+            = new OrchestratorManagementClientBuilder().endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient();
+        this.openShiftManagementClient
+            = new OpenShiftManagementClientBuilder().endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient();
     }
 
     /**
@@ -97,5 +113,23 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
             this.kubernetesClusters = new KubernetesClustersImpl(this);
         }
         return this.kubernetesClusters;
+    }
+
+    /**
+     * Gets the OrchestratorManagementClient.
+     *
+     * @return the OrchestratorManagementClient
+     */
+    public OrchestratorManagementClient orchestratorClient() {
+        return this.orchestratorManagementClient;
+    }
+
+    /**
+     * Gets the OpenShiftManagementClient.
+     *
+     * @return the OpenShiftManagementClient
+     */
+    public OpenShiftManagementClient openShiftClient() {
+        return this.openShiftManagementClient;
     }
 }

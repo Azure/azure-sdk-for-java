@@ -425,5 +425,8 @@
     <!-- CUSTOM CHECKS -->
     <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
     <module name="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
+
+    <!-- Validates that classes implementing JsonSerializable or XmlSerializable have required serialization methods -->
+    <module name="io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck"/>
   </module>
 </module>

@@ -5,7 +5,6 @@ package com.azure.ai.agents.implementation.http;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.util.logging.ClientLogger;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpResponse;
 
@@ -16,8 +15,6 @@ import java.io.InputStream;
  * the translation logic encapsulated so response handling elsewhere can remain framework agnostic.
  */
 final class AzureHttpResponseAdapter implements HttpResponse {
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureHttpResponseAdapter.class);
 
     private final com.azure.core.http.HttpResponse azureResponse;
 
@@ -42,7 +39,9 @@ final class AzureHttpResponseAdapter implements HttpResponse {
 
     @Override
     public InputStream body() {
-        return azureResponse.getBodyAsBinaryData().toStream();
+        // replace with azureResponse.bodyStream() and delete FluxInputStream class from this package
+        // when new version of azure-core is released.
+        return new FluxInputStream(azureResponse.getBody());
     }
 
     @Override

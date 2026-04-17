@@ -24,7 +24,7 @@ public final class DeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"byrcdlbhshfwp\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"khevxccedc\"}},\"ipAddress\":\"md\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"xltjcvnhltiu\",\"containerName\":\"xnavvwxq\"}},\"scalingProperties\":{\"capacity\":1077177476,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"y\",\"capacity\":{\"min\":1222380956,\"max\":1874068657}},{\"name\":\"wlmdjrkv\",\"capacity\":{\"min\":197369131,\"max\":185014481}},{\"name\":\"vfvpdbodaciz\",\"capacity\":{\"min\":218756340,\"max\":242566551}},{\"name\":\"lhkrribdeibqipqk\",\"capacity\":{\"min\":2080529192,\"max\":1234217414}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"ndzwmkrefa\"},\"userProfile\":{\"preferredEmail\":\"orwkqnyh\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Enabled\"},\"webApplicationFirewallStatus\":{\"wafRelease\":\"ivfxzsjabibsyst\",\"attackSignaturesPackage\":{\"version\":\"fsdjpvkvp\",\"revisionDatetime\":\"2021-04-17T09:45:49Z\"},\"botSignaturesPackage\":{\"version\":\"bkzbzkd\",\"revisionDatetime\":\"2021-03-09T04:47:51Z\"},\"threatCampaignsPackage\":{\"version\":\"jabudurgkakmo\",\"revisionDatetime\":\"2021-02-03T01:10:02Z\"},\"componentVersions\":{\"wafEngineVersion\":\"jjklff\",\"wafNginxVersion\":\"mouwqlgzrfzeey\"}}},\"dataplaneApiEndpoint\":\"izikayuhq\"},\"identity\":{\"principalId\":\"bs\",\"tenantId\":\"bqwrvtldgm\",\"type\":\"None\",\"userAssignedIdentities\":{\"drhneuyow\":{\"principalId\":\"ipaslthaqfxssmwu\",\"clientId\":\"bdsrez\"},\"sibircgpi\":{\"principalId\":\"d\",\"clientId\":\"t\"},\"i\":{\"principalId\":\"zimejzanlfzx\",\"clientId\":\"vrmbzono\"},\"frl\":{\"principalId\":\"jq\",\"clientId\":\"rgz\"}}},\"sku\":{\"name\":\"szrnwo\"},\"location\":\"ndfpwpj\",\"tags\":{\"h\":\"bt\",\"dhszfjv\":\"lsj\",\"qmqhldvriii\":\"bgofeljag\"},\"id\":\"jnalghf\",\"name\":\"vtvsexsowueluq\",\"type\":\"hahhxvrhmzkwpj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"nginxVersion\":\"aqfxss\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"ezpdrhneu\"}},\"ipAddress\":\"wqkdwytisibi\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"pzimejzanlfzxi\",\"containerName\":\"rmbzo\"}},\"scalingProperties\":{\"capacity\":185109829,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"jq\",\"capacity\":{\"min\":1122267125,\"max\":749799353}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"zpfrla\"},\"userProfile\":{\"preferredEmail\":\"rnwoiindfp\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"wafRelease\":\"bt\",\"attackSignaturesPackage\":{\"version\":\"flsjc\",\"revisionDatetime\":\"2021-10-21T17:47:33Z\"},\"botSignaturesPackage\":{\"version\":\"zfjvfbgofe\",\"revisionDatetime\":\"2021-03-16T08:43:43Z\"},\"threatCampaignsPackage\":{\"version\":\"grqmqhldvrii\",\"revisionDatetime\":\"2021-03-28T06:00:08Z\"},\"componentVersions\":{\"wafEngineVersion\":\"nalghfkvtvsexso\",\"wafNginxVersion\":\"ueluqhhahhxvrhmz\"}}},\"dataplaneApiEndpoint\":\"pjgwwspug\"},\"identity\":{\"principalId\":\"qs\",\"tenantId\":\"qxujxukndxd\",\"type\":\"None\",\"userAssignedIdentities\":{\"o\":{\"principalId\":\"ufzdmsyq\",\"clientId\":\"ihwhbotzingamvpp\"},\"yhmtnvyqiat\":{\"principalId\":\"qzudphq\",\"clientId\":\"vdkfwynwcvtbvk\"}}},\"sku\":{\"name\":\"wp\"},\"location\":\"p\",\"tags\":{\"g\":\"jaesgvvsccya\",\"lvdnkfx\":\"qfhwyg\",\"apfcqdpsq\":\"semdwzrmu\"},\"id\":\"qvpsvuoymg\",\"name\":\"celve\",\"type\":\"rypqlmfeo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,26 +35,26 @@ public final class DeploymentsListMockTests {
 
         PagedIterable<NginxDeployment> response = manager.deployments().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ndfpwpj", response.iterator().next().location());
-        Assertions.assertEquals("bt", response.iterator().next().tags().get("h"));
-        Assertions.assertEquals("khevxccedc",
+        Assertions.assertEquals("p", response.iterator().next().location());
+        Assertions.assertEquals("jaesgvvsccya", response.iterator().next().tags().get("g"));
+        Assertions.assertEquals("ezpdrhneu",
             response.iterator().next().properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertTrue(response.iterator().next().properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("xltjcvnhltiu",
+        Assertions.assertEquals("pzimejzanlfzxi",
             response.iterator().next().properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("xnavvwxq",
+        Assertions.assertEquals("rmbzo",
             response.iterator().next().properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(1077177476, response.iterator().next().properties().scalingProperties().capacity());
-        Assertions.assertEquals("y",
+        Assertions.assertEquals(185109829, response.iterator().next().properties().scalingProperties().capacity());
+        Assertions.assertEquals("jq",
             response.iterator().next().properties().scalingProperties().profiles().get(0).name());
-        Assertions.assertEquals(1222380956,
+        Assertions.assertEquals(1122267125,
             response.iterator().next().properties().scalingProperties().profiles().get(0).capacity().min());
-        Assertions.assertEquals(1874068657,
+        Assertions.assertEquals(749799353,
             response.iterator().next().properties().scalingProperties().profiles().get(0).capacity().max());
-        Assertions.assertEquals("ndzwmkrefa",
+        Assertions.assertEquals("zpfrla",
             response.iterator().next().properties().autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals("orwkqnyh", response.iterator().next().properties().userProfile().preferredEmail());
-        Assertions.assertEquals(ActivationState.ENABLED,
+        Assertions.assertEquals("rnwoiindfp", response.iterator().next().properties().userProfile().preferredEmail());
+        Assertions.assertEquals(ActivationState.DISABLED,
             response.iterator()
                 .next()
                 .properties()
@@ -62,6 +62,6 @@ public final class DeploymentsListMockTests {
                 .webApplicationFirewallSettings()
                 .activationState());
         Assertions.assertEquals(IdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("szrnwo", response.iterator().next().sku().name());
+        Assertions.assertEquals("wp", response.iterator().next().sku().name());
     }
 }

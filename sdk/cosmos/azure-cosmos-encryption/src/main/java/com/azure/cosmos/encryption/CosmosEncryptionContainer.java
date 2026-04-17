@@ -123,8 +123,7 @@ public final class CosmosEncryptionContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    // TODO Make this api public once it is GA in cosmos core library
-    CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
 
@@ -277,8 +276,7 @@ public final class CosmosEncryptionContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    // TODO Make this api public once it is GA in cosmos core library
-    <T> CosmosPagedIterable<T> queryChangeFeed(
+    public <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");

@@ -14,21 +14,21 @@ public final class FileSystemUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemUser model = BinaryData.fromString(
-            "{\"nfsUser\":{\"userId\":3604947321817577406,\"groupId\":3720735958022849834},\"cifsUser\":{\"username\":\"risjnhnytxifqjz\"}}")
+            "{\"nfsUser\":{\"userId\":5744786061005129903,\"groupId\":5373165762406096070},\"cifsUser\":{\"username\":\"kh\"}}")
             .toObject(FileSystemUser.class);
-        Assertions.assertEquals(3604947321817577406L, model.nfsUser().userId());
-        Assertions.assertEquals(3720735958022849834L, model.nfsUser().groupId());
-        Assertions.assertEquals("risjnhnytxifqjz", model.cifsUser().username());
+        Assertions.assertEquals(5744786061005129903L, model.nfsUser().userId());
+        Assertions.assertEquals(5373165762406096070L, model.nfsUser().groupId());
+        Assertions.assertEquals("kh", model.cifsUser().username());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileSystemUser model = new FileSystemUser()
-            .withNfsUser(new NfsUser().withUserId(3604947321817577406L).withGroupId(3720735958022849834L))
-            .withCifsUser(new CifsUser().withUsername("risjnhnytxifqjz"));
+            .withNfsUser(new NfsUser().withUserId(5744786061005129903L).withGroupId(5373165762406096070L))
+            .withCifsUser(new CifsUser().withUsername("kh"));
         model = BinaryData.fromObject(model).toObject(FileSystemUser.class);
-        Assertions.assertEquals(3604947321817577406L, model.nfsUser().userId());
-        Assertions.assertEquals(3720735958022849834L, model.nfsUser().groupId());
-        Assertions.assertEquals("risjnhnytxifqjz", model.cifsUser().username());
+        Assertions.assertEquals(5744786061005129903L, model.nfsUser().userId());
+        Assertions.assertEquals(5373165762406096070L, model.nfsUser().groupId());
+        Assertions.assertEquals("kh", model.cifsUser().username());
     }
 }

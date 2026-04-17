@@ -31,12 +31,8 @@ public final class ElasticBackupPoliciesImpl implements ElasticBackupPolicies {
         String backupPolicyName, Context context) {
         Response<ElasticBackupPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, backupPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticBackupPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticBackupPolicyImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticBackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName) {

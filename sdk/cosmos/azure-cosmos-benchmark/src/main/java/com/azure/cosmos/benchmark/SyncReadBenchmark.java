@@ -8,10 +8,11 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 
+
 class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
 
-    SyncReadBenchmark(Configuration cfg) throws Exception {
-        super(cfg);
+    SyncReadBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
+        super(workloadCfg);
     }
 
     @Override

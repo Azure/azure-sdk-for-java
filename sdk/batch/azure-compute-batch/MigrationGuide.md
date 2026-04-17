@@ -80,12 +80,6 @@ To view the latest version of the package, [visit this link](https://central.son
     - [Get Node File Properties](#get-node-file-properties)
     - [Get Remote Login Settings](#get-remote-login-settings)
     - [Upload Node Logs](#upload-node-logs)
-  - [Certificate Operations](#certificate-operations)
-    - [Create Certificate](#create-certificate)
-    - [Get Certificate](#get-certificate)
-    - [List Certificates](#list-certificates)
-    - [Delete Certificate](#delete-certificate)
-    - [Cancel Delete Certificate](#cancel-delete-certificate)
   - [Application Operations](#application-operations)
     - [Get Application](#get-application)
     - [List Applications](#list-applications)
@@ -339,8 +333,7 @@ Previously, in `Microsoft-Azure-Batch`, to patch a pool, you could call the `pat
 List<MetadataItem> metadata = new ArrayList<>();
 metadata.add(new MetadataItem("name", "value"));
 
-// The null values indicate that StartTask, CertificateReferences, and ApplicationPackageReferences remain unchanged.
-batchClient.poolOperations().patchPool("poolId", null, null, null, metadata);
+batchClient.poolOperations().patchPool("poolId");
 ```
 
 With `Azure-Compute-Batch`, you can call `updatePool` directly on the client.
@@ -1431,128 +1424,6 @@ batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
         System.out.println("Number of files uploaded: " + logResult.getNumberOfFilesUploaded());
         System.out.println("Log upload container URL: " + logResult.getVirtualDirectoryName());
     });
-```
-
-### Certificate Operations
-
-Note: Certificate operations are deprecated. Please migrate to use Azure Key Vault. For more information, see [Migrate Batch account certificates to Azure Key Vault](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-
-#### Create Certificate From Cer
-
-Previously, in `Microsoft-Azure-Batch`, to create a certificate, you could call the `createCertificateFromCer` method from the `CertificateOperations` object.
-
-```java
-Certificate cert = batchClient.getCertificateOperations().createCertificateFromCer("cerFilePath");
-```
-
-With `Azure-Compute-Batch`, you can call `createCertificate` directly on the client.
-
-```java com.azure.compute.batch.create-certificate.certificate-create
-batchClient.createCertificate(
-    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
-        .setCertificateFormat(BatchCertificateFormat.PFX)
-        .setPassword("fakeTokenPlaceholder"),
-    null);
-```
-
-#### Create Certificate
-
-Previously, in `Microsoft-Azure-Batch`, to create a certificate, you could call the `createCertificate` method from the `CertificateOperations` object.
-
-Method 1 (`createCertificate` takes in `InputStream` parameter):
-
-```java
-InputStream certStream = new FileInputStream("path/to/certificate.cer");
-batchClient.certificateOperations().createCertificate(certStream);
-```
-
-Method 2 (`createCertificate` takes in `CertificateAddParameter`):
-
-```java
-CertificateAddParameter certParam = new CertificateAddParameter()
-    .withThumbprint("your-thumbprint")
-    .withThumbprintAlgorithm("sha1")
-    .withData("base64-encoded-certificate-data")
-    .withCertificateFormat(CertificateFormat.CER);
-
-batchClient.createCertificate(certParam);
-```
-
-With `Azure-Compute-Batch`, you can call `createCertificate` directly on the client.
-
-```java com.azure.compute.batch.create-certificate.certificate-create
-batchClient.createCertificate(
-    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
-        .setCertificateFormat(BatchCertificateFormat.PFX)
-        .setPassword("fakeTokenPlaceholder"),
-    null);
-```
-
-#### Get Certificate
-
-Previously, in `Microsoft-Azure-Batch`, to get a certificate, you could call the `getCertificate` method from the `CertificateOperations` object.
-
-```java
-String thumbprintAlgorithm = "sha1";
-String thumbprint = "your-thumbprint"; 
-Certificate cert = batchClient.certificateOperations().getCertificate(thumbprintAlgorithm, thumbprint);
-```
-
-With `Azure-Compute-Batch`, you can call `getCertificate` directly on the client.
-
-```java com.azure.compute.batch.get-certificate.certificate-get
-BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
-    new BatchCertificateGetOptions());
-```
-
-#### List Certificates
-
-Previously, in `Microsoft-Azure-Batch`, to list all certificates on the account, you could call the `listCertificates` method from the `CertificateOperations` object.
-
-```java
-batchClient.getCertificateOperations().listCertificates()
-```
-
-With `Azure-Compute-Batch`, you can call `listCertificates` directly on the client.
-
-```java com.azure.compute.batch.list-certificates.certificate-list
-PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
-```
-
-#### Delete Certificate
-
-Previously, in `Microsoft-Azure-Batch`, to delete a certificate, you could call the `deleteCertificate` method from the `CertificateOperations` object.
-
-```java
-String thumbprintAlgorithm = "sha1";
-String thumbprint = "your-thumbprint";
-batchClient.certificateOperations().deleteCertificate(thumbprintAlgorithm, thumbprint);
-```
-
-With `Azure-Compute-Batch`, you can call `beginDeleteCertificate` directly on the client. It is also now an LRO (Long Running Operation).
-
-```java com.azure.compute.batch.certificate.delete-certificate
-String thumbprintAlgorithm = "sha1";
-String thumbprint = "your-thumbprint";
-SyncPoller<BatchCertificate, Void> deleteCertificatePoller = batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
-deleteCertificatePoller.waitForCompletion();
-PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificatePoller.poll();
-```
-
-#### Cancel Delete Certificate
-
-Previously, in `Microsoft-Azure-Batch`, to cancel the deletion of a certificate, you could call the `cancelDeleteCertificate` method from the `CertificateOperations` object.
-
-```java
-String thumbprintAlgorithm = "sha1";
-String thumbprint = "your-thumbprint";
-batchClient.certificateOperations().cancelDeleteCertificate(thumbprintAlgorithm, thumbprint);
-```
-
-With `Azure-Compute-Batch`, you can call `cancelCertificateDeletion` directly on the client.
-
-```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
-batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
 ```
 
 ### Application Operations

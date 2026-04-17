@@ -19,10 +19,12 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +32,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -40,6 +43,7 @@ import org.springframework.boot.context.properties.source.InvalidConfigurationPr
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -113,7 +117,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         String[] labelFilter = { "\0" };
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, KEY_FILTER, labelFilter);
+            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null);
     }
 
     @AfterEach
@@ -191,5 +195,95 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         assertThatThrownBy(() -> propertySource.initProperties(null, contextMock))
             .isInstanceOf(InvalidConfigurationPropertyValueException.class)
             .hasMessageNotContaining(ITEM_INVALID_JSON.getValue());
+    }
+
+    @Test
+    public void initPropertiesWithTagsFilterTest() throws IOException {
+        // Create a property source with tags filter
+        String[] labelFilter = { "\0" };
+        List<String> tagsFilter = Arrays.asList("env=prod", "team=backend");
+        AppConfigurationApplicationSettingPropertySource taggedPropertySource
+            = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter);
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
+
+        taggedPropertySource.initProperties(null, contextMock);
+
+        // Capture the SettingSelector passed to listSettings
+        ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
+        verify(clientMock).listSettings(selectorCaptor.capture(), Mockito.any(Context.class));
+
+        SettingSelector capturedSelector = selectorCaptor.getValue();
+        assertThat(capturedSelector.getTagsFilter()).isNotNull();
+        assertThat(capturedSelector.getTagsFilter()).hasSize(2);
+        assertThat(capturedSelector.getTagsFilter()).containsExactly("env=prod", "team=backend");
+    }
+
+    @Test
+    public void initPropertiesWithNullTagsFilterTest() throws IOException {
+        // Create a property source with null tags filter (default behavior)
+        String[] labelFilter = { "\0" };
+        AppConfigurationApplicationSettingPropertySource untaggedPropertySource
+            = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null);
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
+
+        untaggedPropertySource.initProperties(null, contextMock);
+
+        // Capture the SettingSelector passed to listSettings
+        ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
+        verify(clientMock).listSettings(selectorCaptor.capture(), Mockito.any(Context.class));
+
+        SettingSelector capturedSelector = selectorCaptor.getValue();
+        // Tags filter should not be set when null
+        assertThat(capturedSelector.getTagsFilter()).isNull();
+    }
+
+    @Test
+    public void initPropertiesWithEmptyTagsFilterTest() throws IOException {
+        // Create a property source with empty tags filter
+        String[] labelFilter = { "\0" };
+        List<String> tagsFilter = new ArrayList<>();
+        AppConfigurationApplicationSettingPropertySource emptyTagPropertySource
+            = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter);
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
+
+        emptyTagPropertySource.initProperties(null, contextMock);
+
+        // Capture the SettingSelector passed to listSettings
+        ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
+        verify(clientMock).listSettings(selectorCaptor.capture(), Mockito.any(Context.class));
+
+        SettingSelector capturedSelector = selectorCaptor.getValue();
+        // Tags filter should not be set when empty
+        assertThat(capturedSelector.getTagsFilter()).isNull();
+    }
+
+    @Test
+    public void initPropertiesWithTagsFilterMultipleLabelsTest() throws IOException {
+        // Create a property source with tags filter and multiple labels
+        String[] labelFilter = { "dev", "prod" };
+        List<String> tagsFilter = Arrays.asList("env=staging");
+        AppConfigurationApplicationSettingPropertySource multiLabelPropertySource
+            = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter);
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
+
+        multiLabelPropertySource.initProperties(null, contextMock);
+
+        // Capture all SettingSelector instances passed to listSettings (one per label)
+        ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
+        verify(clientMock, Mockito.times(2)).listSettings(selectorCaptor.capture(), Mockito.any(Context.class));
+
+        // Both calls should have the tags filter set
+        for (SettingSelector capturedSelector : selectorCaptor.getAllValues()) {
+            assertThat(capturedSelector.getTagsFilter()).isNotNull();
+            assertThat(capturedSelector.getTagsFilter()).containsExactly("env=staging");
+        }
     }
 }

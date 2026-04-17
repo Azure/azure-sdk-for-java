@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class ElasticVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticVolumes_Update.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_Update.json
      */
     /**
      * Sample code: ElasticVolumes_Update.

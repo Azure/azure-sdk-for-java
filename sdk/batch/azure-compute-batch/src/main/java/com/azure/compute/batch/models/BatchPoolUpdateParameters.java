@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Parameters for updating an Azure Batch Pool.
@@ -53,20 +52,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
     private BatchStartTask startTask;
 
     /*
-     * If this element is present, it replaces any existing Certificate references configured on the Pool.
-     * If omitted, any existing Certificate references are left unchanged.
-     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     */
-    @Generated
-    private List<BatchCertificateReference> certificateReferences;
-
-    /*
      * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new
      * Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
      * reimaged. If this element is present, it replaces any existing Package references. If you specify an empty
@@ -92,13 +77,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
-     * The desired node communication mode for the pool. If this element is present, it replaces the existing
-     * targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
-     */
-    @Generated
-    private BatchNodeCommunicationMode targetNodeCommunicationMode;
-
-    /*
      * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
      * default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or
      * 256.<br /><br />This field can be updated only when the pool is empty.
@@ -118,15 +96,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
      */
     @Generated
     private NetworkConfiguration networkConfiguration;
-
-    /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
-     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
-     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
-     * 'UserSubscription'.<br /><br />This field can be updated only when the pool is empty.
-     */
-    @Generated
-    private Map<String, String> resourceTags;
 
     /*
      * The list of user Accounts to be created on each Compute Node in the Pool. This field can be updated only when the
@@ -264,46 +233,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
     }
 
     /**
-     * Get the certificateReferences property: If this element is present, it replaces any existing Certificate
-     * references configured on the Pool.
-     * If omitted, any existing Certificate references are left unchanged.
-     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @return the certificateReferences value.
-     */
-    @Generated
-    public List<BatchCertificateReference> getCertificateReferences() {
-        return this.certificateReferences;
-    }
-
-    /**
-     * Set the certificateReferences property: If this element is present, it replaces any existing Certificate
-     * references configured on the Pool.
-     * If omitted, any existing Certificate references are left unchanged.
-     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param certificateReferences the certificateReferences value to set.
-     * @return the BatchPoolUpdateParameters object itself.
-     */
-    @Generated
-    public BatchPoolUpdateParameters setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
-        this.certificateReferences = certificateReferences;
-        return this;
-    }
-
-    /**
      * Get the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
      * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
      * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
@@ -386,33 +315,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
     }
 
     /**
-     * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
-     * metadata is left unchanged.
-     *
-     * @return the targetNodeCommunicationMode value.
-     */
-    @Generated
-    public BatchNodeCommunicationMode getTargetNodeCommunicationMode() {
-        return this.targetNodeCommunicationMode;
-    }
-
-    /**
-     * Set the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
-     * metadata is left unchanged.
-     *
-     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolUpdateParameters object itself.
-     */
-    @Generated
-    public BatchPoolUpdateParameters
-        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
-        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
-        return this;
-    }
-
-    /**
      * Get the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
      * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores
      * of the vmSize of the pool or 256.&lt;br /&gt;&lt;br /&gt;This field can be updated only when the pool is empty.
@@ -483,36 +385,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
     @Generated
     public BatchPoolUpdateParameters setNetworkConfiguration(NetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.&lt;br /&gt;&lt;br /&gt;This field can be updated only when
-     * the pool is empty.
-     *
-     * @return the resourceTags value.
-     */
-    @Generated
-    public Map<String, String> getResourceTags() {
-        return this.resourceTags;
-    }
-
-    /**
-     * Set the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.&lt;br /&gt;&lt;br /&gt;This field can be updated only when
-     * the pool is empty.
-     *
-     * @param resourceTags the resourceTags value to set.
-     * @return the BatchPoolUpdateParameters object itself.
-     */
-    @Generated
-    public BatchPoolUpdateParameters setResourceTags(Map<String, String> resourceTags) {
-        this.resourceTags = resourceTags;
         return this;
     }
 
@@ -601,18 +473,13 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
         jsonWriter.writeStringField("vmSize", this.vmSize);
         jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
         jsonWriter.writeJsonField("startTask", this.startTask);
-        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
-        jsonWriter.writeStringField("targetNodeCommunicationMode",
-            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
         jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
         jsonWriter.writeJsonField("taskSchedulingPolicy", this.taskSchedulingPolicy);
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
-        jsonWriter.writeMapField("resourceTags", this.resourceTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("userAccounts", this.userAccounts, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("mountConfiguration", this.mountConfiguration,
             (writer, element) -> writer.writeJson(element));
@@ -644,10 +511,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("startTask".equals(fieldName)) {
                     deserializedBatchPoolUpdateParameters.startTask = BatchStartTask.fromJson(reader);
-                } else if ("certificateReferences".equals(fieldName)) {
-                    List<BatchCertificateReference> certificateReferences
-                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
-                    deserializedBatchPoolUpdateParameters.certificateReferences = certificateReferences;
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     List<BatchApplicationPackageReference> applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -658,9 +521,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {
                     deserializedBatchPoolUpdateParameters.virtualMachineConfiguration
                         = VirtualMachineConfiguration.fromJson(reader);
-                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
-                    deserializedBatchPoolUpdateParameters.targetNodeCommunicationMode
-                        = BatchNodeCommunicationMode.fromString(reader.getString());
                 } else if ("taskSlotsPerNode".equals(fieldName)) {
                     deserializedBatchPoolUpdateParameters.taskSlotsPerNode = reader.getNullable(JsonReader::getInt);
                 } else if ("taskSchedulingPolicy".equals(fieldName)) {
@@ -668,9 +528,6 @@ public final class BatchPoolUpdateParameters implements JsonSerializable<BatchPo
                         = BatchTaskSchedulingPolicy.fromJson(reader);
                 } else if ("networkConfiguration".equals(fieldName)) {
                     deserializedBatchPoolUpdateParameters.networkConfiguration = NetworkConfiguration.fromJson(reader);
-                } else if ("resourceTags".equals(fieldName)) {
-                    Map<String, String> resourceTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedBatchPoolUpdateParameters.resourceTags = resourceTags;
                 } else if ("userAccounts".equals(fieldName)) {
                     List<UserAccount> userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
                     deserializedBatchPoolUpdateParameters.userAccounts = userAccounts;

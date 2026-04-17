@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -60,6 +61,16 @@ class AzureServiceBusClientBuilderConfiguration {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                                                     this.serviceBusProperties.getConnectionString());
+    }
+
+    @Bean
+    @ConditionalOnBean(AzureServiceBusConnectionDetails.class)
+    @ConditionalOnMissingBean(value = AzureServiceType.ServiceBus.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionDetailsConnectionStringProvider(
+        AzureServiceBusConnectionDetails connectionDetails) {
+
+        return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
+                                                    connectionDetails.getConnectionString());
     }
 
 }

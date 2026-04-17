@@ -1,26 +1,29 @@
 # Release History
 
-## 1.19.0-beta.2 (Unreleased)
+## 1.19.0-beta.3 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+- Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications.
+
+### Other Changes
+
+- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
+
+## 1.19.0-beta.2 (2026-02-25)
+
+### Breaking Changes
+
 - Renamed `enableAzureTokenProxy()` method in `WorkloadIdentityCredentialBuilder` to `enableAzureProxy()`. These changes only affect code written against beta version 1.19.0-beta.1.
 
 ### Bugs Fixed
+
 - Fixed `NullPointerException` in `IdentityClientOptions` when running in GraalVM native images (e.g., Quarkus applications). Replaced reflection-dependent `AzureIdentityEnvVars` enum usage with direct string literal to ensure compatibility with native compilation.
 - Fixed logging for token authentication errors to include full stack traces with inner exceptions. Previously, error logs referenced "inner exceptions" but only logged the error message, making debugging difficult.
-
-### Other Changes
-- Removed unused jetty, redisson, and lettuce-core dependencies.
-
-## 1.19.0-beta.1 (2025-11-14)
-
-### Features Added
-- Added `enableAzureTokenProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`).
-
-### Other Changes
-- Ported the authentication flow of WorkloadIdentityCredential to use Msal4j.
 
 ## 1.18.2 (2026-01-20)
 
@@ -33,6 +36,16 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+
+## 1.19.0-beta.1 (2025-11-14)
+
+### Features Added
+
+- Added `enableAzureTokenProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`).
+
+### Other Changes
+
+- Ported the authentication flow of WorkloadIdentityCredential to use Msal4j.
 
 ## 1.18.1 (2025-10-13)
 

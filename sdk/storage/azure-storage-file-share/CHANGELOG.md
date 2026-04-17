@@ -1,6 +1,6 @@
 # Release History
 
-## 12.30.0-beta.1 (Unreleased)
+## 12.31.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.31.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for uploading up to 4 MiB of data with create file APIs.
+- Added support for service version 2026-06-06.
+
+## 12.30.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for improved error handling for file share provisioning.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
 
 ## 12.29.2 (2026-02-05)
 

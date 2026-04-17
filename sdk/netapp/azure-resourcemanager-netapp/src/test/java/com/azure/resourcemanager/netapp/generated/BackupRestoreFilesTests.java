@@ -13,21 +13,22 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"xetlgydlhqv\",\"n\",\"pxy\"],\"restoreFilePath\":\"fiqgeaar\",\"destinationVolumeId\":\"gjekglklby\"}")
+            "{\"fileList\":[\"qyybxubmdnafcbq\",\"remj\",\"laqacigele\"],\"restoreFilePath\":\"d\",\"destinationVolumeId\":\"vqvwzkjopwbe\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("xetlgydlhqv", model.fileList().get(0));
-        Assertions.assertEquals("fiqgeaar", model.restoreFilePath());
-        Assertions.assertEquals("gjekglklby", model.destinationVolumeId());
+        Assertions.assertEquals("qyybxubmdnafcbq", model.fileList().get(0));
+        Assertions.assertEquals("d", model.restoreFilePath());
+        Assertions.assertEquals("vqvwzkjopwbe", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("xetlgydlhqv", "n", "pxy"))
-            .withRestoreFilePath("fiqgeaar")
-            .withDestinationVolumeId("gjekglklby");
+        BackupRestoreFiles model
+            = new BackupRestoreFiles().withFileList(Arrays.asList("qyybxubmdnafcbq", "remj", "laqacigele"))
+                .withRestoreFilePath("d")
+                .withDestinationVolumeId("vqvwzkjopwbe");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("xetlgydlhqv", model.fileList().get(0));
-        Assertions.assertEquals("fiqgeaar", model.restoreFilePath());
-        Assertions.assertEquals("gjekglklby", model.destinationVolumeId());
+        Assertions.assertEquals("qyybxubmdnafcbq", model.fileList().get(0));
+        Assertions.assertEquals("d", model.restoreFilePath());
+        Assertions.assertEquals("vqvwzkjopwbe", model.destinationVolumeId());
     }
 }

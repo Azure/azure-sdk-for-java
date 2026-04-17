@@ -25,13 +25,14 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import com.azure.resourcemanager.netapp.models.LargeVolumeType;
 import com.azure.resourcemanager.netapp.models.LdapServerType;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
+import com.azure.resourcemanager.netapp.models.ListQuotaReportResult;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.QuotaReportFilterRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
@@ -650,12 +651,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public ListQuotaReportResponse listQuotaReport() {
+    public ListQuotaReportResult listQuotaReport() {
         return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public ListQuotaReportResponse listQuotaReport(Context context) {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
+    public ListQuotaReportResult listQuotaReport(QuotaReportFilterRequest body, Context context) {
+        return serviceManager.volumes()
+            .listQuotaReport(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public VolumeImpl withRegion(Region location) {

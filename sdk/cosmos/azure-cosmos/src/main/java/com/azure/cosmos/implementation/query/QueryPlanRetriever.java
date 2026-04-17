@@ -33,13 +33,14 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 class QueryPlanRetriever {
-    private final static
-    ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
-    private final static
-    ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
-        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private static final String TRUE = "True";
 
@@ -86,7 +87,6 @@ class QueryPlanRetriever {
 
         PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
 
-
         final Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY_PLAN_REQUEST, TRUE);
@@ -107,11 +107,11 @@ class QueryPlanRetriever {
         queryPlanRequest.useGatewayMode = true;
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
-        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
+        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = queryOptionsAccessor()
             .getImpl(nonNullRequestOptions)
             .getCosmosEndToEndLatencyPolicyConfig();
 
-        List<String> excludeRegions = qryOptAccessor
+        List<String> excludeRegions = queryOptionsAccessor()
             .getImpl(nonNullRequestOptions)
             .getExcludedRegions();
 
@@ -153,7 +153,7 @@ class QueryPlanRetriever {
                     CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
                     if (HttpConstants.StatusCodes.NOTFOUND == (cosmosException.getStatusCode()) && HttpConstants.SubStatusCodes.UNKNOWN == (cosmosException.getSubStatusCode())) {
-                        cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                        cosmosExceptionAccessor().setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                     }
 
                     return cosmosException;

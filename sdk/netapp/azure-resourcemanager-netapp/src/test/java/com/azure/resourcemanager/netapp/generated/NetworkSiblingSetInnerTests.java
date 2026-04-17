@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"jdjltymkmvgui\",\"subnetId\":\"wartspphkixkykxd\",\"networkSiblingSetStateId\":\"j\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"hikkflrmy\",\"volumeResourceIds\":[\"nc\",\"lhrisw\",\"lmiiiovg\"]},{\"ipAddress\":\"gxuugqkctotio\",\"volumeResourceIds\":[\"teqdptj\",\"wdtgukranblw\",\"hqlkccuzgygqwaho\",\"ulwgniiprglvawuw\"]},{\"ipAddress\":\"ufypiv\",\"volumeResourceIds\":[\"bjpmcubk\",\"ifoxxkubvphav\",\"mhbrbqgvg\"]},{\"ipAddress\":\"pbbttefjoknss\",\"volumeResourceIds\":[\"qedikdfrd\",\"iqmrjgeihfqlggw\",\"iwzcxmjpbyeph\"]}]}")
+            "{\"networkSiblingSetId\":\"pvn\",\"subnetId\":\"wmtxkyctwwgz\",\"networkSiblingSetStateId\":\"jlmec\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Failed\",\"nicInfoList\":[{\"ipAddress\":\"neezaifg\",\"volumeResourceIds\":[\"oqqtl\",\"fhzbkr\",\"jjjavfqnvhnq\"]},{\"ipAddress\":\"wdogiyetesyp\",\"volumeResourceIds\":[\"bztjhqtfbovnynkb\",\"etnjuhpsprkz\",\"aupia\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("jdjltymkmvgui", model.networkSiblingSetId());
-        Assertions.assertEquals("wartspphkixkykxd", model.subnetId());
-        Assertions.assertEquals("j", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.BASIC, model.networkFeatures());
-        Assertions.assertEquals("nc", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("pvn", model.networkSiblingSetId());
+        Assertions.assertEquals("wmtxkyctwwgz", model.subnetId());
+        Assertions.assertEquals("jlmec", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
+        Assertions.assertEquals("oqqtl", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

@@ -4,7 +4,9 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -27,6 +29,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
@@ -38,10 +41,15 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getTidFromToken;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SasAsyncTests extends DataLakeTestBase {
@@ -843,6 +851,231 @@ public class SasAsyncTests extends DataLakeTestBase {
                 .getProperties()))
             .expectNextCount(1)
             .verifyComplete();
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void dataLakeFileSystemDynamicUserDelegationSas() {
+        liveTestScenarioWithRetry(() -> {
+            // Define request headers and query parameters
+            Map<String, String> requestHeaders = new HashMap<>();
+            requestHeaders.put("foo$", "bar!");
+            requestHeaders.put("company", "msft");
+            requestHeaders.put("city", "redmond,atlanta,reston");
+
+            Map<String, String> requestQueryParams = new HashMap<>();
+            requestQueryParams.put("hello$", "world!");
+            requestQueryParams.put("check", "spelling");
+            requestQueryParams.put("firstName", "john,Tim");
+
+            // Generate user delegation SAS with request headers and query params
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setRequestHeaders(requestHeaders)
+                    .setRequestQueryParameters(requestQueryParams);
+
+            Mono<PathProperties> response
+                = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime).flatMap(r -> {
+                    r.setSignedObjectId(testResourceNamer.recordValueFromConfig(r.getSignedObjectId()));
+                    r.setSignedTenantId(testResourceNamer.recordValueFromConfig(r.getSignedTenantId()));
+
+                    String sasWithPermissions = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, r);
+
+                    DataLakeFileAsyncClient client
+                        = new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                            .sasToken(sasWithPermissions)
+                            .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                            .buildAsyncClient()
+                            .getFileAsyncClient(pathName);
+
+                    return client.getProperties();
+
+                });
+            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-04-06")
+    public void dataLakeFileDynamicUserDelegationSas() {
+        liveTestScenarioWithRetry(() -> {
+            // Define request headers and query parameters
+            Map<String, String> requestHeaders = new HashMap<>();
+            requestHeaders.put("foo$", "bar!");
+            requestHeaders.put("company", "msft");
+            requestHeaders.put("city", "redmond,atlanta,reston");
+
+            Map<String, String> requestQueryParams = new HashMap<>();
+            requestQueryParams.put("hello$", "world!");
+            requestQueryParams.put("check", "spelling");
+            requestQueryParams.put("firstName", "john,Tim");
+
+            // Generate user delegation SAS with request headers and query params
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setRequestHeaders(requestHeaders)
+                    .setRequestQueryParameters(requestQueryParams);
+
+            Mono<PathProperties> response
+                = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime).flatMap(r -> {
+                    r.setSignedObjectId(testResourceNamer.recordValueFromConfig(r.getSignedObjectId()));
+                    r.setSignedTenantId(testResourceNamer.recordValueFromConfig(r.getSignedTenantId()));
+
+                    String sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, r);
+
+                    DataLakeFileAsyncClient client = new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl())
+                        .sasToken(sasWithPermissions)
+                        .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                        .buildFileAsyncClient();
+
+                    return client.getProperties();
+                });
+
+            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void dataLakeFileSystemSasUserDelegationDelegatedTenantId() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            DataLakeGetUserDelegationKeyOptions options
+                = new DataLakeGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+
+            Mono<Response<UserDelegationKey>> userDelegationKeyMono
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options);
+
+            Mono<PathProperties> response = userDelegationKeyMono.flatMap(r -> {
+                UserDelegationKey userDelegationKey = r.getValue();
+                assertNotNull(userDelegationKey);
+                assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+                DataLakeServiceSasSignatureValues sasValues
+                    = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+                String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+                assertTrue(sas.contains("sduoid=" + oid));
+                assertTrue(sas.contains("skdutid=" + tid));
+
+                // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+                // token credential.
+                DataLakeFileSystemAsyncClient client = instrument(
+                    new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                        .sasToken(sas)
+                        .credential(tokenCredential)).buildAsyncClient();
+
+                return client.getFileAsyncClient(pathName).getPropertiesWithResponse(null);
+            }).map(resp -> {
+                StorageCommonTestUtils.verifySasAndTokenInRequest(resp);
+                return resp.getValue();
+            });
+
+            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void dataLakeFileSystemSasUserDelegationDelegatedTenantIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            String tid = getTidFromToken(tokenCredential);
+
+            DataLakeGetUserDelegationKeyOptions options
+                = new DataLakeGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            Mono<Response<UserDelegationKey>> userDelegationKeyMono
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options);
+
+            Mono<Void> response = userDelegationKeyMono.flatMap(r -> {
+                UserDelegationKey userDelegationKey = r.getValue();
+                assertNotNull(userDelegationKey);
+                assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+                DataLakeServiceSasSignatureValues sasValues
+                    = new DataLakeServiceSasSignatureValues(expiryTime, permissions);
+                String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+                assertTrue(sas.contains("skdutid=" + tid));
+                assertFalse(sas.contains("sduoid="));
+
+                // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+                // token credential.
+                DataLakeFileSystemAsyncClient client = instrument(
+                    new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                        .sasToken(sas)).buildAsyncClient();
+
+                return client.listPaths().collectList().then();
+            });
+
+            StepVerifier.create(response).verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = Assertions.assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(403, e.getStatusCode());
+                assertEquals("AuthenticationFailed", e.getErrorCode());
+            });
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void dataLakeFileSystemSasUserDelegationDelegatedTenantIdRoundTrip() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            DataLakeGetUserDelegationKeyOptions options
+                = new DataLakeGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            Mono<Response<UserDelegationKey>> userDelegationKeyMono
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options);
+
+            Mono<String> response = userDelegationKeyMono.flatMap(r -> {
+                UserDelegationKey userDelegationKey = r.getValue();
+                assertNotNull(userDelegationKey);
+                assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+                DataLakeServiceSasSignatureValues sasValues
+                    = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+                String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+                BlobUrlParts originalParts
+                    = BlobUrlParts.parse(dataLakeFileSystemClient.getFileSystemUrl() + "?" + sas);
+
+                BlobUrlParts roundTripParts = BlobUrlParts.parse(originalParts.toUrl());
+
+                assertEquals(originalParts.toUrl().toString(), roundTripParts.toUrl().toString());
+                assertEquals(originalParts.getCommonSasQueryParameters().encode(),
+                    roundTripParts.getCommonSasQueryParameters().encode());
+
+                return Mono.just(sas);
+            });
+
+            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        });
     }
 
 }

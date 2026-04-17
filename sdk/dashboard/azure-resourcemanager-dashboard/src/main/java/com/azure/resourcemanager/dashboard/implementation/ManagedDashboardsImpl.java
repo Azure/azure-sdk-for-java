@@ -31,12 +31,8 @@ public final class ManagedDashboardsImpl implements ManagedDashboards {
         Context context) {
         Response<ManagedDashboardInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dashboardName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedDashboardImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ManagedDashboardImpl(inner.getValue(), this.manager()));
     }
 
     public ManagedDashboard getByResourceGroup(String resourceGroupName, String dashboardName) {

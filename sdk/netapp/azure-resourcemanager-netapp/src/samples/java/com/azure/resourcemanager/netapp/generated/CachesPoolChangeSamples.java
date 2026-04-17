@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
  */
 public final class CachesPoolChangeSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Caches_PoolChange.json
+     * x-ms-original-file: 2025-12-15-preview/Caches_PoolChange.json
      */
     /**
      * Sample code: Caches_PoolChange.

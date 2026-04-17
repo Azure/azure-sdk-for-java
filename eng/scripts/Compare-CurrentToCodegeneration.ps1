@@ -148,7 +148,8 @@ $generateScript = {
 
   if ($_.Type -eq 'Swagger') {
     # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
-    $generateOutput = (& $updateCodegenScript 6>&1)
+    # 2>&1 redirects stderr to stdout to suppress autorest deprecation messages that would fail the pipeline.
+    $generateOutput = (& $updateCodegenScript 2>&1 6>&1)
 
     if ($LastExitCode -ne 0) {
       Write-Host "$separatorBar`nError running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))`n$separatorBar"

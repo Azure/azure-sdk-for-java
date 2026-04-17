@@ -34,12 +34,8 @@ public final class VirtualHardDisksImpl implements VirtualHardDisks {
         String virtualHardDiskName, Context context) {
         Response<VirtualHardDiskInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualHardDiskName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualHardDiskImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VirtualHardDiskImpl(inner.getValue(), this.manager()));
     }
 
     public VirtualHardDisk getByResourceGroup(String resourceGroupName, String virtualHardDiskName) {

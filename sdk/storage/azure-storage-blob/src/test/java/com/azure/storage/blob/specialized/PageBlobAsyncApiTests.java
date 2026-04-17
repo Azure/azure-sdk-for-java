@@ -17,6 +17,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -570,7 +571,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(destBlob.createIfNotExists(Constants.KB)
             .then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null))).verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getStatusCode() == 401);
+                assertEquals(401, e.getStatusCode());
                 assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
                 assertTrue(e.getServiceMessage()
                     .contains(
@@ -962,10 +963,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .thenMany(bc.listPageRanges(new BlobRange(0, (long) 4 * Constants.KB)));
 
         StepVerifier.create(response).assertNext(r -> {
-            assertEquals(r.getRange(), new HttpRange(0, (long) Constants.KB));
+            assertEquals(new HttpRange(0, (long) Constants.KB), r.getRange());
             assertFalse(r.isClear());
         }).assertNext(r -> {
-            assertEquals(r.getRange(), new HttpRange(2 * Constants.KB, (long) Constants.KB));
+            assertEquals(new HttpRange(2 * Constants.KB, (long) Constants.KB), r.getRange());
             assertFalse(r.isClear());
         }).verifyComplete();
     }
@@ -1247,16 +1248,16 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 .thenMany(bc.listPageRangesDiff(new BlobRange(0, 4L * Constants.KB), r.getSnapshotId())));
 
         StepVerifier.create(response).assertNext(r -> {
-            assertEquals(r.getRange(), new HttpRange(0L, (long) Constants.KB));
+            assertEquals(new HttpRange(0L, (long) Constants.KB), r.getRange());
             assertFalse(r.isClear());
         }).assertNext(r -> {
-            assertEquals(r.getRange(), new HttpRange(2 * Constants.KB, (long) Constants.KB));
+            assertEquals(new HttpRange(2 * Constants.KB, (long) Constants.KB), r.getRange());
             assertFalse(r.isClear());
         }).assertNext(r -> {
-            assertEquals(r.getRange(), new HttpRange(Constants.KB, (long) Constants.KB));
+            assertEquals(new HttpRange(Constants.KB, (long) Constants.KB), r.getRange());
             assertTrue(r.isClear());
         }).assertNext(r -> {
-            assertEquals(r.getRange(), new HttpRange(3 * Constants.KB, (long) Constants.KB));
+            assertEquals(new HttpRange(3 * Constants.KB, (long) Constants.KB), r.getRange());
             assertTrue(r.isClear());
         }).verifyComplete();
     }
@@ -1842,6 +1843,73 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void uploadPagesFromUriSourceCPK() {
+        // Create source page blob
+        PageBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyAsyncClient(sourceCustomerProvidedKey);
+
+        // Create destination page blob
+        PageBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyAsyncClient(destCustomerProvidedKey);
+
+        PageRange defaultRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(defaultRange, sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
+
+        StepVerifier.create(sourceBlob.createIfNotExists(PageBlobClient.PAGE_BYTES)
+            .then(destBlob.createIfNotExists(PageBlobClient.PAGE_BYTES))
+            .then(sourceBlob.uploadPages(defaultRange,
+                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
+            .then(destBlob.uploadPagesFromUrlWithResponse(options))).assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertEquals(destCustomerProvidedKey.getKeySha256(), r.getValue().getEncryptionKeySha256());
+            }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void uploadPagesFromUriSourceCPKFail() {
+        // Create source page blob
+        PageBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyAsyncClient(sourceCustomerProvidedKey);
+
+        // Create destination page blob
+        PageBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyAsyncClient(destCustomerProvidedKey);
+
+        PageRange defaultRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(defaultRange, sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
+
+        StepVerifier.create(sourceBlob.createIfNotExists(PageBlobClient.PAGE_BYTES)
+            .then(destBlob.createIfNotExists(PageBlobClient.PAGE_BYTES))
+            .then(sourceBlob.uploadPages(defaultRange,
+                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
+            .then(destBlob.uploadPagesFromUrlWithResponse(options))).verifyErrorSatisfies(e -> {
+                BlobStorageException ex = assertInstanceOf(BlobStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
+            });
     }
 
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.CacheUpdateProperties;
  */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Caches_Update.json
+     * x-ms-original-file: 2025-12-15-preview/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.

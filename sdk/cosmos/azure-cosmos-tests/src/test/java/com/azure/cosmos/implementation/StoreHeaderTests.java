@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.Assert;
@@ -18,12 +20,12 @@ public class StoreHeaderTests extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "internalClientBuildersWithSessionConsistency")
     public StoreHeaderTests(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void validateStoreHeader() {
         Document docDefinition1 = getDocumentDefinition();
         Document responseDoc1 = createDocument(client, createdDatabase.getId(), createdCollection.getId(), docDefinition1);
@@ -42,8 +44,8 @@ public class StoreHeaderTests extends TestSuiteBase {
     public void before_StoreHeaderTests() {
         client = clientBuilder().build();
 
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION_INTERNAL;
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

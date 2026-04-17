@@ -4,16 +4,20 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
+import com.azure.resourcemanager.netapp.models.AzureKeyVaultDetails;
 import com.azure.resourcemanager.netapp.models.Bucket;
 import com.azure.resourcemanager.netapp.models.BucketPatchPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerPatchProperties;
+import com.azure.resourcemanager.netapp.models.CertificateAkvDetails;
+import com.azure.resourcemanager.netapp.models.CredentialsAkvDetails;
+import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
 
 /**
  * Samples for Buckets Update.
  */
 public final class BucketsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Buckets_Update.json
+     * x-ms-original-file: 2025-12-15-preview/Buckets_Update.json
      */
     /**
      * Sample code: Buckets_Update.
@@ -26,8 +30,35 @@ public final class BucketsUpdateSamples {
             .getValue();
         resource.update()
             .withServer(new BucketServerPatchProperties().withFqdn("fullyqualified.domainname.com")
-                .withCertificateObject("<REDACTED>"))
+                .withCertificateObject("<REDACTED>")
+                .withOnCertificateConflictAction(OnCertificateConflictAction.UPDATE))
             .withPermissions(BucketPatchPermissions.READ_WRITE)
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-15-preview/Buckets_UpdateWithAkv.json
+     */
+    /**
+     * Sample code: Buckets_UpdateWithAkv.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void bucketsUpdateWithAkv(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        Bucket resource = manager.buckets()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", "bucket1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withServer(new BucketServerPatchProperties().withFqdn("fullyqualified.domainname.com")
+                .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
+            .withPermissions(BucketPatchPermissions.READ_ONLY)
+            .withAkvDetails(new AzureKeyVaultDetails()
+                .withCertificateAkvDetails(
+                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                        .withCertificateName("my-certificate"))
+                .withCredentialsAkvDetails(
+                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                        .withSecretName("fakeTokenPlaceholder")))
             .apply();
     }
 }

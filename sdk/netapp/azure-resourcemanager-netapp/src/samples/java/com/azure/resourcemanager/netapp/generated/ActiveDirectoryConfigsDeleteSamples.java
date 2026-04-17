@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ActiveDirectoryConfigsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ActiveDirectoryConfigs_Delete.json
+     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_Delete.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_Delete.

@@ -12,15 +12,16 @@ public final class ManagedHsmKeyRotationPolicyAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmKeyRotationPolicyAttributes model = BinaryData
-            .fromString("{\"created\":5395516794381693956,\"updated\":7063043374720708164,\"expiryTime\":\"pip\"}")
+            .fromString("{\"created\":3269415164815993977,\"updated\":8270148461266122367,\"expiryTime\":\"vvwxqi\"}")
             .toObject(ManagedHsmKeyRotationPolicyAttributes.class);
-        Assertions.assertEquals("pip", model.expiryTime());
+        Assertions.assertEquals("vvwxqi", model.expiryTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedHsmKeyRotationPolicyAttributes model = new ManagedHsmKeyRotationPolicyAttributes().withExpiryTime("pip");
+        ManagedHsmKeyRotationPolicyAttributes model
+            = new ManagedHsmKeyRotationPolicyAttributes().withExpiryTime("vvwxqi");
         model = BinaryData.fromObject(model).toObject(ManagedHsmKeyRotationPolicyAttributes.class);
-        Assertions.assertEquals("pip", model.expiryTime());
+        Assertions.assertEquals("vvwxqi", model.expiryTime());
     }
 }

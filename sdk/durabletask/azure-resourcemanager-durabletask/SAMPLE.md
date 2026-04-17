@@ -16,11 +16,18 @@
 ## Schedulers
 
 - [CreateOrUpdate](#schedulers_createorupdate)
+- [CreateOrUpdatePrivateEndpointConnection](#schedulers_createorupdateprivateendpointconnection)
 - [Delete](#schedulers_delete)
+- [DeletePrivateEndpointConnection](#schedulers_deleteprivateendpointconnection)
 - [GetByResourceGroup](#schedulers_getbyresourcegroup)
+- [GetPrivateEndpointConnection](#schedulers_getprivateendpointconnection)
+- [GetPrivateLink](#schedulers_getprivatelink)
 - [List](#schedulers_list)
 - [ListByResourceGroup](#schedulers_listbyresourcegroup)
+- [ListPrivateEndpointConnections](#schedulers_listprivateendpointconnections)
+- [ListPrivateLinks](#schedulers_listprivatelinks)
 - [Update](#schedulers_update)
+- [UpdatePrivateEndpointConnection](#schedulers_updateprivateendpointconnection)
 
 ## TaskHubs
 
@@ -36,7 +43,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Operations_List.json
+     * x-ms-original-file: 2026-02-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -63,7 +70,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-02-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_CreateOrReplace_MaximumSet.
@@ -91,7 +98,7 @@ public final class RetentionPoliciesCreateOrReplaceSamples {
  */
 public final class RetentionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RetentionPolicies_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-02-01/RetentionPolicies_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Delete_MaximumSet.
@@ -113,7 +120,7 @@ public final class RetentionPoliciesDeleteSamples {
  */
 public final class RetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RetentionPolicies_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-02-01/RetentionPolicies_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Get_MaximumSet.
@@ -135,7 +142,7 @@ public final class RetentionPoliciesGetSamples {
  */
 public final class RetentionPoliciesListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-02-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_ListByScheduler_MaximumSet.
@@ -163,7 +170,7 @@ import java.util.Arrays;
  */
 public final class RetentionPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RetentionPolicies_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-02-01/RetentionPolicies_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RetentionPolicies_Update_MaximumSet.
@@ -200,7 +207,7 @@ import java.util.Map;
  */
 public final class SchedulersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-02-01/Schedulers_CreateOrUpdate.json
      */
     /**
      * Sample code: Schedulers_CreateOrUpdate.
@@ -232,6 +239,42 @@ public final class SchedulersCreateOrUpdateSamples {
 }
 ```
 
+### Schedulers_CreateOrUpdatePrivateEndpointConnection
+
+```java
+import com.azure.resourcemanager.durabletask.models.PrivateEndpoint;
+import com.azure.resourcemanager.durabletask.models.PrivateEndpointConnectionProperties;
+import com.azure.resourcemanager.durabletask.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.durabletask.models.PrivateLinkServiceConnectionState;
+
+/**
+ * Samples for Schedulers CreateOrUpdatePrivateEndpointConnection.
+ */
+public final class SchedulersCreateOrUpdatePrivateEndpointConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Create_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateEndpointConnectionsCreateMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers()
+            .definePrivateEndpointConnection("spzckqrbhfnabu")
+            .withExistingScheduler("rgdurabletask", "testscheduler")
+            .withProperties(
+                new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                        .withDescription("ujdcsoyxljivwsgfkexhotaxcmzq")
+                        .withActionsRequired("mxymqfbbmpwjxsroldlsd")))
+            .create();
+    }
+}
+```
+
 ### Schedulers_Delete
 
 ```java
@@ -240,7 +283,7 @@ public final class SchedulersCreateOrUpdateSamples {
  */
 public final class SchedulersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_Delete.json
+     * x-ms-original-file: 2026-02-01/Schedulers_Delete.json
      */
     /**
      * Sample code: Schedulers_Delete.
@@ -253,6 +296,30 @@ public final class SchedulersDeleteSamples {
 }
 ```
 
+### Schedulers_DeletePrivateEndpointConnection
+
+```java
+/**
+ * Samples for Schedulers DeletePrivateEndpointConnection.
+ */
+public final class SchedulersDeletePrivateEndpointConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateEndpointConnectionsDeleteMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers()
+            .deletePrivateEndpointConnection("rgdurabletask", "testscheduler", "spzckqrbhfnabu",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Schedulers_GetByResourceGroup
 
 ```java
@@ -261,7 +328,7 @@ public final class SchedulersDeleteSamples {
  */
 public final class SchedulersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_Get.json
+     * x-ms-original-file: 2026-02-01/Schedulers_Get.json
      */
     /**
      * Sample code: Schedulers_Get.
@@ -275,6 +342,54 @@ public final class SchedulersGetByResourceGroupSamples {
 }
 ```
 
+### Schedulers_GetPrivateEndpointConnection
+
+```java
+/**
+ * Samples for Schedulers GetPrivateEndpointConnection.
+ */
+public final class SchedulersGetPrivateEndpointConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Get_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateEndpointConnectionsGetMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers()
+            .getPrivateEndpointConnectionWithResponse("rgdurabletask", "testscheduler", "spzckqrbhfnabu",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Schedulers_GetPrivateLink
+
+```java
+/**
+ * Samples for Schedulers GetPrivateLink.
+ */
+public final class SchedulersGetPrivateLinkSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateLinkResources_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PrivateLinkResources_Get_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateLinkResourcesGetMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers()
+            .getPrivateLinkWithResponse("rgdurabletask", "testscheduler", "ulbdiqhrmwnkejje",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Schedulers_List
 
 ```java
@@ -283,7 +398,7 @@ public final class SchedulersGetByResourceGroupSamples {
  */
 public final class SchedulersListSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_ListBySubscription.json
+     * x-ms-original-file: 2026-02-01/Schedulers_ListBySubscription.json
      */
     /**
      * Sample code: Schedulers_ListBySubscription.
@@ -304,7 +419,7 @@ public final class SchedulersListSamples {
  */
 public final class SchedulersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_ListByResourceGroup.json
+     * x-ms-original-file: 2026-02-01/Schedulers_ListByResourceGroup.json
      */
     /**
      * Sample code: Schedulers_ListByResourceGroup.
@@ -313,6 +428,51 @@ public final class SchedulersListByResourceGroupSamples {
      */
     public static void schedulersListByResourceGroup(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
         manager.schedulers().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Schedulers_ListPrivateEndpointConnections
+
+```java
+/**
+ * Samples for Schedulers ListPrivateEndpointConnections.
+ */
+public final class SchedulersListPrivateEndpointConnectionsSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_List_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateEndpointConnectionsListMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers()
+            .listPrivateEndpointConnections("rgdurabletask", "testscheduler", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Schedulers_ListPrivateLinks
+
+```java
+/**
+ * Samples for Schedulers ListPrivateLinks.
+ */
+public final class SchedulersListPrivateLinksSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateLinkResources_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PrivateLinkResources_List_MaximumSet.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateLinkResourcesListMaximumSet(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        manager.schedulers().listPrivateLinks("rgdurabletask", "testscheduler", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -333,7 +493,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_Update.json
+     * x-ms-original-file: 2026-02-01/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.
@@ -365,6 +525,40 @@ public final class SchedulersUpdateSamples {
 }
 ```
 
+### Schedulers_UpdatePrivateEndpointConnection
+
+```java
+import com.azure.resourcemanager.durabletask.models.OptionalPropertiesUpdateableProperties;
+import com.azure.resourcemanager.durabletask.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.durabletask.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.durabletask.models.PrivateLinkServiceConnectionState;
+
+/**
+ * Samples for Schedulers UpdatePrivateEndpointConnection.
+ */
+public final class SchedulersUpdatePrivateEndpointConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-02-01/PrivateEndpointConnections_Update.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Update.
+     * 
+     * @param manager Entry point to DurableTaskManager.
+     */
+    public static void
+        privateEndpointConnectionsUpdate(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
+        PrivateEndpointConnection resource = manager.schedulers()
+            .getPrivateEndpointConnectionWithResponse("rgdurabletask", "testscheduler", "spzckqrbhfnabu",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new OptionalPropertiesUpdateableProperties().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
+            .apply();
+    }
+}
+```
+
 ### TaskHubs_CreateOrUpdate
 
 ```java
@@ -375,7 +569,7 @@ import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
  */
 public final class TaskHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/TaskHubs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-02-01/TaskHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: TaskHubs_CreateOrUpdate.
@@ -400,7 +594,7 @@ public final class TaskHubsCreateOrUpdateSamples {
  */
 public final class TaskHubsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01/TaskHubs_Delete.json
+     * x-ms-original-file: 2026-02-01/TaskHubs_Delete.json
      */
     /**
      * Sample code: TaskHubs_Delete.
@@ -421,7 +615,7 @@ public final class TaskHubsDeleteSamples {
  */
 public final class TaskHubsGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01/TaskHubs_Get.json
+     * x-ms-original-file: 2026-02-01/TaskHubs_Get.json
      */
     /**
      * Sample code: TaskHubs_Get.
@@ -443,7 +637,7 @@ public final class TaskHubsGetSamples {
  */
 public final class TaskHubsListBySchedulerSamples {
     /*
-     * x-ms-original-file: 2025-11-01/TaskHubs_ListByScheduler.json
+     * x-ms-original-file: 2026-02-01/TaskHubs_ListByScheduler.json
      */
     /**
      * Sample code: TaskHubs_ListByScheduler.

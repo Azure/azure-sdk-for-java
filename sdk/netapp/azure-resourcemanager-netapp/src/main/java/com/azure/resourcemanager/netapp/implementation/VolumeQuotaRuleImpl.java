@@ -9,7 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRuleInner;
 import com.azure.resourcemanager.netapp.models.ProvisioningState;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRulePatch;
 import java.util.Collections;
@@ -57,7 +57,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
         return this.innerModel().quotaSizeInKiBs();
     }
 
-    public Type quotaType() {
+    public QuotaType quotaType() {
         return this.innerModel().quotaType();
     }
 
@@ -205,7 +205,7 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
         }
     }
 
-    public VolumeQuotaRuleImpl withQuotaType(Type quotaType) {
+    public VolumeQuotaRuleImpl withQuotaType(QuotaType quotaType) {
         this.innerModel().withQuotaType(quotaType);
         return this;
     }

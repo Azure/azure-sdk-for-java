@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.ElasticVolumeRevert;
  */
 public final class ElasticVolumesRevertSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticVolumes_Revert.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_Revert.json
      */
     /**
      * Sample code: ElasticVolumes_Revert.

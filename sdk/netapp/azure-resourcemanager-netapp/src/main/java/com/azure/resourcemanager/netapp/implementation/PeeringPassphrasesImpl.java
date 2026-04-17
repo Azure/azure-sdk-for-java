@@ -30,6 +30,10 @@ public final class PeeringPassphrasesImpl implements PeeringPassphrases {
         return this.innerModel().vserverPeeringCommand();
     }
 
+    public String criticalWarning() {
+        return this.innerModel().criticalWarning();
+    }
+
     public PeeringPassphrasesInner innerModel() {
         return this.innerObject;
     }

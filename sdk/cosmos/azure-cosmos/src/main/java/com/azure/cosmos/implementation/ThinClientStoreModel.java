@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
@@ -12,14 +13,16 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +38,7 @@ import java.util.Map;
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
 
@@ -104,9 +108,17 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
-        if (content.readableBytes() == 0) {
+        if (content.refCnt() == 0) {
+            // ByteBuf was already released (e.g., stream RST due to responseTimeout on HTTP/2).
+            // Treat as empty response to avoid IllegalReferenceCountException during decoding.
+            logger.debug("Content ByteBuf already released (refCnt=0) in unwrapToStoreResponse, treating as empty");
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+        }
 
-            ReferenceCountUtil.safeRelease(content);
+        if (content.readableBytes() == 0) {
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
@@ -135,33 +147,35 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             payloadBuf
                         );
 
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
-                            // payload is a slice/derived view; super() owns payload, we still own the container
-                            // this includes scenarios where payloadBuf == EMPTY_BUFFER
-                            ReferenceCountUtil.safeRelease(content);
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                            safeSilentRelease(content);
                         }
 
                         return storeResponse;
-                    } catch (Throwable t){
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
-                            // payload is a slice/derived view; super() owns payload, we still own the container
-                            // this includes scenarios where payloadBuf == EMPTY_BUFFER
-                            ReferenceCountUtil.safeRelease(content);
+                    } catch (Throwable t) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                            safeSilentRelease(content);
                         }
 
                         throw t;
                     }
                 }
 
-                ReferenceCountUtil.safeRelease(content);
+                if (content.refCnt() > 0) {
+                    safeSilentRelease(content);
+                }
                 return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
             }
 
-            ReferenceCountUtil.safeRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             throw new IllegalStateException("Invalid rntbd response");
         } catch (Throwable t) {
             // Ensure container is not leaked on any unexpected path
-            ReferenceCountUtil.safeRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             throw t;
         }
     }
@@ -172,6 +186,36 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             && request.requestContext.resolvedPartitionKeyRange == null
             && request.getPartitionKeyRangeIdentity() != null;
     }
+
+    @Override
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        // Ensure partitionKeyDefinition is resolved from the collection cache before
+        // reaching wrapInHttpRequest, which needs it for client-side EPK computation.
+        // This handles cases where clone() or other code paths didn't propagate partitionKeyDefinition.
+        if (request.getPartitionKeyInternal() != null && request.getPartitionKeyDefinition() == null) {
+            RxClientCollectionCache cache = this.getCollectionCache();
+            if (cache != null) {
+                return cache
+                    .resolveCollectionAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        request)
+                    .flatMap(collectionHolder -> {
+                        if (collectionHolder.v != null) {
+                            request.setPartitionKeyDefinition(collectionHolder.v.getPartitionKey());
+                        } else {
+                            throw new NullPointerException(
+                                "Collection cache returned null for request to "
+                                    + request.getResourceAddress()
+                                    + ". Cannot resolve partitionKeyDefinition for client-side EPK computation.");
+                        }
+                        return super.performRequestInternal(request, requestUri);
+                    });
+            }
+        }
+
+        return super.performRequestInternal(request, requestUri);
+    }
+
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {
@@ -223,9 +267,12 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray));
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
         } finally {
-            ReferenceCountUtil.safeRelease(byteBuf);
+            if (byteBuf.refCnt() > 0) {
+                safeSilentRelease(byteBuf);
+            }
         }
     }
 

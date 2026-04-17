@@ -1,5 +1,6 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model;
 
+import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 
@@ -16,5 +17,10 @@ public class QuickPulseMonitoringDataPoints implements JsonSerializable<QuickPul
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeArray(monitoringDataPoints, JsonWriter::writeJson, false);
+    }
+
+    public static QuickPulseMonitoringDataPoints fromJson(JsonReader jsonReader) throws IOException {
+        List<QuickPulseEnvelope> dataPoints = jsonReader.readArray(QuickPulseEnvelope::fromJson);
+        return new QuickPulseMonitoringDataPoints(dataPoints);
     }
 }

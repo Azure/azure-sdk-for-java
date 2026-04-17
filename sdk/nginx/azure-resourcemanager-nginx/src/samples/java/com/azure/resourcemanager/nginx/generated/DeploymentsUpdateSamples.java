@@ -11,7 +11,7 @@ import com.azure.resourcemanager.nginx.models.NginxDeployment;
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Update.json
+     * x-ms-original-file: 2025-11-01/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -26,7 +26,7 @@ public final class DeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_UpdateSubnet.json
+     * x-ms-original-file: 2025-11-01/Deployments_UpdateSubnet.json
      */
     /**
      * Sample code: Deployments_UpdateSubnet.

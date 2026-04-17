@@ -16,31 +16,31 @@ public final class ElasticBackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"dailyBackupsToKeep\":723884538,\"weeklyBackupsToKeep\":840919331,\"monthlyBackupsToKeep\":726767515,\"assignedVolumesCount\":981780547,\"policyState\":\"Disabled\"},\"eTag\":\"vnlvxbcuiiznktwf\",\"location\":\"snvpdibmi\",\"tags\":{\"yls\":\"tbzbkiwbuqnyophz\"},\"id\":\"crpfbcunez\",\"name\":\"cez\",\"type\":\"lfwyfwlwxjwetn\"}")
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"dailyBackupsToKeep\":417013973,\"weeklyBackupsToKeep\":438034725,\"monthlyBackupsToKeep\":187127133,\"assignedVolumesCount\":1432603704,\"policyState\":\"Enabled\"},\"eTag\":\"kyjpmspbps\",\"location\":\"fppyogtieyujtvcz\",\"tags\":{\"xvglnkvxlxp\":\"yxrxmunj\"},\"id\":\"glqivbgkcv\",\"name\":\"hpzvuqdflvoniyp\",\"type\":\"pubcpzgpxtivhjk\"}")
             .toObject(ElasticBackupPolicyInner.class);
-        Assertions.assertEquals("snvpdibmi", model.location());
-        Assertions.assertEquals("tbzbkiwbuqnyophz", model.tags().get("yls"));
-        Assertions.assertEquals(723884538, model.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(840919331, model.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(726767515, model.properties().monthlyBackupsToKeep());
-        Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, model.properties().policyState());
+        Assertions.assertEquals("fppyogtieyujtvcz", model.location());
+        Assertions.assertEquals("yxrxmunj", model.tags().get("xvglnkvxlxp"));
+        Assertions.assertEquals(417013973, model.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(438034725, model.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(187127133, model.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, model.properties().policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticBackupPolicyInner model = new ElasticBackupPolicyInner().withLocation("snvpdibmi")
-            .withTags(mapOf("yls", "tbzbkiwbuqnyophz"))
-            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(723884538)
-                .withWeeklyBackupsToKeep(840919331)
-                .withMonthlyBackupsToKeep(726767515)
-                .withPolicyState(ElasticBackupPolicyState.DISABLED));
+        ElasticBackupPolicyInner model = new ElasticBackupPolicyInner().withLocation("fppyogtieyujtvcz")
+            .withTags(mapOf("xvglnkvxlxp", "yxrxmunj"))
+            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(417013973)
+                .withWeeklyBackupsToKeep(438034725)
+                .withMonthlyBackupsToKeep(187127133)
+                .withPolicyState(ElasticBackupPolicyState.ENABLED));
         model = BinaryData.fromObject(model).toObject(ElasticBackupPolicyInner.class);
-        Assertions.assertEquals("snvpdibmi", model.location());
-        Assertions.assertEquals("tbzbkiwbuqnyophz", model.tags().get("yls"));
-        Assertions.assertEquals(723884538, model.properties().dailyBackupsToKeep());
-        Assertions.assertEquals(840919331, model.properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(726767515, model.properties().monthlyBackupsToKeep());
-        Assertions.assertEquals(ElasticBackupPolicyState.DISABLED, model.properties().policyState());
+        Assertions.assertEquals("fppyogtieyujtvcz", model.location());
+        Assertions.assertEquals("yxrxmunj", model.tags().get("xvglnkvxlxp"));
+        Assertions.assertEquals(417013973, model.properties().dailyBackupsToKeep());
+        Assertions.assertEquals(438034725, model.properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(187127133, model.properties().monthlyBackupsToKeep());
+        Assertions.assertEquals(ElasticBackupPolicyState.ENABLED, model.properties().policyState());
     }
 
     // Use "Map.of" if available

@@ -561,6 +561,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchTask if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchTask.
      */
     @Generated
@@ -572,8 +573,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     deserializedBatchTask.id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedBatchTask.displayName = reader.getString();
                 } else if ("url".equals(fieldName)) {
                     deserializedBatchTask.url = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
@@ -584,20 +583,22 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("creationTime".equals(fieldName)) {
                     deserializedBatchTask.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("exitConditions".equals(fieldName)) {
-                    deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchTask.state = BatchTaskState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     deserializedBatchTask.stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("commandLine".equals(fieldName)) {
+                    deserializedBatchTask.commandLine = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBatchTask.displayName = reader.getString();
+                } else if ("exitConditions".equals(fieldName)) {
+                    deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("previousState".equals(fieldName)) {
                     deserializedBatchTask.previousState = BatchTaskState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
                     deserializedBatchTask.previousStateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("commandLine".equals(fieldName)) {
-                    deserializedBatchTask.commandLine = reader.getString();
                 } else if ("containerSettings".equals(fieldName)) {
                     deserializedBatchTask.containerSettings = BatchTaskContainerSettings.fromJson(reader);
                 } else if ("resourceFiles".equals(fieldName)) {
