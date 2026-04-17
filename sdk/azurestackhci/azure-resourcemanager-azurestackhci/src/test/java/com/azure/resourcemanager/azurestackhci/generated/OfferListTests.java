@@ -12,15 +12,15 @@ public final class OfferListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfferList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"mcl\",\"publisherId\":\"ijcoejctb\",\"content\":\"qsqsy\",\"contentVersion\":\"kbfkg\",\"skuMappings\":[{\"catalogPlanId\":\"exxppofmxaxcfjp\",\"marketplaceSkuId\":\"dtocj\",\"marketplaceSkuVersions\":[\"vpmouexhdzxib\",\"eojnxqbzvddn\"]},{\"catalogPlanId\":\"ndei\",\"marketplaceSkuId\":\"twnpzaoqvuhrhcf\",\"marketplaceSkuVersions\":[\"ddglm\"]},{\"catalogPlanId\":\"hjq\",\"marketplaceSkuId\":\"pyeicxm\",\"marketplaceSkuVersions\":[\"wqvhkhixuigdt\",\"pbobjo\"]}]},\"id\":\"m\",\"name\":\"w\",\"type\":\"a\"},{\"properties\":{\"provisioningState\":\"hrzayvvtpgvdf\",\"publisherId\":\"otkftutqxlngx\",\"content\":\"fgugnxkrxdqmid\",\"contentVersion\":\"hzrvqd\",\"skuMappings\":[{\"catalogPlanId\":\"jybige\",\"marketplaceSkuId\":\"qfbow\",\"marketplaceSkuVersions\":[\"nyktzlcuiy\",\"gqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]}]},\"id\":\"sxlzevgbmqj\",\"name\":\"abcypmivk\",\"type\":\"lzu\"},{\"properties\":{\"provisioningState\":\"fwnfnb\",\"publisherId\":\"fionl\",\"content\":\"x\",\"contentVersion\":\"qgtz\",\"skuMappings\":[{\"catalogPlanId\":\"qbqqwxr\",\"marketplaceSkuId\":\"eallnwsubisnj\",\"marketplaceSkuVersions\":[\"mngnzscxaqw\"]},{\"catalogPlanId\":\"chcbonqvpkvlrxnj\",\"marketplaceSkuId\":\"seiphe\",\"marketplaceSkuVersions\":[\"okeyyienj\",\"dlwtgrhpdj\"]},{\"catalogPlanId\":\"umasxazjpq\",\"marketplaceSkuId\":\"gual\",\"marketplaceSkuVersions\":[\"xhejjzzvdud\",\"wdslfhotwmcy\",\"pwlbjnpg\"]}]},\"id\":\"ftadehxnltyfs\",\"name\":\"ppusuesnzwdejba\",\"type\":\"orxzdmohctbqvud\"},{\"properties\":{\"provisioningState\":\"ndnvo\",\"publisherId\":\"ujjugwdkcglh\",\"content\":\"azjdyggd\",\"contentVersion\":\"ixhbkuofqweykhm\",\"skuMappings\":[{\"catalogPlanId\":\"fyexfwhy\",\"marketplaceSkuId\":\"i\",\"marketplaceSkuVersions\":[\"vdcsitynn\",\"amdecte\",\"f\"]},{\"catalogPlanId\":\"scjeypv\",\"marketplaceSkuId\":\"zrkgqhcjrefovg\",\"marketplaceSkuVersions\":[\"sle\"]},{\"catalogPlanId\":\"vxyqjpkcattpngjc\",\"marketplaceSkuId\":\"czsqpjhvm\",\"marketplaceSkuVersions\":[\"v\",\"ysou\",\"q\"]},{\"catalogPlanId\":\"a\",\"marketplaceSkuId\":\"ae\",\"marketplaceSkuVersions\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"]}]},\"id\":\"thfuiuaodsfcpkvx\",\"name\":\"dpuozmyz\",\"type\":\"dagfuaxbezyiuok\"}],\"nextLink\":\"whrdxwzywqsmbsu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"ztfolhbnxk\",\"publisherId\":\"laulppg\",\"content\":\"tpnapnyiropuhpig\",\"contentVersion\":\"gylgqgitxmedjvcs\",\"skuMappings\":[{\"catalogPlanId\":\"wwncwzzhxgk\",\"marketplaceSkuId\":\"mgucna\",\"marketplaceSkuVersions\":[\"eoellwptfdygp\"]}]},\"id\":\"b\",\"name\":\"ac\",\"type\":\"op\"},{\"properties\":{\"provisioningState\":\"rhhuaopppcqeqx\",\"publisherId\":\"z\",\"content\":\"hzxct\",\"contentVersion\":\"gbkdmoizpos\",\"skuMappings\":[{\"catalogPlanId\":\"cfbu\",\"marketplaceSkuId\":\"mfqjhhkxbp\",\"marketplaceSkuVersions\":[\"mjh\",\"xjyngudivk\",\"tswb\",\"qzvszjf\"]},{\"catalogPlanId\":\"vjfdx\",\"marketplaceSkuId\":\"vetvt\",\"marketplaceSkuVersions\":[\"qtdo\",\"mcbxvwvxysl\",\"bhsfxob\"]}]},\"id\":\"tkblmpewww\",\"name\":\"bkrvrnsvshqj\",\"type\":\"hxcr\"}],\"nextLink\":\"fovasr\"}")
             .toObject(OfferList.class);
-        Assertions.assertEquals("ijcoejctb", model.value().get(0).publisherId());
-        Assertions.assertEquals("qsqsy", model.value().get(0).content());
-        Assertions.assertEquals("kbfkg", model.value().get(0).contentVersion());
-        Assertions.assertEquals("exxppofmxaxcfjp", model.value().get(0).skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("dtocj", model.value().get(0).skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("vpmouexhdzxib",
+        Assertions.assertEquals("laulppg", model.value().get(0).publisherId());
+        Assertions.assertEquals("tpnapnyiropuhpig", model.value().get(0).content());
+        Assertions.assertEquals("gylgqgitxmedjvcs", model.value().get(0).contentVersion());
+        Assertions.assertEquals("wwncwzzhxgk", model.value().get(0).skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("mgucna", model.value().get(0).skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("eoellwptfdygp",
             model.value().get(0).skuMappings().get(0).marketplaceSkuVersions().get(0));
-        Assertions.assertEquals("whrdxwzywqsmbsu", model.nextLink());
+        Assertions.assertEquals("fovasr", model.nextLink());
     }
 }

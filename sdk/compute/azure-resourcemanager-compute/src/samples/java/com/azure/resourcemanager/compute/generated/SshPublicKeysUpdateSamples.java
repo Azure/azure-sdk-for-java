@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class SshPublicKeysUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/sshPublicKeyExamples/SshPublicKey_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/sshPublicKeyExamples/SshPublicKey_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_Update_MinimumSet_Gen.
@@ -28,7 +28,7 @@ public final class SshPublicKeysUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/sshPublicKeyExamples/SshPublicKey_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/sshPublicKeyExamples/SshPublicKey_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_Update_MaximumSet_Gen.

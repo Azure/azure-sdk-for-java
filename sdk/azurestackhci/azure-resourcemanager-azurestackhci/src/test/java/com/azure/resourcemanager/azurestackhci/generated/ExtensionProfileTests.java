@@ -11,7 +11,7 @@ public final class ExtensionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionProfile model = BinaryData.fromString(
-            "{\"extensions\":[{\"extensionName\":\"m\",\"state\":\"Deleted\",\"errorDetails\":[{\"exception\":\"xhnpo\"}],\"extensionResourceId\":\"qwcabvnui\",\"typeHandlerVersion\":\"ey\",\"managedBy\":\"Azure\"}]}")
+            "{\"extensions\":[{\"extensionName\":\"y\",\"state\":\"Deleted\",\"errorDetails\":[{\"exception\":\"q\"},{\"exception\":\"vyeldot\"}],\"extensionResourceId\":\"dkwisw\",\"typeHandlerVersion\":\"ukjtasbvwispkxk\",\"managedBy\":\"Azure\"}]}")
             .toObject(ExtensionProfile.class);
     }
 }

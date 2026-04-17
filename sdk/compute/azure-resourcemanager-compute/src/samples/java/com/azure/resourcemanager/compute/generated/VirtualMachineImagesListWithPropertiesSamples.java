@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineImagesListWithPropertiesSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineImageExamples/VirtualMachineImages_ListWithProperties_MinimumSet_Gen.json
+     * 2025-11-01/virtualMachineImageExamples/VirtualMachineImages_ListWithProperties_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImages_ListWithProperties_MinimumSet.
@@ -27,7 +27,7 @@ public final class VirtualMachineImagesListWithPropertiesSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineImageExamples/VirtualMachineImages_ListWithProperties_MaximumSet_Gen.json
+     * 2025-11-01/virtualMachineImageExamples/VirtualMachineImages_ListWithProperties_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImages_ListWithProperties_MaximumSet.

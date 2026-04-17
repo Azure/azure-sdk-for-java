@@ -12,21 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateRequest model = BinaryData
-            .fromString(
-                "{\"edgeDeviceIds\":[\"hbrnnhjx\",\"qwjhqkbiwetpozyc\",\"qiqyhgfsetzlexbs\"],\"additionalInfo\":\"e\"}")
-            .toObject(ValidateRequest.class);
-        Assertions.assertEquals("hbrnnhjx", model.edgeDeviceIds().get(0));
-        Assertions.assertEquals("e", model.additionalInfo());
+        ValidateRequest model
+            = BinaryData.fromString("{\"edgeDeviceIds\":[\"qazu\",\"am\",\"zkrrcoiisba\"],\"additionalInfo\":\"ppc\"}")
+                .toObject(ValidateRequest.class);
+        Assertions.assertEquals("qazu", model.edgeDeviceIds().get(0));
+        Assertions.assertEquals("ppc", model.additionalInfo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateRequest model
-            = new ValidateRequest().withEdgeDeviceIds(Arrays.asList("hbrnnhjx", "qwjhqkbiwetpozyc", "qiqyhgfsetzlexbs"))
-                .withAdditionalInfo("e");
+        ValidateRequest model = new ValidateRequest().withEdgeDeviceIds(Arrays.asList("qazu", "am", "zkrrcoiisba"))
+            .withAdditionalInfo("ppc");
         model = BinaryData.fromObject(model).toObject(ValidateRequest.class);
-        Assertions.assertEquals("hbrnnhjx", model.edgeDeviceIds().get(0));
-        Assertions.assertEquals("e", model.additionalInfo());
+        Assertions.assertEquals("qazu", model.edgeDeviceIds().get(0));
+        Assertions.assertEquals("ppc", model.additionalInfo());
     }
 }

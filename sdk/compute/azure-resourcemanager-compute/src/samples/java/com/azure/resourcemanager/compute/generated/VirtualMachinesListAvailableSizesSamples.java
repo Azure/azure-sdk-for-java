@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesListAvailableSizesSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
      */
     /**
      * Sample code: Lists all available virtual machine sizes to which the specified virtual machine can be resized.

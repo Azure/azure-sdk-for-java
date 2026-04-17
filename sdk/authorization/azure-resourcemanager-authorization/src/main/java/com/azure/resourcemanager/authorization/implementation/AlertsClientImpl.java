@@ -108,7 +108,7 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.Authorization/roleManagementAlerts/refresh")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refreshAll(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
@@ -144,7 +144,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context))
@@ -174,7 +174,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context);
@@ -254,7 +254,7 @@ public final class AlertsClientImpl implements AlertsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), apiVersion, scope, alertId, contentType,
@@ -292,7 +292,7 @@ public final class AlertsClientImpl implements AlertsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, scope, alertId, contentType, parameters, context);
@@ -364,7 +364,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -392,7 +392,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context)
@@ -482,7 +482,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -513,7 +513,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.refresh(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context);
@@ -660,7 +660,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return alert operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshAllWithResponseAsync(String scope) {
@@ -671,7 +671,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.refreshAll(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -686,7 +686,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return alert operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshAllWithResponseAsync(String scope, Context context) {
@@ -697,7 +697,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.refreshAll(this.client.getEndpoint(), apiVersion, scope, accept, context);
@@ -710,7 +710,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of alert operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AlertOperationResultInner>, AlertOperationResultInner>
@@ -729,7 +729,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of alert operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AlertOperationResultInner>, AlertOperationResultInner>
@@ -747,7 +747,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of alert operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefreshAll(String scope) {
@@ -762,7 +762,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of alert operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefreshAll(String scope,
@@ -777,7 +777,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return alert operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AlertOperationResultInner> refreshAllAsync(String scope) {
@@ -792,7 +792,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return alert operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertOperationResultInner> refreshAllAsync(String scope, Context context) {
@@ -806,7 +806,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return alert operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertOperationResultInner refreshAll(String scope) {
@@ -821,7 +821,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return alert operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertOperationResultInner refreshAll(String scope, Context context) {

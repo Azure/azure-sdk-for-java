@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ArcSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetArcSetting.json
+     * x-ms-original-file: 2026-04-01-preview/GetArcSetting.json
      */
     /**
      * Sample code: Get ArcSetting.

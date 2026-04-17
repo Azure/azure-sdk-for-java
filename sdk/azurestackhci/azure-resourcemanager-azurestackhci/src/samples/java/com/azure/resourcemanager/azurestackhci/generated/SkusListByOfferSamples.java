@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class SkusListByOfferSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListSkusByOffer.json
+     * x-ms-original-file: 2026-04-01-preview/ListSkusByOffer.json
      */
     /**
      * Sample code: List SKU resources by offer for the HCI Cluster.

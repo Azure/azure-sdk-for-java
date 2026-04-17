@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Reported properties pushed from edge device.
@@ -25,6 +27,16 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
      * Extensions details for edge device.
      */
     private ExtensionProfile extensionProfile;
+
+    /*
+     * Most recent edge device sync timestamp in UTC.
+     */
+    private OffsetDateTime lastSyncTimestamp;
+
+    /*
+     * CVM support details for edge device.
+     */
+    private ConfidentialVmProfile confidentialVmProfile;
 
     /**
      * Creates an instance of ReportedProperties class.
@@ -73,6 +85,46 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
     }
 
     /**
+     * Get the lastSyncTimestamp property: Most recent edge device sync timestamp in UTC.
+     * 
+     * @return the lastSyncTimestamp value.
+     */
+    public OffsetDateTime lastSyncTimestamp() {
+        return this.lastSyncTimestamp;
+    }
+
+    /**
+     * Set the lastSyncTimestamp property: Most recent edge device sync timestamp in UTC.
+     * 
+     * @param lastSyncTimestamp the lastSyncTimestamp value to set.
+     * @return the ReportedProperties object itself.
+     */
+    ReportedProperties withLastSyncTimestamp(OffsetDateTime lastSyncTimestamp) {
+        this.lastSyncTimestamp = lastSyncTimestamp;
+        return this;
+    }
+
+    /**
+     * Get the confidentialVmProfile property: CVM support details for edge device.
+     * 
+     * @return the confidentialVmProfile value.
+     */
+    public ConfidentialVmProfile confidentialVmProfile() {
+        return this.confidentialVmProfile;
+    }
+
+    /**
+     * Set the confidentialVmProfile property: CVM support details for edge device.
+     * 
+     * @param confidentialVmProfile the confidentialVmProfile value to set.
+     * @return the ReportedProperties object itself.
+     */
+    ReportedProperties withConfidentialVmProfile(ConfidentialVmProfile confidentialVmProfile) {
+        this.confidentialVmProfile = confidentialVmProfile;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -100,6 +152,11 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
                     deserializedReportedProperties.deviceState = DeviceState.fromString(reader.getString());
                 } else if ("extensionProfile".equals(fieldName)) {
                     deserializedReportedProperties.extensionProfile = ExtensionProfile.fromJson(reader);
+                } else if ("lastSyncTimestamp".equals(fieldName)) {
+                    deserializedReportedProperties.lastSyncTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("confidentialVmProfile".equals(fieldName)) {
+                    deserializedReportedProperties.confidentialVmProfile = ConfidentialVmProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -11,7 +11,7 @@ public final class HciEdgeDeviceStorageNetworksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceStorageNetworks model = BinaryData.fromString(
-            "{\"name\":\"imipskdyzatvfuz\",\"networkAdapterName\":\"ftjvvruxwigsye\",\"storageVlanId\":\"qdsmjtg\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"gkkileplkcsmkn\",\"ipv4Address\":\"tbbaedorvvmqf\",\"subnetMask\":\"ygbdgwumgxdgdhpa\"},{\"physicalNode\":\"dexjddvjs\",\"ipv4Address\":\"wotmmwllcolsrsxa\",\"subnetMask\":\"efh\"}]}")
+            "{\"name\":\"ktg\",\"networkAdapterName\":\"tyouambewreswmow\",\"storageVlanId\":\"mmuteyxeyguq\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"ii\",\"ipv4Address\":\"spxlzde\",\"subnetMask\":\"grijwaiufanrayb\"},{\"physicalNode\":\"eqfrojs\",\"ipv4Address\":\"grhydk\",\"subnetMask\":\"ywezskiecafyg\"}]}")
             .toObject(HciEdgeDeviceStorageNetworks.class);
     }
 }
