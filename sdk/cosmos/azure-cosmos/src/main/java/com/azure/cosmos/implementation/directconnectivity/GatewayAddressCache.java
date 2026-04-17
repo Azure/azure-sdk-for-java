@@ -77,6 +77,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GatewayAddressCache implements IAddressCache {
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
+
     private static Duration minDurationBeforeEnforcingCollectionRoutingMapRefresh = Duration.ofSeconds(30);
 
     private final static Logger logger = LoggerFactory.getLogger(GatewayAddressCache.class);
@@ -1220,9 +1224,7 @@ public class GatewayAddressCache implements IAddressCache {
         String errorMessage,
         long transportRequestId) {
         if (request.requestContext.cosmosDiagnostics != null) {
-            ImplementationBridgeHelpers
-                .CosmosDiagnosticsHelper
-                .getCosmosDiagnosticsAccessor()
+            diagAccessor()
                 .recordAddressResolutionEnd(request, identifier, errorMessage, transportRequestId);
         }
     }

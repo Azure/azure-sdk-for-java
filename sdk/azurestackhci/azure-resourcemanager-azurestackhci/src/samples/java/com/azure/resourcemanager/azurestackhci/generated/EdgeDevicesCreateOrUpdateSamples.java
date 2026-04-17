@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class EdgeDevicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateHciEdgeDevice.json
+     * x-ms-original-file: 2026-04-01-preview/CreateHciEdgeDevice.json
      */
     /**
      * Sample code: Create HCI Edge Device.

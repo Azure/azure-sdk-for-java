@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class UpdateSummariesOperationGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetUpdateSummaries.json
+     * x-ms-original-file: 2026-04-01-preview/GetUpdateSummaries.json
      */
     /**
      * Sample code: Get Update summaries under cluster resource.

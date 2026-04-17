@@ -11,7 +11,7 @@ public final class DefaultExtensionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultExtensionDetails model
-            = BinaryData.fromString("{\"category\":\"pemvtzfkufubljof\",\"consentTime\":\"2021-09-01T11:04:48Z\"}")
+            = BinaryData.fromString("{\"category\":\"txp\",\"consentTime\":\"2021-09-04T06:17:20Z\"}")
                 .toObject(DefaultExtensionDetails.class);
     }
 }

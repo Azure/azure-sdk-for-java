@@ -11,7 +11,7 @@ public final class RemoteSupportJobNodeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoteSupportJobNodeSettings model = BinaryData.fromString(
-            "{\"state\":\"efchn\",\"createdAt\":\"2021-09-28T11:12:27Z\",\"updatedAt\":\"2021-11-04T17:27:29Z\",\"connectionStatus\":\"xhk\",\"connectionErrorMessage\":\"qirwrweoox\"}")
+            "{\"state\":\"bmoichd\",\"createdAt\":\"2021-02-22T21:48:45Z\",\"updatedAt\":\"2021-05-21T19:41:45Z\",\"connectionStatus\":\"b\",\"connectionErrorMessage\":\"nbatzvi\"}")
             .toObject(RemoteSupportJobNodeSettings.class);
     }
 }

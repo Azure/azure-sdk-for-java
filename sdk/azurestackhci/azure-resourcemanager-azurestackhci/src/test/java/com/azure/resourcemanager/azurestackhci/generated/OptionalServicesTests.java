@@ -12,14 +12,14 @@ public final class OptionalServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OptionalServices model
-            = BinaryData.fromString("{\"customLocation\":\"hyxxrwlycoduhpk\"}").toObject(OptionalServices.class);
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.customLocation());
+            = BinaryData.fromString("{\"customLocation\":\"mbtxhwgf\"}").toObject(OptionalServices.class);
+        Assertions.assertEquals("mbtxhwgf", model.customLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptionalServices model = new OptionalServices().withCustomLocation("hyxxrwlycoduhpk");
+        OptionalServices model = new OptionalServices().withCustomLocation("mbtxhwgf");
         model = BinaryData.fromObject(model).toObject(OptionalServices.class);
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.customLocation());
+        Assertions.assertEquals("mbtxhwgf", model.customLocation());
     }
 }
