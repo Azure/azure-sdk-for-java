@@ -9,18 +9,19 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.NotificationRule;
 import com.azure.developer.loadtesting.models.TestFileInfo;
-import com.azure.developer.loadtesting.models.TestProfile;
-import com.azure.developer.loadtesting.models.TestProfileRun;
+import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample demonstrates how to list tests, test files, test runs, test profiles and test profile runs for a given resource.
+ * Sample demonstrates how to list tests, test files, test runs, triggers
+ * and notification rules for a given resource.
  */
 public final class ListOperationsAsync {
     /**
-     * Authenticates with the load testing resource and shows how to list tests, test files and test runs
-     * for a given resource.
+     * Authenticates with the load testing resource and shows how to list tests, test files, test runs, triggers
+     * and notification rules for a given resource.
      *
      * @param args Unused. Arguments to the program.
      *
@@ -31,8 +32,8 @@ public final class ListOperationsAsync {
         listTests();
         listTestRuns();
         listTestFiles();
-        listTestProfiles();
-        listTestProfileRuns();
+        listTriggers();
+        listNotificationRules();
     }
 
     public static void listTests() {
@@ -71,7 +72,8 @@ public final class ListOperationsAsync {
             null, // executionFrom
             null, // executionTo
             "EXECUTING,DONE", // status
-            null // testRunIds (List<String>)
+            null, // testRunIds (List<String>)
+            null
         );
 
         testRuns.subscribe(testRun -> {
@@ -103,33 +105,33 @@ public final class ListOperationsAsync {
         // END: java-listOperationsAsync-sample-listTestFiles
     }
 
-    public static void listTestProfiles() {
-        // BEGIN: java-listOperationsAsync-sample-listTestProfiles
+    public static void listTriggers() {
+        // BEGIN: java-listOperationsAsync-sample-listTriggers
         LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildAsyncClient();
 
-        PagedFlux<TestProfile> testProfiles = client.listTestProfiles();
+        PagedFlux<Trigger> triggers = client.listTriggers();
 
-        testProfiles.subscribe(testProfile -> {
-            System.out.println(String.format("%s\\t%s", testProfile.getTestProfileId(), testProfile.getDisplayName()));
+        triggers.subscribe(trigger -> {
+            System.out.println(String.format("%s\\t%s", trigger.getTriggerId(), trigger.getDisplayName()));
         });
-        // END: java-listOperationsAsync-sample-listTestProfiles
+        // END: java-listOperationsAsync-sample-listTriggers
     }
 
-    public static void listTestProfileRuns() {
-        // BEGIN: java-listOperationsAsync-sample-listTestProfileRuns
-        LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
+    public static void listNotificationRules() {
+        // BEGIN: java-listOperationsAsync-sample-listNotificationRules
+        LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildAsyncClient();
 
-        PagedFlux<TestProfileRun> testProfileRuns = client.listTestProfileRuns();
+        PagedFlux<NotificationRule> notificationRules = client.listNotificationRules();
 
-        testProfileRuns.subscribe(testProfileRun -> {
-            System.out.println(String.format("%s\\t%s", testProfileRun.getTestProfileRunId(), testProfileRun.getDisplayName()));
+        notificationRules.subscribe(rule -> {
+            System.out.println(String.format("%s\\t%s", rule.getNotificationRuleId(), rule.getDisplayName()));
         });
-        // END: java-listOperationsAsync-sample-listTestProfileRuns
+        // END: java-listOperationsAsync-sample-listNotificationRules
     }
 }

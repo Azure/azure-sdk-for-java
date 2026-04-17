@@ -15,10 +15,10 @@ import com.azure.core.http.HttpHeaders;
 @Fluent
 public final class ServicesSetPropertiesHeaders {
     /*
-     * The x-ms-version property.
+     * The x-ms-client-request-id property.
      */
     @Generated
-    private String xMsVersion;
+    private String xMsClientRequestId;
 
     /*
      * The x-ms-request-id property.
@@ -27,10 +27,10 @@ public final class ServicesSetPropertiesHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-client-request-id property.
+     * The x-ms-version property.
      */
     @Generated
-    private String xMsClientRequestId;
+    private String xMsVersion;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -41,30 +41,30 @@ public final class ServicesSetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ServicesSetPropertiesHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsClientRequestId value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
     @Generated
-    public ServicesSetPropertiesHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public ServicesSetPropertiesHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -91,24 +91,24 @@ public final class ServicesSetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
     @Generated
-    public ServicesSetPropertiesHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public ServicesSetPropertiesHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 }

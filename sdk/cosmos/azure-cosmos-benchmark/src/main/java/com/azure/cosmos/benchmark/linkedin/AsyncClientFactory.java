@@ -11,7 +11,10 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.google.common.base.Preconditions;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Duration;
 
 
@@ -55,6 +58,16 @@ public class AsyncClientFactory {
             cosmosClientBuilder.directMode(DIRECT_CONNECTION_CONFIG, GATEWAY_CONNECTION_CONFIG);
         } else {
             cosmosClientBuilder.gatewayMode(GATEWAY_CONNECTION_CONFIG);
+        }
+
+        // Inject shared micrometer registry for SDK telemetry if available
+        MeterRegistry registry = cfg.getCosmosMicrometerRegistry();
+        if (registry != null) {
+            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+                .metricsOptions(new CosmosMicrometerMetricsOptions()
+                    .meterRegistry(registry)
+                    .setEnabled(true));
+            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 
         return cosmosClientBuilder

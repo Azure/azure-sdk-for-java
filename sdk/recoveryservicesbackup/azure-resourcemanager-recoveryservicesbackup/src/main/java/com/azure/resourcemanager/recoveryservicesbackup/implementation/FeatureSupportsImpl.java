@@ -31,12 +31,8 @@ public final class FeatureSupportsImpl implements FeatureSupports {
         FeatureSupportRequest parameters, Context context) {
         Response<AzureVMResourceFeatureSupportResponseInner> inner
             = this.serviceClient().validateWithResponse(azureRegion, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AzureVMResourceFeatureSupportResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AzureVMResourceFeatureSupportResponseImpl(inner.getValue(), this.manager()));
     }
 
     public AzureVMResourceFeatureSupportResponse validate(String azureRegion, FeatureSupportRequest parameters) {

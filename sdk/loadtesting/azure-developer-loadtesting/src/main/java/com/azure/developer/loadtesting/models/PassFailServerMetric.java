@@ -267,6 +267,19 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
     }
 
     /**
+     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
+     *
+     * @param action the action value to set.
+     * @return the PassFailServerMetric object itself.
+     */
+    @Generated
+    public PassFailServerMetric setAction(PassFailAction action) {
+        this.action = action;
+        this.updatedProperties.add("action");
+        return this;
+    }
+
+    /**
      * Get the actualValue property: The actual value of the server metric.
      *
      * @return the actualValue value.
@@ -397,18 +410,5 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
             }
             return deserializedPassFailServerMetric;
         });
-    }
-
-    /**
-     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
-     *
-     * @param action the action value to set.
-     * @return the PassFailServerMetric object itself.
-     */
-    @Generated
-    public PassFailServerMetric setAction(PassFailAction action) {
-        this.action = action;
-        this.updatedProperties.add("action");
-        return this;
     }
 }

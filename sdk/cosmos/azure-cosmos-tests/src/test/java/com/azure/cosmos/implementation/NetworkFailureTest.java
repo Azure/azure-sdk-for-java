@@ -18,7 +18,9 @@ import java.time.Instant;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class NetworkFailureTest extends TestSuiteBase {
-    private static final int TIMEOUT = ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS + 60000;
+    private static final int TEST_MAX_RETRY_COUNT = 5;
+    private static final int TEST_RETRY_INTERVAL_MS = 100;
+    private static final int TIMEOUT = TEST_MAX_RETRY_COUNT * TEST_RETRY_INTERVAL_MS + 60000;
     private final DocumentCollection collectionDefinition;
 
     @Factory(dataProvider = "internalClientBuilders")
@@ -29,6 +31,14 @@ public class NetworkFailureTest extends TestSuiteBase {
 
     @Test(groups = { "long-emulator" }, timeOut = TIMEOUT)
     public void createCollectionWithUnreachableHost() {
+        // Save previous values to restore later (in case CI sets these)
+        String prevMaxRetryCount = System.getProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+        String prevRetryIntervalMs = System.getProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+
+        // Override retry constants for this test to avoid 120 × 1s = 2 min wait
+        System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", String.valueOf(TEST_MAX_RETRY_COUNT));
+        System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", String.valueOf(TEST_RETRY_INTERVAL_MS));
+
         SpyClientUnderTestFactory.ClientWithGatewaySpy client = null;
 
         try {
@@ -61,10 +71,21 @@ public class NetworkFailureTest extends TestSuiteBase {
             validateResourceResponseFailure(createObservable, validator, TIMEOUT);
             Instant after = Instant.now();
             assertThat(after.toEpochMilli() - start.toEpochMilli())
-                    .isGreaterThanOrEqualTo(ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS);
+                    .isGreaterThanOrEqualTo(TEST_MAX_RETRY_COUNT * TEST_RETRY_INTERVAL_MS);
 
         } finally {
             safeClose(client);
+            // Restore previous values (or clear if previously unset)
+            if (prevMaxRetryCount != null) {
+                System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", prevMaxRetryCount);
+            } else {
+                System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+            }
+            if (prevRetryIntervalMs != null) {
+                System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", prevRetryIntervalMs);
+            } else {
+                System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+            }
         }
     }
 

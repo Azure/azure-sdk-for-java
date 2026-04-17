@@ -13,4 +13,5 @@ module com.azure.resourcemanager.search {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.search.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.search.models to com.azure.core;
+    opens com.azure.resourcemanager.search.implementation.models to com.azure.core;
 }

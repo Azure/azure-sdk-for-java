@@ -37,17 +37,12 @@ public class BenchmarkConfig {
     private boolean enableNettyHttpMetrics = false;
 
     // -- Reporting --
-    private String reportingDirectory;
     private int printingInterval = 10;
-    private String resultUploadEndpoint;
-    private String resultUploadKey;
-    private String resultUploadDatabase;
-    private String resultUploadContainer;
 
-    // -- Run metadata (for result reporting) --
-    private String testVariationName = "";
-    private String branchName = "";
-    private String commitId = "";
+    // At most one destination is configured (null = console-only)
+    private CsvReporterConfig csvReporterConfig;
+    private CosmosReporterConfig cosmosReporterConfig;
+    private AppInsightsReporterConfig appInsightsReporterConfig;
 
     // -- JVM-global system properties (apply to all tenants, set once at startup) --
     private boolean isPartitionLevelCircuitBreakerEnabled = true;
@@ -107,16 +102,20 @@ public class BenchmarkConfig {
     public boolean isEnableJvmStats() { return enableJvmStats; }
     public boolean isEnableNettyHttpMetrics() { return enableNettyHttpMetrics; }
 
-    public String getReportingDirectory() { return reportingDirectory; }
     public int getPrintingInterval() { return printingInterval; }
-    public String getResultUploadEndpoint() { return resultUploadEndpoint; }
-    public String getResultUploadKey() { return resultUploadKey; }
-    public String getResultUploadDatabase() { return resultUploadDatabase; }
-    public String getResultUploadContainer() { return resultUploadContainer; }
+    public CsvReporterConfig getCsvReporterConfig() { return csvReporterConfig; }
+    public CosmosReporterConfig getCosmosReporterConfig() { return cosmosReporterConfig; }
+    public AppInsightsReporterConfig getAppInsightsReporterConfig() { return appInsightsReporterConfig; }
 
-    public String getTestVariationName() { return testVariationName; }
-    public String getBranchName() { return branchName; }
-    public String getCommitId() { return commitId; }
+    /**
+     * Determine the reporting destination from which config is present.
+     */
+    public ReportingDestination getReportingDestination() {
+        if (csvReporterConfig != null) return ReportingDestination.CSV;
+        if (cosmosReporterConfig != null) return ReportingDestination.COSMOSDB;
+        if (appInsightsReporterConfig != null) return ReportingDestination.APPLICATION_INSIGHTS;
+        return null;
+    }
 
     public boolean isPartitionLevelCircuitBreakerEnabled() { return isPartitionLevelCircuitBreakerEnabled; }
     public boolean isPerPartitionAutomaticFailoverRequired() { return isPerPartitionAutomaticFailoverRequired; }
@@ -128,10 +127,10 @@ public class BenchmarkConfig {
     public String toString() {
         return String.format(
             "BenchmarkConfig{cycles=%d, settleTimeMs=%d, suppressCleanup=%s, " +
-            "gcBetweenCycles=%s, tenants=%d, reportingDirectory=%s, " +
+            "gcBetweenCycles=%s, tenants=%d, reportingDestination=%s, " +
             "circuitBreaker=%s, ppaf=%s, minConnPoolSize=%d}",
             cycles, settleTimeMs, suppressCleanup, gcBetweenCycles,
-            tenantWorkloads.size(), reportingDirectory,
+            tenantWorkloads.size(), getReportingDestination(),
             isPartitionLevelCircuitBreakerEnabled, isPerPartitionAutomaticFailoverRequired,
             minConnectionPoolSizePerEndpoint);
     }
@@ -146,8 +145,6 @@ public class BenchmarkConfig {
 
         loadJvmSystemProperties(root);
         loadMetricsConfig(root);
-        loadResultUploadConfig(root);
-        loadRunMetadata(root);
     }
 
     /**
@@ -174,69 +171,66 @@ public class BenchmarkConfig {
 
     /**
      * Metrics and reporting settings from the top-level "metrics" section.
+     * Reporter destination is determined by which key is present under "metrics.destination":
+     * "csv", "cosmos", or "applicationInsights". At most one should be configured.
      */
     private void loadMetricsConfig(JsonNode root) {
         JsonNode metrics = root.get("metrics");
-        if (metrics != null && metrics.isObject()) {
-            if (metrics.has("enableJvmStats")) {
-                enableJvmStats = Boolean.parseBoolean(metrics.get("enableJvmStats").asText());
-            }
-            if (metrics.has("enableNettyHttpMetrics")) {
-                enableNettyHttpMetrics = Boolean.parseBoolean(metrics.get("enableNettyHttpMetrics").asText());
-            }
-            if (metrics.has("printingInterval")) {
-                printingInterval = Integer.parseInt(metrics.get("printingInterval").asText());
-            }
-            if (metrics.has("reportingDirectory")) {
-                reportingDirectory = metrics.get("reportingDirectory").asText();
-            }
-        }
-    }
-
-    /**
-     * Result upload configuration from "metrics.resultUpload".
-     */
-    private void loadResultUploadConfig(JsonNode root) {
-        JsonNode metrics = root.get("metrics");
         if (metrics == null || !metrics.isObject()) {
             return;
         }
-        JsonNode resultUpload = metrics.get("resultUpload");
-        if (resultUpload != null && resultUpload.isObject()) {
-            if (resultUpload.has("serviceEndpoint")) {
-                resultUploadEndpoint = resultUpload.get("serviceEndpoint").asText();
-            }
-            if (resultUpload.has("masterKey")) {
-                resultUploadKey = resultUpload.get("masterKey").asText();
-            }
-            if (resultUpload.has("database")) {
-                resultUploadDatabase = resultUpload.get("database").asText();
-            }
-            if (resultUpload.has("container")) {
-                resultUploadContainer = resultUpload.get("container").asText();
-            }
-        }
-    }
 
-    /**
-     * Run metadata from "metrics.runMetadata" (tagged on uploaded results).
-     */
-    private void loadRunMetadata(JsonNode root) {
-        JsonNode metrics = root.get("metrics");
-        if (metrics == null || !metrics.isObject()) {
+        if (metrics.has("enableJvmStats")) {
+            enableJvmStats = Boolean.parseBoolean(metrics.get("enableJvmStats").asText());
+        }
+        if (metrics.has("enableNettyHttpMetrics")) {
+            enableNettyHttpMetrics = Boolean.parseBoolean(metrics.get("enableNettyHttpMetrics").asText());
+        }
+        if (metrics.has("printingInterval")) {
+            printingInterval = Integer.parseInt(metrics.get("printingInterval").asText());
+        }
+
+        JsonNode destination = metrics.get("destination");
+        if (destination == null || !destination.isObject()) {
             return;
         }
-        JsonNode runMetadata = metrics.get("runMetadata");
-        if (runMetadata != null && runMetadata.isObject()) {
-            if (runMetadata.has("testVariationName")) {
-                testVariationName = runMetadata.get("testVariationName").asText();
-            }
-            if (runMetadata.has("branchName")) {
-                branchName = runMetadata.get("branchName").asText();
-            }
-            if (runMetadata.has("commitId")) {
-                commitId = runMetadata.get("commitId").asText();
-            }
+
+        // CSV
+        JsonNode csv = destination.get("csv");
+        if (csv != null && csv.isObject()) {
+            csvReporterConfig = new CsvReporterConfig(
+                csv.has("reportingDirectory") ? csv.get("reportingDirectory").asText() : null);
+        }
+
+        // Cosmos DB
+        JsonNode cosmos = destination.get("cosmos");
+        if (cosmos != null && cosmos.isObject()) {
+            cosmosReporterConfig = new CosmosReporterConfig(
+                cosmos.has("serviceEndpoint") ? cosmos.get("serviceEndpoint").asText() : null,
+                cosmos.has("masterKey") ? cosmos.get("masterKey").asText() : null,
+                cosmos.has("database") ? cosmos.get("database").asText() : null,
+                cosmos.has("container") ? cosmos.get("container").asText() : null,
+                cosmos.has("testVariationName") ? cosmos.get("testVariationName").asText() : null,
+                cosmos.has("branchName") ? cosmos.get("branchName").asText() : null,
+                cosmos.has("commitId") ? cosmos.get("commitId").asText() : null);
+        }
+
+        // Application Insights
+        JsonNode appInsights = destination.get("applicationInsights");
+        if (appInsights != null && appInsights.isObject()) {
+            appInsightsReporterConfig = new AppInsightsReporterConfig(
+                appInsights.has("connectionString") ? appInsights.get("connectionString").asText() : null,
+                appInsights.has("stepSeconds") ? Integer.parseInt(appInsights.get("stepSeconds").asText()) : 10,
+                appInsights.has("testCategory") ? appInsights.get("testCategory").asText() : null);
+        }
+
+        // Warn if multiple destinations are configured — only the first match is used
+        int configuredCount = (csvReporterConfig != null ? 1 : 0)
+            + (cosmosReporterConfig != null ? 1 : 0)
+            + (appInsightsReporterConfig != null ? 1 : 0);
+        if (configuredCount > 1) {
+            logger.warn("Multiple reporting destinations configured; only '{}' will be used. "
+                + "Destinations are mutually exclusive.", getReportingDestination());
         }
     }
 }

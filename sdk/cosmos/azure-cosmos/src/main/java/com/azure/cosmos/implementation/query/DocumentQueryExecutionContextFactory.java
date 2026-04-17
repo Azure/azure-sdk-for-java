@@ -50,16 +50,12 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 public class DocumentQueryExecutionContextFactory {
-
-    private static final ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private final static int PageSizeFactorForTop = 5;
     private static final Logger logger = LoggerFactory.getLogger(DocumentQueryExecutionContextFactory.class);
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
     private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(DiagnosticsClientContext diagnosticsClientContext,
                                                                                  IDocumentQueryClient client,
@@ -113,9 +109,7 @@ public class DocumentQueryExecutionContextFactory {
         Instant startTime = Instant.now();
         Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono;
 
-        if (ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
+        if (queryRequestOptionsAccessor()
             .isQueryPlanRetrievalDisallowed(cosmosQueryRequestOptions)) {
 
             Instant endTime = Instant.now(); // endTime for query plan diagnostics
@@ -262,7 +256,12 @@ public class DocumentQueryExecutionContextFactory {
         SqlQuerySpec query,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
-        if (canCacheQuery(partitionedQueryExecutionInfo.getQueryInfo()) && !queryPlanCache.containsKey(query.getQueryText())) {
+        QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
+        if (queryInfo == null) {
+            logger.trace("Skipping query plan caching: queryInfo is null (likely a hybrid search query)");
+            return;
+        }
+        if (canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
             if (queryPlanCache.size() >= Constants.QUERYPLAN_CACHE_SIZE) {
                 logger.warn("Clearing query plan cache as it has reached the maximum size : {}", queryPlanCache.size());
                 queryPlanCache.clear();
@@ -357,8 +356,8 @@ public class DocumentQueryExecutionContextFactory {
 
         return collectionObs.single().flatMap(collectionValueHolder -> {
 
-            queryRequestOptionsAccessor.setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
-            queryRequestOptionsAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
+            queryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
+            queryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
 
             Mono<PartitionKeyRangesAndQueryInfos> queryPlanTask =
                 getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
@@ -438,7 +437,7 @@ public class DocumentQueryExecutionContextFactory {
 
             int pageSize = hybridSearchQueryInfo.hasSkip() ? hybridSearchQueryInfo.getTake() + hybridSearchQueryInfo.getSkip() : hybridSearchQueryInfo.getTake();
             int maxitemSizeForFullTextSearch = Math.max(Configs.getMaxItemCountForHybridSearchSearch(),
-                qryOptAccessor.getMaxItemCountForHybridSearch(cosmosQueryRequestOptions));
+                queryRequestOptionsAccessor().getMaxItemCountForHybridSearch(cosmosQueryRequestOptions));
 
             if (pageSize > maxitemSizeForFullTextSearch) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
@@ -462,7 +461,7 @@ public class DocumentQueryExecutionContextFactory {
                 int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
                     queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
                 int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemCountForVectorSearch(),
-                    qryOptAccessor.getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
+                    queryRequestOptionsAccessor().getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
                 if (maxLimit > maxItemSizeForVectorSearch) {
                     throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
                         "Executing a vector search query with TOP or LIMIT larger than the maxItemSizeForVectorSearch " +

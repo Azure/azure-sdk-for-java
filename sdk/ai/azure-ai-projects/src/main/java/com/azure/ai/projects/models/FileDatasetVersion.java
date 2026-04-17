@@ -55,17 +55,6 @@ public final class FileDatasetVersion extends DatasetVersion {
      */
     @Generated
     @Override
-    public FileDatasetVersion setDataUri(String dataUri) {
-        super.setDataUri(dataUri);
-        this.updatedProperties.add("dataUri");
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public FileDatasetVersion setConnectionName(String connectionName) {
         super.setConnectionName(connectionName);
         this.updatedProperties.add("connectionName");
@@ -104,7 +93,7 @@ public final class FileDatasetVersion extends DatasetVersion {
             return toJsonMergePatch(jsonWriter);
         } else {
             jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("dataUri", getDataUri());
+            jsonWriter.writeStringField("dataUri", getDataUrl());
             jsonWriter.writeStringField("connectionName", getConnectionName());
             jsonWriter.writeStringField("description", getDescription());
             jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
@@ -116,11 +105,11 @@ public final class FileDatasetVersion extends DatasetVersion {
     @Generated
     private JsonWriter toJsonMergePatch(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (updatedProperties.contains("dataUri")) {
-            if (getDataUri() == null) {
+        if (updatedProperties.contains("dataUrl")) {
+            if (getDataUrl() == null) {
                 jsonWriter.writeNullField("dataUri");
             } else {
-                jsonWriter.writeStringField("dataUri", getDataUri());
+                jsonWriter.writeStringField("dataUri", getDataUrl());
             }
         }
         if (updatedProperties.contains("connectionName")) {
@@ -178,7 +167,7 @@ public final class FileDatasetVersion extends DatasetVersion {
                         .setVersion(deserializedFileDatasetVersion, reader.getString());
                 } else if ("dataUri".equals(fieldName)) {
                     JsonMergePatchHelper.getDatasetVersionAccessor()
-                        .setDataUri(deserializedFileDatasetVersion, reader.getString());
+                        .setDataUrl(deserializedFileDatasetVersion, reader.getString());
                 } else if ("isReference".equals(fieldName)) {
                     JsonMergePatchHelper.getDatasetVersionAccessor()
                         .setIsReference(deserializedFileDatasetVersion, reader.getNullable(JsonReader::getBoolean));
@@ -202,5 +191,16 @@ public final class FileDatasetVersion extends DatasetVersion {
             }
             return deserializedFileDatasetVersion;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FileDatasetVersion setDataUrl(String dataUrl) {
+        super.setDataUrl(dataUrl);
+        this.updatedProperties.add("dataUrl");
+        return this;
     }
 }

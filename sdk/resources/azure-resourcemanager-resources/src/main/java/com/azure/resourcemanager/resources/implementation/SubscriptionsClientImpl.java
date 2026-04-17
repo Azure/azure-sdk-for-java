@@ -66,7 +66,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SubscriptionClientSu")
+    @ServiceInterface(name = "SubscriptionClientSubscriptions")
     public interface SubscriptionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/locations")
@@ -583,8 +583,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription list operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -610,8 +609,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription list operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {

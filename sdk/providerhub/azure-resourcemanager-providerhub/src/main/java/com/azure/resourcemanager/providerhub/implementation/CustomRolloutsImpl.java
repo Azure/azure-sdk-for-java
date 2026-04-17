@@ -30,12 +30,8 @@ public final class CustomRolloutsImpl implements CustomRollouts {
     public Response<CustomRollout> getWithResponse(String providerNamespace, String rolloutName, Context context) {
         Response<CustomRolloutInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, rolloutName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CustomRolloutImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CustomRolloutImpl(inner.getValue(), this.manager()));
     }
 
     public CustomRollout get(String providerNamespace, String rolloutName) {

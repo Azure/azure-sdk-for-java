@@ -31,12 +31,8 @@ public final class WatchersImpl implements Watchers {
         Context context) {
         Response<WatcherInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, watcherName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WatcherImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WatcherImpl(inner.getValue(), this.manager()));
     }
 
     public Watcher getByResourceGroup(String resourceGroupName, String watcherName) {

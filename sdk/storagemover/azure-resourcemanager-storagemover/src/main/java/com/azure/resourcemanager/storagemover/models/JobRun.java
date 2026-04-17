@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * An immutable client-side representation of JobRun.
@@ -81,6 +82,20 @@ public interface JobRun {
      * @return the executionEndTime value.
      */
     OffsetDateTime executionEndTime();
+
+    /**
+     * Gets the triggerType property: Trigger type for the job run. Default is manual.
+     * 
+     * @return the triggerType value.
+     */
+    TriggerType triggerType();
+
+    /**
+     * Gets the scheduledExecutionTime property: Scheduled execution time. Null if Trigger type is manual.
+     * 
+     * @return the scheduledExecutionTime value.
+     */
+    OffsetDateTime scheduledExecutionTime();
 
     /**
      * Gets the lastStatusUpdate property: The last updated time of the Job Run.
@@ -235,6 +250,13 @@ public interface JobRun {
      * @return the error value.
      */
     JobRunError error();
+
+    /**
+     * Gets the warnings property: Warning details.
+     * 
+     * @return the warnings value.
+     */
+    List<JobRunWarning> warnings();
 
     /**
      * Gets the provisioningState property: The provisioning state of this resource.

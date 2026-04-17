@@ -11,7 +11,7 @@ public final class ImagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"releaseVersion\":\"un\",\"releaseDisplayName\":\"bwjzr\",\"releaseNotes\":\"fygxgispemvtzfk\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"ljofxqeofjaeqjh\",\"jbasvmsmjqulngs\",\"tnb\"]}")
+            "{\"provisioningState\":\"Failed\",\"releaseVersion\":\"eusnhutj\",\"releaseDisplayName\":\"ltmrldh\",\"releaseNotes\":\"gjzzdatqxhocdg\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"gphuticndvka\",\"zwyiftyhxhur\"],\"updateProperties\":{\"systemReboot\":\"NotRequired\",\"securityUpdates\":\"tyxolniwpwc\",\"osVersion\":\"kjfkg\",\"agentVersion\":\"awxklr\",\"featureUpdates\":\"plwckbas\"}}")
             .toObject(ImageProperties.class);
     }
 }

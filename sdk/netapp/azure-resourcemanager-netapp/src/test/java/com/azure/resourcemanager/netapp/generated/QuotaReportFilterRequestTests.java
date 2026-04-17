@@ -13,21 +13,21 @@ public final class QuotaReportFilterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaReportFilterRequest model = BinaryData.fromString(
-            "{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"pvjzbe\",\"usageThresholdPercentage\":151747977}")
+            "{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"ntwlrbqtkoie\",\"usageThresholdPercentage\":1053107000}")
             .toObject(QuotaReportFilterRequest.class);
-        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("pvjzbe", model.quotaTarget());
-        Assertions.assertEquals(151747977, model.usageThresholdPercentage());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("ntwlrbqtkoie", model.quotaTarget());
+        Assertions.assertEquals(1053107000, model.usageThresholdPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.INDIVIDUAL_USER_QUOTA)
-            .withQuotaTarget("pvjzbe")
-            .withUsageThresholdPercentage(151747977);
+        QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.DEFAULT_GROUP_QUOTA)
+            .withQuotaTarget("ntwlrbqtkoie")
+            .withUsageThresholdPercentage(1053107000);
         model = BinaryData.fromObject(model).toObject(QuotaReportFilterRequest.class);
-        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("pvjzbe", model.quotaTarget());
-        Assertions.assertEquals(151747977, model.usageThresholdPercentage());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("ntwlrbqtkoie", model.quotaTarget());
+        Assertions.assertEquals(1053107000, model.usageThresholdPercentage());
     }
 }

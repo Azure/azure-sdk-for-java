@@ -31,12 +31,8 @@ public final class SolutionTypesImpl implements SolutionTypes {
         Context context) {
         Response<SolutionTypeResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, solutionType, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SolutionTypeResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SolutionTypeResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SolutionTypeResource getByResourceGroup(String resourceGroupName, String solutionType) {

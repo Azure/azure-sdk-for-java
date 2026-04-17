@@ -44,12 +44,8 @@ public final class ScriptCmdletsImpl implements ScriptCmdlets {
         String scriptPackageName, String scriptCmdletName, Context context) {
         Response<ScriptCmdletInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ScriptCmdletImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ScriptCmdletImpl(inner.getValue(), this.manager()));
     }
 
     public ScriptCmdlet get(String resourceGroupName, String privateCloudName, String scriptPackageName,

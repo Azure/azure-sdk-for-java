@@ -256,6 +256,8 @@ public class HttpConstants {
         public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
         public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
         public static final String QUERY_EXECUTION_INFO = "x-ms-cosmos-query-execution-info";
+        public static final String POPULATE_QUERY_ADVICE = "x-ms-cosmos-populatequeryadvice";
+        public static final String QUERY_ADVICE = "x-ms-cosmos-query-advice";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
@@ -314,7 +316,7 @@ public class HttpConstants {
         public static final String SUPPORTED_CAPABILITIES;
         public static final String SUPPORTED_CAPABILITIES_NONE;
         static {
-            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE);
+            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE | CHANGE_FEED_WITH_START_TIME_POST_MERGE);
             SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
         }
     }

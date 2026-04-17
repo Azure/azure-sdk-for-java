@@ -13,17 +13,17 @@ public final class SchedulerSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerSku model
-            = BinaryData.fromString("{\"name\":\"Consumption\",\"capacity\":1900229207,\"redundancyState\":\"Zone\"}")
+            = BinaryData.fromString("{\"name\":\"Dedicated\",\"capacity\":105854038,\"redundancyState\":\"None\"}")
                 .toObject(SchedulerSku.class);
-        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.name());
-        Assertions.assertEquals(1900229207, model.capacity());
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.name());
+        Assertions.assertEquals(105854038, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchedulerSku model = new SchedulerSku().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1900229207);
+        SchedulerSku model = new SchedulerSku().withName(SchedulerSkuName.DEDICATED).withCapacity(105854038);
         model = BinaryData.fromObject(model).toObject(SchedulerSku.class);
-        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.name());
-        Assertions.assertEquals(1900229207, model.capacity());
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.name());
+        Assertions.assertEquals(105854038, model.capacity());
     }
 }

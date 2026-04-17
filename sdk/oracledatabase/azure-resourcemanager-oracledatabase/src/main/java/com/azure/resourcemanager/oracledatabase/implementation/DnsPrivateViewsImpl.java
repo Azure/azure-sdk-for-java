@@ -30,12 +30,8 @@ public final class DnsPrivateViewsImpl implements DnsPrivateViews {
     public Response<DnsPrivateView> getWithResponse(String location, String dnsprivateviewocid, Context context) {
         Response<DnsPrivateViewInner> inner
             = this.serviceClient().getWithResponse(location, dnsprivateviewocid, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsPrivateViewImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsPrivateViewImpl(inner.getValue(), this.manager()));
     }
 
     public DnsPrivateView get(String location, String dnsprivateviewocid) {

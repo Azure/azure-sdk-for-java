@@ -30,12 +30,8 @@ public final class UpgradableVersionsImpl implements UpgradableVersions {
         Context context) {
         Response<UpgradableVersionsListInner> inner
             = this.serviceClient().detailsWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new UpgradableVersionsListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new UpgradableVersionsListImpl(inner.getValue(), this.manager()));
     }
 
     public UpgradableVersionsList details(String resourceGroupName, String monitorName) {

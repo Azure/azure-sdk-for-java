@@ -6,7 +6,6 @@ import json
 import glob
 import logging
 import argparse
-import shutil
 from typing import List
 
 pwd = os.getcwd()
@@ -33,7 +32,6 @@ from generate_utils import (
     update_spec,
     generate_typespec_project,
     is_mgmt_premium,
-    copy_folder_recursive_sync,
 )
 
 os.chdir(pwd)
@@ -279,17 +277,68 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
     return packages
 
 
-def verify_self_serve_parameters(api_version, sdk_release_type):
-    if sdk_release_type and sdk_release_type not in ["stable", "beta"]:
-        raise ValueError(f"Invalid SDK release type [{sdk_release_type}], only support 'stable' or 'beta'.")
-    if api_version and sdk_release_type:
-        if api_version.endswith("-preview") and sdk_release_type == "stable":
-            raise ValueError(f"SDK release type is [stable], but API version [{api_version}] is preview.")
-        logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
-    elif api_version or sdk_release_type:
-        raise ValueError(
-            "Both [API version] and [SDK release type] parameters are required for self-serve SDK generation."
-        )
+def infer_sdk_release_type(sdk_root: str, sdk_folder: str, module: str) -> str:
+    """Infer SDK release type from the generated metadata JSON.
+
+    Reads {sdk_root}/{sdk_folder}/src/main/resources/META-INF/{module}_metadata.json
+    and inspects the apiVersions values:
+    - All GA (no 'preview' substring) -> 'stable'
+    - Any preview or mixed -> 'beta'
+    - Fallback on error -> 'beta' (safe default)
+    """
+    metadata_path = os.path.join(sdk_root, sdk_folder, "src", "main", "resources", "META-INF", f"{module}_metadata.json")
+    try:
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
+        api_versions = metadata.get("apiVersions", {})
+        if not api_versions:
+            logging.warning(f"[SelfServe] No apiVersions found in {metadata_path}, defaulting to beta.")
+            return "beta"
+
+        has_preview = any("preview" in v.lower() for v in api_versions.values())
+        inferred = "beta" if has_preview else "stable"
+        logging.info(f"[SelfServe] Inferred sdkReleaseType={inferred} from apiVersions: {api_versions}")
+        return inferred
+    except FileNotFoundError:
+        logging.warning(f"[SelfServe] Metadata file not found: {metadata_path}, defaulting to beta.")
+        return "beta"
+    except Exception as e:
+        logging.warning(f"[SelfServe] Failed to read metadata file {metadata_path}: {e}, defaulting to beta.")
+        return "beta"
+
+
+def update_revapi_skip(pom_path: str, beta: bool):
+    """Update revapi.skip property in pom.xml based on release type.
+
+    beta=True:  ensure <revapi.skip>true</revapi.skip> (add if missing, flip if false)
+    beta=False: flip <revapi.skip>true</revapi.skip> to false if present (skip if absent, as false is default)
+    """
+    try:
+        with open(pom_path, "r") as f:
+            content = f.read()
+        if beta:
+            if "<revapi.skip>true</revapi.skip>" in content:
+                return
+            if "<revapi.skip>false</revapi.skip>" in content:
+                new_content = content.replace("<revapi.skip>false</revapi.skip>", "<revapi.skip>true</revapi.skip>")
+                logging.info(f"[SelfServe] Changed revapi.skip to true in {pom_path}")
+            else:
+                new_content = re.sub(
+                    r'([ \t]*)</properties>',
+                    r'\1  <revapi.skip>true</revapi.skip>\n\1</properties>',
+                    content,
+                    count=1,
+                )
+                logging.info(f"[SelfServe] Added revapi.skip=true to {pom_path}")
+        else:
+            if "<revapi.skip>true</revapi.skip>" not in content:
+                return
+            new_content = content.replace("<revapi.skip>true</revapi.skip>", "<revapi.skip>false</revapi.skip>")
+            logging.info(f"[SelfServe] Changed revapi.skip to false in {pom_path}")
+        with open(pom_path, "w") as f:
+            f.write(new_content)
+    except Exception as e:
+        logging.warning(f"[SelfServe] Failed to update revapi.skip in {pom_path}: {e}")
 
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
@@ -301,14 +350,11 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     sdk_release_type: str = config["sdkReleaseType"] if "sdkReleaseType" in config else None
     api_version = config["apiVersion"] if "apiVersion" in config else None
+    # Generate with beta by default; will be corrected after inference if needed
     release_beta_sdk: bool = not sdk_release_type or sdk_release_type == "beta"
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
-    run_mode: str = config["runMode"] if "runMode" in config else None
-
-    if run_mode == "release" or run_mode == "local":
-        verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project,
@@ -319,10 +365,14 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         remove_before_regen=True,
         group_id=GROUP_ID,
         api_version=api_version,
-        generate_beta_sdk=release_beta_sdk,
     )
 
     if succeeded:
+        # Infer sdk release type from generated metadata when not explicitly provided
+        if not sdk_release_type and sdk_folder and module:
+            inferred_type = infer_sdk_release_type(sdk_root, sdk_folder, module)
+            release_beta_sdk = inferred_type == "beta"
+
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
@@ -334,12 +384,12 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         output_folder = sdk_folder
         update_version(sdk_root, output_folder)
 
+        # Update revapi.skip based on release type
+        update_revapi_skip(os.path.join(sdk_root, output_folder, "pom.xml"), beta=release_beta_sdk)
+
         # compile
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            if is_mgmt_premium(module):
-                move_premium_samples(sdk_root, service, module)
-                update_azure_resourcemanager_pom(sdk_root, module, current_version)
             # For output breaking changes, useful in sdk validation pipeline
             logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
@@ -427,122 +477,6 @@ def update_changelog_version(sdk_root: str, output_folder: str, current_version:
         os.chdir(pwd)
 
 
-def move_premium_samples(sdk_root: str, service: str, module: str):
-    package_path = "com/" + module.replace("-", "/")
-    source_sample_dir = os.path.join(
-        sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated"
-    )
-    target_sample_dir = os.path.join(
-        sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path
-    )
-    logging.info(f"Moving samples from {source_sample_dir} to {target_sample_dir}.")
-    copy_folder_recursive_sync(source_sample_dir, target_sample_dir)
-    shutil.rmtree(source_sample_dir, ignore_errors=True)
-
-
-def update_azure_resourcemanager_pom(sdk_root: str, module: str, current_version: str):
-    """
-    Updates azure-resourcemanager pom for premium package split:
-    1. Add unreleased entry in eng/versioning/version_client.txt
-    2. Update dependency in azure-resourcemanager/pom.xml to use unreleased dependency
-    """
-    # 1. Add unreleased entry to version_client.txt
-    version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
-    group_id = "com.azure.resourcemanager"
-    project = "{0}:{1}".format(group_id, module)
-
-    # Check if unreleased entry already exists
-    unreleased_project = "unreleased_{0}".format(project)
-    unreleased_exists = False
-    with open(version_file, "r", encoding="utf-8") as fin:
-        content = fin.read()
-        if unreleased_project in content:
-            unreleased_exists = True
-            logging.info("[UNRELEASED][Skip] Unreleased entry already exists for %s", module)
-
-    if not unreleased_exists:
-        # Find the unreleased section and add the entry
-        with open(version_file, "r", encoding="utf-8") as fin:
-            lines = fin.read().splitlines()
-
-        # Find the unreleased section start
-        unreleased_section_start = -1
-        for i, line in enumerate(lines):
-            if "# Unreleased dependencies:" in line:
-                unreleased_section_start = i
-                break
-
-        if unreleased_section_start == -1:
-            logging.error("[UNRELEASED][Skip] Cannot find unreleased section in version_client.txt")
-            return
-
-        # Determine insertion point: append to the end of the unreleased section
-        # by locating the first blank line after the last 'unreleased_' entry.
-        last_unreleased_idx = -1
-        end_of_section_idx = -1
-        seen_unreleased = False
-        for i in range(unreleased_section_start + 1, len(lines)):
-            line = lines[i]
-            if line.startswith("unreleased_"):
-                seen_unreleased = True
-                last_unreleased_idx = i
-                continue
-            if seen_unreleased:
-                # First blank line after we started seeing unreleased entries marks end of section
-                if line.strip() == "":
-                    end_of_section_idx = i  # insert before this blank line
-                    break
-                # Or a new header line also marks the end
-                if line.startswith("# "):
-                    end_of_section_idx = i
-                    break
-
-        if last_unreleased_idx != -1:
-            insert_index = end_of_section_idx if end_of_section_idx != -1 else last_unreleased_idx + 1
-        else:
-            # No existing unreleased entries, insert after header comments and optional blank line
-            insert_index = unreleased_section_start + 1
-            while insert_index < len(lines) and lines[insert_index].startswith("#"):
-                insert_index += 1
-            if insert_index < len(lines) and lines[insert_index].strip() == "":
-                insert_index += 1
-
-        # Insert the unreleased entry
-        unreleased_entry = "unreleased_{0};{1}".format(project, current_version)
-        lines.insert(insert_index, unreleased_entry)
-
-        with open(version_file, "w", encoding="utf-8") as fout:
-            fout.write("\n".join(lines))
-            fout.write("\n")
-
-        logging.info("[UNRELEASED][Success] Added unreleased entry: %s", unreleased_entry)
-
-    # 2. Update azure-resourcemanager pom.xml
-    pom_file = os.path.join(sdk_root, "sdk/resourcemanager/azure-resourcemanager/pom.xml")
-    if not os.path.exists(pom_file):
-        logging.error("[POM][Skip] Cannot find azure-resourcemanager pom.xml")
-        return
-
-    with open(pom_file, "r", encoding="utf-8") as fin:
-        pom_content = fin.read()
-
-    # Pattern to find the dependency and its version comment
-    dependency_pattern = r"(<groupId>{0}</groupId>\s*<artifactId>{1}</artifactId>\s*<version>)[^<]+(</version>\s*<!-- {{x-version-update;){2}(;dependency}} -->)".format(
-        re.escape(group_id), re.escape(module), re.escape(project)
-    )
-
-    # Replace current with unreleased dependency
-    replacement = r"\g<1>" + current_version + r"\g<2>unreleased_" + project + r"\g<3>"
-    updated_pom_content = re.sub(dependency_pattern, replacement, pom_content, flags=re.DOTALL)
-
-    if updated_pom_content != pom_content:
-        with open(pom_file, "w", encoding="utf-8") as fout:
-            fout.write(updated_pom_content)
-        logging.info("[POM][Success] Updated azure-resourcemanager pom.xml to use unreleased dependency of %s", module)
-    else:
-        logging.warning("[POM][Skip] Could not find dependency for %s in azure-resourcemanager pom.xml", module)
-
-
 def main():
     (parser, args) = parse_args()
     args = vars(args)
@@ -553,7 +487,6 @@ def main():
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
-    premium = False
 
     if args.get("tsp_config"):
         tsp_config = args["tsp_config"]
@@ -561,8 +494,6 @@ def main():
         succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
             tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID, **args
         )
-
-        premium = is_mgmt_premium(module)
 
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args["version"] = current_version
@@ -612,9 +543,6 @@ def main():
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            if premium:
-                move_premium_samples(sdk_root, service, module)
-                update_azure_resourcemanager_pom(sdk_root, module, current_version)
             latest_release_version = get_latest_release_version(stable_version, current_version)
             compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
 

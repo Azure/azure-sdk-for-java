@@ -17,12 +17,6 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class DirectoriesSetMetadataHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
@@ -35,16 +29,22 @@ public final class DirectoriesSetMetadataHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-request-server-encrypted property.
+     * The x-ms-version property.
      */
     @Generated
-    private Boolean xMsRequestServerEncrypted;
+    private String xMsVersion;
 
     /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @Generated
+    private Boolean xMsRequestServerEncrypted;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -58,43 +58,21 @@ public final class DirectoriesSetMetadataHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DirectoriesSetMetadataHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
-        if (xMsRequestServerEncrypted != null) {
-            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
-        } else {
-            this.xMsRequestServerEncrypted = null;
-        }
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the DirectoriesSetMetadataHeaders object itself.
-     */
-    @Generated
-    public DirectoriesSetMetadataHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        if (xMsRequestServerEncrypted != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        } else {
+            this.xMsRequestServerEncrypted = null;
+        }
     }
 
     /**
@@ -142,24 +120,24 @@ public final class DirectoriesSetMetadataHeaders {
     }
 
     /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsRequestServerEncrypted value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the DirectoriesSetMetadataHeaders object itself.
      */
     @Generated
-    public DirectoriesSetMetadataHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
+    public DirectoriesSetMetadataHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -189,6 +167,28 @@ public final class DirectoriesSetMetadataHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @return the xMsRequestServerEncrypted value.
+     */
+    @Generated
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the DirectoriesSetMetadataHeaders object itself.
+     */
+    @Generated
+    public DirectoriesSetMetadataHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 }

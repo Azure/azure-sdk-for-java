@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class StorageMoversGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_Get.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_Get.json
      */
     /**
      * Sample code: StorageMovers_Get.

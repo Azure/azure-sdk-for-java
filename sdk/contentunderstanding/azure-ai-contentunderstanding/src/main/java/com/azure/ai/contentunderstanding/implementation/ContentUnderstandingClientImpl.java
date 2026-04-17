@@ -180,7 +180,7 @@ public final class ContentUnderstandingClientImpl {
         Mono<Response<BinaryData>> analyze(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData analyzeRequest1, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData analyzeRequest, RequestOptions requestOptions, Context context);
 
         @Post("/analyzers/{analyzerId}:analyze")
         @ExpectedResponses({ 202 })
@@ -191,7 +191,7 @@ public final class ContentUnderstandingClientImpl {
         Response<BinaryData> analyzeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData analyzeRequest1, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData analyzeRequest, RequestOptions requestOptions, Context context);
 
         @Post("/analyzers/{analyzerId}:analyzeBinary")
         @ExpectedResponses({ 202 })
@@ -414,7 +414,7 @@ public final class ContentUnderstandingClientImpl {
         Mono<Response<BinaryData>> grantCopyAuthorization(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData grantCopyAuthorizationRequest1, RequestOptions requestOptions,
+            @BodyParam("application/json") BinaryData grantCopyAuthorizationRequest, RequestOptions requestOptions,
             Context context);
 
         @Post("/analyzers/{analyzerId}:grantCopyAuthorization")
@@ -426,7 +426,7 @@ public final class ContentUnderstandingClientImpl {
         Response<BinaryData> grantCopyAuthorizationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData grantCopyAuthorizationRequest1, RequestOptions requestOptions,
+            @BodyParam("application/json") BinaryData grantCopyAuthorizationRequest, RequestOptions requestOptions,
             Context context);
 
         @Get("/analyzers")
@@ -619,7 +619,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -629,13 +629,13 @@ public final class ContentUnderstandingClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> analyzeWithResponseAsync(String analyzerId, BinaryData analyzeRequest1,
+    private Mono<Response<BinaryData>> analyzeWithResponseAsync(String analyzerId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.analyze(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                analyzerId, contentType, accept, analyzeRequest1, requestOptions, context));
+                analyzerId, contentType, accept, analyzeRequest, requestOptions, context));
     }
 
     /**
@@ -739,7 +739,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -748,12 +748,12 @@ public final class ContentUnderstandingClientImpl {
      * @return provides status details for analyze operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> analyzeWithResponse(String analyzerId, BinaryData analyzeRequest1,
+    private Response<BinaryData> analyzeWithResponse(String analyzerId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.analyzeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), analyzerId, contentType,
-            accept, analyzeRequest1, requestOptions, Context.NONE);
+            accept, analyzeRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -857,7 +857,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -867,9 +867,9 @@ public final class ContentUnderstandingClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>
-        beginAnalyzeWithModelAsync(String analyzerId, BinaryData analyzeRequest1, RequestOptions requestOptions) {
+        beginAnalyzeWithModelAsync(String analyzerId, BinaryData analyzeRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(3),
-            () -> this.analyzeWithResponseAsync(analyzerId, analyzeRequest1, requestOptions),
+            () -> this.analyzeWithResponseAsync(analyzerId, analyzeRequest, requestOptions),
             new com.azure.ai.contentunderstanding.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
@@ -983,7 +983,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -993,9 +993,9 @@ public final class ContentUnderstandingClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> beginAnalyzeWithModel(String analyzerId,
-        BinaryData analyzeRequest1, RequestOptions requestOptions) {
+        BinaryData analyzeRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(3),
-            () -> this.analyzeWithResponse(analyzerId, analyzeRequest1, requestOptions),
+            () -> this.analyzeWithResponse(analyzerId, analyzeRequest, requestOptions),
             new com.azure.ai.contentunderstanding.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
@@ -1109,7 +1109,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1118,10 +1118,10 @@ public final class ContentUnderstandingClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeAsync(String analyzerId, BinaryData analyzeRequest1,
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeAsync(String analyzerId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(3),
-            () -> this.analyzeWithResponseAsync(analyzerId, analyzeRequest1, requestOptions),
+            () -> this.analyzeWithResponseAsync(analyzerId, analyzeRequest, requestOptions),
             new com.azure.ai.contentunderstanding.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
@@ -1234,7 +1234,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param analyzeRequest1 The analyzeRequest1 parameter.
+     * @param analyzeRequest The analyzeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1243,10 +1243,10 @@ public final class ContentUnderstandingClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest1,
+    public SyncPoller<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(3),
-            () -> this.analyzeWithResponse(analyzerId, analyzeRequest1, requestOptions),
+            () -> this.analyzeWithResponse(analyzerId, analyzeRequest, requestOptions),
             new com.azure.ai.contentunderstanding.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
@@ -5194,7 +5194,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param grantCopyAuthorizationRequest1 The grantCopyAuthorizationRequest1 parameter.
+     * @param grantCopyAuthorizationRequest The grantCopyAuthorizationRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5205,12 +5205,12 @@ public final class ContentUnderstandingClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> grantCopyAuthorizationWithResponseAsync(String analyzerId,
-        BinaryData grantCopyAuthorizationRequest1, RequestOptions requestOptions) {
+        BinaryData grantCopyAuthorizationRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.grantCopyAuthorization(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                analyzerId, contentType, accept, grantCopyAuthorizationRequest1, requestOptions, context));
+                analyzerId, contentType, accept, grantCopyAuthorizationRequest, requestOptions, context));
     }
 
     /**
@@ -5239,7 +5239,7 @@ public final class ContentUnderstandingClientImpl {
      * </pre>
      *
      * @param analyzerId The unique identifier of the analyzer.
-     * @param grantCopyAuthorizationRequest1 The grantCopyAuthorizationRequest1 parameter.
+     * @param grantCopyAuthorizationRequest The grantCopyAuthorizationRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5249,11 +5249,11 @@ public final class ContentUnderstandingClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> grantCopyAuthorizationWithResponse(String analyzerId,
-        BinaryData grantCopyAuthorizationRequest1, RequestOptions requestOptions) {
+        BinaryData grantCopyAuthorizationRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.grantCopyAuthorizationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), analyzerId,
-            contentType, accept, grantCopyAuthorizationRequest1, requestOptions, Context.NONE);
+            contentType, accept, grantCopyAuthorizationRequest, requestOptions, Context.NONE);
     }
 
     /**

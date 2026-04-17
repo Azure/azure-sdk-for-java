@@ -2,45 +2,86 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.benchmark;
 
-import com.codahale.metrics.Gauge;
-import com.codahale.metrics.Metric;
-import com.codahale.metrics.MetricSet;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.MultiGauge;
+import io.micrometer.core.instrument.Tags;
+import io.micrometer.core.instrument.binder.MeterBinder;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
- * A Dropwizard MetricSet that reports JVM thread counts grouped by name prefix.
+ * A Micrometer {@link MeterBinder} that reports JVM thread counts grouped by name prefix.
  * Thread names like "reactor-http-epoll-1", "reactor-http-epoll-2" are grouped
  * under the prefix "reactor-http-epoll" with a count of 2.
  *
- * This is useful for identifying which thread pools are growing in multi-tenancy
- * scenarios where per-client thread leaks need to be detected.
+ * <p>This is useful for identifying which thread pools are growing in multi-tenancy
+ * scenarios where per-client thread leaks need to be detected.</p>
  *
- * Registered metrics:
- *   threads.prefix.{name} = count of threads with that prefix
- *   threads.prefix.total  = total thread count (same as threads.count)
+ * <p>Registered metrics:</p>
+ * <ul>
+ *   <li>{@code jvm.threads.prefix} — one gauge per thread name prefix, tagged with {@code prefix=...}</li>
+ * </ul>
  */
-public class ThreadPrefixGaugeSet implements MetricSet {
+public class ThreadPrefixGaugeSet implements MeterBinder {
+
+    private static final String METRIC_NAME = "jvm.threads.prefix";
+    private static final int DEFAULT_REFRESH_INTERVAL_SECONDS = 10;
+
+    private final int refreshIntervalSeconds;
+    private ScheduledExecutorService scheduler;
+
+    public ThreadPrefixGaugeSet() {
+        this(DEFAULT_REFRESH_INTERVAL_SECONDS);
+    }
+
+    public ThreadPrefixGaugeSet(int refreshIntervalSeconds) {
+        this.refreshIntervalSeconds = refreshIntervalSeconds;
+    }
 
     @Override
-    public Map<String, Metric> getMetrics() {
-        Map<String, Metric> gauges = new HashMap<>();
+    public void bindTo(MeterRegistry registry) {
+        MultiGauge multiGauge = MultiGauge.builder(METRIC_NAME)
+            .description("Thread count grouped by name prefix")
+            .register(registry);
 
-        // Dynamic gauge that computes thread prefix counts on each read
-        gauges.put("threads.prefix.snapshot", (Gauge<Map<String, Integer>>) () -> {
-            Map<String, Integer> prefixCounts = new TreeMap<>();
-            Thread.getAllStackTraces().keySet().forEach(t -> {
-                String prefix = t.getName().replaceAll("-?\\d+$", "");
-                if (prefix.isEmpty()) {
-                    prefix = t.getName();
-                }
-                prefixCounts.merge(prefix, 1, Integer::sum);
-            });
-            return prefixCounts;
+        scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "thread-prefix-gauge-updater");
+            t.setDaemon(true);
+            return t;
         });
 
-        return gauges;
+        scheduler.scheduleAtFixedRate(() -> {
+            Map<String, Integer> prefixCounts = computePrefixCounts();
+            multiGauge.register(
+                prefixCounts.entrySet().stream()
+                    .map(e -> MultiGauge.Row.of(Tags.of("prefix", e.getKey()), e.getValue()))
+                    .collect(Collectors.toList()),
+                true // overwrite previous rows
+            );
+        }, 0, refreshIntervalSeconds, TimeUnit.SECONDS);
+    }
+
+    public void close() {
+        if (scheduler != null) {
+            scheduler.shutdown();
+        }
+    }
+
+    private Map<String, Integer> computePrefixCounts() {
+        Map<String, Integer> prefixCounts = new TreeMap<>();
+        Thread.getAllStackTraces().keySet().forEach(t -> {
+            String prefix = t.getName().replaceAll("-?\\d+$", "");
+            if (prefix.isEmpty()) {
+                prefix = t.getName();
+            }
+            prefixCounts.merge(prefix, 1, Integer::sum);
+        });
+        return prefixCounts;
     }
 }

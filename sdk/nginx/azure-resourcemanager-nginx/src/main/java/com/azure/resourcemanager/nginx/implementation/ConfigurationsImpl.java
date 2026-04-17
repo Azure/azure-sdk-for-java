@@ -34,12 +34,8 @@ public final class ConfigurationsImpl implements Configurations {
         String configurationName, Context context) {
         Response<NginxConfigurationResponseInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, deploymentName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NginxConfigurationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NginxConfigurationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public NginxConfigurationResponse get(String resourceGroupName, String deploymentName, String configurationName) {
@@ -79,12 +75,8 @@ public final class ConfigurationsImpl implements Configurations {
         String configurationName, AnalysisCreate body, Context context) {
         Response<AnalysisResultInner> inner = this.serviceClient()
             .analysisWithResponse(resourceGroupName, deploymentName, configurationName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AnalysisResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AnalysisResultImpl(inner.getValue(), this.manager()));
     }
 
     public AnalysisResult analysis(String resourceGroupName, String deploymentName, String configurationName) {

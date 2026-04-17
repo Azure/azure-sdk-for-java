@@ -1547,7 +1547,7 @@ public class ImplementationBridgeHelpers {
             }
         }
 
-        public static CosmosDiagnosticsThresholdsAccessor getCosmosAsyncClientAccessor() {
+        public static CosmosDiagnosticsThresholdsAccessor getCosmosDiagnosticsThresholdsAccessor() {
             if (!cosmosDiagnosticsThresholdsClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsThresholds...");
                 initializeAllAccessors();
@@ -1892,6 +1892,7 @@ public class ImplementationBridgeHelpers {
 
             void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
             ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
+            CosmosItemSerializer getInternalDefaultSerializer();
         }
     }
 
