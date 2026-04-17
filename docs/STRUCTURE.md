@@ -46,21 +46,6 @@ These files are generated / maintained per-library and are **not** pulled into `
 
 ---
 
-### `doc/` — Legacy Developer Docs
-
-The `doc/` directory predates `docs/`. It contains a small number of files with stable
-external shortlinks that cannot be moved:
-
-| File | Notes |
-|------|-------|
-| `doc/deprecation_process.md` | Linked from `aka.ms/azsdk/java/deprecation-process` — do not move |
-| `doc/dev/CredScan-Process.md` | Referenced from engineering logs |
-| `doc/dev/sdk-generation-pipeline-troubleshooting.md` | Referenced from pipeline failure guidance |
-
-**New developer documentation should go in `docs/contributor/`**, not `doc/`.
-
----
-
 ### `eng/` — Engineering System
 
 Contains CI/CD pipeline definitions, scripts, and build tooling. Content here is often

@@ -188,5 +188,5 @@ Common options from `PerfStressOptions`:
 
 ## See Also
 
-- [Performance Tuning](../user/performance-tuning.md) — user-facing guidance
-- [Building](./building.md)
+- [Performance Tuning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/user/performance-tuning.md) — user-facing guidance
+- [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)

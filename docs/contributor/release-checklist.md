@@ -1,7 +1,7 @@
 # Release Checklist
 
 > **Source**: Summarized from [wiki/Getting-Started-Guidance](https://github.com/Azure/azure-sdk-for-java/wiki/Getting-Started-Guidance) (last reviewed April 2026).  
-> **See also**: [Deprecation](deprecation.md) · [Versioning](versioning.md) · [aka.ms/azsdk/release-checklist](https://aka.ms/azsdk/release-checklist)
+> **See also**: [Deprecation](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/deprecation.md) · [Versioning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md) · [aka.ms/azsdk/release-checklist](https://aka.ms/azsdk/release-checklist)
 
 ---
 
@@ -20,7 +20,7 @@
 - [ ] All synchronous service client methods have `withResponse` overloads that accept a `Context`.
 - [ ] All asynchronous service client methods translate `reactor.util.context.Context` to `com.azure.core.util.Context`.
 - [ ] Distributed tracing is correctly implemented per [tracing guidelines](https://azure.github.io/azure-sdk/java_implementation.html#distributed-tracing).
-- [ ] All service client builder classes have the full set of [expected builder APIs](https://azure.github.io/azure-sdk/java_design.html#java-service-client-builder-consistency).
+- [ ] All service client builder classes have the full set of [expected builder APIs](https://azure.github.io/azure-sdk/java_introduction.html#service-client-creation).
 
 ---
 
@@ -33,7 +33,7 @@
 
 ## Before Beta 2
 
-- [ ] Apply all [required annotations](https://azure.github.io/azure-sdk/java_design.html#annotations):
+- [ ] Apply all [required annotations](https://azure.github.io/azure-sdk/java_introduction.html#service-client):
   `@ServiceClient`, `@ServiceMethod`, `@Fluent`, `@ServiceClientBuilder`, etc.
 - [ ] All public APIs log at the correct level and log sufficient context per the logging guidelines.
 
@@ -52,7 +52,7 @@
 - [ ] Re-validate `pom.xml` (same criteria as Before Beta 1).
 - [ ] Test coverage is sufficiently high; any overrides that suppress coverage failure must be communicated in the PR.
 - [ ] No beta-scoped production dependencies (test-scoped beta dependencies are acceptable).
-- [ ] Run the BOM dependency checker if the library will be included in the BOM (see [BOM Guidelines](bom-guidelines.md)).
+- [ ] Run the BOM dependency checker if the library will be included in the BOM (see [BOM Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/bom-guidelines.md)).
 
 ---
 
@@ -63,4 +63,4 @@ Trigger the release pipeline as documented at:
 <https://aka.ms/azsdk/release-checklist>
 
 For troubleshooting SDK generation pipeline failures see:
-[SDK Generation Pipeline Troubleshooting](../../doc/dev/sdk-generation-pipeline-troubleshooting.md)
+[SDK Generation Pipeline Troubleshooting](sdk-generation-pipeline-troubleshooting.md)

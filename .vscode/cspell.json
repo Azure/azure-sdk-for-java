@@ -281,6 +281,7 @@
     "Djava",
     "Dshade",
     "Dspotbugs",
+    "Dsurefire",
     "Dtest",
     "Dverbose",
     "dicom",
