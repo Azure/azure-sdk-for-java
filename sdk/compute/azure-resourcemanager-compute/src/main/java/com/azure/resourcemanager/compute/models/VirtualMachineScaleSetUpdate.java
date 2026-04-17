@@ -44,6 +44,11 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     private List<String> zones;
 
+    /*
+     * User-defined constraints for virtual machine scale set hardware placement.
+     */
+    private Placement placement;
+
     /**
      * Creates an instance of VirtualMachineScaleSetUpdate class.
      */
@@ -136,6 +141,26 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
      */
     public VirtualMachineScaleSetUpdate withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the placement property: User-defined constraints for virtual machine scale set hardware placement.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: User-defined constraints for virtual machine scale set hardware placement.
+     * 
+     * @param placement the placement value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate withPlacement(Placement placement) {
+        this.placement = placement;
         return this;
     }
 
@@ -494,6 +519,29 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @return the lifecycleHooksProfile value.
+     */
+    public LifecycleHooksProfile lifecycleHooksProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().lifecycleHooksProfile();
+    }
+
+    /**
+     * Set the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @param lifecycleHooksProfile the lifecycleHooksProfile value to set.
+     * @return the VirtualMachineScaleSetUpdate object itself.
+     */
+    public VirtualMachineScaleSetUpdate withLifecycleHooksProfile(LifecycleHooksProfile lifecycleHooksProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
+        }
+        this.innerProperties().withLifecycleHooksProfile(lifecycleHooksProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -512,6 +560,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
         if (identity() != null) {
             identity().validate();
         }
+        if (placement() != null) {
+            placement().validate();
+        }
     }
 
     /**
@@ -526,6 +577,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("placement", this.placement);
         return jsonWriter.writeEndObject();
     }
 
@@ -559,6 +611,8 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedVirtualMachineScaleSetUpdate.zones = zones;
+                } else if ("placement".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdate.placement = Placement.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

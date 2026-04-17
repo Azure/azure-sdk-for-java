@@ -27,30 +27,52 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciManagementClient;
 import com.azure.resourcemanager.azurestackhci.implementation.ArcSettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.AzureStackHciManagementClientBuilder;
+import com.azure.resourcemanager.azurestackhci.implementation.ClusterJobsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ClustersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.DeploymentSettingsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.DevicePoolsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.EdgeDeviceJobsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.EdgeDevicesImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachineJobsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.EdgeMachinesImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ExtensionsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.KubernetesVersionsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OffersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.OsImagesImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.OwnershipVouchersImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.PlatformUpdatesImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.PublishersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.SecuritySettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.SkusImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.UpdateContentsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdateRunsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.UpdateSummariesOperationGroupsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdateSummariesOperationsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdatesImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ValidatedSolutionRecipesImpl;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettings;
+import com.azure.resourcemanager.azurestackhci.models.ClusterJobs;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettings;
+import com.azure.resourcemanager.azurestackhci.models.DevicePools;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDeviceJobs;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDevices;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineJobs;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachines;
 import com.azure.resourcemanager.azurestackhci.models.Extensions;
+import com.azure.resourcemanager.azurestackhci.models.KubernetesVersions;
 import com.azure.resourcemanager.azurestackhci.models.Offers;
 import com.azure.resourcemanager.azurestackhci.models.Operations;
+import com.azure.resourcemanager.azurestackhci.models.OsImages;
+import com.azure.resourcemanager.azurestackhci.models.OwnershipVouchers;
+import com.azure.resourcemanager.azurestackhci.models.PlatformUpdates;
+import com.azure.resourcemanager.azurestackhci.models.Publishers;
 import com.azure.resourcemanager.azurestackhci.models.SecuritySettings;
 import com.azure.resourcemanager.azurestackhci.models.Skus;
+import com.azure.resourcemanager.azurestackhci.models.UpdateContents;
 import com.azure.resourcemanager.azurestackhci.models.UpdateRuns;
+import com.azure.resourcemanager.azurestackhci.models.UpdateSummariesOperationGroups;
 import com.azure.resourcemanager.azurestackhci.models.UpdateSummariesOperations;
 import com.azure.resourcemanager.azurestackhci.models.Updates;
 import com.azure.resourcemanager.azurestackhci.models.ValidatedSolutionRecipes;
@@ -67,6 +89,14 @@ import java.util.stream.Collectors;
  * Azure Stack HCI service.
  */
 public final class AzureStackHciManager {
+    private KubernetesVersions kubernetesVersions;
+
+    private PlatformUpdates platformUpdates;
+
+    private OsImages osImages;
+
+    private UpdateContents updateContents;
+
     private Operations operations;
 
     private ArcSettings arcSettings;
@@ -83,6 +113,8 @@ public final class AzureStackHciManager {
 
     private Extensions extensions;
 
+    private Publishers publishers;
+
     private SecuritySettings securitySettings;
 
     private Skus skus;
@@ -91,7 +123,19 @@ public final class AzureStackHciManager {
 
     private Updates updates;
 
+    private UpdateSummariesOperationGroups updateSummariesOperationGroups;
+
     private ValidatedSolutionRecipes validatedSolutionRecipes;
+
+    private EdgeMachines edgeMachines;
+
+    private EdgeMachineJobs edgeMachineJobs;
+
+    private OwnershipVouchers ownershipVouchers;
+
+    private ClusterJobs clusterJobs;
+
+    private DevicePools devicePools;
 
     private UpdateSummariesOperations updateSummariesOperations;
 
@@ -311,6 +355,54 @@ public final class AzureStackHciManager {
     }
 
     /**
+     * Gets the resource collection API of KubernetesVersions.
+     * 
+     * @return Resource collection API of KubernetesVersions.
+     */
+    public KubernetesVersions kubernetesVersions() {
+        if (this.kubernetesVersions == null) {
+            this.kubernetesVersions = new KubernetesVersionsImpl(clientObject.getKubernetesVersions(), this);
+        }
+        return kubernetesVersions;
+    }
+
+    /**
+     * Gets the resource collection API of PlatformUpdates.
+     * 
+     * @return Resource collection API of PlatformUpdates.
+     */
+    public PlatformUpdates platformUpdates() {
+        if (this.platformUpdates == null) {
+            this.platformUpdates = new PlatformUpdatesImpl(clientObject.getPlatformUpdates(), this);
+        }
+        return platformUpdates;
+    }
+
+    /**
+     * Gets the resource collection API of OsImages.
+     * 
+     * @return Resource collection API of OsImages.
+     */
+    public OsImages osImages() {
+        if (this.osImages == null) {
+            this.osImages = new OsImagesImpl(clientObject.getOsImages(), this);
+        }
+        return osImages;
+    }
+
+    /**
+     * Gets the resource collection API of UpdateContents.
+     * 
+     * @return Resource collection API of UpdateContents.
+     */
+    public UpdateContents updateContents() {
+        if (this.updateContents == null) {
+            this.updateContents = new UpdateContentsImpl(clientObject.getUpdateContents(), this);
+        }
+        return updateContents;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      * 
      * @return Resource collection API of Operations.
@@ -407,6 +499,18 @@ public final class AzureStackHciManager {
     }
 
     /**
+     * Gets the resource collection API of Publishers.
+     * 
+     * @return Resource collection API of Publishers.
+     */
+    public Publishers publishers() {
+        if (this.publishers == null) {
+            this.publishers = new PublishersImpl(clientObject.getPublishers(), this);
+        }
+        return publishers;
+    }
+
+    /**
      * Gets the resource collection API of SecuritySettings. It manages SecuritySetting.
      * 
      * @return Resource collection API of SecuritySettings.
@@ -455,6 +559,19 @@ public final class AzureStackHciManager {
     }
 
     /**
+     * Gets the resource collection API of UpdateSummariesOperationGroups.
+     * 
+     * @return Resource collection API of UpdateSummariesOperationGroups.
+     */
+    public UpdateSummariesOperationGroups updateSummariesOperationGroups() {
+        if (this.updateSummariesOperationGroups == null) {
+            this.updateSummariesOperationGroups
+                = new UpdateSummariesOperationGroupsImpl(clientObject.getUpdateSummariesOperationGroups(), this);
+        }
+        return updateSummariesOperationGroups;
+    }
+
+    /**
      * Gets the resource collection API of ValidatedSolutionRecipes.
      * 
      * @return Resource collection API of ValidatedSolutionRecipes.
@@ -465,6 +582,66 @@ public final class AzureStackHciManager {
                 = new ValidatedSolutionRecipesImpl(clientObject.getValidatedSolutionRecipes(), this);
         }
         return validatedSolutionRecipes;
+    }
+
+    /**
+     * Gets the resource collection API of EdgeMachines. It manages EdgeMachine.
+     * 
+     * @return Resource collection API of EdgeMachines.
+     */
+    public EdgeMachines edgeMachines() {
+        if (this.edgeMachines == null) {
+            this.edgeMachines = new EdgeMachinesImpl(clientObject.getEdgeMachines(), this);
+        }
+        return edgeMachines;
+    }
+
+    /**
+     * Gets the resource collection API of EdgeMachineJobs. It manages EdgeMachineJob.
+     * 
+     * @return Resource collection API of EdgeMachineJobs.
+     */
+    public EdgeMachineJobs edgeMachineJobs() {
+        if (this.edgeMachineJobs == null) {
+            this.edgeMachineJobs = new EdgeMachineJobsImpl(clientObject.getEdgeMachineJobs(), this);
+        }
+        return edgeMachineJobs;
+    }
+
+    /**
+     * Gets the resource collection API of OwnershipVouchers.
+     * 
+     * @return Resource collection API of OwnershipVouchers.
+     */
+    public OwnershipVouchers ownershipVouchers() {
+        if (this.ownershipVouchers == null) {
+            this.ownershipVouchers = new OwnershipVouchersImpl(clientObject.getOwnershipVouchers(), this);
+        }
+        return ownershipVouchers;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterJobs. It manages ClusterJob.
+     * 
+     * @return Resource collection API of ClusterJobs.
+     */
+    public ClusterJobs clusterJobs() {
+        if (this.clusterJobs == null) {
+            this.clusterJobs = new ClusterJobsImpl(clientObject.getClusterJobs(), this);
+        }
+        return clusterJobs;
+    }
+
+    /**
+     * Gets the resource collection API of DevicePools. It manages DevicePool.
+     * 
+     * @return Resource collection API of DevicePools.
+     */
+    public DevicePools devicePools() {
+        if (this.devicePools == null) {
+            this.devicePools = new DevicePoolsImpl(clientObject.getDevicePools(), this);
+        }
+        return devicePools;
     }
 
     /**

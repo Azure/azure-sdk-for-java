@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class RestorePointCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollection_Update_MaximumSet_Gen.
@@ -33,7 +33,7 @@ public final class RestorePointCollectionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollection_Update_MinimumSet_Gen.

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class CapacityReservationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity reservation .
@@ -35,7 +35,7 @@ public final class CapacityReservationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a targeted capacity reservation.
@@ -55,7 +55,7 @@ public final class CapacityReservationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a block capacity reservation.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class ImagesListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_ListBySubscription.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_ListBySubscription.json
      */
     /**
      * Sample code: List all virtual machine images in a subscription.

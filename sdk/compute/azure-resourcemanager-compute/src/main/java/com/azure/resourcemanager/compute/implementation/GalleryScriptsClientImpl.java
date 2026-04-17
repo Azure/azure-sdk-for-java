@@ -382,12 +382,12 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript) {
+    public PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String galleryName, String galleryScriptName, GalleryScriptInner galleryScript) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<GalleryScriptInner, GalleryScriptInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GalleryScriptInner.class, GalleryScriptInner.class, this.client.getContext());
     }
 
     /**
@@ -406,13 +406,14 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript, Context context) {
+    private PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String galleryName, String galleryScriptName, GalleryScriptInner galleryScript,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, galleryName,
             galleryScriptName, galleryScript, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<GalleryScriptInner, GalleryScriptInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GalleryScriptInner.class, GalleryScriptInner.class, context);
     }
 
     /**
@@ -430,8 +431,8 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript) {
+    public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptInner galleryScript) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript)
             .getSyncPoller();
     }
@@ -452,8 +453,8 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptInner galleryScript, Context context) {
+    public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginCreateOrUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptInner galleryScript, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context)
             .getSyncPoller();
     }
@@ -473,8 +474,8 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createOrUpdateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
-        GalleryScriptInner galleryScript) {
+    public Mono<GalleryScriptInner> createOrUpdateAsync(String resourceGroupName, String galleryName,
+        String galleryScriptName, GalleryScriptInner galleryScript) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -495,8 +496,8 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
-        GalleryScriptInner galleryScript, Context context) {
+    private Mono<GalleryScriptInner> createOrUpdateAsync(String resourceGroupName, String galleryName,
+        String galleryScriptName, GalleryScriptInner galleryScript, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -513,11 +514,12 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
+    public GalleryScriptInner createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript) {
-        createOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).block();
+        return createOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).block();
     }
 
     /**
@@ -532,11 +534,12 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
+    public GalleryScriptInner createOrUpdate(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptInner galleryScript, Context context) {
-        createOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).block();
+        return createOrUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).block();
     }
 
     /**
@@ -652,12 +655,12 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript) {
+    public PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdateAsync(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<GalleryScriptInner, GalleryScriptInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GalleryScriptInner.class, GalleryScriptInner.class, this.client.getContext());
     }
 
     /**
@@ -675,13 +678,13 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript, Context context) {
+    private PollerFlux<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdateAsync(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<GalleryScriptInner, GalleryScriptInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GalleryScriptInner.class, GalleryScriptInner.class, context);
     }
 
     /**
@@ -698,8 +701,8 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript) {
+    public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).getSyncPoller();
     }
 
@@ -718,8 +721,8 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String galleryName,
-        String galleryScriptName, GalleryScriptUpdate galleryScript, Context context) {
+    public SyncPoller<PollResult<GalleryScriptInner>, GalleryScriptInner> beginUpdate(String resourceGroupName,
+        String galleryName, String galleryScriptName, GalleryScriptUpdate galleryScript, Context context) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context)
             .getSyncPoller();
     }
@@ -738,7 +741,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
+    public Mono<GalleryScriptInner> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript) {
         return beginUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -759,7 +762,7 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
+    private Mono<GalleryScriptInner> updateAsync(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript, Context context) {
         return beginUpdateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -775,11 +778,12 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String galleryName, String galleryScriptName,
+    public GalleryScriptInner update(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript) {
-        updateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).block();
+        return updateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript).block();
     }
 
     /**
@@ -793,11 +797,12 @@ public final class GalleryScriptsClientImpl implements GalleryScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Script Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String galleryName, String galleryScriptName,
+    public GalleryScriptInner update(String resourceGroupName, String galleryName, String galleryScriptName,
         GalleryScriptUpdate galleryScript, Context context) {
-        updateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).block();
+        return updateAsync(resourceGroupName, galleryName, galleryScriptName, galleryScript, context).block();
     }
 
     /**

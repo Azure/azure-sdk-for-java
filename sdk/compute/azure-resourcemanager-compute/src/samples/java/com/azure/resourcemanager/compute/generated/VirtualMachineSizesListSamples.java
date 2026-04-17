@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineSizesListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/computeRPCommonExamples/VirtualMachineSizes_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/computeRPCommonExamples/VirtualMachineSizes_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineSizes_List_MinimumSet_Gen.
@@ -21,7 +21,7 @@ public final class VirtualMachineSizesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/computeRPCommonExamples/VirtualMachineSizes_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/computeRPCommonExamples/VirtualMachineSizes_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineSizes_List_MaximumSet_Gen.

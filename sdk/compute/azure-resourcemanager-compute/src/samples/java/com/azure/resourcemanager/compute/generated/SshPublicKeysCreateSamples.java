@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourceInner
  */
 public final class SshPublicKeysCreateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/sshPublicKeyExamples/SshPublicKey_Create.json
+     * x-ms-original-file: 2025-11-01/sshPublicKeyExamples/SshPublicKey_Create.json
      */
     /**
      * Sample code: Create a new SSH public key resource.

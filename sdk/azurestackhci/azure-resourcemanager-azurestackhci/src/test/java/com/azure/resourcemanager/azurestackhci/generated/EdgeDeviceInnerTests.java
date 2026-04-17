@@ -11,7 +11,7 @@ public final class EdgeDeviceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceInner model = BinaryData
-            .fromString("{\"kind\":\"EdgeDevice\",\"id\":\"w\",\"name\":\"epdfgkmtdherng\",\"type\":\"tcjuahokqto\"}")
+            .fromString("{\"kind\":\"EdgeDevice\",\"id\":\"puuyjucejik\",\"name\":\"oeo\",\"type\":\"vtzejetjklnti\"}")
             .toObject(EdgeDeviceInner.class);
     }
 

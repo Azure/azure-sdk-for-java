@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ExtensionsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetExtension.json
+     * x-ms-original-file: 2026-04-01-preview/GetExtension.json
      */
     /**
      * Sample code: Get ArcSettings Extension.
