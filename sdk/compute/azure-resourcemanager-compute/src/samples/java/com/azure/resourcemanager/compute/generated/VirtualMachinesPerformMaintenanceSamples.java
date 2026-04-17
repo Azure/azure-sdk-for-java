@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesPerformMaintenanceSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_PerformMaintenance_MaximumSet_Gen.
@@ -24,7 +24,7 @@ public final class VirtualMachinesPerformMaintenanceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_PerformMaintenance_MinimumSet_Gen.

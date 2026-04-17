@@ -67,7 +67,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewHistoryDefinitionInner>> getById(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("historyDefinitionId") String historyDefinitionId, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -76,7 +76,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewHistoryDefinitionListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -91,7 +91,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -113,7 +113,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
             return Mono
                 .error(new IllegalArgumentException("Parameter historyDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion, scope, historyDefinitionId,
@@ -124,7 +124,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +147,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
             return Mono
                 .error(new IllegalArgumentException("Parameter historyDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, scope, historyDefinitionId, accept, context);
@@ -156,7 +156,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -171,7 +171,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,7 +188,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,7 +204,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, filter, accept, context))
@@ -235,7 +235,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @param context The context to associate with this operation.
@@ -255,7 +255,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scope, filter, accept, context)
@@ -267,7 +267,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +285,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,7 +302,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @param context The context to associate with this operation.
@@ -322,7 +322,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +339,7 @@ public final class ScopeAccessReviewHistoryDefinitionsClientImpl implements Scop
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @param context The context to associate with this operation.

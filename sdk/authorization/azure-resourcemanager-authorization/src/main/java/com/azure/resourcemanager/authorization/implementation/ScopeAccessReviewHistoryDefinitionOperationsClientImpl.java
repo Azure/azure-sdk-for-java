@@ -67,7 +67,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewHistoryDefinitionInner>> create(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("historyDefinitionId") String historyDefinitionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AccessReviewHistoryDefinitionProperties properties, Context context);
@@ -77,14 +77,14 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteById(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("historyDefinitionId") String historyDefinitionId, Context context);
     }
 
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +111,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -123,7 +123,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @param context The context to associate with this operation.
@@ -151,7 +151,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -162,7 +162,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +180,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @param context The context to associate with this operation.
@@ -198,7 +198,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +215,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -235,7 +235,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter historyDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil.withContext(
             context -> service.deleteById(this.client.getEndpoint(), apiVersion, scope, historyDefinitionId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -244,7 +244,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,7 +266,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter historyDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), apiVersion, scope, historyDefinitionId, context);
     }
@@ -274,7 +274,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -289,7 +289,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +305,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

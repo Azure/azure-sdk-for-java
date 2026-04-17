@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetsApproveRollingUpgradeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ApproveRollingUpgrade.

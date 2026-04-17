@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetVMExtensionsGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Get.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Get.json
      */
     /**
      * Sample code: Get VirtualMachineScaleSet VM extension.
