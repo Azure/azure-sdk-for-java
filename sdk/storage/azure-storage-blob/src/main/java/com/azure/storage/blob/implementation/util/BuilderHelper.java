@@ -30,6 +30,7 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
@@ -64,7 +65,12 @@ public final class BuilderHelper {
     }
 
     /**
-     * Constructs a {@link HttpPipeline} from values passed from a builder.
+     * Constructs a {@link HttpPipeline} from values passed from a builder, with optional session-based
+     * authentication support.
+     * <p>
+     * When {@code sessionOptions} is non-null and the resolved session mode is not {@link SessionMode#NONE},
+     * and a {@code tokenCredential} is present, a {@link SessionTokenCredentialPolicy} is added after the
+     * bearer token policy. The session policy uses a separate bearer-only pipeline for CreateSession calls.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
@@ -81,6 +87,8 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
+     * @param sessionOptions {@link SessionOptions} containing session mode, container name, and service version.
+     *                       Pass {@code null} to disable session support.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -88,7 +96,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ClientLogger logger) {
+        ClientLogger logger, SessionOptions sessionOptions) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
@@ -127,6 +135,9 @@ public final class BuilderHelper {
             policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
         }
 
+        addSessionPolicyIfEnabled(policies, sessionOptions, tokenCredential, endpoint, logOptions, clientOptions,
+            httpClient, logger);
+
         if (azureSasCredential != null) {
             policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
         } else if (sasToken != null) {
@@ -148,6 +159,69 @@ public final class BuilderHelper {
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
             .build();
+    }
+
+
+    private static void addSessionPolicyIfEnabled(List<HttpPipelinePolicy> policies, SessionOptions sessionOptions,
+        TokenCredential tokenCredential, String endpoint, HttpLogOptions logOptions, ClientOptions clientOptions,
+        HttpClient httpClient, ClientLogger logger) {
+
+        if (sessionOptions == null || tokenCredential == null) {
+            return;
+        }
+
+        SessionMode effectiveMode = resolveSessionMode(sessionOptions.getSessionMode(), tokenCredential);
+        if (effectiveMode == SessionMode.NONE) {
+            return;
+        }
+
+        validateSessionOptions(sessionOptions, effectiveMode, logger);
+
+        // Build a bearer-only pipeline from the policies accumulated so far (before the session policy).
+        // This pipeline is used by BlobSessionClient for CreateSession calls and intentionally has no
+        // session policy to avoid circular dependency.
+        HttpPipeline bearerPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .tracer(createTracer(clientOptions))
+            .build();
+
+        SessionTokenCredentialPolicy sessionPolicy
+            = createSessionPolicy(bearerPipeline, endpoint, sessionOptions, effectiveMode);
+
+        // TODO (GA): Move SessionTokenCredentialPolicy before BearerTokenPolicy and modify
+        // StorageBearerTokenChallengeAuthorizationPolicy to skip when Authorization is already set.
+        // This avoids the unnecessary bearer token cache lookup on every session-signed request.
+        // Currently session policy sits after bearer and overwrites the header, which is correct
+        // but wastes a token cache hit per request. See policy ordering analysis in session auth design.
+        policies.add(sessionPolicy);
+    }
+
+    private static void validateSessionOptions(SessionOptions sessionOptions, SessionMode effectiveMode,
+        ClientLogger logger) {
+        if (CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "containerName must be set in SessionOptions when using SessionMode." + effectiveMode));
+        }
+        if (sessionOptions.getServiceVersion() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "serviceVersion must be set in SessionOptions when using SessionMode." + effectiveMode));
+        }
+    }
+
+    private static SessionTokenCredentialPolicy createSessionPolicy(HttpPipeline bearerPipeline, String endpoint,
+        SessionOptions sessionOptions, SessionMode effectiveMode) {
+        BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint,
+            sessionOptions.getServiceVersion(), sessionOptions.getContainerName());
+        return new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), effectiveMode);
+    }
+
+    private static SessionMode resolveSessionMode(SessionMode sessionMode, TokenCredential tokenCredential) {
+        if (sessionMode != null) {
+            return sessionMode;
+        }
+        // Default to AUTO when identity-based auth is configured, NONE otherwise.
+        return tokenCredential != null ? SessionMode.AUTO : SessionMode.NONE;
     }
 
     /**

@@ -32,6 +32,8 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.implementation.util.SessionOptions;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -91,6 +93,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private SessionMode sessionMode;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -124,6 +127,8 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
+        validateSessionMode();
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -133,7 +138,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobContainerClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
@@ -165,6 +170,8 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
+        validateSessionMode();
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -174,18 +181,29 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(sessionMode)
+            .setContainerName(containerName)
+            .setServiceVersion(serviceVersion);
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions);
+    }
+
+    private void validateSessionMode() {
+        if (sessionMode != null && sessionMode != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("containerName must be set when using SessionMode." + sessionMode));
+        }
     }
 
     /**
@@ -604,6 +622,23 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      */
     public BlobContainerClientBuilder audience(BlobAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionMode} that controls how the SDK manages session-based authentication
+     * for this container.
+     * <p>
+     * Sessions amortize authentication and authorization cost across many requests by signing them
+     * with a lightweight HMAC key instead of a full bearer token. When session mode is set to a value
+     * other than {@link SessionMode#NONE}, {@link #containerName(String) containerName} must also be set.
+     *
+     * @param sessionMode The session mode to use. If {@code null}, defaults to {@link SessionMode#AUTO}
+     * when identity-based authentication (bearer token) is configured.
+     * @return the updated BlobContainerClientBuilder object.
+     */
+    public BlobContainerClientBuilder sessionMode(SessionMode sessionMode) {
+        this.sessionMode = sessionMode;
         return this;
     }
 }

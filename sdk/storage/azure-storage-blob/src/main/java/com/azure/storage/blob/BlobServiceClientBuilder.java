@@ -151,11 +151,11 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+                perRetryPolicies, configuration, audience, LOGGER, null);
     }
 
     /**
-     * Creates a {@link BlobServiceAsyncClient} based on options set in the builder. Every time
+     * Creates a {@link BlobServiceAsyncClient}based on options set in the builder. Every time
      * {@code buildAsyncClient()} is called, a new instance of {@link BlobServiceAsyncClient} is created.
      *
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
