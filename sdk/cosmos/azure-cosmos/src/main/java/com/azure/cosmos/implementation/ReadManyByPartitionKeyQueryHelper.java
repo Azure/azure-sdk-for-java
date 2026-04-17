@@ -20,7 +20,7 @@ import java.util.List;
 public class ReadManyByPartitionKeyQueryHelper {
 
     private static final String DEFAULT_TABLE_ALIAS = "c";
-    // Internal parameter prefix — uses double-underscore to avoid collisions with user-provided parameters
+    // Internal parameter prefix - uses double-underscore to avoid collisions with user-provided parameters
     private static final String PK_PARAM_PREFIX = "@__rmPk_";
 
     public static SqlQuerySpec createReadManyByPkQuerySpec(
@@ -30,7 +30,19 @@ public class ReadManyByPartitionKeyQueryHelper {
         List<String> partitionKeySelectors,
         PartitionKeyDefinition pkDefinition) {
 
-        // Extract the table alias from the FROM clause (e.g. "FROM x" → "x", "FROM c" → "c")
+        // Guard against collisions with our internal parameter names - callers cannot realistically
+        // use the @__rmPk_ prefix for their own parameters, but if they do we surface a clear error
+        // rather than letting the server reject a SqlQuerySpec with duplicate parameter names.
+        for (SqlParameter baseParam : baseParameters) {
+            String name = baseParam.getName();
+            if (name != null && name.startsWith(PK_PARAM_PREFIX)) {
+                throw new IllegalArgumentException(
+                    "Custom query parameter name '" + name + "' collides with the reserved " +
+                        "readManyByPartitionKey internal prefix '" + PK_PARAM_PREFIX + "'. Rename the parameter.");
+            }
+        }
+
+        // Extract the table alias from the FROM clause (e.g. "FROM x" -> "x", "FROM c" -> "c")
         String tableAlias = extractTableAlias(baseQueryText);
 
         StringBuilder pkFilter = new StringBuilder();
@@ -40,7 +52,7 @@ public class ReadManyByPartitionKeyQueryHelper {
         boolean isSinglePathPk = partitionKeySelectors.size() == 1;
 
         if (isSinglePathPk && pkDefinition.getKind() != PartitionKind.MULTI_HASH) {
-            // Single PK path — use IN clause for normal values, OR NOT IS_DEFINED for NONE
+            // Single PK path - use IN clause for normal values, OR NOT IS_DEFINED for NONE
             // First, separate NONE PKs from normal PKs
             boolean hasNone = false;
             List<PartitionKey> normalPkValues = new ArrayList<>();
@@ -89,13 +101,13 @@ public class ReadManyByPartitionKeyQueryHelper {
                 pkFilter.append(")");
             }
         } else {
-            // Multiple PK paths (HPK) or MULTI_HASH — use OR of AND clauses
+            // Multiple PK paths (HPK) or MULTI_HASH - use OR of AND clauses
             pkFilter.append(" ");
             for (int i = 0; i < pkValues.size(); i++) {
                 PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
                 Object[] pkComponents = pkInternal.toObjectArray();
 
-                // PartitionKey.NONE — generate NOT IS_DEFINED for all PK paths
+                // PartitionKey.NONE - generate NOT IS_DEFINED for all PK paths
                 if (pkComponents == null) {
                     pkFilter.append("(");
                     for (int j = 0; j < partitionKeySelectors.size(); j++) {
@@ -136,12 +148,12 @@ public class ReadManyByPartitionKeyQueryHelper {
         String finalQuery;
         int whereIndex = findTopLevelWhereIndex(baseQueryText);
         if (whereIndex >= 0) {
-            // Base query has WHERE — AND our PK filter
+            // Base query has WHERE - AND our PK filter
             String beforeWhere = baseQueryText.substring(0, whereIndex);
             String afterWhere = baseQueryText.substring(whereIndex + 5); // skip "WHERE"
             finalQuery = beforeWhere + "WHERE (" + afterWhere.trim() + ") AND (" + pkFilter.toString().trim() + ")";
         } else {
-            // No WHERE — add one
+            // No WHERE - add one
             finalQuery = baseQueryText + " WHERE" + pkFilter.toString();
         }
 
@@ -197,7 +209,7 @@ public class ReadManyByPartitionKeyQueryHelper {
                     return containerName;
                 }
             }
-            // Otherwise the next token is the alias ("FROM root r" → alias is "r")
+            // Otherwise the next token is the alias ("FROM root r" -> alias is "r")
             int aliasStart = afterFrom;
             while (afterFrom < queryText.length()
                 && !Character.isWhitespace(queryText.charAt(afterFrom))
@@ -230,7 +242,7 @@ public class ReadManyByPartitionKeyQueryHelper {
                 while (i < queryText.length()) {
                     if (queryText.charAt(i) == '\'') {
                         if (i + 1 < queryText.length() && queryText.charAt(i + 1) == '\'') {
-                            i += 2; // escaped quote — skip both
+                            i += 2; // escaped quote - skip both
                             continue;
                         }
                         break; // end of string literal

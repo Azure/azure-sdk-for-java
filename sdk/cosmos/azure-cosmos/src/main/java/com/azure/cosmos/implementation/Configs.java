@@ -58,7 +58,7 @@ public class Configs {
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
 
-    // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
+    // Thin client connect/acquire timeout - controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
     // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
     // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.
     // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
@@ -249,9 +249,9 @@ public class Configs {
     public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
 
     // readManyByPartitionKey: max number of PK values per query per physical partition
-    private static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
-    private static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
-    private static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 1000;
+    public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    public static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 100;
 
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
@@ -683,7 +683,7 @@ public class Configs {
             }
         }
 
-        // Guard against invalid values — timeout must be at least 500ms
+        // Guard against invalid values - timeout must be at least 500ms
         if (value < 500) {
             logger.warn(
                 "Invalid thin client connection timeout: {}ms. Must be >= 500. Falling back to default: {}ms.",

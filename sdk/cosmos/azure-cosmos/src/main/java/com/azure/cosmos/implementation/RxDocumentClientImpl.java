@@ -4499,7 +4499,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         }
 
                         // Build per-physical-partition batched queries.
-                        // Each physical partition may have many PKs — split into batches
+                        // Each physical partition may have many PKs - split into batches
                         // to avoid oversized SQL queries. Batch size is configurable via
                         // system property COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE (default 1000).
                         int maxPksPerPartitionQuery = Configs.getReadManyByPkMaxBatchSize();
@@ -4534,9 +4534,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             return Flux.empty();
                         }
 
-                        // Round-robin interleave: [batch0-p1, batch0-p2, ..., batch0-pN, batch1-p1, batch1-p2, ...]
-                        // This ensures that with bounded concurrency, different partitions are
-                        // preferred over sequential batches of the same partition.
+                        // Interleave batches across physical partitions so that the first batch for
+                        // each partition is kicked off before the second batch of any partition. With bounded
+                        // concurrency this spreads the initial wave of work across the cluster; note that
+                        // skewed distributions (one partition with N batches, another with 1) will eventually
+                        // fall back to sequential execution once the short partitions are drained.
                         List<Map<PartitionKeyRange, SqlQuerySpec>> interleavedBatches = new ArrayList<>();
                         for (int batchIdx = 0; batchIdx < maxBatchesPerPartition; batchIdx++) {
                             for (List<Map<PartitionKeyRange, SqlQuerySpec>> partitionBatches : batchesPerPartition) {
@@ -4625,7 +4627,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
 
             // PartitionKey.NONE wraps NonePartitionKey which has components = null.
-            // For routing purposes, treat NONE as UndefinedPartitionKey — documents ingested
+            // For routing purposes, treat NONE as UndefinedPartitionKey - documents ingested
             // without a partition key path are stored with the undefined EPK.
             PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
                 ? PartitionKeyInternal.UndefinedPartitionKey
@@ -4637,12 +4639,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             List<PartitionKeyRange> targetRanges;
 
             if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && componentCount < definedPathCount) {
-                // Partial HPK — compute EPK prefix range and find all overlapping physical partitions
+                // Partial HPK - compute EPK prefix range and find all overlapping physical partitions
                 Range<String> epkRange = PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(
                     effectivePkInternal, pkDefinition);
                 targetRanges = routingMap.getOverlappingRanges(epkRange);
             } else {
-                // Full PK — maps to exactly one physical partition
+                // Full PK - maps to exactly one physical partition
                 String effectivePartitionKeyString = PartitionKeyInternalHelper
                     .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
                 PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);

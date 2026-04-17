@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{SparkBridgeInternal}
+import com.azure.cosmos.SparkBridgeInternal
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 import java.util
@@ -184,6 +184,15 @@ object CosmosItemsDataSource {
           pkDefinition.getPaths.asScala.map(_.stripPrefix("/")).toList
         })
 
+      // Nested PK paths (containing /) cannot be resolved from top-level DataFrame columns.
+      // Surface an explicit error so users know to use the UDF-produced _partitionKeyIdentity column.
+      if (pkPaths.exists(_.contains("/"))) {
+        throw new IllegalArgumentException(
+          "Container has nested partition key path(s) " + pkPaths.mkString("[", ",", "]") + ". " +
+            "Nested paths cannot be resolved from DataFrame columns automatically - add a " +
+            "'_partitionKeyIdentity' column produced by the GetCosmosPartitionKeyValue UDF.")
+      }
+
       // Check if ALL PK path columns exist in the DataFrame schema
       val dfFieldNames = df.schema.fieldNames.toSet
       val allPkColumnsPresent = pkPaths.forall(path => dfFieldNames.contains(path))
@@ -195,7 +204,7 @@ object CosmosItemsDataSource {
             // Single partition key
             buildPartitionKey(row.getAs[Any](pkPaths.head), treatNullAsNone)
           } else {
-            // Hierarchical partition key — build level by level
+            // Hierarchical partition key - build level by level
             val builder = new PartitionKeyBuilder()
             for (path <- pkPaths) {
               addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone)
@@ -227,7 +236,15 @@ object CosmosItemsDataSource {
       case null =>
         if (treatNullAsNone) builder.addNoneValue()
         else builder.addNullValue()
-      case other => builder.add(other.toString)
+      case other =>
+        // Reject unknown types rather than silently .toString-ing them - the document field
+        // was stored with its original type and a stringified value will never match.
+        // Supported types: String, Number (Byte/Short/Int/Long/Float/Double/BigDecimal), Boolean, null.
+        throw new IllegalArgumentException(
+          s"Unsupported partition key column type '${other.getClass.getName}' with value '$other'. " +
+            "Supported types are String, Number (integral or floating-point), Boolean, and null. " +
+            "For other source types, convert the column before calling readManyByPartitionKey or use " +
+            "the GetCosmosPartitionKeyValue UDF to produce a '_partitionKeyIdentity' column.")
     }
   }
 

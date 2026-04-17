@@ -71,7 +71,12 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             classOf[ObjectNode])
             .block()
         } catch {
-          case _: CosmosException => None
+          // The warm-up readItem is only used to hydrate the collection/routing-map caches.
+          // A 404 (item not found) is expected, but we log other CosmosExceptions at debug to
+          // aid diagnosis (auth failures, throttling, etc.) while not failing reader setup.
+          case ex: CosmosException =>
+            logDebug(s"Warm-up readItem for metadata caches completed with exception: ${ex.getMessage}", ex)
+            None
         }
 
         val state = new CosmosClientMetadataCachesSnapshot()

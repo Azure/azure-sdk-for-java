@@ -16,16 +16,12 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.Random
 import scala.util.control.Breaks
 
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
-
 /**
- * Retry-safe iterator for readManyByPartitionKey that batches partition keys and lazily
- * iterates pages within each batch via CosmosPagedIterable — consistent with how
- * TransientIOErrorsRetryingIterator handles normal queries. On transient I/O errors the
- * current batch's flux is recreated and pages already consumed are replayed, avoiding
- * the memory overhead of collectList and matching the query iterator's structure.
+ * Retry-safe iterator for readManyByPartitionKey. The full partition-key list is passed to the
+ * SDK in a single call - the SDK is responsible for fan-out and per-physical-partition batching
+ * (see Configs.getReadManyByPkMaxBatchSize()). This iterator therefore wraps a single
+ * CosmosPagedIterable and, on transient I/O failures, re-creates the underlying flux and
+ * skips the pages that were already emitted upstream so no row is delivered twice.
  */
 private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSparkRow]
 (
@@ -57,12 +53,19 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     case None => "n/a"
   }
 
+  // Number of pages that have been fully emitted upstream. On retry, we recreate the flux
+  // and skip this many pages before emitting any item, so already-delivered rows are not
+  // re-emitted. A page is "committed" as soon as we surface its first item to the caller -
+  // subsequent failures while still inside that page cannot be recovered from without
+  // risking duplication, so we fail fast in that case.
+  private var pagesCommitted: Long = 0
+  // Whether the currently-buffered page has emitted at least one item. If true, we have
+  // passed the point of no return for this page: any transient failure here must surface,
+  // because we cannot partially-skip within a page on retry.
+  private var currentPagePartiallyConsumed: Boolean = false
+
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
-
-  private val pkBatchIterator = partitionKeys.asScala.iterator.grouped(pageSize)
-  // Track the current batch so we can replay it on retry
-  private var currentBatch: Option[java.util.List[PartitionKey]] = None
 
   override def hasNext: Boolean = {
     executeWithRetry("hasNextInternal", () => hasNextInternal)
@@ -85,38 +88,39 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
-          // Need a new feed response iterator — either for the current batch (on retry)
-          // or for the next batch
-          val batch = currentBatch match {
-            case Some(b) => b // retry of current batch
-            case None =>
-              if (pkBatchIterator.hasNext) {
-                val nextBatch = new java.util.ArrayList[PartitionKey](pkBatchIterator.next().toList.asJava)
-                currentBatch = Some(nextBatch)
-                nextBatch
-              } else {
-                return Some(false) // no more batches
-              }
-          }
-
           val pagedFlux = customQuery match {
             case Some(query) =>
-              container.readManyByPartitionKey(batch, query, queryOptions, classType)
+              container.readManyByPartitionKey(partitionKeys, query, queryOptions, classType)
             case None =>
-              container.readManyByPartitionKey(batch, queryOptions, classType)
+              container.readManyByPartitionKey(partitionKeys, queryOptions, classType)
           }
 
-          currentFeedResponseIterator = Some(
-            new CosmosPagedIterable[TSparkRow](
-              pagedFlux,
-              pageSize,
-              pagePrefetchBufferSize
-            )
-              .iterableByPage()
-              .iterator
-              .asScala
-              .buffered
+          val rawIterator = new CosmosPagedIterable[TSparkRow](
+            pagedFlux,
+            pageSize,
+            pagePrefetchBufferSize
           )
+            .iterableByPage()
+            .iterator
+
+          // Skip pages already emitted upstream (replay-safe retry).
+          var skipped: Long = 0
+          while (skipped < pagesCommitted && rawIterator.hasNext) {
+            rawIterator.next()
+            skipped += 1
+          }
+          if (skipped < pagesCommitted) {
+            // The server returned fewer pages than before - cannot safely replay.
+            // Surface a clean error rather than silently emitting a truncated result.
+            throw new IllegalStateException(
+              s"readManyByPartitionKey retry replay failed: expected to skip $pagesCommitted " +
+                s"already-emitted pages but only $skipped were available. Context: $operationContextString")
+          }
+
+          // scalastyle:off underscore.import
+          import scala.collection.JavaConverters._
+          // scalastyle:on underscore.import
+          currentFeedResponseIterator = Some(rawIterator.asScala.buffered)
 
           currentFeedResponseIterator.get
       }
@@ -152,20 +156,24 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
             operationContextAndListener.get.getOperationContext,
             feedResponse)
         }
+        // scalastyle:off underscore.import
+        import scala.collection.JavaConverters._
+        // scalastyle:on underscore.import
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
 
         if (iteratorCandidate.hasNext) {
           currentItemIterator = Some(iteratorCandidate)
+          currentPagePartiallyConsumed = false
           Some(true)
         } else {
-          // empty page interleaved — try again
+          // empty page - count it as committed (no items to replay) and try again
+          pagesCommitted += 1
           None
         }
       } else {
-        // Current batch's flux is exhausted — move to next batch
-        currentBatch = None
+        // Flux exhausted
         currentFeedResponseIterator = None
-        None
+        Some(false)
       }
     }
   }
@@ -175,6 +183,9 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
       case Some(iterator) => if (iterator.hasNext) {
         true
       } else {
+        // Entire page drained -> it is now committed for replay-skipping purposes.
+        pagesCommitted += 1
+        currentPagePartiallyConsumed = false
         currentItemIterator = None
         false
       }
@@ -183,11 +194,15 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
   }
 
   override def next(): TSparkRow = {
-    currentItemIterator.get.next()
+    executeWithRetry("next", () => {
+      val value = currentItemIterator.get.next()
+      currentPagePartiallyConsumed = true
+      value
+    })
   }
 
-  override def head(): TSparkRow = {
-    currentItemIterator.get.head
+  override def head: TSparkRow = {
+    executeWithRetry("head", () => currentItemIterator.get.head)
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
@@ -206,6 +221,17 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
         catch {
           case cosmosException: CosmosException =>
             if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
+              if (currentPagePartiallyConsumed) {
+                // We have already emitted items from the current page upstream. Replaying
+                // the flux would re-skip only completed pages, not items within a page -
+                // which would cause silent duplication. Fail the task instead.
+                logError(
+                  s"Transient failure in TransientIOErrorsRetryingReadManyByPartitionKeyIterator." +
+                    s"$methodName after items from the current page were already emitted - " +
+                    s"cannot safely retry without duplicating rows.",
+                  cosmosException)
+                throw cosmosException
+              }
               val retryCountSnapshot = retryCount.incrementAndGet()
               if (retryCountSnapshot > maxRetryCount) {
                 logError(
@@ -217,7 +243,8 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
                 logWarning(
                   s"Transient failure handled in " +
                     s"TransientIOErrorsRetryingReadManyByPartitionKeyIterator.$methodName -" +
-                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
+                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms " +
+                    s"(pagesCommitted=$pagesCommitted)",
                   cosmosException)
               }
             } else {
@@ -226,7 +253,7 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
           case other: Throwable => throw other
         }
 
-        // Reset iterators but keep currentBatch so the batch is replayed
+        // Reset iterators; pagesCommitted is intentionally preserved so replay can skip them.
         currentItemIterator = None
         currentFeedResponseIterator = None
         Thread.sleep(retryIntervalInMs)
@@ -236,6 +263,10 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     returnValue.get
   }
 
+  //  Clean up iterator references - the underlying Reactor subscription from
+  //  CosmosPagedIterable.iterator will be cleaned up when the iterator is GC'd.
+  //  This matches the behavior of TransientIOErrorsRetryingIterator; any still-prefetched
+  //  pages are discarded with the iterator.
   override def close(): Unit = {
     currentItemIterator = None
     currentFeedResponseIterator = None

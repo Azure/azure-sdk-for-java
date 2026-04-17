@@ -6,6 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
+import com.azure.cosmos.BridgeInternal
 import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
@@ -154,13 +155,17 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
       }
     )
 
-  // Collect all PK values upfront — readManyByPartitionKey needs the full list to
-  // group by physical partition and issue parallel queries.
-  // Deduplicate by PK string representation — safe because the list size is bounded
-  // by the per-call limit of the readManyByPartitionKey API.
+  // Collect all PK values upfront - readManyByPartitionKey needs the full list to
+  // group by physical partition (the SDK batches internally per physical partition).
+  // Deduplicate using the canonical PartitionKeyInternal JSON representation so that
+  // equivalent PKs built from different runtime types (Int vs Long vs Double) are
+  // collapsed, and distinct PKs that happen to toString() identically are not.
   private lazy val pkList = {
     val seen = new java.util.LinkedHashMap[String, PartitionKey]()
-    readManyPartitionKeys.foreach(pk => seen.putIfAbsent(pk.toString, pk))
+    readManyPartitionKeys.foreach(pk => {
+      val key = BridgeInternal.getPartitionKeyInternal(pk).toJson
+      seen.putIfAbsent(key, pk)
+    })
     new java.util.ArrayList[PartitionKey](seen.values())
   }
 
@@ -188,9 +193,10 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
     override def close(): Unit = {}
   }
 
-  // Batch partition keys and retry each batch independently on transient I/O errors.
-  // This avoids the continuation-token problem with TransientIOErrorsRetryingIterator
-  // where a retry would re-read all data from scratch, causing silent data duplication.
+  // Pass the full PK list to the SDK (which batches per physical partition internally).
+  // On transient I/O failures the retry iterator tracks pages already emitted upstream
+  // and skips them on replay; if a failure occurs mid-page (after items from that page
+  // have been emitted) the task fails rather than risking row duplication.
   private lazy val iterator: CloseableSparkRowItemIterator =
     if (pkList.isEmpty) {
       EmptySparkRowItemIterator

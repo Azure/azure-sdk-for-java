@@ -1,0 +1,3444 @@
+===== PR #LOCAL-users_fabianm_readManyByPK =====
+Title: Branch comparison users/fabianm/readManyByPK vs origin/main
+Author: Fabian Meiswinkel
+Status: DIVERGED (ahead 30, behind 4)
+Branch: users/fabianm/readManyByPK -> origin/main
+Head SHA: 93957f3a8442d730fe67fbc379ef5399f46f5665
+Merge Base: 20313f79ba8dd0dfa97862d0c31dd4b2e44ee671
+URL: N/A (local branch comparison)
+
+--- Description ---
+Adds readManyByPartitionKey API (sync+async) and Spark connector support for PK-only reads, with query-plan-based validation
+--- End Description ---
+
+===== Commits in PR =====
+9770833eb59 Adding readManyByPartitionKey API
+ac287bcdf00 Merge branch 'main' of https://github.com/Azure/azure-sdk-for-java into users/fabianm/readManyByPK
+9a5b3e96e7e Update sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKey.scala
+a8720c3c9f2 Update sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKey.scala
+d499da76fb4 Update sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/RxDocumentClientImpl.java
+c3c542a33a7 Update sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelper.java
+4416354e03e ┬┤Fixing code review comments
+3ab3f0d64f5 Merge branch 'main' of https://github.com/Azure/azure-sdk-for-java into users/fabianm/readManyByPK
+588a7550c54 Update CosmosAsyncContainer.java
+8c5cdb47b31 Merge branch 'main' into users/fabianm/readManyByPK
+f5485527a9c Update ReadManyByPartitionKeyTest.java
+f68cf02ff71 Fixing test issues
+8b6c4b168ea Update CosmosAsyncContainer.java
+8ba7f4db2da Merge branch 'main' into users/fabianm/readManyByPK
+56b067a9339 Reacted to code review feedback
+fa430e918fa Merge branch 'main' into users/fabianm/readManyByPK
+d9504c91f34 Fix build issues
+73151f09e5f Merge branch 'main' into users/fabianm/readManyByPK
+681830e2d4a Fixing  changelog
+7f745e60641 Merge branch 'main' into users/fabianm/readManyByPK
+0b8905dbb01 Addressing code review comments
+22abc780ed8 Addressing code review feedback
+662b1a4b90e Update CosmosItemsDataSource.scala
+c764de9de02 Update CosmosItemsDataSource.scala
+e1e6f5a6f73 Merge branch 'main' into users/fabianm/readManyByPK
+080ce4a2293 Update RxDocumentClientImpl.java
+516bbf3a95a Merge branch 'users/fabianm/readManyByPK' of https://github.com/Azure/azure-sdk-for-java into users/fabianm/readManyByPK
+b01f8758eea Fix readManyByPartitionKey retries
+7130d4aa35a Fix PK.None
+93957f3a844 Update ReadManyByPartitionKeyQueryHelper.java
+
+===== Files Changed =====
+  sdk/cosmos/azure-cosmos-spark_3-3_2-12/CHANGELOG.md  (+1 -0)
+  sdk/cosmos/azure-cosmos-spark_3-4_2-12/CHANGELOG.md  (+1 -0)
+  sdk/cosmos/azure-cosmos-spark_3-5_2-12/CHANGELOG.md  (+1 -0)
+  sdk/cosmos/azure-cosmos-spark_3-5_2-13/CHANGELOG.md  (+1 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConfig.scala  (+20 -2)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConstants.scala  (+1 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosItemsDataSource.scala  (+125 -1)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelper.scala  (+45 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosReadManyByPartitionKeyReader.scala  (+150 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKey.scala  (+249 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/TransientIOErrorsRetryingReadManyByPartitionKeyIterator.scala  (+259 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/udf/GetCosmosPartitionKeyValue.scala  (+25 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosConfigSpec.scala  (+42 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelperSpec.scala  (+104 -0)
+  sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKeyITest.scala  (+158 -0)
+  sdk/cosmos/azure-cosmos-spark_4-0_2-13/CHANGELOG.md  (+1 -0)
+  sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/ReadManyByPartitionKeyTest.java  (+462 -0)
+  sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelperTest.java  (+426 -0)
+  sdk/cosmos/azure-cosmos/CHANGELOG.md  (+1 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosAsyncContainer.java  (+126 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosContainer.java  (+67 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/AsyncDocumentClient.java  (+21 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/Configs.java  (+19 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelper.java  (+263 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/RxDocumentClientImpl.java  (+292 -0)
+  sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/query/DocumentQueryExecutionContextFactory.java  (+11 -0)
+  sdk/cosmos/cspell.yaml  (+6 -0)
+  sdk/cosmos/docs/readManyByPartitionKey-design.md  (+169 -0)
+
+===== Full Diff =====
+diff --git a/sdk/cosmos/azure-cosmos-spark_3-3_2-12/CHANGELOG.md b/sdk/cosmos/azure-cosmos-spark_3-3_2-12/CHANGELOG.md
+index cbf97c610f9..fe114462019 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3-3_2-12/CHANGELOG.md
++++ b/sdk/cosmos/azure-cosmos-spark_3-3_2-12/CHANGELOG.md
+@@ -3,6 +3,7 @@
+ ### 4.47.0-beta.1 (Unreleased)
+
+ #### Features Added
++* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+
+ #### Breaking Changes
+
+diff --git a/sdk/cosmos/azure-cosmos-spark_3-4_2-12/CHANGELOG.md b/sdk/cosmos/azure-cosmos-spark_3-4_2-12/CHANGELOG.md
+index c9097e749f0..3b2c7ce36db 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3-4_2-12/CHANGELOG.md
++++ b/sdk/cosmos/azure-cosmos-spark_3-4_2-12/CHANGELOG.md
+@@ -3,6 +3,7 @@
+ ### 4.47.0-beta.1 (Unreleased)
+
+ #### Features Added
++* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+
+ #### Breaking Changes
+
+diff --git a/sdk/cosmos/azure-cosmos-spark_3-5_2-12/CHANGELOG.md b/sdk/cosmos/azure-cosmos-spark_3-5_2-12/CHANGELOG.md
+index f5eac38bdb7..2240a48b165 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3-5_2-12/CHANGELOG.md
++++ b/sdk/cosmos/azure-cosmos-spark_3-5_2-12/CHANGELOG.md
+@@ -3,6 +3,7 @@
+ ### 4.47.0-beta.1 (Unreleased)
+
+ #### Features Added
++* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+
+ #### Breaking Changes
+
+diff --git a/sdk/cosmos/azure-cosmos-spark_3-5_2-13/CHANGELOG.md b/sdk/cosmos/azure-cosmos-spark_3-5_2-13/CHANGELOG.md
+index 919d7fbfa32..20a3e3a61bd 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3-5_2-13/CHANGELOG.md
++++ b/sdk/cosmos/azure-cosmos-spark_3-5_2-13/CHANGELOG.md
+@@ -3,6 +3,7 @@
+ ### 4.47.0-beta.1 (Unreleased)
+
+ #### Features Added
++* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+
+ #### Breaking Changes
+
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConfig.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConfig.scala
+index 951f4735444..e1b8f0b51f8 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConfig.scala
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConfig.scala
+@@ -92,6 +92,7 @@ private[spark] object CosmosConfigNames {
+   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
+   val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
+   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
++  val ReadManyByPkNullHandling = "spark.cosmos.read.readManyByPk.nullHandling"
+   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
+   val DiagnosticsMode = "spark.cosmos.diagnostics"
+   val DiagnosticsSamplingMaxCount = "spark.cosmos.diagnostics.sampling.maxCount"
+@@ -226,6 +227,7 @@ private[spark] object CosmosConfigNames {
+     ReadPartitioningFeedRangeFilter,
+     ReadRuntimeFilteringEnabled,
+     ReadManyFilteringEnabled,
++    ReadManyByPkNullHandling,
+     ViewsRepositoryPath,
+     DiagnosticsMode,
+     DiagnosticsSamplingIntervalInSeconds,
+@@ -1042,7 +1044,8 @@ private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStra
+                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
+                                     runtimeFilteringEnabled: Boolean,
+                                     readManyFilteringConfig: CosmosReadManyFilteringConfig,
+-                                    responseContinuationTokenLimitInKb: Option[Int] = None)
++                                    responseContinuationTokenLimitInKb: Option[Int] = None,
++                                    readManyByPkTreatNullAsNone: Boolean = false)
+
+ private object SchemaConversionModes extends Enumeration {
+   type SchemaConversionMode = Value
+@@ -1136,6 +1139,18 @@ private object CosmosReadConfig {
+     helpMessage = " Indicates whether dynamic partition pruning filters will be pushed down when applicable."
+   )
+
++  private val ReadManyByPkNullHandling = CosmosConfigEntry[String](
++    key = CosmosConfigNames.ReadManyByPkNullHandling,
++    mandatory = false,
++    defaultValue = Some("Null"),
++    parseFromStringFunction = value => value,
++    helpMessage = "Determines how null values in hierarchical partition key components are treated " +
++      "for readManyByPartitionKey. 'Null' (default) maps null to a JSON null value via addNullValue(), " +
++      "which is appropriate when the document field exists with an explicit null value. " +
++      "'None' maps null to PartitionKey.NONE via addNoneValue(), which should only be used when the " +
++      "partition key path does not exist at all in the document."
++  )
++
+   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
+     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+     val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
+@@ -1158,6 +1173,8 @@ private object CosmosReadConfig {
+     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
+     val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
+     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
++    val readManyByPkNullHandling = CosmosConfigEntry.parse(cfg, ReadManyByPkNullHandling)
++    val readManyByPkTreatNullAsNone = readManyByPkNullHandling.getOrElse("Null").equalsIgnoreCase("None")
+
+     val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
+       readConsistencyStrategyOverride.get
+@@ -1189,7 +1206,8 @@ private object CosmosReadConfig {
+       throughputControlConfigOpt,
+       runtimeFilteringEnabled.get,
+       readManyFilteringConfig,
+-      responseContinuationTokenLimitInKb)
++      responseContinuationTokenLimitInKb,
++      readManyByPkTreatNullAsNone)
+   }
+ }
+
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConstants.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConstants.scala
+index 9ece4741652..00761f23d39 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConstants.scala
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosConstants.scala
+@@ -45,6 +45,7 @@ private[cosmos] object CosmosConstants {
+     val Id = "id"
+     val ETag = "_etag"
+     val ItemIdentity = "_itemIdentity"
++    val PartitionKeyIdentity = "_partitionKeyIdentity"
+   }
+
+   object StatusCodes {
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosItemsDataSource.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosItemsDataSource.scala
+index a35cff27af6..86ef865bcb8 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosItemsDataSource.scala
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosItemsDataSource.scala
+@@ -2,9 +2,10 @@
+ // Licensed under the MIT License.
+ package com.azure.cosmos.spark
+
+-import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
++import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyBuilder}
+ import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
+ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
++import com.azure.cosmos.{SparkBridgeInternal}
+ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+
+ import java.util
+@@ -112,4 +113,127 @@ object CosmosItemsDataSource {
+
+     readManyReader.readMany(df.rdd, readManyFilterExtraction)
+   }
++
++  def readManyByPartitionKey(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
++    readManyByPartitionKey(df, userConfig, null)
++  }
++
++  def readManyByPartitionKey(
++    df: DataFrame,
++    userConfig: java.util.Map[String, String],
++    userProvidedSchema: StructType): DataFrame = {
++
++    val readManyReader = new CosmosReadManyByPartitionKeyReader(
++      userProvidedSchema,
++      userConfig.asScala.toMap)
++
++    // Option 1: Look for the _partitionKeyIdentity column (produced by GetCosmosPartitionKeyValue UDF)
++    val pkIdentityFieldExtraction = df
++      .schema
++      .find(field => field.name.equals(CosmosConstants.Properties.PartitionKeyIdentity) && field.dataType.equals(StringType))
++      .map(field => (row: Row) => {
++        val rawValue = row.getString(row.fieldIndex(field.name))
++        CosmosPartitionKeyHelper.tryParsePartitionKey(rawValue)
++          .getOrElse(throw new IllegalArgumentException(
++            s"Invalid _partitionKeyIdentity value in row: '$rawValue'. " +
++              "Expected format: pk([...json...])"))
++      })
++
++    // Option 2: Detect PK columns by matching the container's partition key paths against the DataFrame schema
++    val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
++      None // no need to resolve PK paths - _partitionKeyIdentity column takes precedence
++    } else {
++      val effectiveConfig = CosmosConfig.getEffectiveConfig(
++        databaseName = None,
++        containerName = None,
++        userConfig.asScala.toMap)
++      val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveConfig)
++      val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveConfig)
++      val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(None)
++      val calledFrom = s"CosmosItemsDataSource.readManyByPartitionKey"
++      val treatNullAsNone = readConfig.readManyByPkTreatNullAsNone
++
++      val pkPaths = Loan(
++        List[Option[CosmosClientCacheItem]](
++          Some(
++            CosmosClientCache(
++              CosmosClientConfiguration(
++                effectiveConfig,
++                readConsistencyStrategy = readConfig.readConsistencyStrategy,
++                sparkEnvironmentInfo),
++              None,
++              calledFrom)),
++          ThroughputControlHelper.getThroughputControlClientCacheItem(
++            effectiveConfig,
++            calledFrom,
++            None,
++            sparkEnvironmentInfo)
++        ))
++        .to(clientCacheItems => {
++          val container =
++            ThroughputControlHelper.getContainer(
++              effectiveConfig,
++              containerConfig,
++              clientCacheItems(0).get,
++              clientCacheItems(1))
++
++          val pkDefinition = SparkBridgeInternal
++            .getContainerPropertiesFromCollectionCache(container)
++            .getPartitionKeyDefinition
++
++          pkDefinition.getPaths.asScala.map(_.stripPrefix("/")).toList
++        })
++
++      // Check if ALL PK path columns exist in the DataFrame schema
++      val dfFieldNames = df.schema.fieldNames.toSet
++      val allPkColumnsPresent = pkPaths.forall(path => dfFieldNames.contains(path))
++
++      if (allPkColumnsPresent && pkPaths.nonEmpty) {
++        // pkPaths already defined above
++        Some((row: Row) => {
++          if (pkPaths.size == 1) {
++            // Single partition key
++            buildPartitionKey(row.getAs[Any](pkPaths.head), treatNullAsNone)
++          } else {
++            // Hierarchical partition key ΓÇö build level by level
++            val builder = new PartitionKeyBuilder()
++            for (path <- pkPaths) {
++              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone)
++            }
++            builder.build()
++          }
++        })
++      } else {
++        None
++      }
++    }
++
++    val pkExtraction = pkIdentityFieldExtraction
++      .orElse(pkColumnExtraction)
++      .getOrElse(
++        throw new IllegalArgumentException(
++          "Cannot determine partition key extraction from the input DataFrame. " +
++            "Either add a '_partitionKeyIdentity' column (using the GetCosmosPartitionKeyValue UDF) " +
++            "or ensure the DataFrame contains columns matching the container's partition key paths."))
++
++    readManyReader.readManyByPartitionKey(df.rdd, pkExtraction)
++  }
++
++  private def addPartitionKeyComponent(builder: PartitionKeyBuilder, value: Any, treatNullAsNone: Boolean): Unit = {
++    value match {
++      case s: String => builder.add(s)
++      case n: Number => builder.add(n.doubleValue())
++      case b: Boolean => builder.add(b)
++      case null =>
++        if (treatNullAsNone) builder.addNoneValue()
++        else builder.addNullValue()
++      case other => builder.add(other.toString)
++    }
++  }
++
++  private def buildPartitionKey(value: Any, treatNullAsNone: Boolean): PartitionKey = {
++    val builder = new PartitionKeyBuilder()
++    addPartitionKeyComponent(builder, value, treatNullAsNone)
++    builder.build()
++  }
+ }
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelper.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelper.scala
+new file mode 100644
+index 00000000000..27776f5c3de
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelper.scala
+@@ -0,0 +1,45 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++
++package com.azure.cosmos.spark
++
++import com.azure.cosmos.implementation.routing.PartitionKeyInternal
++import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
++import com.azure.cosmos.models.PartitionKey
++import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
++
++import java.util
++
++// scalastyle:off underscore.import
++import scala.collection.JavaConverters._
++// scalastyle:on underscore.import
++
++private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
++  // pattern will be recognized
++  // pk(partitionKeyValue)
++  //
++  // (?i) : The whole matching is case-insensitive
++  // pk[(](.*)[)]: partitionKey Value
++  private val cosmosPartitionKeyStringRegx = """(?i)pk[(](.*)[)]""".r
++  private val objectMapper = Utils.getSimpleObjectMapper
++
++  def getCosmosPartitionKeyValueString(partitionKeyValue: List[Object]): String = {
++    s"pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
++  }
++
++  def tryParsePartitionKey(cosmosPartitionKeyString: String): Option[PartitionKey] = {
++    cosmosPartitionKeyString match {
++      case cosmosPartitionKeyStringRegx(pkValue) =>
++        scala.util.Try(Utils.parse(pkValue, classOf[Object])).toOption.flatMap {
++          case arrayList: util.ArrayList[Object @unchecked] =>
++            Some(
++              ImplementationBridgeHelpers
++                .PartitionKeyHelper
++                .getPartitionKeyAccessor
++                .toPartitionKey(PartitionKeyInternal.fromObjectArray(arrayList.toArray, false)))
++          case other => Some(new PartitionKey(other))
++        }
++      case _ => None
++    }
++  }
++}
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosReadManyByPartitionKeyReader.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosReadManyByPartitionKeyReader.scala
+new file mode 100644
+index 00000000000..91f3a56bc66
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/CosmosReadManyByPartitionKeyReader.scala
+@@ -0,0 +1,150 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++package com.azure.cosmos.spark
++
++import com.azure.cosmos.{CosmosException, ReadConsistencyStrategy}
++import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
++import com.azure.cosmos.models.PartitionKey
++import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
++import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
++import com.fasterxml.jackson.databind.node.ObjectNode
++import org.apache.spark.TaskContext
++import org.apache.spark.broadcast.Broadcast
++import org.apache.spark.rdd.RDD
++import org.apache.spark.sql.{DataFrame, Row, SparkSession}
++import org.apache.spark.sql.types.StructType
++
++import java.util.UUID
++
++private[spark] class CosmosReadManyByPartitionKeyReader(
++                                                         val userProvidedSchema: StructType,
++                                                         val userConfig: Map[String, String]
++                                                       ) extends BasicLoggingTrait with Serializable {
++  val effectiveUserConfig: Map[String, String] = CosmosConfig.getEffectiveConfig(
++    databaseName = None,
++    containerName = None,
++    userConfig)
++
++  val clientConfig: CosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
++  val readConfig: CosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
++  val cosmosContainerConfig: CosmosContainerConfig =
++    CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
++  //scalastyle:off multiple.string.literals
++  val tableName: String = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
++    s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
++  private lazy val sparkSession = {
++    assertOnSparkDriver()
++    SparkSession.active
++  }
++  val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
++  logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
++
++  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
++    val calledFrom = s"CosmosReadManyByPartitionKeyReader($tableName).initializeAndBroadcastCosmosClientStateForContainer"
++    Loan(
++      List[Option[CosmosClientCacheItem]](
++        Some(
++          CosmosClientCache(
++            CosmosClientConfiguration(
++              effectiveUserConfig,
++              readConsistencyStrategy = readConfig.readConsistencyStrategy,
++              sparkEnvironmentInfo),
++            None,
++            calledFrom)),
++        ThroughputControlHelper.getThroughputControlClientCacheItem(
++          effectiveUserConfig,
++          calledFrom,
++          None,
++          sparkEnvironmentInfo)
++      ))
++      .to(clientCacheItems => {
++        val container =
++          ThroughputControlHelper.getContainer(
++            effectiveUserConfig,
++            cosmosContainerConfig,
++            clientCacheItems(0).get,
++            clientCacheItems(1))
++        try {
++          container.readItem(
++            UUIDs.nonBlockingRandomUUID().toString,
++            new PartitionKey(UUIDs.nonBlockingRandomUUID().toString),
++            classOf[ObjectNode])
++            .block()
++        } catch {
++          case _: CosmosException => None
++        }
++
++        val state = new CosmosClientMetadataCachesSnapshot()
++        state.serialize(clientCacheItems(0).get.cosmosClient)
++
++        var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
++        if (clientCacheItems(1).isDefined) {
++          throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
++          throughputControlState.get.serialize(clientCacheItems(1).get.cosmosClient)
++        }
++
++        val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
++        sparkSession.sparkContext.broadcast(metadataSnapshots)
++      })
++  }
++
++  def readManyByPartitionKey(inputRdd: RDD[Row], pkExtraction: Row => PartitionKey): DataFrame = {
++    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
++    val calledFrom = s"CosmosReadManyByPartitionKeyReader.readManyByPartitionKey($correlationActivityId)"
++    val schema = Loan(
++      List[Option[CosmosClientCacheItem]](
++        Some(CosmosClientCache(
++          CosmosClientConfiguration(
++            effectiveUserConfig,
++            readConsistencyStrategy = readConfig.readConsistencyStrategy,
++            sparkEnvironmentInfo),
++          None,
++          calledFrom
++        )),
++        ThroughputControlHelper.getThroughputControlClientCacheItem(
++          effectiveUserConfig,
++          calledFrom,
++          None,
++          sparkEnvironmentInfo)
++      ))
++      .to(clientCacheItems => Option.apply(userProvidedSchema).getOrElse(
++        CosmosTableSchemaInferrer.inferSchema(
++          clientCacheItems(0).get,
++          clientCacheItems(1),
++          effectiveUserConfig,
++          ItemsTable.defaultSchemaForInferenceDisabled)))
++
++    val clientStates = initializeAndBroadcastCosmosClientStatesForContainer
++
++    sparkSession.sqlContext.createDataFrame(
++      inputRdd.mapPartitionsWithIndex(
++        (partitionIndex: Int, rowIterator: Iterator[Row]) => {
++          val pkIterator: Iterator[PartitionKey] = rowIterator
++            .map(row => pkExtraction.apply(row))
++
++          logInfo(s"Creating an ItemsPartitionReaderWithReadManyByPartitionKey for Activity $correlationActivityId to read for "
++            + s"input partition [$partitionIndex] ${tableName}")
++
++          val reader = new ItemsPartitionReaderWithReadManyByPartitionKey(
++            effectiveUserConfig,
++            CosmosReadManyHelper.FullRangeFeedRange,
++            schema,
++            DiagnosticsContext(correlationActivityId, partitionIndex.toString),
++            clientStates,
++            DiagnosticsConfig.parseDiagnosticsConfig(effectiveUserConfig),
++            sparkEnvironmentInfo,
++            TaskContext.get,
++            pkIterator)
++
++          new Iterator[Row] {
++            override def hasNext: Boolean = reader.next()
++
++            override def next(): Row = reader.getCurrentRow()
++          }
++        },
++        preservesPartitioning = true
++      ),
++      schema)
++  }
++}
++
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKey.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKey.scala
+new file mode 100644
+index 00000000000..c67cc9c10be
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKey.scala
+@@ -0,0 +1,249 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++
++package com.azure.cosmos.spark
++
++import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
++import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
++import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
++import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
++import com.azure.cosmos.spark.BulkWriter.getThreadInfo
++import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
++import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
++import com.fasterxml.jackson.databind.node.ObjectNode
++import org.apache.spark.TaskContext
++import org.apache.spark.broadcast.Broadcast
++import org.apache.spark.sql.Row
++import org.apache.spark.sql.catalyst.InternalRow
++import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
++import org.apache.spark.sql.connector.read.PartitionReader
++import org.apache.spark.sql.types.StructType
++
++import java.util
++
++// scalastyle:off underscore.import
++import scala.collection.JavaConverters._
++// scalastyle:on underscore.import
++
++private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
++(
++  config: Map[String, String],
++  feedRange: NormalizedRange,
++  readSchema: StructType,
++  diagnosticsContext: DiagnosticsContext,
++  cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
++  diagnosticsConfig: DiagnosticsConfig,
++  sparkEnvironmentInfo: String,
++  taskContext: TaskContext,
++  readManyPartitionKeys: Iterator[PartitionKey]
++)
++  extends PartitionReader[InternalRow] {
++
++  private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
++
++  private val readManyOptions = new CosmosReadManyRequestOptions()
++  private val readManyOptionsImpl = ImplementationBridgeHelpers
++    .CosmosReadManyRequestOptionsHelper
++    .getCosmosReadManyRequestOptionsAccessor
++    .getImpl(readManyOptions)
++
++  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
++  ThroughputControlHelper.populateThroughputControlGroupName(readManyOptionsImpl, readConfig.throughputControlConfig)
++
++  private val operationContext = {
++    assert(taskContext != null)
++
++    SparkTaskContext(diagnosticsContext.correlationActivityId,
++      taskContext.stageId(),
++      taskContext.partitionId(),
++      taskContext.taskAttemptId(),
++      feedRange.toString)
++  }
++
++  private val operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
++    if (diagnosticsConfig.mode.isDefined) {
++      val listener =
++        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
++
++      val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
++
++      readManyOptionsImpl
++        .setOperationContextAndListenerTuple(ctxAndListener)
++
++      Some(ctxAndListener)
++    } else {
++      None
++    }
++  }
++
++  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} $getThreadInfo")
++
++  private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
++
++  log.logInfo(s"Using ReadManyByPartitionKey from feed range $feedRange of " +
++    s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
++    s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
++    s"Context: ${operationContext.toString} $getThreadInfo")
++
++  private val clientCacheItem = CosmosClientCache(
++    CosmosClientConfiguration(config, readConfig.readConsistencyStrategy, sparkEnvironmentInfo),
++    Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
++    s"ItemsPartitionReaderWithReadManyByPartitionKey($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
++  )
++
++  private val throughputControlClientCacheItemOpt =
++    ThroughputControlHelper.getThroughputControlClientCacheItem(
++      config,
++      clientCacheItem.context,
++      Some(cosmosClientStateHandles),
++      sparkEnvironmentInfo)
++
++  private val cosmosAsyncContainer =
++    ThroughputControlHelper.getContainer(
++      config,
++      containerTargetConfig,
++      clientCacheItem,
++      throughputControlClientCacheItemOpt)
++
++  private val partitionKeyDefinition: PartitionKeyDefinition = {
++    TransientErrorsRetryPolicy.executeWithRetry(() => {
++      SparkBridgeInternal
++        .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer).getPartitionKeyDefinition
++    })
++  }
++
++  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
++  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
++
++  readManyOptionsImpl
++    .setCustomItemSerializer(
++      new CosmosItemSerializerNoExceptionWrapping {
++        override def serialize[T](item: T): util.Map[String, AnyRef] = {
++          throw new UnsupportedOperationException(
++            s"Serialization is not supported by the custom item serializer in " +
++              s"ItemsPartitionReaderWithReadManyByPartitionKey; this serializer is intended " +
++              s"for deserializing read-many responses into SparkRowItem only. " +
++              s"Unexpected item type: ${if (item == null) "null" else item.getClass.getName}"
++          )
++        }
++
++        override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
++          if (jsonNodeMap == null) {
++            throw new IllegalStateException("The 'jsonNodeMap' should never be null here.")
++          }
++
++          if (classType != classOf[SparkRowItem]) {
++            throw new IllegalStateException("The 'classType' must be 'classOf[SparkRowItem])' here.")
++          }
++
++          val objectNode: ObjectNode = jsonNodeMap match {
++            case map: ObjectNodeMap =>
++              map.getObjectNode
++            case _ =>
++              Utils.getSimpleObjectMapper.convertValue(jsonNodeMap, classOf[ObjectNode])
++          }
++
++          val partitionKey = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
++
++          val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
++            objectNode,
++            readConfig.schemaConversionMode)
++
++          SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey)).asInstanceOf[T]
++        }
++      }
++    )
++
++  // Collect all PK values upfront ΓÇö readManyByPartitionKey needs the full list to
++  // group by physical partition and issue parallel queries.
++  // Deduplicate by PK string representation ΓÇö safe because the list size is bounded
++  // by the per-call limit of the readManyByPartitionKey API.
++  private lazy val pkList = {
++    val seen = new java.util.LinkedHashMap[String, PartitionKey]()
++    readManyPartitionKeys.foreach(pk => seen.putIfAbsent(pk.toString, pk))
++    new java.util.ArrayList[PartitionKey](seen.values())
++  }
++
++  private val endToEndTimeoutPolicy =
++    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(
++      java.time.Duration.ofSeconds(CosmosConstants.readOperationEndToEndTimeoutInSeconds))
++      .enable(true)
++      .build
++
++  readManyOptionsImpl.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
++
++  private trait CloseableSparkRowItemIterator {
++    def hasNext: Boolean
++    def next(): SparkRowItem
++    def close(): Unit
++  }
++
++  private object EmptySparkRowItemIterator extends CloseableSparkRowItemIterator {
++    override def hasNext: Boolean = false
++
++    override def next(): SparkRowItem = {
++      throw new java.util.NoSuchElementException("No items available for empty partition-key list.")
++    }
++
++    override def close(): Unit = {}
++  }
++
++  // Batch partition keys and retry each batch independently on transient I/O errors.
++  // This avoids the continuation-token problem with TransientIOErrorsRetryingIterator
++  // where a retry would re-read all data from scratch, causing silent data duplication.
++  private lazy val iterator: CloseableSparkRowItemIterator =
++    if (pkList.isEmpty) {
++      EmptySparkRowItemIterator
++    } else {
++      new CloseableSparkRowItemIterator {
++        private val delegate = new TransientIOErrorsRetryingReadManyByPartitionKeyIterator[SparkRowItem](
++          cosmosAsyncContainer,
++          pkList,
++          readConfig.customQuery.map(_.toSqlQuerySpec),
++          readManyOptions,
++          readConfig.maxItemCount,
++          readConfig.prefetchBufferSize,
++          operationContextAndListenerTuple,
++          classOf[SparkRowItem]
++        )
++
++        override def hasNext: Boolean = delegate.hasNext
++
++        override def next(): SparkRowItem = delegate.next()
++
++        override def close(): Unit = delegate.close()
++      }
++    }
++
++  private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
++
++  private def shouldLogDetailedFeedDiagnostics(): Boolean = {
++    diagnosticsConfig.mode.isDefined &&
++      diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)
++  }
++
++  private def getPartitionKeyForFeedDiagnostics(pkValue: PartitionKey): Option[PartitionKey] = {
++    if (shouldLogDetailedFeedDiagnostics()) {
++      Some(pkValue)
++    } else {
++      None
++    }
++  }
++
++  override def next(): Boolean = iterator.hasNext
++
++  override def get(): InternalRow = {
++    cosmosRowConverter.fromRowToInternalRow(iterator.next().row, rowSerializer)
++  }
++
++  def getCurrentRow(): Row = iterator.next().row
++
++  override def close(): Unit = {
++    this.iterator.close()
++    RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
++    clientCacheItem.close()
++    if (throughputControlClientCacheItemOpt.isDefined) {
++      throughputControlClientCacheItemOpt.get.close()
++    }
++  }
++}
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/TransientIOErrorsRetryingReadManyByPartitionKeyIterator.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/TransientIOErrorsRetryingReadManyByPartitionKeyIterator.scala
+new file mode 100644
+index 00000000000..dcfdf4f9353
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/TransientIOErrorsRetryingReadManyByPartitionKeyIterator.scala
+@@ -0,0 +1,259 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++
++package com.azure.cosmos.spark
++
++import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
++import com.azure.cosmos.implementation.OperationCancelledException
++import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
++import com.azure.cosmos.models.{CosmosReadManyRequestOptions, FeedResponse, PartitionKey, SqlQuerySpec}
++import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
++import com.azure.cosmos.util.CosmosPagedIterable
++
++import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
++import java.util.concurrent.atomic.AtomicLong
++import scala.concurrent.{Await, ExecutionContext, Future}
++import scala.util.Random
++import scala.util.control.Breaks
++
++// scalastyle:off underscore.import
++import scala.collection.JavaConverters._
++// scalastyle:on underscore.import
++
++/**
++ * Retry-safe iterator for readManyByPartitionKey that batches partition keys and lazily
++ * iterates pages within each batch via CosmosPagedIterable ΓÇö consistent with how
++ * TransientIOErrorsRetryingIterator handles normal queries. On transient I/O errors the
++ * current batch's flux is recreated and pages already consumed are replayed, avoiding
++ * the memory overhead of collectList and matching the query iterator's structure.
++ */
++private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSparkRow]
++(
++  val container: CosmosAsyncContainer,
++  val partitionKeys: java.util.List[PartitionKey],
++  val customQuery: Option[SqlQuerySpec],
++  val queryOptions: CosmosReadManyRequestOptions,
++  val pageSize: Int,
++  val pagePrefetchBufferSize: Int,
++  val operationContextAndListener: Option[OperationContextAndListenerTuple],
++  val classType: Class[TSparkRow]
++) extends BufferedIterator[TSparkRow] with BasicLoggingTrait with AutoCloseable {
++
++  private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
++  private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
++
++  private val maxPageRetrievalTimeout = scala.concurrent.duration.FiniteDuration(
++    5 + CosmosConstants.readOperationEndToEndTimeoutInSeconds,
++    scala.concurrent.duration.SECONDS)
++
++  private val rnd = Random
++  private val retryCount = new AtomicLong(0)
++  private lazy val operationContextString = operationContextAndListener match {
++    case Some(o) => if (o.getOperationContext != null) {
++      o.getOperationContext.toString
++    } else {
++      "n/a"
++    }
++    case None => "n/a"
++  }
++
++  private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
++  private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
++
++  private val pkBatchIterator = partitionKeys.asScala.iterator.grouped(pageSize)
++  // Track the current batch so we can replay it on retry
++  private var currentBatch: Option[java.util.List[PartitionKey]] = None
++
++  override def hasNext: Boolean = {
++    executeWithRetry("hasNextInternal", () => hasNextInternal)
++  }
++
++  private def hasNextInternal: Boolean = {
++    var returnValue: Option[Boolean] = None
++
++    while (returnValue.isEmpty) {
++      returnValue = hasNextInternalCore
++    }
++
++    returnValue.get
++  }
++
++  private def hasNextInternalCore: Option[Boolean] = {
++    if (hasBufferedNext) {
++      Some(true)
++    } else {
++      val feedResponseIterator = currentFeedResponseIterator match {
++        case Some(existing) => existing
++        case None =>
++          // Need a new feed response iterator ΓÇö either for the current batch (on retry)
++          // or for the next batch
++          val batch = currentBatch match {
++            case Some(b) => b // retry of current batch
++            case None =>
++              if (pkBatchIterator.hasNext) {
++                val nextBatch = new java.util.ArrayList[PartitionKey](pkBatchIterator.next().toList.asJava)
++                currentBatch = Some(nextBatch)
++                nextBatch
++              } else {
++                return Some(false) // no more batches
++              }
++          }
++
++          val pagedFlux = customQuery match {
++            case Some(query) =>
++              container.readManyByPartitionKey(batch, query, queryOptions, classType)
++            case None =>
++              container.readManyByPartitionKey(batch, queryOptions, classType)
++          }
++
++          currentFeedResponseIterator = Some(
++            new CosmosPagedIterable[TSparkRow](
++              pagedFlux,
++              pageSize,
++              pagePrefetchBufferSize
++            )
++              .iterableByPage()
++              .iterator
++              .asScala
++              .buffered
++          )
++
++          currentFeedResponseIterator.get
++      }
++
++      val hasNext: Boolean = try {
++        Await.result(
++          Future {
++            feedResponseIterator.hasNext
++          }(TransientIOErrorsRetryingReadManyByPartitionKeyIterator.executionContext),
++          maxPageRetrievalTimeout)
++      } catch {
++        case endToEndTimeoutException: OperationCancelledException =>
++          val message = s"End-to-end timeout hit when trying to retrieve the next page. " +
++            s"Context: $operationContextString"
++          logError(message, throwable = endToEndTimeoutException)
++          throw endToEndTimeoutException
++
++        case timeoutException: TimeoutException =>
++          val message = s"Attempting to retrieve the next page timed out. " +
++            s"Context: $operationContextString"
++          logError(message, timeoutException)
++          val exception = new OperationCancelledException(message, null)
++          exception.setStackTrace(timeoutException.getStackTrace)
++          throw exception
++
++        case other: Throwable => throw other
++      }
++
++      if (hasNext) {
++        val feedResponse = feedResponseIterator.next()
++        if (operationContextAndListener.isDefined) {
++          operationContextAndListener.get.getOperationListener.feedResponseProcessedListener(
++            operationContextAndListener.get.getOperationContext,
++            feedResponse)
++        }
++        val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
++
++        if (iteratorCandidate.hasNext) {
++          currentItemIterator = Some(iteratorCandidate)
++          Some(true)
++        } else {
++          // empty page interleaved ΓÇö try again
++          None
++        }
++      } else {
++        // Current batch's flux is exhausted ΓÇö move to next batch
++        currentBatch = None
++        currentFeedResponseIterator = None
++        None
++      }
++    }
++  }
++
++  private def hasBufferedNext: Boolean = {
++    currentItemIterator match {
++      case Some(iterator) => if (iterator.hasNext) {
++        true
++      } else {
++        currentItemIterator = None
++        false
++      }
++      case None => false
++    }
++  }
++
++  override def next(): TSparkRow = {
++    currentItemIterator.get.next()
++  }
++
++  override def head(): TSparkRow = {
++    currentItemIterator.get.head
++  }
++
++  private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
++    val loop = new Breaks()
++    var returnValue: Option[T] = None
++
++    loop.breakable {
++      while (true) {
++        val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
++
++        try {
++          returnValue = Some(func())
++          retryCount.set(0)
++          loop.break
++        }
++        catch {
++          case cosmosException: CosmosException =>
++            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
++              val retryCountSnapshot = retryCount.incrementAndGet()
++              if (retryCountSnapshot > maxRetryCount) {
++                logError(
++                  s"Too many transient failure retry attempts in " +
++                    s"TransientIOErrorsRetryingReadManyByPartitionKeyIterator.$methodName",
++                  cosmosException)
++                throw cosmosException
++              } else {
++                logWarning(
++                  s"Transient failure handled in " +
++                    s"TransientIOErrorsRetryingReadManyByPartitionKeyIterator.$methodName -" +
++                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
++                  cosmosException)
++              }
++            } else {
++              throw cosmosException
++            }
++          case other: Throwable => throw other
++        }
++
++        // Reset iterators but keep currentBatch so the batch is replayed
++        currentItemIterator = None
++        currentFeedResponseIterator = None
++        Thread.sleep(retryIntervalInMs)
++      }
++    }
++
++    returnValue.get
++  }
++
++  override def close(): Unit = {
++    currentItemIterator = None
++    currentFeedResponseIterator = None
++  }
++}
++
++private object TransientIOErrorsRetryingReadManyByPartitionKeyIterator extends BasicLoggingTrait {
++  private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
++
++  val executorService: ExecutorService = new ThreadPoolExecutor(
++    maxConcurrency,
++    maxConcurrency,
++    0L,
++    TimeUnit.MILLISECONDS,
++    new SynchronousQueue(),
++    SparkUtils.daemonThreadFactory(),
++    new ThreadPoolExecutor.CallerRunsPolicy()
++  )
++
++  val executionContext: ExecutionContext = ExecutionContext.fromExecutorService(executorService)
++}
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/udf/GetCosmosPartitionKeyValue.scala b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/udf/GetCosmosPartitionKeyValue.scala
+new file mode 100644
+index 00000000000..a58d5b723b8
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/main/scala/com/azure/cosmos/spark/udf/GetCosmosPartitionKeyValue.scala
+@@ -0,0 +1,25 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++
++package com.azure.cosmos.spark.udf
++
++import com.azure.cosmos.spark.CosmosPartitionKeyHelper
++import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
++import org.apache.spark.sql.api.java.UDF1
++
++@SerialVersionUID(1L)
++class GetCosmosPartitionKeyValue extends UDF1[Object, String] {
++  override def call
++  (
++    partitionKeyValue: Object
++  ): String = {
++    requireNotNull(partitionKeyValue, "partitionKeyValue")
++
++    partitionKeyValue match {
++      // for subpartitions case - Seq covers both WrappedArray (Scala 2.12) and ArraySeq (Scala 2.13)
++      case seq: Seq[Any] =>
++        CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(seq.map(_.asInstanceOf[Object]).toList)
++      case _ => CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(List(partitionKeyValue))
++    }
++  }
++}
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosConfigSpec.scala b/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosConfigSpec.scala
+index 17f75e45a74..17a298d6213 100644
+--- a/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosConfigSpec.scala
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosConfigSpec.scala
+@@ -457,6 +457,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
+     config.runtimeFilteringEnabled shouldBe true
+     config.readManyFilteringConfig.readManyFilteringEnabled shouldBe false
+     config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
++    config.readManyByPkTreatNullAsNone shouldBe false
+
+     userConfig = Map(
+       "spark.cosmos.read.forceEventualConsistency" -> "false",
+@@ -630,6 +631,47 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
+     config.customQuery.get.queryText shouldBe queryText
+   }
+
++  it should "parse readManyByPk nullHandling configuration" in {
++    // Default (not specified) should treat null as JSON null (addNullValue)
++    var userConfig = Map(
++      "spark.cosmos.read.forceEventualConsistency" -> "false"
++    )
++    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
++    config.readManyByPkTreatNullAsNone shouldBe false
++
++    // Explicit "Null" should treat null as JSON null (addNullValue)
++    userConfig = Map(
++      "spark.cosmos.read.forceEventualConsistency" -> "false",
++      "spark.cosmos.read.readManyByPk.nullHandling" -> "Null"
++    )
++    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
++    config.readManyByPkTreatNullAsNone shouldBe false
++
++    // Case-insensitive "null"
++    userConfig = Map(
++      "spark.cosmos.read.forceEventualConsistency" -> "false",
++      "spark.cosmos.read.readManyByPk.nullHandling" -> "null"
++    )
++    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
++    config.readManyByPkTreatNullAsNone shouldBe false
++
++    // "None" should treat null as PartitionKey.NONE (addNoneValue)
++    userConfig = Map(
++      "spark.cosmos.read.forceEventualConsistency" -> "false",
++      "spark.cosmos.read.readManyByPk.nullHandling" -> "None"
++    )
++    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
++    config.readManyByPkTreatNullAsNone shouldBe true
++
++    // Case-insensitive "none"
++    userConfig = Map(
++      "spark.cosmos.read.forceEventualConsistency" -> "false",
++      "spark.cosmos.read.readManyByPk.nullHandling" -> "none"
++    )
++    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
++    config.readManyByPkTreatNullAsNone shouldBe true
++  }
++
+   it should "throw on invalid read configuration" in {
+     val userConfig = Map(
+       "spark.cosmos.read.schemaConversionMode" -> "not a valid value"
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelperSpec.scala b/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelperSpec.scala
+new file mode 100644
+index 00000000000..1ac40e39584
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/CosmosPartitionKeyHelperSpec.scala
+@@ -0,0 +1,104 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++
++package com.azure.cosmos.spark
++
++import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
++
++class CosmosPartitionKeyHelperSpec extends UnitSpec {
++  //scalastyle:off multiple.string.literals
++  //scalastyle:off magic.number
++
++  it should "return the correct partition key value string for single PK" in {
++    val pkString = CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(List("pk1"))
++    pkString shouldEqual "pk([\"pk1\"])"
++  }
++
++  it should "return the correct partition key value string for HPK" in {
++    val pkString = CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(List("city1", "zip1"))
++    pkString shouldEqual "pk([\"city1\",\"zip1\"])"
++  }
++
++  it should "return the correct partition key value string for 3-level HPK" in {
++    val pkString = CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(List("a", "b", "c"))
++    pkString shouldEqual "pk([\"a\",\"b\",\"c\"])"
++  }
++
++  it should "parse valid single PK string" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"myPkValue\"])")
++    pk.isDefined shouldBe true
++    pk.get shouldEqual new PartitionKey("myPkValue")
++  }
++
++  it should "parse valid HPK string" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"city1\",\"zip1\"])")
++    pk.isDefined shouldBe true
++    val expected = new PartitionKeyBuilder().add("city1").add("zip1").build()
++    pk.get shouldEqual expected
++  }
++
++  it should "parse valid 3-level HPK string" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"a\",\"b\",\"c\"])")
++    pk.isDefined shouldBe true
++    val expected = new PartitionKeyBuilder().add("a").add("b").add("c").build()
++    pk.get shouldEqual expected
++  }
++
++  it should "roundtrip single PK" in {
++    val original = "pk([\"roundtrip\"])"
++    val parsed = CosmosPartitionKeyHelper.tryParsePartitionKey(original)
++    parsed.isDefined shouldBe true
++    val serialized = CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(List("roundtrip"))
++    serialized shouldEqual original
++  }
++
++  it should "roundtrip HPK" in {
++    val original = "pk([\"city\",\"zip\"])"
++    val parsed = CosmosPartitionKeyHelper.tryParsePartitionKey(original)
++    parsed.isDefined shouldBe true
++    val serialized = CosmosPartitionKeyHelper.getCosmosPartitionKeyValueString(List("city", "zip"))
++    serialized shouldEqual original
++  }
++
++  it should "return None for malformed string" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("invalid_format")
++    pk.isDefined shouldBe false
++  }
++
++  it should "return None for missing pk prefix" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("[\"value\"]")
++    pk.isDefined shouldBe false
++  }
++
++  it should "be case-insensitive for parsing" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("PK([\"value\"])")
++    pk.isDefined shouldBe true
++    pk.get shouldEqual new PartitionKey("value")
++  }
++
++
++  it should "return None for malformed JSON inside pk() wrapper" in {
++    // Invalid JSON that would cause JsonProcessingException
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk({invalid json})")
++    pk.isDefined shouldBe false
++  }
++
++  it should "return None for truncated JSON inside pk() wrapper" in {
++    val pk = CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"unterminated)")
++    pk.isDefined shouldBe false
++  }
++
++  it should "produce different partition keys for addNullValue vs addNoneValue in HPK" in {
++    // addNullValue represents an explicit JSON null for a field that exists with value null
++    val pkWithNull = new PartitionKeyBuilder().add("Redmond").addNullValue().build()
++
++    // addNoneValue represents PartitionKey.NONE, meaning the field is absent/undefined
++    val pkWithNone = new PartitionKeyBuilder().add("Redmond").addNoneValue().build()
++
++    // These MUST produce different partition key hashes and route to different physical partitions
++    pkWithNull should not equal pkWithNone
++  }
++
++  //scalastyle:on multiple.string.literals
++  //scalastyle:on magic.number
++}
+diff --git a/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKeyITest.scala b/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKeyITest.scala
+new file mode 100644
+index 00000000000..5c2d7b59836
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-spark_3/src/test/scala/com/azure/cosmos/spark/ItemsPartitionReaderWithReadManyByPartitionKeyITest.scala
+@@ -0,0 +1,158 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++
++package com.azure.cosmos.spark
++
++import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations, Utils}
++import com.azure.cosmos.models.PartitionKey
++import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
++import com.fasterxml.jackson.databind.node.ObjectNode
++import org.apache.spark.MockTaskContext
++import org.apache.spark.broadcast.Broadcast
++import org.apache.spark.sql.types.{StringType, StructField, StructType}
++
++import java.util.UUID
++import scala.collection.mutable.ListBuffer
++
++class ItemsPartitionReaderWithReadManyByPartitionKeyITest
++  extends IntegrationSpec
++    with Spark
++    with AutoCleanableCosmosContainersWithPkAsPartitionKey {
++  private val idProperty = "id"
++  private val pkProperty = "pk"
++
++  //scalastyle:off multiple.string.literals
++  //scalastyle:off magic.number
++
++  it should "be able to retrieve all items for given partition keys" in {
++    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
++
++    // Create items with known PK values
++    val partitionKeyDefinition = container.read().block().getProperties.getPartitionKeyDefinition
++    val allItemsByPk = scala.collection.mutable.Map[String, ListBuffer[ObjectNode]]()
++    val pkValues = List("pkA", "pkB", "pkC")
++
++    for (pk <- pkValues) {
++      allItemsByPk(pk) = ListBuffer[ObjectNode]()
++      for (_ <- 1 to 5) {
++        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
++        objectNode.put(idProperty, UUID.randomUUID().toString)
++        objectNode.put(pkProperty, pk)
++        container.createItem(objectNode).block()
++        allItemsByPk(pk) += objectNode
++      }
++    }
++
++    val config = Map(
++      "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
++      "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
++      "spark.cosmos.database" -> cosmosDatabase,
++      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
++      "spark.cosmos.read.inferSchema.enabled" -> "true",
++      "spark.cosmos.applicationName" -> "ReadManyByPKTest"
++    )
++
++    val readSchema = StructType(Seq(
++      StructField(idProperty, StringType, false),
++      StructField(pkProperty, StringType, false)
++    ))
++
++    val diagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "")
++    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
++    val cosmosClientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
++
++    // Read items for pkA and pkB (not pkC)
++    val targetPks = List("pkA", "pkB")
++    val pkIterator = targetPks.map(pk => new PartitionKey(pk)).iterator
++
++    val reader = ItemsPartitionReaderWithReadManyByPartitionKey(
++      config,
++      NormalizedRange("", "FF"),
++      readSchema,
++      diagnosticsContext,
++      cosmosClientMetadataCachesSnapshots,
++      diagnosticsConfig,
++      "",
++      MockTaskContext.mockTaskContext(),
++      pkIterator
++    )
++
++    val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
++    val itemsReadFromReader = ListBuffer[ObjectNode]()
++    while (reader.next()) {
++      itemsReadFromReader += cosmosRowConverter.fromInternalRowToObjectNode(reader.get(), readSchema)
++    }
++
++    // Should have 10 items (5 for pkA + 5 for pkB)
++    itemsReadFromReader.size shouldEqual 10
++
++    // All items should be from pkA or pkB
++    itemsReadFromReader.foreach(item => {
++      val pk = item.get(pkProperty).asText()
++      targetPks should contain(pk)
++    })
++
++    // Validate all expected IDs are present
++    val expectedIds = (allItemsByPk("pkA") ++ allItemsByPk("pkB")).map(_.get(idProperty).asText()).toSet
++    val actualIds = itemsReadFromReader.map(_.get(idProperty).asText()).toSet
++    actualIds shouldEqual expectedIds
++
++    reader.close()
++  }
++
++  it should "return empty results for non-existent partition keys" in {
++    val config = Map(
++      "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
++      "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
++      "spark.cosmos.database" -> cosmosDatabase,
++      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
++      "spark.cosmos.read.inferSchema.enabled" -> "true",
++      "spark.cosmos.applicationName" -> "ReadManyByPKEmptyTest"
++    )
++
++    val readSchema = StructType(Seq(
++      StructField(idProperty, StringType, false),
++      StructField(pkProperty, StringType, false)
++    ))
++
++    val diagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "")
++    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
++    val cosmosClientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
++
++    val pkIterator = List(new PartitionKey("nonExistentPk")).iterator
++
++    val reader = ItemsPartitionReaderWithReadManyByPartitionKey(
++      config,
++      NormalizedRange("", "FF"),
++      readSchema,
++      diagnosticsContext,
++      cosmosClientMetadataCachesSnapshots,
++      diagnosticsConfig,
++      "",
++      MockTaskContext.mockTaskContext(),
++      pkIterator
++    )
++
++    val itemsReadFromReader = ListBuffer[ObjectNode]()
++    val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
++    while (reader.next()) {
++      itemsReadFromReader += cosmosRowConverter.fromInternalRowToObjectNode(reader.get(), readSchema)
++    }
++
++    itemsReadFromReader.size shouldEqual 0
++    reader.close()
++  }
++
++  private def getCosmosClientMetadataCachesSnapshots(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
++    val cosmosClientMetadataCachesSnapshot = new CosmosClientMetadataCachesSnapshot()
++    cosmosClientMetadataCachesSnapshot.serialize(cosmosClient)
++
++    spark.sparkContext.broadcast(
++      CosmosClientMetadataCachesSnapshots(
++        cosmosClientMetadataCachesSnapshot,
++        Option.empty[CosmosClientMetadataCachesSnapshot]))
++  }
++
++  //scalastyle:on multiple.string.literals
++  //scalastyle:on magic.number
++}
+diff --git a/sdk/cosmos/azure-cosmos-spark_4-0_2-13/CHANGELOG.md b/sdk/cosmos/azure-cosmos-spark_4-0_2-13/CHANGELOG.md
+index 3972ae6aeb9..d8368be6a0d 100644
+--- a/sdk/cosmos/azure-cosmos-spark_4-0_2-13/CHANGELOG.md
++++ b/sdk/cosmos/azure-cosmos-spark_4-0_2-13/CHANGELOG.md
+@@ -3,6 +3,7 @@
+ ### 4.47.0-beta.1 (Unreleased)
+
+ #### Features Added
++* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+
+ #### Breaking Changes
+
+diff --git a/sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/ReadManyByPartitionKeyTest.java b/sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/ReadManyByPartitionKeyTest.java
+new file mode 100644
+index 00000000000..2c26d564ed2
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/ReadManyByPartitionKeyTest.java
+@@ -0,0 +1,462 @@
++/*
++ * Copyright (c) Microsoft Corporation. All rights reserved.
++ * Licensed under the MIT License.
++ */
++
++package com.azure.cosmos;
++
++import com.azure.cosmos.models.CosmosContainerProperties;
++import com.azure.cosmos.models.CosmosItemRequestOptions;
++import com.azure.cosmos.models.FeedResponse;
++import com.azure.cosmos.models.PartitionKey;
++import com.azure.cosmos.models.PartitionKeyBuilder;
++import com.azure.cosmos.models.PartitionKeyDefinition;
++import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
++import com.azure.cosmos.models.PartitionKind;
++import com.azure.cosmos.models.SqlParameter;
++import com.azure.cosmos.models.SqlQuerySpec;
++import com.azure.cosmos.rx.TestSuiteBase;
++import com.azure.cosmos.util.CosmosPagedIterable;
++import com.fasterxml.jackson.databind.node.ObjectNode;
++import org.testng.annotations.AfterClass;
++import org.testng.annotations.BeforeClass;
++import org.testng.annotations.Factory;
++import org.testng.annotations.Test;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.List;
++import java.util.UUID;
++import java.util.stream.Collectors;
++
++import static org.assertj.core.api.Assertions.assertThat;
++import static org.assertj.core.api.Assertions.fail;
++
++public class ReadManyByPartitionKeyTest extends TestSuiteBase {
++
++    private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
++    private CosmosClient client;
++    private CosmosDatabase createdDatabase;
++
++    // Single PK container (/mypk)
++    private CosmosContainer singlePkContainer;
++
++    // HPK container (/city, /zipcode, /areaCode)
++    private CosmosContainer multiHashContainer;
++
++    @Factory(dataProvider = "clientBuilders")
++    public ReadManyByPartitionKeyTest(CosmosClientBuilder clientBuilder) {
++        super(clientBuilder);
++    }
++
++    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
++    public void before_ReadManyByPartitionKeyTest() {
++        client = getClientBuilder().buildClient();
++        createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
++
++        // Single PK container
++        String singlePkContainerName = UUID.randomUUID().toString();
++        CosmosContainerProperties singlePkProps = new CosmosContainerProperties(singlePkContainerName, "/mypk");
++        createdDatabase.createContainer(singlePkProps);
++        singlePkContainer = createdDatabase.getContainer(singlePkContainerName);
++
++        // HPK container
++        String multiHashContainerName = UUID.randomUUID().toString();
++        PartitionKeyDefinition hpkDef = new PartitionKeyDefinition();
++        hpkDef.setKind(PartitionKind.MULTI_HASH);
++        hpkDef.setVersion(PartitionKeyDefinitionVersion.V2);
++        ArrayList<String> paths = new ArrayList<>();
++        paths.add("/city");
++        paths.add("/zipcode");
++        paths.add("/areaCode");
++        hpkDef.setPaths(paths);
++
++        CosmosContainerProperties hpkProps = new CosmosContainerProperties(multiHashContainerName, hpkDef);
++        createdDatabase.createContainer(hpkProps);
++        multiHashContainer = createdDatabase.getContainer(multiHashContainerName);
++    }
++
++    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
++    public void afterClass() {
++        safeDeleteSyncDatabase(createdDatabase);
++        safeCloseSyncClient(client);
++    }
++
++    //region Single PK tests
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void singlePk_readManyByPartitionKey_basic() {
++        // Create items with different PKs
++        List<ObjectNode> items = createSinglePkItems("pk1", 3);
++        items.addAll(createSinglePkItems("pk2", 2));
++        items.addAll(createSinglePkItems("pk3", 4));
++
++        // Read by 2 partition keys
++        List<PartitionKey> pkValues = Arrays.asList(
++            new PartitionKey("pk1"),
++            new PartitionKey("pk2"));
++
++        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        assertThat(resultList).hasSize(5); // 3 + 2
++        resultList.forEach(item -> {
++            String pk = item.get("mypk").asText();
++            assertThat(pk).isIn("pk1", "pk2");
++        });
++
++        // Cleanup
++        cleanupContainer(singlePkContainer);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void singlePk_readManyByPartitionKey_withProjection() {
++        List<ObjectNode> items = createSinglePkItems("pkProj", 2);
++
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkProj"));
++        SqlQuerySpec customQuery = new SqlQuerySpec("SELECT c.id, c.mypk FROM c");
++
++        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
++            pkValues, customQuery, null, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        assertThat(resultList).hasSize(2);
++        // Should only have id and mypk fields (plus system properties)
++        resultList.forEach(item -> {
++            assertThat(item.has("id")).isTrue();
++            assertThat(item.has("mypk")).isTrue();
++        });
++
++        cleanupContainer(singlePkContainer);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void singlePk_readManyByPartitionKey_withAdditionalFilter() {
++        // Create items with different "status" values
++        createSinglePkItemsWithStatus("pkFilter", "active", 3);
++        createSinglePkItemsWithStatus("pkFilter", "inactive", 2);
++
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkFilter"));
++        SqlQuerySpec customQuery = new SqlQuerySpec(
++            "SELECT * FROM c WHERE c.status = @status",
++            Arrays.asList(new SqlParameter("@status", "active")));
++
++        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
++            pkValues, customQuery, null, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        assertThat(resultList).hasSize(3);
++        resultList.forEach(item -> {
++            assertThat(item.get("status").asText()).isEqualTo("active");
++        });
++
++        cleanupContainer(singlePkContainer);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void singlePk_readManyByPartitionKey_emptyResults() {
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("nonExistent"));
++
++        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        assertThat(resultList).isEmpty();
++    }
++
++    //endregion
++
++    //region HPK tests
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void hpk_readManyByPartitionKey_fullPk() {
++        createHpkItems();
++
++        // Read by full PKs
++        List<PartitionKey> pkValues = Arrays.asList(
++            new PartitionKeyBuilder().add("Redmond").add("98053").add(1).build(),
++            new PartitionKeyBuilder().add("Pittsburgh").add("15232").add(2).build());
++
++        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        // Redmond/98053/1 has 2 items, Pittsburgh/15232/2 has 1 item
++        assertThat(resultList).hasSize(3);
++
++        cleanupContainer(multiHashContainer);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void hpk_readManyByPartitionKey_partialPk_singleLevel() {
++        createHpkItems();
++
++        // Read by partial PK (only city)
++        List<PartitionKey> pkValues = Collections.singletonList(
++            new PartitionKeyBuilder().add("Redmond").build());
++
++        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        // Redmond has 3 items total (2 with 98053/1 and 1 with 12345/1)
++        assertThat(resultList).hasSize(3);
++        resultList.forEach(item -> {
++            assertThat(item.get("city").asText()).isEqualTo("Redmond");
++        });
++
++        cleanupContainer(multiHashContainer);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void hpk_readManyByPartitionKey_partialPk_twoLevels() {
++        createHpkItems();
++
++        // Read by partial PK (city + zipcode)
++        List<PartitionKey> pkValues = Collections.singletonList(
++            new PartitionKeyBuilder().add("Redmond").add("98053").build());
++
++        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        // Redmond/98053 has 2 items
++        assertThat(resultList).hasSize(2);
++        resultList.forEach(item -> {
++            assertThat(item.get("city").asText()).isEqualTo("Redmond");
++            assertThat(item.get("zipcode").asText()).isEqualTo("98053");
++        });
++
++        cleanupContainer(multiHashContainer);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void hpk_readManyByPartitionKey_withProjection() {
++        createHpkItems();
++
++        List<PartitionKey> pkValues = Collections.singletonList(
++            new PartitionKeyBuilder().add("Redmond").add("98053").add(1).build());
++
++        SqlQuerySpec customQuery = new SqlQuerySpec("SELECT c.id, c.city FROM c");
++
++        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(
++            pkValues, customQuery, null, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        assertThat(resultList).hasSize(2);
++
++        cleanupContainer(multiHashContainer);
++    }
++
++    //endregion
++
++    //region Negative/validation tests
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void rejectsAggregateQuery() {
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++        SqlQuerySpec aggregateQuery = new SqlQuerySpec("SELECT COUNT(1) FROM c");
++
++        try {
++            singlePkContainer.readManyByPartitionKey(pkValues, aggregateQuery, null, ObjectNode.class)
++                .stream().collect(Collectors.toList());
++            fail("Should have thrown IllegalArgumentException for aggregate query");
++        } catch (IllegalArgumentException e) {
++            assertThat(e.getMessage()).contains("aggregates");
++        }
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void rejectsOrderByQuery() {
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++        SqlQuerySpec orderByQuery = new SqlQuerySpec("SELECT * FROM c ORDER BY c.id");
++
++        try {
++            singlePkContainer.readManyByPartitionKey(pkValues, orderByQuery, null, ObjectNode.class)
++                .stream().collect(Collectors.toList());
++            fail("Should have thrown IllegalArgumentException for ORDER BY query");
++        } catch (IllegalArgumentException e) {
++            assertThat(e.getMessage()).contains("ORDER BY");
++        }
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void rejectsDistinctQuery() {
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++        SqlQuerySpec distinctQuery = new SqlQuerySpec("SELECT DISTINCT c.mypk FROM c");
++
++        try {
++            singlePkContainer.readManyByPartitionKey(pkValues, distinctQuery, null, ObjectNode.class)
++                .stream().collect(Collectors.toList());
++            fail("Should have thrown IllegalArgumentException for DISTINCT query");
++        } catch (IllegalArgumentException e) {
++            assertThat(e.getMessage()).contains("DISTINCT");
++        }
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void rejectsGroupByQuery() {
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++        SqlQuerySpec groupByQuery = new SqlQuerySpec("SELECT c.mypk FROM c GROUP BY c.mypk");
++
++        try {
++            singlePkContainer.readManyByPartitionKey(pkValues, groupByQuery, null, ObjectNode.class)
++                .stream().collect(Collectors.toList());
++            fail("Should have thrown IllegalArgumentException for GROUP BY query");
++        } catch (IllegalArgumentException e) {
++            assertThat(e.getMessage()).contains("GROUP BY");
++        }
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void rejectsGroupByWithAggregateQuery() {
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++        SqlQuerySpec groupByWithAggregateQuery = new SqlQuerySpec("SELECT c.mypk, COUNT(1) as cnt FROM c GROUP BY c.mypk");
++
++        try {
++            singlePkContainer.readManyByPartitionKey(pkValues, groupByWithAggregateQuery, null, ObjectNode.class)
++                .stream().collect(Collectors.toList());
++            fail("Should have thrown IllegalArgumentException for GROUP BY with aggregate query");
++        } catch (IllegalArgumentException e) {
++            assertThat(e.getMessage()).contains("GROUP BY");
++        }
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
++    public void rejectsNullPartitionKeyList() {
++        singlePkContainer.readManyByPartitionKey((List<PartitionKey>) null, ObjectNode.class);
++    }
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
++    public void rejectsEmptyPartitionKeyList() {
++        singlePkContainer.readManyByPartitionKey(new ArrayList<>(), ObjectNode.class)
++            .stream().collect(Collectors.toList());
++    }
++
++    //endregion
++
++
++    //region Batch size tests (#10)
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void singlePk_readManyByPartitionKey_withSmallBatchSize() {
++        // Temporarily set batch size to 2 to exercise the batching/interleaving logic
++        String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
++        try {
++            System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "2");
++
++            // Create items across 4 PKs (more than the batch size of 2)
++            List<ObjectNode> items = createSinglePkItems("batchPk1", 2);
++            items.addAll(createSinglePkItems("batchPk2", 2));
++            items.addAll(createSinglePkItems("batchPk3", 2));
++            items.addAll(createSinglePkItems("batchPk4", 2));
++
++            // Read all 4 PKs ΓÇö should be split into batches of 2
++            List<PartitionKey> pkValues = Arrays.asList(
++                new PartitionKey("batchPk1"),
++                new PartitionKey("batchPk2"),
++                new PartitionKey("batchPk3"),
++                new PartitionKey("batchPk4"));
++
++            CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
++            List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++            assertThat(resultList).hasSize(8); // 2 items per PK * 4 PKs
++            resultList.forEach(item -> {
++                String pk = item.get("mypk").asText();
++                assertThat(pk).isIn("batchPk1", "batchPk2", "batchPk3", "batchPk4");
++            });
++
++            cleanupContainer(singlePkContainer);
++        } finally {
++            if (originalValue != null) {
++                System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", originalValue);
++            } else {
++                System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
++            }
++        }
++    }
++
++    //endregion
++
++    //region Custom serializer regression tests (#5)
++
++    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
++    public void singlePk_readManyByPartitionKey_withRequestOptions() {
++        // This test ensures that request options (like throughput control settings)
++        // are properly propagated through the readManyByPartitionKey path.
++        // It acts as a regression test for the redundant options construction bug.
++        List<ObjectNode> items = createSinglePkItems("pkOpts", 3);
++
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkOpts"));
++        com.azure.cosmos.models.CosmosReadManyRequestOptions options = new com.azure.cosmos.models.CosmosReadManyRequestOptions();
++
++        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
++            pkValues, options, ObjectNode.class);
++        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
++
++        assertThat(resultList).hasSize(3);
++
++        cleanupContainer(singlePkContainer);
++    }
++
++    //endregion
++
++    //region helper methods
++
++    private List<ObjectNode> createSinglePkItems(String pkValue, int count) {
++        List<ObjectNode> items = new ArrayList<>();
++        for (int i = 0; i < count; i++) {
++            ObjectNode item = com.azure.cosmos.implementation.Utils.getSimpleObjectMapper().createObjectNode();
++            item.put("id", UUID.randomUUID().toString());
++            item.put("mypk", pkValue);
++            singlePkContainer.createItem(item);
++            items.add(item);
++        }
++        return items;
++    }
++
++    private List<ObjectNode> createSinglePkItemsWithStatus(String pkValue, String status, int count) {
++        List<ObjectNode> items = new ArrayList<>();
++        for (int i = 0; i < count; i++) {
++            ObjectNode item = com.azure.cosmos.implementation.Utils.getSimpleObjectMapper().createObjectNode();
++            item.put("id", UUID.randomUUID().toString());
++            item.put("mypk", pkValue);
++            item.put("status", status);
++            singlePkContainer.createItem(item);
++            items.add(item);
++        }
++        return items;
++    }
++
++    private void createHpkItems() {
++        // Same data as CosmosMultiHashTest.createItems()
++        createHpkItem("Redmond", "98053", 1);
++        createHpkItem("Redmond", "98053", 1);
++        createHpkItem("Pittsburgh", "15232", 2);
++        createHpkItem("Stonybrook", "11790", 3);
++        createHpkItem("Stonybrook", "11794", 3);
++        createHpkItem("Stonybrook", "11791", 3);
++        createHpkItem("Redmond", "12345", 1);
++    }
++
++    private void createHpkItem(String city, String zipcode, int areaCode) {
++        ObjectNode item = com.azure.cosmos.implementation.Utils.getSimpleObjectMapper().createObjectNode();
++        item.put("id", UUID.randomUUID().toString());
++        item.put("city", city);
++        item.put("zipcode", zipcode);
++        item.put("areaCode", areaCode);
++        multiHashContainer.createItem(item);
++    }
++
++    private void cleanupContainer(CosmosContainer container) {
++        CosmosPagedIterable<ObjectNode> allItems = container.queryItems(
++            "SELECT * FROM c", new com.azure.cosmos.models.CosmosQueryRequestOptions(), ObjectNode.class);
++        allItems.forEach(item -> {
++            try {
++                container.deleteItem(item, new CosmosItemRequestOptions());
++            } catch (CosmosException e) {
++                // ignore cleanup failures
++            }
++        });
++    }
++
++    //endregion
++}
+diff --git a/sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelperTest.java b/sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelperTest.java
+new file mode 100644
+index 00000000000..95c109ba025
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelperTest.java
+@@ -0,0 +1,426 @@
++/*
++ * Copyright (c) Microsoft Corporation. All rights reserved.
++ * Licensed under the MIT License.
++ */
++
++package com.azure.cosmos.implementation;
++
++import com.azure.cosmos.models.PartitionKey;
++import com.azure.cosmos.models.PartitionKeyBuilder;
++import com.azure.cosmos.models.PartitionKeyDefinition;
++import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
++import com.azure.cosmos.models.PartitionKind;
++import com.azure.cosmos.models.SqlParameter;
++import com.azure.cosmos.models.SqlQuerySpec;
++import org.testng.annotations.Test;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.List;
++import java.util.stream.Collectors;
++
++import static org.assertj.core.api.Assertions.assertThat;
++
++public class ReadManyByPartitionKeyQueryHelperTest {
++
++    //region Single PK (HASH) tests
++
++    @Test(groups = { "unit" })
++    public void singlePk_defaultQuery_singleValue() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("SELECT * FROM c WHERE");
++        assertThat(result.getQueryText()).contains("IN (");
++        assertThat(result.getQueryText()).contains("@__rmPk_0");
++        assertThat(result.getParameters()).hasSize(1);
++        assertThat(result.getParameters().get(0).getValue(Object.class)).isEqualTo("pk1");
++    }
++
++    @Test(groups = { "unit" })
++    public void singlePk_defaultQuery_multipleValues() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Arrays.asList(
++            new PartitionKey("pk1"),
++            new PartitionKey("pk2"),
++            new PartitionKey("pk3"));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("IN (");
++        assertThat(result.getQueryText()).contains("@__rmPk_0");
++        assertThat(result.getQueryText()).contains("@__rmPk_1");
++        assertThat(result.getQueryText()).contains("@__rmPk_2");
++        assertThat(result.getParameters()).hasSize(3);
++    }
++
++    @Test(groups = { "unit" })
++    public void singlePk_customQuery_noWhere() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Arrays.asList(new PartitionKey("pk1"), new PartitionKey("pk2"));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT c.name, c.age FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).startsWith("SELECT c.name, c.age FROM c WHERE");
++        assertThat(result.getQueryText()).contains("IN (");
++    }
++
++    @Test(groups = { "unit" })
++    public void singlePk_customQuery_withExistingWhere() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++
++        List<SqlParameter> baseParams = new ArrayList<>();
++        baseParams.add(new SqlParameter("@minAge", 18));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c WHERE c.age > @minAge", baseParams, pkValues, selectors, pkDef);
++
++        // Should AND the PK filter to the existing WHERE clause
++        assertThat(result.getQueryText()).contains("WHERE (c.age > @minAge) AND (");
++        assertThat(result.getQueryText()).contains("IN (");
++        assertThat(result.getParameters()).hasSize(2); // @minAge + @__rmPk_0
++        assertThat(result.getParameters().get(0).getName()).isEqualTo("@minAge");
++    }
++
++    //endregion
++
++    //region HPK (MULTI_HASH) tests
++
++    @Test(groups = { "unit" })
++    public void hpk_fullPk_defaultQuery() {
++        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
++        List<String> selectors = createSelectors(pkDef);
++
++        PartitionKey pk = new PartitionKeyBuilder().add("Redmond").add("98052").build();
++        List<PartitionKey> pkValues = Collections.singletonList(pk);
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("SELECT * FROM c WHERE");
++        // Should use OR/AND pattern, not IN
++        assertThat(result.getQueryText()).doesNotContain("IN (");
++        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
++        assertThat(result.getQueryText()).contains("AND");
++        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_1");
++        assertThat(result.getParameters()).hasSize(2);
++        assertThat(result.getParameters().get(0).getValue(Object.class)).isEqualTo("Redmond");
++        assertThat(result.getParameters().get(1).getValue(Object.class)).isEqualTo("98052");
++    }
++
++    @Test(groups = { "unit" })
++    public void hpk_fullPk_multipleValues() {
++        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
++        List<String> selectors = createSelectors(pkDef);
++
++        List<PartitionKey> pkValues = Arrays.asList(
++            new PartitionKeyBuilder().add("Redmond").add("98052").build(),
++            new PartitionKeyBuilder().add("Seattle").add("98101").build());
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("OR");
++        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
++        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_1");
++        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_2");
++        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_3");
++        assertThat(result.getParameters()).hasSize(4);
++    }
++
++    @Test(groups = { "unit" })
++    public void hpk_partialPk_singleLevel() {
++        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode", "/areaCode");
++        List<String> selectors = createSelectors(pkDef);
++
++        // Partial PK ΓÇö only first level
++        PartitionKey partialPk = new PartitionKeyBuilder().add("Redmond").build();
++        List<PartitionKey> pkValues = Collections.singletonList(partialPk);
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
++        // Should NOT include zipcode or areaCode since it's partial
++        assertThat(result.getQueryText()).doesNotContain("zipcode");
++        assertThat(result.getQueryText()).doesNotContain("areaCode");
++        assertThat(result.getParameters()).hasSize(1);
++    }
++
++    @Test(groups = { "unit" })
++    public void hpk_partialPk_twoLevels() {
++        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode", "/areaCode");
++        List<String> selectors = createSelectors(pkDef);
++
++        // Partial PK ΓÇö first two levels
++        PartitionKey partialPk = new PartitionKeyBuilder().add("Redmond").add("98052").build();
++        List<PartitionKey> pkValues = Collections.singletonList(partialPk);
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
++        assertThat(result.getQueryText()).contains("c[\"zipcode\"] = @__rmPk_1");
++        assertThat(result.getQueryText()).doesNotContain("areaCode");
++        assertThat(result.getParameters()).hasSize(2);
++    }
++
++    @Test(groups = { "unit" })
++    public void hpk_customQuery_withWhere() {
++        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
++        List<String> selectors = createSelectors(pkDef);
++
++        List<SqlParameter> baseParams = new ArrayList<>();
++        baseParams.add(new SqlParameter("@status", "active"));
++
++        PartitionKey pk = new PartitionKeyBuilder().add("Redmond").add("98052").build();
++        List<PartitionKey> pkValues = Collections.singletonList(pk);
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT c.name FROM c WHERE c.status = @status", baseParams, pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("WHERE (c.status = @status) AND (");
++        assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
++        assertThat(result.getParameters()).hasSize(3); // @status + 2 pk params
++    }
++
++    //endregion
++
++    //region findTopLevelWhereIndex tests
++
++    @Test(groups = { "unit" })
++    public void findWhere_simpleQuery() {
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex("SELECT * FROM C WHERE C.ID = 1");
++        assertThat(idx).isEqualTo(16);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_noWhere() {
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex("SELECT * FROM C");
++        assertThat(idx).isEqualTo(-1);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_whereInSubquery() {
++        // WHERE inside parentheses (subquery) should be ignored
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
++            "SELECT * FROM C WHERE EXISTS(SELECT VALUE T FROM T IN C.TAGS WHERE T = 'FOO')");
++        // Should find the outer WHERE, not the inner one
++        assertThat(idx).isEqualTo(16);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_caseInsensitive() {
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex("SELECT * FROM C WHERE C.X = 1");
++        assertThat(idx).isGreaterThan(0);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_whereNotKeyword() {
++        // "ELSEWHERE" should not match
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex("SELECT * FROM ELSEWHERE");
++        assertThat(idx).isEqualTo(-1);
++    }
++
++    //endregion
++
++    //region Custom alias tests
++
++    @Test(groups = { "unit" })
++    public void singlePk_customAlias() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Arrays.asList(new PartitionKey("pk1"), new PartitionKey("pk2"));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT x.id, x.mypk FROM x", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).startsWith("SELECT x.id, x.mypk FROM x WHERE");
++        assertThat(result.getQueryText()).contains("x[\"mypk\"] IN (");
++        assertThat(result.getQueryText()).doesNotContain("c[\"mypk\"]");
++    }
++
++    @Test(groups = { "unit" })
++    public void singlePk_customAlias_withWhere() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++
++        List<SqlParameter> baseParams = new ArrayList<>();
++        baseParams.add(new SqlParameter("@cat", "HelloWorld"));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT x.id, x.mypk FROM x WHERE x.category = @cat", baseParams, pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("WHERE (x.category = @cat) AND (x[\"mypk\"] IN (");
++    }
++
++    @Test(groups = { "unit" })
++    public void hpk_customAlias() {
++        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
++        List<String> selectors = createSelectors(pkDef);
++
++        PartitionKey pk = new PartitionKeyBuilder().add("Redmond").add("98052").build();
++        List<PartitionKey> pkValues = Collections.singletonList(pk);
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT r.name FROM root r", new ArrayList<>(), pkValues, selectors, pkDef);
++
++        assertThat(result.getQueryText()).contains("r[\"city\"] = @__rmPk_0");
++        assertThat(result.getQueryText()).contains("r[\"zipcode\"] = @__rmPk_1");
++        assertThat(result.getQueryText()).doesNotContain("c[\"");
++    }
++
++    //endregion
++
++    //region extractTableAlias tests
++
++    @Test(groups = { "unit" })
++    public void extractAlias_defaultC() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias("SELECT * FROM c")).isEqualTo("c");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_customX() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias("SELECT x.id FROM x WHERE x.age > 5")).isEqualTo("x");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_rootWithAlias() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias("SELECT r.name FROM root r")).isEqualTo("r");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_rootNoAlias() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias("SELECT * FROM root")).isEqualTo("root");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_containerWithWhere() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias("SELECT * FROM items WHERE items.status = 'active'")).isEqualTo("items");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_caseInsensitive() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias("select * from MyContainer where MyContainer.id = '1'")).isEqualTo("MyContainer");
++    }
++
++    //endregion
++
++
++    //region String literal handling tests (#1)
++
++    @Test(groups = { "unit" })
++    public void findWhere_ignoresWhereInsideStringLiteral() {
++        // WHERE inside a string literal should be ignored
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
++            "SELECT * FROM c WHERE c.msg = 'use WHERE clause here'");
++        // Should find the outer WHERE at position 16, not the one inside the string
++        assertThat(idx).isEqualTo(16);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_ignoresParenthesesInsideStringLiteral() {
++        // Parentheses inside string literal should not affect depth tracking
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
++            "SELECT * FROM c WHERE c.name = 'foo(bar)' AND c.x = 1");
++        assertThat(idx).isEqualTo(16);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_handlesUnbalancedParenInStringLiteral() {
++        // Unbalanced paren inside string literal must not corrupt depth
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
++            "SELECT * FROM c WHERE c.val = 'open(' AND c.active = true");
++        assertThat(idx).isEqualTo(16);
++    }
++
++    @Test(groups = { "unit" })
++    public void findWhere_handlesStringLiteralBeforeWhere() {
++        // String literal in SELECT before WHERE
++        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
++            "SELECT 'WHERE' as label FROM c WHERE c.id = '1'");
++        // The WHERE inside quotes should be ignored; the real WHERE is further along
++        assertThat(idx).isGreaterThan(30);
++    }
++
++    @Test(groups = { "unit" })
++    public void singlePk_customQuery_withStringLiteralContainingParens() {
++        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
++        List<String> selectors = createSelectors(pkDef);
++        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
++
++        List<SqlParameter> baseParams = new ArrayList<>();
++        baseParams.add(new SqlParameter("@msg", "hello"));
++
++        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
++            "SELECT * FROM c WHERE c.msg = 'test(value)WHERE'", baseParams, pkValues, selectors, pkDef);
++
++        // Should correctly AND the PK filter to the real WHERE clause
++        assertThat(result.getQueryText()).contains("WHERE (c.msg = 'test(value)WHERE') AND (");
++    }
++
++    //endregion
++
++    //region OFFSET/LIMIT/HAVING alias detection tests (#9)
++
++    @Test(groups = { "unit" })
++    public void extractAlias_containerWithOffset() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
++            "SELECT * FROM c OFFSET 10 LIMIT 5")).isEqualTo("c");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_containerWithLimit() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
++            "SELECT * FROM c LIMIT 10")).isEqualTo("c");
++    }
++
++    @Test(groups = { "unit" })
++    public void extractAlias_containerWithHaving() {
++        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
++            "SELECT c.status, COUNT(1) FROM c GROUP BY c.status HAVING COUNT(1) > 1")).isEqualTo("c");
++    }
++
++    //endregion
++
++    //region helpers
++
++    private PartitionKeyDefinition createSinglePkDefinition(String path) {
++        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
++        pkDef.setKind(PartitionKind.HASH);
++        pkDef.setVersion(PartitionKeyDefinitionVersion.V2);
++        pkDef.setPaths(Collections.singletonList(path));
++        return pkDef;
++    }
++
++    private PartitionKeyDefinition createMultiHashPkDefinition(String... paths) {
++        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
++        pkDef.setKind(PartitionKind.MULTI_HASH);
++        pkDef.setVersion(PartitionKeyDefinitionVersion.V2);
++        pkDef.setPaths(Arrays.asList(paths));
++        return pkDef;
++    }
++
++    private List<String> createSelectors(PartitionKeyDefinition pkDef) {
++        return pkDef.getPaths()
++            .stream()
++            .map(pathPart -> pathPart.substring(1)) // skip starting /
++            .map(pathPart -> pathPart.replace("\"", "\\"))
++            .map(part -> "[\"" + part + "\"]")
++            .collect(Collectors.toList());
++    }
++
++    //endregion
++}
+diff --git a/sdk/cosmos/azure-cosmos/CHANGELOG.md b/sdk/cosmos/azure-cosmos/CHANGELOG.md
+index e8ea564fab7..904c01c3238 100644
+--- a/sdk/cosmos/azure-cosmos/CHANGELOG.md
++++ b/sdk/cosmos/azure-cosmos/CHANGELOG.md
+@@ -3,6 +3,7 @@
+ ### 4.80.0-beta.1 (Unreleased)
+
+ #### Features Added
++* Added new `readManyByPartitionKey` to bulk query by a list of pk-values with better efficiency. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+
+ #### Breaking Changes
+
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosAsyncContainer.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosAsyncContainer.java
+index ad871bb97c0..4e234667c1c 100644
+--- a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosAsyncContainer.java
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosAsyncContainer.java
+@@ -165,6 +165,7 @@ public class CosmosAsyncContainer {
+     private final String createItemSpanName;
+     private final String readAllItemsSpanName;
+     private final String readManyItemsSpanName;
++    private final String readManyByPartitionKeyItemsSpanName;
+     private final String readAllItemsOfLogicalPartitionSpanName;
+     private final String queryItemsSpanName;
+     private final String queryChangeFeedSpanName;
+@@ -198,6 +199,7 @@ public class CosmosAsyncContainer {
+         this.createItemSpanName = "createItem." + this.id;
+         this.readAllItemsSpanName = "readAllItems." + this.id;
+         this.readManyItemsSpanName = "readManyItems." + this.id;
++        this.readManyByPartitionKeyItemsSpanName = "readManyByPartitionKeyItems." + this.id;
+         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
+         this.queryItemsSpanName = "queryItems." + this.id;
+         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
+@@ -1601,6 +1603,130 @@ public class CosmosAsyncContainer {
+                 context);
+     }
+
++    /**
++     * Reads many documents matching the provided partition key values.
++     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
++     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
++     * as the base query.
++     *
++     * @param <T> the type parameter
++     * @param partitionKeys list of partition key values to read documents for
++     * @param classType   class type
++     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
++     */
++    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        Class<T> classType) {
++
++        return this.readManyByPartitionKey(partitionKeys, null, null, classType);
++    }
++
++    /**
++     * Reads many documents matching the provided partition key values.
++     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
++     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
++     * as the base query.
++     *
++     * @param <T> the type parameter
++     * @param partitionKeys list of partition key values to read documents for
++     * @param requestOptions the optional request options
++     * @param classType   class type
++     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
++     */
++    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        CosmosReadManyRequestOptions requestOptions,
++        Class<T> classType) {
++
++        return this.readManyByPartitionKey(partitionKeys, null, requestOptions, classType);
++    }
++
++    /**
++     * Reads many documents matching the provided partition key values with a custom query.
++     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
++     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
++     * The SDK will automatically append partition key filtering to the custom query.
++     * <p>
++     * The custom query must be a simple streamable query ΓÇö aggregates, ORDER BY, DISTINCT,
++     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
++     * rejected.
++     * <p>
++     * Partial hierarchical partition keys are supported and will fan out to multiple
++     * physical partitions.
++     *
++     * @param <T> the type parameter
++     * @param partitionKeys list of partition key values to read documents for
++     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
++     * @param requestOptions the optional request options
++     * @param classType   class type
++     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
++     */
++    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        SqlQuerySpec customQuery,
++        CosmosReadManyRequestOptions requestOptions,
++        Class<T> classType) {
++
++        if (partitionKeys == null) {
++            throw new IllegalArgumentException("Argument 'partitionKeys' must not be null.");
++        }
++        if (partitionKeys.isEmpty()) {
++            throw new IllegalArgumentException("Argument 'partitionKeys' must not be empty.");
++        }
++        for (PartitionKey pk : partitionKeys) {
++            if (pk == null) {
++                throw new IllegalArgumentException(
++                    "Argument 'partitionKeys' must not contain null elements.");
++            }
++        }
++
++        return UtilBridgeInternal.createCosmosPagedFlux(
++            readManyByPartitionKeyInternalFunc(partitionKeys, customQuery, requestOptions, classType));
++    }
++
++    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeyInternalFunc(
++        List<PartitionKey> partitionKeys,
++        SqlQuerySpec customQuery,
++        CosmosReadManyRequestOptions requestOptions,
++        Class<T> classType) {
++
++        CosmosAsyncClient client = this.getDatabase().getClient();
++
++        return (pagedFluxOptions -> {
++            CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
++                ? new CosmosQueryRequestOptions()
++                : queryOptionsAccessor().clone(readManyOptionsAccessor().getImpl(requestOptions));
++            queryRequestOptions.setMaxDegreeOfParallelism(-1);
++            queryRequestOptions.setQueryName("readManyByPartitionKey");
++            CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
++            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeyItemsSpanName);
++
++            QueryFeedOperationState state = new QueryFeedOperationState(
++                client,
++                this.readManyByPartitionKeyItemsSpanName,
++                database.getId(),
++                this.getId(),
++                ResourceType.Document,
++                OperationType.Query,
++                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeyItemsSpanName),
++                queryRequestOptions,
++                pagedFluxOptions
++            );
++
++            pagedFluxOptions.setFeedOperationState(state);
++
++            return CosmosBridgeInternal
++                .getAsyncDocumentClient(this.getDatabase())
++                .readManyByPartitionKey(
++                    partitionKeys,
++                    customQuery,
++                    BridgeInternal.getLink(this),
++                    state,
++                    classType)
++                .map(response -> prepareFeedResponse(response, false));
++        });
++    }
++
+     /**
+      * Reads all the items of a logical partition
+      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosContainer.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosContainer.java
+index 04a6060c192..0bd8be5850c 100644
+--- a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosContainer.java
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/CosmosContainer.java
+@@ -540,6 +540,73 @@ public class CosmosContainer {
+                 classType));
+     }
+
++    /**
++     * Reads many documents matching the provided partition key values.
++     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
++     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
++     * as the base query.
++     *
++     * @param <T> the type parameter
++     * @param partitionKeys list of partition key values to read documents for
++     * @param classType   class type
++     * @return a {@link CosmosPagedIterable} containing the results
++     */
++    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        Class<T> classType) {
++
++        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, classType));
++    }
++
++    /**
++     * Reads many documents matching the provided partition key values.
++     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
++     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
++     * as the base query.
++     *
++     * @param <T> the type parameter
++     * @param partitionKeys list of partition key values to read documents for
++     * @param requestOptions the optional request options
++     * @param classType   class type
++     * @return a {@link CosmosPagedIterable} containing the results
++     */
++    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        CosmosReadManyRequestOptions requestOptions,
++        Class<T> classType) {
++
++        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, requestOptions, classType));
++    }
++
++    /**
++     * Reads many documents matching the provided partition key values with a custom query.
++     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
++     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
++     * The SDK will automatically append partition key filtering to the custom query.
++     * <p>
++     * The custom query must be a simple streamable query ΓÇö aggregates, ORDER BY, DISTINCT,
++     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
++     * rejected.
++     * <p>
++     * Partial hierarchical partition keys are supported and will fan out to multiple
++     * physical partitions.
++     *
++     * @param <T> the type parameter
++     * @param partitionKeys list of partition key values to read documents for
++     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
++     * @param requestOptions the optional request options
++     * @param classType   class type
++     * @return a {@link CosmosPagedIterable} containing the results
++     */
++    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        SqlQuerySpec customQuery,
++        CosmosReadManyRequestOptions requestOptions,
++        Class<T> classType) {
++
++        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, customQuery, requestOptions, classType));
++    }
++
+     /**
+      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
+      * <!-- src_embed com.azure.cosmos.CosmosContainer.readAllItems -->
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/AsyncDocumentClient.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/AsyncDocumentClient.java
+index 945e768a82f..8e2499c9039 100644
+--- a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/AsyncDocumentClient.java
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/AsyncDocumentClient.java
+@@ -1584,6 +1584,27 @@ public interface AsyncDocumentClient {
+         QueryFeedOperationState state,
+         Class<T> klass);
+
++    /**
++     * Reads many documents by partition key values.
++     * Unlike {@link #readMany(List, String, QueryFeedOperationState, Class)} this method does not require
++     * item ids - it queries all documents matching the provided partition key values.
++     * Partial hierarchical partition keys are supported and will fan out to multiple physical partitions.
++     *
++     * @param partitionKeys list of partition key values to read documents for
++     * @param customQuery optional custom query (for projections/additional filters) - null means SELECT * FROM c
++     * @param collectionLink link for the documentcollection/container to be queried
++     * @param state the query operation state
++     * @param klass class type
++     * @param <T> the type parameter
++     * @return a Flux with feed response pages of documents
++     */
++    <T> Flux<FeedResponse<T>> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        SqlQuerySpec customQuery,
++        String collectionLink,
++        QueryFeedOperationState state,
++        Class<T> klass);
++
+     /**
+      * Read all documents of a certain logical partition.
+      * <p>
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/Configs.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/Configs.java
+index 337055c6947..162b0740f40 100644
+--- a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/Configs.java
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/Configs.java
+@@ -248,6 +248,11 @@ public class Configs {
+     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+     public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
+
++    // readManyByPartitionKey: max number of PK values per query per physical partition
++    private static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
++    private static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
++    private static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 1000;
++
+     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
+     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
+     public static final int DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY = 1;
+@@ -816,6 +821,20 @@ public class Configs {
+         return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+     }
+
++    public static int getReadManyByPkMaxBatchSize() {
++        String valueFromSystemProperty = System.getProperty(READ_MANY_BY_PK_MAX_BATCH_SIZE);
++        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
++            return Math.max(1, Integer.parseInt(valueFromSystemProperty));
++        }
++
++        String valueFromEnvVariable = System.getenv(READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE);
++        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
++            return Math.max(1, Integer.parseInt(valueFromEnvVariable));
++        }
++
++        return DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE;
++    }
++
+     public static int getMaxBulkMicroBatchConcurrency() {
+         String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_CONCURRENCY);
+         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelper.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelper.java
+new file mode 100644
+index 00000000000..6d6cd084e01
+--- /dev/null
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/ReadManyByPartitionKeyQueryHelper.java
+@@ -0,0 +1,263 @@
++// Copyright (c) Microsoft Corporation. All rights reserved.
++// Licensed under the MIT License.
++package com.azure.cosmos.implementation;
++
++import com.azure.cosmos.BridgeInternal;
++import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
++import com.azure.cosmos.models.PartitionKey;
++import com.azure.cosmos.models.PartitionKeyDefinition;
++import com.azure.cosmos.models.PartitionKind;
++import com.azure.cosmos.models.SqlParameter;
++import com.azure.cosmos.models.SqlQuerySpec;
++
++import java.util.ArrayList;
++import java.util.List;
++
++/**
++ * Helper for constructing SqlQuerySpec instances for readManyByPartitionKey operations.
++ * This class is not intended to be used directly by end-users.
++ */
++public class ReadManyByPartitionKeyQueryHelper {
++
++    private static final String DEFAULT_TABLE_ALIAS = "c";
++    // Internal parameter prefix ΓÇö uses double-underscore to avoid collisions with user-provided parameters
++    private static final String PK_PARAM_PREFIX = "@__rmPk_";
++
++    public static SqlQuerySpec createReadManyByPkQuerySpec(
++        String baseQueryText,
++        List<SqlParameter> baseParameters,
++        List<PartitionKey> pkValues,
++        List<String> partitionKeySelectors,
++        PartitionKeyDefinition pkDefinition) {
++
++        // Extract the table alias from the FROM clause (e.g. "FROM x" ΓåÆ "x", "FROM c" ΓåÆ "c")
++        String tableAlias = extractTableAlias(baseQueryText);
++
++        StringBuilder pkFilter = new StringBuilder();
++        List<SqlParameter> parameters = new ArrayList<>(baseParameters);
++        int paramCount = 0;
++
++        boolean isSinglePathPk = partitionKeySelectors.size() == 1;
++
++        if (isSinglePathPk && pkDefinition.getKind() != PartitionKind.MULTI_HASH) {
++            // Single PK path ΓÇö use IN clause for normal values, OR NOT IS_DEFINED for NONE
++            // First, separate NONE PKs from normal PKs
++            boolean hasNone = false;
++            List<PartitionKey> normalPkValues = new ArrayList<>();
++            for (PartitionKey pk : pkValues) {
++                PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
++                if (pkInternal.getComponents() == null) {
++                    hasNone = true;
++                } else {
++                    normalPkValues.add(pk);
++                }
++            }
++
++            pkFilter.append(" ");
++            boolean hasNormalValues = !normalPkValues.isEmpty();
++            if (hasNormalValues && hasNone) {
++                pkFilter.append("(");
++            }
++            if (hasNormalValues) {
++                pkFilter.append(tableAlias);
++                pkFilter.append(partitionKeySelectors.get(0));
++                pkFilter.append(" IN ( ");
++                for (int i = 0; i < normalPkValues.size(); i++) {
++                    PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(normalPkValues.get(i));
++                    Object[] pkComponents = pkInternal.toObjectArray();
++                    String pkParamName = PK_PARAM_PREFIX + paramCount;
++                    parameters.add(new SqlParameter(pkParamName, pkComponents[0]));
++                    paramCount++;
++
++                    pkFilter.append(pkParamName);
++                    if (i < normalPkValues.size() - 1) {
++                        pkFilter.append(", ");
++                    }
++                }
++                pkFilter.append(" )");
++            }
++            if (hasNone) {
++                if (hasNormalValues) {
++                    pkFilter.append(" OR ");
++                }
++                pkFilter.append("NOT IS_DEFINED(");
++                pkFilter.append(tableAlias);
++                pkFilter.append(partitionKeySelectors.get(0));
++                pkFilter.append(")");
++            }
++            if (hasNormalValues && hasNone) {
++                pkFilter.append(")");
++            }
++        } else {
++            // Multiple PK paths (HPK) or MULTI_HASH ΓÇö use OR of AND clauses
++            pkFilter.append(" ");
++            for (int i = 0; i < pkValues.size(); i++) {
++                PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
++                Object[] pkComponents = pkInternal.toObjectArray();
++
++                // PartitionKey.NONE ΓÇö generate NOT IS_DEFINED for all PK paths
++                if (pkComponents == null) {
++                    pkFilter.append("(");
++                    for (int j = 0; j < partitionKeySelectors.size(); j++) {
++                        if (j > 0) {
++                            pkFilter.append(" AND ");
++                        }
++                        pkFilter.append("NOT IS_DEFINED(");
++                        pkFilter.append(tableAlias);
++                        pkFilter.append(partitionKeySelectors.get(j));
++                        pkFilter.append(")");
++                    }
++                    pkFilter.append(")");
++                } else {
++                    pkFilter.append("(");
++                    for (int j = 0; j < pkComponents.length; j++) {
++                        String pkParamName = PK_PARAM_PREFIX + paramCount;
++                        parameters.add(new SqlParameter(pkParamName, pkComponents[j]));
++                        paramCount++;
++
++                        if (j > 0) {
++                            pkFilter.append(" AND ");
++                        }
++                        pkFilter.append(tableAlias);
++                        pkFilter.append(partitionKeySelectors.get(j));
++                        pkFilter.append(" = ");
++                        pkFilter.append(pkParamName);
++                    }
++                    pkFilter.append(")");
++                }
++
++                if (i < pkValues.size() - 1) {
++                    pkFilter.append(" OR ");
++                }
++            }
++        }
++
++        // Compose final query: handle existing WHERE clause in base query
++        String finalQuery;
++        int whereIndex = findTopLevelWhereIndex(baseQueryText);
++        if (whereIndex >= 0) {
++            // Base query has WHERE ΓÇö AND our PK filter
++            String beforeWhere = baseQueryText.substring(0, whereIndex);
++            String afterWhere = baseQueryText.substring(whereIndex + 5); // skip "WHERE"
++            finalQuery = beforeWhere + "WHERE (" + afterWhere.trim() + ") AND (" + pkFilter.toString().trim() + ")";
++        } else {
++            // No WHERE ΓÇö add one
++            finalQuery = baseQueryText + " WHERE" + pkFilter.toString();
++        }
++
++        return new SqlQuerySpec(finalQuery, parameters);
++    }
++
++    /**
++     * Extracts the table/collection alias from a SQL query's FROM clause.
++     * Handles: "SELECT * FROM c", "SELECT x.id FROM x WHERE ...", "SELECT * FROM root r", etc.
++     * Returns the alias used after FROM (last token before WHERE or end of FROM clause).
++     */
++    static String extractTableAlias(String queryText) {
++        String upper = queryText.toUpperCase();
++        int fromIndex = findTopLevelKeywordIndex(upper, "FROM");
++        if (fromIndex < 0) {
++            return DEFAULT_TABLE_ALIAS;
++        }
++
++        // Start scanning after "FROM"
++        int afterFrom = fromIndex + 4;
++        // Skip whitespace
++        while (afterFrom < queryText.length() && Character.isWhitespace(queryText.charAt(afterFrom))) {
++            afterFrom++;
++        }
++
++        // Collect the container name token (could be "root", "c", etc.)
++        int tokenStart = afterFrom;
++        while (afterFrom < queryText.length()
++            && !Character.isWhitespace(queryText.charAt(afterFrom))
++            && queryText.charAt(afterFrom) != '('
++            && queryText.charAt(afterFrom) != ')') {
++            afterFrom++;
++        }
++        String containerName = queryText.substring(tokenStart, afterFrom);
++
++        // Skip whitespace after container name
++        while (afterFrom < queryText.length() && Character.isWhitespace(queryText.charAt(afterFrom))) {
++            afterFrom++;
++        }
++
++        // Check if there's an alias after the container name (before WHERE or end)
++        if (afterFrom < queryText.length()) {
++            char nextChar = Character.toUpperCase(queryText.charAt(afterFrom));
++            // If the next token is a keyword (WHERE, ORDER, GROUP, JOIN, OFFSET, LIMIT, HAVING) or end, containerName IS the alias
++            if (nextChar == 'W' || nextChar == 'O' || nextChar == 'G' || nextChar == 'J'
++                || nextChar == 'L' || nextChar == 'H') {
++                // Check if it's actually a keyword
++                String remaining = upper.substring(afterFrom);
++                if (remaining.startsWith("WHERE") || remaining.startsWith("ORDER")
++                    || remaining.startsWith("GROUP") || remaining.startsWith("JOIN")
++                    || remaining.startsWith("OFFSET") || remaining.startsWith("LIMIT")
++                    || remaining.startsWith("HAVING")) {
++                    return containerName;
++                }
++            }
++            // Otherwise the next token is the alias ("FROM root r" ΓåÆ alias is "r")
++            int aliasStart = afterFrom;
++            while (afterFrom < queryText.length()
++                && !Character.isWhitespace(queryText.charAt(afterFrom))
++                && queryText.charAt(afterFrom) != '('
++                && queryText.charAt(afterFrom) != ')') {
++                afterFrom++;
++            }
++            if (afterFrom > aliasStart) {
++                return queryText.substring(aliasStart, afterFrom);
++            }
++        }
++
++        return containerName;
++    }
++
++    /**
++     * Finds the index of a top-level SQL keyword in the query text (case-insensitive),
++     * ignoring occurrences inside parentheses or string literals.
++     */
++    static int findTopLevelKeywordIndex(String queryText, String keyword) {
++        String queryTextUpper = queryText.toUpperCase();
++        String keywordUpper = keyword.toUpperCase();
++        int depth = 0;
++        int keyLen = keywordUpper.length();
++        for (int i = 0; i <= queryTextUpper.length() - keyLen; i++) {
++            char ch = queryTextUpper.charAt(i);
++            // Skip string literals enclosed in single quotes (handle '' escape)
++            if (queryText.charAt(i) == '\'') {
++                i++;
++                while (i < queryText.length()) {
++                    if (queryText.charAt(i) == '\'') {
++                        if (i + 1 < queryText.length() && queryText.charAt(i + 1) == '\'') {
++                            i += 2; // escaped quote ΓÇö skip both
++                            continue;
++                        }
++                        break; // end of string literal
++                    }
++                    i++;
++                }
++                continue;
++            }
++            if (ch == '(') {
++                depth++;
++            } else if (ch == ')') {
++                depth--;
++            } else if (depth == 0 && ch == keywordUpper.charAt(0)
++                && queryTextUpper.startsWith(keywordUpper, i)
++                && (i == 0 || !Character.isLetterOrDigit(queryTextUpper.charAt(i - 1)))
++                && (i + keyLen >= queryTextUpper.length() || !Character.isLetterOrDigit(queryTextUpper.charAt(i + keyLen)))) {
++                return i;
++            }
++        }
++        return -1;
++    }
++
++    /**
++     * Finds the index of the top-level WHERE keyword in the query text,
++     * ignoring WHERE that appears inside parentheses (subqueries).
++     */
++    public static int findTopLevelWhereIndex(String queryTextUpper) {
++        return findTopLevelKeywordIndex(queryTextUpper, "WHERE");
++    }
++}
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/RxDocumentClientImpl.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/RxDocumentClientImpl.java
+index 11121bca033..c70dedaa1f2 100644
+--- a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/RxDocumentClientImpl.java
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/RxDocumentClientImpl.java
+@@ -4365,6 +4365,298 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
+             );
+     }
+
++    @Override
++    public <T> Flux<FeedResponse<T>> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        SqlQuerySpec customQuery,
++        String collectionLink,
++        QueryFeedOperationState state,
++        Class<T> klass) {
++
++        checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
++        checkArgument(!partitionKeys.isEmpty(), "Argument 'partitionKeys' must not be empty.");
++
++        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
++        state.registerDiagnosticsFactory(
++            () -> {}, // we never want to reset in readManyByPartitionKey
++            (ctx) -> diagnosticsFactory.merge(ctx)
++        );
++
++        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
++            this.collectionCache,
++            null,
++            collectionLink,
++            queryOptionsAccessor().getProperties(state.getQueryOptions()),
++            queryOptionsAccessor().getHeaders(state.getQueryOptions()),
++            this.sessionContainer,
++            diagnosticsFactory,
++            ResourceType.Document
++        );
++
++        return ObservableHelper
++            .fluxInlineIfPossibleAsObs(
++                () -> readManyByPartitionKey(
++                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, klass),
++                staleResourceRetryPolicy
++            )
++            .onErrorMap(throwable -> {
++                if (throwable instanceof CosmosException) {
++                    CosmosException cosmosException = (CosmosException) throwable;
++                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
++                    if (diagnostics != null) {
++                        state.mergeDiagnosticsContext();
++                        CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
++                        if (ctx != null) {
++                            ctxAccessor().recordOperation(
++                                ctx,
++                                cosmosException.getStatusCode(),
++                                cosmosException.getSubStatusCode(),
++                                0,
++                                cosmosException.getRequestCharge(),
++                                diagnostics,
++                                throwable
++                            );
++                            diagAccessor()
++                                .setDiagnosticsContext(
++                                    diagnostics,
++                                    state.getDiagnosticsContextSnapshot());
++                        }
++                    }
++
++                    return cosmosException;
++                }
++
++                return throwable;
++            });
++    }
++
++    private <T> Flux<FeedResponse<T>> readManyByPartitionKey(
++        List<PartitionKey> partitionKeys,
++        SqlQuerySpec customQuery,
++        String collectionLink,
++        QueryFeedOperationState state,
++        ScopedDiagnosticsFactory diagnosticsFactory,
++        Class<T> klass) {
++
++        String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
++        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
++            OperationType.Query,
++            ResourceType.Document,
++            collectionLink, null
++        );
++
++        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
++            collectionCache.resolveCollectionAsync(null, request);
++
++        return collectionObs
++            .flatMapMany(documentCollectionResourceResponse -> {
++                final DocumentCollection collection = documentCollectionResourceResponse.v;
++                if (collection == null) {
++                    return Flux.error(new IllegalStateException("Collection cannot be null"));
++                }
++
++                final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
++
++                Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
++                    .tryLookupAsync(
++                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
++                        collection.getResourceId(),
++                        null,
++                        null);
++
++                // Validate custom query if provided
++                Mono<Void> queryValidationMono;
++                if (customQuery != null) {
++                    queryValidationMono = validateCustomQueryForReadManyByPartitionKey(
++                        customQuery, resourceLink, state.getQueryOptions());
++                } else {
++                    queryValidationMono = Mono.empty();
++                }
++
++                return valueHolderMono
++                    .delayUntil(ignored -> queryValidationMono)
++                    .flatMapMany(routingMapHolder -> {
++                        CollectionRoutingMap routingMap = routingMapHolder.v;
++                        if (routingMap == null) {
++                            return Flux.error(new IllegalStateException("Failed to get routing map."));
++                        }
++
++                        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap =
++                            groupPartitionKeysByPhysicalPartition(partitionKeys, pkDefinition, routingMap);
++
++                        List<String> partitionKeySelectors = createPkSelectors(pkDefinition);
++
++                        String baseQueryText;
++                        List<SqlParameter> baseParameters;
++                        if (customQuery != null) {
++                            baseQueryText = customQuery.getQueryText();
++                            baseParameters = customQuery.getParameters() != null
++                                ? new ArrayList<>(customQuery.getParameters())
++                                : new ArrayList<>();
++                        } else {
++                            baseQueryText = "SELECT * FROM c";
++                            baseParameters = new ArrayList<>();
++                        }
++
++                        // Build per-physical-partition batched queries.
++                        // Each physical partition may have many PKs ΓÇö split into batches
++                        // to avoid oversized SQL queries. Batch size is configurable via
++                        // system property COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE (default 1000).
++                        int maxPksPerPartitionQuery = Configs.getReadManyByPkMaxBatchSize();
++
++                        // Build batches per partition as a list of lists (one inner list per partition).
++                        // Then interleave in round-robin order so that concurrent execution
++                        // prefers different physical partitions over multiple batches of the same partition.
++                        List<List<Map<PartitionKeyRange, SqlQuerySpec>>> batchesPerPartition = new ArrayList<>();
++                        int maxBatchesPerPartition = 0;
++
++                        for (Map.Entry<PartitionKeyRange, List<PartitionKey>> entry : partitionRangePkMap.entrySet()) {
++                            List<PartitionKey> allPks = entry.getValue();
++                            if (allPks.isEmpty()) {
++                                continue;
++                            }
++                            List<Map<PartitionKeyRange, SqlQuerySpec>> partitionBatches = new ArrayList<>();
++                            for (int i = 0; i < allPks.size(); i += maxPksPerPartitionQuery) {
++                                List<PartitionKey> batch = allPks.subList(
++                                    i, Math.min(i + maxPksPerPartitionQuery, allPks.size()));
++                                SqlQuerySpec querySpec = ReadManyByPartitionKeyQueryHelper
++                                    .createReadManyByPkQuerySpec(
++                                        baseQueryText, baseParameters, batch,
++                                        partitionKeySelectors, pkDefinition);
++                                partitionBatches.add(
++                                    Collections.singletonMap(entry.getKey(), querySpec));
++                            }
++                            batchesPerPartition.add(partitionBatches);
++                            maxBatchesPerPartition = Math.max(maxBatchesPerPartition, partitionBatches.size());
++                        }
++
++                        if (batchesPerPartition.isEmpty()) {
++                            return Flux.empty();
++                        }
++
++                        // Round-robin interleave: [batch0-p1, batch0-p2, ..., batch0-pN, batch1-p1, batch1-p2, ...]
++                        // This ensures that with bounded concurrency, different partitions are
++                        // preferred over sequential batches of the same partition.
++                        List<Map<PartitionKeyRange, SqlQuerySpec>> interleavedBatches = new ArrayList<>();
++                        for (int batchIdx = 0; batchIdx < maxBatchesPerPartition; batchIdx++) {
++                            for (List<Map<PartitionKeyRange, SqlQuerySpec>> partitionBatches : batchesPerPartition) {
++                                if (batchIdx < partitionBatches.size()) {
++                                    interleavedBatches.add(partitionBatches.get(batchIdx));
++                                }
++                            }
++                        }
++
++                        // Execute all batches with bounded concurrency.
++                        List<Flux<FeedResponse<T>>> queryFluxes = interleavedBatches
++                            .stream()
++                            .map(batchMap -> queryForReadMany(
++                                diagnosticsFactory,
++                                resourceLink,
++                                new SqlQuerySpec(DUMMY_SQL_QUERY),
++                                state.getQueryOptions(),
++                                klass,
++                                ResourceType.Document,
++                                collection,
++                                Collections.unmodifiableMap(batchMap)))
++                            .collect(Collectors.toList());
++
++                        int fluxConcurrency = Math.min(queryFluxes.size(),
++                            Math.max(Configs.getCPUCnt(), 1));
++
++                        return Flux.merge(Flux.fromIterable(queryFluxes), fluxConcurrency, 1);
++                    });
++            });
++    }
++
++    private Mono<Void> validateCustomQueryForReadManyByPartitionKey(
++        SqlQuerySpec customQuery,
++        String resourceLink,
++        CosmosQueryRequestOptions queryRequestOptions) {
++
++        IDocumentQueryClient queryClient = documentQueryClientImpl(
++            RxDocumentClientImpl.this, getOperationContextAndListenerTuple(queryRequestOptions));
++
++        return DocumentQueryExecutionContextFactory
++            .fetchQueryPlanForValidation(this, queryClient, customQuery, resourceLink, queryRequestOptions)
++            .flatMap(queryPlan -> {
++                QueryInfo queryInfo = queryPlan.getQueryInfo();
++
++                if (queryInfo.hasGroupBy()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain GROUP BY."));
++                }
++                if (queryInfo.hasAggregates()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain aggregates."));
++                }
++                if (queryInfo.hasOrderBy()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain ORDER BY."));
++                }
++                if (queryInfo.hasDistinct()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain DISTINCT."));
++                }
++                if (queryInfo.hasDCount()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain DCOUNT."));
++                }
++                if (queryInfo.hasNonStreamingOrderBy()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain non-streaming ORDER BY."));
++                }
++                if (queryPlan.hasHybridSearchQueryInfo()) {
++                    return Mono.error(new IllegalArgumentException(
++                        "Custom query for readMany by partition key must not contain hybrid/vector/full-text search."));
++                }
++
++                return Mono.empty();
++            });
++    }
++
++    private Map<PartitionKeyRange, List<PartitionKey>> groupPartitionKeysByPhysicalPartition(
++        List<PartitionKey> partitionKeys,
++        PartitionKeyDefinition pkDefinition,
++        CollectionRoutingMap routingMap) {
++
++        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap = new HashMap<>();
++
++        for (PartitionKey pk : partitionKeys) {
++            PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
++
++            // PartitionKey.NONE wraps NonePartitionKey which has components = null.
++            // For routing purposes, treat NONE as UndefinedPartitionKey ΓÇö documents ingested
++            // without a partition key path are stored with the undefined EPK.
++            PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
++                ? PartitionKeyInternal.UndefinedPartitionKey
++                : pkInternal;
++
++            int componentCount = effectivePkInternal.getComponents().size();
++            int definedPathCount = pkDefinition.getPaths().size();
++
++            List<PartitionKeyRange> targetRanges;
++
++            if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && componentCount < definedPathCount) {
++                // Partial HPK ΓÇö compute EPK prefix range and find all overlapping physical partitions
++                Range<String> epkRange = PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(
++                    effectivePkInternal, pkDefinition);
++                targetRanges = routingMap.getOverlappingRanges(epkRange);
++            } else {
++                // Full PK ΓÇö maps to exactly one physical partition
++                String effectivePartitionKeyString = PartitionKeyInternalHelper
++                    .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
++                PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
++                targetRanges = Collections.singletonList(range);
++            }
++
++            for (PartitionKeyRange range : targetRanges) {
++                partitionRangePkMap.computeIfAbsent(range, k -> new ArrayList<>()).add(pk);
++            }
++        }
++
++        return partitionRangePkMap;
++    }
++
+     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
+         Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap,
+         PartitionKeyDefinition partitionKeyDefinition) {
+diff --git a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/query/DocumentQueryExecutionContextFactory.java b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/query/DocumentQueryExecutionContextFactory.java
+index e62d8ed3d75..d8f9614343c 100644
+--- a/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/query/DocumentQueryExecutionContextFactory.java
++++ b/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/query/DocumentQueryExecutionContextFactory.java
+@@ -318,6 +318,17 @@ public class DocumentQueryExecutionContextFactory {
+         return feedRanges;
+     }
+
++    public static Mono<PartitionedQueryExecutionInfo> fetchQueryPlanForValidation(
++        DiagnosticsClientContext diagnosticsClientContext,
++        IDocumentQueryClient queryClient,
++        SqlQuerySpec sqlQuerySpec,
++        String resourceLink,
++        CosmosQueryRequestOptions queryRequestOptions) {
++
++        return QueryPlanRetriever.getQueryPlanThroughGatewayAsync(
++            diagnosticsClientContext, queryClient, sqlQuerySpec, resourceLink, queryRequestOptions);
++    }
++
+     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
+         DiagnosticsClientContext diagnosticsClientContext,
+         IDocumentQueryClient client,
+diff --git a/sdk/cosmos/cspell.yaml b/sdk/cosmos/cspell.yaml
+new file mode 100644
+index 00000000000..94a4002c2c9
+--- /dev/null
++++ b/sdk/cosmos/cspell.yaml
+@@ -0,0 +1,6 @@
++import:
++  - ../../.vscode/cspell.json
++overrides:
++  - filename: "**/sdk/cosmos/*"
++    words:
++    - DCOUNT
+diff --git a/sdk/cosmos/docs/readManyByPartitionKey-design.md b/sdk/cosmos/docs/readManyByPartitionKey-design.md
+new file mode 100644
+index 00000000000..95d7624f0c8
+--- /dev/null
++++ b/sdk/cosmos/docs/readManyByPartitionKey-design.md
+@@ -0,0 +1,169 @@
++# readManyByPartitionKey ΓÇö Design & Implementation
++
++## Overview
++
++New `readManyByPartitionKey` methods on `CosmosAsyncContainer` / `CosmosContainer` that accept a
++`List<PartitionKey>` (without item-id). The SDK splits the PK values by physical
++partition, generates batched streaming queries per physical partition, and returns results as
++`CosmosPagedFlux<T>` / `CosmosPagedIterable<T>`.
++
++An optional `SqlQuerySpec` parameter lets callers supply a custom query for projections
++and additional filters. The SDK appends the auto-generated PK WHERE clause to it.
++
++## Decisions
++
++| Topic | Decision |
++|---|---|
++| API name | `readManyByPartitionKey` ΓÇö distinct name to avoid ambiguity with existing `readMany(List<CosmosItemIdentity>)` |
++| Return type | `CosmosPagedFlux<T>` (async) / `CosmosPagedIterable<T>` (sync) |
++| Custom query format | `SqlQuerySpec` ΓÇö full query with parameters; SDK ANDs the PK filter |
++| Partial HPK | Supported from the start; prefix PKs fan out via `getOverlappingRanges` |
++| PK deduplication | Done at Spark layer only, not in the SDK |
++| Spark UDF | New `GetCosmosPartitionKeyValue` UDF |
++| Custom query validation | Gateway query plan; reject aggregates/ORDER BY/DISTINCT/GROUP BY/DCount/non-streaming ORDER BY/vector/fulltext |
++| PK list size | No hard upper-bound enforced; SDK batches internally per physical partition (default 1000 PKs per batch, configurable via `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE`) |
++| Eager validation | Null and empty PK list rejected eagerly (not lazily in reactive chain) |
++| Telemetry | Separate span name `readManyByPartitionKeyItems.<containerId>` (distinct from existing `readManyItems`) |
++| Query construction | Table alias auto-detected from FROM clause; string literals and subqueries handled correctly |
++
++## Phase 1 ΓÇö SDK Core (`azure-cosmos`)
++
++### Step 1: New public overloads in CosmosAsyncContainer
++
++```java
++<T> CosmosPagedFlux<T> readManyByPartitionKey(List<PartitionKey> partitionKeys, Class<T> classType)
++<T> CosmosPagedFlux<T> readManyByPartitionKey(List<PartitionKey> partitionKeys,
++                                               CosmosReadManyRequestOptions requestOptions,
++                                               Class<T> classType)
++<T> CosmosPagedFlux<T> readManyByPartitionKey(List<PartitionKey> partitionKeys,
++                                               SqlQuerySpec customQuery,
++                                               CosmosReadManyRequestOptions requestOptions,
++                                               Class<T> classType)
++```
++
++All delegate to a private `readManyByPartitionKeyInternalFunc(...)`.
++
++**Eager validation:** The 4-arg method validates `partitionKeys` is non-null and non-empty before constructing the reactive pipeline, throwing `IllegalArgumentException` synchronously.
++
++### Step 2: Sync wrappers in CosmosContainer
++
++Same signatures returning `CosmosPagedIterable<T>`, delegating to the async container.
++
++### Step 3: Internal orchestration (RxDocumentClientImpl)
++
++1. Resolve collection metadata + PK definition from cache.
++2. Fetch routing map from `partitionKeyRangeCache` **in parallel with** custom query validation (Step 4).
++3. For each `PartitionKey`:
++   - Compute effective partition key (EPK).
++   - Full PK ΓåÆ `getRangeByEffectivePartitionKey()` (single range).
++   - Partial HPK ΓåÆ compute EPK prefix range ΓåÆ `getOverlappingRanges()` (multiple ranges).
++     **Note:** partial HPK intentionally fans out to multiple physical partitions.
++4. Group PK values by `PartitionKeyRange`.
++5. Per physical partition ΓåÆ split PKs into batches of `maxPksPerPartitionQuery` (configurable, default 1000).
++6. Per batch ΓåÆ build `SqlQuerySpec` with PK WHERE clause (Step 5).
++7. Interleave batches across physical partitions in round-robin order so that bounded concurrency prefers different physical partitions over sequential batches of the same partition.
++8. Execute queries via `queryForReadMany()` with bounded concurrency (`Math.min(batchCount, cpuCount)`).
++9. Return results as `CosmosPagedFlux<T>`.
++
++### Step 4: Custom query validation
++
++One-time call per invocation (existing query plan caching applies). Runs **in parallel** with routing map lookup to minimize latency:
++
++- `QueryPlanRetriever.getQueryPlanThroughGatewayAsync()` for the user query.
++- Reject (`IllegalArgumentException`) if:
++  - `queryInfo.hasGroupBy()` ΓÇö checked first (takes precedence over aggregates since `hasAggregates()` also returns true for GROUP BY queries)
++  - `queryInfo.hasAggregates()`
++  - `queryInfo.hasOrderBy()`
++  - `queryInfo.hasDistinct()`
++  - `queryInfo.hasDCount()`
++  - `queryInfo.hasNonStreamingOrderBy()`
++  - `partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()`
++
++### Step 5: Query construction
++
++Query construction is implemented in `ReadManyByPartitionKeyQueryHelper`. The helper:
++- Extracts the table alias from the FROM clause (handles `FROM c`, `FROM root r`, `FROM x WHERE ...`)
++- Handles string literals in queries (parens/keywords inside `'...'` are correctly skipped)
++- Recognizes SQL keywords: WHERE, ORDER, GROUP, JOIN, OFFSET, LIMIT, HAVING
++- Uses parameterized queries (`@__rmPk_` prefix) to prevent SQL injection
++
++**Single PK (HASH):**
++```sql
++{baseQuery} WHERE {alias}["{pkPath}"] IN (@__rmPk_0, @__rmPk_1, @__rmPk_2)
++```
++
++**Full HPK (MULTI_HASH):**
++```sql
++{baseQuery} WHERE ({alias}["{path1}"] = @__rmPk_0 AND {alias}["{path2}"] = @__rmPk_1)
++              OR  ({alias}["{path1}"] = @__rmPk_2 AND {alias}["{path2}"] = @__rmPk_3)
++```
++
++**Partial HPK (prefix-only):**
++```sql
++{baseQuery} WHERE ({alias}["{path1}"] = @__rmPk_0)
++              OR  ({alias}["{path1}"] = @__rmPk_1)
++```
++
++If the base query already has a WHERE clause:
++```sql
++{selectAndFrom} WHERE ({existingWhere}) AND ({pkFilter})
++```
++
++### Step 6: Interface wiring
++
++New method `readManyByPartitionKey` added directly to `AsyncDocumentClient` interface, implemented in `RxDocumentClientImpl`. New `fetchQueryPlanForValidation` static method added to `DocumentQueryExecutionContextFactory` for custom query validation.
++
++### Step 7: Configuration
++
++New configurable batch size via system property `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE` or environment variable `COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE` (default: 1000, minimum: 1). Follows existing `Configs` patterns.
++
++## Phase 2 ΓÇö Spark Connector (`azure-cosmos-spark_3`)
++
++### Step 8: New UDF ΓÇö `GetCosmosPartitionKeyValue`
++
++- Input: partition key value (single value or Seq for hierarchical PKs).
++- Output: serialized PK string in format `pk([...json...])`.
++- **Null handling:** Throws on null input (Scala convention; callers should filter nulls upstream).
++
++### Step 9: PK-only serialization helper
++
++`CosmosPartitionKeyHelper`:
++- `getCosmosPartitionKeyValueString(pkValues: List[Object]): String` ΓÇö serialize to `pk([...])` format.
++- `tryParsePartitionKey(serialized: String): Option[PartitionKey]` ΓÇö deserialize; returns `None` for malformed input including invalid JSON (wrapped in `scala.util.Try`).
++
++### Step 10: `CosmosItemsDataSource.readManyByPartitionKey`
++
++Static entry points that accept a DataFrame and Cosmos config. PK extraction supports two modes:
++1. **UDF-produced column**: DataFrame contains `_partitionKeyIdentity` column (from `GetCosmosPartitionKeyValue` UDF).
++2. **Schema-matched columns**: DataFrame columns match the container's PK paths.
++
++Falls back with `IllegalArgumentException` if neither mode is possible.
++
++### Step 11: `CosmosReadManyByPartitionKeyReader`
++
++Orchestrator that resolves schema, initializes and broadcasts client state to executors, then maps each Spark partition to an `ItemsPartitionReaderWithReadManyByPartitionKey`.
++
++### Step 12: `ItemsPartitionReaderWithReadManyByPartitionKey`
++
++Spark `PartitionReader[InternalRow]` that:
++- Deduplicates PKs via `LinkedHashMap` (by PK string representation).
++- Passes the pre-built `CosmosReadManyRequestOptions` (with throughput control, diagnostics, custom serializer) to the SDK.
++- Uses `TransientIOErrorsRetryingIterator` for retry handling.
++- Short-circuits empty PK lists to avoid SDK rejection.
++
++## Phase 3 ΓÇö Testing
++
++### Unit tests
++- Query construction: single PK, HPK full/partial, custom query composition, table alias detection.
++- Query plan rejection: aggregates, ORDER BY, DISTINCT, GROUP BY (with and without aggregates), DCOUNT.
++- String literal handling: WHERE/parentheses inside string constants.
++- Keyword detection: WHERE, ORDER, GROUP, JOIN, OFFSET, LIMIT, HAVING.
++- PK serialization/deserialization roundtrip (including malformed JSON handling).
++- `findTopLevelWhereIndex` edge cases: subqueries, string literals, case insensitivity.
++
++### Integration tests
++- End-to-end SDK: single PK basic, projections, filters, empty results, HPK full/partial, request options propagation.
++- Batch size validation: temporarily lowered batch size to exercise batching/interleaving logic.
++- Null/empty PK list rejection (eager validation).
++- Spark connector: `ItemsPartitionReaderWithReadManyByPartitionKey` with known PK values and non-existent PKs.
++- `CosmosPartitionKeyHelper`: single/HPK roundtrip, case insensitivity, malformed input.
+
