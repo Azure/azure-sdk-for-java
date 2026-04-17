@@ -16,43 +16,40 @@ public final class ArcSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcSettingProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"PartiallyConnected\",\"arcInstanceResourceGroup\":\"mailzydehojw\",\"arcApplicationClientId\":\"huxinpmqnj\",\"arcApplicationTenantId\":\"wixjsprozvcp\",\"arcServicePrincipalObjectId\":\"eg\",\"arcApplicationObjectId\":\"wmfdatscmdvpjhul\",\"aggregateState\":\"Deleting\",\"perNodeDetails\":[{\"name\":\"jozkrwfndiod\",\"arcInstance\":\"slwejdpvw\",\"arcNodeServicePrincipalObjectId\":\"oqpsoa\",\"state\":\"Succeeded\"},{\"name\":\"zakljlahbc\",\"arcInstance\":\"ffdfdosygexpa\",\"arcNodeServicePrincipalObjectId\":\"akhmsbzjhcrz\",\"state\":\"DisableInProgress\"},{\"name\":\"hlxaolthqtr\",\"arcInstance\":\"jbp\",\"arcNodeServicePrincipalObjectId\":\"fsinzgvfcjrwzoxx\",\"state\":\"PartiallyConnected\"}],\"connectivityProperties\":{\"enabled\":true,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":6619682147047690446},{\"serviceName\":\"WAC\",\"port\":7202609969053429028},{\"serviceName\":\"WAC\",\"port\":5685465600666313009},{\"serviceName\":\"WAC\",\"port\":3411109218141355466}]},\"defaultExtensions\":[{\"category\":\"xofpdvhpfxxypi\",\"consentTime\":\"2020-12-31T08:59:56Z\"},{\"category\":\"ayhuy\",\"consentTime\":\"2021-05-05T04:33:07Z\"},{\"category\":\"odepoogin\",\"consentTime\":\"2021-04-24T19:55:27Z\"},{\"category\":\"iheogna\",\"consentTime\":\"2021-08-23T15:48:59Z\"}]}")
+            "{\"provisioningState\":\"Creating\",\"arcInstanceResourceGroup\":\"dbabp\",\"arcApplicationClientId\":\"wrqlfktsthsuco\",\"arcApplicationTenantId\":\"nyyazttbtwwrqpue\",\"arcServicePrincipalObjectId\":\"kzywbiex\",\"arcApplicationObjectId\":\"eyueaxibxujwb\",\"aggregateState\":\"Succeeded\",\"perNodeDetails\":[{\"name\":\"uzyoxaep\",\"arcInstance\":\"zjancuxr\",\"arcNodeServicePrincipalObjectId\":\"wbavxbniwdj\",\"state\":\"Provisioning\"},{\"name\":\"s\",\"arcInstance\":\"pgn\",\"arcNodeServicePrincipalObjectId\":\"txhp\",\"state\":\"DisableInProgress\"}],\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":4699400425607352245}]},\"defaultExtensions\":[{\"category\":\"xwtctyqiklbbovpl\",\"consentTime\":\"2021-08-16T02:09:31Z\"},{\"category\":\"vgyuguos\",\"consentTime\":\"2021-10-31T02:07:56Z\"},{\"category\":\"ss\",\"consentTime\":\"2021-06-19T09:22Z\"},{\"category\":\"kfplgmgsxnk\",\"consentTime\":\"2021-07-28T04:14:11Z\"}]}")
             .toObject(ArcSettingProperties.class);
-        Assertions.assertEquals("mailzydehojw", model.arcInstanceResourceGroup());
-        Assertions.assertEquals("huxinpmqnj", model.arcApplicationClientId());
-        Assertions.assertEquals("wixjsprozvcp", model.arcApplicationTenantId());
-        Assertions.assertEquals("eg", model.arcServicePrincipalObjectId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.arcApplicationObjectId());
-        Assertions.assertTrue(model.connectivityProperties().enabled());
+        Assertions.assertEquals("dbabp", model.arcInstanceResourceGroup());
+        Assertions.assertEquals("wrqlfktsthsuco", model.arcApplicationClientId());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.arcApplicationTenantId());
+        Assertions.assertEquals("kzywbiex", model.arcServicePrincipalObjectId());
+        Assertions.assertEquals("eyueaxibxujwb", model.arcApplicationObjectId());
+        Assertions.assertFalse(model.connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             model.connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(6619682147047690446L,
+        Assertions.assertEquals(4699400425607352245L,
             model.connectivityProperties().serviceConfigurations().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcSettingProperties model = new ArcSettingProperties().withArcInstanceResourceGroup("mailzydehojw")
-            .withArcApplicationClientId("huxinpmqnj")
-            .withArcApplicationTenantId("wixjsprozvcp")
-            .withArcServicePrincipalObjectId("eg")
-            .withArcApplicationObjectId("wmfdatscmdvpjhul")
-            .withConnectivityProperties(new ArcConnectivityProperties().withEnabled(true)
+        ArcSettingProperties model = new ArcSettingProperties().withArcInstanceResourceGroup("dbabp")
+            .withArcApplicationClientId("wrqlfktsthsuco")
+            .withArcApplicationTenantId("nyyazttbtwwrqpue")
+            .withArcServicePrincipalObjectId("kzywbiex")
+            .withArcApplicationObjectId("eyueaxibxujwb")
+            .withConnectivityProperties(new ArcConnectivityProperties().withEnabled(false)
                 .withServiceConfigurations(Arrays.asList(
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(6619682147047690446L),
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(7202609969053429028L),
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(5685465600666313009L),
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3411109218141355466L))));
+                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(4699400425607352245L))));
         model = BinaryData.fromObject(model).toObject(ArcSettingProperties.class);
-        Assertions.assertEquals("mailzydehojw", model.arcInstanceResourceGroup());
-        Assertions.assertEquals("huxinpmqnj", model.arcApplicationClientId());
-        Assertions.assertEquals("wixjsprozvcp", model.arcApplicationTenantId());
-        Assertions.assertEquals("eg", model.arcServicePrincipalObjectId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.arcApplicationObjectId());
-        Assertions.assertTrue(model.connectivityProperties().enabled());
+        Assertions.assertEquals("dbabp", model.arcInstanceResourceGroup());
+        Assertions.assertEquals("wrqlfktsthsuco", model.arcApplicationClientId());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.arcApplicationTenantId());
+        Assertions.assertEquals("kzywbiex", model.arcServicePrincipalObjectId());
+        Assertions.assertEquals("eyueaxibxujwb", model.arcApplicationObjectId());
+        Assertions.assertFalse(model.connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             model.connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(6619682147047690446L,
+        Assertions.assertEquals(4699400425607352245L,
             model.connectivityProperties().serviceConfigurations().get(0).port());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.MigrateVMToVirtualMachineScaleSe
  */
 public final class VirtualMachinesMigrateToVMScaleSetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
      */
     /**
      * Sample code: Migrate a Virtual Machine to Flexible Virtual Machine Scale Ser.

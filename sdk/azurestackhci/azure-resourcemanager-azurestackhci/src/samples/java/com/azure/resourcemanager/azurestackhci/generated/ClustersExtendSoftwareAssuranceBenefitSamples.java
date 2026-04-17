@@ -13,7 +13,7 @@ import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceIntent;
  */
 public final class ClustersExtendSoftwareAssuranceBenefitSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ExtendSoftwareAssuranceBenefit.json
+     * x-ms-original-file: 2026-04-01-preview/ExtendSoftwareAssuranceBenefit.json
      */
     /**
      * Sample code: Create cluster Identity.

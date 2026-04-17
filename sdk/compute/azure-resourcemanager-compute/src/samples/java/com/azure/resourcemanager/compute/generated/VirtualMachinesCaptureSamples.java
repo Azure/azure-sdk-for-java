@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
  */
 public final class VirtualMachinesCaptureSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Capture_MinimumSet_Gen.
@@ -29,7 +29,7 @@ public final class VirtualMachinesCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Capture_MaximumSet_Gen.

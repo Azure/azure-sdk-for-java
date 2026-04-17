@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.RunCommandInput;
  */
 public final class VirtualMachinesRunCommandSamples {
     /*
-     * x-ms-original-file: 2025-04-01/runCommandExamples/VirtualMachineRunCommand.json
+     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineRunCommand.json
      */
     /**
      * Sample code: VirtualMachineRunCommand.
