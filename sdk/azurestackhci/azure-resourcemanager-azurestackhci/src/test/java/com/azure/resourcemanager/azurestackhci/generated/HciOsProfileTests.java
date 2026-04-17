@@ -10,7 +10,8 @@ import com.azure.resourcemanager.azurestackhci.models.HciOsProfile;
 public final class HciOsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HciOsProfile model = BinaryData.fromString("{\"bootType\":\"eslk\",\"assemblyVersion\":\"ustcpoq\"}")
-            .toObject(HciOsProfile.class);
+        HciOsProfile model
+            = BinaryData.fromString("{\"bootType\":\"ybxawoijpodtblx\",\"assemblyVersion\":\"kwjdjodqhy\"}")
+                .toObject(HciOsProfile.class);
     }
 }

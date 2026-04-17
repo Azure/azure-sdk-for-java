@@ -70,7 +70,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewInstanceInner>> getById(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -78,7 +78,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewInstanceInner>> create(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AccessReviewInstanceProperties properties, Context context);
@@ -88,7 +88,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewInstanceListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @QueryParam("$filter") String filter,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -104,7 +104,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +129,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId,
@@ -140,7 +140,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -166,7 +166,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id, accept, context);
@@ -175,7 +175,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +192,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -210,7 +210,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +226,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -257,7 +257,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         } else {
             properties.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -269,7 +269,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -301,7 +301,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
         } else {
             properties.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -312,7 +312,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -331,7 +331,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -350,7 +350,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -368,7 +368,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
@@ -392,7 +392,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId,
@@ -405,7 +405,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
@@ -430,7 +430,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, filter, accept, context)
@@ -441,7 +441,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
@@ -460,7 +460,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -477,7 +477,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
@@ -498,7 +498,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,7 +514,7 @@ public final class ScopeAccessReviewInstancesClientImpl implements ScopeAccessRe
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are

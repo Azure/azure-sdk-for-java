@@ -213,6 +213,34 @@ public interface Clusters {
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
 
     /**
+     * Changes ring of a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param changeRingRequest Change ring request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Cluster changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param changeRingRequest Change ring request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Cluster changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest,
+        Context context);
+
+    /**
      * Trigger Log Collection on a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

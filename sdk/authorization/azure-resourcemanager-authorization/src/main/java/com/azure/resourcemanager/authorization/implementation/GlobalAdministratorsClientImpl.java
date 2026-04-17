@@ -75,7 +75,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "undefined";
         return FluxUtil.withContext(context -> service.elevateAccess(this.client.getEndpoint(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -95,7 +95,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2015-07-01";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.elevateAccess(this.client.getEndpoint(), apiVersion, context);
     }

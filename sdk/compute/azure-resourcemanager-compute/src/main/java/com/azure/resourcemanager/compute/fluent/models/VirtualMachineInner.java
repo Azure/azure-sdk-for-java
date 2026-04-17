@@ -22,6 +22,7 @@ import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Placement;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.ResiliencyProfile;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
@@ -968,6 +969,29 @@ public final class VirtualMachineInner extends Resource {
      */
     public OffsetDateTime timeCreated() {
         return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Get the resiliencyProfile property: Resiliency profile for the virtual machine.
+     * 
+     * @return the resiliencyProfile value.
+     */
+    public ResiliencyProfile resiliencyProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().resiliencyProfile();
+    }
+
+    /**
+     * Set the resiliencyProfile property: Resiliency profile for the virtual machine.
+     * 
+     * @param resiliencyProfile the resiliencyProfile value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withResiliencyProfile(ResiliencyProfile resiliencyProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withResiliencyProfile(resiliencyProfile);
+        return this;
     }
 
     /**

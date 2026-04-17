@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetsStartSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Start_MinimumSet_Gen.
@@ -27,7 +27,7 @@ public final class VirtualMachineScaleSetsStartSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Start_MaximumSet_Gen.

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class DedicatedHostGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host group.
@@ -35,7 +35,7 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
      */
     /**
      * Sample code: Create or update a dedicated host group with Ultra SSD support.

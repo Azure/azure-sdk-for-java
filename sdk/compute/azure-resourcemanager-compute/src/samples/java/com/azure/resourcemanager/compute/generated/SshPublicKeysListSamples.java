@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SshPublicKeysListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_ListBySubscription_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class SshPublicKeysListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_ListBySubscription_MaximumSet_Gen.

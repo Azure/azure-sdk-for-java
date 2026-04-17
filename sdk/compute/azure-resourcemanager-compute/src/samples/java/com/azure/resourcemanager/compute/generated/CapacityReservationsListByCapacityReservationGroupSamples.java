@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.ExpandTypesForGetCapacityReserva
  */
 public final class CapacityReservationsListByCapacityReservationGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in reservation group.
@@ -28,7 +28,7 @@ public final class CapacityReservationsListByCapacityReservationGroupSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
+     * 2025-11-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in targeted reservation group.
@@ -44,7 +44,7 @@ public final class CapacityReservationsListByCapacityReservationGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List block capacity reservations in reservation group.

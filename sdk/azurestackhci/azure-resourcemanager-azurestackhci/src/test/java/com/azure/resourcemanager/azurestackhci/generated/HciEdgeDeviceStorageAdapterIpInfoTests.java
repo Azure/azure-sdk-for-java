@@ -10,8 +10,8 @@ import com.azure.resourcemanager.azurestackhci.models.HciEdgeDeviceStorageAdapte
 public final class HciEdgeDeviceStorageAdapterIpInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HciEdgeDeviceStorageAdapterIpInfo model = BinaryData
-            .fromString("{\"physicalNode\":\"cgjokjljnhvlq\",\"ipv4Address\":\"ek\",\"subnetMask\":\"eksnbksdqhjvyk\"}")
-            .toObject(HciEdgeDeviceStorageAdapterIpInfo.class);
+        HciEdgeDeviceStorageAdapterIpInfo model
+            = BinaryData.fromString("{\"physicalNode\":\"xieqv\",\"ipv4Address\":\"makli\",\"subnetMask\":\"cahyhx\"}")
+                .toObject(HciEdgeDeviceStorageAdapterIpInfo.class);
     }
 }
