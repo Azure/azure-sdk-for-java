@@ -64,10 +64,7 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             cosmosContainerConfig,
             clientCacheItems(0).get,
             clientCacheItems(1))
-        // Warm-up readItem: intentionally issues a lookup for a random id/partition-key pair
-        // on the driver so that the collection/routing-map caches are populated before we serialize
-        // the client state and broadcast it to executors. This costs ~1 RU + 1 RTT per broadcast build
-        // (expected 404) but avoids every executor doing the same lookup in parallel on first use.
+
         // Warm-up readItem: intentionally issues a lookup for a random id/partition-key pair
         // on the driver so that the collection/routing-map caches are populated before we serialize
         // the client state and broadcast it to executors. This costs ~1 RU + 1 RTT per broadcast build

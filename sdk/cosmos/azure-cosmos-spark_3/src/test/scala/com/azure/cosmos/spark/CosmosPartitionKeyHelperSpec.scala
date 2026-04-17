@@ -95,6 +95,14 @@ class CosmosPartitionKeyHelperSpec extends UnitSpec {
     pk.get shouldEqual PartitionKey.NONE
   }
 
+  it should "throw for unsupported component types in the null-handling builder path" in {
+    val error = the[IllegalArgumentException] thrownBy {
+      CosmosPartitionKeyHelper.tryParsePartitionKey("pk([null,{\"nested\":\"value\"}])", treatNullAsNone = false)
+    }
+
+    error.getMessage should include("Unsupported partition key component type")
+    error.getMessage should include("java.util.LinkedHashMap")
+  }
   it should "throw a clear error when None nullHandling is used for hierarchical partition keys" in {
     val error = the[IllegalArgumentException] thrownBy {
       CosmosPartitionKeyHelper.tryParsePartitionKey("pk([\"Redmond\",null])", treatNullAsNone = true)

@@ -71,7 +71,10 @@ private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
                 case s: String => builder.add(s)
                 case n: java.lang.Number => builder.add(n.doubleValue())
                 case b: java.lang.Boolean => builder.add(b.booleanValue())
-                case other => builder.add(other.toString)
+                case other =>
+                  throw new IllegalArgumentException(
+                    s"Unsupported partition key component type '${other.getClass.getName}' with value '$other'. " +
+                      "Supported types are String, Number (integral or floating-point), Boolean, and null.")
               }
               Some(builder.build())
             } else {
