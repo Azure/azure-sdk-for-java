@@ -15,7 +15,7 @@ The test proxy sits between the test client and the live Azure endpoint during r
 
 1. **Repo size** — recordings move out of the main repo to a dedicated assets repo
 2. **Shared infrastructure** — single recording format across all Azure SDK languages
-3. **Performance testing** — test proxy can serveas a local stub for benchmarks
+3. **Performance testing** — test proxy can serve as a local stub for benchmarks
 
 ---
 

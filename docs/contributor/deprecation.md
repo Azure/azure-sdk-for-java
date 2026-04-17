@@ -1,10 +1,8 @@
 # Deprecation Process
 
-> **Canonical source**: [`doc/deprecation_process.md`](../../doc/deprecation_process.md)  
-> **Short link**: [aka.ms/azsdk/java/deprecation-process](https://aka.ms/azsdk/java/deprecation-process)  
-> **Source**: Summarized for contributor reference (last reviewed April 2026).
+> **Short link**: [aka.ms/azsdk/java/deprecation-process](https://aka.ms/azsdk/java/deprecation-process)
 
-This document summarises the key steps. For the authoritative text, see the canonical source above.
+This document describes how to mark a package deprecated on Maven.
 
 ---
 

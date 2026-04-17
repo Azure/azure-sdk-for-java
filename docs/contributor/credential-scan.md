@@ -1,9 +1,7 @@
 # Credential Scan (CredScan)
 
-> **Canonical source**: [`doc/dev/CredScan-Process.md`](../../doc/dev/CredScan-Process.md)  
-> **Source**: Summarized for contributor reference (last reviewed April 2026).
-
-This document summarises the key steps. For the full process, see the canonical source above.
+This guide describes how package owners can monitor their package's Credential Scanner (CredScan) status
+and correct any warnings. General information about CredScan can be found at [aka.ms/credscan][credscan_doc].
 
 ---
 
@@ -12,7 +10,7 @@ This document summarises the key steps. For the full process, see the canonical 
 CredScan (Credential Scanner) scans the repository nightly for accidental credential strings
 (API keys, passwords, connection strings, etc.) that should not be committed to source control.
 
-It runs in the `java - aggregate-reports` Azure DevOps pipeline.  
+It runs in the [`java - aggregate-reports`][aggregate_reports] Azure DevOps pipeline.
 Findings appear in the "Post Analysis" → "ComplianceTools" job.
 
 ---
@@ -78,3 +76,6 @@ Suppress false positives in [`eng/CredScanSuppression.json`](../../eng/CredScanS
 
 - [CredScan overview](https://aka.ms/credscan)
 - [Suppression file](../../eng/CredScanSuppression.json)
+
+[aggregate_reports]: https://dev.azure.com/azure-sdk/internal/_build?definitionId=1359
+[credscan_doc]: https://aka.ms/credscan

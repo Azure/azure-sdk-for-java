@@ -80,7 +80,8 @@ java.lang.IllegalStateException: Package 'com.azure.resourcemanager.<pkg>' is no
 
 ---
 
-### 1.3 Verify Swagger and TypeSpec Code Generation fails 
+### 1.3 Verify Swagger and TypeSpec Code Generation fails
+
 **Log signal:**
 - Verify Swagger and TypeSpec Code Generation check fails in Java SDK CI - java-pullrequest
 

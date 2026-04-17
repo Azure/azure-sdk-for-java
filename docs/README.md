@@ -23,7 +23,6 @@ It is structured so that both humans and LLM/agent tooling can navigate directly
 | Per-library changelog | `sdk/<service>/<library>/CHANGELOG.md` |
 | Engineering tooling & pipelines | [`/eng/`](../eng/README.md) |
 | GitHub Copilot agent instructions | [`.github/copilot-instructions.md`](../.github/copilot-instructions.md) |
-| Legacy developer docs | [`/doc/`](../doc/README.md) |
 
 ---
 
@@ -74,13 +73,13 @@ For **developers building or maintaining** SDK libraries:
 | [BOM Guidelines](contributor/bom-guidelines.md) | Azure SDK BOM (bill of materials) guidelines |
 | [Release Checklist](contributor/release-checklist.md) | Pre-release checklist from Beta 1 through GA |
 | [Credential Scan](contributor/credential-scan.md) | Monitor and fix CredScan warnings |
-| [SDK Generation Pipeline Troubleshooting](../doc/dev/sdk-generation-pipeline-troubleshooting.md) | Diagnose SDK auto-generation pipeline failures |
+| [SDK Generation Pipeline Troubleshooting](contributor/sdk-generation-pipeline-troubleshooting.md) | Diagnose SDK auto-generation pipeline failures |
 
 ---
 
 ## Documentation Placement Decisions
 
-See [STRUCTURE.md](STRUCTURE.md) for the full rationale on what lives here versus in `eng/`, `doc/`, or alongside individual SDK libraries.
+See [STRUCTURE.md](STRUCTURE.md) for the full rationale on what lives here versus in `eng/` or alongside individual SDK libraries.
 
 ---
 
