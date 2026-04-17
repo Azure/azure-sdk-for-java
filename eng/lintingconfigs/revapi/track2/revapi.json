@@ -1713,11 +1713,21 @@
         },
         {
           "code": "java.method.removed",
+          "old" : "method java.util.List<com.azure.resourcemanager.monitor.models.AlertRuleLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition::anyOf()",
+          "justification": "ActivityLogAlertLeafCondition replaced by AlertRuleAnyOfOrLeafCondition in TypeSpec migration."
+        },
+        {
+          "code": "java.method.removed",
           "old" : {
             "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\.ConditionOperator.*"
           },
-          "justification": "Output-only immutable models' methods are removed."
+          "justification": "ConditionOperator changed from enum to ExpandableStringEnum; enum-specific methods removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.monitor.models.MetricAlertAction::webhookProperties()",
+          "justification": "webhookProperties() removed in TypeSpec migration."
         },
         {
           "code": "java.class.removed",

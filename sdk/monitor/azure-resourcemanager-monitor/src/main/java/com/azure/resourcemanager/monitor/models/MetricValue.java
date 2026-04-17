@@ -23,7 +23,7 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     /*
      * The timestamp for the metric value in ISO 8601 format.
      */
-    private OffsetDateTime timeStamp;
+    private OffsetDateTime timestamp;
 
     /*
      * The average value in the time range.
@@ -58,12 +58,12 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     }
 
     /**
-     * Get the timeStamp property: The timestamp for the metric value in ISO 8601 format.
+     * Get the timestamp property: The timestamp for the metric value in ISO 8601 format.
      * 
-     * @return the timeStamp value.
+     * @return the timestamp value.
      */
-    public OffsetDateTime timeStamp() {
-        return this.timeStamp;
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
@@ -118,9 +118,9 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeStamp() == null) {
+        if (timestamp() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property timeStamp in model MetricValue"));
+                .log(new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
         }
     }
 
@@ -133,7 +133,7 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("timeStamp",
-            this.timeStamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeStamp));
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeNumberField("average", this.average);
         jsonWriter.writeNumberField("minimum", this.minimum);
         jsonWriter.writeNumberField("maximum", this.maximum);
@@ -159,7 +159,7 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
                 reader.nextToken();
 
                 if ("timeStamp".equals(fieldName)) {
-                    deserializedMetricValue.timeStamp = reader
+                    deserializedMetricValue.timestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("average".equals(fieldName)) {
                     deserializedMetricValue.average = reader.getNullable(JsonReader::getDouble);

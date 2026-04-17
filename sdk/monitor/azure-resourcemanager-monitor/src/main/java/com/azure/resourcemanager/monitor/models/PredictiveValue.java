@@ -23,7 +23,7 @@ public final class PredictiveValue implements JsonSerializable<PredictiveValue> 
     /*
      * the timestamp for the metric value in ISO 8601 format.
      */
-    private OffsetDateTime timeStamp;
+    private OffsetDateTime timestamp;
 
     /*
      * Predictive value in this time bucket.
@@ -37,12 +37,12 @@ public final class PredictiveValue implements JsonSerializable<PredictiveValue> 
     }
 
     /**
-     * Get the timeStamp property: the timestamp for the metric value in ISO 8601 format.
+     * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
      * 
-     * @return the timeStamp value.
+     * @return the timestamp value.
      */
-    public OffsetDateTime timeStamp() {
-        return this.timeStamp;
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
@@ -60,9 +60,9 @@ public final class PredictiveValue implements JsonSerializable<PredictiveValue> 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeStamp() == null) {
+        if (timestamp() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property timeStamp in model PredictiveValue"));
+                .log(new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
         }
     }
 
@@ -75,7 +75,7 @@ public final class PredictiveValue implements JsonSerializable<PredictiveValue> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("timeStamp",
-            this.timeStamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeStamp));
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeDoubleField("value", this.value);
         return jsonWriter.writeEndObject();
     }
@@ -97,7 +97,7 @@ public final class PredictiveValue implements JsonSerializable<PredictiveValue> 
                 reader.nextToken();
 
                 if ("timeStamp".equals(fieldName)) {
-                    deserializedPredictiveValue.timeStamp = reader
+                    deserializedPredictiveValue.timestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("value".equals(fieldName)) {
                     deserializedPredictiveValue.value = reader.getDouble();

@@ -69,7 +69,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                     .withAutoMitigate(true)
                     .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                         "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                        .withWebHookProperties(
+                        .withWebhookProperties(
                             mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
@@ -109,7 +109,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebHookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -152,7 +152,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebHookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -261,7 +261,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebHookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -369,7 +369,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebHookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -409,7 +409,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebHookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -451,7 +451,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebHookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 

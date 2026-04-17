@@ -26,7 +26,7 @@ public final class MetricAlertAction implements JsonSerializable<MetricAlertActi
      * This field allows specifying custom properties, which would be appended to the alert payload sent as input to the
      * webhook.
      */
-    private Map<String, String> webHookProperties;
+    private Map<String, String> webhookProperties;
 
     /**
      * Creates an instance of MetricAlertAction class.
@@ -55,24 +55,24 @@ public final class MetricAlertAction implements JsonSerializable<MetricAlertActi
     }
 
     /**
-     * Get the webHookProperties property: This field allows specifying custom properties, which would be appended to
+     * Get the webhookProperties property: This field allows specifying custom properties, which would be appended to
      * the alert payload sent as input to the webhook.
      * 
-     * @return the webHookProperties value.
+     * @return the webhookProperties value.
      */
-    public Map<String, String> webHookProperties() {
-        return this.webHookProperties;
+    public Map<String, String> webhookProperties() {
+        return this.webhookProperties;
     }
 
     /**
-     * Set the webHookProperties property: This field allows specifying custom properties, which would be appended to
+     * Set the webhookProperties property: This field allows specifying custom properties, which would be appended to
      * the alert payload sent as input to the webhook.
      * 
-     * @param webHookProperties the webHookProperties value to set.
+     * @param webhookProperties the webhookProperties value to set.
      * @return the MetricAlertAction object itself.
      */
-    public MetricAlertAction withWebHookProperties(Map<String, String> webHookProperties) {
-        this.webHookProperties = webHookProperties;
+    public MetricAlertAction withWebhookProperties(Map<String, String> webhookProperties) {
+        this.webhookProperties = webhookProperties;
         return this;
     }
 
@@ -91,7 +91,7 @@ public final class MetricAlertAction implements JsonSerializable<MetricAlertActi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("actionGroupId", this.actionGroupId);
-        jsonWriter.writeMapField("webHookProperties", this.webHookProperties,
+        jsonWriter.writeMapField("webHookProperties", this.webhookProperties,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -114,8 +114,8 @@ public final class MetricAlertAction implements JsonSerializable<MetricAlertActi
                 if ("actionGroupId".equals(fieldName)) {
                     deserializedMetricAlertAction.actionGroupId = reader.getString();
                 } else if ("webHookProperties".equals(fieldName)) {
-                    Map<String, String> webHookProperties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMetricAlertAction.webHookProperties = webHookProperties;
+                    Map<String, String> webhookProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetricAlertAction.webhookProperties = webhookProperties;
                 } else {
                     reader.skipChildren();
                 }
