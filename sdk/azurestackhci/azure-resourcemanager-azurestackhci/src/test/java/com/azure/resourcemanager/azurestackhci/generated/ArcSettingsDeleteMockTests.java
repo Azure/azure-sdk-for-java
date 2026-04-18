@@ -27,7 +27,7 @@ public final class ArcSettingsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.arcSettings().delete("inzabwmvoglj", "v", "pgidnw", com.azure.core.util.Context.NONE);
+        manager.arcSettings().delete("brwnrzozs", "agysokl", "iksy", com.azure.core.util.Context.NONE);
 
     }
 }

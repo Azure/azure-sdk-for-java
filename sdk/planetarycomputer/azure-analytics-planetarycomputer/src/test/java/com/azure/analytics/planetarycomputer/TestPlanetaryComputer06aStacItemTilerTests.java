@@ -3,6 +3,7 @@
 
 package com.azure.analytics.planetarycomputer;
 
+import com.azure.analytics.planetarycomputer.models.GetPreviewContentType;
 import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
 import com.azure.analytics.planetarycomputer.models.StacItemBounds;
 import com.azure.analytics.planetarycomputer.models.TileMatrix;
@@ -148,7 +149,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         // This is server behavior - it may return JPEG for performance reasons
         GetPreviewOptions options
             = new GetPreviewOptions().setWidth(512).setHeight(512).setAssets(Arrays.asList("image"));
-        BinaryData imageData = dataClient.getPreview(collectionId, itemId, options, "image/png");
+        BinaryData imageData = dataClient.getPreview(collectionId, itemId, options, GetPreviewContentType.IMAGE_PNG);
 
         byte[] imageBytes = imageData.toBytes();
 

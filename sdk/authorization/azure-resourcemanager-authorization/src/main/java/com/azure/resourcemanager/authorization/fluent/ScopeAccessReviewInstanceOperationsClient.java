@@ -18,7 +18,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +32,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +46,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -61,7 +61,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to stop an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,7 +74,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -90,7 +90,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -106,7 +106,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -123,7 +123,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to approve/deny all decisions for a review with certain filters.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Record all decisions payload.
@@ -138,7 +138,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +152,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +166,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -181,7 +181,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to reset all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +194,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +208,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -237,7 +237,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to apply all decisions for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,7 +250,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +264,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +278,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -293,7 +293,7 @@ public interface ScopeAccessReviewInstanceOperationsClient {
     /**
      * An action to send reminders for an access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

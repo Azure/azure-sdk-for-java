@@ -5,7 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
-$PackageRepositoryUri = "https://repo1.maven.org/maven2"
+$PackageRepositoryUri = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 . "$PSScriptRoot/docs/Docs-Onboarding.ps1"
@@ -272,13 +272,19 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
   return $uniqueResultSet
 }
 
-# Returns the maven (really sonatype) publish status of a package id and version.
+# Returns the maven publish status of a package id and version by checking the 
+# Azure Artifacts feed which the release pipeline publishes to alongside Maven Central.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  # oss.sonatype.org seems to have started returning 403 for our agents. Based on https://central.sonatype.org/faq/403-error-central it is likely
-  # because some agent is trying to query the directory too frequently. So we will attempt to query the raw maven repo itself.
-  # $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
-  $uri = "https://repo1.maven.org/maven2/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  # Use the Azure Artifacts feed instead of repo1.maven.org because the public
+  # Maven Central endpoint is blocked on the build agent network.
+  $uri = "$PackageRepositoryUri/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+
+  $headers = @{ "Content-signal" = "search=yes,ai-train=no" }
+  # Azure DevOps feeds require authentication; use SYSTEM_ACCESSTOKEN if available.
+  if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+    $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+  }
 
   $attempt = 1
   while ($attempt -le 3)
@@ -290,7 +296,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
       }
 
       Write-Host "Checking published package at $uri"
-      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck -UserAgent "azure-sdk-for-java" -Headers $headers
 
       if ($response.BaseResponse.IsSuccessStatusCode)
       {

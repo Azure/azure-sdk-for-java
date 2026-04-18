@@ -25,7 +25,7 @@ public final class ArcSettingsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"PartiallySucceeded\",\"arcInstanceResourceGroup\":\"caatsdohzniucbda\",\"arcApplicationClientId\":\"b\",\"arcApplicationTenantId\":\"injdllwktlepo\",\"arcServicePrincipalObjectId\":\"vvqxua\",\"arcApplicationObjectId\":\"cqwulynkgfcfd\",\"aggregateState\":\"NotSpecified\",\"perNodeDetails\":[{\"name\":\"xxtclhuulri\",\"arcInstance\":\"yokvjgbzsxebr\",\"arcNodeServicePrincipalObjectId\":\"ttfyhcdjwsuoard\",\"state\":\"InProgress\"}],\"connectivityProperties\":{\"enabled\":true,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":4965485797809115467},{\"serviceName\":\"WAC\",\"port\":181212846656517806},{\"serviceName\":\"WAC\",\"port\":8700956360206524200},{\"serviceName\":\"WAC\",\"port\":3971377482592634684}]},\"defaultExtensions\":[{\"category\":\"xiplkysolsyj\",\"consentTime\":\"2021-04-06T12:49:09Z\"}]},\"id\":\"lwhdmcvhtbb\",\"name\":\"jhfv\",\"type\":\"uwzb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Disconnected\",\"arcInstanceResourceGroup\":\"towagehxu\",\"arcApplicationClientId\":\"wesrtjaqgb\",\"arcApplicationTenantId\":\"kncypmte\",\"arcServicePrincipalObjectId\":\"psaneyvaerpi\",\"arcApplicationObjectId\":\"nhrfbrj\",\"aggregateState\":\"Succeeded\",\"perNodeDetails\":[{\"name\":\"mraqnilppqcaig\",\"arcInstance\":\"wfwlrfdjwlzse\",\"arcNodeServicePrincipalObjectId\":\"tqfdr\",\"state\":\"DisableInProgress\"},{\"name\":\"m\",\"arcInstance\":\"serwyc\",\"arcNodeServicePrincipalObjectId\":\"ytjwgetfigw\",\"state\":\"InProgress\"},{\"name\":\"xzizebjr\",\"arcInstance\":\"gdstubw\",\"arcNodeServicePrincipalObjectId\":\"xzsshxliqmsckwh\",\"state\":\"PartiallySucceeded\"},{\"name\":\"iiy\",\"arcInstance\":\"qzwjalwrsofx\",\"arcNodeServicePrincipalObjectId\":\"crmvjfmr\",\"state\":\"NotSpecified\"}],\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":4716967675530697490},{\"serviceName\":\"WAC\",\"port\":1563532893861413315},{\"serviceName\":\"WAC\",\"port\":5553575258211608935}]},\"defaultExtensions\":[{\"category\":\"jv\",\"consentTime\":\"2021-08-31T04:28:27Z\"},{\"category\":\"kiocxoerjwbuo\",\"consentTime\":\"2021-06-23T01:09:52Z\"},{\"category\":\"mnlrl\",\"consentTime\":\"2021-04-04T04:51:59Z\"},{\"category\":\"tatezyozd\",\"consentTime\":\"2021-04-10T04:24Z\"}]},\"id\":\"nlsjxcscnitodmra\",\"name\":\"jjidodnvltcvmah\",\"type\":\"uwkup\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,27 +35,27 @@ public final class ArcSettingsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ArcSetting response = manager.arcSettings()
-            .define("bezacfpztga")
-            .withExistingCluster("uykykipfsd", "epfnoc")
-            .withArcInstanceResourceGroup("jga")
-            .withArcApplicationClientId("kctgkp")
-            .withArcApplicationTenantId("kqzkcyzmff")
-            .withArcServicePrincipalObjectId("dyfcix")
-            .withArcApplicationObjectId("lcqvhoejgoiutgw")
+            .define("sxjbjkewrigl")
+            .withExistingCluster("fhvqiias", "twskkfkuyikmxhh")
+            .withArcInstanceResourceGroup("feclfl")
+            .withArcApplicationClientId("jffzwncvdefxonzt")
+            .withArcApplicationTenantId("jptnnt")
+            .withArcServicePrincipalObjectId("cjqpzjvnpjr")
+            .withArcApplicationObjectId("pgsjbioagwviqehm")
             .withConnectivityProperties(new ArcConnectivityProperties().withEnabled(false)
                 .withServiceConfigurations(Arrays.asList(
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(7818421886306304685L))))
+                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(5277515385784472682L))))
             .create();
 
-        Assertions.assertEquals("caatsdohzniucbda", response.arcInstanceResourceGroup());
-        Assertions.assertEquals("b", response.arcApplicationClientId());
-        Assertions.assertEquals("injdllwktlepo", response.arcApplicationTenantId());
-        Assertions.assertEquals("vvqxua", response.arcServicePrincipalObjectId());
-        Assertions.assertEquals("cqwulynkgfcfd", response.arcApplicationObjectId());
-        Assertions.assertTrue(response.connectivityProperties().enabled());
+        Assertions.assertEquals("towagehxu", response.arcInstanceResourceGroup());
+        Assertions.assertEquals("wesrtjaqgb", response.arcApplicationClientId());
+        Assertions.assertEquals("kncypmte", response.arcApplicationTenantId());
+        Assertions.assertEquals("psaneyvaerpi", response.arcServicePrincipalObjectId());
+        Assertions.assertEquals("nhrfbrj", response.arcApplicationObjectId());
+        Assertions.assertFalse(response.connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             response.connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(4965485797809115467L,
+        Assertions.assertEquals(4716967675530697490L,
             response.connectivityProperties().serviceConfigurations().get(0).port());
     }
 }

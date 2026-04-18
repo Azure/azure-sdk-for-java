@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
+import com.azure.resourcemanager.azurestackhci.models.ChangeRingRequest;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
 import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
@@ -143,6 +144,26 @@ public final class ClustersImpl implements Clusters {
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context) {
         ClusterInner inner = this.serviceClient()
             .extendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest, context);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest) {
+        ClusterInner inner = this.serviceClient().changeRing(resourceGroupName, clusterName, changeRingRequest);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest,
+        Context context) {
+        ClusterInner inner
+            = this.serviceClient().changeRing(resourceGroupName, clusterName, changeRingRequest, context);
         if (inner != null) {
             return new ClusterImpl(inner, this.manager());
         } else {

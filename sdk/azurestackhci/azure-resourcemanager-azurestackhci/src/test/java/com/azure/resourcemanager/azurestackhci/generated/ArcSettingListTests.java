@@ -13,18 +13,18 @@ public final class ArcSettingListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcSettingList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"DisableInProgress\",\"arcInstanceResourceGroup\":\"xbnjbiksq\",\"arcApplicationClientId\":\"lssai\",\"arcApplicationTenantId\":\"p\",\"arcServicePrincipalObjectId\":\"nzl\",\"arcApplicationObjectId\":\"fmppe\",\"aggregateState\":\"Error\",\"perNodeDetails\":[{\"name\":\"sabkyqduujitcjcz\",\"arcInstance\":\"evndh\",\"arcNodeServicePrincipalObjectId\":\"wpdappdsbdkv\",\"state\":\"Accepted\"},{\"name\":\"feusnhut\",\"arcInstance\":\"ltmrldh\",\"arcNodeServicePrincipalObjectId\":\"jzzd\",\"state\":\"Accepted\"}],\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":4634339895723122949},{\"serviceName\":\"WAC\",\"port\":5556090733611514478},{\"serviceName\":\"WAC\",\"port\":3195393764493000398}]},\"defaultExtensions\":[{\"category\":\"ndv\",\"consentTime\":\"2021-07-12T00:44:12Z\"},{\"category\":\"wyiftyhxhur\",\"consentTime\":\"2021-08-25T23:42:56Z\"},{\"category\":\"yxolniwp\",\"consentTime\":\"2021-07-02T03:55:48Z\"},{\"category\":\"jfkgiawxk\",\"consentTime\":\"2021-05-21T20:11:19Z\"}]},\"id\":\"lwckbasyypnddhs\",\"name\":\"cbacphejkotynqg\",\"type\":\"ulzndlikwyqk\"}],\"nextLink\":\"gibma\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"arcInstanceResourceGroup\":\"uscrpabgyepsb\",\"arcApplicationClientId\":\"azqugxywpmueefj\",\"arcApplicationTenantId\":\"fqkquj\",\"arcServicePrincipalObjectId\":\"suyonobglaocq\",\"arcApplicationObjectId\":\"ccm\",\"aggregateState\":\"InProgress\",\"perNodeDetails\":[{\"name\":\"tlmoyrx\",\"arcInstance\":\"fudwpznt\",\"arcNodeServicePrincipalObjectId\":\"dzhlrq\",\"state\":\"Connected\"}],\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":8781176229641624570},{\"serviceName\":\"WAC\",\"port\":5275318016138914703},{\"serviceName\":\"WAC\",\"port\":1967797899884280622}]},\"defaultExtensions\":[{\"category\":\"n\",\"consentTime\":\"2021-07-01T08:22:45Z\"}]},\"id\":\"zka\",\"name\":\"kuwbcrnwb\",\"type\":\"ehhseyvjusrts\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"arcInstanceResourceGroup\":\"deemao\",\"arcApplicationClientId\":\"xagkvtmelmqkrh\",\"arcApplicationTenantId\":\"vljua\",\"arcServicePrincipalObjectId\":\"quhcdhmduala\",\"arcApplicationObjectId\":\"qpv\",\"aggregateState\":\"Creating\",\"perNodeDetails\":[{\"name\":\"rcrgvx\",\"arcInstance\":\"gomz\",\"arcNodeServicePrincipalObjectId\":\"misgwbnb\",\"state\":\"Creating\"}],\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":2514005563573922649},{\"serviceName\":\"WAC\",\"port\":489170478703847309},{\"serviceName\":\"WAC\",\"port\":4089645691345581060}]},\"defaultExtensions\":[{\"category\":\"uhashsfwx\",\"consentTime\":\"2021-10-19T13:09:56Z\"},{\"category\":\"z\",\"consentTime\":\"2021-01-09T15:25:04Z\"},{\"category\":\"i\",\"consentTime\":\"2020-12-22T21:46:37Z\"}]},\"id\":\"xdje\",\"name\":\"wpucwwfvovbv\",\"type\":\"euecivyhzceuoj\"}],\"nextLink\":\"rw\"}")
             .toObject(ArcSettingList.class);
-        Assertions.assertEquals("xbnjbiksq", model.value().get(0).arcInstanceResourceGroup());
-        Assertions.assertEquals("lssai", model.value().get(0).arcApplicationClientId());
-        Assertions.assertEquals("p", model.value().get(0).arcApplicationTenantId());
-        Assertions.assertEquals("nzl", model.value().get(0).arcServicePrincipalObjectId());
-        Assertions.assertEquals("fmppe", model.value().get(0).arcApplicationObjectId());
+        Assertions.assertEquals("uscrpabgyepsb", model.value().get(0).arcInstanceResourceGroup());
+        Assertions.assertEquals("azqugxywpmueefj", model.value().get(0).arcApplicationClientId());
+        Assertions.assertEquals("fqkquj", model.value().get(0).arcApplicationTenantId());
+        Assertions.assertEquals("suyonobglaocq", model.value().get(0).arcServicePrincipalObjectId());
+        Assertions.assertEquals("ccm", model.value().get(0).arcApplicationObjectId());
         Assertions.assertFalse(model.value().get(0).connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             model.value().get(0).connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(4634339895723122949L,
+        Assertions.assertEquals(8781176229641624570L,
             model.value().get(0).connectivityProperties().serviceConfigurations().get(0).port());
-        Assertions.assertEquals("gibma", model.nextLink());
+        Assertions.assertEquals("rw", model.nextLink());
     }
 }
