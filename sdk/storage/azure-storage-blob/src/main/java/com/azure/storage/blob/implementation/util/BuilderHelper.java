@@ -127,6 +127,9 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
+        addSessionPolicyIfEnabled(policies, sessionOptions, tokenCredential, endpoint, clientOptions, httpClient,
+            audience, logger);
+
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
@@ -134,9 +137,6 @@ public final class BuilderHelper {
                 : Constants.STORAGE_SCOPE;
             policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
         }
-
-        addSessionPolicyIfEnabled(policies, sessionOptions, tokenCredential, endpoint, logOptions, clientOptions,
-            httpClient, logger);
 
         if (azureSasCredential != null) {
             policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
@@ -161,10 +161,9 @@ public final class BuilderHelper {
             .build();
     }
 
-
     private static void addSessionPolicyIfEnabled(List<HttpPipelinePolicy> policies, SessionOptions sessionOptions,
-        TokenCredential tokenCredential, String endpoint, HttpLogOptions logOptions, ClientOptions clientOptions,
-        HttpClient httpClient, ClientLogger logger) {
+        TokenCredential tokenCredential, String endpoint, ClientOptions clientOptions, HttpClient httpClient,
+        BlobAudience audience, ClientLogger logger) {
 
         if (sessionOptions == null || tokenCredential == null) {
             return;
@@ -177,23 +176,23 @@ public final class BuilderHelper {
 
         validateSessionOptions(sessionOptions, effectiveMode, logger);
 
-        // Build a bearer-only pipeline from the policies accumulated so far (before the session policy).
-        // This pipeline is used by BlobSessionClient for CreateSession calls and intentionally has no
-        // session policy to avoid circular dependency.
-        HttpPipeline bearerPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(clientOptions)
-            .tracer(createTracer(clientOptions))
-            .build();
+        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(policies);
+        httpsValidation(tokenCredential, "bearer token", endpoint, logger);
+        String scope = audience != null
+            ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
+            : Constants.STORAGE_SCOPE;
+        bearerPolicies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
+
+        HttpPipeline bearerPipeline
+            = new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .clientOptions(clientOptions)
+                .tracer(createTracer(clientOptions))
+                .build();
 
         SessionTokenCredentialPolicy sessionPolicy
             = createSessionPolicy(bearerPipeline, endpoint, sessionOptions, effectiveMode);
 
-        // TODO (GA): Move SessionTokenCredentialPolicy before BearerTokenPolicy and modify
-        // StorageBearerTokenChallengeAuthorizationPolicy to skip when Authorization is already set.
-        // This avoids the unnecessary bearer token cache lookup on every session-signed request.
-        // Currently session policy sits after bearer and overwrites the header, which is correct
-        // but wastes a token cache hit per request. See policy ordering analysis in session auth design.
         policies.add(sessionPolicy);
     }
 

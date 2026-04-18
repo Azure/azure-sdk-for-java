@@ -50,8 +50,6 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         HttpPipelineNextPolicy retryNext = next.clone();
-        // Save the bearer token set by the upstream BearerTokenPolicy so we can restore it on fallback.
-        String bearerAuth = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         return getValidSessionAsync().flatMap(session -> {
             signRequest(context, session);
             return next.process().flatMap(response -> {
@@ -73,7 +71,8 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
                 if (shouldFallBackToBearer(context, response)) {
                     response.close();
                     context.setData(RETRY_CONTEXT_KEY, true);
-                    restoreBearerAuth(context, bearerAuth);
+                    // Remove session auth so the downstream BearerTokenPolicy adds a bearer token.
+                    context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
                     return retryNext.process();
                 }
 
@@ -89,7 +88,6 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         HttpPipelineNextSyncPolicy retryNext = next.clone();
-        String bearerAuth = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         StorageSessionCredential session = getValidSessionSync();
         signRequest(context, session);
 
@@ -112,7 +110,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         if (shouldFallBackToBearer(context, response)) {
             response.close();
             context.setData(RETRY_CONTEXT_KEY, true);
-            restoreBearerAuth(context, bearerAuth);
+            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             return retryNext.processSync();
         }
 
@@ -159,14 +157,6 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         context.getHttpRequest()
             .setHeader(HttpHeaderName.AUTHORIZATION, cred.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
                 context.getHttpRequest().getHttpMethod().toString(), context.getHttpRequest().getHeaders()));
-    }
-
-    private static void restoreBearerAuth(HttpPipelineCallContext context, String bearerAuth) {
-        if (bearerAuth != null) {
-            context.getHttpRequest().setHeader(HttpHeaderName.AUTHORIZATION, bearerAuth);
-        } else {
-            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
-        }
     }
 
     private void handleSessionExpiringHeader(HttpResponse response) {
