@@ -49,12 +49,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     private List<QueryAnswerResult> answers;
 
     /*
-     * Debug information that applies to the search results as a whole.
-     */
-    @Generated
-    private DebugInfo debugInfo;
-
-    /*
      * Continuation JSON payload returned when the query can't return all the requested results in a single response.
      * You can use this JSON along with
      */
@@ -86,12 +80,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      */
     @Generated
     private SemanticSearchResultsType semanticPartialResponseType;
-
-    /*
-     * Type of query rewrite that was used to retrieve documents.
-     */
-    @Generated
-    private SemanticQueryRewritesResultType semanticQueryRewritesResultType;
 
     /**
      * Creates an instance of SearchDocumentsResult class.
@@ -147,23 +135,13 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the debugInfo property: Debug information that applies to the search results as a whole.
-     *
-     * @return the debugInfo value.
-     */
-    @Generated
-    public DebugInfo getDebugInfo() {
-        return this.debugInfo;
-    }
-
-    /**
      * Get the nextPageParameters property: Continuation JSON payload returned when the query can't return all the
      * requested results in a single response. You can use this JSON along with.
      *
      * @return the nextPageParameters value.
      */
     @Generated
-    public SearchRequest getNextPageParameters() {
+    SearchRequest getNextPageParameters() {
         return this.nextPageParameters;
     }
 
@@ -185,7 +163,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * @return the nextLink value.
      */
     @Generated
-    public String getNextLink() {
+    String getNextLink() {
         return this.nextLink;
     }
 
@@ -209,16 +187,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     @Generated
     public SemanticSearchResultsType getSemanticPartialResponseType() {
         return this.semanticPartialResponseType;
-    }
-
-    /**
-     * Get the semanticQueryRewritesResultType property: Type of query rewrite that was used to retrieve documents.
-     *
-     * @return the semanticQueryRewritesResultType value.
-     */
-    @Generated
-    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
-        return this.semanticQueryRewritesResultType;
     }
 
     /**
@@ -261,8 +229,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                 } else if ("@search.answers".equals(fieldName)) {
                     List<QueryAnswerResult> answers = reader.readArray(reader1 -> QueryAnswerResult.fromJson(reader1));
                     deserializedSearchDocumentsResult.answers = answers;
-                } else if ("@search.debug".equals(fieldName)) {
-                    deserializedSearchDocumentsResult.debugInfo = DebugInfo.fromJson(reader);
                 } else if ("@search.nextPageParameters".equals(fieldName)) {
                     deserializedSearchDocumentsResult.nextPageParameters = SearchRequest.fromJson(reader);
                 } else if ("@odata.nextLink".equals(fieldName)) {
@@ -273,9 +239,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                 } else if ("@search.semanticPartialResponseType".equals(fieldName)) {
                     deserializedSearchDocumentsResult.semanticPartialResponseType
                         = SemanticSearchResultsType.fromString(reader.getString());
-                } else if ("@search.semanticQueryRewritesResultType".equals(fieldName)) {
-                    deserializedSearchDocumentsResult.semanticQueryRewritesResultType
-                        = SemanticQueryRewritesResultType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

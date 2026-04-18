@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response of a RoleAssignment list operation.
+ * Role assignment list operation result.
  */
 @Immutable
 public final class RoleAssignmentListResult implements JsonSerializable<RoleAssignmentListResult> {

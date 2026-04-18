@@ -142,7 +142,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope,
@@ -176,7 +176,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, roleAssignmentScheduleRequestName, accept,
@@ -261,7 +261,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -301,7 +301,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -388,7 +388,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -425,7 +425,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, filter, accept, context)
@@ -553,7 +553,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), apiVersion, scope,
                 roleAssignmentScheduleRequestName, context))
@@ -585,7 +585,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), apiVersion, scope, roleAssignmentScheduleRequestName, context);
     }
@@ -665,7 +665,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -705,7 +705,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-09-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
