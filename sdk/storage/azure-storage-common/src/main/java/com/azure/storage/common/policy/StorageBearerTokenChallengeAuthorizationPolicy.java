@@ -46,13 +46,20 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
-        // Delegate to superclass to maintain previous behavior
+        // If another policy (e.g., SessionTokenCredentialPolicy) has already set the Authorization header,
+        // skip bearer token authorization to avoid overwriting it.
+        if (hasSessionHeader(context)) {
+            return Mono.empty();
+        }
         return super.authorizeRequest(context);
     }
 
+
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-        // Delegate to superclass to maintain previous behavior
+        if (hasSessionHeader(context)) {
+            return;
+        }
         super.authorizeRequestSync(context);
     }
 
@@ -153,5 +160,10 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     static boolean isBearerChallenge(String authenticateHeader) {
         return (!CoreUtils.isNullOrEmpty(authenticateHeader)
             && authenticateHeader.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length()));
+    }
+
+
+    private boolean hasSessionHeader(HttpPipelineCallContext context) {
+        return context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION) != null;
     }
 }
