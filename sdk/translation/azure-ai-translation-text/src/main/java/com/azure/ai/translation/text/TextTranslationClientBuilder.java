@@ -51,8 +51,8 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = { TextTranslationClient.class, TextTranslationAsyncClient.class })
 public final class TextTranslationClientBuilder implements HttpTrait<TextTranslationClientBuilder>,
-    ConfigurationTrait<TextTranslationClientBuilder>, EndpointTrait<TextTranslationClientBuilder>,
-    KeyCredentialTrait<TextTranslationClientBuilder>, TokenCredentialTrait<TextTranslationClientBuilder> {
+    ConfigurationTrait<TextTranslationClientBuilder>, TokenCredentialTrait<TextTranslationClientBuilder>,
+    KeyCredentialTrait<TextTranslationClientBuilder>, EndpointTrait<TextTranslationClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -449,4 +449,13 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
+
+    /*
+     * The KeyCredential used for authentication.
+     */
+    @Generated
+    private KeyCredential keyCredential;
 }
