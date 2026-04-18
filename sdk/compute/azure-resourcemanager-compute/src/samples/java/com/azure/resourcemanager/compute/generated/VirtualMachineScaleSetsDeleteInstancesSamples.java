@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsDeleteInstancesSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.
@@ -30,7 +30,7 @@ public final class VirtualMachineScaleSetsDeleteInstancesSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.

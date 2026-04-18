@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class ProximityPlacementGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
+     * x-ms-original-file: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
      */
     /**
      * Sample code: Delete a proximity placement group.

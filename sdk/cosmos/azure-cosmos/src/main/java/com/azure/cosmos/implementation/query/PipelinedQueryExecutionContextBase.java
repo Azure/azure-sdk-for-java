@@ -5,12 +5,20 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.SqlParameterHelper.SqlParameterAccessor;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.SqlQuerySpecHelper.SqlQuerySpecAccessor;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 /**
@@ -59,6 +67,28 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         }
 
         CosmosItemSerializer candidateSerializer = client.getEffectiveItemSerializer(cosmosQueryRequestOptions);
+
+        // Apply the effective custom serializer to SqlParameter values so that
+        // query parameters are serialized consistently with stored document values.
+        // Clone the SqlQuerySpec first to avoid mutating the caller's original object,
+        // which could race if the same instance is reused across concurrent queries.
+        if (candidateSerializer != CosmosItemSerializer.DEFAULT_SERIALIZER
+            && cosmosItemSerializerAccessor().canSerialize(candidateSerializer)) {
+            SqlQuerySpec original = initParams.getQuery();
+            if (original != null) {
+                List<SqlParameter> originalParams = original.getParameters();
+                if (originalParams != null && !originalParams.isEmpty()) {
+                    List<SqlParameter> clonedParams = new ArrayList<>(originalParams.size());
+                    SqlParameterAccessor paramAccessor = sqlParameterAccessor();
+                    for (SqlParameter p : originalParams) {
+                        clonedParams.add(paramAccessor.createCopy(p));
+                    }
+                    SqlQuerySpec clonedQuery = new SqlQuerySpec(original.getQueryText(), clonedParams);
+                    sqlQuerySpecAccessor().applySerializerToParameters(clonedQuery, candidateSerializer);
+                    initParams.setQuery(clonedQuery);
+                }
+            }
+        }
 
         if (hybridSearchQueryInfo != null) {
             return PipelinedDocumentQueryExecutionContext.createHybridAsyncCore(
@@ -193,5 +223,17 @@ public abstract class PipelinedQueryExecutionContextBase<T>
 
     public HybridSearchQueryInfo getHybridSearchQueryInfo() {
         return this.hybridSearchQueryInfo;
+    }
+
+    private static SqlQuerySpecAccessor sqlQuerySpecAccessor() {
+        return ImplementationBridgeHelpers.SqlQuerySpecHelper.getSqlQuerySpecAccessor();
+    }
+
+    private static SqlParameterAccessor sqlParameterAccessor() {
+        return ImplementationBridgeHelpers.SqlParameterHelper.getSqlParameterAccessor();
+    }
+
+    private static CosmosItemSerializerAccessor cosmosItemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
     }
 }

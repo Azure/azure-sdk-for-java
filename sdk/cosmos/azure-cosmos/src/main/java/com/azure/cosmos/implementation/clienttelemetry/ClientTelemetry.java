@@ -37,6 +37,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * first metadata fetch and disposed immediately after; no long-lived HTTP client is kept.</p>
  */
 public class ClientTelemetry {
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
     public final static String VM_ID_PREFIX = "vmId_";
     public final static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -91,12 +95,8 @@ public class ClientTelemetry {
         checkNotNull(clientTelemetryConfig, "Argument 'clientTelemetryConfig' cannot be null");
 
         this.clientTelemetryConfig = clientTelemetryConfig;
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
-            clientTelemetryAccessor = ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor();
-        assert(clientTelemetryAccessor != null);
-        this.clientMetricsEnabled = clientTelemetryAccessor
+        assert(clientTelemetryConfigAccessor() != null);
+        this.clientMetricsEnabled = clientTelemetryConfigAccessor()
             .isClientMetricsEnabled(clientTelemetryConfig);
     }
 

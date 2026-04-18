@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CapacityReservationGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroup_Update_MinimumSet_Gen.
@@ -29,7 +29,7 @@ public final class CapacityReservationGroupsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroup_Update_MaximumSet_Gen.
