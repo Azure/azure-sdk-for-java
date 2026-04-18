@@ -54,7 +54,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return super.authorizeRequest(context);
     }
 
-
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
         if (hasSessionHeader(context)) {
@@ -161,7 +160,6 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return (!CoreUtils.isNullOrEmpty(authenticateHeader)
             && authenticateHeader.regionMatches(true, 0, BEARER_TOKEN_PREFIX, 0, BEARER_TOKEN_PREFIX.length()));
     }
-
 
     private boolean hasSessionHeader(HttpPipelineCallContext context) {
         return context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION) != null;
