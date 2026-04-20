@@ -31,13 +31,13 @@
 
 #### `models.ManagedClusterIngressProfileWebAppRouting` was modified
 
-* `gatewayApiImplementations()` was added
 * `withGatewayApiImplementations(models.ManagedClusterWebAppRoutingGatewayApiImplementations)` was added
+* `gatewayApiImplementations()` was added
 
 #### `models.ManagedClusterAzureMonitorProfile` was modified
 
-* `withAppMonitoring(models.ManagedClusterAzureMonitorProfileAppMonitoring)` was added
 * `appMonitoring()` was added
+* `withAppMonitoring(models.ManagedClusterAzureMonitorProfileAppMonitoring)` was added
 
 ## 2.59.0-beta.1 (2026-03-30)
 
