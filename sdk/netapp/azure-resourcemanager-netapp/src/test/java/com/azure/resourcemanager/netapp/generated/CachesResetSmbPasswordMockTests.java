@@ -27,7 +27,9 @@ public final class CachesResetSmbPasswordMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.caches().resetSmbPassword("rzwnyk", "id", "chl", "mpwctoflds", com.azure.core.util.Context.NONE);
+        manager.caches()
+            .resetSmbPassword("ofvfkakpoldtve", "boclzhzjknyuxgv", "txpnrupza", "mrdixtreki",
+                com.azure.core.util.Context.NONE);
 
     }
 }
