@@ -8,6 +8,14 @@
 
 - Updated `api-version` to `2026-02-01`.
 
+## 2.59.0-beta.1 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-01-02-preview`.
+
 ## 2.58.0 (2026-03-20)
 
 ### Breaking Changes
