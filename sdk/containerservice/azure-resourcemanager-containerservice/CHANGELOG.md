@@ -1,14 +1,43 @@
 # Release History
 
-## 2.59.0-beta.2 (Unreleased)
+## 2.59.0 (2026-04-20)
 
 ### Features Added
 
-### Breaking Changes
+* `models.ManagedClusterAzureMonitorProfileAppMonitoring` was added
 
-### Bugs Fixed
+* `models.ManagedClusterWebAppRoutingGatewayApiImplementations` was added
 
-### Other Changes
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation` was added
+
+* `models.ManagedClusterHostedSystemProfile` was added
+
+* `models.ManagedGatewayType` was added
+
+* `models.GatewayApiIstioEnabled` was added
+
+* `models.ManagedClusterAppRoutingIstio` was added
+
+* `models.ManagedClusterIngressProfileGatewayConfiguration` was added
+
+#### `models.ManagedClusterIngressProfile` was modified
+
+* `gatewayApi()` was added
+* `withGatewayApi(models.ManagedClusterIngressProfileGatewayConfiguration)` was added
+
+#### `models.OSSku` was modified
+
+* `WINDOWS2025` was added
+
+#### `models.ManagedClusterIngressProfileWebAppRouting` was modified
+
+* `gatewayApiImplementations()` was added
+* `withGatewayApiImplementations(models.ManagedClusterWebAppRoutingGatewayApiImplementations)` was added
+
+#### `models.ManagedClusterAzureMonitorProfile` was modified
+
+* `withAppMonitoring(models.ManagedClusterAzureMonitorProfileAppMonitoring)` was added
+* `appMonitoring()` was added
 
 ## 2.59.0-beta.1 (2026-03-30)
 
