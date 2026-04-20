@@ -120,14 +120,14 @@ README samples use the [CodeSnippet Maven Plugin](https://github.com/Azure/azure
 
 ---
 
-## Project Structure: `pom.xml` vs `pom.service.xml`
+## Project Structure: `pom.xml` vs `sdk/<service>/pom.xml`
 
-The repo has two Maven project hierarchies:
+The repo commonly uses two Maven build scopes:
 
 | File | Purpose |
 |------|---------|
 | `pom.xml` (root) | Aggregates _all_ modules for repo-wide builds |
-| `pom.service.xml` | Aggregates only the modules for a single service pipeline |
+| `sdk/<service>/pom.xml` | Service-level aggregator POM for building modules under a single service area |
 
-Use `pom.service.xml` when building within a service pipeline context.  
-See the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) for additional details.
+Use `sdk/<service>/pom.xml` when building within a service pipeline context or when you want to build only one service area.  
+See the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) for additional details about client- and service-level build entry points.
