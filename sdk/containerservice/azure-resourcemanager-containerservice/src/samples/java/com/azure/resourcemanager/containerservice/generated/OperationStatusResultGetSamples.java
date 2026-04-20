@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class OperationStatusResultGetSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/OperationStatusResultGet.json
+     * x-ms-original-file: 2026-02-02-preview/OperationStatusResultGet.json
      */
     /**
      * Sample code: Get OperationStatusResult.

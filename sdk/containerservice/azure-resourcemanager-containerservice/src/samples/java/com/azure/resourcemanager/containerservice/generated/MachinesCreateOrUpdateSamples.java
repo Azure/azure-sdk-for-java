@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class MachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/MachineCreate_Update.json
+     * x-ms-original-file: 2026-02-02-preview/MachineCreate_Update.json
      */
     /**
      * Sample code: Create/Update Machine.

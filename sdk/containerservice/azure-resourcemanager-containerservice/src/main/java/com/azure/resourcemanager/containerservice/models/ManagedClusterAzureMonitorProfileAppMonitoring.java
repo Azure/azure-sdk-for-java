@@ -12,33 +12,31 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Application Monitoring Profile for Kubernetes Application Container. Collects application logs, metrics and traces
- * through auto-instrumentation of the application using Azure Monitor OpenTelemetry based SDKs. See
- * aka.ms/AzureMonitorApplicationMonitoring for an overview.
+ * Application Monitoring profile for AKS.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileAppMonitoring
     implements JsonSerializable<ManagedClusterAzureMonitorProfileAppMonitoring> {
     /*
-     * Application Monitoring Auto Instrumentation for Kubernetes Application Container. Deploys web hook to
-     * auto-instrument Azure Monitor OpenTelemetry based SDKs to collect OpenTelemetry metrics, logs and traces of the
-     * application. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Application Monitoring auto-instrumentation for AKS. Deploys a webhook that auto-instruments workloads with
+     * Microsoft OpenTelemetry Distros to collect OpenTelemetry metrics, logs, and traces. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      */
     private ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation autoInstrumentation;
 
     /*
-     * Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Metrics. Collects
-     * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
-     * aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application
+     * using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
+     * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      */
     private ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics openTelemetryMetrics;
 
     /*
-     * Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Logs and Traces.
-     * Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
-     * aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of
+     * the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
+     * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      */
-    private ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs openTelemetryLogs;
+    private ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces openTelemetryLogsAndTraces;
 
     /**
      * Creates an instance of ManagedClusterAzureMonitorProfileAppMonitoring class.
@@ -47,9 +45,10 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Get the autoInstrumentation property: Application Monitoring Auto Instrumentation for Kubernetes Application
-     * Container. Deploys web hook to auto-instrument Azure Monitor OpenTelemetry based SDKs to collect OpenTelemetry
-     * metrics, logs and traces of the application. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Get the autoInstrumentation property: Application Monitoring auto-instrumentation for AKS. Deploys a webhook that
+     * auto-instruments workloads with Microsoft OpenTelemetry Distros to collect OpenTelemetry metrics, logs, and
+     * traces. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an
+     * overview.
      * 
      * @return the autoInstrumentation value.
      */
@@ -58,9 +57,10 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Set the autoInstrumentation property: Application Monitoring Auto Instrumentation for Kubernetes Application
-     * Container. Deploys web hook to auto-instrument Azure Monitor OpenTelemetry based SDKs to collect OpenTelemetry
-     * metrics, logs and traces of the application. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Set the autoInstrumentation property: Application Monitoring auto-instrumentation for AKS. Deploys a webhook that
+     * auto-instruments workloads with Microsoft OpenTelemetry Distros to collect OpenTelemetry metrics, logs, and
+     * traces. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an
+     * overview.
      * 
      * @param autoInstrumentation the autoInstrumentation value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoring object itself.
@@ -72,9 +72,9 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Get the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for Kubernetes
-     * Application Container Metrics. Collects OpenTelemetry metrics of the application using Azure Monitor
-     * OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Get the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for AKS. Collects
+     * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
      * @return the openTelemetryMetrics value.
      */
@@ -83,9 +83,9 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Set the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for Kubernetes
-     * Application Container Metrics. Collects OpenTelemetry metrics of the application using Azure Monitor
-     * OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Set the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for AKS. Collects
+     * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
      * @param openTelemetryMetrics the openTelemetryMetrics value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoring object itself.
@@ -97,27 +97,27 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
-     * Get the openTelemetryLogs property: Application Monitoring Open Telemetry Metrics Profile for Kubernetes
-     * Application Container Logs and Traces. Collects OpenTelemetry logs and traces of the application using Azure
-     * Monitor OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Get the openTelemetryLogsAndTraces property: Application Monitoring Open Telemetry Logs and Traces Profile for
+     * AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
-     * @return the openTelemetryLogs value.
+     * @return the openTelemetryLogsAndTraces value.
      */
-    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs openTelemetryLogs() {
-        return this.openTelemetryLogs;
+    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces openTelemetryLogsAndTraces() {
+        return this.openTelemetryLogsAndTraces;
     }
 
     /**
-     * Set the openTelemetryLogs property: Application Monitoring Open Telemetry Metrics Profile for Kubernetes
-     * Application Container Logs and Traces. Collects OpenTelemetry logs and traces of the application using Azure
-     * Monitor OpenTelemetry based SDKs. See aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * Set the openTelemetryLogsAndTraces property: Application Monitoring Open Telemetry Logs and Traces Profile for
+     * AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
      * 
-     * @param openTelemetryLogs the openTelemetryLogs value to set.
+     * @param openTelemetryLogsAndTraces the openTelemetryLogsAndTraces value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoring object itself.
      */
-    public ManagedClusterAzureMonitorProfileAppMonitoring
-        withOpenTelemetryLogs(ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs openTelemetryLogs) {
-        this.openTelemetryLogs = openTelemetryLogs;
+    public ManagedClusterAzureMonitorProfileAppMonitoring withOpenTelemetryLogsAndTraces(
+        ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces openTelemetryLogsAndTraces) {
+        this.openTelemetryLogsAndTraces = openTelemetryLogsAndTraces;
         return this;
     }
 
@@ -133,8 +133,8 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
         if (openTelemetryMetrics() != null) {
             openTelemetryMetrics().validate();
         }
-        if (openTelemetryLogs() != null) {
-            openTelemetryLogs().validate();
+        if (openTelemetryLogsAndTraces() != null) {
+            openTelemetryLogsAndTraces().validate();
         }
     }
 
@@ -146,7 +146,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("autoInstrumentation", this.autoInstrumentation);
         jsonWriter.writeJsonField("openTelemetryMetrics", this.openTelemetryMetrics);
-        jsonWriter.writeJsonField("openTelemetryLogs", this.openTelemetryLogs);
+        jsonWriter.writeJsonField("openTelemetryLogsAndTraces", this.openTelemetryLogsAndTraces);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,9 +172,9 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
                 } else if ("openTelemetryMetrics".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfileAppMonitoring.openTelemetryMetrics
                         = ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics.fromJson(reader);
-                } else if ("openTelemetryLogs".equals(fieldName)) {
-                    deserializedManagedClusterAzureMonitorProfileAppMonitoring.openTelemetryLogs
-                        = ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs.fromJson(reader);
+                } else if ("openTelemetryLogsAndTraces".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfileAppMonitoring.openTelemetryLogsAndTraces
+                        = ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

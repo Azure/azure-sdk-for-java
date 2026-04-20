@@ -22,6 +22,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterControlPlaneScalingProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHealthMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
@@ -321,6 +322,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Health monitor profile for the managed cluster.
      */
     private ManagedClusterHealthMonitorProfile healthMonitorProfile;
+
+    /*
+     * Profile for providing scaled and performance guaranteed control plane capacity to deliver consistent performance
+     * under high workload. Requires Kubernetes version 1.33.0 or later.
+     */
+    private ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile;
 
     /*
      * Contains read-only information about the Managed Cluster.
@@ -1293,6 +1300,31 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the controlPlaneScalingProfile property: Profile for providing scaled and performance guaranteed control
+     * plane capacity to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or
+     * later.
+     * 
+     * @return the controlPlaneScalingProfile value.
+     */
+    public ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile() {
+        return this.controlPlaneScalingProfile;
+    }
+
+    /**
+     * Set the controlPlaneScalingProfile property: Profile for providing scaled and performance guaranteed control
+     * plane capacity to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or
+     * later.
+     * 
+     * @param controlPlaneScalingProfile the controlPlaneScalingProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties
+        withControlPlaneScalingProfile(ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile) {
+        this.controlPlaneScalingProfile = controlPlaneScalingProfile;
+        return this;
+    }
+
+    /**
      * Get the status property: Contains read-only information about the Managed Cluster.
      * 
      * @return the status value.
@@ -1422,6 +1454,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (healthMonitorProfile() != null) {
             healthMonitorProfile().validate();
         }
+        if (controlPlaneScalingProfile() != null) {
+            controlPlaneScalingProfile().validate();
+        }
         if (status() != null) {
             status().validate();
         }
@@ -1478,6 +1513,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("schedulerProfile", this.schedulerProfile);
         jsonWriter.writeJsonField("hostedSystemProfile", this.hostedSystemProfile);
         jsonWriter.writeJsonField("healthMonitorProfile", this.healthMonitorProfile);
+        jsonWriter.writeJsonField("controlPlaneScalingProfile", this.controlPlaneScalingProfile);
         jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
@@ -1624,6 +1660,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("healthMonitorProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.healthMonitorProfile
                         = ManagedClusterHealthMonitorProfile.fromJson(reader);
+                } else if ("controlPlaneScalingProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.controlPlaneScalingProfile
+                        = ManagedClusterControlPlaneScalingProfile.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterProperties.status = ManagedClusterStatus.fromJson(reader);
                 } else {

@@ -24,6 +24,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterControlPlaneScalingProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHealthMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
@@ -1353,6 +1354,34 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withHealthMonitorProfile(healthMonitorProfile);
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneScalingProfile property: Profile for providing scaled and performance guaranteed control
+     * plane capacity to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or
+     * later.
+     * 
+     * @return the controlPlaneScalingProfile value.
+     */
+    public ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().controlPlaneScalingProfile();
+    }
+
+    /**
+     * Set the controlPlaneScalingProfile property: Profile for providing scaled and performance guaranteed control
+     * plane capacity to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or
+     * later.
+     * 
+     * @param controlPlaneScalingProfile the controlPlaneScalingProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner
+        withControlPlaneScalingProfile(ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withControlPlaneScalingProfile(controlPlaneScalingProfile);
         return this;
     }
 

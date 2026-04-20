@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class JWTAuthenticatorsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/JWTAuthenticators_Get.json
+     * x-ms-original-file: 2026-02-02-preview/JWTAuthenticators_Get.json
      */
     /**
      * Sample code: Get JWT Authenticator.

@@ -12,9 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Application Monitoring Open Telemetry Metrics Profile for Kubernetes Application Container Metrics. Collects
- * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
- * aka.ms/AzureMonitorApplicationMonitoring for an overview.
+ * Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application
+ * using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
+ * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
@@ -25,9 +25,14 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     private Boolean enabled;
 
     /*
-     * The Open Telemetry host port for Open Telemetry metrics. If not specified, the default port is 28333.
+     * The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
      */
-    private Long port;
+    private Long httpPort;
+
+    /*
+     * The host port for Open Telemetry GRPC metrics. If not specified, the default port is 28334.
+     */
+    private Long grpcPort;
 
     /**
      * Creates an instance of ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics class.
@@ -56,24 +61,46 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     }
 
     /**
-     * Get the port property: The Open Telemetry host port for Open Telemetry metrics. If not specified, the default
+     * Get the httpPort property: The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default
      * port is 28333.
      * 
-     * @return the port value.
+     * @return the httpPort value.
      */
-    public Long port() {
-        return this.port;
+    public Long httpPort() {
+        return this.httpPort;
     }
 
     /**
-     * Set the port property: The Open Telemetry host port for Open Telemetry metrics. If not specified, the default
+     * Set the httpPort property: The host port for Open Telemetry HTTP/PROTOBUF metrics. If not specified, the default
      * port is 28333.
      * 
-     * @param port the port value to set.
+     * @param httpPort the httpPort value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics object itself.
      */
-    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics withPort(Long port) {
-        this.port = port;
+    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics withHttpPort(Long httpPort) {
+        this.httpPort = httpPort;
+        return this;
+    }
+
+    /**
+     * Get the grpcPort property: The host port for Open Telemetry GRPC metrics. If not specified, the default port is
+     * 28334.
+     * 
+     * @return the grpcPort value.
+     */
+    public Long grpcPort() {
+        return this.grpcPort;
+    }
+
+    /**
+     * Set the grpcPort property: The host port for Open Telemetry GRPC metrics. If not specified, the default port is
+     * 28334.
+     * 
+     * @param grpcPort the grpcPort value to set.
+     * @return the ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics object itself.
+     */
+    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics withGrpcPort(Long grpcPort) {
+        this.grpcPort = grpcPort;
         return this;
     }
 
@@ -92,7 +119,8 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
-        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeNumberField("httpPort", this.httpPort);
+        jsonWriter.writeNumberField("grpcPort", this.grpcPort);
         return jsonWriter.writeEndObject();
     }
 
@@ -117,8 +145,11 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMe
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics.enabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("port".equals(fieldName)) {
-                    deserializedManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics.port
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics.httpPort
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("grpcPort".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics.grpcPort
                         = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();

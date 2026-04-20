@@ -1,14 +1,89 @@
 # Release History
 
-## 2.59.0-beta.2 (Unreleased)
-
-### Features Added
+## 2.59.0-beta.2 (2026-04-20)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.NodeCustomizationProfile` was removed
 
-### Other Changes
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs` was removed
+
+#### `models.ScaleProfile` was modified
+
+* `withAutoscale(models.AutoScaleProfile)` was removed
+* `models.AutoScaleProfile autoscale()` -> `java.util.List autoscale()`
+
+#### `models.ManagedClusterAgentPoolProfile` was modified
+
+* `withNodeCustomizationProfile(models.NodeCustomizationProfile)` was removed
+* `nodeImageVersion()` was removed
+
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics` was modified
+
+* `withPort(java.lang.Long)` was removed
+* `port()` was removed
+
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoring` was modified
+
+* `openTelemetryLogs()` was removed
+* `withOpenTelemetryLogs(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs)` was removed
+
+### Features Added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces` was added
+
+* `models.ManagedClusterAzureMonitorProfileMetricsControlPlane` was added
+
+* `models.ControlPlaneScalingSize` was added
+
+* `models.PreparedImageSpecificationProfile` was added
+
+* `models.ManagedClusterControlPlaneScalingProfile` was added
+
+#### `models.ScaleProfile` was modified
+
+* `withAutoscale(java.util.List)` was added
+
+#### `models.ManagedClusterAgentPoolProfile` was modified
+
+* `withNodeImageVersion(java.lang.String)` was added
+* `withPreparedImageSpecificationProfile(models.PreparedImageSpecificationProfile)` was added
+
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics` was modified
+
+* `httpPort()` was added
+* `withHttpPort(java.lang.Long)` was added
+* `withGrpcPort(java.lang.Long)` was added
+* `grpcPort()` was added
+
+#### `models.ManagedClusterAzureMonitorProfileMetrics` was modified
+
+* `controlPlane()` was added
+* `withControlPlane(models.ManagedClusterAzureMonitorProfileMetricsControlPlane)` was added
+
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoring` was modified
+
+* `withOpenTelemetryLogsAndTraces(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces)` was added
+* `openTelemetryLogsAndTraces()` was added
+
+#### `models.MachineNetworkProperties` was modified
+
+* `withNodePublicIpTags(java.util.List)` was added
+* `withEnableNodePublicIp(java.lang.Boolean)` was added
+* `withVnetSubnetId(java.lang.String)` was added
+* `withPodSubnetId(java.lang.String)` was added
+* `withNodePublicIpPrefixId(java.lang.String)` was added
+
+#### `models.ManagedClusterHostedSystemProfile` was modified
+
+* `withNodeSubnetID(java.lang.String)` was added
+* `nodeSubnetID()` was added
+* `withSystemNodeSubnetID(java.lang.String)` was added
+* `systemNodeSubnetID()` was added
+
+#### `models.MachineProperties` was modified
+
+* `withNetwork(models.MachineNetworkProperties)` was added
 
 ## 2.59.0-beta.1 (2026-03-30)
 
