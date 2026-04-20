@@ -31,6 +31,10 @@ public final class ValueUnwrapCosmosItemSerializer extends CosmosItemSerializer 
     private ValueUnwrapCosmosItemSerializer(boolean shouldUnwrapValue) {
         itemSerializerAccessor()
             .setShouldWrapSerializationExceptions(this, false);
+        ImplementationBridgeHelpers
+            .CosmosItemSerializerHelper
+            .getCosmosItemSerializerAccessor()
+            .setCanSerialize(this, false);
         this.shouldUnwrapValue = shouldUnwrapValue;
     }
 

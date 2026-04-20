@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class ImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromASnapshot.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromASnapshot.json
      */
     /**
      * Sample code: Create a virtual machine image from a snapshot.
@@ -40,7 +40,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromAManagedDisk.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromAManagedDisk.json
      */
     /**
      * Sample code: Create a virtual machine image from a managed disk.
@@ -61,7 +61,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a blob with DiskEncryptionSet resource.
@@ -83,7 +83,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a managed disk with DiskEncryptionSet resource.
@@ -106,7 +106,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a blob.
@@ -132,7 +132,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a snapshot with DiskEncryptionSet resource.
@@ -155,7 +155,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a snapshot.
@@ -180,7 +180,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromABlob.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromABlob.json
      */
     /**
      * Sample code: Create a virtual machine image from a blob.
@@ -200,7 +200,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_CreateFromAVM.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_CreateFromAVM.json
      */
     /**
      * Sample code: Create a virtual machine image from an existing virtual machine.
@@ -218,7 +218,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a managed disk.

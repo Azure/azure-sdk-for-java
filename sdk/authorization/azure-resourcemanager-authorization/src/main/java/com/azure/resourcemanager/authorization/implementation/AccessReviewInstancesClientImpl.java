@@ -128,7 +128,7 @@ public final class AccessReviewInstancesClientImpl implements AccessReviewInstan
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion,
@@ -165,7 +165,7 @@ public final class AccessReviewInstancesClientImpl implements AccessReviewInstan
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -253,7 +253,7 @@ public final class AccessReviewInstancesClientImpl implements AccessReviewInstan
         } else {
             properties.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -297,7 +297,7 @@ public final class AccessReviewInstancesClientImpl implements AccessReviewInstan
         } else {
             properties.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -385,7 +385,7 @@ public final class AccessReviewInstancesClientImpl implements AccessReviewInstan
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -423,7 +423,7 @@ public final class AccessReviewInstancesClientImpl implements AccessReviewInstan
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

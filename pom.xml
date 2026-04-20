@@ -220,6 +220,7 @@
     <module>sdk/redhatopenshift</module>
     <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
+    <module>sdk/relationships</module>
     <module>sdk/relay</module>
     <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>

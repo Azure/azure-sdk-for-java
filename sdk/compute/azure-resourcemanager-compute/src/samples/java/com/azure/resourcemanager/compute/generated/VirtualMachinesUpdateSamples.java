@@ -27,7 +27,7 @@ import java.util.Arrays;
 public final class VirtualMachinesUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
+     * 2025-11-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
      */
     /**
      * Sample code: Update a VM by detaching data disk.
@@ -72,7 +72,7 @@ public final class VirtualMachinesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
      */
     /**
      * Sample code: Update a VM by force-detaching data disk.

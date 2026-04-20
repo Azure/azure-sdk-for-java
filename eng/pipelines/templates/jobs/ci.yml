@@ -434,6 +434,9 @@ jobs:
         parameters:
           npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - task: PowerShell@2
         displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
@@ -444,9 +447,6 @@ jobs:
             -RegenerationType 'All'
         env:
           NPM_CONFIG_USERCONFIG: $(Agent.TempDirectory)/analyze-job/.npmrc
-
-      # Authenticate with Azure Artifacts
-      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:

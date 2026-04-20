@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersDelete.json
+     * x-ms-original-file: 2026-02-01/ManagedClustersDelete.json
      */
     /**
      * Sample code: Delete Managed Cluster.
@@ -20,6 +20,6 @@ public final class ManagedClustersDeleteSamples {
         deleteManagedCluster(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
         manager.serviceClient()
             .getManagedClusters()
-            .delete("rg1", "clustername1", null, null, com.azure.core.util.Context.NONE);
+            .delete("rg1", "clustername1", null, com.azure.core.util.Context.NONE);
     }
 }

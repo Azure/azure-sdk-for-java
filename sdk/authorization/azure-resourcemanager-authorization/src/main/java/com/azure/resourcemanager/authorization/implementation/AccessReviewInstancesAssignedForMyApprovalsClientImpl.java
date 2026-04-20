@@ -116,7 +116,7 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id,
@@ -150,7 +150,7 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id, accept, context);
@@ -227,7 +227,7 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, filter,
@@ -262,7 +262,7 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, filter, accept, context)

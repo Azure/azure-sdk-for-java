@@ -15,14 +15,13 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
-import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.ListIndexersResult;
 import com.azure.search.documents.indexes.models.ListSkillsetsResult;
@@ -30,7 +29,6 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.SkillNames;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -83,13 +81,6 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new datasource or updates a datasource if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -108,7 +99,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -119,9 +109,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -151,7 +138,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -162,9 +148,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -286,7 +269,6 @@ public final class SearchIndexerClient {
      *             name: String (Required)
      *             description: String (Optional)
      *             type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *             subType: String (Optional)
      *             credentials (Required): {
      *                 connectionString: String (Optional)
      *             }
@@ -297,9 +279,6 @@ public final class SearchIndexerClient {
      *             identity (Optional): {
      *                 &#64;odata.type: String (Required)
      *             }
-     *             indexerPermissionOptions (Optional): [
-     *                 String(userIds/groupIds/rbacScope) (Optional)
-     *             ]
      *             dataChangeDetectionPolicy (Optional): {
      *                 &#64;odata.type: String (Required)
      *             }
@@ -354,53 +333,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>overwrite</td><td>Boolean</td><td>No</td><td>If false, keys or ids will be appended to existing ones. If
-     * true, only the keys or ids in this payload will be queued to be re-ingested.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     documentKeys (Optional): [
-     *         String (Optional)
-     *     ]
-     *     datasourceDocumentIds (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetDocumentsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.resetDocumentsWithResponse(name, requestOptions);
-    }
-
-    /**
      * Runs an indexer on-demand.
      *
      * @param name The name of the indexer.
@@ -419,15 +351,6 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new indexer or updates an indexer if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -509,12 +432,6 @@ public final class SearchIndexerClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -589,12 +506,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -763,12 +674,6 @@ public final class SearchIndexerClient {
      *                     &#64;odata.type: String (Required)
      *                 }
      *             }
-     *             cache (Optional): {
-     *                 id: String (Optional)
-     *                 storageConnectionString: String (Optional)
-     *                 enableReprocessing: Boolean (Optional)
-     *                 identity (Optional): (recursive schema, see identity above)
-     *             }
      *         }
      *     ]
      * }
@@ -790,15 +695,6 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new skillset in a search service or updates the skillset if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -888,12 +784,6 @@ public final class SearchIndexerClient {
      *         ]
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
      *         }
      *     }
      *     indexProjections (Optional): {
@@ -1008,12 +898,6 @@ public final class SearchIndexerClient {
      *         ]
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
      *         }
      *     }
      *     indexProjections (Optional): {
@@ -1221,12 +1105,6 @@ public final class SearchIndexerClient {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
-     *                 parameters (Optional): {
-     *                     synthesizeGeneratedKeyName: Boolean (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
      *             }
      *             indexProjections (Optional): {
      *                 selectors (Required): [
@@ -1274,45 +1152,6 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getSkillsetsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getSkillsetsWithResponse(requestOptions);
-    }
-
-    /**
-     * Creates a new datasource or updates a datasource if it already exists.
-     *
-     * @param name The name of the datasource.
-     * @param dataSource The definition of the datasource to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(String name,
-        SearchIndexerDataSourceConnection dataSource, Boolean skipIndexerResetRequirementForCache,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
-            .getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
     }
 
     /**
@@ -1431,11 +1270,15 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request.
+     * @return all datasources as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListDataSourcesResult listDataSourceConnections() {
-        return getDataSourceConnections();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections() {
+        return new PagedIterable<>(() -> {
+            Response<ListDataSourcesResult> response = listDataSourceConnectionsWithResponse(new RequestOptions());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().getDataSources(), null, null);
+        });
     }
 
     /**
@@ -1460,7 +1303,7 @@ public final class SearchIndexerClient {
      * @return response from a List Datasources request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
+    Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
         return convertResponse(getDataSourceConnectionsWithResponse(requestOptions), ListDataSourcesResult.class);
     }
 
@@ -1472,61 +1315,21 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request.
+     * @return the names of all datasources as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listDataSourceConnectionNames() {
-        return listDataSourceConnectionNamesWithResponse().getValue();
-    }
-
-    /**
-     * Lists the names of all datasources available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> listDataSourceConnectionNamesWithResponse() {
-        Response<ListDataSourcesResult> response
-            = listDataSourceConnectionsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
-        return new SimpleResponse<>(response,
-            response.getValue()
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listDataSourceConnectionNames() {
+        return new PagedIterable<>(() -> {
+            Response<ListDataSourcesResult> response
+                = listDataSourceConnectionsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+            List<String> names = response.getValue()
                 .getDataSources()
                 .stream()
                 .map(SearchIndexerDataSourceConnection::getName)
-                .collect(Collectors.toList()));
-    }
-
-    /**
-     * Lists all datasources available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListDataSourcesResult getDataSourceConnections(List<String> select) {
-        // Generated convenience method for getDataSourceConnectionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getDataSourceConnectionsWithResponse(requestOptions).getValue().toObject(ListDataSourcesResult.class);
+                .collect(Collectors.toList());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                names, null, null);
+        });
     }
 
     /**
@@ -1589,74 +1392,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resync(String name, IndexerResyncBody indexerResync) {
-        // Generated convenience method for hiddenGeneratedResyncWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        hiddenGeneratedResyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions).getValue();
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
-     * payload will be queued to be re-ingested.
-     * @param keysOrIds The keys or ids of the documents to be re-ingested. If keys are provided, the document key field
-     * must be specified in the indexer configuration. If ids are provided, the document key field is ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String name, Boolean overwrite, DocumentKeysOrIds keysOrIds) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (overwrite != null) {
-            requestOptions.addQueryParam("overwrite", String.valueOf(overwrite), false);
-        }
-        if (keysOrIds != null) {
-            requestOptions.setBody(BinaryData.fromObject(keysOrIds));
-        }
-        resetDocumentsWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String name) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        resetDocumentsWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
      * Runs an indexer on-demand.
      *
      * @param name The name of the indexer.
@@ -1673,48 +1408,6 @@ public final class SearchIndexerClient {
         // Generated convenience method for runIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         runIndexerWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Creates a new indexer or updates an indexer if it already exists.
-     *
-     * @param name The name of the indexer.
-     * @param indexer The definition of the indexer to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndexer createOrUpdateIndexer(String name, SearchIndexer indexer, Boolean skipIndexerResetRequirementForCache,
-        Boolean disableCacheReprocessingChangeDetection, MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateIndexerWithResponse(name, BinaryData.fromObject(indexer), requestOptions).getValue()
-            .toObject(SearchIndexer.class);
     }
 
     /**
@@ -1824,44 +1517,20 @@ public final class SearchIndexerClient {
     /**
      * Lists all indexers available for a search service.
      *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request.
+     * @return all indexers as paginated response with {@link PagedIterable}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListIndexersResult getIndexers(List<String> select) {
-        // Generated convenience method for getIndexersWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getIndexersWithResponse(requestOptions).getValue().toObject(ListIndexersResult.class);
-    }
-
-    /**
-     * Lists all indexers available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListIndexersResult listIndexers() {
-        return getIndexers();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexer> listIndexers() {
+        return new PagedIterable<>(() -> {
+            Response<ListIndexersResult> response = listIndexersWithResponse(new RequestOptions());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().getIndexers(), null, null);
+        });
     }
 
     /**
@@ -1885,41 +1554,30 @@ public final class SearchIndexerClient {
      * @return response from a List Indexers request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
+    Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
         return convertResponse(getIndexersWithResponse(requestOptions), ListIndexersResult.class);
     }
 
     /**
-     * Lists all indexer names available for a search service.
+     * Lists the names of all indexers available for a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request.
+     * @return the names of all indexers as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listIndexerNames() {
-        return listIndexerNamesWithResponse().getValue();
-    }
-
-    /**
-     * Lists all indexer names available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> listIndexerNamesWithResponse() {
-        Response<ListIndexersResult> response
-            = listIndexersWithResponse(new RequestOptions().addQueryParam("$select", "name"));
-        return new SimpleResponse<>(response,
-            response.getValue().getIndexers().stream().map(SearchIndexer::getName).collect(Collectors.toList()));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listIndexerNames() {
+        return new PagedIterable<>(() -> {
+            Response<ListIndexersResult> response
+                = listIndexersWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+            List<String> names
+                = response.getValue().getIndexers().stream().map(SearchIndexer::getName).collect(Collectors.toList());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                names, null, null);
+        });
     }
 
     /**
@@ -1980,49 +1638,6 @@ public final class SearchIndexerClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetIndexerStatusWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerStatus.class);
-    }
-
-    /**
-     * Creates a new skillset in a search service or updates the skillset if it already exists.
-     *
-     * @param name The name of the skillset.
-     * @param skillset The skillset containing one or more skills to create or update in a search service.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of skills.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndexerSkillset createOrUpdateSkillset(String name, SearchIndexerSkillset skillset,
-        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateSkillsetWithResponse(name, BinaryData.fromObject(skillset), requestOptions).getValue()
-            .toObject(SearchIndexerSkillset.class);
     }
 
     /**
@@ -2133,34 +1748,6 @@ public final class SearchIndexerClient {
     /**
      * List all skillsets in a search service.
      *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSkillsetsResult getSkillsets(List<String> select) {
-        // Generated convenience method for getSkillsetsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getSkillsetsWithResponse(requestOptions).getValue().toObject(ListSkillsetsResult.class);
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2184,11 +1771,15 @@ public final class SearchIndexerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request.
+     * @return all skillsets as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListSkillsetsResult listSkillsets() {
-        return getSkillsets();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexerSkillset> listSkillsets() {
+        return new PagedIterable<>(() -> {
+            Response<ListSkillsetsResult> response = listSkillsetsWithResponse(new RequestOptions());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue().getSkillsets(), null, null);
+        });
     }
 
     /**
@@ -2213,45 +1804,33 @@ public final class SearchIndexerClient {
      * @return response from a list skillset request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListSkillsetsResult> listSkillsetsWithResponse(RequestOptions requestOptions) {
+    Response<ListSkillsetsResult> listSkillsetsWithResponse(RequestOptions requestOptions) {
         return convertResponse(getSkillsetsWithResponse(requestOptions), ListSkillsetsResult.class);
     }
 
     /**
-     * List the names of all skillsets in a search service.
+     * Lists the names of all skillsets in a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request.
+     * @return the names of all skillsets as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listSkillsetNames() {
-        return listSkillsetNamesWithResponse().getValue();
-    }
-
-    /**
-     * List the names of all skillsets in a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> listSkillsetNamesWithResponse() {
-        Response<ListSkillsetsResult> response
-            = listSkillsetsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
-        return new SimpleResponse<>(response,
-            response.getValue()
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listSkillsetNames() {
+        return new PagedIterable<>(() -> {
+            Response<ListSkillsetsResult> response
+                = listSkillsetsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+            List<String> names = response.getValue()
                 .getSkillsets()
                 .stream()
                 .map(SearchIndexerSkillset::getName)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                names, null, null);
+        });
     }
 
     /**
@@ -2273,26 +1852,6 @@ public final class SearchIndexerClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedCreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSkills(String name, SkillNames skillNames) {
-        // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions).getValue();
     }
 
     /**
@@ -2421,41 +1980,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resyncWithResponse(String name, IndexerResyncBody indexerResync,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions);
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetSkillsWithResponse(String name, SkillNames skillNames, RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions);
-    }
-
-    /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2465,7 +1989,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2476,9 +1999,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2526,7 +2046,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2537,9 +2056,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2569,7 +2085,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2580,9 +2095,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2618,36 +2130,6 @@ public final class SearchIndexerClient {
     Response<BinaryData> hiddenGeneratedCreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
         RequestOptions requestOptions) {
         return this.serviceClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions);
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     options (Optional): [
-     *         String(permissions) (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> hiddenGeneratedResyncWithResponse(String name, BinaryData indexerResync,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resyncWithResponse(name, indexerResync, requestOptions);
     }
 
     /**
@@ -2722,12 +2204,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2820,12 +2296,6 @@ public final class SearchIndexerClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -2901,12 +2371,6 @@ public final class SearchIndexerClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -2934,16 +2398,8 @@ public final class SearchIndexerClient {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
-     *         usedSeconds: long (Required)
-     *         remainingSeconds: Long (Optional)
-     *         beginningTime: OffsetDateTime (Required)
-     *         endingTime: OffsetDateTime (Required)
-     *     }
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
-     *         statusDetail: String(resetDocs/resync) (Optional)
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
      *         errorMessage: String (Optional)
      *         startTime: OffsetDateTime (Optional)
      *         endTime: OffsetDateTime (Optional)
@@ -2978,21 +2434,6 @@ public final class SearchIndexerClient {
      *         maxRunTime: Duration (Optional)
      *         maxDocumentExtractionSize: Long (Optional)
      *         maxDocumentContentCharactersToExtract: Long (Optional)
-     *     }
-     *     currentState (Optional): {
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
-     *         allDocsInitialTrackingState: String (Optional)
-     *         allDocsFinalTrackingState: String (Optional)
-     *         resetDocsInitialTrackingState: String (Optional)
-     *         resetDocsFinalTrackingState: String (Optional)
-     *         resyncInitialTrackingState: String (Optional)
-     *         resyncFinalTrackingState: String (Optional)
-     *         resetDocumentKeys (Optional): [
-     *             String (Optional)
-     *         ]
-     *         resetDatasourceDocumentIds (Optional): [
-     *             String (Optional)
-     *         ]
      *     }
      * }
      * }
@@ -3093,12 +2534,6 @@ public final class SearchIndexerClient {
      *         ]
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
      *         }
      *     }
      *     indexProjections (Optional): {
@@ -3230,12 +2665,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -3350,12 +2779,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -3405,32 +2828,86 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Reset an existing skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skillNames (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
+     * Lists all datasources available for a search service.
      *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> hiddenGeneratedResetSkillsWithResponse(String name, BinaryData skillNames,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponse(name, skillNames, requestOptions);
+    ListDataSourcesResult getDataSourceConnections(List<String> select) {
+        // Generated convenience method for getDataSourceConnectionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getDataSourceConnectionsWithResponse(requestOptions).getValue().toObject(ListDataSourcesResult.class);
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListIndexersResult getIndexers(List<String> select) {
+        // Generated convenience method for getIndexersWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getIndexersWithResponse(requestOptions).getValue().toObject(ListIndexersResult.class);
+    }
+
+    /**
+     * List all skillsets in a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListSkillsetsResult getSkillsets(List<String> select) {
+        // Generated convenience method for getSkillsetsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getSkillsetsWithResponse(requestOptions).getValue().toObject(ListSkillsetsResult.class);
     }
 }
