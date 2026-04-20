@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -134,12 +135,13 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = policy.process(context, next).block();
-
-        assertEquals(response, actualResponse);
-        assertTrue(context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + FIRST_TOKEN),
-            "Expected request to be signed with a session credential.");
-        verify(next, times(1)).process();
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            assertEquals(response, actualResponse);
+            assertTrue(
+                context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + FIRST_TOKEN),
+                "Expected request to be signed with a session credential.");
+            verify(next, times(1)).process();
+        }
     }
 
     @Test
@@ -160,15 +162,15 @@ public class SessionTokenCredentialPolicyTest {
             .thenReturn("Session error=session_expired");
         when(retriedResponse.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = policy.process(context, next).block();
-
-        assertEquals(retriedResponse, actualResponse);
-        assertTrue(
-            context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + SECOND_TOKEN));
-        verify(initialResponse, times(1)).close();
-        verify(next, times(1)).process();
-        verify(retryNext, times(1)).process();
-        verify(sessionClient, times(2)).createSessionAsync();
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            assertEquals(retriedResponse, actualResponse);
+            assertTrue(
+                context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + SECOND_TOKEN));
+            verify(initialResponse, times(1)).close();
+            verify(next, times(1)).process();
+            verify(retryNext, times(1)).process();
+            verify(sessionClient, times(2)).createSessionAsync();
+        }
     }
 
     @Test
@@ -189,14 +191,14 @@ public class SessionTokenCredentialPolicyTest {
             .thenReturn("Session error=session_expired");
         when(retriedResponse.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = policy.processSync(context, next);
-
-        assertEquals(retriedResponse, actualResponse);
-        assertTrue(
-            context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + SECOND_TOKEN));
-        verify(initialResponse, times(1)).close();
-        verify(next, times(1)).processSync();
-        verify(retryNext, times(1)).processSync();
+        try (HttpResponse actualResponse = policy.processSync(context, next)) {
+            assertEquals(retriedResponse, actualResponse);
+            assertTrue(
+                context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + SECOND_TOKEN));
+            verify(initialResponse, times(1)).close();
+            verify(next, times(1)).processSync();
+            verify(retryNext, times(1)).processSync();
+        }
     }
 
     @Test
@@ -219,11 +221,11 @@ public class SessionTokenCredentialPolicyTest {
         when(retriedResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
             .thenReturn("Session error=session_expired");
 
-        HttpResponse actualResponse = policy.process(context, next).block();
-
-        assertEquals(retriedResponse, actualResponse);
-        verify(retryNext, times(1)).process();
-        verify(sessionClient, times(2)).createSessionAsync();
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            assertEquals(retriedResponse, actualResponse);
+            verify(retryNext, times(1)).process();
+            verify(sessionClient, times(2)).createSessionAsync();
+        }
     }
 
     @Test
@@ -238,13 +240,13 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(forbiddenResponse));
         when(forbiddenResponse.getStatusCode()).thenReturn(403);
 
-        HttpResponse actualResponse = policy.process(context, next).block();
-
-        assertEquals(forbiddenResponse, actualResponse);
-        verify(next, times(1)).process();
-        verify(retryNext, times(0)).process();
-        verify(forbiddenResponse, times(0)).close();
-        verify(sessionClient, times(1)).createSessionAsync();
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            assertEquals(forbiddenResponse, actualResponse);
+            verify(next, times(1)).process();
+            verify(retryNext, times(0)).process();
+            verify(forbiddenResponse, times(0)).close();
+            verify(sessionClient, times(1)).createSessionAsync();
+        }
     }
 
     @Test
@@ -262,17 +264,17 @@ public class SessionTokenCredentialPolicyTest {
         when(invalidResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
             .thenReturn("Session error=session_token_invalid");
 
-        HttpResponse actualResponse = policy.process(context, next).block();
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            // Returns the 401 as-is — no retry
+            assertEquals(invalidResponse, actualResponse);
+            verify(next, times(1)).process();
+            verify(retryNext, times(0)).process();
+            verify(invalidResponse, times(0)).close();
 
-        // Returns the 401 as-is — no retry
-        assertEquals(invalidResponse, actualResponse);
-        verify(next, times(1)).process();
-        verify(retryNext, times(0)).process();
-        verify(invalidResponse, times(0)).close();
-
-        // But the session was invalidated so the next request gets a fresh session
-        StorageSessionCredential nextSession = policy.getValidSessionAsync().block();
-        assertEquals(SECOND_TOKEN, nextSession.getSessionToken());
+            // But the session was invalidated so the next request gets a fresh session
+            StorageSessionCredential nextSession = policy.getValidSessionAsync().block();
+            assertEquals(SECOND_TOKEN, nextSession.getSessionToken());
+        }
     }
 
     @Test
@@ -292,15 +294,15 @@ public class SessionTokenCredentialPolicyTest {
             .thenReturn("SessionOperationsTemporarilyUnavailable");
         when(bearerResponse.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = policy.process(context, next).block();
-
-        assertEquals(bearerResponse, actualResponse);
-        verify(unavailableResponse, times(1)).close();
-        verify(retryNext, times(1)).process();
-        // Authorization header should have been stripped so bearer policy can add its own
-        String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
-        assertTrue(authHeader == null || !authHeader.startsWith("Session"),
-            "Session auth should have been stripped but was: " + authHeader);
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            assertEquals(bearerResponse, actualResponse);
+            verify(unavailableResponse, times(1)).close();
+            verify(retryNext, times(1)).process();
+            // Authorization header should have been stripped so bearer policy can add its own
+            String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+            assertTrue(authHeader == null || !authHeader.startsWith("Session"),
+                "Session auth should have been stripped but was: " + authHeader);
+        }
     }
 
     @Test
@@ -320,14 +322,14 @@ public class SessionTokenCredentialPolicyTest {
             .thenReturn("SessionOperationsTemporarilyUnavailable");
         when(bearerResponse.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = policy.processSync(context, next);
-
-        assertEquals(bearerResponse, actualResponse);
-        verify(unavailableResponse, times(1)).close();
-        verify(retryNext, times(1)).processSync();
-        String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
-        assertTrue(authHeader == null || !authHeader.startsWith("Session"),
-            "Session auth should have been stripped but was: " + authHeader);
+        try (HttpResponse actualResponse = policy.processSync(context, next)) {
+            assertEquals(bearerResponse, actualResponse);
+            verify(unavailableResponse, times(1)).close();
+            verify(retryNext, times(1)).processSync();
+            String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+            assertTrue(authHeader == null || !authHeader.startsWith("Session"),
+                "Session auth should have been stripped but was: " + authHeader);
+        }
     }
 
     @Test
@@ -343,12 +345,12 @@ public class SessionTokenCredentialPolicyTest {
         when(busyResponse.getStatusCode()).thenReturn(503);
         when(busyResponse.getHeaderValue(HttpHeaderName.fromString("x-ms-error-code"))).thenReturn("ServerBusy");
 
-        HttpResponse actualResponse = policy.process(context, next).block();
-
-        // ServerBusy 503 is not session-specific — return as-is for retry policy to handle
-        assertEquals(busyResponse, actualResponse);
-        verify(retryNext, times(0)).process();
-        verify(busyResponse, times(0)).close();
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            // ServerBusy 503 is not session-specific — return as-is for retry policy to handle
+            assertEquals(busyResponse, actualResponse);
+            verify(retryNext, times(0)).process();
+            verify(busyResponse, times(0)).close();
+        }
     }
 
     @Test
@@ -361,12 +363,12 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = nonePolicy.process(context, next).block();
-
-        assertEquals(response, actualResponse);
-        verify(next, times(1)).process();
-        verify(sessionClient, times(0)).createSessionAsync();
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
+        try (HttpResponse actualResponse = nonePolicy.process(context, next).block()) {
+            assertEquals(response, actualResponse);
+            verify(next, times(1)).process();
+            verify(sessionClient, times(0)).createSessionAsync();
+            assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
+        }
     }
 
     @Test
@@ -379,12 +381,12 @@ public class SessionTokenCredentialPolicyTest {
         when(next.processSync()).thenReturn(response);
         when(response.getStatusCode()).thenReturn(200);
 
-        HttpResponse actualResponse = nonePolicy.processSync(context, next);
-
-        assertEquals(response, actualResponse);
-        verify(next, times(1)).processSync();
-        verify(sessionClient, times(0)).createSessionSync();
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
+        try (HttpResponse actualResponse = nonePolicy.processSync(context, next)) {
+            assertEquals(response, actualResponse);
+            verify(next, times(1)).processSync();
+            verify(sessionClient, times(0)).createSessionSync();
+            assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
+        }
     }
 
     @Test
@@ -399,7 +401,7 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
         verify(sessionClient, times(1)).createSessionAsync();
@@ -420,11 +422,11 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy next1 = mock(HttpPipelineNextPolicy.class);
         when(next1.process()).thenReturn(Mono.just(firstResponse));
 
-        HttpResponse actual1 = autoPolicy.process(context1, next1).block();
-
-        assertEquals(firstResponse, actual1);
-        verify(sessionClient, times(0)).createSessionAsync();
-        assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+        try (HttpResponse actual1 = autoPolicy.process(context1, next1).block()) {
+            assertEquals(firstResponse, actual1);
+            verify(sessionClient, times(0)).createSessionAsync();
+            assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+        }
 
         // Second request — should use session
         HttpPipelineCallContext context2 = createContext();
@@ -432,11 +434,11 @@ public class SessionTokenCredentialPolicyTest {
         when(next2.clone()).thenReturn(next2);
         when(next2.process()).thenReturn(Mono.just(secondResponse));
 
-        HttpResponse actual2 = autoPolicy.process(context2, next2).block();
-
-        assertEquals(secondResponse, actual2);
-        verify(sessionClient, times(1)).createSessionAsync();
-        assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+        try (HttpResponse actual2 = autoPolicy.process(context2, next2).block()) {
+            assertEquals(secondResponse, actual2);
+            verify(sessionClient, times(1)).createSessionAsync();
+            assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+        }
     }
 
     @Test
@@ -454,11 +456,11 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextSyncPolicy next1 = mock(HttpPipelineNextSyncPolicy.class);
         when(next1.processSync()).thenReturn(firstResponse);
 
-        HttpResponse actual1 = autoPolicy.processSync(context1, next1);
-
-        assertEquals(firstResponse, actual1);
-        verify(sessionClient, times(0)).createSessionSync();
-        assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+        try (HttpResponse actual1 = autoPolicy.processSync(context1, next1)) {
+            assertEquals(firstResponse, actual1);
+            verify(sessionClient, times(0)).createSessionSync();
+            assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+        }
 
         // Second request — session signed
         HttpPipelineCallContext context2 = createContext();
@@ -466,11 +468,11 @@ public class SessionTokenCredentialPolicyTest {
         when(next2.clone()).thenReturn(next2);
         when(next2.processSync()).thenReturn(secondResponse);
 
-        HttpResponse actual2 = autoPolicy.processSync(context2, next2);
-
-        assertEquals(secondResponse, actual2);
-        verify(sessionClient, times(1)).createSessionSync();
-        assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+        try (HttpResponse actual2 = autoPolicy.processSync(context2, next2)) {
+            assertEquals(secondResponse, actual2);
+            verify(sessionClient, times(1)).createSessionSync();
+            assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+        }
     }
 
     private SessionTokenCredentialPolicy createPolicy(SessionMode mode) {
@@ -523,7 +525,7 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
             "GetBlob request should be signed with session auth");
@@ -538,7 +540,7 @@ public class SessionTokenCredentialPolicyTest {
 
         when(next.process()).thenReturn(Mono.just(response));
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
             "PUT request should not be signed with session auth");
@@ -554,7 +556,7 @@ public class SessionTokenCredentialPolicyTest {
 
         when(next.process()).thenReturn(Mono.just(response));
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
             "ListBlobs request (restype=container&comp=list) should not be signed with session auth");
@@ -570,7 +572,7 @@ public class SessionTokenCredentialPolicyTest {
 
         when(next.process()).thenReturn(Mono.just(response));
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
             "GetBlobProperties (comp=metadata) should not be signed with session auth");
@@ -589,7 +591,7 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
             "GetBlob with snapshot should still use session auth");
@@ -604,7 +606,7 @@ public class SessionTokenCredentialPolicyTest {
 
         when(next.process()).thenReturn(Mono.just(response));
 
-        policy.process(context, next).block();
+        policy.process(context, next).block().close();
 
         assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
             "Container-level GET (restype=container) should not use session auth");
@@ -622,14 +624,14 @@ public class SessionTokenCredentialPolicyTest {
             new HttpRequest(HttpMethod.PUT, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
         HttpPipelineNextPolicy putNext = mock(HttpPipelineNextPolicy.class);
         when(putNext.process()).thenReturn(Mono.just(response));
-        autoPolicy.process(putContext, putNext).block();
+        autoPolicy.process(putContext, putNext).block().close();
 
         // Second request: GET blob — should be first GetBlob, so AUTO returns false (bearer)
         HttpPipelineCallContext getContext1
             = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
         HttpPipelineNextPolicy getNext1 = mock(HttpPipelineNextPolicy.class);
         when(getNext1.process()).thenReturn(Mono.just(response));
-        autoPolicy.process(getContext1, getNext1).block();
+        Objects.requireNonNull(autoPolicy.process(getContext1, getNext1).block()).close();
 
         assertNull(getContext1.getHttpRequest().getHeaders().getValue(authHeaderName),
             "First GetBlob in AUTO mode should use bearer (counter not advanced by PUT)");
@@ -641,7 +643,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy getNext2 = mock(HttpPipelineNextPolicy.class);
         when(getNext2.clone()).thenReturn(getNext2);
         when(getNext2.process()).thenReturn(Mono.just(response));
-        autoPolicy.process(getContext2, getNext2).block();
+        Objects.requireNonNull(autoPolicy.process(getContext2, getNext2).block()).close();
 
         assertTrue(getContext2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
             "Second GetBlob in AUTO mode should use session auth");
@@ -656,7 +658,7 @@ public class SessionTokenCredentialPolicyTest {
 
         when(next.process()).thenReturn(Mono.just(response));
 
-        policy.process(context, next).block();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
             "ALWAYS mode should still skip session auth for non-GetBlob (DELETE) requests");
@@ -675,7 +677,7 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
             "GetBlob on IP-style endpoint should use session auth");
