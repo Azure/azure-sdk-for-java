@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-06-06)
+## 2.0.0 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +11,10 @@
 
 - `TranslationTarget.setTone` and `TranslationTarget.setGender` now accept `TranslationTone` and `TranslationGender` enums instead of `String`.
 - Removed `grade` property from `TranslationTarget`.
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 1.1.8 (2026-01-29)
 
