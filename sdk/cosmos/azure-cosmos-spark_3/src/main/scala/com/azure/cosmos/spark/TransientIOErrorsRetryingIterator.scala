@@ -275,7 +275,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   }
 }
 
-private object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
+private[spark] object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
   private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
 
   val executorService: ExecutorService = new ThreadPoolExecutor(

@@ -10,7 +10,7 @@ import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.time.Duration
-import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
+import java.util.concurrent.TimeoutException
 import scala.concurrent.{Await, ExecutionContext, Future}
 
 // scalastyle:off underscore.import
@@ -174,21 +174,5 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
 }
 
 private object TransientIOErrorsRetryingReadManyIterator extends BasicLoggingTrait {
-  private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
-
-  val executorService: ExecutorService = new ThreadPoolExecutor(
-    maxConcurrency,
-    maxConcurrency,
-    0L,
-    TimeUnit.MILLISECONDS,
-    // A synchronous queue does not have any internal capacity, not even a capacity of one.
-    new SynchronousQueue(),
-    SparkUtils.daemonThreadFactory(),
-    // if all worker threads are busy,
-    // this policy makes the caller thread execute the task.
-    // This provides a simple feedback control mechanism that will slow down the rate that new tasks are submitted.
-    new ThreadPoolExecutor.CallerRunsPolicy()
-  )
-
-  val executionContext = ExecutionContext.fromExecutorService(executorService)
+  val executionContext: ExecutionContext = TransientIOErrorsRetryingIterator.executionContext
 }

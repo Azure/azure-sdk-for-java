@@ -11,6 +11,7 @@ import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInterna
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -195,9 +196,9 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
   }
 
   // Pass the full PK list to the SDK (which batches per physical partition internally).
-  // On transient I/O failures the retry iterator tracks pages already emitted upstream
-  // and skips them on replay; if a failure occurs mid-page (after items from that page have been
-  // emitted) the task fails rather than risking row duplication.
+  // On transient I/O failures the retry iterator re-creates the underlying flux from the
+  // continuation token of the last fully-committed page, matching the pattern used by
+  // TransientIOErrorsRetryingIterator for queries and change feed.
   private val isClosed = new AtomicBoolean(false)
   private var iteratorOpt: Option[CloseableSparkRowItemIterator] = None
 
@@ -209,11 +210,22 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
           EmptySparkRowItemIterator
         } else {
           new CloseableSparkRowItemIterator {
+            private val customQueryOpt = readConfig.customQuery.map(_.toSqlQuerySpec)
+
+            // Factory that creates a CosmosPagedFlux from an optional continuation token.
+            // On the first call continuationToken is null (start from scratch); on retry
+            // it is the continuation token from the last fully-drained page.
+            private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (_: String) =>
+              customQueryOpt match {
+                case Some(query) =>
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, readManyOptions, classOf[SparkRowItem])
+                case None =>
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, readManyOptions, classOf[SparkRowItem])
+              }
+            }
+
             private val delegate = new TransientIOErrorsRetryingReadManyByPartitionKeyIterator[SparkRowItem](
-              cosmosAsyncContainer,
-              pkList,
-              readConfig.customQuery.map(_.toSqlQuerySpec),
-              readManyOptions,
+              fluxFactory,
               readConfig.maxItemCount,
               readConfig.prefetchBufferSize,
               operationContextAndListenerTuple,

@@ -3,32 +3,37 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
+import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.OperationCancelledException
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.models.{CosmosReadManyRequestOptions, FeedResponse, PartitionKey, SqlQuerySpec}
+import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.util.CosmosPagedIterable
+import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
 
-import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
-import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.TimeoutException
+import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.Random
 import scala.util.control.Breaks
 
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
 /**
- * Retry-safe iterator for readManyByPartitionKeys. The full partition-key list is passed to the
- * SDK in a single call - the SDK is responsible for fan-out and per-physical-partition batching
- * (see Configs.getReadManyByPkMaxBatchSize()). This iterator therefore wraps a single
- * CosmosPagedIterable and, on transient I/O failures, re-creates the underlying flux and
- * skips the pages that were already emitted upstream so no row is delivered twice.
+ * Retry-safe iterator for readManyByPartitionKeys that uses continuation-token-based
+ * replay (matching the pattern of TransientIOErrorsRetryingIterator).
+ *
+ * On transient I/O failures the iterator re-creates the underlying CosmosPagedFlux from the
+ * continuation token of the last fully-committed page. A page is "committed" only after all
+ * its items have been drained by the caller; the continuation token is captured from each
+ * FeedResponse and used as the resume point on retry. This avoids the correctness issues of
+ * page-count-based skipping (where the server is not guaranteed to return the same page
+ * boundaries across requests).
  */
 private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSparkRow]
 (
-  val container: CosmosAsyncContainer,
-  val partitionKeys: java.util.List[PartitionKey],
-  val customQuery: Option[SqlQuerySpec],
-  val queryOptions: CosmosReadManyRequestOptions,
+  val cosmosPagedFluxFactory: String => CosmosPagedFlux[TSparkRow],
   val pageSize: Int,
   val pagePrefetchBufferSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple],
@@ -43,6 +48,9 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     scala.concurrent.duration.SECONDS)
 
   private val rnd = Random
+  // scalastyle:off null
+  private val lastContinuationToken = new AtomicReference[String](null)
+  // scalastyle:on null
   private val retryCount = new AtomicLong(0)
   private lazy val operationContextString = operationContextAndListener match {
     case Some(o) => if (o.getOperationContext != null) {
@@ -52,17 +60,6 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     }
     case None => "n/a"
   }
-
-  // Number of pages that have been fully emitted upstream. On retry, we recreate the flux
-  // and skip this many pages before emitting any item, so already-delivered rows are not
-  // re-emitted. A page is "committed" as soon as we surface its first item to the caller -
-  // subsequent failures while still inside that page cannot be recovered from without
-  // risking duplication, so we fail fast in that case.
-  private var pagesCommitted: Long = 0
-  // Whether the currently-buffered page has emitted at least one item. If true, we have
-  // passed the point of no return for this page: any transient failure here must surface,
-  // because we cannot partially-skip within a page on retry.
-  private var currentPagePartiallyConsumed: Boolean = false
 
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
@@ -88,39 +85,18 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
-          val pagedFlux = customQuery match {
-            case Some(query) =>
-              container.readManyByPartitionKeys(partitionKeys, query, queryOptions, classType)
-            case None =>
-              container.readManyByPartitionKeys(partitionKeys, queryOptions, classType)
-          }
-
-          val rawIterator = new CosmosPagedIterable[TSparkRow](
-            pagedFlux,
-            pageSize,
-            pagePrefetchBufferSize
+          val newPagedFlux = cosmosPagedFluxFactory.apply(lastContinuationToken.get)
+          currentFeedResponseIterator = Some(
+            new CosmosPagedIterable[TSparkRow](
+              newPagedFlux,
+              pageSize,
+              pagePrefetchBufferSize
+            )
+              .iterableByPage()
+              .iterator
+              .asScala
+              .buffered
           )
-            .iterableByPage()
-            .iterator
-
-          // Skip pages already emitted upstream (replay-safe retry).
-          var skipped: Long = 0
-          while (skipped < pagesCommitted && rawIterator.hasNext) {
-            rawIterator.next()
-            skipped += 1
-          }
-          if (skipped < pagesCommitted) {
-            // The server returned fewer pages than before - cannot safely replay.
-            // Surface a clean error rather than silently emitting a truncated result.
-            throw new IllegalStateException(
-              s"readManyByPartitionKeys retry replay failed: expected to skip $pagesCommitted " +
-                s"already-emitted pages but only $skipped were available. Context: $operationContextString")
-          }
-
-          // scalastyle:off underscore.import
-          import scala.collection.JavaConverters._
-          // scalastyle:on underscore.import
-          currentFeedResponseIterator = Some(rawIterator.asScala.buffered)
 
           currentFeedResponseIterator.get
       }
@@ -134,13 +110,13 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
       } catch {
         case endToEndTimeoutException: OperationCancelledException =>
           val message = s"End-to-end timeout hit when trying to retrieve the next page. " +
-            s"Context: $operationContextString"
+            s"ContinuationToken: $lastContinuationToken, Context: $operationContextString"
           logError(message, throwable = endToEndTimeoutException)
           throw endToEndTimeoutException
 
         case timeoutException: TimeoutException =>
           val message = s"Attempting to retrieve the next page timed out. " +
-            s"Context: $operationContextString"
+            s"ContinuationToken: $lastContinuationToken, Context: $operationContextString"
           logError(message, timeoutException)
           val exception = new OperationCancelledException(message, null)
           exception.setStackTrace(timeoutException.getStackTrace)
@@ -156,23 +132,18 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
             operationContextAndListener.get.getOperationContext,
             feedResponse)
         }
-        // scalastyle:off underscore.import
-        import scala.collection.JavaConverters._
-        // scalastyle:on underscore.import
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
+        lastContinuationToken.set(feedResponse.getContinuationToken)
 
         if (iteratorCandidate.hasNext) {
           currentItemIterator = Some(iteratorCandidate)
-          currentPagePartiallyConsumed = false
           Some(true)
         } else {
-          // empty page - count it as committed (no items to replay) and try again
-          pagesCommitted += 1
+          // empty page interleaved - attempt to get next FeedResponse
           None
         }
       } else {
         // Flux exhausted
-        currentFeedResponseIterator = None
         Some(false)
       }
     }
@@ -183,9 +154,6 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
       case Some(iterator) => if (iterator.hasNext) {
         true
       } else {
-        // Entire page drained -> it is now committed for replay-skipping purposes.
-        pagesCommitted += 1
-        currentPagePartiallyConsumed = false
         currentItemIterator = None
         false
       }
@@ -194,15 +162,11 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
   }
 
   override def next(): TSparkRow = {
-    executeWithRetry("next", () => {
-      val value = currentItemIterator.get.next()
-      currentPagePartiallyConsumed = true
-      value
-    })
+    currentItemIterator.get.next()
   }
 
   override def head: TSparkRow = {
-    executeWithRetry("head", () => currentItemIterator.get.head)
+    currentItemIterator.get.head
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
@@ -221,17 +185,6 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
         catch {
           case cosmosException: CosmosException =>
             if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
-              if (currentPagePartiallyConsumed) {
-                // We have already emitted items from the current page upstream. Replaying
-                // the flux would re-skip only completed pages, not items within a page -
-                // which would cause silent duplication. Fail the task instead.
-                logError(
-                  s"Transient failure in TransientIOErrorsRetryingReadManyByPartitionKeyIterator." +
-                    s"$methodName after items from the current page were already emitted - " +
-                    s"cannot safely retry without duplicating rows.",
-                  cosmosException)
-                throw cosmosException
-              }
               val retryCountSnapshot = retryCount.incrementAndGet()
               if (retryCountSnapshot > maxRetryCount) {
                 logError(
@@ -244,7 +197,7 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
                   s"Transient failure handled in " +
                     s"TransientIOErrorsRetryingReadManyByPartitionKeyIterator.$methodName -" +
                     s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms " +
-                    s"(pagesCommitted=$pagesCommitted)",
+                    s"(continuationToken=$lastContinuationToken)",
                   cosmosException)
               }
             } else {
@@ -253,7 +206,6 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
           case other: Throwable => throw other
         }
 
-        // Reset iterators; pagesCommitted is intentionally preserved so replay can skip them.
         currentItemIterator = None
         currentFeedResponseIterator = None
         Thread.sleep(retryIntervalInMs)
@@ -263,10 +215,6 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     returnValue.get
   }
 
-  //  Clean up iterator references - the underlying Reactor subscription from
-  //  CosmosPagedIterable.iterator will be cleaned up when the iterator is GC'd.
-  //  This matches the behavior of TransientIOErrorsRetryingIterator; any still-prefetched
-  //  pages are discarded with the iterator.
   override def close(): Unit = {
     currentItemIterator = None
     currentFeedResponseIterator = None
@@ -274,17 +222,5 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
 }
 
 private object TransientIOErrorsRetryingReadManyByPartitionKeyIterator extends BasicLoggingTrait {
-  private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
-
-  val executorService: ExecutorService = new ThreadPoolExecutor(
-    maxConcurrency,
-    maxConcurrency,
-    0L,
-    TimeUnit.MILLISECONDS,
-    new SynchronousQueue(),
-    SparkUtils.daemonThreadFactory(),
-    new ThreadPoolExecutor.CallerRunsPolicy()
-  )
-
-  val executionContext: ExecutionContext = ExecutionContext.fromExecutorService(executorService)
+  val executionContext: ExecutionContext = TransientIOErrorsRetryingIterator.executionContext
 }
