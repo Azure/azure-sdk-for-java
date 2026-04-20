@@ -48,7 +48,7 @@ public final class StorageSessionCredential {
         String accountName) {
         this.sessionToken = Objects.requireNonNull(sessionToken, "'sessionToken' cannot be null.");
         this.sessionKey = Objects.requireNonNull(sessionKey, "'sessionKey' cannot be null.");
-        this.expiration = Objects.requireNonNull(expiration, "'expiration' cannot be null.");
+        this.expiration = expiration != null ? expiration : OffsetDateTime.now().plusMinutes(5L);
         this.accountName = Objects.requireNonNull(accountName, "'accountName' cannot be null.");
     }
 
