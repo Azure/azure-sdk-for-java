@@ -375,6 +375,27 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void rejectsTopQuery() {
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
+        SqlQuerySpec topQuery = new SqlQuerySpec("SELECT TOP 5 * FROM c");
+
+        try {
+            singlePkContainer.readManyByPartitionKeys(pkValues, topQuery, null, ObjectNode.class)
+                .stream().collect(Collectors.toList());
+            fail("Should have thrown IllegalArgumentException for TOP query");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("TOP");
+        }
+    }
+
+    // DCOUNT, standalone LIMIT, and hybrid/vector/full-text search cannot be tested against the
+    // emulator: DCOUNT is not recognized as a built-in function, standalone LIMIT is not valid
+    // Cosmos SQL syntax (only valid with OFFSET, already covered by rejectsOffsetQuery), and
+    // hybrid search requires vector indexes. All three are covered by unit tests in
+    // ReadManyByPartitionKeyQueryPlanValidationTest (rejectsDCountQueryPlan, rejectsLimitQueryPlan,
+    // rejectsHybridSearchQueryPlanWithoutDereferencingNullQueryInfo).
+
 
 
     //endregion

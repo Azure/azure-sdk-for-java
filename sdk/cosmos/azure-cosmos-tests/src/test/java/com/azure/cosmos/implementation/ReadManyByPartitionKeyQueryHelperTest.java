@@ -507,6 +507,52 @@ public class ReadManyByPartitionKeyQueryHelperTest {
 
     //endregion
 
+    //region PartitionKey.NONE query generation tests
+
+    @Test(groups = { "unit" })
+    public void singlePk_nonePartitionKey_generatesNotIsDefined() {
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Collections.singletonList(PartitionKey.NONE);
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
+
+        assertThat(result.getQueryText()).contains("NOT IS_DEFINED(c[\"mypk\"])");
+        assertThat(result.getParameters()).isEmpty();
+    }
+
+    @Test(groups = { "unit" })
+    public void singlePk_mixedNoneAndNormal_generatesCombinedFilter() {
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Arrays.asList(new PartitionKey("pk1"), PartitionKey.NONE);
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
+
+        assertThat(result.getQueryText()).contains("IN (");
+        assertThat(result.getQueryText()).contains("NOT IS_DEFINED(c[\"mypk\"])");
+        assertThat(result.getQueryText()).contains("OR");
+    }
+
+    @Test(groups = { "unit" })
+    public void hpk_nonePartitionKey_generatesNotIsDefinedForAllPaths() {
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Collections.singletonList(PartitionKey.NONE);
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
+
+        assertThat(result.getQueryText()).contains("NOT IS_DEFINED(c[\"city\"])");
+        assertThat(result.getQueryText()).contains("NOT IS_DEFINED(c[\"zipcode\"])");
+        assertThat(result.getQueryText()).contains("AND");
+        assertThat(result.getParameters()).isEmpty();
+    }
+
+    //endregion
+
     //region helpers
     private PartitionKeyDefinition createSinglePkDefinition(String path) {
         PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
