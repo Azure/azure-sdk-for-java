@@ -247,13 +247,27 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
     }
   }
 
-  override def next(): Boolean = getOrCreateIterator.hasNext
+  private var currentRow: Option[Row] = None
 
-  override def get(): InternalRow = {
-    cosmosRowConverter.fromRowToInternalRow(getOrCreateIterator.next().row, rowSerializer)
+  override def next(): Boolean = {
+    val hasMore = getOrCreateIterator.hasNext
+    if (hasMore) {
+      currentRow = Some(getOrCreateIterator.next().row)
+    } else {
+      currentRow = None
+    }
+    hasMore
   }
 
-  def getCurrentRow(): Row = getOrCreateIterator.next().row
+  override def get(): InternalRow = {
+    cosmosRowConverter.fromRowToInternalRow(
+      currentRow.getOrElse(throw new NoSuchElementException("No current row - next() must be called first")),
+      rowSerializer)
+  }
+
+  def getCurrentRow(): Row = {
+    currentRow.getOrElse(throw new NoSuchElementException("No current row - next() must be called first"))
+  }
 
   override def close(): Unit = {
     if (isClosed.compareAndSet(false, true)) {
