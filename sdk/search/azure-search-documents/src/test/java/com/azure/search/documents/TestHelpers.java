@@ -410,7 +410,7 @@ public final class TestHelpers {
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
-            searchIndexClient.createIndex(createTestIndex(indexName, baseIndex));
+            searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
 
             if (indexData != null) {
                 uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
