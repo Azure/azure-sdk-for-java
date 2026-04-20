@@ -32,7 +32,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.implementation.util.SessionOptions;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
@@ -93,7 +93,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private SessionMode sessionMode;
+    private SessionOptions sessionOptions;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -191,18 +191,20 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         if (httpPipeline != null) {
             return httpPipeline;
         }
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(sessionMode)
-            .setContainerName(containerName)
-            .setServiceVersion(serviceVersion);
+        SessionOptions effectiveOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+        effectiveOptions.setContainerName(containerName).setServiceVersion(serviceVersion);
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, sessionOptions);
+            perRetryPolicies, configuration, audience, LOGGER, effectiveOptions);
     }
 
     private void validateSessionMode() {
-        if (sessionMode != null && sessionMode != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("containerName must be set when using SessionMode." + sessionMode));
+        if (sessionOptions != null
+            && sessionOptions.getSessionMode() != null
+            && sessionOptions.getSessionMode() != SessionMode.NONE
+            && CoreUtils.isNullOrEmpty(containerName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
         }
     }
 
@@ -626,19 +628,20 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     }
 
     /**
-     * Sets the {@link SessionMode} that controls how the SDK manages session-based authentication
+     * Sets the {@link SessionOptions} that controls how the SDK manages session-based authentication
      * for this container.
      * <p>
      * Sessions amortize authentication and authorization cost across many requests by signing them
-     * with a lightweight HMAC key instead of a full bearer token. When session mode is set to a value
-     * other than {@link SessionMode#NONE}, {@link #containerName(String) containerName} must also be set.
+     * with a lightweight HMAC key instead of a full bearer token. When the session mode within the options
+     * is set to a value other than {@link SessionMode#NONE},
+     * {@link #containerName(String) containerName} must also be set.
      *
-     * @param sessionMode The session mode to use. If {@code null}, defaults to {@link SessionMode#AUTO}
+     * @param sessionOptions The session options to use. If {@code null}, defaults to {@link SessionMode#AUTO}
      * when identity-based authentication (bearer token) is configured.
      * @return the updated BlobContainerClientBuilder object.
      */
-    public BlobContainerClientBuilder sessionMode(SessionMode sessionMode) {
-        this.sessionMode = sessionMode;
+    public BlobContainerClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        this.sessionOptions = sessionOptions;
         return this;
     }
 }

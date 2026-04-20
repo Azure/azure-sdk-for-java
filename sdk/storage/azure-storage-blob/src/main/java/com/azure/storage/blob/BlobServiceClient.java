@@ -29,7 +29,7 @@ import com.azure.storage.blob.implementation.models.ServicesGetStatisticsHeaders
 import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.implementation.util.SessionOptions;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerListDetails;

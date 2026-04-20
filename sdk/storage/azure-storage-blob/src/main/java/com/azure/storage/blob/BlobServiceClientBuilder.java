@@ -30,7 +30,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.implementation.util.SessionOptions;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;

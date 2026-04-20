@@ -32,6 +32,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
