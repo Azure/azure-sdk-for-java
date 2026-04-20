@@ -26,12 +26,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesClient;
 import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourceInner;
 import com.azure.resourcemanager.monitor.implementation.models.ScheduledQueryRuleResourceCollection;
-import com.azure.resourcemanager.monitor.models.ErrorContractException;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -74,7 +74,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
@@ -82,7 +82,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
 
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
@@ -91,7 +91,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
 
         @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceInner>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
@@ -101,7 +101,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({ 200, 204 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ruleName") String ruleName,
@@ -110,7 +110,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceCollection>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
@@ -119,7 +119,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/scheduledQueryRules")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceCollection>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
@@ -127,7 +127,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -135,7 +135,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduledQueryRuleResourceCollection>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -147,7 +147,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -184,7 +184,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -219,7 +219,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource on successful completion of {@link Mono}.
      */
@@ -236,7 +236,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response}.
      */
@@ -252,7 +252,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource.
      */
@@ -268,7 +268,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -312,7 +312,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -354,7 +354,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource on successful completion of {@link Mono}.
      */
@@ -373,7 +373,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response}.
      */
@@ -390,7 +390,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource.
      */
@@ -407,7 +407,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -451,7 +451,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -493,7 +493,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource on successful completion of {@link Mono}.
      */
@@ -512,7 +512,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource along with {@link Response}.
      */
@@ -529,7 +529,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the scheduled query rule resource.
      */
@@ -545,7 +545,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -580,7 +580,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -613,7 +613,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -629,7 +629,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -644,7 +644,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -657,7 +657,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -693,7 +693,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -728,7 +728,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
      */
@@ -744,7 +744,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
      */
@@ -760,7 +760,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with
      * {@link PagedIterable}.
@@ -776,7 +776,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with
      * {@link PagedIterable}.
@@ -790,7 +790,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
     /**
      * Retrieve a scheduled query rule definitions in a subscription.
      * 
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -820,7 +820,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -846,7 +846,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
     /**
      * Retrieve a scheduled query rule definitions in a subscription.
      * 
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
      */
@@ -861,7 +861,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with {@link PagedFlux}.
      */
@@ -874,7 +874,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
     /**
      * Retrieve a scheduled query rule definitions in a subscription.
      * 
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with
      * {@link PagedIterable}.
@@ -889,7 +889,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources as paginated response with
      * {@link PagedIterable}.
@@ -904,7 +904,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -934,7 +934,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -961,7 +961,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -991,7 +991,7 @@ public final class ScheduledQueryRulesClientImpl implements InnerSupportsGet<Sch
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of scheduled query rule resources along with {@link PagedResponse} on successful
      * completion of {@link Mono}.

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.monitor.models;
 
 /**
- * Type of managed service identity. Previously undocumented values might be returned.
+ * Type of managed service identity.
  */
 public enum IdentityType {
     /**

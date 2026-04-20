@@ -14,21 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * List of private endpoint connections associated with the specified resource before version v6.
- * 
- * This model represents the standard `PrivateEndpointConnectionResourceListResult` envelope for versions v3, v4, and
- * v5. It has been deprecated for v6 and beyond.
- * 
- * Note: This is only intended for use with versions before v6. Do not use this if you are already on
- * CommonTypes.Version.v6 or beyond.
- * 
- * If you are migrating to v6 or above, use `PrivateEndpointConnectionResourceListResult` directly.
+ * List of private endpoint connection associated with the specified storage account.
  */
 @Immutable
 public final class PrivateEndpointConnectionListResult
     implements JsonSerializable<PrivateEndpointConnectionListResult> {
     /*
-     * Array of private endpoint connections.
+     * Array of private endpoint connections
      */
     private List<PrivateEndpointConnectionInner> value;
 
