@@ -22,6 +22,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -785,6 +786,54 @@ public class BuilderHelperTests {
             }
         }
         return -1;
+    }
+
+    // endregion
+
+    // region BlobContainerClientBuilder sessionOptions tests
+
+    @Test
+    public void containerBuilderWithSessionOptionsAlwaysAndContainerNameSucceeds() {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ALWAYS);
+
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .containerName("mycontainer")
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(options)
+            .buildClient());
+    }
+
+    @Test
+    public void containerBuilderWithSessionOptionsAlwaysAndNoContainerNameThrows() {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ALWAYS);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .httpClient(new NoOpHttpClient())
+                .sessionOptions(options)
+                .buildClient());
+    }
+
+    @Test
+    public void containerBuilderWithSessionOptionsNoneAndNoContainerNameSucceeds() {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.NONE);
+
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(options)
+            .buildClient());
+    }
+
+    @Test
+    public void containerBuilderWithNoSessionOptionsSucceeds() {
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .containerName("mycontainer")
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .buildClient());
     }
 
     // endregion
