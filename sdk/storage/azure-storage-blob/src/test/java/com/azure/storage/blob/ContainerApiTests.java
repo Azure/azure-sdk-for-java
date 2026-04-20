@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
@@ -2130,4 +2131,33 @@ public class ContainerApiTests extends BlobTestBase {
     //    }
 
     // Need to create a container client test here to test that sessions have been enabled and used
+
+    @Test
+    public void createSession() {
+        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
+        CreateSessionResponse response = oauthCc.createSession();
+
+        assertNotNull(response);
+        assertNotNull(response.getId());
+        assertNotNull(response.getExpiration());
+        assertNotNull(response.getCredentials());
+        assertNotNull(response.getCredentials().getSessionToken());
+        assertNotNull(response.getCredentials().getSessionKey());
+    }
+
+    @Test
+    public void createSessionWithResponse() {
+        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
+        Response<CreateSessionResponse> response = oauthCc.createSessionWithResponse(null, Context.NONE);
+
+        assertResponseStatusCode(response, 201);
+        CreateSessionResponse sessionResponse = response.getValue();
+        assertNotNull(sessionResponse);
+        assertNotNull(sessionResponse.getId());
+        assertNotNull(sessionResponse.getExpiration());
+        assertTrue(sessionResponse.getExpiration().isAfter(OffsetDateTime.now()));
+        assertNotNull(sessionResponse.getCredentials());
+        assertNotNull(sessionResponse.getCredentials().getSessionToken());
+        assertNotNull(sessionResponse.getCredentials().getSessionKey());
+    }
 }
