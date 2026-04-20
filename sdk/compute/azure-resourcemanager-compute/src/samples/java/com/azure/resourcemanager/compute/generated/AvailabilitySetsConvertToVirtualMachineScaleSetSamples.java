@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.ConvertToVirtualMachineScaleSetI
  */
 public final class AvailabilitySetsConvertToVirtualMachineScaleSetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
+     * x-ms-original-file: 2025-11-01/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
      */
     /**
      * Sample code: AvailabilitySet_ConvertToVirtualMachineScaleSet_Gen.

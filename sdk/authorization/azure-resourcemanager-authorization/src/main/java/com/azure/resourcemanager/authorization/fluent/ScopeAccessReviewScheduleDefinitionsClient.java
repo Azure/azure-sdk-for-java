@@ -22,7 +22,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +36,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,7 +49,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +64,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +77,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +92,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +107,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @param context The context to associate with this operation.
@@ -123,7 +123,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +138,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,7 +151,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -164,7 +164,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +178,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -190,7 +190,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -205,7 +205,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -217,7 +217,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -229,7 +229,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -245,7 +245,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -258,7 +258,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,7 +271,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +285,7 @@ public interface ScopeAccessReviewScheduleDefinitionsClient {
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

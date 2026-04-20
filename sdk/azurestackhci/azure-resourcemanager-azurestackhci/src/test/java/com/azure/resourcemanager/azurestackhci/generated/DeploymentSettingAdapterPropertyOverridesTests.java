@@ -12,22 +12,22 @@ public final class DeploymentSettingAdapterPropertyOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingAdapterPropertyOverrides model = BinaryData.fromString(
-            "{\"jumboPacket\":\"vvcnayr\",\"networkDirect\":\"rnxxmueed\",\"networkDirectTechnology\":\"rdvstkwqqtch\"}")
+            "{\"jumboPacket\":\"mrsreuzvxurisjnh\",\"networkDirect\":\"txifqj\",\"networkDirectTechnology\":\"xmrhu\"}")
             .toObject(DeploymentSettingAdapterPropertyOverrides.class);
-        Assertions.assertEquals("vvcnayr", model.jumboPacket());
-        Assertions.assertEquals("rnxxmueed", model.networkDirect());
-        Assertions.assertEquals("rdvstkwqqtch", model.networkDirectTechnology());
+        Assertions.assertEquals("mrsreuzvxurisjnh", model.jumboPacket());
+        Assertions.assertEquals("txifqj", model.networkDirect());
+        Assertions.assertEquals("xmrhu", model.networkDirectTechnology());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentSettingAdapterPropertyOverrides model
-            = new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("vvcnayr")
-                .withNetworkDirect("rnxxmueed")
-                .withNetworkDirectTechnology("rdvstkwqqtch");
+            = new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("mrsreuzvxurisjnh")
+                .withNetworkDirect("txifqj")
+                .withNetworkDirectTechnology("xmrhu");
         model = BinaryData.fromObject(model).toObject(DeploymentSettingAdapterPropertyOverrides.class);
-        Assertions.assertEquals("vvcnayr", model.jumboPacket());
-        Assertions.assertEquals("rnxxmueed", model.networkDirect());
-        Assertions.assertEquals("rdvstkwqqtch", model.networkDirectTechnology());
+        Assertions.assertEquals("mrsreuzvxurisjnh", model.jumboPacket());
+        Assertions.assertEquals("txifqj", model.networkDirect());
+        Assertions.assertEquals("xmrhu", model.networkDirectTechnology());
     }
 }

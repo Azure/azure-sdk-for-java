@@ -20,7 +20,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,7 +35,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,7 +48,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +63,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
     /**
      * Get access review history definition by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +77,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +93,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,7 +107,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -121,7 +121,7 @@ public interface ScopeAccessReviewHistoryDefinitionsClient {
      * Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
      * for 30 days after creation.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Only standard filters on definition name and created date are
      * supported.
      * @param context The context to associate with this operation.

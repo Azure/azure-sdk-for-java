@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DnsZonesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DnsZones model
-            = BinaryData.fromString("{\"dnsZoneName\":\"wjmy\",\"dnsForwarder\":[\"sslswtmweriof\",\"pyqs\"]}")
-                .toObject(DnsZones.class);
-        Assertions.assertEquals("wjmy", model.dnsZoneName());
-        Assertions.assertEquals("sslswtmweriof", model.dnsForwarder().get(0));
+        DnsZones model = BinaryData
+            .fromString(
+                "{\"dnsZoneName\":\"indfpwpjyl\",\"dnsForwarder\":[\"lhflsjcdhszfjvf\",\"gofel\",\"a\",\"rqmq\"]}")
+            .toObject(DnsZones.class);
+        Assertions.assertEquals("indfpwpjyl", model.dnsZoneName());
+        Assertions.assertEquals("lhflsjcdhszfjvf", model.dnsForwarder().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsZones model
-            = new DnsZones().withDnsZoneName("wjmy").withDnsForwarder(Arrays.asList("sslswtmweriof", "pyqs"));
+        DnsZones model = new DnsZones().withDnsZoneName("indfpwpjyl")
+            .withDnsForwarder(Arrays.asList("lhflsjcdhszfjvf", "gofel", "a", "rqmq"));
         model = BinaryData.fromObject(model).toObject(DnsZones.class);
-        Assertions.assertEquals("wjmy", model.dnsZoneName());
-        Assertions.assertEquals("sslswtmweriof", model.dnsForwarder().get(0));
+        Assertions.assertEquals("indfpwpjyl", model.dnsZoneName());
+        Assertions.assertEquals("lhflsjcdhszfjvf", model.dnsForwarder().get(0));
     }
 }

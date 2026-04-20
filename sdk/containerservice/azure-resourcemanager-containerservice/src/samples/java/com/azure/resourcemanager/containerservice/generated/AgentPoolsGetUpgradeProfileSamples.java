@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsGetUpgradeProfileSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/AgentPoolsGetUpgradeProfile.json
+     * x-ms-original-file: 2026-02-01/AgentPoolsGetUpgradeProfile.json
      */
     /**
      * Sample code: Get Upgrade Profile for Agent Pool.

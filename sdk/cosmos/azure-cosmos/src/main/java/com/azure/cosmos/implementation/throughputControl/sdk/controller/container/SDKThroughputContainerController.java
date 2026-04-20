@@ -183,6 +183,13 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     }
 
     private Mono<SDKThroughputContainerController> resolveContainerMaxThroughput() {
+        // When no group uses targetThroughputThreshold, there is no need to resolve the container's
+        // max throughput. Skip the query to avoid requiring throughputSettings/read permission
+        // (which AAD principals may not have).
+        if (this.throughputProvisioningScope == ThroughputProvisioningScope.NONE) {
+            return Mono.just(this);
+        }
+
         return this.throughputQueryMono
             .flatMap(maxThroughput -> {
                 this.maxContainerThroughput.set(maxThroughput);

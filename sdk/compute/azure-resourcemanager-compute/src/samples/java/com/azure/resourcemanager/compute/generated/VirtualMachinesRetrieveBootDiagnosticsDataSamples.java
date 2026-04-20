@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesRetrieveBootDiagnosticsDataSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
      */
     /**
      * Sample code: RetrieveBootDiagnosticsData of a virtual machine.
