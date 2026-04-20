@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -2173,6 +2174,42 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertNotNull(sessionResponse.getCredentials().getSessionToken());
             assertNotNull(sessionResponse.getCredentials().getSessionKey());
         }).verifyComplete();
+    }
+
+    @Test
+    public void sessionAuthUsedForGetBlobOnly() {
+        // Upload a blob using shared key auth
+        String blobName = generateBlobName();
+        ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), 7).block();
+
+        // Build a session-enabled container client with token credential
+        List<String> capturedAuthHeaders = Collections.synchronizedList(new ArrayList<>());
+        HttpPipelinePolicy capturePolicy = (context, next) -> {
+            String auth = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (auth != null) {
+                capturedAuthHeaders.add(auth);
+            }
+            return next.process();
+        };
+
+        BlobContainerAsyncClient sessionCcAsync
+            = getContainerClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl(), capturePolicy)
+                .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ALWAYS))
+                .buildAsyncClient();
+
+        // Download the blob — should use session auth
+        capturedAuthHeaders.clear();
+        sessionCcAsync.getBlobAsyncClient(blobName).downloadContent().block();
+        assertFalse(capturedAuthHeaders.isEmpty(), "Expected at least one auth header for download");
+        assertTrue(capturedAuthHeaders.get(capturedAuthHeaders.size() - 1).startsWith("Session "),
+            "GetBlob should use Session auth, got: " + capturedAuthHeaders.get(capturedAuthHeaders.size() - 1));
+
+        // List blobs — should use bearer auth, not session
+        capturedAuthHeaders.clear();
+        sessionCcAsync.listBlobs().collectList().block();
+        assertFalse(capturedAuthHeaders.isEmpty(), "Expected at least one auth header for listBlobs");
+        assertTrue(capturedAuthHeaders.get(capturedAuthHeaders.size() - 1).startsWith("Bearer "),
+            "ListBlobs should use Bearer auth, got: " + capturedAuthHeaders.get(capturedAuthHeaders.size() - 1));
     }
 
 }

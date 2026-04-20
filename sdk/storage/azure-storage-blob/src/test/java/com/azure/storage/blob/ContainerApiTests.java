@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -34,6 +35,8 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
@@ -64,6 +67,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2159,5 +2163,42 @@ public class ContainerApiTests extends BlobTestBase {
         assertNotNull(sessionResponse.getCredentials());
         assertNotNull(sessionResponse.getCredentials().getSessionToken());
         assertNotNull(sessionResponse.getCredentials().getSessionKey());
+    }
+
+    @Test
+    public void sessionAuthUsedForGetBlobOnly() {
+        // Upload a blob using shared key auth
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+
+        // Build a session-enabled container client with token credential
+        List<String> capturedAuthHeaders = new ArrayList<>();
+        HttpPipelinePolicy capturePolicy = (context, next) -> {
+            String auth = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (auth != null) {
+                capturedAuthHeaders.add(auth);
+            }
+            return next.process();
+        };
+
+        BlobContainerClient sessionCc
+            = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl(), capturePolicy)
+                .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ALWAYS))
+                .buildClient();
+
+        // Download the blob — should use session auth
+        capturedAuthHeaders.clear();
+        sessionCc.getBlobClient(blobName).downloadContent();
+        assertFalse(capturedAuthHeaders.isEmpty(), "Expected at least one auth header for download");
+        assertTrue(capturedAuthHeaders.get(capturedAuthHeaders.size() - 1).startsWith("Session "),
+            "GetBlob should use Session auth, got: " + capturedAuthHeaders.get(capturedAuthHeaders.size() - 1));
+
+        // List blobs — should use bearer auth, not session
+        capturedAuthHeaders.clear();
+        sessionCc.listBlobs().forEach(blob -> {
+        });
+        assertFalse(capturedAuthHeaders.isEmpty(), "Expected at least one auth header for listBlobs");
+        assertTrue(capturedAuthHeaders.get(capturedAuthHeaders.size() - 1).startsWith("Bearer "),
+            "ListBlobs should use Bearer auth, got: " + capturedAuthHeaders.get(capturedAuthHeaders.size() - 1));
     }
 }

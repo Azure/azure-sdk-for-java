@@ -487,9 +487,15 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     private static HttpPipelineCallContext createContext() {
+        return createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+    }
+
+    private static HttpPipelineCallContext createContextForUrl(String url) {
+        return createContextForRequest(new HttpRequest(HttpMethod.GET, url));
+    }
+
+    private static HttpPipelineCallContext createContextForRequest(HttpRequest request) {
         HttpPipelineCallContext context = mock(HttpPipelineCallContext.class);
-        HttpRequest request
-            = new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob");
         Map<String, Object> data = new ConcurrentHashMap<>();
 
         when(context.getHttpRequest()).thenReturn(request);
@@ -502,4 +508,178 @@ public class SessionTokenCredentialPolicyTest {
 
         return context;
     }
+
+    // region GetBlob-only filtering tests
+
+    @Test
+    public void getBlobRequestUsesSessionAuth() {
+        HttpPipelineCallContext context
+            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+
+        policy.process(context, next).block();
+
+        assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
+            "GetBlob request should be signed with session auth");
+    }
+
+    @Test
+    public void putBlobRequestSkipsSessionAuth() {
+        HttpPipelineCallContext context = createContextForRequest(
+            new HttpRequest(HttpMethod.PUT, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.process()).thenReturn(Mono.just(response));
+
+        policy.process(context, next).block();
+
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
+            "PUT request should not be signed with session auth");
+        verify(sessionClient, times(0)).createSessionAsync();
+    }
+
+    @Test
+    public void listBlobsRequestSkipsSessionAuth() {
+        HttpPipelineCallContext context
+            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer?restype=container&comp=list");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.process()).thenReturn(Mono.just(response));
+
+        policy.process(context, next).block();
+
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
+            "ListBlobs request (restype=container&comp=list) should not be signed with session auth");
+        verify(sessionClient, times(0)).createSessionAsync();
+    }
+
+    @Test
+    public void getBlobPropertiesRequestSkipsSessionAuth() {
+        HttpPipelineCallContext context
+            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob?comp=metadata");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.process()).thenReturn(Mono.just(response));
+
+        policy.process(context, next).block();
+
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
+            "GetBlobProperties (comp=metadata) should not be signed with session auth");
+        verify(sessionClient, times(0)).createSessionAsync();
+    }
+
+    @Test
+    public void getBlobWithSnapshotUsesSessionAuth() {
+        HttpPipelineCallContext context = createContextForUrl(
+            "https://myaccount.blob.core.windows.net/mycontainer/myblob?snapshot=2021-01-01T00:00:00Z");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+
+        policy.process(context, next).block();
+
+        assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
+            "GetBlob with snapshot should still use session auth");
+    }
+
+    @Test
+    public void containerLevelGetRequestSkipsSessionAuth() {
+        HttpPipelineCallContext context
+            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer?restype=container");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.process()).thenReturn(Mono.just(response));
+
+        policy.process(context, next).block();
+
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
+            "Container-level GET (restype=container) should not use session auth");
+        verify(sessionClient, times(0)).createSessionAsync();
+    }
+
+    @Test
+    public void autoModeCounterOnlyAdvancesOnGetBlobRequests() {
+        SessionTokenCredentialPolicy autoPolicy = createPolicy(SessionMode.AUTO);
+        HttpResponse response = mock(HttpResponse.class);
+        when(response.getStatusCode()).thenReturn(200);
+
+        // First request: PUT (non-GetBlob) — should not advance AUTO counter
+        HttpPipelineCallContext putContext = createContextForRequest(
+            new HttpRequest(HttpMethod.PUT, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
+        HttpPipelineNextPolicy putNext = mock(HttpPipelineNextPolicy.class);
+        when(putNext.process()).thenReturn(Mono.just(response));
+        autoPolicy.process(putContext, putNext).block();
+
+        // Second request: GET blob — should be first GetBlob, so AUTO returns false (bearer)
+        HttpPipelineCallContext getContext1
+            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy getNext1 = mock(HttpPipelineNextPolicy.class);
+        when(getNext1.process()).thenReturn(Mono.just(response));
+        autoPolicy.process(getContext1, getNext1).block();
+
+        assertNull(getContext1.getHttpRequest().getHeaders().getValue(authHeaderName),
+            "First GetBlob in AUTO mode should use bearer (counter not advanced by PUT)");
+
+        // Third request: GET blob — should now use session (counter was advanced by previous GetBlob)
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        HttpPipelineCallContext getContext2
+            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        HttpPipelineNextPolicy getNext2 = mock(HttpPipelineNextPolicy.class);
+        when(getNext2.clone()).thenReturn(getNext2);
+        when(getNext2.process()).thenReturn(Mono.just(response));
+        autoPolicy.process(getContext2, getNext2).block();
+
+        assertTrue(getContext2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
+            "Second GetBlob in AUTO mode should use session auth");
+    }
+
+    @Test
+    public void alwaysModeNonGetBlobSkipsSession() {
+        HttpPipelineCallContext context = createContextForRequest(
+            new HttpRequest(HttpMethod.DELETE, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(next.process()).thenReturn(Mono.just(response));
+
+        policy.process(context, next).block();
+
+        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
+            "ALWAYS mode should still skip session auth for non-GetBlob (DELETE) requests");
+        verify(sessionClient, times(0)).createSessionAsync();
+    }
+
+    @Test
+    public void ipStyleEndpointGetBlobUsesSessionAuth() {
+        HttpPipelineCallContext context
+            = createContextForUrl("https://127.0.0.1:10000/devstoreaccount1/mycontainer/myblob");
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+
+        policy.process(context, next).block();
+
+        assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
+            "GetBlob on IP-style endpoint should use session auth");
+    }
+
+    // endregion
 }
