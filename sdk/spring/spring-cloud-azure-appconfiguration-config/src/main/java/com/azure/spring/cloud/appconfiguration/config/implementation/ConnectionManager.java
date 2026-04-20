@@ -160,7 +160,7 @@ class ConnectionManager {
             if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
                 availableClients.add(clients.get(0));
             }
-        } else if (clients.size() > 0 && !configStore.isLoadBalancingEnabled()) {
+        } else if (!clients.isEmpty() && !configStore.isLoadBalancingEnabled()) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
@@ -175,10 +175,10 @@ class ConnectionManager {
             }
         }
 
-        if (availableClients.size() == 0 || configStore.isLoadBalancingEnabled()) {
+        if (availableClients.isEmpty() || configStore.isLoadBalancingEnabled()) {
             List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
 
-            if (autoFailoverEndpoints.size() > 0) {
+            if (!autoFailoverEndpoints.isEmpty()) {
                 for (String failoverEndpoint : autoFailoverEndpoints) {
                     AppConfigurationReplicaClient client = autoFailoverClients.get(failoverEndpoint);
                     if (client == null) {
@@ -192,9 +192,9 @@ class ConnectionManager {
                 }
             }
         }
-        if (clients.size() > 0 && availableClients.size() == 0) {
+        if (!clients.isEmpty() && availableClients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.DOWN;
-        } else if (clients.size() > 0) {
+        } else if (!clients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.UP;
         }
 
@@ -220,6 +220,51 @@ class ConnectionManager {
         int failedAttempt = autoFailoverClients.get(endpoint).getFailedAttempts();
         long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
         autoFailoverClients.get(endpoint).updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+    }
+
+    /**
+     * Gets the duration in milliseconds until the next client becomes available (exits backoff).
+     * Returns 0 if a client is already available, or the minimum wait time if all clients are in backoff.
+     * 
+     * @return duration in milliseconds until next client is available, or 0 if one is available now
+     */
+    long getMillisUntilNextClientAvailable() {
+        Instant now = Instant.now();
+        Instant earliestAvailable = Instant.MAX;
+
+        // Check configured clients
+        if (clients != null) {
+            for (AppConfigurationReplicaClient client : clients) {
+                Instant backoffEnd = client.getBackoffEndTime();
+                if (!backoffEnd.isAfter(now)) {
+                    return 0; // Client available now
+                }
+                if (backoffEnd.isBefore(earliestAvailable)) {
+                    earliestAvailable = backoffEnd;
+                }
+            }
+        }
+
+        // Check auto-failover clients
+        for (AppConfigurationReplicaClient client : autoFailoverClients.values()) {
+            Instant backoffEnd = client.getBackoffEndTime();
+            if (!backoffEnd.isAfter(now)) {
+                return 0; // Client available now
+            }
+            if (backoffEnd.isBefore(earliestAvailable)) {
+                earliestAvailable = backoffEnd;
+            }
+        }
+
+        // If no clients were found or no backoff times were set, avoid calling toEpochMilli on Instant.MAX.
+        if (Instant.MAX.equals(earliestAvailable)) {
+            // No clients are currently tracked; treat as no wait required.
+            return 0L;
+        }
+
+        long millisUntilNext = earliestAvailable.toEpochMilli() - now.toEpochMilli();
+        // Ensure we never return a negative duration, even in the presence of clock skew.
+        return Math.max(millisUntilNext, 0L);
     }
 
     /**

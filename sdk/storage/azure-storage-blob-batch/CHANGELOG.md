@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 12.29.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.3`.
+
+
 ## 12.31.0-beta.1 (2026-03-25)
 
 ### Features Added

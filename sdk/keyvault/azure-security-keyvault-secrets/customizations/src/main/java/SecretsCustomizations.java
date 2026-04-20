@@ -49,7 +49,7 @@ public class SecretsCustomizations extends Customization {
             .addImplementedType("ServiceVersion")
             .setJavadocComment("The versions of Azure Key Vault Secrets supported by this client library.");
 
-        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6")) {
+        for (String version : Arrays.asList("7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "2025-07-01")) {
             enumDeclaration.addEnumConstant("V" + version.replace('.', '_').replace('-', '_').toUpperCase())
                 .setJavadocComment("Service version {@code " + version + "}.")
                 .addArgument(new StringLiteralExpr(version));
@@ -70,7 +70,7 @@ public class SecretsCustomizations extends Customization {
             .setType("SecretServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link SecretServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V7_6; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V2025_07_01; }"));
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java",

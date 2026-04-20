@@ -181,16 +181,6 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
      */
     @Generated
     @Override
-    public WebKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public WebKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -206,7 +196,6 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
         jsonWriter.writeStringField("knowledgeSourceName", getKnowledgeSourceName());
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
-        jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("language", this.language);
@@ -231,7 +220,6 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
             String knowledgeSourceName = null;
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
             Float rerankerThreshold = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.WEB;
             String language = null;
@@ -247,8 +235,6 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
                     includeReferences = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeReferenceSourceData".equals(fieldName)) {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else if ("kind".equals(fieldName)) {
@@ -269,7 +255,6 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
                 = new WebKnowledgeSourceParams(knowledgeSourceName);
             deserializedWebKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedWebKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
-            deserializedWebKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
             deserializedWebKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
             deserializedWebKnowledgeSourceParams.kind = kind;
             deserializedWebKnowledgeSourceParams.language = language;

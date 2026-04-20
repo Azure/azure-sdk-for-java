@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 12.33.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.18.2`.
+
+
 ## 12.35.0-beta.1 (2026-03-25)
 
 ### Features Added

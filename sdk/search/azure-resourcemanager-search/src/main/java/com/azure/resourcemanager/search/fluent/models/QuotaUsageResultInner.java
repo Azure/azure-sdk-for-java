@@ -38,7 +38,7 @@ public final class QuotaUsageResultInner implements JsonSerializable<QuotaUsageR
     private Integer limit;
 
     /*
-     * The name of the SKU supported by Azure AI Search.
+     * The SKU name information of the current search service.
      */
     private QuotaUsageResultName name;
 
@@ -85,7 +85,7 @@ public final class QuotaUsageResultInner implements JsonSerializable<QuotaUsageR
     }
 
     /**
-     * Get the name property: The name of the SKU supported by Azure AI Search.
+     * Get the name property: The SKU name information of the current search service.
      * 
      * @return the name value.
      */

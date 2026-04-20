@@ -24,6 +24,12 @@ public final class ManagedClusterIngressProfileWebAppRouting
     private Boolean enabled;
 
     /*
+     * Configurations for Gateway API providers to be used for managed ingress with App Routing. See
+     * https://aka.ms/k8s-gateway-api for more information on the Gateway API.
+     */
+    private ManagedClusterWebAppRoutingGatewayApiImplementations gatewayApiImplementations;
+
+    /*
      * Resource IDs of the DNS zones to be associated with the Application Routing add-on. Used only when Application
      * Routing add-on is enabled. Public and private DNS zones can be in different resource groups, but all public DNS
      * zones must be in the same resource group and all private DNS zones must be in the same resource group.
@@ -67,6 +73,29 @@ public final class ManagedClusterIngressProfileWebAppRouting
      */
     public ManagedClusterIngressProfileWebAppRouting withEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the gatewayApiImplementations property: Configurations for Gateway API providers to be used for managed
+     * ingress with App Routing. See https://aka.ms/k8s-gateway-api for more information on the Gateway API.
+     * 
+     * @return the gatewayApiImplementations value.
+     */
+    public ManagedClusterWebAppRoutingGatewayApiImplementations gatewayApiImplementations() {
+        return this.gatewayApiImplementations;
+    }
+
+    /**
+     * Set the gatewayApiImplementations property: Configurations for Gateway API providers to be used for managed
+     * ingress with App Routing. See https://aka.ms/k8s-gateway-api for more information on the Gateway API.
+     * 
+     * @param gatewayApiImplementations the gatewayApiImplementations value to set.
+     * @return the ManagedClusterIngressProfileWebAppRouting object itself.
+     */
+    public ManagedClusterIngressProfileWebAppRouting
+        withGatewayApiImplementations(ManagedClusterWebAppRoutingGatewayApiImplementations gatewayApiImplementations) {
+        this.gatewayApiImplementations = gatewayApiImplementations;
         return this;
     }
 
@@ -136,6 +165,9 @@ public final class ManagedClusterIngressProfileWebAppRouting
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (gatewayApiImplementations() != null) {
+            gatewayApiImplementations().validate();
+        }
         if (nginx() != null) {
             nginx().validate();
         }
@@ -151,6 +183,7 @@ public final class ManagedClusterIngressProfileWebAppRouting
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("gatewayAPIImplementations", this.gatewayApiImplementations);
         jsonWriter.writeArrayField("dnsZoneResourceIds", this.dnsZoneResourceIds,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("nginx", this.nginx);
@@ -176,6 +209,9 @@ public final class ManagedClusterIngressProfileWebAppRouting
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterIngressProfileWebAppRouting.enabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gatewayAPIImplementations".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfileWebAppRouting.gatewayApiImplementations
+                        = ManagedClusterWebAppRoutingGatewayApiImplementations.fromJson(reader);
                 } else if ("dnsZoneResourceIds".equals(fieldName)) {
                     List<String> dnsZoneResourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterIngressProfileWebAppRouting.dnsZoneResourceIds = dnsZoneResourceIds;
