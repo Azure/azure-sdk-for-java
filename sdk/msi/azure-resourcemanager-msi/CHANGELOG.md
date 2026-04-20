@@ -1,14 +1,33 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.54.0-beta.1 (2026-04-20)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.UserAssignedIdentitiesListResult` was removed
 
-### Other Changes
+#### `models.FederatedIdentityCredentialsListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ClaimsMatchingExpression` was added
+
+* `models.AssignmentRestrictions` was added
+
+#### `models.IdentityUpdate` was modified
+
+* `assignmentRestrictions()` was added
+* `withAssignmentRestrictions(models.AssignmentRestrictions)` was added
 
 ## 2.53.7 (2026-03-30)
 
