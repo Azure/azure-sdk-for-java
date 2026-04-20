@@ -28,6 +28,7 @@ import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionMode;
@@ -216,11 +217,64 @@ public final class BuilderHelper {
     }
 
     private static SessionMode resolveSessionMode(SessionMode sessionMode, TokenCredential tokenCredential) {
+        return resolveSessionMode(sessionMode, tokenCredential != null);
+    }
+
+    /**
+     * Wraps an existing pipeline with a per-container {@link SessionTokenCredentialPolicy}.
+     * Used by {@link com.azure.storage.blob.BlobServiceClient#getBlobContainerClient(String)} to give each
+     * container its own session credential cache while sharing all other policies.
+     *
+     * @param basePipeline The service-level pipeline (used as-is for CreateSession calls).
+     * @param sessionMode The session mode. If {@code null}, defaults to AUTO when bearer auth is detected.
+     * @param endpoint The storage account endpoint.
+     * @param serviceVersion The blob service version.
+     * @param containerName The container name for session scoping.
+     * @return A new pipeline with session support, or {@code basePipeline} unchanged if sessions are not applicable.
+     */
+    public static HttpPipeline wrapWithSessionPolicy(HttpPipeline basePipeline, SessionMode sessionMode,
+        String endpoint, BlobServiceVersion serviceVersion, String containerName) {
+
+        // Detect whether the pipeline has bearer auth by scanning for the policy.
+        boolean hasBearerAuth = false;
+        int bearerIndex = -1;
+        for (int i = 0; i < basePipeline.getPolicyCount(); i++) {
+            if (basePipeline.getPolicy(i) instanceof StorageBearerTokenChallengeAuthorizationPolicy) {
+                hasBearerAuth = true;
+                bearerIndex = i;
+                break;
+            }
+        }
+
+        SessionMode effectiveMode = resolveSessionMode(sessionMode, hasBearerAuth);
+        if (effectiveMode == SessionMode.NONE || !hasBearerAuth) {
+            return basePipeline;
+        }
+
+        // The base pipeline (with bearer) serves as the bearer-only pipeline for CreateSession calls.
+        BlobSessionClient sessionClient = new BlobSessionClient(basePipeline, endpoint, serviceVersion, containerName);
+        SessionTokenCredentialPolicy sessionPolicy
+            = new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), effectiveMode);
+
+        // Build a new pipeline with session policy inserted before the bearer policy.
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        for (int i = 0; i < basePipeline.getPolicyCount(); i++) {
+            if (i == bearerIndex) {
+                policies.add(sessionPolicy);
+            }
+            policies.add(basePipeline.getPolicy(i));
+        }
+
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(basePipeline.getHttpClient())
+            .build();
+    }
+
+    private static SessionMode resolveSessionMode(SessionMode sessionMode, boolean hasBearerAuth) {
         if (sessionMode != null) {
             return sessionMode;
         }
-        // Default to AUTO when identity-based auth is configured, NONE otherwise.
-        return tokenCredential != null ? SessionMode.AUTO : SessionMode.NONE;
+        return hasBearerAuth ? SessionMode.AUTO : SessionMode.NONE;
     }
 
     /**

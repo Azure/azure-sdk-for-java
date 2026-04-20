@@ -22,7 +22,9 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.implementation.util.SessionOptions;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
@@ -33,6 +35,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -95,6 +98,7 @@ public final class BlobServiceAsyncClient {
     private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
     // clients
     private final boolean anonymousAccess;
+    private final SessionMode sessionMode;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -111,7 +115,8 @@ public final class BlobServiceAsyncClient {
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess,
+        SessionOptions sessionOptions) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -130,6 +135,7 @@ public final class BlobServiceAsyncClient {
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
+        this.sessionMode = sessionOptions.getSessionMode();
     }
 
     /**
@@ -154,7 +160,9 @@ public final class BlobServiceAsyncClient {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        return new BlobContainerAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+        HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(), sessionMode,
+            getAccountUrl(), getServiceVersion(), containerName);
+        return new BlobContainerAsyncClient(containerPipeline, getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
