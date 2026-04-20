@@ -30,13 +30,13 @@ import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.AuthenticationType;
 import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
-import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobContainerSessionInfo;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -1698,10 +1698,10 @@ public final class BlobContainerAsyncClient {
      * Creates a session scoped to this container. The session provides temporary credentials (a session token and
      * session key) that can be used to sign subsequent requests using the Shared Key protocol.
      *
-     * @return A {@link Mono} containing the {@link CreateSessionResponse} with session credentials.
+     * @return A {@link Mono} containing the {@link BlobContainerSessionInfo} with session credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateSessionResponse> createSession() {
+    public Mono<BlobContainerSessionInfo> createSession() {
         return createSessionWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -1709,10 +1709,10 @@ public final class BlobContainerAsyncClient {
      * Creates a session scoped to this container. The session provides temporary credentials (a session token and
      * session key) that can be used to sign subsequent requests using the Shared Key protocol.
      *
-     * @return A {@link Mono} containing a {@link Response} with the {@link CreateSessionResponse}.
+     * @return A {@link Mono} containing a {@link Response} with the {@link BlobContainerSessionInfo}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateSessionResponse>> createSessionWithResponse() {
+    public Mono<Response<BlobContainerSessionInfo>> createSessionWithResponse() {
         try {
             return withContext(this::createSessionWithResponse);
         } catch (RuntimeException ex) {
@@ -1720,13 +1720,23 @@ public final class BlobContainerAsyncClient {
         }
     }
 
-    Mono<Response<CreateSessionResponse>> createSessionWithResponse(Context context) {
+    Mono<Response<BlobContainerSessionInfo>> createSessionWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
         return this.azureBlobStorage.getContainers()
             .createSessionWithResponseAsync(containerName, config, null, null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .map(response -> {
+                BlobContainerSessionInfo info
+                    = new BlobContainerSessionInfo(response.getValue().getId(), response.getValue().getExpiration(),
+                        response.getValue().getCredentials() != null
+                            ? response.getValue().getCredentials().getSessionToken()
+                            : null,
+                        response.getValue().getCredentials() != null
+                            ? response.getValue().getCredentials().getSessionKey()
+                            : null);
+                return new SimpleResponse<>(response, info);
+            });
     }
 
 }

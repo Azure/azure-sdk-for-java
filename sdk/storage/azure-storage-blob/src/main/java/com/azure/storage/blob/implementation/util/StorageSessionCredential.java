@@ -27,7 +27,7 @@ import static com.azure.storage.common.Utility.urlDecode;
  * Holds session credentials (token, key, expiration) and signs requests using the Shared Key protocol.
  * The Authorization header format is: {@code Session <sessionToken>:<signature>}
  */
-public final class StorageSessionCredential {
+final class StorageSessionCredential {
 
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
 
@@ -89,7 +89,7 @@ public final class StorageSessionCredential {
         return expiration;
     }
 
-    public Boolean isExpired() {
+    public boolean isExpired() {
         return OffsetDateTime.now().isAfter(expiration);
     }
 

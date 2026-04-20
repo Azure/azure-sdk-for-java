@@ -71,7 +71,7 @@ public final class BuilderHelper {
      * authentication support.
      * <p>
      * When {@code sessionOptions} is non-null and the resolved session mode is not {@link SessionMode#NONE},
-     * and a {@code tokenCredential} is present, a {@link SessionTokenCredentialPolicy} is added after the
+     * and a {@code tokenCredential} is present, a {@link SessionTokenCredentialPolicy} is added before the
      * bearer token policy. The session policy uses a separate bearer-only pipeline for CreateSession calls.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
