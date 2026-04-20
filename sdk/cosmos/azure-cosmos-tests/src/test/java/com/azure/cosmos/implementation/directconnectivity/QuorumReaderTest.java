@@ -7,11 +7,13 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContextValidator;
 import com.azure.cosmos.implementation.DocumentServiceRequestValidator;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
@@ -648,5 +650,52 @@ public class QuorumReaderTest {
             .assertNext(validator::validate)
             .expectComplete()
             .verify(Duration.ofMillis(timeout));
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_AllReplicasThrottled_Returns429() {
+        // When all replicas return 429 during initial quorum read,
+        // the reader should propagate the 429 exception to let ResourceThrottleRetryPolicy handle it.
+        int replicaCountToRead = 2;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+
+        TransportClientWrapper transportClientWrapper = TransportClientWrapper.Builder.uriToResultBuilder()
+            .exceptionOn(primaryReplicaURI, OperationType.Read, ResourceType.Document, throttleException, true)
+            .exceptionOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, throttleException, true)
+            .exceptionOn(secondaryReplicaURIs.get(1), OperationType.Read, ResourceType.Document, throttleException, true)
+            .exceptionOn(secondaryReplicaURIs.get(2), OperationType.Read, ResourceType.Document, throttleException, true)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
+
+        StepVerifier.create(storeResponseSingle)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
+                RequestRateTooLargeException rte = (RequestRateTooLargeException) error;
+                assertThat(rte.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+            })
+            .verify(Duration.ofMillis(10000));
     }
 }

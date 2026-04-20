@@ -510,12 +510,22 @@ public class ConsistencyWriter {
 
         AtomicInteger writeBarrierRetryCount = new AtomicInteger(ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES);
         AtomicLong maxGlobalCommittedLsnReceived = new AtomicLong(0);
+        AtomicBoolean lastAttemptWasThrottled = new AtomicBoolean(false);
         return Flux.defer(() -> {
             if (barrierRequest.requestContext.timeoutHelper.isElapsed()) {
                 return Flux.error(new RequestTimeoutException());
             }
 
             if (writeBarrierRetryCount.get() == 0) {
+                if (lastAttemptWasThrottled.get()) {
+                    logger.warn("ConsistencyWriter: Write barrier failed after all retries due to consistent "
+                        + "throttling (429). Throwing RequestTimeoutException (408).");
+                    return Flux.error(
+                        new RequestTimeoutException(
+                            RMResources.RequestTimeout,
+                            null,
+                            HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED));
+                }
                 return Mono.just(false);
             }
 
@@ -551,6 +561,18 @@ public class ConsistencyWriter {
                             cosmosExceptionFromStoreResult);
                     }
 
+                    // Track whether all replicas returned 429 Too Many Requests.
+                    // For writes, we do NOT yield early - continue retries to preserve idempotency.
+                    // If all retries are exhausted due to consistent throttling, we throw 408 (RequestTimeout).
+                    if (responses != null && !responses.isEmpty()
+                        && responses.stream().allMatch(r -> r.isThrottledException)) {
+                        logger.info("ConsistencyWriter: waitForWriteBarrierAsync - All replicas returned 429 Too Many Requests. "
+                            + "Continuing retries.");
+                        lastAttemptWasThrottled.set(true);
+                    } else {
+                        lastAttemptWasThrottled.set(false);
+                    }
+
                     if (responses != null && responses.stream().anyMatch(response -> {
                         long lsnToCompare = barrierType == BarrierType.N_REGION_SYNCHRONOUS_COMMIT
                             ? response.globalNRegionCommittedLSN
@@ -579,6 +601,7 @@ public class ConsistencyWriter {
                                          responses.stream().map(StoreResult::toString).collect(Collectors.joining("; ")));
                             logger.debug("ConsistencyWriter: Highest global committed lsn received for write barrier call is {}", maxGlobalCommittedLsnReceived);
                         }
+
                         return Mono.just(Boolean.FALSE);
                     }
 

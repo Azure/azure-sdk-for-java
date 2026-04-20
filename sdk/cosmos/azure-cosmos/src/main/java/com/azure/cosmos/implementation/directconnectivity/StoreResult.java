@@ -40,6 +40,7 @@ public class StoreResult {
     final public boolean isAvoidQuorumSelectionException;
     final public Uri storePhysicalAddress;
     final public boolean isThroughputControlRequestRateTooLargeException;
+    final public boolean isThrottledException;
     final public Double backendLatencyInMs;
     final public Double retryAfterInMs;
 
@@ -85,6 +86,8 @@ public class StoreResult {
         this.itemLSN = itemLSN;
         this.sessionToken = sessionToken;
         this.isThroughputControlRequestRateTooLargeException = this.exception != null && Exceptions.isThroughputControlRequestRateTooLargeException(this.exception);
+        this.isThrottledException = this.exception != null
+                && this.exception.getStatusCode() == HttpConstants.StatusCodes.TOO_MANY_REQUESTS;
         this.backendLatencyInMs = backendLatencyInMs;
         this.retryAfterInMs = retryAfterInMs;
         this.isAvoidQuorumSelectionException = this.exception != null && Exceptions.isAvoidQuorumSelectionException(this.exception);
