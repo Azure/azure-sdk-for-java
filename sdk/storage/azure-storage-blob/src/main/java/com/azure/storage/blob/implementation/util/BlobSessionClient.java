@@ -64,7 +64,14 @@ final class BlobSessionClient {
 
     private StorageSessionCredential toCredential(Response<CreateSessionResponse> response) {
         CreateSessionResponse session = response.getValue();
+        if (session == null) {
+            throw new IllegalStateException("CreateSession response did not contain a session payload.");
+        }
+
         SessionCredentials creds = session.getCredentials();
+        if (creds == null) {
+            throw new IllegalStateException("CreateSession response did not contain HMAC session credentials.");
+        }
         return new StorageSessionCredential(creds.getSessionToken(), creds.getSessionKey(), session.getExpiration(),
             accountName);
     }
