@@ -4,14 +4,18 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.SessionMode;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -45,7 +49,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (!shouldUseSession()) {
+        if (!isGetBlobRequest(context) || !shouldUseSession()) {
             return next.process();
         }
 
@@ -83,7 +87,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        if (!shouldUseSession()) {
+        if (!isGetBlobRequest(context) || !shouldUseSession()) {
             return next.processSync();
         }
 
@@ -123,10 +127,13 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Determines whether this request should use session auth based on the configured mode.
+     * <p>
+     * This method is only called for GetBlob requests — the caller checks {@link #isGetBlobRequest} first,
+     * so the AUTO counter only advances on eligible operations.
      * <ul>
      *   <li>{@link SessionMode#NONE}: always returns false — passthrough to bearer.</li>
-     *   <li>{@link SessionMode#ALWAYS}: always returns true — session from first request.</li>
-     *   <li>{@link SessionMode#AUTO}: returns false for the first request (bearer), true thereafter.</li>
+     *   <li>{@link SessionMode#ALWAYS}: always returns true — session from first GetBlob request.</li>
+     *   <li>{@link SessionMode#AUTO}: returns false for the first GetBlob request (bearer), true thereafter.</li>
      * </ul>
      */
     private boolean shouldUseSession() {
@@ -143,6 +150,37 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             default:
                 return true;
         }
+    }
+
+    /**
+     * Returns {@code true} if the request is a GetBlob (download) operation.
+     * <p>
+     * A GetBlob request is identified as an HTTP GET to a URL with both a container name and blob name,
+     * and no {@code comp} or {@code restype} query parameters (those indicate metadata, properties,
+     * list, or other sub-operations that should use bearer auth).
+     * <p>
+     * GET requests with {@code snapshot} or {@code versionid} query parameters are still considered
+     * GetBlob operations and are eligible for session auth.
+     */
+    private static boolean isGetBlobRequest(HttpPipelineCallContext context) {
+        if (context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
+            return false;
+        }
+
+        BlobUrlParts parts = BlobUrlParts.parse(context.getHttpRequest().getUrl());
+
+        // Must target a specific blob (container + blob name present).
+        if (CoreUtils.isNullOrEmpty(parts.getBlobContainerName()) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
+            return false;
+        }
+
+        // comp= or restype= indicate sub-operations (properties, metadata, list, tags, etc.)
+        Map<String, String[]> queryParams = parts.getUnparsedParameters();
+        if (queryParams.containsKey("comp") || queryParams.containsKey("restype")) {
+            return false;
+        }
+
+        return true;
     }
 
     StorageSessionCredential getValidSessionSync() {
