@@ -89,8 +89,10 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions {@link SessionOptions} containing session mode, container name, and service version.
+     * @param sessionOptions {@link SessionOptions} containing the session mode.
      *                       Pass {@code null} to disable session support.
+     * @param containerName The container name for session scoping. Required when session is active.
+     * @param serviceVersion The service version for session creation. Required when session is active.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -98,7 +100,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ClientLogger logger, SessionOptions sessionOptions) {
+        ClientLogger logger, SessionOptions sessionOptions, String containerName, BlobServiceVersion serviceVersion) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
@@ -130,7 +132,7 @@ public final class BuilderHelper {
         }
 
         addSessionPolicyIfEnabled(policies, sessionOptions, tokenCredential, endpoint, clientOptions, httpClient,
-            audience, logger);
+            audience, logger, containerName, serviceVersion);
 
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
@@ -165,7 +167,7 @@ public final class BuilderHelper {
 
     private static void addSessionPolicyIfEnabled(List<HttpPipelinePolicy> policies, SessionOptions sessionOptions,
         TokenCredential tokenCredential, String endpoint, ClientOptions clientOptions, HttpClient httpClient,
-        BlobAudience audience, ClientLogger logger) {
+        BlobAudience audience, ClientLogger logger, String containerName, BlobServiceVersion serviceVersion) {
 
         if (sessionOptions == null || tokenCredential == null) {
             return;
@@ -176,7 +178,7 @@ public final class BuilderHelper {
             return;
         }
 
-        validateSessionOptions(sessionOptions, effectiveMode, logger);
+        validateSessionOptions(containerName, serviceVersion, effectiveMode, logger);
 
         List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(policies);
         httpsValidation(tokenCredential, "bearer token", endpoint, logger);
@@ -193,27 +195,27 @@ public final class BuilderHelper {
                 .build();
 
         SessionTokenCredentialPolicy sessionPolicy
-            = createSessionPolicy(bearerPipeline, endpoint, sessionOptions, effectiveMode);
+            = createSessionPolicy(bearerPipeline, endpoint, containerName, serviceVersion, effectiveMode);
 
         policies.add(sessionPolicy);
     }
 
-    private static void validateSessionOptions(SessionOptions sessionOptions, SessionMode effectiveMode,
-        ClientLogger logger) {
-        if (CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "containerName must be set in SessionOptions when using SessionMode." + effectiveMode));
+    private static void validateSessionOptions(String containerName, BlobServiceVersion serviceVersion,
+        SessionMode effectiveMode, ClientLogger logger) {
+        if (CoreUtils.isNullOrEmpty(containerName)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("containerName must be set when using SessionMode." + effectiveMode));
         }
-        if (sessionOptions.getServiceVersion() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "serviceVersion must be set in SessionOptions when using SessionMode." + effectiveMode));
+        if (serviceVersion == null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("serviceVersion must be set when using SessionMode." + effectiveMode));
         }
     }
 
     private static SessionTokenCredentialPolicy createSessionPolicy(HttpPipeline bearerPipeline, String endpoint,
-        SessionOptions sessionOptions, SessionMode effectiveMode) {
-        BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint,
-            sessionOptions.getServiceVersion(), sessionOptions.getContainerName());
+        String containerName, BlobServiceVersion serviceVersion, SessionMode effectiveMode) {
+        BlobSessionClient sessionClient
+            = new BlobSessionClient(bearerPipeline, endpoint, serviceVersion, containerName);
         return new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), effectiveMode);
     }
 
