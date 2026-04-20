@@ -5,6 +5,7 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -41,7 +42,8 @@ public class BlobSessionClientTests extends BlobTestBase {
 
     @Test
     public void createSessionAsyncReturnsTokenAndKey() {
-        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(ccAsync.getBlobContainerName());
+        BlobContainerAsyncClient oauthCc
+            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
         BlobSessionClient sessionClient
             = new BlobSessionClient(oauthCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
                 BlobServiceVersion.getLatest(), ccAsync.getBlobContainerName());
