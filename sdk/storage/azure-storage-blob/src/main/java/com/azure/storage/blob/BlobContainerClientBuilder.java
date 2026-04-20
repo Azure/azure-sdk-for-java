@@ -191,11 +191,9 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         if (httpPipeline != null) {
             return httpPipeline;
         }
-        SessionOptions effectiveOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
-        effectiveOptions.setContainerName(containerName).setServiceVersion(serviceVersion);
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, effectiveOptions);
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, containerName, serviceVersion);
     }
 
     private void validateSessionMode() {

@@ -153,7 +153,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER, null);
+                perRetryPolicies, configuration, audience, LOGGER, null, null, null);
     }
 
     /**
