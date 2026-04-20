@@ -199,7 +199,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.readManyItemsSpanName = "readManyItems." + this.id;
-        this.readManyByPartitionKeySpanName = "readManyByPartitionKey." + this.id;
+        this.readManyByPartitionKeySpanName = "readManyByPartitionKeys." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -1614,11 +1614,11 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      */
-    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         Class<T> classType) {
 
-        return this.readManyByPartitionKey(partitionKeys, null, null, classType);
+        return this.readManyByPartitionKeys(partitionKeys, null, null, classType);
     }
 
     /**
@@ -1633,12 +1633,12 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      */
-    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         CosmosReadManyRequestOptions requestOptions,
         Class<T> classType) {
 
-        return this.readManyByPartitionKey(partitionKeys, null, requestOptions, classType);
+        return this.readManyByPartitionKeys(partitionKeys, null, requestOptions, classType);
     }
 
     /**
@@ -1661,12 +1661,12 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      */
-    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         Class<T> classType) {
 
-        return this.readManyByPartitionKey(partitionKeys, customQuery, null, classType);
+        return this.readManyByPartitionKeys(partitionKeys, customQuery, null, classType);
     }
 
     /**
@@ -1690,7 +1690,7 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      */
-    public <T> CosmosPagedFlux<T> readManyByPartitionKey(
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         CosmosReadManyRequestOptions requestOptions,
@@ -1731,7 +1731,7 @@ public class CosmosAsyncContainer {
             if (queryRequestOptions.getMaxDegreeOfParallelism() == 0) {
                 queryRequestOptions.setMaxDegreeOfParallelism(-1);
             }
-            queryRequestOptions.setQueryName("readManyByPartitionKey");
+            queryRequestOptions.setQueryName("readManyByPartitionKeys");
             CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
             applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeySpanName);
 
@@ -1751,7 +1751,7 @@ public class CosmosAsyncContainer {
 
             return CosmosBridgeInternal
                 .getAsyncDocumentClient(this.getDatabase())
-                .readManyByPartitionKey(
+                .readManyByPartitionKeys(
                     partitionKeys,
                     customQuery,
                     BridgeInternal.getLink(this),

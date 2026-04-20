@@ -99,7 +99,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             new PartitionKey("pk1"),
             new PartitionKey("pk2"));
 
-        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(pkValues, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
         assertThat(resultList).hasSize(5); // 3 + 2
@@ -119,7 +119,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkProj"));
         SqlQuerySpec customQuery = new SqlQuerySpec("SELECT c.id, c.mypk FROM c");
 
-        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(
             pkValues, customQuery, null, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
@@ -144,7 +144,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             "SELECT * FROM c WHERE c.status = @status",
             Arrays.asList(new SqlParameter("@status", "active")));
 
-        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(
             pkValues, customQuery, null, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
@@ -160,7 +160,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
     public void singlePk_readManyByPartitionKey_emptyResults() {
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("nonExistent"));
 
-        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(pkValues, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
         assertThat(resultList).isEmpty();
@@ -179,7 +179,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             new PartitionKeyBuilder().add("Redmond").add("98053").add(1).build(),
             new PartitionKeyBuilder().add("Pittsburgh").add("15232").add(2).build());
 
-        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKeys(pkValues, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
         // Redmond/98053/1 has 2 items, Pittsburgh/15232/2 has 1 item
@@ -196,7 +196,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         List<PartitionKey> pkValues = Collections.singletonList(
             new PartitionKeyBuilder().add("Redmond").build());
 
-        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKeys(pkValues, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
         // Redmond has 3 items total (2 with 98053/1 and 1 with 12345/1)
@@ -216,7 +216,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         List<PartitionKey> pkValues = Collections.singletonList(
             new PartitionKeyBuilder().add("Redmond").add("98053").build());
 
-        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKeys(pkValues, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
         // Redmond/98053 has 2 items
@@ -267,7 +267,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
         SqlQuerySpec customQuery = new SqlQuerySpec("SELECT c.id, c.city FROM c");
 
-        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKey(
+        CosmosPagedIterable<ObjectNode> results = multiHashContainer.readManyByPartitionKeys(
             pkValues, customQuery, null, ObjectNode.class);
         List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
 
@@ -286,7 +286,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         SqlQuerySpec aggregateQuery = new SqlQuerySpec("SELECT COUNT(1) FROM c");
 
         try {
-            singlePkContainer.readManyByPartitionKey(pkValues, aggregateQuery, null, ObjectNode.class)
+            singlePkContainer.readManyByPartitionKeys(pkValues, aggregateQuery, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for aggregate query");
         } catch (IllegalArgumentException e) {
@@ -300,7 +300,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         SqlQuerySpec orderByQuery = new SqlQuerySpec("SELECT * FROM c ORDER BY c.id");
 
         try {
-            singlePkContainer.readManyByPartitionKey(pkValues, orderByQuery, null, ObjectNode.class)
+            singlePkContainer.readManyByPartitionKeys(pkValues, orderByQuery, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for ORDER BY query");
         } catch (IllegalArgumentException e) {
@@ -314,7 +314,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         SqlQuerySpec distinctQuery = new SqlQuerySpec("SELECT DISTINCT c.mypk FROM c");
 
         try {
-            singlePkContainer.readManyByPartitionKey(pkValues, distinctQuery, null, ObjectNode.class)
+            singlePkContainer.readManyByPartitionKeys(pkValues, distinctQuery, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for DISTINCT query");
         } catch (IllegalArgumentException e) {
@@ -328,7 +328,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         SqlQuerySpec groupByQuery = new SqlQuerySpec("SELECT c.mypk FROM c GROUP BY c.mypk");
 
         try {
-            singlePkContainer.readManyByPartitionKey(pkValues, groupByQuery, null, ObjectNode.class)
+            singlePkContainer.readManyByPartitionKeys(pkValues, groupByQuery, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for GROUP BY query");
         } catch (IllegalArgumentException e) {
@@ -342,7 +342,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         SqlQuerySpec groupByWithAggregateQuery = new SqlQuerySpec("SELECT c.mypk, COUNT(1) as cnt FROM c GROUP BY c.mypk");
 
         try {
-            singlePkContainer.readManyByPartitionKey(pkValues, groupByWithAggregateQuery, null, ObjectNode.class)
+            singlePkContainer.readManyByPartitionKeys(pkValues, groupByWithAggregateQuery, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for GROUP BY with aggregate query");
         } catch (IllegalArgumentException e) {
@@ -352,12 +352,12 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void rejectsNullPartitionKeyList() {
-        singlePkContainer.readManyByPartitionKey((List<PartitionKey>) null, ObjectNode.class);
+        singlePkContainer.readManyByPartitionKeys((List<PartitionKey>) null, ObjectNode.class);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void rejectsEmptyPartitionKeyList() {
-        singlePkContainer.readManyByPartitionKey(new ArrayList<>(), ObjectNode.class)
+        singlePkContainer.readManyByPartitionKeys(new ArrayList<>(), ObjectNode.class)
             .stream().collect(Collectors.toList());
     }
 
@@ -367,7 +367,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         SqlQuerySpec offsetQuery = new SqlQuerySpec("SELECT * FROM c OFFSET 0 LIMIT 10");
 
         try {
-            singlePkContainer.readManyByPartitionKey(pkValues, offsetQuery, null, ObjectNode.class)
+            singlePkContainer.readManyByPartitionKeys(pkValues, offsetQuery, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
             fail("Should have thrown IllegalArgumentException for OFFSET query");
         } catch (IllegalArgumentException e) {
@@ -402,7 +402,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
                 new PartitionKey("batchPk3"),
                 new PartitionKey("batchPk4"));
 
-            CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKey(pkValues, ObjectNode.class);
+            CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(pkValues, ObjectNode.class);
             List<FeedResponse<ObjectNode>> pages = new ArrayList<>();
             results.iterableByPage().forEach(pages::add);
             List<ObjectNode> resultList = pages.stream()
@@ -450,7 +450,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             }
         });
 
-        CosmosPagedIterable<ReadManyByPartitionKeyPojo> results = singlePkContainer.readManyByPartitionKey(
+        CosmosPagedIterable<ReadManyByPartitionKeyPojo> results = singlePkContainer.readManyByPartitionKeys(
             pkValues, options, ReadManyByPartitionKeyPojo.class);
         List<ReadManyByPartitionKeyPojo> resultList = results.stream().collect(Collectors.toList());
 

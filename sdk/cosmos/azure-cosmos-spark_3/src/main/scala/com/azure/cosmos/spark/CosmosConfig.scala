@@ -1145,7 +1145,7 @@ private object CosmosReadConfig {
     defaultValue = Some("Null"),
     parseFromStringFunction = value => value,
     helpMessage = "Determines how null values in partition key columns are treated for " +
-      "readManyByPartitionKey. 'Null' (default) maps null to a JSON null via addNullValue(), which " +
+      "readManyByPartitionKeys. 'Null' (default) maps null to a JSON null via addNullValue(), which " +
       "is appropriate when the document field exists with an explicit null value. 'None' maps null " +
       "to PartitionKey.NONE via addNoneValue(), which is only supported for single-path partition keys " +
       "and should only be used when the partition key path does not exist at all in the document. " +

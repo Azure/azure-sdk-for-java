@@ -4,7 +4,7 @@
 
 #### Features Added
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
-* Added new `readManyByPartitionKey` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. Also fixes nested partition key selector generation for `readMany` and `readAllItems`. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added new `readManyByPartitionKeys` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. Also fixes nested partition key selector generation for `readMany` and `readAllItems`. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 
 #### Breaking Changes
 

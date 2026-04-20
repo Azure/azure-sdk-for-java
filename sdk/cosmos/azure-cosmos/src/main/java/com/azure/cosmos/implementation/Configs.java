@@ -250,7 +250,7 @@ public class Configs {
     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
     public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
 
-    // readManyByPartitionKey: max number of PK values per query per physical partition
+    // readManyByPartitionKeys: max number of PK values per query per physical partition
     public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
     public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
     public static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 100;

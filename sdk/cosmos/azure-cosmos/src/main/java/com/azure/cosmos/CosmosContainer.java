@@ -551,11 +551,11 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedIterable} containing the results
      */
-    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+    public <T> CosmosPagedIterable<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         Class<T> classType) {
 
-        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, classType));
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKeys(partitionKeys, classType));
     }
 
     /**
@@ -570,12 +570,12 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedIterable} containing the results
      */
-    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+    public <T> CosmosPagedIterable<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         CosmosReadManyRequestOptions requestOptions,
         Class<T> classType) {
 
-        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, requestOptions, classType));
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKeys(partitionKeys, requestOptions, classType));
     }
 
     /**
@@ -598,12 +598,12 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedIterable} containing the results
      */
-    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+    public <T> CosmosPagedIterable<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         Class<T> classType) {
 
-        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, customQuery, classType));
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKeys(partitionKeys, customQuery, classType));
     }
 
     /**
@@ -627,13 +627,13 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a {@link CosmosPagedIterable} containing the results
      */
-    public <T> CosmosPagedIterable<T> readManyByPartitionKey(
+    public <T> CosmosPagedIterable<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         CosmosReadManyRequestOptions requestOptions,
         Class<T> classType) {
 
-        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKey(partitionKeys, customQuery, requestOptions, classType));
+        return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKeys(partitionKeys, customQuery, requestOptions, classType));
     }
 
     /**

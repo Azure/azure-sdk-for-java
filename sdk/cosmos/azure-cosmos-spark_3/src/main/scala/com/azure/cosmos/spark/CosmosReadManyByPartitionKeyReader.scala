@@ -122,7 +122,7 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
       })
   }
 
-  def readManyByPartitionKey(
+  def readManyByPartitionKeys(
     inputRdd: RDD[Row],
     pkExtraction: Row => PartitionKey,
     readerState: (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots])): DataFrame = {

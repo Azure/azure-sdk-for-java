@@ -156,7 +156,7 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
       }
     )
 
-  // Collect all PK values upfront - readManyByPartitionKey needs the full list to
+  // Collect all PK values upfront - readManyByPartitionKeys needs the full list to
   // group by physical partition (the SDK batches internally per physical partition).
   // Deduplicate using the canonical PartitionKeyInternal JSON representation so that
   // equivalent PKs built from different runtime types (Int vs Long vs Double) are

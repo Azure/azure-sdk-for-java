@@ -1,8 +1,8 @@
-# readManyByPartitionKey — Design & Implementation
+# readManyByPartitionKeys — Design & Implementation
 
 ## Overview
 
-New `readManyByPartitionKey` methods on `CosmosAsyncContainer` / `CosmosContainer` that accept a
+New `readManyByPartitionKeys` methods on `CosmosAsyncContainer` / `CosmosContainer` that accept a
 `List<PartitionKey>` (without item-id). The SDK splits the PK values by physical
 partition, generates batched streaming queries per physical partition, and returns results as
 `CosmosPagedFlux<T>` / `CosmosPagedIterable<T>`.
@@ -14,7 +14,7 @@ and additional filters. The SDK appends the auto-generated PK WHERE clause to it
 
 | Topic | Decision |
 |---|---|
-| API name | `readManyByPartitionKey` — distinct name to avoid ambiguity with existing `readMany(List<CosmosItemIdentity>)` |
+| API name | `readManyByPartitionKeys` — distinct name to avoid ambiguity with existing `readMany(List<CosmosItemIdentity>)` |
 | Return type | `CosmosPagedFlux<T>` (async) / `CosmosPagedIterable<T>` (sync) |
 | Custom query format | `SqlQuerySpec` — full query with parameters; SDK ANDs the PK filter |
 | Partial HPK | Supported from the start; prefix PKs fan out via `getOverlappingRanges` |
@@ -31,11 +31,11 @@ and additional filters. The SDK appends the auto-generated PK WHERE clause to it
 ### Step 1: New public overloads in CosmosAsyncContainer
 
 ```java
-<T> CosmosPagedFlux<T> readManyByPartitionKey(List<PartitionKey> partitionKeys, Class<T> classType)
-<T> CosmosPagedFlux<T> readManyByPartitionKey(List<PartitionKey> partitionKeys,
+<T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys, Class<T> classType)
+<T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys,
                                                CosmosReadManyRequestOptions requestOptions,
                                                Class<T> classType)
-<T> CosmosPagedFlux<T> readManyByPartitionKey(List<PartitionKey> partitionKeys,
+<T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys,
                                                SqlQuerySpec customQuery,
                                                CosmosReadManyRequestOptions requestOptions,
                                                Class<T> classType)
@@ -114,7 +114,7 @@ If the base query already has a WHERE clause:
 
 ### Step 6: Interface wiring
 
-New method `readManyByPartitionKey` added directly to `AsyncDocumentClient` interface, implemented in `RxDocumentClientImpl`. New `fetchQueryPlanForValidation` static method added to `DocumentQueryExecutionContextFactory` for custom query validation.
+New method `readManyByPartitionKeys` added directly to `AsyncDocumentClient` interface, implemented in `RxDocumentClientImpl`. New `fetchQueryPlanForValidation` static method added to `DocumentQueryExecutionContextFactory` for custom query validation.
 
 ### Step 7: Configuration
 
@@ -135,7 +135,7 @@ New configurable batch size via system property `COSMOS.READ_MANY_BY_PK_MAX_BATC
 - `tryParsePartitionKey(serialized: String): Option[PartitionKey]` — deserialize; returns `None` for malformed input including invalid JSON (wrapped in `scala.util.Try`).
 - When `spark.cosmos.read.readManyByPk.nullHandling=None` is used, hierarchical partition keys with null components are rejected with a clear error because `PartitionKey.NONE` cannot be used with multiple paths.
 
-### Step 10: `CosmosItemsDataSource.readManyByPartitionKey`
+### Step 10: `CosmosItemsDataSource.readManyByPartitionKeys`
 
 Static entry points that accept a DataFrame and Cosmos config. PK extraction supports two modes:
 1. **UDF-produced column**: DataFrame contains `_partitionKeyIdentity` column (from `GetCosmosPartitionKeyValue` UDF).

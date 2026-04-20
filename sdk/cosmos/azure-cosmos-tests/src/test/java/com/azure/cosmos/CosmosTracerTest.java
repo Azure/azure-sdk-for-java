@@ -925,14 +925,14 @@ public class CosmosTracerTest extends TestSuiteBase {
             .map(CosmosItemIdentity::getPartitionKey)
             .collect(Collectors.toList());
         feedItemResponse = cosmosAsyncContainer
-            .readManyByPartitionKey(partitionKeys, ObjectNode.class)
+            .readManyByPartitionKeys(partitionKeys, ObjectNode.class)
             .byPage(1)
             .blockFirst();
         assertThat(feedItemResponse).isNotNull();
         assertThat(feedItemResponse.getResults()).isNotEmpty();
         verifyTracerAttributes(
             mockTracer,
-            "readManyByPartitionKey." + cosmosAsyncContainer.getId(),
+            "readManyByPartitionKeys." + cosmosAsyncContainer.getId(),
             cosmosAsyncDatabase.getId(),
             cosmosAsyncContainer.getId(),
             feedItemResponse.getCosmosDiagnostics(),
@@ -940,7 +940,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             useLegacyTracing,
             enableRequestLevelTracing,
             forceThresholdViolations,
-            "readManyByPartitionKey",
+            "readManyByPartitionKeys",
             samplingRate);
         mockTracer.reset();
     }

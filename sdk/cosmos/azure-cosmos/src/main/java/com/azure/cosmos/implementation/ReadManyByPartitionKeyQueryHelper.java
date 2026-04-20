@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Helper for constructing SqlQuerySpec instances for readManyByPartitionKey operations.
+ * Helper for constructing SqlQuerySpec instances for readManyByPartitionKeys operations.
  * This class is not intended to be used directly by end-users.
  */
 public class ReadManyByPartitionKeyQueryHelper {
@@ -39,7 +39,7 @@ public class ReadManyByPartitionKeyQueryHelper {
             if (name != null && name.startsWith(PK_PARAM_PREFIX)) {
                 throw new IllegalArgumentException(
                     "Custom query parameter name '" + name + "' collides with the reserved " +
-                        "readManyByPartitionKey internal prefix '" + PK_PARAM_PREFIX + "'. Rename the parameter.");
+                        "readManyByPartitionKeys internal prefix '" + PK_PARAM_PREFIX + "'. Rename the parameter.");
             }
         }
 

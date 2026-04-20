@@ -114,11 +114,11 @@ object CosmosItemsDataSource {
     readManyReader.readMany(df.rdd, readManyFilterExtraction)
   }
 
-  def readManyByPartitionKey(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
-    readManyByPartitionKey(df, userConfig, null)
+  def readManyByPartitionKeys(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
+    readManyByPartitionKeys(df, userConfig, null)
   }
 
-  def readManyByPartitionKey(
+  def readManyByPartitionKeys(
     df: DataFrame,
     userConfig: java.util.Map[String, String],
     userProvidedSchema: StructType): DataFrame = {
@@ -195,7 +195,7 @@ object CosmosItemsDataSource {
             "Either add a '_partitionKeyIdentity' column (using the GetCosmosPartitionKeyValue UDF) " +
             "or ensure the DataFrame contains columns matching the container's partition key paths."))
 
-    readManyReader.readManyByPartitionKey(df.rdd, pkExtraction, readerState)
+    readManyReader.readManyByPartitionKeys(df.rdd, pkExtraction, readerState)
   }
 
   private def addPartitionKeyComponent(
@@ -220,7 +220,7 @@ object CosmosItemsDataSource {
         throw new IllegalArgumentException(
           s"Unsupported partition key column type '${other.getClass.getName}' with value '$other'. " +
             "Supported types are String, Number (integral or floating-point), Boolean, and null. " +
-            "For other source types, convert the column before calling readManyByPartitionKey or use " +
+            "For other source types, convert the column before calling readManyByPartitionKeys or use " +
             "the GetCosmosPartitionKeyValue UDF to produce a '_partitionKeyIdentity' column.")
     }
   }

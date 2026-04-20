@@ -17,7 +17,7 @@ import scala.util.Random
 import scala.util.control.Breaks
 
 /**
- * Retry-safe iterator for readManyByPartitionKey. The full partition-key list is passed to the
+ * Retry-safe iterator for readManyByPartitionKeys. The full partition-key list is passed to the
  * SDK in a single call - the SDK is responsible for fan-out and per-physical-partition batching
  * (see Configs.getReadManyByPkMaxBatchSize()). This iterator therefore wraps a single
  * CosmosPagedIterable and, on transient I/O failures, re-creates the underlying flux and
@@ -90,9 +90,9 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
         case None =>
           val pagedFlux = customQuery match {
             case Some(query) =>
-              container.readManyByPartitionKey(partitionKeys, query, queryOptions, classType)
+              container.readManyByPartitionKeys(partitionKeys, query, queryOptions, classType)
             case None =>
-              container.readManyByPartitionKey(partitionKeys, queryOptions, classType)
+              container.readManyByPartitionKeys(partitionKeys, queryOptions, classType)
           }
 
           val rawIterator = new CosmosPagedIterable[TSparkRow](
@@ -113,7 +113,7 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
             // The server returned fewer pages than before - cannot safely replay.
             // Surface a clean error rather than silently emitting a truncated result.
             throw new IllegalStateException(
-              s"readManyByPartitionKey retry replay failed: expected to skip $pagesCommitted " +
+              s"readManyByPartitionKeys retry replay failed: expected to skip $pagesCommitted " +
                 s"already-emitted pages but only $skipped were available. Context: $operationContextString")
           }
 

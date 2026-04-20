@@ -4367,7 +4367,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public <T> Flux<FeedResponse<T>> readManyByPartitionKey(
+    public <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         String collectionLink,
@@ -4379,7 +4379,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
         state.registerDiagnosticsFactory(
-            () -> {}, // we never want to reset in readManyByPartitionKey
+            () -> {}, // we never want to reset in readManyByPartitionKeys
             (ctx) -> diagnosticsFactory.merge(ctx)
         );
 
@@ -4396,7 +4396,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return ObservableHelper
             .fluxInlineIfPossibleAsObs(
-                () -> readManyByPartitionKey(
+                () -> readManyByPartitionKeys(
                     partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, klass),
                 staleResourceRetryPolicy
             )
@@ -4431,7 +4431,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
     }
 
-    private <T> Flux<FeedResponse<T>> readManyByPartitionKey(
+    private <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         String collectionLink,

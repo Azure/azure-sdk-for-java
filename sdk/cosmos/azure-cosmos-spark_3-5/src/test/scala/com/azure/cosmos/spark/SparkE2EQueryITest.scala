@@ -75,7 +75,7 @@ class SparkE2EQueryITest
         item.getAs[String]("id") shouldEqual id
     }
 
-    "spark readManyByPartitionKey" can "use a matching top-level partition key column without the UDF" in {
+    "spark readManyByPartitionKeys" can "use a matching top-level partition key column without the UDF" in {
         val cosmosEndpoint = TestConfigurations.HOST
         val cosmosMasterKey = TestConfigurations.MASTER_KEY
         val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
@@ -102,7 +102,7 @@ class SparkE2EQueryITest
         import sparkSession.implicits._
 
         val rows = CosmosItemsDataSource
-            .readManyByPartitionKey(Seq("pkA", "pkB").toDF("pk"), cfg.asJava)
+            .readManyByPartitionKeys(Seq("pkA", "pkB").toDF("pk"), cfg.asJava)
             .selectExpr("id", "pk", "payload")
             .collect()
 
@@ -112,7 +112,7 @@ class SparkE2EQueryITest
         rows.map(_.getAs[String]("payload")).toSet shouldEqual Set("value-pkA", "value-pkB")
     }
     
-    "spark readManyByPartitionKey" can "require the UDF for nested partition key paths and succeed with it" in {
+    "spark readManyByPartitionKeys" can "require the UDF for nested partition key paths and succeed with it" in {
         val cosmosEndpoint = TestConfigurations.HOST
         val cosmosMasterKey = TestConfigurations.MASTER_KEY
         val containerName = s"nested-pk-${UUID.randomUUID()}"
@@ -156,7 +156,7 @@ class SparkE2EQueryITest
             import sparkSession.implicits._
 
             val missingUdfError = the[IllegalArgumentException] thrownBy {
-                CosmosItemsDataSource.readManyByPartitionKey(Seq("tenantA").toDF("tenantId"), cfg.asJava)
+                CosmosItemsDataSource.readManyByPartitionKeys(Seq("tenantA").toDF("tenantId"), cfg.asJava)
             }
 
             missingUdfError.getMessage should include("Nested paths cannot be resolved from DataFrame columns automatically")
@@ -169,7 +169,7 @@ class SparkE2EQueryITest
                 .withColumn("_partitionKeyIdentity", expr("GetCosmosPartitionKeyValue(tenantId)"))
 
             val rows = CosmosItemsDataSource
-                .readManyByPartitionKey(inputDf, cfg.asJava)
+                .readManyByPartitionKeys(inputDf, cfg.asJava)
                 .selectExpr("id", "tenant.id as tenantId")
                 .collect()
 

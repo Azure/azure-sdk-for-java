@@ -1598,7 +1598,7 @@ public interface AsyncDocumentClient {
      * @param <T> the type parameter
      * @return a Flux with feed response pages of documents
      */
-    <T> Flux<FeedResponse<T>> readManyByPartitionKey(
+    <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         String collectionLink,
