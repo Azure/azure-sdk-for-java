@@ -63,6 +63,7 @@ extends:
                   arguments: >
                     -SourcesDirectory .
                     -PackagesYmlPath eng/pipelines/patch-release.yml
+                    -UseCurrentBranch
                 env:
                   SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
