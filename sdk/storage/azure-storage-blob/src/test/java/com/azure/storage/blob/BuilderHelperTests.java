@@ -718,7 +718,7 @@ public class BuilderHelperTests {
     }
 
     @Test
-    public void wrapWithSessionPolicyAlwaysWithBearerAddsSesionPolicy() {
+    public void wrapWithSessionPolicyAlwaysWithBearerAddsSessionPolicy() {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
         HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.ALWAYS, ENDPOINT,

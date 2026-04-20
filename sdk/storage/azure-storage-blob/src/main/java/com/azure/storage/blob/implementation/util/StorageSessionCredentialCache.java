@@ -123,6 +123,7 @@ final class StorageSessionCredentialCache {
             }).doFinally(ignored -> {
                 synchronized (creationLock) {
                     inflightCreation = null;
+                    refreshing = false;
                 }
             }).cache();
 
