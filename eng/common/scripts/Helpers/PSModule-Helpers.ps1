@@ -86,9 +86,18 @@ function moduleIsInstalled([string]$moduleName, [string]$version) {
 }
 
 function installModule([string]$moduleName, [string]$version, $repoUrl) {
+  # Build credential from SYSTEM_ACCESSTOKEN if available for authenticated feeds
+  $credential = $null
+  if ($env:SYSTEM_ACCESSTOKEN) {
+    $password = ConvertTo-SecureString $env:SYSTEM_ACCESSTOKEN -AsPlainText -Force
+    $credential = New-Object PSCredential("build", $password)
+  }
+
   $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
   if ($repo.Count -eq 0) {
-    Register-PSRepository -Name $repoUrl -SourceLocation $repoUrl -InstallationPolicy Trusted | Out-Null
+    $registerArgs = @{ Name = $repoUrl; SourceLocation = $repoUrl; InstallationPolicy = 'Trusted' }
+    if ($credential) { $registerArgs['Credential'] = $credential }
+    Register-PSRepository @registerArgs | Out-Null
     $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
     if ($repo.Count -eq 0) {
       throw "Failed to register package repository $repoUrl."
@@ -101,7 +110,16 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
 
   Write-Verbose "Installing module $moduleName with min version $version from $repoUrl"
   # Install under CurrentUser scope so that the end up under $CurrentUserModulePath for caching
-  Install-Module $moduleName -MinimumVersion $version -Repository $repo.Name -Scope CurrentUser -Force -WhatIf:$false
+  $installArgs = @{
+    Name = $moduleName
+    MinimumVersion = $version
+    Repository = $repo.Name
+    Scope = 'CurrentUser'
+    Force = $true
+    WhatIf = $false
+  }
+  if ($credential) { $installArgs['Credential'] = $credential }
+  Install-Module @installArgs
   # Ensure module installed
   $modules = (Get-Module -ListAvailable $moduleName)
   if ($version -as [Version]) {

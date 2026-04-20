@@ -22,6 +22,8 @@ steps:
        Write-Host "Installed platyPS version: $($m.Version)"
        $m | Import-Module
     displayName: Install Pester and platyPS modules
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
    # default test steps
   - ${{ if eq(length(parameters.CustomTestSteps), 0) }}:
