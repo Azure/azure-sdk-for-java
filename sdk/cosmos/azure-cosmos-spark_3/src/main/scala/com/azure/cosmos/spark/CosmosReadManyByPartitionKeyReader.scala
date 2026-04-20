@@ -76,11 +76,13 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             clientCacheItems(0).get,
             clientCacheItems(1))
 
-        // 1. Resolve PK paths from the collection cache
-        val pkPaths = SparkBridgeInternal
-          .getContainerPropertiesFromCollectionCache(container)
-          .getPartitionKeyDefinition
-          .getPaths.asScala.map(_.stripPrefix("/")).toList
+        // 1. Resolve PK paths from the collection cache (with transient-error retry)
+        val pkPaths = TransientErrorsRetryPolicy.executeWithRetry(() => {
+          SparkBridgeInternal
+            .getContainerPropertiesFromCollectionCache(container)
+            .getPartitionKeyDefinition
+            .getPaths.asScala.map(_.stripPrefix("/")).toList
+        })
 
         // 2. Infer schema if not user-provided
         val schema = Option.apply(userProvidedSchema).getOrElse(
