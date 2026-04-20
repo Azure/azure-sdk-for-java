@@ -22,6 +22,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -50,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -680,4 +682,110 @@ public class BuilderHelperTests {
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }
+
+    // region wrapWithSessionPolicy tests
+    @Test
+    public void wrapWithSessionPolicyNoBearerAuthReturnsSamePipeline() {
+        HttpPipeline sharedKeyPipeline = buildSharedKeyPipeline();
+
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(sharedKeyPipeline, SessionMode.ALWAYS, ENDPOINT,
+            BlobServiceVersion.getLatest(), "mycontainer");
+
+        assertSame(sharedKeyPipeline, result, "Pipeline without bearer auth should be returned unchanged");
+    }
+
+    @Test
+    public void wrapWithSessionPolicySessionModeNoneReturnsSamePipeline() {
+        HttpPipeline bearerPipeline = buildBearerPipeline();
+
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.NONE, ENDPOINT,
+            BlobServiceVersion.getLatest(), "mycontainer");
+
+        assertSame(bearerPipeline, result, "SessionMode.NONE should return the pipeline unchanged");
+    }
+
+    @Test
+    public void wrapWithSessionPolicyNullSessionModeWithBearerDefaultsToAuto() {
+        HttpPipeline bearerPipeline = buildBearerPipeline();
+
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, null, ENDPOINT,
+            BlobServiceVersion.getLatest(), "mycontainer");
+
+        assertTrue(hasPolicyOfType(result, "SessionTokenCredentialPolicy"),
+            "Null sessionMode with bearer should resolve to AUTO and add SessionTokenCredentialPolicy");
+    }
+
+    @Test
+    public void wrapWithSessionPolicyAlwaysWithBearerAddsSesionPolicy() {
+        HttpPipeline bearerPipeline = buildBearerPipeline();
+
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.ALWAYS, ENDPOINT,
+            BlobServiceVersion.getLatest(), "mycontainer");
+
+        assertTrue(hasPolicyOfType(result, "SessionTokenCredentialPolicy"),
+            "SessionMode.ALWAYS with bearer should add SessionTokenCredentialPolicy");
+        assertEquals(bearerPipeline.getPolicyCount() + 1, result.getPolicyCount(),
+            "Wrapped pipeline should have exactly one additional policy");
+    }
+
+    @Test
+    public void wrapWithSessionPolicyInsertsSessionPolicyBeforeBearer() {
+        HttpPipeline bearerPipeline = buildBearerPipeline();
+
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.ALWAYS, ENDPOINT,
+            BlobServiceVersion.getLatest(), "mycontainer");
+
+        int sessionIndex = indexOfPolicy(result, "SessionTokenCredentialPolicy");
+        int bearerIndex = indexOfPolicy(result, "StorageBearerTokenChallengeAuthorizationPolicy");
+
+        assertTrue(sessionIndex >= 0, "SessionTokenCredentialPolicy should be present");
+        assertTrue(bearerIndex >= 0, "StorageBearerTokenChallengeAuthorizationPolicy should be present");
+        assertTrue(sessionIndex < bearerIndex, "SessionTokenCredentialPolicy (index " + sessionIndex
+            + ") should appear before " + "StorageBearerTokenChallengeAuthorizationPolicy (index " + bearerIndex + ")");
+    }
+
+    /**
+     * Helper to build a pipeline with bearer token auth for session wrapping tests.
+     */
+    private static HttpPipeline buildBearerPipeline() {
+        return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ClientLogger(BuilderHelperTests.class), null);
+    }
+
+    /**
+     * Helper to build a pipeline without bearer token auth (shared key only) for session wrapping tests.
+     */
+    private static HttpPipeline buildSharedKeyPipeline() {
+        return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, new RequestRetryOptions(), null,
+            BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null);
+    }
+
+    /**
+     * Checks whether the pipeline contains a policy whose simple class name matches the given name.
+     */
+    private static boolean hasPolicyOfType(HttpPipeline pipeline, String simpleClassName) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the index of the first policy whose simple class name matches, or -1 if not found.
+     */
+    private static int indexOfPolicy(HttpPipeline pipeline, String simpleClassName) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // endregion
 }
