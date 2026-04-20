@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0 (2026-03-26)
 
 - Azure Resource Manager Extensions client library for Java. This package contains Microsoft Azure SDK for Extensions Management SDK. Use these APIs to create extension resources through ARM, for Kubernetes Clusters. Package api-version 2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
