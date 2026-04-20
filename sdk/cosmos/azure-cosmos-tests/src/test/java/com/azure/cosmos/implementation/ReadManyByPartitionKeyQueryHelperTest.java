@@ -370,6 +370,24 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         assertThat(result.getQueryText()).contains("WHERE (c.msg = 'test(value)WHERE') AND (");
     }
 
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresKeywordInsideDoubleQuotedBracketNotation() {
+        // c["WHERE"] uses double-quoted bracket notation — the WHERE inside quotes
+        // must not be matched as the real WHERE keyword.
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT c[\"WHERE\"] FROM c WHERE c.status = 'active'");
+        // The real WHERE is after "FROM c ", not inside the brackets
+        assertThat(idx).isEqualTo(25);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresFromInsideDoubleQuotedBracketNotation() {
+        // Property named "FROM" in bracket notation should not confuse the FROM-clause parser
+        String query = "SELECT c[\"FROM\"] FROM c WHERE c.x = 1";
+        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(query)).isEqualTo("c");
+        assertThat(ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(query)).isEqualTo(24);
+    }
+
     //endregion
 
     //region OFFSET/LIMIT/HAVING alias detection tests (#9)

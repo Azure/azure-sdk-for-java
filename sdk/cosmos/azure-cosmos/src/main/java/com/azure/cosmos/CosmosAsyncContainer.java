@@ -1657,6 +1657,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
      * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     *  - should not contain WHERE clause filters for PK
      * @param classType   class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      */
@@ -1684,6 +1685,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
      * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     *  - should not contain WHERE clause filters for PK
      * @param requestOptions the optional request options
      * @param classType   class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages

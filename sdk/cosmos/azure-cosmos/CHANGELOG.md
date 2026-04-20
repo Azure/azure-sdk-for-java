@@ -4,7 +4,7 @@
 
 #### Features Added
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
-* Added new `CosmosItemsDataSource.readManyByPartitionKey` Spark function to execute bulk queries by a list of pk-values with better efficiency. Configure null handling via `spark.cosmos.read.readManyByPk.nullHandling` - default `Null` treats a null PK column as JSON null (`addNullValue`), `None` treats it as `PartitionKey.NONE` (`addNoneValue` / `NOT IS_DEFINED`). These route to different physical partitions - picking the wrong mode silently returns zero rows. Also fixes nested partition keys for `readMany` and `readAllItems` See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added new `readManyByPartitionKey` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. Also fixes nested partition key selector generation for `readMany` and `readAllItems`. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 
 #### Breaking Changes
 

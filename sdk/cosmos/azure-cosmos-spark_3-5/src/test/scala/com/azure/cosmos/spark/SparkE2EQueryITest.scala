@@ -111,6 +111,7 @@ class SparkE2EQueryITest
         rows.map(_.getAs[String]("pk")).toSet shouldEqual Set("pkA", "pkB")
         rows.map(_.getAs[String]("payload")).toSet shouldEqual Set("value-pkA", "value-pkB")
     }
+    
     "spark readManyByPartitionKey" can "require the UDF for nested partition key paths and succeed with it" in {
         val cosmosEndpoint = TestConfigurations.HOST
         val cosmosMasterKey = TestConfigurations.MASTER_KEY

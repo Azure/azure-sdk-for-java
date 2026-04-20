@@ -285,6 +285,14 @@ public class ReadManyByPartitionKeyQueryHelper {
                 }
                 continue;
             }
+            // Skip double-quoted identifiers (e.g. c["WHERE"])
+            if (ch == '"') {
+                i++;
+                while (i < len && queryText.charAt(i) != '"') {
+                    i++;
+                }
+                continue;
+            }
             char upperCh = queryTextUpper.charAt(i);
             if (upperCh == '(') {
                 depth++;
