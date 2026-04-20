@@ -50,6 +50,16 @@ public class ReadManyByPartitionKeyQueryPlanValidationTest {
     }
 
     @Test(groups = { "unit" })
+    public void rejectsTopQueryPlan() {
+        QueryInfo queryInfo = new QueryInfo();
+        queryInfo.set("top", 5);
+
+        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(createQueryPlan(queryInfo, null)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("TOP");
+    }
+
+    @Test(groups = { "unit" })
     public void rejectsHybridSearchQueryPlanWithoutDereferencingNullQueryInfo() {
         assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(
             createQueryPlan(null, new HybridSearchQueryInfo())))

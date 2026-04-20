@@ -4629,6 +4629,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException(
                 "Custom query for readMany by partition key must not contain LIMIT.");
         }
+        if (queryInfo.hasTop()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain TOP.");
+        }
         if (queryInfo.hasNonStreamingOrderBy()) {
             throw new IllegalArgumentException(
                 "Custom query for readMany by partition key must not contain non-streaming ORDER BY.");
