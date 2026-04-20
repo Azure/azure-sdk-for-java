@@ -25,7 +25,6 @@ pr:
     - eng/versioning/version_java_files.txt
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms/ # pom only release pipeline
-    - sdk/cosmos/ # emulator tests
     - sdk/e2e/ # no pipeline, nothing to build
     - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
     - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
@@ -72,7 +71,6 @@ extends:
     - eng/versioning/version_java_files.txt
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms/ # pom only release pipeline
-    - sdk/cosmos/ # emulator tests
     - sdk/e2e/ # no pipeline, nothing to build
     - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
     - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
