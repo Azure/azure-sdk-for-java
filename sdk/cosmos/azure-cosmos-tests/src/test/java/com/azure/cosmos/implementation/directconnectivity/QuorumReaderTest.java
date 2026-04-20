@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContextValidator;
 import com.azure.cosmos.implementation.DocumentServiceRequestValidator;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
@@ -690,6 +692,71 @@ public class QuorumReaderTest {
 
         Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
 
+        StepVerifier.create(storeResponseSingle)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
+                RequestRateTooLargeException rte = (RequestRateTooLargeException) error;
+                assertThat(rte.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+            })
+            .verify(Duration.ofMillis(10000));
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_GoneReplicasExcluded_ThrottledReplicaYieldsEarly() {
+        // Validates that when replicas return a mix of 410 (Gone) and 429 (TooManyRequests),
+        // the Gone replicas are excluded from the result set by StoreReader, and
+        // the remaining 429 replica triggers early yield to ResourceThrottleRetryPolicy.
+        // This mirrors the .NET test ValidatesReadMultipleReplicaAsyncExcludesGoneReplicas.
+        int replicaCountToRead = 2;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(
+            Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        // 3 replicas return 410 (Gone) - these will be excluded from results by StoreReader
+        GoneException goneException = new GoneException();
+
+        // 1 replica returns 429 with valid LSN - isValid=true, kept in resultCollector
+        // Because statusCode != GONE && lsn >= 0, StoreReader marks this as valid
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        BridgeInternal.setLSN(throttleException, 50);
+        BridgeInternal.setPartitionKeyRangeId(throttleException, "1");
+
+        TransportClientWrapper transportClientWrapper = TransportClientWrapper.Builder.uriToResultBuilder()
+            .exceptionOn(primaryReplicaURI, OperationType.Read, ResourceType.Document, goneException, true)
+            .exceptionOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, goneException, true)
+            .exceptionOn(secondaryReplicaURIs.get(1), OperationType.Read, ResourceType.Document, goneException, true)
+            .exceptionOn(secondaryReplicaURIs.get(2), OperationType.Read, ResourceType.Document, throttleException, true)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+        request.requestContext.performLocalRefreshOnGoneException = true;
+
+        StoreReader storeReader = new StoreReader(
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = new QuorumReader(
+            mockDiagnosticsClientContext(), configs,
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
+            storeReader, serviceConfigurator, authTokenProvider);
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
+            mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
+
+        // The Gone (410) replicas are excluded by StoreReader, leaving only the throttled (429) replica.
+        // Since all remaining replicas are throttled, the early yield kicks in and propagates the 429.
         StepVerifier.create(storeResponseSingle)
             .expectErrorSatisfies(error -> {
                 assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
