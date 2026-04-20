@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosException, ReadConsistencyStrategy}
+import com.azure.cosmos.{CosmosException, ReadConsistencyStrategy, SparkBridgeInternal}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
@@ -15,6 +15,10 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.types.StructType
 
 import java.util.UUID
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 private[spark] class CosmosReadManyByPartitionKeyReader(
                                                          val userProvidedSchema: StructType,
@@ -39,8 +43,15 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
   val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
   logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
 
-  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
-    val calledFrom = s"CosmosReadManyByPartitionKeyReader($tableName).initializeAndBroadcastCosmosClientStateForContainer"
+  /**
+   * Resolves the partition key paths for the target container.
+   * Uses a single Loan block that also infers the schema (if needed) and warms
+   * the client metadata caches for broadcast — avoiding three separate Loan round-trips.
+   *
+   * @return (pkPaths, schema, broadcastClientStates)
+   */
+  private[spark] def initializeReaderState(): (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots]) = {
+    val calledFrom = s"CosmosReadManyByPartitionKeyReader($tableName).initializeReaderState"
     Loan(
       List[Option[CosmosClientCacheItem]](
         Some(
@@ -65,10 +76,21 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             clientCacheItems(0).get,
             clientCacheItems(1))
 
-        // Warm-up readItem: intentionally issues a lookup for a random id/partition-key pair
-        // on the driver so that the collection/routing-map caches are populated before we serialize
-        // the client state and broadcast it to executors. This costs ~1 RU + 1 RTT per broadcast build
-        // (expected 404) but avoids every executor doing the same lookup in parallel on first use.
+        // 1. Resolve PK paths from the collection cache
+        val pkPaths = SparkBridgeInternal
+          .getContainerPropertiesFromCollectionCache(container)
+          .getPartitionKeyDefinition
+          .getPaths.asScala.map(_.stripPrefix("/")).toList
+
+        // 2. Infer schema if not user-provided
+        val schema = Option.apply(userProvidedSchema).getOrElse(
+          CosmosTableSchemaInferrer.inferSchema(
+            clientCacheItems(0).get,
+            clientCacheItems(1),
+            effectiveUserConfig,
+            ItemsTable.defaultSchemaForInferenceDisabled))
+
+        // 3. Warm-up readItem so collection/routing-map caches are populated before broadcast
         try {
           container.readItem(
             UUIDs.nonBlockingRandomUUID().toString,
@@ -76,14 +98,12 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             classOf[ObjectNode])
             .block()
         } catch {
-          // The warm-up readItem is only used to hydrate the collection/routing-map caches.
-          // A 404 (item not found) is expected, but we log other CosmosExceptions at debug to
-          // aid diagnosis (auth failures, throttling, etc.) while not failing reader setup.
           case ex: CosmosException =>
             logDebug(s"Warm-up readItem for metadata caches completed with exception: ${ex.getMessage}", ex)
             None
         }
 
+        // 4. Serialize and broadcast client state
         val state = new CosmosClientMetadataCachesSnapshot()
         state.serialize(clientCacheItems(0).get.cosmosClient)
 
@@ -94,37 +114,19 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
-        sparkSession.sparkContext.broadcast(metadataSnapshots)
+        val broadcastStates = sparkSession.sparkContext.broadcast(metadataSnapshots)
+
+        (pkPaths, schema, broadcastStates)
       })
   }
 
-  def readManyByPartitionKey(inputRdd: RDD[Row], pkExtraction: Row => PartitionKey): DataFrame = {
-    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
-    val calledFrom = s"CosmosReadManyByPartitionKeyReader.readManyByPartitionKey($correlationActivityId)"
-    val schema = Loan(
-      List[Option[CosmosClientCacheItem]](
-        Some(CosmosClientCache(
-          CosmosClientConfiguration(
-            effectiveUserConfig,
-            readConsistencyStrategy = readConfig.readConsistencyStrategy,
-            sparkEnvironmentInfo),
-          None,
-          calledFrom
-        )),
-        ThroughputControlHelper.getThroughputControlClientCacheItem(
-          effectiveUserConfig,
-          calledFrom,
-          None,
-          sparkEnvironmentInfo)
-      ))
-      .to(clientCacheItems => Option.apply(userProvidedSchema).getOrElse(
-        CosmosTableSchemaInferrer.inferSchema(
-          clientCacheItems(0).get,
-          clientCacheItems(1),
-          effectiveUserConfig,
-          ItemsTable.defaultSchemaForInferenceDisabled)))
+  def readManyByPartitionKey(
+    inputRdd: RDD[Row],
+    pkExtraction: Row => PartitionKey,
+    readerState: (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots])): DataFrame = {
 
-    val clientStates = initializeAndBroadcastCosmosClientStatesForContainer
+    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
+    val (_, schema, clientStates) = readerState
 
     sparkSession.sqlContext.createDataFrame(
       inputRdd.mapPartitionsWithIndex(

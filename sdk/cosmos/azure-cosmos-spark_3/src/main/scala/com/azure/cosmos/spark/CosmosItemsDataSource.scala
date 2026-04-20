@@ -135,6 +135,11 @@ object CosmosItemsDataSource {
     val sharedReadConfig = CosmosReadConfig.parseCosmosReadConfig(sharedEffectiveConfig)
     val sharedTreatNullAsNone = sharedReadConfig.readManyByPkTreatNullAsNone
 
+    // Initialize reader state once: resolves PK paths, infers schema, and broadcasts client caches
+    // in a single Loan block instead of three separate ones.
+    val readerState = readManyReader.initializeReaderState()
+    val (pkPaths, _, _) = readerState
+
     // Option 1: Look for the _partitionKeyIdentity column (produced by GetCosmosPartitionKeyValue UDF)
     val pkIdentityFieldExtraction = df
       .schema
@@ -151,46 +156,9 @@ object CosmosItemsDataSource {
     val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
       None // no need to resolve PK paths - _partitionKeyIdentity column takes precedence
     } else {
-      val effectiveConfig = sharedEffectiveConfig
-      val readConfig = sharedReadConfig
-      val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveConfig)
-      val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(None)
-      val calledFrom = s"CosmosItemsDataSource.readManyByPartitionKey"
-      val treatNullAsNone = readConfig.readManyByPkTreatNullAsNone
-
-      val pkPaths = Loan(
-        List[Option[CosmosClientCacheItem]](
-          Some(
-            CosmosClientCache(
-              CosmosClientConfiguration(
-                effectiveConfig,
-                readConsistencyStrategy = readConfig.readConsistencyStrategy,
-                sparkEnvironmentInfo),
-              None,
-              calledFrom)),
-          ThroughputControlHelper.getThroughputControlClientCacheItem(
-            effectiveConfig,
-            calledFrom,
-            None,
-            sparkEnvironmentInfo)
-        ))
-        .to(clientCacheItems => {
-          val container =
-            ThroughputControlHelper.getContainer(
-              effectiveConfig,
-              containerConfig,
-              clientCacheItems(0).get,
-              clientCacheItems(1))
-
-          val pkDefinition = SparkBridgeInternal
-            .getContainerPropertiesFromCollectionCache(container)
-            .getPartitionKeyDefinition
-
-          pkDefinition.getPaths.asScala.map(_.stripPrefix("/")).toList
-        })
+      val treatNullAsNone = sharedReadConfig.readManyByPkTreatNullAsNone
 
       // Nested PK paths (containing /) cannot be resolved from top-level DataFrame columns.
-      // Surface an explicit error so users know to use the UDF-produced _partitionKeyIdentity column.
       if (pkPaths.exists(_.contains("/"))) {
         throw new IllegalArgumentException(
           "Container has nested partition key path(s) " + pkPaths.mkString("[", ",", "]") + ". " +
@@ -203,13 +171,10 @@ object CosmosItemsDataSource {
       val allPkColumnsPresent = pkPaths.forall(path => dfFieldNames.contains(path))
 
       if (allPkColumnsPresent && pkPaths.nonEmpty) {
-        // pkPaths already defined above
         Some((row: Row) => {
           if (pkPaths.size == 1) {
-            // Single partition key
             buildPartitionKey(row.getAs[Any](pkPaths.head), treatNullAsNone)
           } else {
-            // Hierarchical partition key - build level by level
             val builder = new PartitionKeyBuilder()
             for (path <- pkPaths) {
               addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone, pkPaths.size)
@@ -230,7 +195,7 @@ object CosmosItemsDataSource {
             "Either add a '_partitionKeyIdentity' column (using the GetCosmosPartitionKeyValue UDF) " +
             "or ensure the DataFrame contains columns matching the container's partition key paths."))
 
-    readManyReader.readManyByPartitionKey(df.rdd, pkExtraction)
+    readManyReader.readManyByPartitionKey(df.rdd, pkExtraction, readerState)
   }
 
   private def addPartitionKeyComponent(
