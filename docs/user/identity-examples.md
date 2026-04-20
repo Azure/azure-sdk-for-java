@@ -1,7 +1,5 @@
 # Azure Identity Examples
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples  
-> Last updated in wiki: May 1, 2025
 
 This page shows common `azure-identity` patterns for authenticating Azure SDK clients. All examples authenticate a `SecretClient` from `azure-security-keyvault-secrets`; the same pattern applies to any Azure SDK client.
 
@@ -30,7 +28,6 @@ SecretClient client = new SecretClientBuilder()
     .buildClient();
 ```
 
-> See [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
 ### User-Assigned Managed Identity with DefaultAzureCredential
 
@@ -60,7 +57,6 @@ ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .build();
 ```
 
-> See [Creating a Service Principal with the Azure CLI](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli).
 
 ---
 
@@ -85,7 +81,6 @@ DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
     .build();
 ```
 
-> See [Enable applications for device code flow](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-device-code-flow).
 
 ---
 
@@ -215,5 +210,5 @@ TokenCredential credential = tokenRequestContext -> Mono.defer(() -> {
 
 ## See Also
 
-- [Configuration](./configuration.md)
-- [FAQ](./faq.md)
+- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md)
+- [FAQ](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/faq.md)

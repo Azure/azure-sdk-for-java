@@ -1,8 +1,5 @@
 # Frequently Asked Questions
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions  
-> Last updated in wiki: Feb 22, 2022
-
 ---
 
 ## My app uses the async client libraries but never gets any results
@@ -59,7 +56,7 @@ See [Troubleshoot dependency version conflicts](https://docs.microsoft.com/en-us
 
 ## Creating Shaded JARs to Avoid Dependency Conflicts
 
-Shaded JARs bundle and relocate all dependencies, eliminating transitive conflicts. See [Creating a Shaded JAR](https://github.com/Azure/azure-sdk-for-java/wiki/Creating-a-Shaded-Jar) for the step-by-step guide.
+Shaded JARs bundle and relocate all dependencies, eliminating transitive conflicts. The Maven Shade Plugin (`maven-shade-plugin`) is the standard tool for this.
 
 ---
 
@@ -71,7 +68,7 @@ ADB injects Spark and its dependencies (including older Jackson versions) into t
 
 ### Steps
 
-1. [Create a shaded JAR](https://github.com/Azure/azure-sdk-for-java/wiki/Creating-a-Shaded-Jar) with relocation rules for conflicting packages (e.g. Jackson).
+1. Create a shaded JAR with relocation rules for conflicting packages (e.g. Jackson) using `maven-shade-plugin`.
 2. In the Azure Portal → Databricks workspace → create a cluster.
 3. From the cluster, create a Job → set task as "Set JAR" → upload your shaded JAR.
 4. Set the Main class to the `mainClass` entry from the maven-shade-plugin configuration.
@@ -128,6 +125,6 @@ Then add this JVM argument:
 
 ## See Also
 
-- [Configuration](./configuration.md)
-- [Azure Identity Examples](./identity-examples.md)
-- [Performance Tuning](./performance-tuning.md)
+- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md)
+- [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/identity-examples.md)
+- [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/performance-tuning.md)

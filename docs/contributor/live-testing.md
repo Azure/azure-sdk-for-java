@@ -1,7 +1,7 @@
 # Live Testing
 
-> **Source**: Consolidated from [CONTRIBUTING.md](../../CONTRIBUTING.md) and `eng/common/TestResources/` (last reviewed April 2026).  
-> **See also**: [Unit Testing](unit-testing.md) · [Test Resources scripts](../../eng/common/TestResources/README.md)
+> **Source**: Consolidated from [CONTRIBUTING.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/CONTRIBUTING.md) and `eng/common/TestResources/` (last reviewed April 2026).  
+> **See also**: [Unit Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/unit-testing.md) · [Test Resources scripts](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/README.md)
 
 ---
 
@@ -31,7 +31,7 @@ Deploy using PowerShell:
 eng/common/TestResources/New-TestResources.ps1 -ServiceDirectory keyvault
 ```
 
-> **Full reference**: [`New-TestResources.ps1` documentation](../../eng/common/TestResources/New-TestResources.ps1.md)  
+> **Full reference**: [`New-TestResources.ps1` documentation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/New-TestResources.ps1.md)  
 > See **Example 1** in that doc for the recommended invocation that creates a service principal and sets environment variables.
 
 The script prints the environment variable exports to set before running tests.
@@ -86,7 +86,7 @@ When done, remove the deployed resources to avoid incurring costs:
 eng/common/TestResources/Remove-TestResources.ps1 -ServiceDirectory keyvault
 ```
 
-> **Full reference**: [`Remove-TestResources.ps1` documentation](../../eng/common/TestResources/Remove-TestResources.ps1.md)
+> **Full reference**: [`Remove-TestResources.ps1` documentation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/Remove-TestResources.ps1.md)
 
 ---
 
@@ -101,12 +101,11 @@ them offline without deployed Azure resources.
 | `PLAYBACK` | Replays recorded responses; no network calls |
 | `LIVE` | Always hits the real service; no recording |
 
-See the [Test Proxy onboarding guide](../../eng/common/testproxy/onboarding/README.md) and
-the [Test Proxy Migration wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration) for setup instructions.
+See the [Test Proxy onboarding guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/testproxy/onboarding/README.md) and
+the [Test Proxy Migration guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/test-proxy-migration.md) for setup instructions.
 
 ---
 
 ## Parameterized Live Tests
 
-For guidance on writing parameterized tests that can run both as live and playback tests,
-see [Parameterized test for SDK live test](https://github.com/Azure/azure-sdk-for-java/wiki/Parameterized-test-for-SDK-live-test) (wiki).
+For guidance on writing parameterized tests that can run both as live and playback tests, see the sections below.

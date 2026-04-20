@@ -1,7 +1,5 @@
 # Serialization
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Serialization  
-> Last updated in wiki: Jul 21, 2021
 
 Azure Core provides two serialization abstractions:
 
@@ -157,11 +155,11 @@ Custom serializers can be passed to these models via their constructors or build
 
 ## Migration to `azure-json`
 
-For new code and libraries migrating away from Jackson, see [Azure JSON Migration](./azure-json-migration.md).
+For new code and libraries migrating away from Jackson, see [Azure JSON Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/azure-json-migration.md).
 
 ---
 
 ## See Also
 
-- [Azure JSON Migration](./azure-json-migration.md)
-- [Configuration](./configuration.md)
+- [Azure JSON Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/azure-json-migration.md)
+- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md)

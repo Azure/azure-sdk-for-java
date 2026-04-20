@@ -1,7 +1,5 @@
 # Writing Performance Tests
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Writing-Performance-Tests  
-> Last updated in wiki: Feb 3, 2021
 
 Performance tests for Azure SDK libraries use the `perf-test-core` framework (`com.azure:perf-test-core`). Each library that needs benchmarking gets its own Maven module at `sdk/<service>/azure-<service>-perf/`.
 
@@ -188,5 +186,5 @@ Common options from `PerfStressOptions`:
 
 ## See Also
 
-- [Performance Tuning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/user/performance-tuning.md) — user-facing guidance
-- [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
+- [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/performance-tuning.md) — user-facing guidance
+- [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)

@@ -1,12 +1,6 @@
 # Management Libraries
 
-> **Wiki sources:**  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/%5BManagement%5D-Authentication  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/%5BManagement%5D-Configuration  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/%5BManagement%5D-Synchronous-calls  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/%5BManagement%5D-Asynchronous-calls  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/Generate-code-from-TypeSpec  
-> - https://aka.ms/azsdk/java/mgmt
+> **Reference:** <https://aka.ms/azsdk/java/mgmt>
 
 Management libraries (`com.azure.resourcemanager.*`) allow you to provision and manage Azure resources by mirroring the Azure Resource Manager (ARM) REST API.
 
@@ -174,21 +168,20 @@ azure.virtualMachines()
 
 ## Generate Code from TypeSpec
 
-Management SDK code is generated from TypeSpec specs in [azure-rest-api-specs](https://github.com/Azure/azure-rest-api-specs). For contributor workflow details, see the [TypeSpec Quickstart](../contributor/typespec-quickstart.md).
+Management SDK code is generated from TypeSpec specs in [azure-rest-api-specs](https://github.com/Azure/azure-rest-api-specs). For contributor workflow details, see the [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md).
 
-**Generate from OpenAPI specs:** see the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/%5BManagement%5D--OpenAPI-specs).
 
 ---
 
 ## More Documentation
 
 - [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt) — comprehensive user guide on docs.microsoft.com
-- [azure-resourcemanager README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/README.md)
+- [azure-resourcemanager README](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/sdk/resourcemanager/azure-resourcemanager/README.md)
 
 ---
 
 ## See Also
 
-- [Azure Identity Examples](./identity-examples.md)
-- [Configuration](./configuration.md)
-- [TypeSpec Quickstart](../contributor/typespec-quickstart.md)
+- [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/identity-examples.md)
+- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md)
+- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md)

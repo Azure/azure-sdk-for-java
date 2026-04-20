@@ -1,7 +1,5 @@
 # Test Proxy Migration
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration  
-> Last updated in wiki: Jun 26, 2024
 
 The **test proxy** is the standard recording/playback infrastructure for Azure SDK tests. It stores recordings in an external [azure-sdk-assets](https://github.com/Azure/azure-sdk-assets) repository, keeping them out of the main SDK repo.
 
@@ -48,7 +46,7 @@ New recordings land in a git-excluded `.assets/` folder at the repo root (not co
 
 ### 1d. Sanitize Secrets (if needed)
 
-Add sanitizers in your test base class — they must be registered only after the playback client or record policy is initialized. See [TableClientTestBase](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/test/java/com/azure/data/tables/TableClientTestBase.java#L61) for an example.
+Add sanitizers in your test base class — they must be registered only after the playback client or record policy is initialized. See [TableClientTestBase](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/sdk/tables/azure-data-tables/src/test/java/com/azure/data/tables/TableClientTestBase.java#L61) for an example.
 
 ---
 
@@ -141,6 +139,6 @@ test-proxy config locate -a sdk/<service>/<module>/assets.json
 
 ## See Also
 
-- [Unit Testing](../contributor/unit-testing.md)
-- [Live Testing](../contributor/live-testing.md)
-- [TypeSpec Quickstart — Tests](../contributor/typespec-quickstart.md#6-tests)
+- [Unit Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/unit-testing.md)
+- [Live Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md)
+- [TypeSpec Quickstart — Tests](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md#6-tests)

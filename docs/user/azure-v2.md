@@ -1,9 +1,5 @@
 # Azure V2 — Logging Best Practices and HTTP Clients
 
-> **Wiki sources:**  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/Logging-Best-Practices (Sep 15, 2025)  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-Clients  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/Add-OkHttp-dependency
 
 Azure V2 refers to the next-generation `io.clientcore` packages. This page covers guidance specifically for code that uses `clientcore` rather than `com.azure`.
 
@@ -129,12 +125,10 @@ To use OkHttp instead:
 HttpClient okHttpClient = new OkHttpHttpClientBuilder().build();
 ```
 
-See [Add OkHttp dependency](https://github.com/Azure/azure-sdk-for-java/wiki/Add-OkHttp-dependency) for the full dependency snippet.
-
 ---
 
 ## See Also
 
-- [Configuration](./configuration.md#configure-http-clients) — for `com.azure` / `azure-core-http-netty` configuration
-- [Performance Tuning](./performance-tuning.md)
+- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md#configure-http-clients) — for `com.azure` / `azure-core-http-netty` configuration
+- [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/performance-tuning.md)
 - General [Azure SDK exception policy](https://azure.github.io/azure-sdk/java_introduction.html)

@@ -1,7 +1,6 @@
 # Code Quality Tools
 
-> **Source**: Summarized from [wiki/Building](https://github.com/Azure/azure-sdk-for-java/wiki/Building) and `eng/lintingconfigs/` (last reviewed April 2026).  
-> **See also**: [Building](building.md)
+> **See also**: [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
 
 ---
 
@@ -114,5 +113,4 @@ If a package has a legitimately long name (approved by architects), add a suppre
 
 ## Javadoc Guidelines
 
-- See [Writing Javadocs](https://github.com/Azure/azure-sdk-for-java/wiki/Writing-Javadocs) (wiki)
-- See [JavaDoc with CodeSnippet](https://github.com/Azure/azure-sdk-for-java/wiki/JavaDoc-with-CodeSnippet) (wiki)
+- See [JavaDoc & Code Snippets](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md)

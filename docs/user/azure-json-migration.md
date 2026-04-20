@@ -1,7 +1,5 @@
 # Azure JSON Migration
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Json-Migration  
-> Last updated in wiki: Jul 26, 2024
 
 `com.azure:azure-json` replaces Jackson Databind as the serialization layer for Azure SDK models. This guide explains why and how to migrate.
 
@@ -167,6 +165,6 @@ mvn verify -f sdk/<service>/<module>/pom.xml
 
 ## See Also
 
-- [Serialization](./serialization.md) — architecture of `azure-json` vs `JacksonAdapter`
-- [Code Quality](../contributor/code-quality.md) — RevApi suppressions
-- [Working with AutoRest](../contributor/autorest.md)
+- [Serialization](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/serialization.md) — architecture of `azure-json` vs `JacksonAdapter`
+- [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md) — RevApi suppressions
+- [Working with AutoRest](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/autorest.md)

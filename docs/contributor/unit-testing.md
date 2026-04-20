@@ -1,7 +1,6 @@
 # Unit Testing
 
-> **Source**: Summarized from [wiki/Unit-Testing](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) (last reviewed April 2026).  
-> **See also**: [Live Testing](live-testing.md) · [Building](building.md)
+> **See also**: [Live Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md) · [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
 
 ---
 
@@ -194,6 +193,6 @@ Then connect a remote debugger in [IntelliJ](https://www.jetbrains.com/help/idea
 
 ## Additional Resources
 
-- [Parameterized tests for SDK live tests](https://github.com/Azure/azure-sdk-for-java/wiki/Parameterized-test-for-SDK-live-test) (wiki)
-- [Test Proxy Migration](https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration) (wiki)
-- [Test Proxy onboarding guide](../../eng/common/testproxy/onboarding/README.md)
+- [Live Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md)
+- [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/test-proxy-migration.md)
+- [Test Proxy onboarding guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/testproxy/onboarding/README.md)

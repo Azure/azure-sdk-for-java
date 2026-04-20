@@ -1,7 +1,5 @@
 # Access Helpers
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Access-helpers  
-> Last updated in wiki: Feb 13, 2024
 
 Access helpers are a pattern for exposing private and package-private members of classes **across package boundaries** without adding public APIs. This is useful when functionality must remain internal to a package but still needs to be accessible from other packages within the same library.
 
@@ -107,5 +105,5 @@ public class HttpHeaders {
 
 ## See Also
 
-- [Adding a Module](./adding-a-module.md)
-- [Code Quality](./code-quality.md)
+- [Adding a Module](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/adding-a-module.md)
+- [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md)

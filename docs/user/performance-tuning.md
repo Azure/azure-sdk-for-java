@@ -1,8 +1,5 @@
 # Performance Tuning
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning  
-> Last updated in wiki: Dec 9, 2019
-
 ---
 
 ## SSL Tuning
@@ -58,7 +55,7 @@ To use JDK built-in SSL (e.g. to reduce JAR size further or avoid native depende
 
 ## HTTP Client Connection Pooling
 
-Proper connection pool sizing is critical for throughput. See [Configuration — Connection Pool](./configuration.md#connection-pool-connectionprovider) for `NettyAsyncHttpClientBuilder` tuning.
+Proper connection pool sizing is critical for throughput. See [Configuration — Connection Pool](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md#connection-pool-connectionprovider) for `NettyAsyncHttpClientBuilder` tuning.
 
 Key defaults:
 - Default `ConnectionProvider`: 500 max connections, 1000 pending connections
@@ -112,7 +109,7 @@ Or configure SLF4J / Logback to restrict `com.azure` logging.
 
 ## Measuring Performance
 
-Use the SDK's built-in performance test framework. See [Writing Performance Tests](../contributor/performance-tests.md) for the full perf-test setup.
+Use the SDK's built-in performance test framework. See [Writing Performance Tests](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/performance-tests.md) for the full perf-test setup.
 
 Quick benchmark:
 
@@ -126,6 +123,6 @@ java -jar target/azure-<service>-perf-*-jar-with-dependencies.jar \
 
 ## See Also
 
-- [Configuration — HTTP Clients](./configuration.md#configure-http-clients)
-- [Writing Performance Tests](../contributor/performance-tests.md)
-- [FAQ](./faq.md)
+- [Configuration — HTTP Clients](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md#configure-http-clients)
+- [Writing Performance Tests](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/performance-tests.md)
+- [FAQ](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/faq.md)

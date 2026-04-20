@@ -1,7 +1,5 @@
 # BOM Guidelines
 
-> **Source**: Summarized from [wiki/BOM-Guidelines](https://github.com/Azure/azure-sdk-for-java/wiki/BOM-Guidelines) (last reviewed April 2026).
-
 ---
 
 ## What Is the Azure SDK BOM?
@@ -92,12 +90,12 @@ mvn package -f sdk/boms/azure-sdk-bom/pom.xml -DskipTests
 1. Verify the library is GA (not beta-only).
 2. Add a `<dependency>` entry in `sdk/boms/azure-sdk-bom/pom.xml` under `<dependencyManagement>`.
 3. Run the dependency checker and resolve all errors before opening a PR.
-4. Follow the standard version-update tag convention (see [Versioning](versioning.md)).
+4. Follow the standard version-update tag convention (see [Versioning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md)).
 
 ---
 
 ## See Also
 
-- [Versioning](versioning.md)
-- [Release Checklist](release-checklist.md)
-- [azure-sdk-bom source](../../sdk/boms/)
+- [Versioning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md)
+- [Release Checklist](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/release-checklist.md)
+- [azure-sdk-bom source](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/sdk/boms/)

@@ -1,8 +1,5 @@
 # Protocol Methods
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods  
-> Last updated in wiki: Nov 24, 2021  
-> See also: [Protocol Methods - Evolving](https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods---Evolving)
 
 Protocol methods provide direct access to raw HTTP for advanced usage and preview APIs. They live in the same client as high-level convenience methods and leverage the full `azure-core` HTTP pipeline (retry, auth, logging, distributed tracing).
 
@@ -190,8 +187,6 @@ result.getJsonArray("entities").forEach(e -> {
 
 ## See Also
 
-- [Protocol Methods - Evolving](https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods---Evolving)
-- [Protocol Methods - Quickstart with AutoRest](https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods-Quickstart-with-AutoRest)
-- [TypeSpec Quickstart](../contributor/typespec-quickstart.md)
-- [Azure Identity Examples](./identity-examples.md)
-- [Configuration](./configuration.md)
+- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md)
+- [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/identity-examples.md)
+- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md)

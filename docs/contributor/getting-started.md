@@ -1,7 +1,6 @@
 # Getting Started – Contributor Environment Setup
 
-> **Source**: Summarized from [wiki/Getting-Started-Guidance](https://github.com/Azure/azure-sdk-for-java/wiki/Getting-Started-Guidance) (last reviewed April 2026).  
-> **See also**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
+> **See also**: [CONTRIBUTING.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/CONTRIBUTING.md)
 
 ---
 
@@ -158,7 +157,7 @@ mvn install -f eng/code-quality-reports/pom.xml
 
 ## Next Steps
 
-- [Building the SDK](building.md)
-- [Running unit tests](unit-testing.md)
-- [Running live tests](live-testing.md)
-- [Submitting a PR](../../CONTRIBUTING.md#pull-requests)
+- [Building the SDK](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+- [Running unit tests](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/unit-testing.md)
+- [Running live tests](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md)
+- [Submitting a PR](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/CONTRIBUTING.md#pull-requests)

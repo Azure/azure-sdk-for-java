@@ -53,18 +53,18 @@ client.doSomething();
 ````
 
 The content inside the README fence is kept in sync with the Java source by CI tooling.
-See [sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ReadmeSamples.java](../../sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ReadmeSamples.java)
+See [sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ReadmeSamples.java](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ReadmeSamples.java)
 as a canonical example.
 
 ## Editing the workflow prompt
 
 The LLM prompt that drives the agent lives in
-[`.github/workflows/update-samples-and-docs.md`](../../.github/workflows/update-samples-and-docs.md).
+[`.github/workflows/update-samples-and-docs.md`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/.github/workflows/update-samples-and-docs.md).
 
 To change agent behavior:
 1. Edit the `.md` file
 2. Run `gh aw compile .github/workflows/update-samples-and-docs.md`
 3. Commit both the `.md` and the updated `.lock.yml`
 
-See [`.github/workflows/README.md`](../../.github/workflows/README.md) for full `gh-aw` setup
+See [`.github/workflows/README.md`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/.github/workflows/README.md) for full `gh-aw` setup
 instructions including the required repository secrets.

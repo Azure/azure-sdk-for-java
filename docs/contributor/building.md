@@ -1,7 +1,6 @@
 # Building the Azure SDK for Java
 
-> **Source**: Summarized from [wiki/Building](https://github.com/Azure/azure-sdk-for-java/wiki/Building) (last reviewed April 2026).  
-> **See also**: [Getting Started](getting-started.md) · [Code Quality](code-quality.md)
+> **See also**: [Getting Started](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/getting-started.md) · [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md)
 
 ---
 
@@ -62,7 +61,7 @@ During iterative development you can skip all code-quality tools to speed up the
 ```
 
 > **Reminder:** Always run analysis before opening a pull request.  
-> See [Code Quality](code-quality.md) for the specific commands.
+> See [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md) for the specific commands.
 
 ---
 
@@ -129,5 +128,4 @@ The repo commonly uses two Maven build scopes:
 | `pom.xml` (root) | Aggregates _all_ modules for repo-wide builds |
 | `sdk/<service>/pom.xml` | Service-level aggregator POM for building modules under a single service area |
 
-Use `sdk/<service>/pom.xml` when building within a service pipeline context or when you want to build only one service area.  
-See the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) for additional details about client- and service-level build entry points.
+Use `sdk/<service>/pom.xml` when building within a service pipeline context or when you want to build only one service area.

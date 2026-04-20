@@ -1,8 +1,5 @@
 # JavaDoc and Code Snippets
 
-> **Wiki sources:**  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/Writing-Javadocs (Jan 25, 2024)  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/JavaDoc-with-CodeSnippet (Feb 21, 2025)
 
 This page covers the standards for writing JavaDoc in Azure SDK Java libraries and the automated code snippet injection workflow.
 
@@ -179,6 +176,6 @@ mvn install -f sdk/<service>/<module>/pom.xml -DskipTests -Dmaven.javadoc.skip
 
 ## See Also
 
-- [TypeSpec Quickstart — Improve SDK Documentation](./typespec-quickstart.md#5-improve-documentation)
-- [Adding a Module](./adding-a-module.md)
-- [Code Quality](./code-quality.md)
+- [TypeSpec Quickstart — Improve SDK Documentation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md#5-improve-documentation)
+- [Adding a Module](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/adding-a-module.md)
+- [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md)

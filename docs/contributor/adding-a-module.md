@@ -1,7 +1,5 @@
 # Adding a Module
 
-> **Wiki source:** https://github.com/Azure/azure-sdk-for-java/wiki/Adding-a-Module  
-> Last updated in wiki: Dec 12, 2023
 
 Adding a new client module to the Azure SDK for Java requires changes to Maven and Azure Pipeline configurations. A module may be added to an existing group (e.g. `sdk/storage`) or to a brand-new group.
 
@@ -51,7 +49,7 @@ Add an entry to the aggregate Javadoc POM.
 
 ### Adding to codesnippets generation
 
-See [JavaDoc with CodeSnippet](./javadocs.md).
+See [JavaDoc with CodeSnippet](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md).
 
 ---
 
@@ -69,7 +67,7 @@ Run the version-update script to propagate versions across POMs:
 python eng/versioning/update_versions.py --sr
 ```
 
-See [versioning.md](./versioning.md) for full details.
+See [versioning.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md) for full details.
 
 ---
 
@@ -124,7 +122,7 @@ All steps above plus:
 
 ## See Also
 
-- [versioning.md](./versioning.md)
-- [javadocs.md](./javadocs.md)
-- [TypeSpec Quickstart](./typespec-quickstart.md)
-- [Building](./building.md)
+- [versioning.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md)
+- [javadocs.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md)
+- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md)
+- [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)

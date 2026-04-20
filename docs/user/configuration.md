@@ -1,8 +1,5 @@
 # Configuration
 
-> **Wiki sources:**  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/Configuration (Nov 9, 2020)  
-> - https://github.com/Azure/azure-sdk-for-java/wiki/Configure-HTTP-Clients (Jan 9, 2023)
 
 Azure Core provides the `Configuration` class as the standard way to load, store, and share environment and runtime configuration across SDK components.
 
@@ -200,6 +197,6 @@ BlobServiceClient client = new BlobServiceClientBuilder()
 
 ## See Also
 
-- [Azure Identity Examples](./identity-examples.md)
-- [Performance Tuning](./performance-tuning.md)
-- [FAQ](./faq.md)
+- [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/identity-examples.md)
+- [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/performance-tuning.md)
+- [FAQ](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/faq.md)
