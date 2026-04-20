@@ -20,7 +20,7 @@ final class PartitionKeyQueryHelper {
             .stream()
             .map(PathParser::getPathParts)
             .map(pathParts -> pathParts.stream()
-                .map(pathPart -> "[\"" + pathPart.replace("\"", "\\") + "\"]")
+                .map(pathPart -> "[\"" + pathPart.replace("\"", "\\\"") + "\"]")
                 .collect(Collectors.joining()))
             .collect(Collectors.toList());
     }

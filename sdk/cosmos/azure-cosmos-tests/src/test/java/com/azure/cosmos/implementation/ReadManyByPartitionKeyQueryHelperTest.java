@@ -400,6 +400,24 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             .containsExactly("[\"address\"][\"city\"]");
     }
 
+    @Test(groups = { "unit" })
+    public void createSelectors_escapesQuotesInPathParts() {
+        // Verify the escaping logic directly: a path part containing a double quote
+        // must produce \" in the selector, not just a bare backslash.
+        // Use an unquoted simple path /my so PathParser returns "my" cleanly,
+        // then verify a path whose PathParser output contains a quote character.
+        // PathParser for /"my\"field" yields token: my\"field (literal \, ")
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/\"my\\\"field\"");
+
+        List<String> selectors = PartitionKeyQueryHelper.createPkSelectors(pkDef);
+        assertThat(selectors).hasSize(1);
+        String selector = selectors.get(0);
+        // Must contain the escaped quote sequence \"
+        assertThat(selector).contains("\\\"");
+        // Must NOT be just ["my\field"] (old bug: quote replaced with bare backslash)
+        assertThat(selector).isNotEqualTo("[\"my\\field\"]");
+    }
+
     //endregion
 
     //region helpers
