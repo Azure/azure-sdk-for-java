@@ -17,9 +17,9 @@ steps:
        . (Join-Path "$(Build.SourcesDirectory)" eng common scripts Helpers PSModule-Helpers.ps1)
        Install-ModuleIfNotInstalled "Pester" "5.7.1" | Import-Module
 
-       # Test: install platyPS from internal feed (upstream to PSGallery)
-       $m = Install-ModuleIfNotInstalled "platyPS" "0.14.2"
-       Write-Host "Installed platyPS version: $($m.Version)"
+       # Test: install powershell-yaml from internal feed (upstream to PSGallery)
+       $m = Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1"
+       Write-Host "Installed powershell-yaml version: $($m.Version)"
        $m | Import-Module
     displayName: Install Pester and platyPS modules
     env:
