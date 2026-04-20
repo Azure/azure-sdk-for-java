@@ -1,14 +1,16 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0 (2026-06-06)
 
 ### Features Added
 
+- GA release of the Azure AI Translator API 2026-06-06, including translations using LLM models, adaptive custom translation, tone variant translations, and gender-specific translations.
+- Added `TranslationTone` and `TranslationGender` enum types for strongly-typed tone and gender options on `TranslationTarget`.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- `TranslationTarget.setTone` and `TranslationTarget.setGender` now accept `TranslationTone` and `TranslationGender` enums instead of `String`.
+- Removed `grade` property from `TranslationTarget`.
 
 ## 1.1.8 (2026-01-29)
 
