@@ -205,7 +205,7 @@ public class ReadManyByPartitionKeyQueryHelper {
             }
             // Handle optional AS: "FROM root AS r" -> alias is "r"
             if (remaining.startsWith("AS")
-                && (remaining.length() == 2 || !Character.isLetterOrDigit(remaining.charAt(2)))) {
+                && (remaining.length() == 2 || !isIdentifierChar(remaining.charAt(2)))) {
                 afterFrom += 2; // skip AS
                 while (afterFrom < queryText.length()
                     && Character.isWhitespace(queryText.charAt(afterFrom))) {
@@ -233,7 +233,7 @@ public class ReadManyByPartitionKeyQueryHelper {
         for (String kw : keywords) {
             if (remainingUpper.startsWith(kw)
                 && (remainingUpper.length() == kw.length()
-                    || !Character.isLetterOrDigit(remainingUpper.charAt(kw.length())))) {
+                    || !isIdentifierChar(remainingUpper.charAt(kw.length())))) {
                 return true;
             }
         }
@@ -300,12 +300,22 @@ public class ReadManyByPartitionKeyQueryHelper {
                 depth--;
             } else if (depth == 0 && upperCh == keywordUpper.charAt(0)
                 && queryTextUpper.startsWith(keywordUpper, i)
-                && (i == 0 || !Character.isLetterOrDigit(queryTextUpper.charAt(i - 1)))
-                && (i + keyLen >= queryTextUpper.length() || !Character.isLetterOrDigit(queryTextUpper.charAt(i + keyLen)))) {
+                && (i == 0 || !isIdentifierChar(queryTextUpper.charAt(i - 1)))
+                && (i + keyLen >= queryTextUpper.length() || !isIdentifierChar(queryTextUpper.charAt(i + keyLen)))) {
                 return i;
             }
         }
         return -1;
+    }
+
+    /**
+     * Returns true if the character can appear in a SQL identifier or property access,
+     * meaning it should NOT be treated as a word boundary for keyword matching.
+     * Covers letters, digits, underscore, dot (property access), bracket (bracket notation),
+     * and dollar sign (system properties).
+     */
+    private static boolean isIdentifierChar(char ch) {
+        return Character.isLetterOrDigit(ch) || ch == '_' || ch == '.' || ch == '[' || ch == '$';
     }
 
     /**

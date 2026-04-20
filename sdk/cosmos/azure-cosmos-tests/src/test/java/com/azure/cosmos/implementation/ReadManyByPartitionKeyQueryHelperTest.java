@@ -390,6 +390,75 @@ public class ReadManyByPartitionKeyQueryHelperTest {
 
     //endregion
 
+    //region Dotted/underscore/bracket property access boundary tests
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresWhereInDottedPropertyAccess() {
+        // c.where is a property named "where" — not the WHERE keyword
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT c.where, c.id FROM c WHERE c.status = 'active'");
+        // "SELECT c.where, c.id FROM c " = 28 chars, so WHERE at 28
+        assertThat(idx).isEqualTo(28);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresFromInDottedPropertyAccess() {
+        // c.from is a property — the real FROM is later
+        String query = "SELECT c.from FROM c WHERE c.x = 1";
+        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(query)).isEqualTo("c");
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresOrderInDottedPropertyAccess() {
+        // c.order shouldn't match ORDER keyword
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelKeywordIndex(
+            "SELECT c.order FROM c WHERE c.x = 1", "ORDER");
+        assertThat(idx).isEqualTo(-1); // no ORDER BY in this query
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresKeywordInUnderscoredIdentifier() {
+        // where_clause is an identifier, not WHERE
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT c.where_clause FROM c WHERE c.x = 1");
+        // "SELECT c.where_clause FROM c " = 29 chars, WHERE at 29
+        assertThat(idx).isEqualTo(29);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresKeywordPrecededByUnderscore() {
+        // _where is an identifier
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT c._where FROM c WHERE c.x = 1");
+        assertThat(idx).isEqualTo(23);
+    }
+
+    @Test(groups = { "unit" })
+    public void extractAlias_ignoresKeywordPrefixInPropertyName() {
+        // c.offset is a property — should not confuse isFollowedByReservedKeyword
+        assertThat(ReadManyByPartitionKeyQueryHelper.extractTableAlias(
+            "SELECT c.offset_val FROM c WHERE c.x = 1")).isEqualTo("c");
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresKeywordFollowedByBracket() {
+        // WHERE[ should not match as a standalone WHERE keyword
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT c.WHERE[0] FROM c WHERE c.x = 1");
+        // The real WHERE is at position 25
+        assertThat(idx).isEqualTo(25);
+    }
+
+    @Test(groups = { "unit" })
+    public void findWhere_ignoresKeywordFollowedByDollar() {
+        // WHERE$1 is an identifier, not WHERE
+        int idx = ReadManyByPartitionKeyQueryHelper.findTopLevelWhereIndex(
+            "SELECT WHERE$1 FROM c WHERE c.x = 1");
+        assertThat(idx).isEqualTo(22);
+    }
+
+    //endregion
+
     //region OFFSET/LIMIT/HAVING alias detection tests (#9)
 
     @Test(groups = { "unit" })
