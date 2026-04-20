@@ -14,9 +14,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
-      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-      ResourceGroupName: 'oltp-spark-ci'
+      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
+      ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       CosmosContainerName: 'sampleContainer3'
@@ -36,9 +36,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
-      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-      ResourceGroupName: 'oltp-spark-ci'
+      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
+      ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       CosmosContainerName: 'sampleContainer4'
@@ -58,9 +58,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
-      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-      ResourceGroupName: 'oltp-spark-ci'
+      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
+      ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       CosmosContainerName: 'sampleContainer5'
@@ -81,9 +81,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
-      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-      ResourceGroupName: 'oltp-spark-ci'
+      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
+      ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       CosmosContainerName: 'sampleContainer6'
@@ -104,9 +104,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
-      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-      ResourceGroupName: 'oltp-spark-ci'
+      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
+      ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       CosmosContainerName: 'sampleContainer7'
@@ -127,9 +127,9 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
-      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
-      ResourceGroupName: 'oltp-spark-ci'
+      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
+      ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
       CosmosContainerName: 'sampleContainer8'
