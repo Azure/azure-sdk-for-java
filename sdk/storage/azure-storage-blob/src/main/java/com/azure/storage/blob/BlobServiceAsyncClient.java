@@ -135,7 +135,7 @@ public final class BlobServiceAsyncClient {
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
-        this.sessionMode = sessionOptions.getSessionMode();
+        this.sessionMode = sessionOptions != null ? sessionOptions.getSessionMode() : SessionMode.NONE;
     }
 
     /**

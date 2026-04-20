@@ -31,6 +31,9 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.models.AuthenticationType;
+import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
+import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -1507,5 +1510,39 @@ public final class BlobContainerClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Creates a session scoped to this container. The session provides temporary credentials (a session token and
+     * session key) that can be used to sign subsequent requests using the Shared Key protocol.
+     *
+     * @return The {@link CreateSessionResponse} with session credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateSessionResponse createSession() {
+        return createSessionWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a session scoped to this container. The session provides temporary credentials (a session token and
+     * session key) that can be used to sign subsequent requests using the Shared Key protocol.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} containing the {@link CreateSessionResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateSessionResponse> createSessionWithResponse(Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        CreateSessionConfiguration config
+            = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
+
+        Callable<Response<CreateSessionResponse>> operation = () -> {
+            Response<CreateSessionResponse> response = this.azureBlobStorage.getContainers()
+                .createSessionWithResponse(containerName, config, null, null, finalContext);
+            return new SimpleResponse<>(response, response.getValue());
+        };
+
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 }

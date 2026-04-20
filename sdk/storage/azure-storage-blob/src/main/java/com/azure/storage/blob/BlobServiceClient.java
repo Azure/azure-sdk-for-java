@@ -29,6 +29,7 @@ import com.azure.storage.blob.implementation.models.ServicesGetStatisticsHeaders
 import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -153,7 +154,8 @@ public final class BlobServiceClient {
             containerName = BlobContainerClient.ROOT_CONTAINER_NAME;
         }
         HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(),
-            sessionOptions.getSessionMode(), getAccountUrl(), getServiceVersion(), containerName);
+            sessionOptions != null ? sessionOptions.getSessionMode() : SessionMode.NONE, getAccountUrl(),
+            getServiceVersion(), containerName);
         return new BlobContainerClient(containerPipeline, getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
