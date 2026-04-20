@@ -4485,7 +4485,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap =
                             groupPartitionKeysByPhysicalPartition(partitionKeys, pkDefinition, routingMap);
 
-                        List<String> partitionKeySelectors = ReadManyByPartitionKeyQueryHelper.createPkSelectors(pkDefinition);
+                        List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
 
                         String baseQueryText;
                         List<SqlParameter> baseParameters;
@@ -4686,7 +4686,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
 
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
-        List<String> partitionKeySelectors = ReadManyByPartitionKeyQueryHelper.createPkSelectors(partitionKeyDefinition);
+        List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(partitionKeyDefinition);
 
         for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
             SqlQuerySpec sqlQuerySpec;
@@ -5301,7 +5301,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
-            List<String> partitionKeySelectors = ReadManyByPartitionKeyQueryHelper.createPkSelectors(pkDefinition);
+            List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
             SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, partitionKeySelectors);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);

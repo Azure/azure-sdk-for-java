@@ -161,16 +161,6 @@ public class ReadManyByPartitionKeyQueryHelper {
         return new SqlQuerySpec(finalQuery, parameters);
     }
 
-    static List<String> createPkSelectors(PartitionKeyDefinition partitionKeyDefinition) {
-        return partitionKeyDefinition.getPaths()
-            .stream()
-            .map(PathParser::getPathParts)
-            .map(pathParts -> pathParts.stream()
-                .map(pathPart -> "[\"" + pathPart.replace("\"", "\\") + "\"]")
-                .collect(Collectors.joining()))
-            .collect(Collectors.toList());
-    }
-
     /**
      * Extracts the table/collection alias from a SQL query's FROM clause.
      * Handles: "SELECT * FROM c", "SELECT x.id FROM x WHERE ...", "SELECT * FROM root r", etc.

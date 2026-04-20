@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -393,10 +392,17 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             "SELECT c.status, COUNT(1) FROM c GROUP BY c.status HAVING COUNT(1) > 1")).isEqualTo("c");
     }
 
+    @Test(groups = { "unit" })
+    public void createSelectors_nestedPath() {
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/address/city");
+
+        assertThat(PartitionKeyQueryHelper.createPkSelectors(pkDef))
+            .containsExactly("[\"address\"][\"city\"]");
+    }
+
     //endregion
 
     //region helpers
-
     private PartitionKeyDefinition createSinglePkDefinition(String path) {
         PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
         pkDef.setKind(PartitionKind.HASH);
@@ -412,14 +418,8 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         pkDef.setPaths(Arrays.asList(paths));
         return pkDef;
     }
-
     private List<String> createSelectors(PartitionKeyDefinition pkDef) {
-        return pkDef.getPaths()
-            .stream()
-            .map(pathPart -> pathPart.substring(1)) // skip starting /
-            .map(pathPart -> pathPart.replace("\"", "\\"))
-            .map(part -> "[\"" + part + "\"]")
-            .collect(Collectors.toList());
+        return PartitionKeyQueryHelper.createPkSelectors(pkDef);
     }
 
     //endregion
