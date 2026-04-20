@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
@@ -1224,6 +1225,31 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withAiToolchainOperatorProfile(aiToolchainOperatorProfile);
+        return this;
+    }
+
+    /**
+     * Get the hostedSystemProfile property: Settings for hosted system addons. For more information, see
+     * https://aka.ms/aks/automatic/systemcomponents.
+     * 
+     * @return the hostedSystemProfile value.
+     */
+    public ManagedClusterHostedSystemProfile hostedSystemProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostedSystemProfile();
+    }
+
+    /**
+     * Set the hostedSystemProfile property: Settings for hosted system addons. For more information, see
+     * https://aka.ms/aks/automatic/systemcomponents.
+     * 
+     * @param hostedSystemProfile the hostedSystemProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withHostedSystemProfile(ManagedClusterHostedSystemProfile hostedSystemProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withHostedSystemProfile(hostedSystemProfile);
         return this;
     }
 

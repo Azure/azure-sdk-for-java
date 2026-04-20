@@ -1,5 +1,6 @@
 # Release History
 # (Unreleased)
+Upgrade Spring Boot dependencies version to 4.0.5 and Spring Cloud dependencies version to 2025.1.1
 Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
 
 ## 6.2.0 (2026-03-25)

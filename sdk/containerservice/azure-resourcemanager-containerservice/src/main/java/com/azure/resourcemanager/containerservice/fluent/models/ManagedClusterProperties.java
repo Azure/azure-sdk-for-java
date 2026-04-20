@@ -21,6 +21,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
@@ -289,6 +290,11 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * AI toolchain operator settings that apply to the whole cluster.
      */
     private ManagedClusterAIToolchainOperatorProfile aiToolchainOperatorProfile;
+
+    /*
+     * Settings for hosted system addons. For more information, see https://aka.ms/aks/automatic/systemcomponents.
+     */
+    private ManagedClusterHostedSystemProfile hostedSystemProfile;
 
     /*
      * Contains read-only information about the Managed Cluster.
@@ -1151,6 +1157,28 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the hostedSystemProfile property: Settings for hosted system addons. For more information, see
+     * https://aka.ms/aks/automatic/systemcomponents.
+     * 
+     * @return the hostedSystemProfile value.
+     */
+    public ManagedClusterHostedSystemProfile hostedSystemProfile() {
+        return this.hostedSystemProfile;
+    }
+
+    /**
+     * Set the hostedSystemProfile property: Settings for hosted system addons. For more information, see
+     * https://aka.ms/aks/automatic/systemcomponents.
+     * 
+     * @param hostedSystemProfile the hostedSystemProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withHostedSystemProfile(ManagedClusterHostedSystemProfile hostedSystemProfile) {
+        this.hostedSystemProfile = hostedSystemProfile;
+        return this;
+    }
+
+    /**
      * Get the status property: Contains read-only information about the Managed Cluster.
      * 
      * @return the status value.
@@ -1268,6 +1296,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (aiToolchainOperatorProfile() != null) {
             aiToolchainOperatorProfile().validate();
         }
+        if (hostedSystemProfile() != null) {
+            hostedSystemProfile().validate();
+        }
         if (status() != null) {
             status().validate();
         }
@@ -1319,6 +1350,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeProvisioningProfile", this.nodeProvisioningProfile);
         jsonWriter.writeJsonField("bootstrapProfile", this.bootstrapProfile);
         jsonWriter.writeJsonField("aiToolchainOperatorProfile", this.aiToolchainOperatorProfile);
+        jsonWriter.writeJsonField("hostedSystemProfile", this.hostedSystemProfile);
         jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
@@ -1452,6 +1484,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("aiToolchainOperatorProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.aiToolchainOperatorProfile
                         = ManagedClusterAIToolchainOperatorProfile.fromJson(reader);
+                } else if ("hostedSystemProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.hostedSystemProfile
+                        = ManagedClusterHostedSystemProfile.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterProperties.status = ManagedClusterStatus.fromJson(reader);
                 } else {

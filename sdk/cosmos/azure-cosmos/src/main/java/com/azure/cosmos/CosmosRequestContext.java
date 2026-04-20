@@ -217,4 +217,6 @@ public final class CosmosRequestContext {
                 }
                 );
     }
+
+    static { initialize(); }
 }

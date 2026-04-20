@@ -1,5 +1,5 @@
 {
-  "flavor": "azure", 
+  "flavor": "azure",
   "CrossLanguageDefinitionId": {
     "com.azure.search.documents.SearchAsyncClient": "Customizations.SearchClient",
     "com.azure.search.documents.SearchAsyncClient.autocomplete": "Customizations.SearchClient.Documents.autocompletePost",
@@ -559,8 +559,8 @@
     "com.azure.search.documents.knowledgebases.models.KnowledgeBaseReference": "Search.KnowledgeBaseReference",
     "com.azure.search.documents.knowledgebases.models.KnowledgeBaseReferenceType": "Search.KnowledgeBaseReferenceType",
     "com.azure.search.documents.knowledgebases.models.KnowledgeBaseRemoteSharePointReference": "Search.KnowledgeBaseRemoteSharePointReference",
-    "com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest": "Search.KnowledgeBaseRetrievalRequest",
-    "com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse": "Search.KnowledgeBaseRetrievalResponse",
+    "com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions": "Search.KnowledgeBaseRetrievalRequest",
+    "com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult": "Search.KnowledgeBaseRetrievalResponse",
     "com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexReference": "Search.KnowledgeBaseSearchIndexReference",
     "com.azure.search.documents.knowledgebases.models.KnowledgeBaseWebReference": "Search.KnowledgeBaseWebReference",
     "com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalIntent": "Search.KnowledgeRetrievalIntent",

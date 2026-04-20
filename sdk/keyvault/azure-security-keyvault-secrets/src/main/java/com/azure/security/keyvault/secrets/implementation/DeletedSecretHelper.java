@@ -33,6 +33,8 @@ public final class DeletedSecretHelper {
         void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate);
 
         void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn);
+
+        void setPreviousVersion(DeletedSecret deletedSecret, String previousVersion);
     }
 
     public static void setId(DeletedSecret deletedSecret, String id) {
@@ -143,6 +145,16 @@ public final class DeletedSecretHelper {
         assert accessor != null;
 
         accessor.setDeletedOn(deletedSecret, deletedOn);
+    }
+
+    public static void setPreviousVersion(DeletedSecret deletedSecret, String previousVersion) {
+        if (accessor == null) {
+            new DeletedSecret();
+        }
+
+        assert accessor != null;
+
+        accessor.setPreviousVersion(deletedSecret, previousVersion);
     }
 
     public static void setAccessor(DeletedSecretAccessor newAccessor) {

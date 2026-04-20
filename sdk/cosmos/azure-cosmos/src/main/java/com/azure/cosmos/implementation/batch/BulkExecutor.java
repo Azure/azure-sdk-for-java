@@ -81,13 +81,28 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *    For our use case, Sinks.many().unicast() will work.
  */
 public final class BulkExecutor<TContext> implements Disposable {
+    private static ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper.CosmosBulkExecutionThresholdsStateAccessor bulkExecutionThresholdsAccessor() {
+        return ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper.getBulkExecutionThresholdsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor databaseAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor() {
+        return ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
+    }
 
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
-    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
-    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor =
-        ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private final CosmosAsyncContainer container;
     private final int maxMicroBatchPayloadSizeInBytes;
@@ -137,9 +152,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         this.bulkSpanName = "nonTransactionalBatch." + this.container.getId();
         this.inputOperations = inputOperations;
         this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
-        this.cosmosClient = ImplementationBridgeHelpers
-            .CosmosAsyncDatabaseHelper
-            .getCosmosAsyncDatabaseAccessor()
+        this.cosmosClient = databaseAccessor()
             .getCosmosAsyncClient(container.getDatabase());
         this.effectiveItemSerializer = this.docClientWrapper.getEffectiveItemSerializer(cosmosBulkOptions.getCustomItemSerializer());
 
@@ -149,8 +162,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         // different values when a new group is created.
         maxMicroBatchIntervalInMs = cosmosBulkExecutionOptions.getMaxMicroBatchInterval().toMillis();
         batchContext = (TContext) cosmosBulkExecutionOptions.getLegacyBatchScopedContext();
-        this.partitionScopeThresholds = ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
-            .getBulkExecutionThresholdsAccessor()
+        this.partitionScopeThresholds = bulkExecutionThresholdsAccessor()
             .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholdsState());
         operationListener = cosmosBulkExecutionOptions.getOperationContextAndListenerTuple();
         if (operationListener != null &&
@@ -312,9 +324,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         Integer nullableMaxConcurrentCosmosPartitions = cosmosBulkExecutionOptions.getMaxConcurrentCosmosPartitions();
         Mono<Integer> maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ?
             Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
-            ImplementationBridgeHelpers
-                .CosmosAsyncContainerHelper
-                .getCosmosAsyncContainerAccessor()
+            containerAccessor()
                 .getFeedRanges(this.container, false).map(ranges -> Math.max(256, ranges.size() * 2));
 
         return
@@ -918,23 +928,23 @@ public final class BulkExecutor<TContext> implements Disposable {
                             true)
                     .flatMap(cosmosBatchResponse -> {
 
-                        cosmosBatchResponseAccessor.setGlobalOpCount(
+                        cosmosBatchResponseAccessor().setGlobalOpCount(
                             cosmosBatchResponse, partitionScopeThresholds.getTotalOperationCountSnapshot());
 
                         PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
                             = partitionScopeThresholds.getCurrentThresholds();
 
-                        cosmosBatchResponseAccessor.setOpCountPerEvaluation(
+                        cosmosBatchResponseAccessor().setOpCountPerEvaluation(
                             cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentOperationCount.get());
-                        cosmosBatchResponseAccessor.setRetriedOpCountPerEvaluation(
+                        cosmosBatchResponseAccessor().setRetriedOpCountPerEvaluation(
                             cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
-                        cosmosBatchResponseAccessor.setTargetMaxMicroBatchSize(
+                        cosmosBatchResponseAccessor().setTargetMaxMicroBatchSize(
                             cosmosBatchResponse, partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
 
                         return Mono.just(cosmosBatchResponse);
                     });
 
-            return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
+            return clientAccessor().getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(
                     responseMono,
                     context,
