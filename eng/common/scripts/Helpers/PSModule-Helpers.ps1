@@ -152,6 +152,7 @@ function Install-ModuleIfNotInstalled() {
 
     $repoUrls = Get-ModuleRepositories $moduleName
 
+    Write-Host "Module '$moduleName' with version '$version' is not installed. Attempting to install from $($repoUrls -join ", ")."
     foreach ($url in $repoUrls) {
       try {
         $module = installModule -moduleName $moduleName -version $version -repoUrl $url
