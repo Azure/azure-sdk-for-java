@@ -17,21 +17,11 @@ steps:
        . (Join-Path "$(Build.SourcesDirectory)" eng common scripts Helpers PSModule-Helpers.ps1)
        Install-ModuleIfNotInstalled "Pester" "5.7.1" | Import-Module
 
-       # Test: force install exact version 0.4.1 from internal feed
-       $repoUrls = Get-ModuleRepositories "powershell-yaml"
-       foreach ($url in $repoUrls) {
-         $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $url })
-         if ($repo.Count -eq 0) {
-           Register-PSRepository -Name $url -SourceLocation $url -InstallationPolicy Trusted
-           $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $url })
-         }
-         Write-Host "Installing powershell-yaml 0.4.1 from $url"
-         Install-Module "powershell-yaml" -RequiredVersion "0.4.1" -Repository $repo.Name -Scope CurrentUser -Force
-         Unregister-PSRepository -Name $url
-       }
-       Write-Host "Installed version: $((Get-Module -ListAvailable powershell-yaml).Version)"
-       Import-Module powershell-yaml
-    displayName: Install Pester, Az, and powershell-yaml modules
+       # Test: install platyPS from internal feed (upstream to PSGallery)
+       $m = Install-ModuleIfNotInstalled "platyPS" "0.14.2"
+       Write-Host "Installed platyPS version: $($m.Version)"
+       $m | Import-Module
+    displayName: Install Pester and platyPS modules
 
    # default test steps
   - ${{ if eq(length(parameters.CustomTestSteps), 0) }}:
