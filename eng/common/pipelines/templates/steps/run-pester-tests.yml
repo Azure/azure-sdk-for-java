@@ -14,9 +14,11 @@ parameters:
 steps:
 
   - pwsh: |
+       $VerbosePreference = 'Continue'
        . (Join-Path "$(Build.SourcesDirectory)" eng common scripts Helpers PSModule-Helpers.ps1)
        Install-ModuleIfNotInstalled "Pester" "5.7.1" | Import-Module
-    displayName: Install Pester
+       Install-ModuleIfNotInstalled "Az" "5.7.0" | Import-Module
+    displayName: Install Pester and Az modules
 
    # default test steps
   - ${{ if eq(length(parameters.CustomTestSteps), 0) }}:
