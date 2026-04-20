@@ -10,6 +10,7 @@
   <suppress files="com.azure.search.documents.testingmodels.Book.java" checks="ParameterNameCheck" />
   <suppress files="com.azure.search.documents.indexes.FieldBuilderTests.java" checks="VisibilityModifierCheck" />
   <suppress files="com.azure.search.documents.SearchClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.search.documents.SearchIndexingBufferedSenderBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.search.documents.SearchIndexingBufferedAsyncSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.SearchIndexingBufferedSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.indexes.SearchIndexClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />

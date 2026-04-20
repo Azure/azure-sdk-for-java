@@ -3,26 +3,15 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.ObjectNodeMap;
-import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.Utils;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.IOException;
 import java.util.Map;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * The {@link CosmosItemSerializer} allows customizing the serialization of Cosmos Items - either to transform payload (for
@@ -47,6 +36,7 @@ public abstract class CosmosItemSerializer {
         new DefaultCosmosItemSerializer(Utils.getSimpleObjectMapper());
 
     private boolean shouldWrapSerializationExceptions;
+    private boolean canSerialize;
 
     private ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
@@ -55,6 +45,7 @@ public abstract class CosmosItemSerializer {
      */
     protected CosmosItemSerializer() {
         this.shouldWrapSerializationExceptions = true;
+        this.canSerialize = true;
     }
 
     /**
@@ -139,6 +130,14 @@ public abstract class CosmosItemSerializer {
         this.shouldWrapSerializationExceptions = enabled;
     }
 
+    void setCanSerialize(boolean canSerialize) {
+        this.canSerialize = canSerialize;
+    }
+
+    boolean canSerialize() {
+        return this.canSerialize;
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
@@ -172,6 +171,15 @@ public abstract class CosmosItemSerializer {
                 }
 
                 @Override
+                public boolean canSerialize(CosmosItemSerializer serializer) {
+                    return serializer.canSerialize();
+                }
+
+                @Override
+                public void setCanSerialize(CosmosItemSerializer serializer, boolean canSerialize) {
+                    serializer.setCanSerialize(canSerialize);
+                }
+
                 public CosmosItemSerializer getInternalDefaultSerializer() {
                     return INTERNAL_DEFAULT_SERIALIZER;
                 }

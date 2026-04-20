@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -37,6 +37,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private static final CosmosDaemonThreadFactory theadFactory = new CosmosDaemonThreadFactory("cosmos-global-endpoint-mgr");
 
     private final int backgroundRefreshLocationTimeIntervalInMS;
+    private final int backgroundRefreshJitterMaxInSeconds;
     private final LocationCache locationCache;
     private final URI defaultEndpoint;
     private final ConnectionPolicy connectionPolicy;
@@ -67,6 +68,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
+        this.backgroundRefreshJitterMaxInSeconds = configs.getBackgroundRefreshLocationJitterMaxInSeconds();
         this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
 
         try {
@@ -302,6 +304,17 @@ public class GlobalEndpointManager implements AutoCloseable {
                 return Mono.empty();
             } else {
                 logger.debug("shouldRefreshEndpoints: false, nothing to do.");
+
+                // Even when no endpoint refresh is needed right now, we must keep the
+                // background refresh timer running so that future database account
+                // topology changes are detected — e.g., multi-write <-> single-write
+                // transitions, failover priority changes, region add/remove.
+                // This aligns with the .NET SDK behavior where the background loop
+                // continues unconditionally as long as the client is alive.
+                if (!this.refreshInBackground.get()) {
+                    this.startRefreshLocationTimerAsync();
+                }
+
                 this.isRefreshing.set(false);
                 return Mono.empty();
             }
@@ -320,12 +333,19 @@ public class GlobalEndpointManager implements AutoCloseable {
             return Mono.empty();
         }
 
-        logger.debug("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
         LocalDateTime now = LocalDateTime.now();
 
-        int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
+        // Add jitter to the background refresh interval to prevent many CosmosClient
+        // instances from refreshing simultaneously and overwhelming the compute gateway.
+        int jitterInSeconds = (initialization || this.backgroundRefreshJitterMaxInSeconds <= 0)
+            ? 0
+            : ThreadLocalRandom.current().nextInt(0, this.backgroundRefreshJitterMaxInSeconds + 1);
+        int delayInMillis = initialization ? 0 : this.backgroundRefreshLocationTimeIntervalInMS + (jitterInSeconds * 1000);
 
         this.refreshInBackground.set(true);
+
+        logger.debug("Background refresh scheduled with delay [{}] ms (base [{}] ms + jitter [{}] s)",
+            delayInMillis, this.backgroundRefreshLocationTimeIntervalInMS, jitterInSeconds);
 
         return Mono.delay(Duration.ofMillis(delayInMillis), CosmosSchedulers.COSMOS_PARALLEL)
                 .flatMap(

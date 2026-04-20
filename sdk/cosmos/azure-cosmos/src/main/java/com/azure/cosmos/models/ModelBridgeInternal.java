@@ -766,5 +766,7 @@ public final class ModelBridgeInternal {
         CosmosClientTelemetryConfig.initialize();
         CosmosContainerIdentity.initialize();
         PriorityLevel.initialize();
+        SqlQuerySpec.initialize();
+        SqlParameter.initialize();
     }
 }
