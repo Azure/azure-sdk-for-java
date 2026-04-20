@@ -26,4 +26,31 @@ public class HttpHeadersTests {
         assertThat(caseSensitiveMap.get(headerName.toLowerCase())).isNull();
         assertThat(caseSensitiveMap.get(headerName)).isEqualTo(headerValue);
     }
+
+    @Test(groups = "unit")
+    public void keysAlreadyLowerCaseSkipsNormalization() {
+        String headerName = "etag";
+        String headerValue = "456";
+
+        // Simulates HTTP/2 where header names are already lowercase
+        HttpHeaders headers = new HttpHeaders(4, true);
+        headers.set(headerName, headerValue);
+
+        Map<String, String> map = headers.toMap();
+        assertThat(map.get(headerName)).isEqualTo(headerValue);
+    }
+
+    @Test(groups = "unit")
+    public void valueRetrievalIsCaseInsensitive() {
+        String headerName = "Content-Type";
+        String headerValue = "application/json";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(headerName, headerValue);
+
+        // Lookup by any case should work since getHeader() lowercases the lookup key
+        assertThat(headers.value("Content-Type")).isEqualTo(headerValue);
+        assertThat(headers.value("content-type")).isEqualTo(headerValue);
+        assertThat(headers.value("CONTENT-TYPE")).isEqualTo(headerValue);
+    }
 }
