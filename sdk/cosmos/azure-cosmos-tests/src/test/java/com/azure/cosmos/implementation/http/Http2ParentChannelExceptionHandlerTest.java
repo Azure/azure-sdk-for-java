@@ -130,6 +130,56 @@ public class Http2ParentChannelExceptionHandlerTest {
     }
 
     /**
+     * With handler — exception on a connection with active streams is
+     * consumed (does not reach TailContext). The handler logs at WARN
+     * instead of DEBUG because in-flight requests may be affected.
+     */
+    @Test(groups = "unit")
+    public void withHandler_activeStreams_consumedAtWarn() throws Exception {
+        EmbeddedChannel channel = createH2ParentChannel(true);
+
+        Http2FrameCodec codec = channel.pipeline().get(Http2FrameCodec.class);
+        assertThat(codec).isNotNull();
+
+        // Create an active stream (client-initiated, odd stream ID)
+        codec.connection().local().createStream(1, false);
+        assertThat(codec.connection().numActiveStreams()).isEqualTo(1);
+        assertThat(channel.isActive()).isTrue();
+
+        channel.pipeline().fireExceptionCaught(
+            new IOException("Connection reset by peer"));
+
+        // Exception consumed — does NOT reach tail, even with active streams
+        channel.checkException();
+
+        channel.finishAndReleaseAll();
+    }
+
+    /**
+     * Handler does not close the channel even when active streams exist —
+     * connection lifecycle is managed by reactor-netty's pool eviction.
+     */
+    @Test(groups = "unit")
+    public void withHandler_activeStreams_channelNotClosed() throws Exception {
+        EmbeddedChannel channel = createH2ParentChannel(true);
+
+        Http2FrameCodec codec = channel.pipeline().get(Http2FrameCodec.class);
+        assertThat(codec).isNotNull();
+
+        codec.connection().local().createStream(1, false);
+        assertThat(codec.connection().numActiveStreams()).isEqualTo(1);
+        assertThat(channel.isActive()).isTrue();
+
+        channel.pipeline().fireExceptionCaught(
+            new IOException("Connection reset by peer"));
+
+        channel.checkException();
+        assertThat(channel.isOpen()).isTrue();
+
+        channel.finishAndReleaseAll();
+    }
+
+    /**
      * Creates an EmbeddedChannel matching the production HTTP/2 parent channel
      * pipeline (minus SslHandler): Http2FrameCodec → Http2MultiplexHandler →
      * Http2ParentChannelExceptionHandler.
