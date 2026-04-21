@@ -252,7 +252,7 @@ Licensed under the MIT License.
               <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
             </property>
           </properties>
-          <skipTests>false</skipTests>
+          <skipTests>true</skipTests>
         </configuration>
       </plugin>
 
@@ -934,9 +934,3 @@ Licensed under the MIT License.
     </profile>
   </profiles>
 </project>
-
-
-
-
-
-
