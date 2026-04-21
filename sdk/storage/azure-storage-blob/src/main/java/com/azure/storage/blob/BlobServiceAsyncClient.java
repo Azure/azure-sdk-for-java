@@ -112,6 +112,7 @@ public final class BlobServiceAsyncClient {
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
      * @param anonymousAccess Whether the client was built with anonymousAccess
+     * @param sessionOptions Session options for session-based authentication.
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
@@ -160,8 +161,11 @@ public final class BlobServiceAsyncClient {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(), sessionMode,
-            getAccountUrl(), getServiceVersion(), containerName);
+        SessionOptions containerSessionOptions = sessionMode != null && sessionMode != SessionMode.NONE
+            ? new SessionOptions().setSessionMode(sessionMode).setContainerName(containerName)
+            : null;
+        HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(), containerSessionOptions,
+            getAccountUrl(), getServiceVersion(), getAccountName());
         return new BlobContainerAsyncClient(containerPipeline, getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }

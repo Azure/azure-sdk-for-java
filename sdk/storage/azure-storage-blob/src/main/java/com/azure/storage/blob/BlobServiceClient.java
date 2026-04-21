@@ -153,9 +153,11 @@ public final class BlobServiceClient {
         if (CoreUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerClient.ROOT_CONTAINER_NAME;
         }
-        HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(),
-            sessionOptions != null ? sessionOptions.getSessionMode() : SessionMode.NONE, getAccountUrl(),
-            getServiceVersion(), containerName);
+        SessionOptions containerSessionOptions = sessionOptions != null
+            ? new SessionOptions().setSessionMode(sessionOptions.getSessionMode()).setContainerName(containerName)
+            : null;
+        HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(), containerSessionOptions,
+            getAccountUrl(), getServiceVersion(), getAccountName());
         return new BlobContainerClient(containerPipeline, getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }

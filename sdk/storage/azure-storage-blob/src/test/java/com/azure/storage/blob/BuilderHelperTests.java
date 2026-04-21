@@ -690,8 +690,9 @@ public class BuilderHelperTests {
     public void wrapWithSessionPolicyNoBearerAuthReturnsSamePipeline() {
         HttpPipeline sharedKeyPipeline = buildSharedKeyPipeline();
 
-        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(sharedKeyPipeline, SessionMode.ALWAYS, ENDPOINT,
-            BlobServiceVersion.getLatest(), "mycontainer");
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(sharedKeyPipeline,
+            new SessionOptions().setSessionMode(SessionMode.ALWAYS).setContainerName("mycontainer"), ENDPOINT,
+            BlobServiceVersion.getLatest(), "myaccount");
 
         assertSame(sharedKeyPipeline, result, "Pipeline without bearer auth should be returned unchanged");
     }
@@ -700,8 +701,9 @@ public class BuilderHelperTests {
     public void wrapWithSessionPolicySessionModeNoneReturnsSamePipeline() {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
-        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.NONE, ENDPOINT,
-            BlobServiceVersion.getLatest(), "mycontainer");
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
+            new SessionOptions().setSessionMode(SessionMode.NONE).setContainerName("mycontainer"), ENDPOINT,
+            BlobServiceVersion.getLatest(), "myaccount");
 
         assertSame(bearerPipeline, result, "SessionMode.NONE should return the pipeline unchanged");
     }
@@ -710,8 +712,9 @@ public class BuilderHelperTests {
     public void wrapWithSessionPolicyNullSessionModeWithBearerDefaultsToAuto() {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
-        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, null, ENDPOINT,
-            BlobServiceVersion.getLatest(), "mycontainer");
+        HttpPipeline result
+            = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, new SessionOptions().setContainerName("mycontainer"),
+                ENDPOINT, BlobServiceVersion.getLatest(), "myaccount");
 
         assertTrue(hasPolicyOfType(result, "SessionTokenCredentialPolicy"),
             "Null sessionMode with bearer should resolve to AUTO and add SessionTokenCredentialPolicy");
@@ -721,8 +724,9 @@ public class BuilderHelperTests {
     public void wrapWithSessionPolicyAlwaysWithBearerAddsSessionPolicy() {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
-        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.ALWAYS, ENDPOINT,
-            BlobServiceVersion.getLatest(), "mycontainer");
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
+            new SessionOptions().setSessionMode(SessionMode.ALWAYS).setContainerName("mycontainer"), ENDPOINT,
+            BlobServiceVersion.getLatest(), "myaccount");
 
         assertTrue(hasPolicyOfType(result, "SessionTokenCredentialPolicy"),
             "SessionMode.ALWAYS with bearer should add SessionTokenCredentialPolicy");
@@ -734,8 +738,9 @@ public class BuilderHelperTests {
     public void wrapWithSessionPolicyInsertsSessionPolicyBeforeBearer() {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
-        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, SessionMode.ALWAYS, ENDPOINT,
-            BlobServiceVersion.getLatest(), "mycontainer");
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
+            new SessionOptions().setSessionMode(SessionMode.ALWAYS).setContainerName("mycontainer"), ENDPOINT,
+            BlobServiceVersion.getLatest(), "myaccount");
 
         int sessionIndex = indexOfPolicy(result, "SessionTokenCredentialPolicy");
         int bearerIndex = indexOfPolicy(result, "StorageBearerTokenChallengeAuthorizationPolicy");
