@@ -4596,7 +4596,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         allBatches.sort(Comparator.comparing(bd -> bd.batchFilter.getMin()));
 
         return buildSequentialBatchFlux(
-            allBatches, 0, null,
+            allBatches, null,
             resourceLink, state, diagnosticsFactory, klass,
             collectionRid, queryHash);
     }
@@ -4675,7 +4675,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return buildSequentialBatchFlux(
-            allBatches, 0, initialBackendContinuation,
+            allBatches, initialBackendContinuation,
             resourceLink, state, diagnosticsFactory, klass,
             collectionRid, queryHash);
     }
@@ -4692,8 +4692,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (PartitionKey pk : partitionKeys) {
             String epk = getEffectivePartitionKeyString(pk, pkDefinition);
 
-            // Check if EPK falls within [min, max) range
-            if (epk.compareTo(epkRange.getMin()) >= 0 && epk.compareTo(epkRange.getMax()) < 0) {
+            if (epkRange.contains(epk)) {
                 result.add(pk);
             }
         }
@@ -4706,7 +4705,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private <T> Flux<FeedResponse<T>> buildSequentialBatchFlux(
         List<BatchDescriptor> allBatches,
-        int startBatchIndex,
         String initialBackendContinuation,
         String resourceLink,
         QueryFeedOperationState state,
@@ -4716,10 +4714,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int queryHash) {
 
         List<Flux<FeedResponse<T>>> sequentialFluxes = new ArrayList<>();
-        for (int i = startBatchIndex; i < allBatches.size(); i++) {
+        for (int i = 0; i < allBatches.size(); i++) {
             final int batchIndex = i;
             final BatchDescriptor bd = allBatches.get(i);
-            final String backendContinuation = (i == startBatchIndex) ? initialBackendContinuation : null;
+            final String backendContinuation = (i == 0) ? initialBackendContinuation : null;
 
             // Remaining batch definitions for the continuation token (batches after the current one)
             final List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingAfterThis = new ArrayList<>();
@@ -4738,10 +4736,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // Set FeedRange for routing via partitionScope EPK — handles splits transparently
             batchQueryOptions.setFeedRange(new FeedRangeEpkImpl(bd.partitionScope));
 
-            if (backendContinuation != null) {
-                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
-                    batchQueryOptions, backendContinuation);
-            }
+            // Always set the continuation token on the cloned options — even when null.
+            // The cloned options may still carry the external caller's continuation token,
+            // which the backend wouldn't know how to interpret. For the first batch we pass
+            // the backend continuation from the composite token; for subsequent batches null
+            // (meaning "start from the beginning of this batch").
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
+                batchQueryOptions, backendContinuation);
 
             // Execute the batch query using the standard query API with FeedRange for routing.
             // FeedRangeEpkImpl(partitionScope) handles routing to the correct physical partition(s),
