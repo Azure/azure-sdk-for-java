@@ -16,6 +16,9 @@ extends:
           TestClassPatterns: com.azure.spring.cloud.integration.tests.cosmos.*IT,com.azure.spring.cloud.integration.tests.cosmos.*.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos-tme
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
         parameters:
           TestName: IT_ServiceBus
@@ -67,3 +70,6 @@ extends:
           # -U forces Maven to re-check remote repositories for failed artifact downloads,
           # preventing cached "Connection reset" errors from blocking the From Source build.
           BuildOptions: '-Denforcer.skip=true -U'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos-tme

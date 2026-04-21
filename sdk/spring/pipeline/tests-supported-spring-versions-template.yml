@@ -35,6 +35,11 @@ parameters:
   - name: MatrixConfigFileName
     type: string
     default: ''
+  - name: CloudConfig
+    type: object
+    default:
+      Public:
+      Preview:
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
@@ -49,6 +54,7 @@ stages:
       TestGoals: "clean verify"
       TestOptions: ${{ parameters.TestOptions }}
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      CloudConfig: ${{ parameters.CloudConfig }}
       PreGenerationSteps:
         - script: |
             python -m pip install termcolor
