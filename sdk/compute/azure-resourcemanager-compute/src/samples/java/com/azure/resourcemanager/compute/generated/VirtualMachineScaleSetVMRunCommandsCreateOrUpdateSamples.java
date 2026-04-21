@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetVMRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
      */
     /**
      * Sample code: Create VirtualMachineScaleSet VM run command.

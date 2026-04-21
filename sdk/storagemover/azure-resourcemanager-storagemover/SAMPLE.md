@@ -796,7 +796,7 @@ import com.azure.resourcemanager.storagemover.models.Frequency;
 import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.Minute;
 import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
-import com.azure.resourcemanager.storagemover.models.Time;
+import com.azure.resourcemanager.storagemover.models.SchedulerTime;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -829,7 +829,7 @@ public final class JobDefinitionsCreateOrUpdateSamples {
                 "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
             .withSchedule(new ScheduleInfo().withFrequency(Frequency.WEEKLY)
                 .withIsActive(true)
-                .withExecutionTime(new Time().withHour(9).withMinute(Minute.ZERO))
+                .withExecutionTime(new SchedulerTime().withHour(9).withMinute(Minute.ZERO))
                 .withStartDate(OffsetDateTime.parse("2025-12-01T00:00:00Z"))
                 .withDaysOfWeek(Arrays.asList("Monday", "Wednesday", "Friday"))
                 .withEndDate(OffsetDateTime.parse("2025-12-31T12:00:00Z")))

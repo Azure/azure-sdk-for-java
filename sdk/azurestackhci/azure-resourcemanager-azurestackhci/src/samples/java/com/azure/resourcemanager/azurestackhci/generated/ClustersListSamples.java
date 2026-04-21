@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListClustersBySubscription.json
+     * x-ms-original-file: 2026-04-01-preview/ListClustersBySubscription.json
      */
     /**
      * Sample code: List clusters in a given subscription.

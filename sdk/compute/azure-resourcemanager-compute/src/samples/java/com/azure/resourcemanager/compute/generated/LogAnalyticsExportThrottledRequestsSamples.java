@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class LogAnalyticsExportThrottledRequestsSamples {
     /*
-     * x-ms-original-file: 2025-04-01/logAnalyticExamples/LogAnalytics_ThrottledRequests.json
+     * x-ms-original-file: 2025-11-01/logAnalyticExamples/LogAnalytics_ThrottledRequests.json
      */
     /**
      * Sample code: Export logs which contain all throttled Api requests made to Compute Resource Provider within the

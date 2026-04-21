@@ -12,15 +12,16 @@ public final class SkuListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"yqlkju\",\"publisherId\":\"mbmslzoyov\",\"offerId\":\"dbpqvybefgvm\",\"content\":\"okcvtlubses\",\"contentVersion\":\"cua\",\"skuMappings\":[{\"catalogPlanId\":\"unlpirykycndz\",\"marketplaceSkuId\":\"ivjreuyk\",\"marketplaceSkuVersions\":[\"nwagl\",\"bxoeeonql\",\"fwmyymv\"]},{\"catalogPlanId\":\"bpbhfckdvezcrcss\",\"marketplaceSkuId\":\"hddubbnqfbl\",\"marketplaceSkuVersions\":[\"lehpavawu\",\"iqjtiogqgdmin\"]}]},\"id\":\"tteajohiygs\",\"name\":\"n\",\"type\":\"onhpcz\"},{\"properties\":{\"provisioningState\":\"ktpv\",\"publisherId\":\"qcs\",\"offerId\":\"chkhufm\",\"content\":\"umqy\",\"contentVersion\":\"ydzulodsaeuzan\",\"skuMappings\":[{\"catalogPlanId\":\"hse\",\"marketplaceSkuId\":\"phpzfngqjcl\",\"marketplaceSkuVersions\":[\"tujwjju\",\"wbeqrkuor\",\"tssruqnmdvhazc\"]},{\"catalogPlanId\":\"ytiq\",\"marketplaceSkuId\":\"bqerzwx\",\"marketplaceSkuVersions\":[\"x\"]},{\"catalogPlanId\":\"gukvlbpkt\",\"marketplaceSkuId\":\"styoua\",\"marketplaceSkuVersions\":[\"wreswmowegm\",\"uteyxeyguq\"]}]},\"id\":\"ijiitns\",\"name\":\"xlzdesygrijwa\",\"type\":\"ufanray\"},{\"properties\":{\"provisioningState\":\"eqfrojs\",\"publisherId\":\"grhydk\",\"offerId\":\"ywezskiecafyg\",\"content\":\"xieqv\",\"contentVersion\":\"makli\",\"skuMappings\":[{\"catalogPlanId\":\"hyhxa\",\"marketplaceSkuId\":\"bx\",\"marketplaceSkuVersions\":[\"ijpodtblxpkkwj\"]},{\"catalogPlanId\":\"odqhyk\",\"marketplaceSkuId\":\"cnre\",\"marketplaceSkuVersions\":[\"llizhce\",\"moqodka\",\"ppyi\"]}]},\"id\":\"gqladywrxwhyd\",\"name\":\"luvvad\",\"type\":\"wzsnuy\"}],\"nextLink\":\"lowuowhlxlnwyr\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"ckywymxga\",\"publisherId\":\"jkdtfoh\",\"offerId\":\"ogzvk\",\"content\":\"rsiwdyjqur\",\"contentVersion\":\"crraueekcsu\",\"skuMappings\":[{\"catalogPlanId\":\"ddacbcbgydlqidy\",\"marketplaceSkuId\":\"hmptyrilkfbn\",\"marketplaceSkuVersions\":[\"xvztpbnfnqtxj\",\"omals\",\"bnfddep\",\"dwq\"]}]},\"id\":\"sfzygleexahv\",\"name\":\"ywhsbrcarycs\",\"type\":\"j\"}],\"nextLink\":\"voaqajuvehzptdmk\"}")
             .toObject(SkuList.class);
-        Assertions.assertEquals("mbmslzoyov", model.value().get(0).publisherId());
-        Assertions.assertEquals("dbpqvybefgvm", model.value().get(0).offerId());
-        Assertions.assertEquals("okcvtlubses", model.value().get(0).content());
-        Assertions.assertEquals("cua", model.value().get(0).contentVersion());
-        Assertions.assertEquals("unlpirykycndz", model.value().get(0).skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("ivjreuyk", model.value().get(0).skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("nwagl", model.value().get(0).skuMappings().get(0).marketplaceSkuVersions().get(0));
-        Assertions.assertEquals("lowuowhlxlnwyr", model.nextLink());
+        Assertions.assertEquals("jkdtfoh", model.value().get(0).publisherId());
+        Assertions.assertEquals("ogzvk", model.value().get(0).offerId());
+        Assertions.assertEquals("rsiwdyjqur", model.value().get(0).content());
+        Assertions.assertEquals("crraueekcsu", model.value().get(0).contentVersion());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.value().get(0).skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("hmptyrilkfbn", model.value().get(0).skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("xvztpbnfnqtxj",
+            model.value().get(0).skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("voaqajuvehzptdmk", model.nextLink());
     }
 }

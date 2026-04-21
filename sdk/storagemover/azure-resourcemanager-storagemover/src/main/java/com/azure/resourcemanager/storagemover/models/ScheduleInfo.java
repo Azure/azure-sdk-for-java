@@ -28,12 +28,12 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
     /*
      * Whether the schedule is currently active
      */
-    private boolean isActive;
+    private Boolean isActive;
 
     /*
      * Time of day to execute (hours and minutes)
      */
-    private Time executionTime;
+    private SchedulerTime executionTime;
 
     /*
      * Specific one-time execution date and time
@@ -91,7 +91,7 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
      * 
      * @return the isActive value.
      */
-    public boolean isActive() {
+    public Boolean isActive() {
         return this.isActive;
     }
 
@@ -101,7 +101,7 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
      * @param isActive the isActive value to set.
      * @return the ScheduleInfo object itself.
      */
-    public ScheduleInfo withIsActive(boolean isActive) {
+    public ScheduleInfo withIsActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
     }
@@ -111,7 +111,7 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
      * 
      * @return the executionTime value.
      */
-    public Time executionTime() {
+    public SchedulerTime executionTime() {
         return this.executionTime;
     }
 
@@ -121,7 +121,7 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
      * @param executionTime the executionTime value to set.
      * @return the ScheduleInfo object itself.
      */
-    public ScheduleInfo withExecutionTime(Time executionTime) {
+    public ScheduleInfo withExecutionTime(SchedulerTime executionTime) {
         this.executionTime = executionTime;
         return this;
     }
@@ -251,7 +251,6 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ScheduleInfo if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScheduleInfo.
      */
     public static ScheduleInfo fromJson(JsonReader jsonReader) throws IOException {
@@ -264,9 +263,9 @@ public final class ScheduleInfo implements JsonSerializable<ScheduleInfo> {
                 if ("frequency".equals(fieldName)) {
                     deserializedScheduleInfo.frequency = Frequency.fromString(reader.getString());
                 } else if ("isActive".equals(fieldName)) {
-                    deserializedScheduleInfo.isActive = reader.getBoolean();
+                    deserializedScheduleInfo.isActive = reader.getNullable(JsonReader::getBoolean);
                 } else if ("executionTime".equals(fieldName)) {
-                    deserializedScheduleInfo.executionTime = Time.fromJson(reader);
+                    deserializedScheduleInfo.executionTime = SchedulerTime.fromJson(reader);
                 } else if ("startDate".equals(fieldName)) {
                     deserializedScheduleInfo.startDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

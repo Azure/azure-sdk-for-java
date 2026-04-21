@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class EdgeDeviceJobsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_Get_RemoteSupport.json
+     * x-ms-original-file: 2026-04-01-preview/EdgeDeviceJobs_Get_RemoteSupport.json
      */
     /**
      * Sample code: EdgeDeviceJobs_Get_RemoteSupport.

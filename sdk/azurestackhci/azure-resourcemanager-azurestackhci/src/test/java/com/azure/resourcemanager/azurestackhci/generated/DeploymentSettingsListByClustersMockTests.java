@@ -24,7 +24,7 @@ public final class DeploymentSettingsListByClustersMockTests {
     @Test
     public void testListByClusters() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"arcNodeResourceIds\":[\"fopueoqusvwluj\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"bittoztjdqumqvf\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"tgctxe\",\"steps\":[{}]},\"deploymentStatus\":{\"status\":\"yurbel\",\"steps\":[{}]}}},\"id\":\"ryizwbxgde\",\"name\":\"xlayunomir\",\"type\":\"p\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"arcNodeResourceIds\":[\"qbvxqtolpwbopv\",\"cbtzaprjxcon\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterProvisioning\",\"deploymentConfiguration\":{\"version\":\"kithueoc\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"wvr\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"ewpmioleaja\",\"steps\":[{},{}]}}},\"id\":\"yzwphbjks\",\"name\":\"ecmbaaj\",\"type\":\"fwrdkql\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class DeploymentSettingsListByClustersMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DeploymentSetting> response
-            = manager.deploymentSettings().listByClusters("kwfugiphrrkuu", "nqd", com.azure.core.util.Context.NONE);
+            = manager.deploymentSettings().listByClusters("rb", "zepirtv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fopueoqusvwluj", response.iterator().next().arcNodeResourceIds().get(0));
-        Assertions.assertEquals(DeploymentMode.DEPLOY, response.iterator().next().deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.iterator().next().operationType());
-        Assertions.assertEquals("bittoztjdqumqvf", response.iterator().next().deploymentConfiguration().version());
+        Assertions.assertEquals("qbvxqtolpwbopv", response.iterator().next().arcNodeResourceIds().get(0));
+        Assertions.assertEquals(DeploymentMode.VALIDATE, response.iterator().next().deploymentMode());
+        Assertions.assertEquals(OperationType.CLUSTER_PROVISIONING, response.iterator().next().operationType());
+        Assertions.assertEquals("kithueoc", response.iterator().next().deploymentConfiguration().version());
     }
 }

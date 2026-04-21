@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 public final class EdgeDeviceJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
+     * x-ms-original-file: 2026-04-01-preview/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
      */
     /**
      * Sample code: EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.
@@ -37,7 +37,7 @@ public final class EdgeDeviceJobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
+     * x-ms-original-file: 2026-04-01-preview/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
      */
     /**
      * Sample code: EdgeDeviceJobs_CreateOrUpdate_CollectLog.

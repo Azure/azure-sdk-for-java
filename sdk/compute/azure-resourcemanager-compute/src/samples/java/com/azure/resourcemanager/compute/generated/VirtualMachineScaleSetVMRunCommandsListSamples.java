@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetVMRunCommandsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
+     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
      */
     /**
      * Sample code: List run commands in Vmss instance.

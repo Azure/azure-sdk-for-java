@@ -6,9 +6,11 @@
 
 ### Breaking Changes
 
+## 2.0.1 (2026-04-16)
+
 ### Bugs Fixed
 
-### Other Changes
+- Fixed streaming APIs to properly stream response data instead of eagerly buffering the entire response body in memory, and moved async completions off I/O threads to prevent blocking.
 
 ## 2.0.0 (2026-03-27)
 

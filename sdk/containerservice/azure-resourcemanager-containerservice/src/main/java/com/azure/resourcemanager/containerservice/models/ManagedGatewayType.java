@@ -18,8 +18,8 @@ public final class ManagedGatewayType extends ExpandableStringEnum<ManagedGatewa
     public static final ManagedGatewayType DISABLED = fromString("Disabled");
 
     /**
-     * The latest Gateway CRD bundle from the standard channel that is compatible with your Kubernetes version will be
-     * reconciled onto your cluster. See https://gateway-api.sigs.k8s.io/concepts/versioning/ for more details.
+     * Gateway API CRDs from the standard release channel will be reconciled onto your cluster. See
+     * https://aka.ms/gateway-api-versions to see which bundle will be installed for your Kubernetes version.
      */
     public static final ManagedGatewayType STANDARD = fromString("Standard");
 

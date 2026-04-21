@@ -51,6 +51,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesEdgeZonesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetLifeCycleHookEventsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
@@ -176,6 +177,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions() {
         return this.virtualMachineScaleSetExtensions;
+    }
+
+    /**
+     * The VirtualMachineScaleSetLifeCycleHookEventsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetLifeCycleHookEventsClient virtualMachineScaleSetLifeCycleHookEvents;
+
+    /**
+     * Gets the VirtualMachineScaleSetLifeCycleHookEventsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetLifeCycleHookEventsClient object.
+     */
+    public VirtualMachineScaleSetLifeCycleHookEventsClient getVirtualMachineScaleSetLifeCycleHookEvents() {
+        return this.virtualMachineScaleSetLifeCycleHookEvents;
     }
 
     /**
@@ -843,6 +858,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.operations = new OperationsClientImpl(this);
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
+        this.virtualMachineScaleSetLifeCycleHookEvents = new VirtualMachineScaleSetLifeCycleHookEventsClientImpl(this);
         this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.virtualMachineExtensions = new VirtualMachineExtensionsClientImpl(this);

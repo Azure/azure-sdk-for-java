@@ -17,12 +17,14 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrating how to analyze invoices using Content Understanding service.
@@ -66,6 +68,43 @@ public class Sample03_AnalyzeInvoice {
 
         AnalysisResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeInvoice
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoiceUsage
+        // Access usage details from the operation status (available after polling completes).
+        // Usage reports resource consumption for billing estimation:
+        //
+        // - documentPagesStandard/Basic/Minimal: Pages processed at each extraction tier.
+        //   Standard = layout + OCR (scanned docs), Basic = OCR only, Minimal = digital formats
+        //   (DOCX, XLSX, HTML, TXT) that need no OCR. Charged per 1,000 pages.
+        //
+        // - contextualizationTokens: Fixed-rate tokens charged by Content Understanding for
+        //   preparing context, generating confidence scores, source grounding, and formatting
+        //   output. Typically 1,000 tokens per page. Charged separately from LLM tokens.
+        //
+        // - tokens: Map of "{model}-input" / "{model}-output" token counts consumed by your
+        //   Foundry model deployment (e.g. "gpt-4.1-input", "gpt-4.1-output"). These are
+        //   billed on your Foundry deployment, not on Content Understanding.
+        //
+        // For full pricing details, see:
+        // https://learn.microsoft.com/azure/ai-services/content-understanding/pricing-explainer
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        }
+        // END:ContentUnderstandingAnalyzeInvoiceUsage
 
         System.out.println("Analysis operation completed");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
