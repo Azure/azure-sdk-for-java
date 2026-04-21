@@ -4,7 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
-import com.azure.core.implementation.http.FluxInputStream;
+import com.azure.core.implementation.FluxInputStream;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;

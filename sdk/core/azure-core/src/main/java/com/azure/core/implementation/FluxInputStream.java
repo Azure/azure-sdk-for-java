@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.http;
+package com.azure.core.implementation;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -227,6 +227,10 @@ public class FluxInputStream extends InputStream {
                 this::signalOnCompleteOrError,
                 // Subscription consumer
                 subscription -> {
+                    if (this.closed) {
+                        subscription.cancel();
+                        return;
+                    }
                     this.subscription = subscription;
                     this.subscribed = true;
                     this.subscription.request(1);
@@ -263,6 +267,10 @@ public class FluxInputStream extends InputStream {
         }
         if (length < 0) {
             throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'length' cannot be less than 0"));
+        }
+        if (offset > bytes.length) {
+            throw LOGGER.logExceptionAsError(
+                new IndexOutOfBoundsException("'offset' cannot be greater than 'bytes'.length"));
         }
         if (length > (bytes.length - offset)) {
             throw LOGGER.logExceptionAsError(

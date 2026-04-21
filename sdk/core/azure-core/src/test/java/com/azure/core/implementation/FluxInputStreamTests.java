@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.http;
+package com.azure.core.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
@@ -28,7 +28,7 @@ public class FluxInputStreamTests {
     private static final int KB = 1024;
     private static final int MB = KB * KB;
 
-    /* Network tests to be performed by implementors of the FluxInputStream. */
+    /* Generates deterministic test data for FluxInputStream unit tests. */
     private Flux<ByteBuffer> generateData(int num) {
         List<ByteBuffer> buffers = new ArrayList<>();
         for (int i = 0; i < num; i++) {
