@@ -180,6 +180,31 @@ public class Http2ParentChannelExceptionHandlerTest {
     }
 
     /**
+     * With handler — when Http2FrameCodec is absent from the pipeline,
+     * getActiveStreamCount() returns -1. Since -1 != 0 and the channel
+     * is active, the handler takes the safe WARN path. This covers the
+     * fallback behavior when the codec is unavailable (e.g., torn down
+     * during shutdown).
+     */
+    @Test(groups = "unit")
+    public void withHandler_codecAbsent_fallsBackToWarnPath() {
+        EmbeddedChannel channel = new EmbeddedChannel(
+            new Http2ParentChannelExceptionHandler());
+
+        assertThat(channel.pipeline().get(Http2FrameCodec.class)).isNull();
+        assertThat(channel.isActive()).isTrue();
+
+        channel.pipeline().fireExceptionCaught(
+            new IOException("Connection reset by peer"));
+
+        // Exception consumed — does NOT reach tail
+        channel.checkException();
+        assertThat(channel.isOpen()).isTrue();
+
+        channel.finishAndReleaseAll();
+    }
+
+    /**
      * Creates an EmbeddedChannel matching the production HTTP/2 parent channel
      * pipeline (minus SslHandler): Http2FrameCodec → Http2MultiplexHandler →
      * Http2ParentChannelExceptionHandler.
