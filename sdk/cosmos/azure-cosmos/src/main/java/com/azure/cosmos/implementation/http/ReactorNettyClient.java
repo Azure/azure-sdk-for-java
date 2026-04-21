@@ -171,8 +171,9 @@ public class ReactorNettyClient implements HttpClient {
                     // In H2, doOnConnected fires for stream (child) channels — channel.parent()
                     // is the TCP connection. The parent pipeline has no ChannelOperationsHandler
                     // (unlike H1.1), so TCP-level exceptions (RST, broken pipe) propagate to
-                    // Netty's TailContext and get logged as WARN. This handler matches H1.1
-                    // behavior by consuming exceptions at DEBUG level.
+                    // Netty's TailContext. This handler aligns the logging with connection state:
+                    // DEBUG when the parent channel is idle or inactive, WARN when the channel
+                    // is active and in-flight streams may be impacted.
                     Channel parent = connection.channel().parent();
                     if (parent != null
                         && parent.pipeline().get(Http2ParentChannelExceptionHandler.HANDLER_NAME) == null) {
