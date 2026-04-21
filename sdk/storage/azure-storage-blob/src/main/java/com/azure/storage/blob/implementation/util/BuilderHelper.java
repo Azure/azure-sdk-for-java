@@ -181,12 +181,15 @@ public final class BuilderHelper {
         String accountName = sessionOptions.getAccountName();
         validateSessionOptions(containerName, serviceVersion, effectiveMode, logger);
 
-        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(policies);
         httpsValidation(tokenCredential, "bearer token", endpoint, logger);
         String scope = audience != null
             ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
             : Constants.STORAGE_SCOPE;
-        bearerPolicies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
+            = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
+
+        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(policies);
+        bearerPolicies.add(bearerPolicy);
 
         HttpPipeline bearerPipeline
             = new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
@@ -195,8 +198,8 @@ public final class BuilderHelper {
                 .tracer(createTracer(clientOptions))
                 .build();
 
-        SessionTokenCredentialPolicy sessionPolicy
-            = createSessionPolicy(bearerPipeline, endpoint, accountName, containerName, serviceVersion, effectiveMode);
+        SessionTokenCredentialPolicy sessionPolicy = createSessionPolicy(bearerPolicy, bearerPipeline, endpoint,
+            accountName, containerName, serviceVersion, effectiveMode);
 
         policies.add(sessionPolicy);
     }
@@ -213,11 +216,13 @@ public final class BuilderHelper {
         }
     }
 
-    private static SessionTokenCredentialPolicy createSessionPolicy(HttpPipeline bearerPipeline, String endpoint,
+    private static SessionTokenCredentialPolicy createSessionPolicy(
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpPipeline bearerPipeline, String endpoint,
         String accountName, String containerName, BlobServiceVersion serviceVersion, SessionMode effectiveMode) {
         BlobSessionClient sessionClient
             = new BlobSessionClient(bearerPipeline, endpoint, serviceVersion, accountName, containerName);
-        return new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), effectiveMode);
+        return new SessionTokenCredentialPolicy(bearerPolicy, new StorageSessionCredentialCache(sessionClient),
+            effectiveMode);
     }
 
     private static SessionMode resolveSessionMode(SessionMode sessionMode, TokenCredential tokenCredential) {
@@ -245,10 +250,12 @@ public final class BuilderHelper {
         // Detect whether the pipeline has bearer auth by scanning for the policy.
         boolean hasBearerAuth = false;
         int bearerIndex = -1;
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy = null;
         for (int i = 0; i < basePipeline.getPolicyCount(); i++) {
             if (basePipeline.getPolicy(i) instanceof StorageBearerTokenChallengeAuthorizationPolicy) {
                 hasBearerAuth = true;
                 bearerIndex = i;
+                bearerPolicy = (StorageBearerTokenChallengeAuthorizationPolicy) basePipeline.getPolicy(i);
                 break;
             }
         }
@@ -261,8 +268,8 @@ public final class BuilderHelper {
         // The base pipeline (with bearer) serves as the bearer-only pipeline for CreateSession calls.
         BlobSessionClient sessionClient
             = new BlobSessionClient(basePipeline, endpoint, serviceVersion, accountName, containerName);
-        SessionTokenCredentialPolicy sessionPolicy
-            = new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), effectiveMode);
+        SessionTokenCredentialPolicy sessionPolicy = new SessionTokenCredentialPolicy(bearerPolicy,
+            new StorageSessionCredentialCache(sessionClient), effectiveMode);
 
         // Build a new pipeline with session policy inserted before the bearer policy.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
