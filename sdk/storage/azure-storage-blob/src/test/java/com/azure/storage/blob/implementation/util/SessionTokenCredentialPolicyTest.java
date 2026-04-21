@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -47,11 +49,24 @@ public class SessionTokenCredentialPolicyTest {
     HttpHeaderName authHeaderName = HttpHeaderName.AUTHORIZATION;
 
     private BlobSessionClient sessionClient;
+    private StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private SessionTokenCredentialPolicy policy;
 
     @BeforeEach
     public void beforeEach() {
         sessionClient = mock(BlobSessionClient.class);
+        bearerPolicy = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
+
+        // Default mock behavior: bearer policy delegates to next policy in the pipeline.
+        when(bearerPolicy.process(any(), any())).thenAnswer(invocation -> {
+            HttpPipelineNextPolicy nextPolicy = invocation.getArgument(1);
+            return nextPolicy.process();
+        });
+        when(bearerPolicy.processSync(any(), any())).thenAnswer(invocation -> {
+            HttpPipelineNextSyncPolicy nextPolicy = invocation.getArgument(1);
+            return nextPolicy.processSync();
+        });
+
         policy = createPolicy(SessionMode.ALWAYS);
     }
 
@@ -297,7 +312,8 @@ public class SessionTokenCredentialPolicyTest {
         try (HttpResponse actualResponse = policy.process(context, next).block()) {
             assertEquals(bearerResponse, actualResponse);
             verify(unavailableResponse, times(1)).close();
-            verify(retryNext, times(1)).process();
+            // Verify that the bearer policy was invoked for fallback
+            verify(bearerPolicy, times(1)).process(any(), any());
             // Authorization header should have been stripped so bearer policy can add its own
             String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
             assertTrue(authHeader == null || !authHeader.startsWith("Session"),
@@ -325,7 +341,8 @@ public class SessionTokenCredentialPolicyTest {
         try (HttpResponse actualResponse = policy.processSync(context, next)) {
             assertEquals(bearerResponse, actualResponse);
             verify(unavailableResponse, times(1)).close();
-            verify(retryNext, times(1)).processSync();
+            // Verify that the bearer policy was invoked for fallback
+            verify(bearerPolicy, times(1)).processSync(any(), any());
             String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
             assertTrue(authHeader == null || !authHeader.startsWith("Session"),
                 "Session auth should have been stripped but was: " + authHeader);
@@ -365,9 +382,9 @@ public class SessionTokenCredentialPolicyTest {
 
         try (HttpResponse actualResponse = nonePolicy.process(context, next).block()) {
             assertEquals(response, actualResponse);
-            verify(next, times(1)).process();
+            // Verify bearer policy was invoked (session delegates to bearer in NONE mode)
+            verify(bearerPolicy, times(1)).process(any(), any());
             verify(sessionClient, times(0)).createSessionAsync();
-            assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
         }
     }
 
@@ -383,9 +400,9 @@ public class SessionTokenCredentialPolicyTest {
 
         try (HttpResponse actualResponse = nonePolicy.processSync(context, next)) {
             assertEquals(response, actualResponse);
-            verify(next, times(1)).processSync();
+            // Verify bearer policy was invoked (session delegates to bearer in NONE mode)
+            verify(bearerPolicy, times(1)).processSync(any(), any());
             verify(sessionClient, times(0)).createSessionSync();
-            assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName));
         }
     }
 
@@ -417,7 +434,7 @@ public class SessionTokenCredentialPolicyTest {
         when(firstResponse.getStatusCode()).thenReturn(200);
         when(secondResponse.getStatusCode()).thenReturn(200);
 
-        // First request — should pass through without session
+        // First request — should delegate to bearer (AUTO first GetBlob)
         HttpPipelineCallContext context1 = createContext();
         HttpPipelineNextPolicy next1 = mock(HttpPipelineNextPolicy.class);
         when(next1.process()).thenReturn(Mono.just(firstResponse));
@@ -425,7 +442,7 @@ public class SessionTokenCredentialPolicyTest {
         try (HttpResponse actual1 = autoPolicy.process(context1, next1).block()) {
             assertEquals(firstResponse, actual1);
             verify(sessionClient, times(0)).createSessionAsync();
-            assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+            verify(bearerPolicy, times(1)).process(any(), any());
         }
 
         // Second request — should use session
@@ -451,7 +468,7 @@ public class SessionTokenCredentialPolicyTest {
         when(firstResponse.getStatusCode()).thenReturn(200);
         when(secondResponse.getStatusCode()).thenReturn(200);
 
-        // First request — pass through
+        // First request — delegate to bearer
         HttpPipelineCallContext context1 = createContext();
         HttpPipelineNextSyncPolicy next1 = mock(HttpPipelineNextSyncPolicy.class);
         when(next1.processSync()).thenReturn(firstResponse);
@@ -459,7 +476,7 @@ public class SessionTokenCredentialPolicyTest {
         try (HttpResponse actual1 = autoPolicy.processSync(context1, next1)) {
             assertEquals(firstResponse, actual1);
             verify(sessionClient, times(0)).createSessionSync();
-            assertNull(context1.getHttpRequest().getHeaders().getValue(authHeaderName));
+            verify(bearerPolicy, times(1)).processSync(any(), any());
         }
 
         // Second request — session signed
@@ -476,7 +493,7 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     private SessionTokenCredentialPolicy createPolicy(SessionMode mode) {
-        return new SessionTokenCredentialPolicy(new StorageSessionCredentialCache(sessionClient), mode);
+        return new SessionTokenCredentialPolicy(bearerPolicy, new StorageSessionCredentialCache(sessionClient), mode);
     }
 
     private static StorageSessionCredential credentialWithToken(String token) {
@@ -542,8 +559,8 @@ public class SessionTokenCredentialPolicyTest {
 
         policy.process(context, next).block().close();
 
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
-            "PUT request should not be signed with session auth");
+        // Non-GetBlob requests delegate to bearer policy instead of session auth
+        verify(bearerPolicy, times(1)).process(any(), any());
         verify(sessionClient, times(0)).createSessionAsync();
     }
 
@@ -558,8 +575,8 @@ public class SessionTokenCredentialPolicyTest {
 
         policy.process(context, next).block().close();
 
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
-            "ListBlobs request (restype=container&comp=list) should not be signed with session auth");
+        // ListBlobs requests delegate to bearer policy instead of session auth
+        verify(bearerPolicy, times(1)).process(any(), any());
         verify(sessionClient, times(0)).createSessionAsync();
     }
 
@@ -574,8 +591,8 @@ public class SessionTokenCredentialPolicyTest {
 
         policy.process(context, next).block().close();
 
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
-            "GetBlobProperties (comp=metadata) should not be signed with session auth");
+        // GetBlobProperties (comp=metadata) delegates to bearer policy instead of session auth
+        verify(bearerPolicy, times(1)).process(any(), any());
         verify(sessionClient, times(0)).createSessionAsync();
     }
 
@@ -608,8 +625,8 @@ public class SessionTokenCredentialPolicyTest {
 
         policy.process(context, next).block().close();
 
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
-            "Container-level GET (restype=container) should not use session auth");
+        // Container-level GET (restype=container) delegates to bearer policy instead of session auth
+        verify(bearerPolicy, times(1)).process(any(), any());
         verify(sessionClient, times(0)).createSessionAsync();
     }
 
@@ -619,22 +636,22 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse response = mock(HttpResponse.class);
         when(response.getStatusCode()).thenReturn(200);
 
-        // First request: PUT (non-GetBlob) — should not advance AUTO counter
+        // First request: PUT (non-GetBlob) — should not advance AUTO counter, delegates to bearer
         HttpPipelineCallContext putContext = createContextForRequest(
             new HttpRequest(HttpMethod.PUT, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
         HttpPipelineNextPolicy putNext = mock(HttpPipelineNextPolicy.class);
         when(putNext.process()).thenReturn(Mono.just(response));
         autoPolicy.process(putContext, putNext).block().close();
 
-        // Second request: GET blob — should be first GetBlob, so AUTO returns false (bearer)
+        // Second request: GET blob — should be first GetBlob, so AUTO delegates to bearer
         HttpPipelineCallContext getContext1
             = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
         HttpPipelineNextPolicy getNext1 = mock(HttpPipelineNextPolicy.class);
         when(getNext1.process()).thenReturn(Mono.just(response));
         Objects.requireNonNull(autoPolicy.process(getContext1, getNext1).block()).close();
 
-        assertNull(getContext1.getHttpRequest().getHeaders().getValue(authHeaderName),
-            "First GetBlob in AUTO mode should use bearer (counter not advanced by PUT)");
+        // Verify bearer policy was called for both passthrough requests
+        verify(bearerPolicy, times(2)).process(any(), any());
 
         // Third request: GET blob — should now use session (counter was advanced by previous GetBlob)
         when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
@@ -660,8 +677,8 @@ public class SessionTokenCredentialPolicyTest {
 
         Objects.requireNonNull(policy.process(context, next).block()).close();
 
-        assertNull(context.getHttpRequest().getHeaders().getValue(authHeaderName),
-            "ALWAYS mode should still skip session auth for non-GetBlob (DELETE) requests");
+        // ALWAYS mode non-GetBlob requests delegate to bearer instead of session auth
+        verify(bearerPolicy, times(1)).process(any(), any());
         verify(sessionClient, times(0)).createSessionAsync();
     }
 

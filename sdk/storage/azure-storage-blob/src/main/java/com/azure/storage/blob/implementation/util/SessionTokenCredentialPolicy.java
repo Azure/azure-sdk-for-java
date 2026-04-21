@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -21,6 +22,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Policy that acquires container-scoped session credentials and signs requests using the Session auth scheme.
+ * <p>
+ * This policy wraps a {@link StorageBearerTokenChallengeAuthorizationPolicy} and delegates to it when session
+ * auth does not apply (non-GetBlob requests, {@link SessionMode#NONE}, or the first request in
+ * {@link SessionMode#AUTO}). When session auth is active, this policy signs the request directly and skips
+ * the bearer policy. On fallback (e.g., 503 SessionOperationsTemporarilyUnavailable), this policy explicitly
+ * delegates to the bearer policy.
  */
 final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
@@ -31,26 +38,31 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String SESSION_TOKEN_INVALID = "session_token_invalid";
     private static final String SESSION_OPS_UNAVAILABLE = "SessionOperationsTemporarilyUnavailable";
 
+    private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final StorageSessionCredentialCache sessionCredentialCache;
     private final SessionMode mode;
     private final AtomicBoolean autoActivated = new AtomicBoolean(false);
 
-    SessionTokenCredentialPolicy(BlobSessionClient sessionClient) {
-        this(
-            new StorageSessionCredentialCache(Objects.requireNonNull(sessionClient, "'sessionClient' cannot be null.")),
-            SessionMode.AUTO);
-    }
-
-    SessionTokenCredentialPolicy(StorageSessionCredentialCache sessionCredentialCache, SessionMode mode) {
+    SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+        StorageSessionCredentialCache sessionCredentialCache, SessionMode mode) {
+        this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionCredentialCache
             = Objects.requireNonNull(sessionCredentialCache, "'sessionCredentialCache' cannot be null.");
         this.mode = Objects.requireNonNull(mode, "'mode' cannot be null.");
     }
 
+    /**
+     * Returns the wrapped bearer token policy. Used when constructing per-container pipelines from a service
+     * pipeline so that the bearer policy can be reused without scanning the pipeline.
+     */
+    StorageBearerTokenChallengeAuthorizationPolicy getBearerPolicy() {
+        return bearerPolicy;
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (!isGetBlobRequest(context) || !shouldUseSession()) {
-            return next.process();
+            return bearerPolicy.process(context, next);
         }
 
         HttpPipelineNextPolicy retryNext = next.clone();
@@ -75,9 +87,8 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
                 if (shouldFallBackToBearer(context, response)) {
                     response.close();
                     context.setData(RETRY_CONTEXT_KEY, true);
-                    // Remove session auth so the downstream BearerTokenPolicy adds a bearer token.
                     context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
-                    return retryNext.process();
+                    return bearerPolicy.process(context, retryNext);
                 }
 
                 return Mono.just(response);
@@ -88,7 +99,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if (!isGetBlobRequest(context) || !shouldUseSession()) {
-            return next.processSync();
+            return bearerPolicy.processSync(context, next);
         }
 
         HttpPipelineNextSyncPolicy retryNext = next.clone();
@@ -115,7 +126,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             response.close();
             context.setData(RETRY_CONTEXT_KEY, true);
             context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
-            return retryNext.processSync();
+            return bearerPolicy.processSync(context, retryNext);
         }
 
         return response;
@@ -241,8 +252,8 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Returns true for 503 with SessionOperationsTemporarilyUnavailable error code.
-     * The session infrastructure is temporarily down, so we strip session auth and let
-     * the downstream BearerTokenPolicy handle the request with a bearer token.
+     * The session infrastructure is temporarily down, so we strip session auth and
+     * delegate to the wrapped bearer policy to handle the request with a bearer token.
      */
     private static boolean shouldFallBackToBearer(HttpPipelineCallContext context, HttpResponse response) {
         if (Boolean.TRUE.equals(context.getData(RETRY_CONTEXT_KEY).orElse(false))) {
