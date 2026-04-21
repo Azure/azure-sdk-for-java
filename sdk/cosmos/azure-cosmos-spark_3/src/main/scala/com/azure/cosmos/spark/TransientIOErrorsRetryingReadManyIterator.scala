@@ -87,7 +87,7 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
             .getCosmosAsyncContainerAccessor
             .readMany(container, readManyFilterList.asJava, queryOptionsWithEnd2EndTimeout, classType)
             .block()
-        }(TransientIOErrorsRetryingReadManyIterator.executionContext),
+        }(TransientIOErrorsRetryingIterator.executionContext),
         maxPageRetrievalTimeout)
     } catch {
       case endToEndTimeoutException: OperationCancelledException =>
@@ -171,8 +171,4 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
   }
 
   override def close(): Unit = {}
-}
-
-private object TransientIOErrorsRetryingReadManyIterator extends BasicLoggingTrait {
-  val executionContext: ExecutionContext = TransientIOErrorsRetryingIterator.executionContext
 }

@@ -1593,7 +1593,7 @@ public interface AsyncDocumentClient {
      * @param partitionKeys list of partition key values to read documents for
      * @param customQuery optional custom query (for projections/additional filters) - null means SELECT * FROM c
      * @param collectionLink link for the documentcollection/container to be queried
-     * @param state the query operation state
+     * @param state the query operation state (may carry a composite continuation token via requestContinuation)
      * @param klass class type
      * @param <T> the type parameter
      * @return a Flux with feed response pages of documents
@@ -1672,7 +1672,7 @@ public interface AsyncDocumentClient {
      */
     void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
-    
+
     /***
      * Enable server throughput control group.
      *

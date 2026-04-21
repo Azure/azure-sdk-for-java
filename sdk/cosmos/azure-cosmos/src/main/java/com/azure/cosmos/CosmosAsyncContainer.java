@@ -1721,6 +1721,13 @@ public class CosmosAsyncContainer {
 
         CosmosAsyncClient client = this.getDatabase().getClient();
 
+        // Extract continuation token before entering the reactive chain.
+        // It will be set on the cloned CosmosQueryRequestOptions so that
+        // QueryFeedOperationState picks it up automatically.
+        String requestContinuation = requestOptions != null
+            ? readManyOptionsAccessor().getRequestContinuation(requestOptions)
+            : null;
+
         return (pagedFluxOptions -> {
             CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
                 ? new CosmosQueryRequestOptions()
@@ -1732,6 +1739,14 @@ public class CosmosAsyncContainer {
                 queryRequestOptions.setMaxDegreeOfParallelism(-1);
             }
             queryRequestOptions.setQueryName("readManyByPartitionKeys");
+
+            // Set the composite continuation token on the cloned query options so that
+            // QueryFeedOperationState carries it through to RxDocumentClientImpl.
+            if (requestContinuation != null) {
+                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
+                    queryRequestOptions, requestContinuation);
+            }
+
             CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
             applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeySpanName);
 

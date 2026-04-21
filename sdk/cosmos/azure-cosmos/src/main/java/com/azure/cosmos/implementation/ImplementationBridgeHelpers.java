@@ -351,6 +351,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosReadManyRequestOptionsAccessor {
             CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
+            String getRequestContinuation(CosmosReadManyRequestOptions options);
         }
     }
 

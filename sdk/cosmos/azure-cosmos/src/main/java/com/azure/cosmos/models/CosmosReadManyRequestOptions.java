@@ -380,6 +380,11 @@ public final class CosmosReadManyRequestOptions {
                 public CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options) {
                     return options.actualRequestOptions;
                 }
+
+                @Override
+                public String getRequestContinuation(CosmosReadManyRequestOptions options) {
+                    return options.actualRequestOptions.getRequestContinuation();
+                }
             });
     }
 

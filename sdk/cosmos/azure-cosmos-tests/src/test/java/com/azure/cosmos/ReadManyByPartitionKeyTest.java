@@ -5,6 +5,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -480,6 +482,155 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         assertThat(resultList.stream().map(item -> item.mypk)).containsOnly("pkOpts");
 
         cleanupContainer(singlePkContainer);
+    }
+
+    //endregion
+
+    //region Continuation token tests
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_sequentialExecution_emitsContinuationTokens() {
+        // Use small batch size so we get multiple batches (and thus multiple continuation tokens)
+        String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+        try {
+            System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "2");
+
+            // Create items across 3 PKs
+            createSinglePkItems("seqPk1", 3);
+            createSinglePkItems("seqPk2", 3);
+            createSinglePkItems("seqPk3", 3);
+
+            List<PartitionKey> pkValues = Arrays.asList(
+                new PartitionKey("seqPk1"),
+                new PartitionKey("seqPk2"),
+                new PartitionKey("seqPk3"));
+
+            // Use the async container to collect FeedResponse pages with continuation tokens
+            CosmosAsyncContainer asyncContainer = client.asyncClient()
+                .getDatabase(preExistingDatabaseId)
+                .getContainer(singlePkContainer.getId());
+
+            List<FeedResponse<ObjectNode>> pages = asyncContainer
+                .readManyByPartitionKeys(pkValues, ObjectNode.class)
+                .byPage()
+                .collectList()
+                .block();
+
+            assertThat(pages).isNotNull();
+            assertThat(pages).isNotEmpty();
+
+            // All non-final pages should have a non-null continuation token
+            for (int i = 0; i < pages.size() - 1; i++) {
+                assertThat(pages.get(i).getContinuationToken())
+                    .as("Page %d should have a continuation token", i)
+                    .isNotNull()
+                    .isNotEmpty();
+            }
+
+            // The final page should have null continuation
+            assertThat(pages.get(pages.size() - 1).getContinuationToken())
+                .as("Last page should have null continuation token")
+                .isNull();
+
+            // Total items should be 9
+            long totalItems = pages.stream()
+                .mapToLong(p -> p.getResults().size())
+                .sum();
+            assertThat(totalItems).isEqualTo(9);
+
+            cleanupContainer(singlePkContainer);
+        } finally {
+            if (originalValue != null) {
+                System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", originalValue);
+            } else {
+                System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+            }
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_continuationToken_resumesCorrectly() {
+        // Use small batch size to force multiple batches
+        String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+        try {
+            System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "1");
+
+            // Create items across 3 PKs
+            createSinglePkItems("resumePk1", 2);
+            createSinglePkItems("resumePk2", 2);
+            createSinglePkItems("resumePk3", 2);
+
+            List<PartitionKey> pkValues = Arrays.asList(
+                new PartitionKey("resumePk1"),
+                new PartitionKey("resumePk2"),
+                new PartitionKey("resumePk3"));
+
+            CosmosAsyncContainer asyncContainer = client.asyncClient()
+                .getDatabase(preExistingDatabaseId)
+                .getContainer(singlePkContainer.getId());
+
+            // First pass: collect all items
+            List<FeedResponse<ObjectNode>> allPages = asyncContainer
+                .readManyByPartitionKeys(pkValues, ObjectNode.class)
+                .byPage()
+                .collectList()
+                .block();
+
+            assertThat(allPages).isNotNull();
+            assertThat(allPages.size()).isGreaterThan(1);
+
+            // Pick a continuation token from the first page
+            String continuationAfterFirstPage = allPages.get(0).getContinuationToken();
+            assertThat(continuationAfterFirstPage).isNotNull();
+            List<ObjectNode> itemsFromFirstPage = allPages.get(0).getResults();
+
+            // Second pass: resume from the continuation token
+            com.azure.cosmos.models.CosmosReadManyRequestOptions options2 =
+                new com.azure.cosmos.models.CosmosReadManyRequestOptions();
+            ((com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl)
+                ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper
+                    .getCosmosReadManyRequestOptionsAccessor()
+                    .getImpl(options2))
+                .setRequestContinuation(continuationAfterFirstPage);
+
+            List<FeedResponse<ObjectNode>> remainingPages = asyncContainer
+                .readManyByPartitionKeys(pkValues, options2, ObjectNode.class)
+                .byPage()
+                .collectList()
+                .block();
+
+            assertThat(remainingPages).isNotNull();
+
+            // Collect all item ids
+            List<String> firstPageIds = itemsFromFirstPage.stream()
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+            List<String> remainingIds = remainingPages.stream()
+                .flatMap(p -> p.getResults().stream())
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+            List<String> allIds = allPages.stream()
+                .flatMap(p -> p.getResults().stream())
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+
+            // Items from first page + remaining should equal all items (no overlap, no gap)
+            List<String> combined = new ArrayList<>(firstPageIds);
+            combined.addAll(remainingIds);
+
+            assertThat(combined).hasSameElementsAs(allIds);
+
+            // No duplicates
+            assertThat(combined).doesNotHaveDuplicates();
+
+            cleanupContainer(singlePkContainer);
+        } finally {
+            if (originalValue != null) {
+                System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", originalValue);
+            } else {
+                System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+            }
+        }
     }
 
     //endregion

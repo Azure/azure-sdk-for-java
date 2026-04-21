@@ -215,12 +215,23 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
             // Factory that creates a CosmosPagedFlux from an optional continuation token.
             // On the first call continuationToken is null (start from scratch); on retry
             // it is the continuation token from the last fully-drained page.
-            private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (_: String) =>
+            private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (continuationToken: String) =>
+              // Clone options and set continuation token if provided so the SDK
+              // resumes from where the previous attempt left off.
+              val effectiveOptions = new CosmosReadManyRequestOptions(readManyOptions)
+              if (continuationToken != null) {
+                val effectiveImpl = ImplementationBridgeHelpers
+                  .CosmosReadManyRequestOptionsHelper
+                  .getCosmosReadManyRequestOptionsAccessor
+                  .getImpl(effectiveOptions)
+                  .asInstanceOf[com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl]
+                effectiveImpl.setRequestContinuation(continuationToken)
+              }
               customQueryOpt match {
                 case Some(query) =>
-                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, readManyOptions, classOf[SparkRowItem])
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, effectiveOptions, classOf[SparkRowItem])
                 case None =>
-                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, readManyOptions, classOf[SparkRowItem])
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, effectiveOptions, classOf[SparkRowItem])
               }
             }
 

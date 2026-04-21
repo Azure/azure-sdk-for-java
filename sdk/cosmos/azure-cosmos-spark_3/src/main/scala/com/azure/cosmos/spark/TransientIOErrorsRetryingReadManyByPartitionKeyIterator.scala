@@ -105,7 +105,7 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
         Await.result(
           Future {
             feedResponseIterator.hasNext
-          }(TransientIOErrorsRetryingReadManyByPartitionKeyIterator.executionContext),
+          }(TransientIOErrorsRetryingIterator.executionContext),
           maxPageRetrievalTimeout)
       } catch {
         case endToEndTimeoutException: OperationCancelledException =>
@@ -219,8 +219,4 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     currentItemIterator = None
     currentFeedResponseIterator = None
   }
-}
-
-private object TransientIOErrorsRetryingReadManyByPartitionKeyIterator extends BasicLoggingTrait {
-  val executionContext: ExecutionContext = TransientIOErrorsRetryingIterator.executionContext
 }
