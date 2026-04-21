@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -283,13 +285,19 @@ public class GatewayReadConsistencyStrategyE2ETest {
         CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
             .setReadConsistencyStrategy(ReadConsistencyStrategy.GLOBAL_STRONG);
 
-        Throwable thrown = catchThrowable(() ->
-            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block()
-        );
+        Throwable caughtError = null;
+        try {
+            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+        } catch (Throwable t) {
+            caughtError = t;
+        }
 
-        assertThat(thrown).isNotNull();
-        assertThat(thrown.getMessage()).contains("ReadConsistencyStrategy");
-        logger.info("Expected error for GLOBAL_STRONG on non-Strong account: {}", thrown.getMessage());
+        assertThat(caughtError)
+            .as("Expected BadRequestException for GLOBAL_STRONG on Session account")
+            .isNotNull()
+            .isInstanceOf(BadRequestException.class);
+        assertThat(caughtError.getMessage()).contains("read-consistency-strategy");
+        logger.info("Expected BadRequestException for GLOBAL_STRONG: {}", caughtError.getMessage());
     }
 
     // endregion
