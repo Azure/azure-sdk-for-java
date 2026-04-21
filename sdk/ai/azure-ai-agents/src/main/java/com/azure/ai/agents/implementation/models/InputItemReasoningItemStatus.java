@@ -5,9 +5,9 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for ItemResourceLocalShellToolCallOutputStatus.
+ * Defines values for InputItemReasoningItemStatus.
  */
-public enum ItemResourceLocalShellToolCallOutputStatus {
+public enum InputItemReasoningItemStatus {
     /**
      * Enum value in_progress.
      */
@@ -24,26 +24,26 @@ public enum ItemResourceLocalShellToolCallOutputStatus {
     INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a ItemResourceLocalShellToolCallOutputStatus instance.
+     * The actual serialized value for a InputItemReasoningItemStatus instance.
      */
     private final String value;
 
-    ItemResourceLocalShellToolCallOutputStatus(String value) {
+    InputItemReasoningItemStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceLocalShellToolCallOutputStatus instance.
+     * Parses a serialized value to a InputItemReasoningItemStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceLocalShellToolCallOutputStatus object, or null if unable to parse.
+     * @return the parsed InputItemReasoningItemStatus object, or null if unable to parse.
      */
-    public static ItemResourceLocalShellToolCallOutputStatus fromString(String value) {
+    public static InputItemReasoningItemStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceLocalShellToolCallOutputStatus[] items = ItemResourceLocalShellToolCallOutputStatus.values();
-        for (ItemResourceLocalShellToolCallOutputStatus item : items) {
+        InputItemReasoningItemStatus[] items = InputItemReasoningItemStatus.values();
+        for (InputItemReasoningItemStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

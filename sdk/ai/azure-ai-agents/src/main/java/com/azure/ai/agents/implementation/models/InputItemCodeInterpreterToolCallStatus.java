@@ -5,9 +5,9 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for ItemResourceCodeInterpreterToolCallStatus.
+ * Defines values for InputItemCodeInterpreterToolCallStatus.
  */
-public enum ItemResourceCodeInterpreterToolCallStatus {
+public enum InputItemCodeInterpreterToolCallStatus {
     /**
      * Enum value in_progress.
      */
@@ -34,26 +34,26 @@ public enum ItemResourceCodeInterpreterToolCallStatus {
     FAILED("failed");
 
     /**
-     * The actual serialized value for a ItemResourceCodeInterpreterToolCallStatus instance.
+     * The actual serialized value for a InputItemCodeInterpreterToolCallStatus instance.
      */
     private final String value;
 
-    ItemResourceCodeInterpreterToolCallStatus(String value) {
+    InputItemCodeInterpreterToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceCodeInterpreterToolCallStatus instance.
+     * Parses a serialized value to a InputItemCodeInterpreterToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceCodeInterpreterToolCallStatus object, or null if unable to parse.
+     * @return the parsed InputItemCodeInterpreterToolCallStatus object, or null if unable to parse.
      */
-    public static ItemResourceCodeInterpreterToolCallStatus fromString(String value) {
+    public static InputItemCodeInterpreterToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceCodeInterpreterToolCallStatus[] items = ItemResourceCodeInterpreterToolCallStatus.values();
-        for (ItemResourceCodeInterpreterToolCallStatus item : items) {
+        InputItemCodeInterpreterToolCallStatus[] items = InputItemCodeInterpreterToolCallStatus.values();
+        for (InputItemCodeInterpreterToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
