@@ -182,7 +182,10 @@ public class ReactorNettyClient implements HttpClient {
                                 Http2ParentChannelExceptionHandler.HANDLER_NAME,
                                 new Http2ParentChannelExceptionHandler());
                         } catch (IllegalArgumentException ignored) {
-                            // Duplicate handler — already installed by a concurrent stream
+                            // TOCTOU race: between the get()==null check above and addLast(),
+                            // a concurrent stream's doOnConnected may have installed the handler.
+                            // Since we always pass a fresh instance (never null, never shared
+                            // across pipelines), duplicate handler name is the only possible cause.
                         }
                     }
                 }));
