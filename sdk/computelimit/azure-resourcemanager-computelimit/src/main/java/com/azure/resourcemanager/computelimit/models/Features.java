@@ -84,4 +84,29 @@ public interface Features {
      * @return the response.
      */
     OperationStatusResult enable(String location, String featureName, Context context);
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    OperationStatusResult disable(String location, String featureName);
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    OperationStatusResult disable(String location, String featureName, Context context);
 }

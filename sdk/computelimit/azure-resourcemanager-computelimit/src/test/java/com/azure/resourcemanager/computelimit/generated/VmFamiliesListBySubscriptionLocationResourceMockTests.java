@@ -6,22 +6,23 @@ package com.azure.resourcemanager.computelimit.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.computelimit.ComputeLimitManager;
-import com.azure.resourcemanager.computelimit.models.SharedLimit;
-import com.azure.resourcemanager.computelimit.models.SharedLimitProperties;
+import com.azure.resourcemanager.computelimit.models.VmFamily;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class SharedLimitsCreateWithResponseMockTests {
+public final class VmFamiliesListBySubscriptionLocationResourceMockTests {
     @Test
-    public void testCreateWithResponse() throws Exception {
+    public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceName\":{\"value\":\"hd\",\"localizedValue\":\"i\"},\"limit\":996013729,\"unit\":\"jnxqbzvddntwn\",\"provisioningState\":\"Failed\"},\"id\":\"btwnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}";
+            = "{\"value\":[{\"properties\":{\"category\":\"bpizcdrqjsdpydn\",\"provisioningState\":\"Failed\"},\"id\":\"de\",\"name\":\"ejzicwifsjtt\",\"type\":\"zfbishcbkhaj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +31,9 @@ public final class SharedLimitsCreateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SharedLimit response = manager.sharedLimits()
-            .define("gmaajrm")
-            .withExistingLocation("po")
-            .withProperties(new SharedLimitProperties())
-            .create();
+        PagedIterable<VmFamily> response = manager.vmFamilies()
+            .listBySubscriptionLocationResource("g", "npiucgygevqznty", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("bpizcdrqjsdpydn", response.iterator().next().properties().category());
     }
 }

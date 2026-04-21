@@ -122,6 +122,24 @@ public final class FeaturesClientImpl implements FeaturesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/disable")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> disable(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("featureName") String featureName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/disable")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> disableSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("featureName") String featureName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -464,6 +482,162 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner enable(String location, String featureName, Context context) {
         return beginEnable(location, featureName, context).getFinalResult();
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(String location, String featureName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.disable(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, featureName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> disableWithResponse(String location, String featureName) {
+        final String accept = "application/json";
+        return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, featureName, accept, Context.NONE);
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> disableWithResponse(String location, String featureName, Context context) {
+        final String accept = "application/json";
+        return service.disableSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, featureName, accept, context);
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableAsync(String location, String featureName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = disableWithResponseAsync(location, featureName);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDisable(String location,
+        String featureName) {
+        Response<BinaryData> response = disableWithResponse(location, featureName);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDisable(String location,
+        String featureName, Context context) {
+        Response<BinaryData> response = disableWithResponse(location, featureName, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> disableAsync(String location, String featureName) {
+        return beginDisableAsync(location, featureName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner disable(String location, String featureName) {
+        return beginDisable(location, featureName).getFinalResult();
+    }
+
+    /**
+     * Disables a compute limit feature for the subscription at the specified location.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner disable(String location, String featureName, Context context) {
+        return beginDisable(location, featureName, context).getFinalResult();
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class FeaturesEnableSamples {
     /*
-     * x-ms-original-file: 2026-03-20/Features_Enable.json
+     * x-ms-original-file: 2026-04-30/Features_Enable.json
      */
     /**
      * Sample code: Enable feature.

@@ -28,7 +28,7 @@ public final class SharedLimitsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.sharedLimits()
-            .deleteByResourceGroupWithResponse("dwzjeiach", "oosflnr", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("gpbtoqcjmklj", "vbqid", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -20,7 +20,7 @@ public final class SharedLimitsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceName\":{\"value\":\"fvzwdzuhty\",\"localizedValue\":\"isdkfthwxmnteiw\"},\"limit\":1352458229,\"unit\":\"km\",\"provisioningState\":\"Failed\"},\"id\":\"mxdcufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"}";
+            = "{\"properties\":{\"resourceName\":{\"value\":\"dkirsoodqxhcr\",\"localizedValue\":\"ohjtckw\"},\"limit\":1289285070,\"unit\":\"ifiyipjxsqwpgrj\",\"provisioningState\":\"Failed\"},\"id\":\"rcjxvsnbyxqabn\",\"name\":\"ocpcy\",\"type\":\"hurzafblj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,9 @@ public final class SharedLimitsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SharedLimit response
-            = manager.sharedLimits().getWithResponse("uckyf", "hr", com.azure.core.util.Context.NONE).getValue();
+        SharedLimit response = manager.sharedLimits()
+            .getWithResponse("sfqpteehz", "vypyqrimzinpv", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

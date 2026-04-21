@@ -72,6 +72,24 @@ public final class FeaturesImpl implements Features {
         }
     }
 
+    public OperationStatusResult disable(String location, String featureName) {
+        OperationStatusResultInner inner = this.serviceClient().disable(location, featureName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult disable(String location, String featureName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().disable(location, featureName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     private FeaturesClient serviceClient() {
         return this.innerClient;
     }
