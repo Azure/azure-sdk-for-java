@@ -20,15 +20,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous TranscriptionClient type.
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class)
 public final class TranscriptionClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClient.class);
 
     @Generated
     private final TranscriptionClientImpl serviceClient;
@@ -154,7 +151,6 @@ public final class TranscriptionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
         if (options.getFileDetails() != null) {

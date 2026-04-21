@@ -21,7 +21,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /**
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class, isAsync = true)
 public final class TranscriptionAsyncClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionAsyncClient.class);
 
     @Generated
     private final TranscriptionClientImpl serviceClient;
