@@ -14,7 +14,7 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      SubscriptionId: '7cc44528-8730-4b11-ae30-5738d333ff2d'
       TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
       ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
@@ -36,7 +36,7 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      SubscriptionId: '7cc44528-8730-4b11-ae30-5738d333ff2d'
       TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
       ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
@@ -58,7 +58,7 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      SubscriptionId: '7cc44528-8730-4b11-ae30-5738d333ff2d'
       TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
       ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
@@ -81,7 +81,7 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      SubscriptionId: '7cc44528-8730-4b11-ae30-5738d333ff2d'
       TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
       ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
@@ -104,7 +104,7 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      SubscriptionId: '7cc44528-8730-4b11-ae30-5738d333ff2d'
       TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
       ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
@@ -127,7 +127,7 @@ stages:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
-      SubscriptionId: '4d042dc6-fe17-4698-a23f-ec6a8d1e98f4'
+      SubscriptionId: '7cc44528-8730-4b11-ae30-5738d333ff2d'
       TenantId: '70a036f6-8e4d-4615-bad6-149c02e7720d'
       ResourceGroupName: 'SSS3PT_oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
