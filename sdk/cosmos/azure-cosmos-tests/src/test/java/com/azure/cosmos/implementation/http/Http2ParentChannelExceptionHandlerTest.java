@@ -34,27 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class Http2ParentChannelExceptionHandlerTest {
 
     /**
-     * Creates an EmbeddedChannel matching the production HTTP/2 parent channel
-     * pipeline (minus SslHandler): Http2FrameCodec → Http2MultiplexHandler →
-     * Http2ParentChannelExceptionHandler.
-     */
-    private static EmbeddedChannel createH2ParentChannel(boolean withExceptionHandler) {
-        Http2FrameCodec codec = Http2FrameCodecBuilder.forClient()
-            .autoAckSettingsFrame(true)
-            .build();
-
-        Http2MultiplexHandler multiplexHandler = new Http2MultiplexHandler(
-            new ChannelInboundHandlerAdapter());
-
-        if (withExceptionHandler) {
-            return new EmbeddedChannel(codec, multiplexHandler,
-                new Http2ParentChannelExceptionHandler());
-        } else {
-            return new EmbeddedChannel(codec, multiplexHandler);
-        }
-    }
-
-    /**
      * BEFORE fix — without the handler, exceptions reach the pipeline tail.
      * EmbeddedChannel's checkException() re-throws the unhandled exception,
      * proving it reached Netty's TailContext (which in production logs as WARN).
@@ -148,5 +127,26 @@ public class Http2ParentChannelExceptionHandlerTest {
         channel.checkException();
 
         channel.finishAndReleaseAll();
+    }
+
+    /**
+     * Creates an EmbeddedChannel matching the production HTTP/2 parent channel
+     * pipeline (minus SslHandler): Http2FrameCodec → Http2MultiplexHandler →
+     * Http2ParentChannelExceptionHandler.
+     */
+    private static EmbeddedChannel createH2ParentChannel(boolean withExceptionHandler) {
+        Http2FrameCodec codec = Http2FrameCodecBuilder.forClient()
+            .autoAckSettingsFrame(true)
+            .build();
+
+        Http2MultiplexHandler multiplexHandler = new Http2MultiplexHandler(
+            new ChannelInboundHandlerAdapter());
+
+        if (withExceptionHandler) {
+            return new EmbeddedChannel(codec, multiplexHandler,
+                new Http2ParentChannelExceptionHandler());
+        } else {
+            return new EmbeddedChannel(codec, multiplexHandler);
+        }
     }
 }
