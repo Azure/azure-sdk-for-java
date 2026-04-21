@@ -200,7 +200,7 @@ public final class BlobClientBuilder
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER, null, null, null);
+                perRetryPolicies, configuration, audience, LOGGER, null, null);
     }
 
     /**

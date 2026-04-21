@@ -149,11 +149,13 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     private HttpPipeline constructPipeline() {
+        // Not setting session options here because it would create a pipeline for the service client that has
+        // a session, when session is container scoped
         return (httpPipeline != null)
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER, null, null, null);
+                perRetryPolicies, configuration, audience, LOGGER, null, null);
     }
 
     /**

@@ -89,9 +89,8 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions {@link SessionOptions} containing the session mode.
+     * @param sessionOptions {@link SessionOptions} containing the session mode, container name, and account name.
      *                       Pass {@code null} to disable session support.
-     * @param containerName The container name for session scoping. Required when session is active.
      * @param serviceVersion The service version for session creation. Required when session is active.
      * @return A new {@link HttpPipeline} from the passed values.
      */
@@ -100,7 +99,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ClientLogger logger, SessionOptions sessionOptions, String accountName, BlobServiceVersion serviceVersion) {
+        ClientLogger logger, SessionOptions sessionOptions, BlobServiceVersion serviceVersion) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
@@ -132,7 +131,7 @@ public final class BuilderHelper {
         }
 
         addSessionPolicyIfEnabled(policies, sessionOptions, tokenCredential, endpoint, clientOptions, httpClient,
-            audience, logger, accountName, serviceVersion);
+            audience, logger, serviceVersion);
 
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
@@ -167,7 +166,7 @@ public final class BuilderHelper {
 
     private static void addSessionPolicyIfEnabled(List<HttpPipelinePolicy> policies, SessionOptions sessionOptions,
         TokenCredential tokenCredential, String endpoint, ClientOptions clientOptions, HttpClient httpClient,
-        BlobAudience audience, ClientLogger logger, String accountName, BlobServiceVersion serviceVersion) {
+        BlobAudience audience, ClientLogger logger, BlobServiceVersion serviceVersion) {
 
         if (sessionOptions == null || tokenCredential == null) {
             return;
@@ -179,6 +178,7 @@ public final class BuilderHelper {
         }
 
         String containerName = sessionOptions.getContainerName();
+        String accountName = sessionOptions.getAccountName();
         validateSessionOptions(containerName, serviceVersion, effectiveMode, logger);
 
         List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(policies);
@@ -230,17 +230,17 @@ public final class BuilderHelper {
      * container its own session credential cache while sharing all other policies.
      *
      * @param basePipeline The service-level pipeline (used as-is for CreateSession calls).
-     * @param sessionOptions The session options containing mode and container name.
+     * @param sessionOptions The session options containing mode, container name, and account name.
      * @param endpoint The storage account endpoint.
      * @param serviceVersion The blob service version.
-     * @param accountName The storage account name.
      * @return A new pipeline with session support, or {@code basePipeline} unchanged if sessions are not applicable.
      */
     public static HttpPipeline wrapWithSessionPolicy(HttpPipeline basePipeline, SessionOptions sessionOptions,
-        String endpoint, BlobServiceVersion serviceVersion, String accountName) {
+        String endpoint, BlobServiceVersion serviceVersion) {
 
         SessionMode sessionMode = sessionOptions != null ? sessionOptions.getSessionMode() : null;
         String containerName = sessionOptions != null ? sessionOptions.getContainerName() : null;
+        String accountName = sessionOptions != null ? sessionOptions.getAccountName() : null;
 
         // Detect whether the pipeline has bearer auth by scanning for the policy.
         boolean hasBearerAuth = false;

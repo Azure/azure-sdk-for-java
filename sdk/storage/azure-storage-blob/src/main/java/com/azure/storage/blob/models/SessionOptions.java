@@ -15,6 +15,7 @@ public final class SessionOptions {
 
     private SessionMode sessionMode;
     private String containerName;
+    private String accountName;
 
     /**
      * Creates a new {@link SessionOptions} instance with default values.
@@ -60,6 +61,28 @@ public final class SessionOptions {
      */
     public SessionOptions setContainerName(String containerName) {
         this.containerName = containerName;
+        return this;
+    }
+
+    /**
+     * Gets the storage account name used for session HMAC signing.
+     *
+     * @return the account name, or {@code null} if not set (will be parsed from the endpoint URL).
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Sets the storage account name used for session HMAC signing. When set, this takes precedence
+     * over the account name parsed from the endpoint URL. This is useful for custom domain URLs
+     * where the account name cannot be inferred from the hostname.
+     *
+     * @param accountName the storage account name.
+     * @return the updated {@link SessionOptions} object.
+     */
+    public SessionOptions setAccountName(String accountName) {
+        this.accountName = accountName;
         return this;
     }
 }
