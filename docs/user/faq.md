@@ -50,7 +50,7 @@ Force a specific version in your project's `pom.xml`:
 </dependency>
 ```
 
-See [Troubleshoot dependency version conflicts](https://docs.microsoft.com/en-us/azure/developer/java/sdk/troubleshooting-dependency-version-conflict) for a detailed walkthrough.
+See [Troubleshoot dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict) for a detailed walkthrough.
 
 ---
 
