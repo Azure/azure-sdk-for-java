@@ -24,8 +24,8 @@
 
 #### `ComputeLimitManager` was modified
 
-* `vmFamilies()` was added
 * `features()` was added
+* `vmFamilies()` was added
 
 ## 1.0.0-beta.1 (2025-11-12)
 
