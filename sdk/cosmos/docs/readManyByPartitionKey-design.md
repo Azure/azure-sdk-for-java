@@ -221,7 +221,7 @@ routing layer) with `isMinInclusive = true` and `isMaxExclusive = false`.
     {"min": "0BF333", "max": "FF"}
   ],
   "currentBatch": {"min": "", "max": "05C1E0"},
-  "backendContinuation": "eyJDb21wb3NpdGVUb2tlbi..."
+  "backendContinuation": "eyJDb21wb3NpdGVUb2"
 }
 ```
 
