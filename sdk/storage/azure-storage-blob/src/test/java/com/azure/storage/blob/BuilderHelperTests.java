@@ -78,7 +78,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), null, null, null);
+            new ClientLogger(BuilderHelperTests.class), null, null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -179,8 +179,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null,
-            null);
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -309,7 +308,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null, null);
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -691,8 +690,10 @@ public class BuilderHelperTests {
         HttpPipeline sharedKeyPipeline = buildSharedKeyPipeline();
 
         HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(sharedKeyPipeline,
-            new SessionOptions().setSessionMode(SessionMode.ALWAYS).setContainerName("mycontainer"), ENDPOINT,
-            BlobServiceVersion.getLatest(), "myaccount");
+            new SessionOptions().setSessionMode(SessionMode.ALWAYS)
+                .setContainerName("mycontainer")
+                .setAccountName("myaccount"),
+            ENDPOINT, BlobServiceVersion.getLatest());
 
         assertSame(sharedKeyPipeline, result, "Pipeline without bearer auth should be returned unchanged");
     }
@@ -702,8 +703,10 @@ public class BuilderHelperTests {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
         HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
-            new SessionOptions().setSessionMode(SessionMode.NONE).setContainerName("mycontainer"), ENDPOINT,
-            BlobServiceVersion.getLatest(), "myaccount");
+            new SessionOptions().setSessionMode(SessionMode.NONE)
+                .setContainerName("mycontainer")
+                .setAccountName("myaccount"),
+            ENDPOINT, BlobServiceVersion.getLatest());
 
         assertSame(bearerPipeline, result, "SessionMode.NONE should return the pipeline unchanged");
     }
@@ -712,9 +715,9 @@ public class BuilderHelperTests {
     public void wrapWithSessionPolicyNullSessionModeWithBearerDefaultsToAuto() {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
-        HttpPipeline result
-            = BuilderHelper.wrapWithSessionPolicy(bearerPipeline, new SessionOptions().setContainerName("mycontainer"),
-                ENDPOINT, BlobServiceVersion.getLatest(), "myaccount");
+        HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
+            new SessionOptions().setContainerName("mycontainer").setAccountName("myaccount"), ENDPOINT,
+            BlobServiceVersion.getLatest());
 
         assertTrue(hasPolicyOfType(result, "SessionTokenCredentialPolicy"),
             "Null sessionMode with bearer should resolve to AUTO and add SessionTokenCredentialPolicy");
@@ -725,8 +728,10 @@ public class BuilderHelperTests {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
         HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
-            new SessionOptions().setSessionMode(SessionMode.ALWAYS).setContainerName("mycontainer"), ENDPOINT,
-            BlobServiceVersion.getLatest(), "myaccount");
+            new SessionOptions().setSessionMode(SessionMode.ALWAYS)
+                .setContainerName("mycontainer")
+                .setAccountName("myaccount"),
+            ENDPOINT, BlobServiceVersion.getLatest());
 
         assertTrue(hasPolicyOfType(result, "SessionTokenCredentialPolicy"),
             "SessionMode.ALWAYS with bearer should add SessionTokenCredentialPolicy");
@@ -739,8 +744,10 @@ public class BuilderHelperTests {
         HttpPipeline bearerPipeline = buildBearerPipeline();
 
         HttpPipeline result = BuilderHelper.wrapWithSessionPolicy(bearerPipeline,
-            new SessionOptions().setSessionMode(SessionMode.ALWAYS).setContainerName("mycontainer"), ENDPOINT,
-            BlobServiceVersion.getLatest(), "myaccount");
+            new SessionOptions().setSessionMode(SessionMode.ALWAYS)
+                .setContainerName("mycontainer")
+                .setAccountName("myaccount"),
+            ENDPOINT, BlobServiceVersion.getLatest());
 
         int sessionIndex = indexOfPolicy(result, "SessionTokenCredentialPolicy");
         int bearerIndex = indexOfPolicy(result, "StorageBearerTokenChallengeAuthorizationPolicy");
@@ -758,7 +765,7 @@ public class BuilderHelperTests {
         return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), null, null, null);
+            new ClientLogger(BuilderHelperTests.class), null, null);
     }
 
     /**
@@ -767,7 +774,7 @@ public class BuilderHelperTests {
     private static HttpPipeline buildSharedKeyPipeline() {
         return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, new RequestRetryOptions(), null,
             BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null, null);
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
     }
 
     /**

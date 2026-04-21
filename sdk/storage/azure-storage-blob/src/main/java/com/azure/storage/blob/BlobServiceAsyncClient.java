@@ -98,7 +98,7 @@ public final class BlobServiceAsyncClient {
     private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
     // clients
     private final boolean anonymousAccess;
-    private final SessionMode sessionMode;
+    private final SessionOptions sessionOptions;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -136,7 +136,7 @@ public final class BlobServiceAsyncClient {
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
-        this.sessionMode = sessionOptions != null ? sessionOptions.getSessionMode() : SessionMode.NONE;
+        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
     }
 
     /**
@@ -161,11 +161,12 @@ public final class BlobServiceAsyncClient {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        SessionOptions containerSessionOptions = sessionMode != null && sessionMode != SessionMode.NONE
-            ? new SessionOptions().setSessionMode(sessionMode).setContainerName(containerName)
-            : null;
+        SessionOptions containerSessionOptions = sessionOptions.setSessionMode(sessionOptions.getSessionMode())
+            .setContainerName(containerName)
+            .setAccountName(getAccountName());
+
         HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(), containerSessionOptions,
-            getAccountUrl(), getServiceVersion(), getAccountName());
+            getAccountUrl(), getServiceVersion());
         return new BlobContainerAsyncClient(containerPipeline, getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
