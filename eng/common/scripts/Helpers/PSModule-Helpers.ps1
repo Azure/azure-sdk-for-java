@@ -47,19 +47,10 @@ function Update-PSModulePathForCI() {
 }
 
 function Get-ModuleRepositories([string]$moduleName) {
+  # Use internal Azure Artifacts feed only.
   $InternalPSRepositoryUrl = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-tools/nuget/v2"
-  # All modules should be installed from the internal feed.
-  # Add module-specific overrides here if a module requires a different internal feed.
-  $packageFeedOverrides = @{}
 
-  $repoUrls = if ($packageFeedOverrides.Contains("${moduleName}")) {
-    @($packageFeedOverrides["${moduleName}"])
-  }
-  else {
-    @($InternalPSRepositoryUrl)
-  }
-
-  return $repoUrls
+  return @($InternalPSRepositoryUrl)
 }
 
 function moduleIsInstalled([string]$moduleName, [string]$version) {
@@ -86,18 +77,9 @@ function moduleIsInstalled([string]$moduleName, [string]$version) {
 }
 
 function installModule([string]$moduleName, [string]$version, $repoUrl) {
-  # Build credential from SYSTEM_ACCESSTOKEN if available for authenticated feeds
-  $credential = $null
-  if ($env:SYSTEM_ACCESSTOKEN) {
-    $password = ConvertTo-SecureString $env:SYSTEM_ACCESSTOKEN -AsPlainText -Force
-    $credential = New-Object PSCredential("build", $password)
-  }
-
   $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
   if ($repo.Count -eq 0) {
-    $registerArgs = @{ Name = $repoUrl; SourceLocation = $repoUrl; InstallationPolicy = 'Trusted' }
-    if ($credential) { $registerArgs['Credential'] = $credential }
-    Register-PSRepository @registerArgs | Out-Null
+    Register-PSRepository -Name $repoUrl -SourceLocation $repoUrl -InstallationPolicy 'Trusted' | Out-Null
     $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
     if ($repo.Count -eq 0) {
       throw "Failed to register package repository $repoUrl."
@@ -108,18 +90,9 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
     Set-PSRepository -Name $repo.Name -InstallationPolicy "Trusted" | Out-Null
   }
 
-  Write-Verbose "Installing module $moduleName with version $version from $repoUrl"
+  Write-Verbose "Installing module $moduleName with min version $version from $repoUrl"
   # Install under CurrentUser scope so that the end up under $CurrentUserModulePath for caching
-  $installArgs = @{
-    Name = $moduleName
-    RequiredVersion = $version
-    Repository = $repo.Name
-    Scope = 'CurrentUser'
-    Force = $true
-    WhatIf = $false
-  }
-  if ($credential) { $installArgs['Credential'] = $credential }
-  Install-Module @installArgs
+  Install-Module $moduleName -MinimumVersion $version -Repository $repo.Name -Scope CurrentUser -Force -WhatIf:$false
   # Ensure module installed
   $modules = (Get-Module -ListAvailable $moduleName)
   if ($version -as [Version]) {

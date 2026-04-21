@@ -21,9 +21,7 @@ steps:
        $m = Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1"
        Write-Host "Installed powershell-yaml version: $($m.Version)"
        $m | Import-Module
-    displayName: Install Pester and platyPS modules
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    displayName: Install Pester and test modules
 
    # default test steps
   - ${{ if eq(length(parameters.CustomTestSteps), 0) }}:
