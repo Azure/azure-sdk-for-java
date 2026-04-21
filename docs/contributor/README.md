@@ -36,7 +36,6 @@ If you are a **consumer** of the SDK looking for usage guidance, start at the [U
 | [Deprecation Process](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/deprecation.md) | Steps to mark a library deprecated and publish a final release |
 | [Release Checklist](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/release-checklist.md) | What to do before Beta 1, Beta N, and GA |
 | [Credential Scan](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/credential-scan.md) | Monitor and suppress CredScan warnings |
-| [Agentic Workflows](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/agentic-workflows.md) | LLM-powered GHA workflows that detect and triage documentation gaps |
 | [SDK Generation Troubleshooting](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/sdk-generation-pipeline-troubleshooting.md) | Diagnose auto-generation pipeline failures |
 | [TypeSpec Client Customizations](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/knowledge/customizing-client-tsp.md) | TypeSpec `client.tsp` reference |
 
