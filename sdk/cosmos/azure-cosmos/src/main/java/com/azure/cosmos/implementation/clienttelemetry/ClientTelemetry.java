@@ -47,14 +47,17 @@ public class ClientTelemetry {
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private static final String USER_AGENT = Utils.getUserAgent();
 
+    // Sentinel for "not on Azure VM" or "IMDS unreachable".
+    // Must be declared before CACHED_METADATA so that fetchAzureVmMetadata()
+    // never reads a null value during class initialization (e.g. when IMDS
+    // access is disabled via COSMOS_DISABLE_IMDS_ACCESS).
+    private static final AzureVMMetadata METADATA_NOT_AVAILABLE = new AzureVMMetadata();
+
     // Cached IMDS metadata Mono. Reactor's cache() ensures:
     // - The fetch executes at most once
     // - All concurrent subscribers share the single result
     // - The HTTP client is created and disposed within the fetch
     private static final Mono<AzureVMMetadata> CACHED_METADATA = fetchAzureVmMetadata().cache();
-
-    // Sentinel for "not on Azure VM" or "IMDS unreachable"
-    private static final AzureVMMetadata METADATA_NOT_AVAILABLE = new AzureVMMetadata();
 
     // IMDS Constants
     private static final String IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
