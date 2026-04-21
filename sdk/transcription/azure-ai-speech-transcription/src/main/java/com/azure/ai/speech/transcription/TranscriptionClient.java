@@ -154,6 +154,7 @@ public final class TranscriptionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
         if (options.getFileDetails() != null) {

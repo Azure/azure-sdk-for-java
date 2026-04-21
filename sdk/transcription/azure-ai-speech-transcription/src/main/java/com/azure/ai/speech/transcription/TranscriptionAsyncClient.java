@@ -158,6 +158,7 @@ public final class TranscriptionAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TranscriptionResult>> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
         if (options.getFileDetails() != null) {
