@@ -14,6 +14,7 @@ package com.azure.storage.blob.models;
 public final class SessionOptions {
 
     private SessionMode sessionMode;
+    private String containerName;
 
     /**
      * Creates a new {@link SessionOptions} instance with default values.
@@ -38,6 +39,27 @@ public final class SessionOptions {
      */
     public SessionOptions setSessionMode(SessionMode sessionMode) {
         this.sessionMode = sessionMode;
+        return this;
+    }
+
+    /**
+     * Gets the container name that the session is scoped to.
+     *
+     * @return the container name, or {@code null} if not set.
+     */
+    public String getContainerName() {
+        return containerName;
+    }
+
+    /**
+     * Sets the container name that the session is scoped to. This is required when the session mode
+     * is not {@link SessionMode#NONE}.
+     *
+     * @param containerName the container name.
+     * @return the updated {@link SessionOptions} object.
+     */
+    public SessionOptions setContainerName(String containerName) {
+        this.containerName = containerName;
         return this;
     }
 }
