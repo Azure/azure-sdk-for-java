@@ -10,11 +10,10 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedOperationState extends FeedOperationState {
-    private static final ImplementationBridgeHelpers
-        .CosmosChangeFeedRequestOptionsHelper
-        .CosmosChangeFeedRequestOptionsAccessor cfOptAccessor = ImplementationBridgeHelpers
-        .CosmosChangeFeedRequestOptionsHelper
-        .getCosmosChangeFeedRequestOptionsAccessor();
+
+    private static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    }
 
     private final CosmosChangeFeedRequestOptions options;
 
@@ -37,17 +36,17 @@ public class ChangeFeedOperationState extends FeedOperationState {
             resourceType,
             checkNotNull(operationType, "Argument 'operationType' must not be null."),
             operationId,
-            clientAccessor.getEffectiveConsistencyLevel(
+            clientAccessor().getEffectiveConsistencyLevel(
                 cosmosAsyncClient,
                 operationType,
                 null),
-            clientAccessor.getEffectiveDiagnosticsThresholds(
+            clientAccessor().getEffectiveDiagnosticsThresholds(
                 cosmosAsyncClient,
-                cfOptAccessor.getDiagnosticsThresholds(
+                changeFeedOptionsAccessor().getDiagnosticsThresholds(
                     checkNotNull(changeFeedRequestOptions, "Argument 'changeFeedRequestOptions' must not be null."))),
             fluxOptions,
             getEffectiveMaxItemCount(fluxOptions, changeFeedRequestOptions),
-            cfOptAccessor.getImpl(checkNotNull(changeFeedRequestOptions, "Argument 'changeFeedRequestOptions' must not be null."))
+            changeFeedOptionsAccessor().getImpl(checkNotNull(changeFeedRequestOptions, "Argument 'changeFeedRequestOptions' must not be null."))
         );
 
         this.options = ModelBridgeInternal

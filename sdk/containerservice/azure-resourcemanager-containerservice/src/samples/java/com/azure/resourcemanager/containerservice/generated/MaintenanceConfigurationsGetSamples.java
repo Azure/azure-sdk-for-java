@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
+     * x-ms-original-file: 2026-02-01/MaintenanceConfigurationsGet_MaintenanceWindow.json
      */
     /**
      * Sample code: Get Maintenance Configuration Configured With Maintenance Window.

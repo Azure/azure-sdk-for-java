@@ -38,9 +38,9 @@ import java.util.regex.Pattern;
  */
 public class FeedResponse<T> implements ContinuablePage<String, T> {
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
@@ -91,14 +91,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         if (diagnostics != null) {
             ClientSideRequestStatistics requestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatisticsRaw(diagnostics);
+                diagAccessor().getClientSideRequestStatisticsRaw(diagnostics);
             if (requestStatistics != null) {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(cosmosDiagnostics,
+                diagAccessor().addClientSideDiagnosticsToFeed(cosmosDiagnostics,
                     Collections.singletonList(requestStatistics));
             } else {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                diagAccessor().addClientSideDiagnosticsToFeed(
                     cosmosDiagnostics,
-                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics));
+                    diagAccessor().getClientSideRequestStatistics(diagnostics));
             }
         }
     }

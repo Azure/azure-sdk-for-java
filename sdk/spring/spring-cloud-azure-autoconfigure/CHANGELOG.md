@@ -1,6 +1,6 @@
 # Release History
 
-## 7.2.0-beta.1 (Unreleased)
+## 7.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +11,10 @@
 - Fixed `azure.scopes` using wrong default value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
 
 ### Other Changes
+
+## 7.2.0 (2026-04-17)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#720-2026-04-17) for more details.
 
 ## 7.1.0 (2026-03-11)
 

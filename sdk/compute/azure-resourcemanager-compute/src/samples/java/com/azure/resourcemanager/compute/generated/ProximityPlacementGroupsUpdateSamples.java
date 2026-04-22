@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ProximityPlacementGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
+     * x-ms-original-file: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
      */
     /**
      * Sample code: Update a proximity placement group.

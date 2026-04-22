@@ -5,20 +5,41 @@
 package com.azure.resourcemanager.azurestackhci.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.azurestackhci.models.OverprovisioningRatio;
 import com.azure.resourcemanager.azurestackhci.models.Storage;
+import com.azure.resourcemanager.azurestackhci.models.StorageS2dConfig;
+import com.azure.resourcemanager.azurestackhci.models.StorageSanConfig;
+import com.azure.resourcemanager.azurestackhci.models.StorageType;
+import com.azure.resourcemanager.azurestackhci.models.VolumeType;
 import org.junit.jupiter.api.Assertions;
 
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model = BinaryData.fromString("{\"configurationMode\":\"r\"}").toObject(Storage.class);
-        Assertions.assertEquals("r", model.configurationMode());
+        Storage model = BinaryData.fromString(
+            "{\"configurationMode\":\"pvkvpbjxbk\",\"storageType\":\"SANS2D\",\"s2d\":{\"volumeType\":\"ThinProvisioned\",\"overprovisioningRatio\":\"2\"},\"san\":{\"infraVolLunId\":\"budurgkakmo\",\"infraPerfLunId\":\"hjjklff\"}}")
+            .toObject(Storage.class);
+        Assertions.assertEquals("pvkvpbjxbk", model.configurationMode());
+        Assertions.assertEquals(StorageType.SANS2D, model.storageType());
+        Assertions.assertEquals(VolumeType.THIN_PROVISIONED, model.s2d().volumeType());
+        Assertions.assertEquals(OverprovisioningRatio.TWO, model.s2d().overprovisioningRatio());
+        Assertions.assertEquals("budurgkakmo", model.san().infraVolLunId());
+        Assertions.assertEquals("hjjklff", model.san().infraPerfLunId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withConfigurationMode("r");
+        Storage model = new Storage().withConfigurationMode("pvkvpbjxbk")
+            .withStorageType(StorageType.SANS2D)
+            .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                .withOverprovisioningRatio(OverprovisioningRatio.TWO))
+            .withSan(new StorageSanConfig().withInfraVolLunId("budurgkakmo").withInfraPerfLunId("hjjklff"));
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals("r", model.configurationMode());
+        Assertions.assertEquals("pvkvpbjxbk", model.configurationMode());
+        Assertions.assertEquals(StorageType.SANS2D, model.storageType());
+        Assertions.assertEquals(VolumeType.THIN_PROVISIONED, model.s2d().volumeType());
+        Assertions.assertEquals(OverprovisioningRatio.TWO, model.s2d().overprovisioningRatio());
+        Assertions.assertEquals("budurgkakmo", model.san().infraVolLunId());
+        Assertions.assertEquals("hjjklff", model.san().infraPerfLunId());
     }
 }

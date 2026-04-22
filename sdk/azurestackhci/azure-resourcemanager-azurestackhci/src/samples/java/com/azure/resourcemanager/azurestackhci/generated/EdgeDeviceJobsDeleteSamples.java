@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class EdgeDeviceJobsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_Delete.json
+     * x-ms-original-file: 2026-04-01-preview/EdgeDeviceJobs_Delete.json
      */
     /**
      * Sample code: EdgeDeviceJobs_Delete.

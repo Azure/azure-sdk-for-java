@@ -163,6 +163,24 @@ public final class UpdatesClientImpl implements UpdatesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("updateName") String updateName, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/prepare")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> prepare(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("updateName") String updateName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/prepare")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> prepareSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("updateName") String updateName, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -763,6 +781,166 @@ public final class UpdatesClientImpl implements UpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void post(String resourceGroupName, String clusterName, String updateName, Context context) {
         beginPost(resourceGroupName, clusterName, updateName, context).getFinalResult();
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> prepareWithResponseAsync(String resourceGroupName, String clusterName,
+        String updateName) {
+        return FluxUtil
+            .withContext(context -> service.prepare(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, updateName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> prepareWithResponse(String resourceGroupName, String clusterName, String updateName) {
+        return service.prepareSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, updateName, Context.NONE);
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> prepareWithResponse(String resourceGroupName, String clusterName, String updateName,
+        Context context) {
+        return service.prepareSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, updateName, context);
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginPrepareAsync(String resourceGroupName, String clusterName,
+        String updateName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = prepareWithResponseAsync(resourceGroupName, clusterName, updateName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPrepare(String resourceGroupName, String clusterName,
+        String updateName) {
+        Response<BinaryData> response = prepareWithResponse(resourceGroupName, clusterName, updateName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPrepare(String resourceGroupName, String clusterName,
+        String updateName, Context context) {
+        Response<BinaryData> response = prepareWithResponse(resourceGroupName, clusterName, updateName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> prepareAsync(String resourceGroupName, String clusterName, String updateName) {
+        return beginPrepareAsync(resourceGroupName, clusterName, updateName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void prepare(String resourceGroupName, String clusterName, String updateName) {
+        beginPrepare(resourceGroupName, clusterName, updateName).getFinalResult();
+    }
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void prepare(String resourceGroupName, String clusterName, String updateName, Context context) {
+        beginPrepare(resourceGroupName, clusterName, updateName, context).getFinalResult();
     }
 
     /**

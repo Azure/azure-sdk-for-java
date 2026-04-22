@@ -3,13 +3,23 @@
 ### 4.80.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
+* Fixed an issue where the throughput control `throughputQueryMono` was always subscribed even when `targetThroughput` is used (not `targetThroughputThreshold`), causing unnecessary `throughputSettings/read` permission requirement for AAD principals. - See [PR 48800](https://github.com/Azure/azure-sdk-for-java/pull/48800)
+* Fixed JVM `<clinit>` deadlock when multiple threads concurrently trigger Cosmos SDK class loading for the first time. - See [PR 48689](https://github.com/Azure/azure-sdk-for-java/pull/48689)
+* Fixed an issue where `CustomItemSerializer` was incorrectly applied to internal SDK query pipeline structures (e.g., `OrderByRowResult`, `Document`), causing deserialization failures in ORDER BY, GROUP BY, aggregate, DISTINCT, and hybrid search queries. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
+* Fixed an issue where `SqlParameter` ignored the configured `CustomItemSerializer`, always using the internal default serializer instead. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
+* Fixed a `ClientTelemetry` static initialization failure when IMDS access is disabled, preventing `NoClassDefFoundError` during Cosmos client creation in non-Azure environments. - See [PR 48888](https://github.com/Azure/azure-sdk-for-java/pull/48888)
 
 #### Other Changes
+
+### 4.79.1 (2026-04-06)
+
+#### Bugs Fixed
+* Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
 
 ### 4.79.0 (2026-03-27)
 

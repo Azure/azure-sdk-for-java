@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class TrustedAccessRoleBindingsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/TrustedAccessRoleBindings_Get.json
+     * x-ms-original-file: 2026-02-01/TrustedAccessRoleBindings_Get.json
      */
     /**
      * Sample code: Get a trusted access role binding.

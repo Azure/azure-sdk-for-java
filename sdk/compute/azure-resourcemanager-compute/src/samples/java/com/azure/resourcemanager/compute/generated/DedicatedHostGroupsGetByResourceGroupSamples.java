@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class DedicatedHostGroupsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/dedicatedHostExamples/DedicatedHostGroup_Get_UltraSSDEnabledDedicatedHostGroup.json
+     * 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Get_UltraSSDEnabledDedicatedHostGroup.json
      */
     /**
      * Sample code: Create an ultraSSDEnabled dedicated host group.
@@ -26,7 +26,7 @@ public final class DedicatedHostGroupsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHostGroup_Get.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHostGroup_Get.json
      */
     /**
      * Sample code: Create a dedicated host group.

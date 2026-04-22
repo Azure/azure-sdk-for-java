@@ -1100,6 +1100,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1107,7 +1108,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName,
-        Boolean hibernate);
+        Boolean hibernate, Boolean forceDeallocate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -1116,13 +1117,15 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName, Boolean hibernate);
+    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName, Boolean hibernate,
+        Boolean forceDeallocate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -1159,6 +1162,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -1167,7 +1171,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName, Boolean hibernate,
-        Context context);
+        Boolean forceDeallocate, Context context);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -1176,13 +1180,14 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate);
+    Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate, Boolean forceDeallocate);
 
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
@@ -1218,13 +1223,15 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param forceDeallocate Optional parameter to force deallocate a virtual machine. Default is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Context context);
+    void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Boolean forceDeallocate,
+        Context context);
 
     /**
      * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before

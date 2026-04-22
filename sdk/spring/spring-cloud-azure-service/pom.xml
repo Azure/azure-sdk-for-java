@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-service</artifactId>
-  <version>7.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+  <version>7.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
 
   <name>Spring Cloud Azure Service</name>
   <description>Spring Cloud Azure Service</description>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>7.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>7.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.79.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.79.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -96,7 +96,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.33.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.33.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

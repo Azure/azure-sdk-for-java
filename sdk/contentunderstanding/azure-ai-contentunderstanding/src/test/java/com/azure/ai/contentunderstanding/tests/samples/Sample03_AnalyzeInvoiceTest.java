@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrating how to analyze invoices using Content Understanding service.
@@ -66,6 +68,36 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
         assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeInvoice
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoiceUsage
+        // Get usage details from the operation status
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        }
+        // END:ContentUnderstandingAnalyzeInvoiceUsage
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceUsage
+        assertNotNull(usage, "Usage details should not be null");
+        assertNotNull(usage.getDocumentPagesStandard(), "Document pages (standard) should not be null");
+        assertTrue(usage.getDocumentPagesStandard() > 0, "Document pages (standard) should be positive");
+        assertNotNull(usage.getTokens(), "Tokens should not be null");
+        assertTrue(!usage.getTokens().isEmpty(), "Tokens should not be empty");
+        System.out.println("Usage details validated successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeInvoiceUsage
 
         // BEGIN:ContentUnderstandingExtractInvoiceFields
         // Get the document content (invoices are documents)
