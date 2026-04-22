@@ -18,6 +18,8 @@ import org.springframework.cloud.stream.binder.HeaderMode;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.integration.core.MessageProducer;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -54,6 +56,7 @@ class ServiceBusRetryTest {
     void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
         binder.setApplicationContext(context);
     }
 
@@ -75,6 +78,16 @@ class ServiceBusRetryTest {
         ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
         RetryTemplate retryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
         assertThat(retryTemplate).isNotNull();
+        SimpleRetryPolicy retryPolicy = (SimpleRetryPolicy) ReflectionTestUtils.getField(retryTemplate, "retryPolicy");
+        assertThat(retryPolicy).isNotNull();
+        assertThat(retryPolicy.getMaxAttempts()).isEqualTo(3);
+
+        ExponentialBackOffPolicy backOffPolicy = (ExponentialBackOffPolicy)
+            ReflectionTestUtils.getField(retryTemplate, "backOffPolicy");
+        assertThat(backOffPolicy).isNotNull();
+        assertThat(ReflectionTestUtils.getField(backOffPolicy, "initialInterval")).isEqualTo(1000L);
+        assertThat(ReflectionTestUtils.getField(backOffPolicy, "multiplier")).isEqualTo(2.0);
+        assertThat(ReflectionTestUtils.getField(backOffPolicy, "maxInterval")).isEqualTo(5000L);
     }
 
     @Test
@@ -95,12 +108,10 @@ class ServiceBusRetryTest {
     }
 
     @Test
-    void testRetryTemplateNotConfiguredWhenMaxAttemptsNotSet() {
+    void testRetryTemplateNotConfiguredWithDefaultRetrySettings() {
         // Arrange
         prepareConsumerProperties();
-        // maxAttempts defaults to 3 in ExtendedConsumerProperties, 
-        // but we test the case where it's explicitly set to 1 or not configured with retry
-        consumerProperties.setMaxAttempts(1);
+        // Use default maxAttempts/backoff values from ExtendedConsumerProperties.
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
 
         // Act

@@ -82,7 +82,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private String instrumentationId;
     private final boolean isAutoComplete;
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
-    private RetryTemplate retryTemplate;
+    private volatile RetryTemplate retryTemplate;
 
     /**
      * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusMessageListenerContainer}.

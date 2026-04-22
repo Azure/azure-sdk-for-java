@@ -3,6 +3,12 @@
 
 ### Features Added
 
+- Add support for Spring Cloud Stream consumer retry properties (`maxAttempts`, `backOffInitialInterval`,
+  `backOffMaxInterval`, `backOffMultiplier`) in Service Bus Stream Binder to enable retry with exponential
+  backoff. [#47149](https://github.com/Azure/azure-sdk-for-java/pull/47149).
+- Add support for injecting a custom `RetryTemplate` from Spring context in Service Bus Stream Binder.
+  [#47149](https://github.com/Azure/azure-sdk-for-java/pull/47149).
+
 ### Breaking Changes
 
 ### Bugs Fixed

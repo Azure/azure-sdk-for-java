@@ -81,6 +81,10 @@ public class ServiceBusMessageChannelBinder extends
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
     private static final String EXCEPTION_MESSAGE = "exception-message";
+    private static final int DEFAULT_MAX_ATTEMPTS = 3;
+    private static final int DEFAULT_BACK_OFF_INITIAL_INTERVAL = 1000;
+    private static final int DEFAULT_BACK_OFF_MAX_INTERVAL = 10000;
+    private static final double DEFAULT_BACK_OFF_MULTIPLIER = 2.0;
 
     private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
@@ -153,8 +157,8 @@ public class ServiceBusMessageChannelBinder extends
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         
-        // Configure retry if maxAttempts > 1
-        if (properties.getMaxAttempts() > 1) {
+        // Configure retry when user has customized retry settings and maxAttempts > 1.
+        if (shouldConfigureRetry(properties)) {
             // Use injected RetryTemplate if available, otherwise create one from properties
             RetryTemplate retryTemplateToUse = this.retryTemplate != null 
                 ? this.retryTemplate 
@@ -399,6 +403,21 @@ public class ServiceBusMessageChannelBinder extends
      */
     public void setRetryTemplate(RetryTemplate retryTemplate) {
         this.retryTemplate = retryTemplate;
+    }
+
+    private boolean shouldConfigureRetry(ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        if (properties.getMaxAttempts() <= 1) {
+            return false;
+        }
+
+        if (this.retryTemplate != null) {
+            return true;
+        }
+
+        return properties.getMaxAttempts() != DEFAULT_MAX_ATTEMPTS
+            || properties.getBackOffInitialInterval() != DEFAULT_BACK_OFF_INITIAL_INTERVAL
+            || properties.getBackOffMaxInterval() != DEFAULT_BACK_OFF_MAX_INTERVAL
+            || Double.compare(properties.getBackOffMultiplier(), DEFAULT_BACK_OFF_MULTIPLIER) != 0;
     }
 
     /**
