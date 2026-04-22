@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ReadManyByPartitionKeyQueryHelperTest {
 
@@ -192,6 +193,34 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         assertThat(result.getQueryText()).contains("WHERE (c.status = @status) AND (");
         assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
         assertThat(result.getParameters()).hasSize(3); // @status + 2 pk params
+    }
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_removesSubsumedFullHpkValues() {
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode", "/areaCode");
+
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKeyBuilder().add("Redmond").build(),
+            new PartitionKeyBuilder().add("Redmond").add("98052").add(1).build(),
+            new PartitionKeyBuilder().add("Seattle").build());
+
+        List<RxDocumentClientImpl.NormalizedPartitionKey> normalizedPartitionKeys =
+            RxDocumentClientImpl.normalizePartitionKeys(pkValues, pkDef);
+
+        assertThat(normalizedPartitionKeys)
+            .extracting(normalizedPk -> normalizedPk.effectivePkInternal.toJson())
+            .containsExactly("[\"Redmond\"]", "[\"Seattle\"]");
+    }
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_rejectsNoneForMultiHashPartitionKeys() {
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
+
+        assertThatThrownBy(() -> RxDocumentClientImpl.normalizePartitionKeys(
+            Collections.singletonList(PartitionKey.NONE),
+            pkDef))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("PartitionKey.NONE is not supported for multi-path partition keys");
     }
 
     //endregion

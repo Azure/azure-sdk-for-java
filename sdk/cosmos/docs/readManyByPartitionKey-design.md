@@ -327,7 +327,7 @@ persisted - it is rederived per batch on resume.
 | `currentBatch`        | `BatchDefinition`          | EPK FILTER range of the batch currently being processed.                                                                                                                                     |
 | `backendContinuation` | `String` (nullable)        | Backend query continuation within the current batch. `null` means "start from the beginning of this batch".                                                                                  |
 | `collectionRid`       | `String`                   | Resource id of the collection. Token is rejected on resume if the rid does not match.                                                                                                        |
-| `queryHash`           | `String` (Murmur3-128 hex) | Stable hash of the custom `SqlQuerySpec` (text + parameter names + parameter values). Token is rejected on resume if the hash does not match.                                               |
+| `queryHash`           | `String` (Murmur3-128 hex) | Stable hash of the custom `SqlQuerySpec` (text + parameter names + parameter values). Token is rejected on resume if the hash does not match. Resume intentionally requires the exact same query shape, not just a semantically equivalent query. |
 | `partitionKeySetHash` | `String` (Murmur3-128 hex) | Stable hash of the deduplicated, sorted set of input EPKs. Order- and duplicate-invariant: a caller may shuffle the input PK list across resume attempts and still get the same data back. |
 
 EPK ranges are represented as `Range<String>` (the existing SDK type used throughout the

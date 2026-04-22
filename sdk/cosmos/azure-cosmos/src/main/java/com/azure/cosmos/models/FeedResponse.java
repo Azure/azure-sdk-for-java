@@ -44,7 +44,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
-    private final Map<String, String> header;
+    private Map<String, String> header;
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
@@ -54,6 +54,10 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+
+    private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
+        return headers == null ? new HashMap<>() : headers;
+    }
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -112,7 +116,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         boolean nochanges,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -129,7 +133,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         CosmosDiagnostics diagnostics) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -430,9 +434,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             ? HttpConstants.HttpHeaders.E_TAG
             : HttpConstants.HttpHeaders.CONTINUATION;
 
+        setContinuationTokenInternal(headerName, continuationToken);
+    }
+
+    private void setContinuationTokenInternal(String headerName, String continuationToken) {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
+            this.header = ensureMutableHeadersMap(this.header);
             this.header.put(headerName, continuationToken);
-        } else {
+        } else if (this.header != null && !this.header.isEmpty()) {
             this.header.remove(headerName);
         }
     }

@@ -6,6 +6,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.testng.annotations.Test;
@@ -13,7 +15,9 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -119,6 +123,31 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
         assertThat(deserialized.getRemainingBatches()).isEmpty();
         assertThat(deserialized.getBackendContinuation()).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void setFeedResponseContinuationToken_handlesEmptyHeadersWithoutCopyingNormalCase() {
+        Map<String, String> immutableEmptyHeaders = Collections.emptyMap();
+        FeedResponse<String> emptyResponse = ModelBridgeInternal.createFeedResponse(
+            Collections.emptyList(),
+            immutableEmptyHeaders);
+
+        ModelBridgeInternal.setFeedResponseContinuationToken(null, emptyResponse);
+
+        assertThat(emptyResponse.getContinuationToken()).isNull();
+        assertThat(emptyResponse.getResponseHeaders()).isNotSameAs(immutableEmptyHeaders);
+        assertThat(emptyResponse.getResponseHeaders()).isEmpty();
+
+        Map<String, String> normalHeaders = new HashMap<>();
+        normalHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, "test-activity-id");
+        FeedResponse<String> normalResponse = ModelBridgeInternal.createFeedResponse(
+            Collections.emptyList(),
+            normalHeaders);
+
+        ModelBridgeInternal.setFeedResponseContinuationToken("token", normalResponse);
+
+        assertThat(normalResponse.getContinuationToken()).isEqualTo("token");
+        assertThat(normalResponse.getResponseHeaders()).isSameAs(normalHeaders);
     }
 
     @Test(groups = { "unit" })

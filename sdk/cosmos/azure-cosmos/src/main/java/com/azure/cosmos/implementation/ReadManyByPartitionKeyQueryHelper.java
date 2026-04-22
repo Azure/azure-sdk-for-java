@@ -12,7 +12,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Helper for constructing SqlQuerySpec instances for readManyByPartitionKeys operations.
@@ -108,10 +107,11 @@ public class ReadManyByPartitionKeyQueryHelper {
                 PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
                 Object[] pkComponents = pkInternal.toObjectArray();
 
-                // PartitionKey.NONE for hierarchical keys is impossible at this point: the builder
-                // (CosmosPartitionKeyHelper.validateNoneHandlingForPartitionKeyComponentCount and
-                // PartitionKeyBuilder.addNoneValue) reject NONE on multi-path PK definitions before
-                // reaching this code path. So pkComponents is guaranteed non-null here.
+                if (pkComponents == null) {
+                    throw new IllegalArgumentException(
+                        "PartitionKey.NONE is not supported for multi-path partition keys in readManyByPartitionKeys.");
+                }
+
                 {
                     pkFilter.append("(");
                     for (int j = 0; j < pkComponents.length; j++) {

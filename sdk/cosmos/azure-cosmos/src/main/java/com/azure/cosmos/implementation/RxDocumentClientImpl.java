@@ -4558,7 +4558,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * Duplicates are removed by effective partition key string and the remaining keys are sorted
      * lexicographically by EPK so batching and continuation-token hashes stay stable.
      */
-    private List<NormalizedPartitionKey> normalizePartitionKeys(
+    static List<NormalizedPartitionKey> normalizePartitionKeys(
         List<PartitionKey> partitionKeys,
         PartitionKeyDefinition pkDefinition) {
 
@@ -4566,6 +4566,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         for (PartitionKey pk : partitionKeys) {
             PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
+            if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && pkInternal.getComponents() == null) {
+                throw new IllegalArgumentException(
+                    "PartitionKey.NONE is not supported for multi-path partition keys in readManyByPartitionKeys.");
+            }
+
             PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
                 ? PartitionKeyInternal.UndefinedPartitionKey
                 : pkInternal;
@@ -4579,7 +4584,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         List<NormalizedPartitionKey> normalizedPartitionKeys = new ArrayList<>(normalizedByEpk.values());
         normalizedPartitionKeys.sort(Comparator.comparing(normalizedPk -> normalizedPk.effectivePartitionKeyString));
-        return normalizedPartitionKeys;
+
+        if (pkDefinition.getKind() != PartitionKind.MULTI_HASH || normalizedPartitionKeys.size() < 2) {
+            return normalizedPartitionKeys;
+        }
+
+        List<NormalizedPartitionKey> collapsedPartitionKeys = new ArrayList<>(normalizedPartitionKeys.size());
+        for (NormalizedPartitionKey candidate : normalizedPartitionKeys) {
+            if (!collapsedPartitionKeys.isEmpty()) {
+                NormalizedPartitionKey previous = collapsedPartitionKeys.get(collapsedPartitionKeys.size() - 1);
+                if (previous.effectivePkInternal.contains(candidate.effectivePkInternal)) {
+                    // The previous PK is a prefix of the current PK, so the current PK is fully
+                    // subsumed by the previous read scope and would only cause duplicate results
+                    // if it ended up in a separate batch.
+                    continue;
+                }
+            }
+
+            collapsedPartitionKeys.add(candidate);
+        }
+
+        return collapsedPartitionKeys;
     }
 
     /**
@@ -4894,7 +4919,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new Range<>(minInclusive, maxExclusive, true, false);
     }
 
-    private static final class NormalizedPartitionKey {
+    static final class NormalizedPartitionKey {
         final PartitionKey partitionKey;
         final PartitionKeyInternal effectivePkInternal;
         final String effectivePartitionKeyString;
