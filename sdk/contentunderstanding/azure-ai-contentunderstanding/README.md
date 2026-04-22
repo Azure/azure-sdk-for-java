@@ -422,6 +422,39 @@ For more information, see [Azure SDK for Java logging][logging].
 * Explore the [samples directory][samples_directory] for complete code examples
 * Read the [Azure AI Content Understanding documentation][product_docs] for detailed service information
 
+## GitHub Copilot Skills
+
+This package includes [GitHub Copilot][github_copilot] skills under `.github/skills/` that provide interactive, AI-assisted workflows for common tasks. In VS Code, Copilot can use these skills to help with environment setup, running samples, and understanding the service.
+
+### Available Skills
+
+| Skill | Description | How to Use |
+|-------|-------------|------------|
+| [**cu-sdk-java-setup-env**][cu_sdk_java_setup_env_skill] | Interactive environment setup — creates and configures your `.env` file with endpoint, credentials, and model deployment settings | In VS Code Copilot Chat, ask: *"Set up my Java environment for Content Understanding"* or reference the skill directly |
+| [**cu-sdk-java-sample-run**][cu_sdk_java_sample_run_skill] | Guided sample runner — helps you build the SDK, configure credentials, and run specific samples with Maven | Ask: *"Run Sample02_AnalyzeUrl"* or *"Run the invoice analysis sample"* |
+| [**cu-sdk-common-knowledge**][cu_sdk_common_knowledge_skill] | Domain knowledge reference — answers questions about Content Understanding concepts, analyzers, field schemas, API operations, and Java SDK usage | Ask: *"What prebuilt analyzers are available?"* or *"How do I create a custom analyzer?"* |
+
+### Using Skills in VS Code
+
+1. In VS Code, open the package folder `sdk/contentunderstanding/azure-ai-contentunderstanding` (File → Open Folder). This is required for VS Code to discover the skills in `.github/skills/`.
+2. Ensure [GitHub Copilot][github_copilot] is installed and activated
+3. Open Copilot Chat from the Chat view or Command Palette
+4. Ask a question related to Content Understanding; Copilot can use the relevant skill when appropriate
+
+**Example prompts:**
+- *"Set up my Content Understanding environment"* → likely uses `cu-sdk-java-setup-env`
+- *"Run Sample03_AnalyzeInvoice"* → likely uses `cu-sdk-java-sample-run`
+- *"Explain how custom analyzers work"* → likely uses `cu-sdk-common-knowledge`
+
+### Troubleshooting Skill Selection
+
+If Copilot does not use the expected skill, try the following:
+
+1. Be explicit about intent and context in one prompt (for example: *"Use cu-sdk-java-sample-run to run Sample01_AnalyzeBinary"*).
+2. Include your goal and current state (for example: *"My .env is configured; help me run Sample02_AnalyzeUrl"*).
+3. Ask for a step-by-step interactive flow when needed (for example: *"Guide me step by step to set up my environment"*).
+4. For build or runtime errors, mention the exact error text so Copilot can apply the right troubleshooting path.
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide][contributing].
@@ -458,3 +491,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [opencode_email]: mailto:opencode@microsoft.com
+[github_copilot]: https://github.com/features/copilot
+[cu_sdk_java_setup_env_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-java-setup-env
+[cu_sdk_java_sample_run_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-java-sample-run
+[cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
