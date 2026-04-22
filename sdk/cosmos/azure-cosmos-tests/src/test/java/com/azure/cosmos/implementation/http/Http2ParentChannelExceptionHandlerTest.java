@@ -181,10 +181,10 @@ public class Http2ParentChannelExceptionHandlerTest {
 
     /**
      * With handler — when Http2FrameCodec is absent from the pipeline,
-     * getActiveStreamCount() returns -1. Since -1 != 0 and the channel
-     * is active, the handler takes the safe WARN path. This covers the
-     * fallback behavior when the codec is unavailable (e.g., torn down
-     * during shutdown).
+     * getActiveStreamCount() returns null. Since the active stream count
+     * is unknown and the channel is active, the handler takes the safe
+     * WARN path. This covers the fallback behavior when the codec is
+     * unavailable (e.g., torn down during shutdown).
      */
     @Test(groups = "unit")
     public void withHandler_codecAbsent_fallsBackToWarnPath() {
@@ -200,6 +200,25 @@ public class Http2ParentChannelExceptionHandlerTest {
         // Exception consumed — does NOT reach tail
         channel.checkException();
         assertThat(channel.isOpen()).isTrue();
+
+        channel.finishAndReleaseAll();
+    }
+
+    /**
+     * Error types (e.g., OutOfMemoryError) are NOT consumed by the handler —
+     * they propagate to TailContext. This ensures JVM-level errors are never
+     * silently swallowed.
+     */
+    @Test(groups = "unit")
+    public void withHandler_errorNotConsumed_propagatesToTail() {
+        EmbeddedChannel channel = createH2ParentChannel(true);
+
+        channel.pipeline().fireExceptionCaught(
+            new OutOfMemoryError("test OOM"));
+
+        assertThatThrownBy(channel::checkException)
+            .isInstanceOf(OutOfMemoryError.class)
+            .hasMessageContaining("test OOM");
 
         channel.finishAndReleaseAll();
     }

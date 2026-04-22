@@ -19,15 +19,19 @@ import org.slf4j.LoggerFactory;
  * which logs them as WARN ("An exceptionCaught() event was fired, and it reached at
  * the tail of the pipeline").
  * <p>
- * This handler consumes all exceptions on the parent channel and uses connection
+ * This handler consumes {@link Exception}s on the parent channel and uses connection
  * state to decide the log level:
  * <ul>
  *   <li><b>DEBUG</b> — when {@code activeStreams == 0} OR {@code !channelActive}.
  *       No in-flight requests are affected (e.g., TCP RST from LB idle timeout,
  *       post-close cleanup).</li>
- *   <li><b>WARN</b> — when active streams exist on a live channel. The exception
- *       may affect in-flight requests and is worth alerting on.</li>
+ *   <li><b>WARN</b> — when active streams exist on a live channel, or when the
+ *       active stream count cannot be determined. The exception may affect
+ *       in-flight requests and is worth alerting on.</li>
  * </ul>
+ * <p>
+ * {@link Error} types (e.g., {@code OutOfMemoryError}) are never consumed — they
+ * propagate to {@code TailContext} for standard Netty handling.
  * <p>
  * The handler does NOT close the channel or alter connection lifecycle — reactor-netty
  * and the connection pool's eviction predicate ({@code !channel.isActive()}) handle that
@@ -43,10 +47,17 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        int activeStreams = getActiveStreamCount(ctx);
+        // Do not consume JVM-level errors (OOM, StackOverflow, etc.) — let them
+        // propagate to TailContext for standard Netty handling.
+        if (cause instanceof Error) {
+            ctx.fireExceptionCaught(cause);
+            return;
+        }
+
+        Integer activeStreams = getActiveStreamCount(ctx);
         boolean channelActive = ctx.channel().isActive();
 
-        if (activeStreams == 0 || !channelActive) {
+        if ((activeStreams != null && activeStreams == 0) || !channelActive) {
             // No active streams OR channel already inactive — exception is noise
             // (e.g., TCP RST from LB idle timeout, post-close cleanup).
             if (logger.isDebugEnabled()) {
@@ -55,22 +66,23 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
                     ctx.channel().id().asShortText(), activeStreams, channelActive, cause);
             }
         } else {
-            // Active streams on a live channel — exception may affect in-flight requests.
+            // Active streams on a live channel, or stream count unknown (null) —
+            // exception may affect in-flight requests.
             logger.warn(
                 "Exception on HTTP/2 parent connection [id:{}, activeStreams={}, channelActive={}]",
                 ctx.channel().id().asShortText(), activeStreams, channelActive, cause);
         }
     }
 
-    private static int getActiveStreamCount(ChannelHandlerContext ctx) {
+    private static Integer getActiveStreamCount(ChannelHandlerContext ctx) {
         try {
             Http2FrameCodec codec = ctx.pipeline().get(Http2FrameCodec.class);
             if (codec != null) {
                 return codec.connection().numActiveStreams();
             }
-        } catch (Exception ignored) {
-            // Codec not available or connection already torn down
+        } catch (Exception e) {
+            logger.debug("Failed to retrieve active stream count from Http2FrameCodec", e);
         }
-        return -1;
+        return null;
     }
 }
