@@ -50,6 +50,7 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
   private val rnd = Random
   // scalastyle:off null
   private val lastContinuationToken = new AtomicReference[String](null)
+  private val pendingContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
   private lazy val operationContextString = operationContextAndListener match {
@@ -82,6 +83,14 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     if (hasBufferedNext) {
       Some(true)
     } else {
+      // All items from the previous page have been drained — promote the pending
+      // continuation token so that any retry resumes from the NEXT page rather than
+      // replaying items the caller has already consumed.
+      val pending = pendingContinuationToken.getAndSet(null)
+      if (pending != null) {
+        lastContinuationToken.set(pending)
+      }
+
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
@@ -133,16 +142,12 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
             feedResponse)
         }
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
-        // INVARIANT: it is safe to record the continuation token BEFORE the items in this
-        // FeedResponse have been drained because executeWithRetry only wraps `hasNext`,
-        // and the buffered iterator is always fully drained before the next page is fetched.
-        // If a transient failure occurs while draining items from the *current* page, the
-        // page is replayed from this continuation token, which is the start of *this* page
-        // (the server's continuation token points at the next page), so on retry the SDK
-        // re-issues the request that produced the page we were processing. Items already
-        // emitted to the caller may be re-emitted; readManyByPartitionKeys is idempotent
-        // and returns documents (not deltas), so duplicates from replay are acceptable.
-        lastContinuationToken.set(feedResponse.getContinuationToken)
+        // Store the continuation token from this page as "pending". It will only be promoted
+        // to lastContinuationToken (the retry resume point) after all items in this page have
+        // been drained by the caller. This ensures that on a transient failure mid-page the
+        // retry resumes from the PREVIOUS page's continuation (i.e. re-fetches the current
+        // page) and never skips items.
+        pendingContinuationToken.set(feedResponse.getContinuationToken)
 
         if (iteratorCandidate.hasNext) {
           currentItemIterator = Some(iteratorCandidate)
@@ -217,6 +222,7 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
 
         currentItemIterator = None
         currentFeedResponseIterator = None
+        pendingContinuationToken.set(null)
         Thread.sleep(retryIntervalInMs)
       }
     }

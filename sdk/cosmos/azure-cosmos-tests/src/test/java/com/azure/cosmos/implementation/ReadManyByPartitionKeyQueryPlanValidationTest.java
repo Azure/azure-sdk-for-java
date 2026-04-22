@@ -24,7 +24,7 @@ public class ReadManyByPartitionKeyQueryPlanValidationTest {
         dCountInfo.setDCountAlias("countAlias");
         queryInfo.set("dCountInfo", dCountInfo);
 
-        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(createQueryPlan(queryInfo, null)))
+        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKeys(createQueryPlan(queryInfo, null)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("DCOUNT");
     }
@@ -34,7 +34,7 @@ public class ReadManyByPartitionKeyQueryPlanValidationTest {
         QueryInfo queryInfo = new QueryInfo();
         queryInfo.set("offset", 10);
 
-        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(createQueryPlan(queryInfo, null)))
+        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKeys(createQueryPlan(queryInfo, null)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("OFFSET");
     }
@@ -44,7 +44,7 @@ public class ReadManyByPartitionKeyQueryPlanValidationTest {
         QueryInfo queryInfo = new QueryInfo();
         queryInfo.set("limit", 10);
 
-        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(createQueryPlan(queryInfo, null)))
+        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKeys(createQueryPlan(queryInfo, null)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("LIMIT");
     }
@@ -54,14 +54,14 @@ public class ReadManyByPartitionKeyQueryPlanValidationTest {
         QueryInfo queryInfo = new QueryInfo();
         queryInfo.set("top", 5);
 
-        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(createQueryPlan(queryInfo, null)))
+        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKeys(createQueryPlan(queryInfo, null)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("TOP");
     }
 
     @Test(groups = { "unit" })
     public void rejectsHybridSearchQueryPlanWithoutDereferencingNullQueryInfo() {
-        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(
+        assertThatThrownBy(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKeys(
             createQueryPlan(null, new HybridSearchQueryInfo())))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("hybrid/vector/full-text");
@@ -71,7 +71,7 @@ public class ReadManyByPartitionKeyQueryPlanValidationTest {
     public void acceptsSimpleQueryPlan() {
         QueryInfo queryInfo = new QueryInfo();
 
-        assertThatCode(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKey(createQueryPlan(queryInfo, null)))
+        assertThatCode(() -> RxDocumentClientImpl.validateQueryPlanForReadManyByPartitionKeys(createQueryPlan(queryInfo, null)))
             .doesNotThrowAnyException();
     }
 

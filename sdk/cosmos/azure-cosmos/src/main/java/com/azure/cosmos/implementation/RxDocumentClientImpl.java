@@ -4524,7 +4524,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // First-call path: validate custom query, resolve routing map, build batches
                 Mono<Void> queryValidationMono;
                 if (customQuery != null) {
-                    queryValidationMono = validateCustomQueryForReadManyByPartitionKey(
+                    queryValidationMono = validateCustomQueryForReadManyByPartitionKeys(
                         customQuery, resourceLink, state.getQueryOptions());
                 } else {
                     queryValidationMono = Mono.empty();
@@ -4966,7 +4966,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Mono<Void> validateCustomQueryForReadManyByPartitionKey(
+    private Mono<Void> validateCustomQueryForReadManyByPartitionKeys(
         SqlQuerySpec customQuery,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions) {
@@ -4983,11 +4983,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 queryRequestOptions,
                 Configs.isQueryPlanCachingEnabled(),
                 this.getQueryPlanCache())
-            .doOnNext(RxDocumentClientImpl::validateQueryPlanForReadManyByPartitionKey)
+            .doOnNext(RxDocumentClientImpl::validateQueryPlanForReadManyByPartitionKeys)
             .then();
     }
 
-    static void validateQueryPlanForReadManyByPartitionKey(PartitionedQueryExecutionInfo queryPlan) {
+    static void validateQueryPlanForReadManyByPartitionKeys(PartitionedQueryExecutionInfo queryPlan) {
         if (queryPlan.hasHybridSearchQueryInfo()) {
             throw new IllegalArgumentException(
                 "Custom query for readMany by partition key must not contain hybrid/vector/full-text search.");

@@ -176,7 +176,7 @@ public class CosmosAsyncContainer {
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String readManyItemsSpanName;
-    private final String readManyByPartitionKeySpanName;
+    private final String readManyByPartitionKeysSpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
     private final String queryChangeFeedSpanName;
@@ -210,7 +210,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.readManyItemsSpanName = "readManyItems." + this.id;
-        this.readManyByPartitionKeySpanName = "readManyByPartitionKeys." + this.id;
+        this.readManyByPartitionKeysSpanName = "readManyByPartitionKeys." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -1727,10 +1727,10 @@ public class CosmosAsyncContainer {
         List<PartitionKey> partitionKeysSnapshot = new ArrayList<>(partitionKeys);
 
         return UtilBridgeInternal.createCosmosPagedFlux(
-            readManyByPartitionKeyInternalFunc(partitionKeysSnapshot, customQuery, requestOptions, classType));
+            readManyByPartitionKeysInternalFunc(partitionKeysSnapshot, customQuery, requestOptions, classType));
     }
 
-    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeyInternalFunc(
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeysInternalFunc(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
         CosmosReadManyByPartitionKeyRequestOptions requestOptions,
@@ -1777,16 +1777,16 @@ public class CosmosAsyncContainer {
             }
 
             CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
-            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeySpanName);
+            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeysSpanName);
 
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
-                this.readManyByPartitionKeySpanName,
+                this.readManyByPartitionKeysSpanName,
                 database.getId(),
                 this.getId(),
                 ResourceType.Document,
                 OperationType.Query,
-                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeySpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeysSpanName),
                 queryRequestOptions,
                 pagedFluxOptions
             );

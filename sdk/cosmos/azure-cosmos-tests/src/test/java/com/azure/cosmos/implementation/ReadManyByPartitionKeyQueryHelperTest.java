@@ -12,6 +12,7 @@ import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.routing.Range;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -218,6 +219,57 @@ public class ReadManyByPartitionKeyQueryHelperTest {
 
         assertThatThrownBy(() -> RxDocumentClientImpl.normalizePartitionKeys(
             Collections.singletonList(PartitionKey.NONE),
+            pkDef))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("PartitionKey.NONE is not supported for multi-path partition keys");
+    }
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_epkAtBatchBoundary_isCorrectlyContained() {
+        // Verifies that a PK whose EPK sits exactly at a batchFilter boundary is correctly
+        // included in its owning range and excluded from the next range. The batchFilter is
+        // [minInclusive, maxExclusive) — a PK at the minInclusive boundary must be included,
+        // and a PK at the maxExclusive boundary must be excluded (it belongs to the next batch).
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKey("alpha"),
+            new PartitionKey("bravo"),
+            new PartitionKey("charlie"));
+
+        List<RxDocumentClientImpl.NormalizedPartitionKey> normalized =
+            RxDocumentClientImpl.normalizePartitionKeys(pkValues, pkDef);
+
+        // After normalization the EPKs are sorted; take the middle one's EPK as a boundary
+        assertThat(normalized).hasSize(3);
+        String middleEpk = normalized.get(1).effectivePartitionKeyString;
+
+        // Range [middleEpk, ...) must include the middle PK (minInclusive)
+        Range<String> rangeIncluding = new Range<>(middleEpk, "FF", true, false);
+        assertThat(rangeIncluding.contains(middleEpk)).isTrue();
+
+        // Range [..., middleEpk) must exclude the middle PK (maxExclusive)
+        Range<String> rangeExcluding = new Range<>("", middleEpk, true, false);
+        assertThat(rangeExcluding.contains(middleEpk)).isFalse();
+    }
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_noneInHpk_alwaysRejected() {
+        // PartitionKey.NONE must be rejected for MULTI_HASH regardless of whether this is the
+        // first call or a continuation-resume call (normalizePartitionKeys is invoked on both
+        // code paths). This test verifies the invariant holds for mixed inputs too.
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
+
+        // NONE alone
+        assertThatThrownBy(() -> RxDocumentClientImpl.normalizePartitionKeys(
+            Collections.singletonList(PartitionKey.NONE), pkDef))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("PartitionKey.NONE is not supported for multi-path partition keys");
+
+        // NONE mixed with valid HPK values
+        assertThatThrownBy(() -> RxDocumentClientImpl.normalizePartitionKeys(
+            Arrays.asList(
+                new PartitionKeyBuilder().add("Redmond").add("98052").build(),
+                PartitionKey.NONE),
             pkDef))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("PartitionKey.NONE is not supported for multi-path partition keys");
