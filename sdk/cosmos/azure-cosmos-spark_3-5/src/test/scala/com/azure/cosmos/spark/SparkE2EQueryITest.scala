@@ -185,5 +185,83 @@ class SparkE2EQueryITest
         }
     }
 
+
+    "spark readManyByPartitionKeys" can "support partial top-level hierarchical partition keys from DataFrame columns without the UDF" in {
+        val cosmosEndpoint = TestConfigurations.HOST
+        val cosmosMasterKey = TestConfigurations.MASTER_KEY
+        val containerName = s"top-level-hpk-${UUID.randomUUID()}"
+
+        val pkPaths = new ArrayList[String]()
+        pkPaths.add("/tenant")
+        pkPaths.add("/region")
+        pkPaths.add("/team")
+
+        val pkDefinition = new PartitionKeyDefinition()
+        pkDefinition.setPaths(pkPaths)
+        pkDefinition.setKind(PartitionKind.MULTI_HASH)
+        pkDefinition.setVersion(PartitionKeyDefinitionVersion.V2)
+
+        val containerProperties = new CosmosContainerProperties(containerName, pkDefinition)
+        cosmosClient
+            .getDatabase(cosmosDatabase)
+            .createContainerIfNotExists(containerProperties, ThroughputProperties.createManualThroughput(400))
+            .block()
+
+        try {
+            val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+            val requestOptions = new CosmosItemRequestOptions()
+
+            Seq(
+                ("tenantA", "east", "sales", "item-a1"),
+                ("tenantA", "west", "hr", "item-a2"),
+                ("tenantB", "east", "sales", "item-b1")
+            ).foreach { case (tenant, region, team, id) =>
+                val item = objectMapper.createObjectNode()
+                item.put("id", id)
+                item.put("tenant", tenant)
+                item.put("region", region)
+                item.put("team", team)
+                item.put("payload", s"$tenant-$region-$team")
+
+                val pk = new PartitionKeyBuilder().add(tenant).add(region).add(team).build()
+                container.createItem(item, pk, requestOptions).block()
+            }
+
+            val cfg = Map(
+                "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+                "spark.cosmos.accountKey" -> cosmosMasterKey,
+                "spark.cosmos.database" -> cosmosDatabase,
+                "spark.cosmos.container" -> containerName,
+                "spark.cosmos.read.inferSchema.enabled" -> "true"
+            )
+
+            val sparkSession = spark
+            import sparkSession.implicits._
+
+            val tenantRows = CosmosItemsDataSource
+                .readManyByPartitionKeys(Seq("tenantA").toDF("tenant"), cfg.asJava)
+                .selectExpr("id", "tenant", "region", "team")
+                .collect()
+
+            tenantRows should have size 2
+            tenantRows.map(_.getAs[String]("id")).toSet shouldEqual Set("item-a1", "item-a2")
+            tenantRows.map(_.getAs[String]("tenant")).toSet shouldEqual Set("tenantA")
+
+            val tenantRegionRows = CosmosItemsDataSource
+                .readManyByPartitionKeys(Seq(("tenantA", "east")).toDF("tenant", "region"), cfg.asJava)
+                .selectExpr("id", "tenant", "region", "team")
+                .collect()
+
+            tenantRegionRows should have size 1
+            tenantRegionRows.head.getAs[String]("id") shouldEqual "item-a1"
+        } finally {
+            cosmosClient
+                .getDatabase(cosmosDatabase)
+                .getContainer(containerName)
+                .delete()
+                .block()
+        }
+    }
+
     // scalastyle:on multiple.string.literals
 }

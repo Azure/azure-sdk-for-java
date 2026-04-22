@@ -2,16 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.routing.MurmurHash3_128;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -47,6 +51,7 @@ public final class ReadManyByPartitionKeyContinuationToken {
     private static final String BACKEND_CONTINUATION_PROPERTY = "bc";
     private static final String COLLECTION_RID_PROPERTY = "cr";
     private static final String QUERY_HASH_PROPERTY = "qh";
+    private static final String PARTITION_KEY_SET_HASH_PROPERTY = "ph";
 
     @JsonProperty(REMAINING_BATCHES_PROPERTY)
     private final List<BatchDefinitionDto> remainingBatches;
@@ -61,7 +66,10 @@ public final class ReadManyByPartitionKeyContinuationToken {
     private final String collectionRid;
 
     @JsonProperty(QUERY_HASH_PROPERTY)
-    private final int queryHash;
+    private final String queryHash;
+
+    @JsonProperty(PARTITION_KEY_SET_HASH_PROPERTY)
+    private final String partitionKeySetHash;
 
     @JsonCreator
     ReadManyByPartitionKeyContinuationToken(
@@ -69,13 +77,15 @@ public final class ReadManyByPartitionKeyContinuationToken {
         @JsonProperty(CURRENT_BATCH_PROPERTY) BatchDefinitionDto currentBatch,
         @JsonProperty(BACKEND_CONTINUATION_PROPERTY) String backendContinuation,
         @JsonProperty(COLLECTION_RID_PROPERTY) String collectionRid,
-        @JsonProperty(QUERY_HASH_PROPERTY) int queryHash) {
+        @JsonProperty(QUERY_HASH_PROPERTY) String queryHash,
+        @JsonProperty(PARTITION_KEY_SET_HASH_PROPERTY) String partitionKeySetHash) {
 
         this.remainingBatches = remainingBatches;
         this.currentBatch = currentBatch;
         this.backendContinuation = backendContinuation;
         this.collectionRid = collectionRid;
         this.queryHash = queryHash;
+        this.partitionKeySetHash = partitionKeySetHash;
     }
 
     public ReadManyByPartitionKeyContinuationToken(
@@ -84,6 +94,39 @@ public final class ReadManyByPartitionKeyContinuationToken {
         String backendContinuation,
         String collectionRid,
         int queryHash) {
+
+        this(remainingBatches, currentBatch, backendContinuation, collectionRid, String.valueOf(queryHash), "0");
+    }
+
+    public ReadManyByPartitionKeyContinuationToken(
+        List<BatchDefinition> remainingBatches,
+        BatchDefinition currentBatch,
+        String backendContinuation,
+        String collectionRid,
+        int queryHash,
+        int partitionKeySetHash) {
+
+        this(remainingBatches, currentBatch, backendContinuation, collectionRid,
+            String.valueOf(queryHash), String.valueOf(partitionKeySetHash));
+    }
+
+    public ReadManyByPartitionKeyContinuationToken(
+        List<BatchDefinition> remainingBatches,
+        BatchDefinition currentBatch,
+        String backendContinuation,
+        String collectionRid,
+        String queryHash) {
+
+        this(remainingBatches, currentBatch, backendContinuation, collectionRid, queryHash, "0");
+    }
+
+    public ReadManyByPartitionKeyContinuationToken(
+        List<BatchDefinition> remainingBatches,
+        BatchDefinition currentBatch,
+        String backendContinuation,
+        String collectionRid,
+        String queryHash,
+        String partitionKeySetHash) {
 
         checkNotNull(currentBatch, "Argument 'currentBatch' must not be null.");
         checkNotNull(remainingBatches, "Argument 'remainingBatches' must not be null.");
@@ -96,6 +139,7 @@ public final class ReadManyByPartitionKeyContinuationToken {
         this.backendContinuation = backendContinuation;
         this.collectionRid = collectionRid;
         this.queryHash = queryHash;
+        this.partitionKeySetHash = partitionKeySetHash;
     }
 
     /**
@@ -110,6 +154,39 @@ public final class ReadManyByPartitionKeyContinuationToken {
         String collectionRid,
         int queryHash) {
 
+        this(remainingBatchRanges, currentBatchRange, backendContinuation, collectionRid, String.valueOf(queryHash), "0");
+    }
+
+    public ReadManyByPartitionKeyContinuationToken(
+        List<Range<String>> remainingBatchRanges,
+        Range<String> currentBatchRange,
+        String backendContinuation,
+        String collectionRid,
+        int queryHash,
+        int partitionKeySetHash) {
+
+        this(remainingBatchRanges, currentBatchRange, backendContinuation, collectionRid,
+            String.valueOf(queryHash), String.valueOf(partitionKeySetHash));
+    }
+
+    public ReadManyByPartitionKeyContinuationToken(
+        List<Range<String>> remainingBatchRanges,
+        Range<String> currentBatchRange,
+        String backendContinuation,
+        String collectionRid,
+        String queryHash) {
+
+        this(remainingBatchRanges, currentBatchRange, backendContinuation, collectionRid, queryHash, "0");
+    }
+
+    public ReadManyByPartitionKeyContinuationToken(
+        List<Range<String>> remainingBatchRanges,
+        Range<String> currentBatchRange,
+        String backendContinuation,
+        String collectionRid,
+        String queryHash,
+        String partitionKeySetHash) {
+
         checkNotNull(currentBatchRange, "Argument 'currentBatchRange' must not be null.");
         checkNotNull(remainingBatchRanges, "Argument 'remainingBatchRanges' must not be null.");
 
@@ -123,6 +200,7 @@ public final class ReadManyByPartitionKeyContinuationToken {
         this.backendContinuation = backendContinuation;
         this.collectionRid = collectionRid;
         this.queryHash = queryHash;
+        this.partitionKeySetHash = partitionKeySetHash;
     }
 
     @JsonIgnore
@@ -147,8 +225,12 @@ public final class ReadManyByPartitionKeyContinuationToken {
         return collectionRid;
     }
 
-    public int getQueryHash() {
+    public String getQueryHash() {
         return queryHash;
+    }
+
+    public String getPartitionKeySetHash() {
+        return partitionKeySetHash;
     }
 
     /**
@@ -156,7 +238,37 @@ public final class ReadManyByPartitionKeyContinuationToken {
      * Hashes over both the query text and all parameter names/values to detect when a continuation
      * token is reused with a different query or different parameter values.
      */
-    public static int computeQueryHash(SqlQuerySpec querySpec) {
+    public static String computeQueryHash(SqlQuerySpec querySpec) {
+        if (querySpec == null) {
+            return "0";
+        }
+
+        try {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            updateHashInput(output, querySpec.getQueryText());
+
+            List<SqlParameter> params = querySpec.getParameters();
+            if (params != null) {
+                for (SqlParameter param : params) {
+                    updateHashInput(output, param.getName());
+
+                    Object value = param.getValue(Object.class);
+                    if (value == null) {
+                        updateHashInput(output, null);
+                    } else {
+                        output.write(Utils.getSimpleObjectMapper().writeValueAsBytes(value));
+                        output.write(0);
+                    }
+                }
+            }
+
+            return murmurHash128Hex(output.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to compute stable query hash for continuation token.", e);
+        }
+    }
+
+    static int computeLegacyQueryHash(SqlQuerySpec querySpec) {
         if (querySpec == null) {
             return 0;
         }
@@ -172,6 +284,104 @@ public final class ReadManyByPartitionKeyContinuationToken {
             }
         }
         return hash;
+    }
+
+    /**
+     * Computes a stable hash for the normalized set of partition key EPK values.
+     * Duplicate and reordered inputs intentionally produce the same digest.
+     */
+    public static String computePartitionKeySetHash(List<String> partitionKeyEpks) {
+        if (partitionKeyEpks == null || partitionKeyEpks.isEmpty()) {
+            return "0";
+        }
+
+        List<String> normalizedEpks = new ArrayList<>(partitionKeyEpks.size());
+        for (String epk : partitionKeyEpks) {
+            if (epk != null) {
+                normalizedEpks.add(epk);
+            }
+        }
+
+        if (normalizedEpks.isEmpty()) {
+            return "0";
+        }
+
+        Collections.sort(normalizedEpks);
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        String previous = null;
+        for (String epk : normalizedEpks) {
+            if (epk.equals(previous)) {
+                continue;
+            }
+
+            updateHashInput(output, epk);
+            previous = epk;
+        }
+
+        return murmurHash128Hex(output.toByteArray());
+    }
+
+    static int computeLegacyPartitionKeySetHash(List<String> partitionKeyEpks) {
+        if (partitionKeyEpks == null || partitionKeyEpks.isEmpty()) {
+            return 0;
+        }
+
+        List<String> normalizedEpks = new ArrayList<>(partitionKeyEpks.size());
+        for (String epk : partitionKeyEpks) {
+            if (epk != null) {
+                normalizedEpks.add(epk);
+            }
+        }
+
+        if (normalizedEpks.isEmpty()) {
+            return 0;
+        }
+
+        Collections.sort(normalizedEpks);
+
+        int hash = 17;
+        String previous = null;
+        for (String epk : normalizedEpks) {
+            if (epk.equals(previous)) {
+                continue;
+            }
+
+            hash = 31 * hash + epk.hashCode();
+            previous = epk;
+        }
+
+        return hash;
+    }
+
+    private static void updateHashInput(ByteArrayOutputStream output, String value) {
+        if (value != null) {
+            output.writeBytes(value.getBytes(StandardCharsets.UTF_8));
+        }
+        output.write(0);
+    }
+
+    private static String murmurHash128Hex(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return "0";
+        }
+
+        UInt128 hash = MurmurHash3_128.hash128(bytes, bytes.length);
+        return toFixedHex(hash.getHigh()) + toFixedHex(hash.getLow());
+    }
+
+    private static String toFixedHex(long value) {
+        String hex = Long.toHexString(value);
+        if (hex.length() >= 16) {
+            return hex;
+        }
+
+        StringBuilder builder = new StringBuilder(16);
+        for (int i = hex.length(); i < 16; i++) {
+            builder.append('0');
+        }
+        builder.append(hex);
+        return builder.toString();
     }
 
     /**

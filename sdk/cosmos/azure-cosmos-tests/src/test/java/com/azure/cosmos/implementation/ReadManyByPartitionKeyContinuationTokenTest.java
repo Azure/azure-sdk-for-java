@@ -21,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class ReadManyByPartitionKeyContinuationTokenTest {
 
     private static final String TEST_COLLECTION_RID = "dbs/testDb/colls/testColl";
-    private static final int TEST_QUERY_HASH = 12345;
+    private static final String TEST_QUERY_HASH = "12345";
+    private static final String TEST_PARTITION_KEY_SET_HASH = "67890";
 
     @Test(groups = { "unit" })
     public void roundtrip_withBackendContinuation() {
@@ -178,7 +179,7 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
     public void collectionRidAndQueryHash_roundtrip() {
         Range<String> current = new Range<>("", "FF", true, false);
         String rid = "dbs/myDb/colls/myColl";
-        int hash = 98765;
+        String hash = "98765";
 
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
@@ -193,8 +194,41 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
     }
 
     @Test(groups = { "unit" })
+    public void partitionKeySetHash_roundtrip() {
+        Range<String> current = new Range<>("", "FF", true, false);
+
+        ReadManyByPartitionKeyContinuationToken token =
+            new ReadManyByPartitionKeyContinuationToken(
+                Collections.emptyList(), current, null, TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
+
+        String serialized = token.serialize();
+        ReadManyByPartitionKeyContinuationToken deserialized =
+            ReadManyByPartitionKeyContinuationToken.deserialize(serialized);
+
+        assertThat(deserialized.getPartitionKeySetHash()).isEqualTo(TEST_PARTITION_KEY_SET_HASH);
+    }
+
+    @Test(groups = { "unit" })
+    public void computePartitionKeySetHash_isStableAcrossDuplicateAndReorderedEpks() {
+        List<String> epks1 = Arrays.asList("BB", "AA", "BB", "CC");
+        List<String> epks2 = Arrays.asList("CC", "AA", "BB");
+
+        assertThat(ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(epks1))
+            .isEqualTo(ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(epks2));
+    }
+
+
+    @Test(groups = { "unit" })
+    public void computePartitionKeySetHash_returnsStableHexDigest() {
+        String hash = ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(
+            Arrays.asList("BB", "AA", "BB", "CC"));
+
+        assertThat(hash).matches("[0-9a-f]{32}");
+    }
+
+    @Test(groups = { "unit" })
     public void computeQueryHash_nullSpec_returnsZero() {
-        assertThat(ReadManyByPartitionKeyContinuationToken.computeQueryHash(null)).isEqualTo(0);
+        assertThat(ReadManyByPartitionKeyContinuationToken.computeQueryHash(null)).isEqualTo("0");
     }
 
     @Test(groups = { "unit" })
@@ -231,8 +265,8 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
     @Test(groups = { "unit" })
     public void computeQueryHash_noParams_stableHash() {
         SqlQuerySpec spec = new SqlQuerySpec("SELECT * FROM c");
-        int hash1 = ReadManyByPartitionKeyContinuationToken.computeQueryHash(spec);
-        int hash2 = ReadManyByPartitionKeyContinuationToken.computeQueryHash(spec);
+        String hash1 = ReadManyByPartitionKeyContinuationToken.computeQueryHash(spec);
+        String hash2 = ReadManyByPartitionKeyContinuationToken.computeQueryHash(spec);
         assertThat(hash1).isEqualTo(hash2);
     }
 

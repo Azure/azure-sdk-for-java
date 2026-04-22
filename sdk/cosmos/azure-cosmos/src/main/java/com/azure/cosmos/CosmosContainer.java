@@ -544,7 +544,8 @@ public class CosmosContainer {
      * Reads many documents matching the provided partition key values.
      * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
      * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
-     * as the base query.
+     * as the base query. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching, so repeated keys do not duplicate the results.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
@@ -562,7 +563,8 @@ public class CosmosContainer {
      * Reads many documents matching the provided partition key values.
      * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
      * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
-     * as the base query.
+     * as the base query. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching, so repeated keys do not duplicate the results.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
@@ -589,7 +591,8 @@ public class CosmosContainer {
      * rejected.
      * <p>
      * Partial hierarchical partition keys are supported and will fan out to multiple
-     * physical partitions.
+     * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
@@ -617,7 +620,8 @@ public class CosmosContainer {
      * rejected.
      * <p>
      * Partial hierarchical partition keys are supported and will fan out to multiple
-     * physical partitions.
+     * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for

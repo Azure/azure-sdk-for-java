@@ -4462,7 +4462,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
 
                 final String collectionRid = collection.getResourceId();
-                final int queryHash = ReadManyByPartitionKeyContinuationToken.computeQueryHash(customQuery);
+                final String queryHash = ReadManyByPartitionKeyContinuationToken.computeQueryHash(customQuery);
+                final List<NormalizedPartitionKey> normalizedPartitionKeys =
+                    normalizePartitionKeys(partitionKeys, pkDefinition);
+                final String partitionKeySetHash = ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(
+                    normalizedPartitionKeys.stream()
+                        .map(normalizedPk -> normalizedPk.effectivePartitionKeyString)
+                        .collect(Collectors.toList()));
 
                 // When a continuation token is present, skip the routing map lookup and batch
                 // construction - the token already contains the batch definitions. Only resolve
@@ -4476,16 +4482,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             "Continuation token was created for a different collection (rid mismatch). " +
                                 "Expected: " + collectionRid + ", token has: " + parsedContinuation.getCollectionRid()));
                     }
-                    if (queryHash != parsedContinuation.getQueryHash()) {
+                    String legacyQueryHash = String.valueOf(
+                        ReadManyByPartitionKeyContinuationToken.computeLegacyQueryHash(customQuery));
+                    if (!queryHash.equals(parsedContinuation.getQueryHash())
+                        && !legacyQueryHash.equals(parsedContinuation.getQueryHash())) {
                         return Flux.error(new IllegalArgumentException(
                             "Continuation token was created with a different query (hash mismatch). " +
                                 "The same query must be used when resuming from a continuation token."));
                     }
+                    String legacyPartitionKeySetHash = String.valueOf(
+                        ReadManyByPartitionKeyContinuationToken.computeLegacyPartitionKeySetHash(
+                            normalizedPartitionKeys.stream()
+                                .map(normalizedPk -> normalizedPk.effectivePartitionKeyString)
+                                .collect(Collectors.toList())));
+                    if (!partitionKeySetHash.equals(parsedContinuation.getPartitionKeySetHash())
+                        && !legacyPartitionKeySetHash.equals(parsedContinuation.getPartitionKeySetHash())) {
+                        return Flux.error(new IllegalArgumentException(
+                            "Continuation token was created with a different partition-key set (hash mismatch). " +
+                                "The same normalized set of partition key values must be used when resuming."));
+                    }
 
                     return buildSequentialFluxFromContinuation(
-                        parsedContinuation, partitionKeys, customQuery, pkDefinition,
+                        parsedContinuation, normalizedPartitionKeys, customQuery, pkDefinition,
                         resourceLink, state, diagnosticsFactory, klass,
-                        collectionRid, queryHash);
+                        collectionRid, queryHash, partitionKeySetHash);
                 }
 
                 // First-call path: validate custom query, resolve routing map, build batches
@@ -4513,11 +4533,40 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         }
 
                         return buildSequentialFluxFromScratch(
-                            partitionKeys, customQuery, pkDefinition, routingMap,
+                            normalizedPartitionKeys, customQuery, pkDefinition, routingMap,
                             resourceLink, state, diagnosticsFactory, klass,
-                            collectionRid, queryHash);
+                            collectionRid, queryHash, partitionKeySetHash);
                     });
             });
+    }
+
+    /**
+     * Normalizes the input partition key list into a deterministic, set-based representation.
+     * Duplicates are removed by effective partition key string and the remaining keys are sorted
+     * lexicographically by EPK so batching and continuation-token hashes stay stable.
+     */
+    private List<NormalizedPartitionKey> normalizePartitionKeys(
+        List<PartitionKey> partitionKeys,
+        PartitionKeyDefinition pkDefinition) {
+
+        Map<String, NormalizedPartitionKey> normalizedByEpk = new LinkedHashMap<>();
+
+        for (PartitionKey pk : partitionKeys) {
+            PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
+            PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
+                ? PartitionKeyInternal.UndefinedPartitionKey
+                : pkInternal;
+            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
+
+            normalizedByEpk.putIfAbsent(
+                effectivePartitionKeyString,
+                new NormalizedPartitionKey(pk, effectivePkInternal, effectivePartitionKeyString));
+        }
+
+        List<NormalizedPartitionKey> normalizedPartitionKeys = new ArrayList<>(normalizedByEpk.values());
+        normalizedPartitionKeys.sort(Comparator.comparing(normalizedPk -> normalizedPk.effectivePartitionKeyString));
+        return normalizedPartitionKeys;
     }
 
     /**
@@ -4526,7 +4575,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * sorts by EPK, and executes sequentially.
      */
     private <T> Flux<FeedResponse<T>> buildSequentialFluxFromScratch(
-        List<PartitionKey> partitionKeys,
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
         SqlQuerySpec customQuery,
         PartitionKeyDefinition pkDefinition,
         CollectionRoutingMap routingMap,
@@ -4535,10 +4584,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ScopedDiagnosticsFactory diagnosticsFactory,
         Class<T> klass,
         String collectionRid,
-        int queryHash) {
+        String queryHash,
+        String partitionKeySetHash) {
 
-        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap =
-            groupPartitionKeysByPhysicalPartition(partitionKeys, pkDefinition, routingMap);
+        Map<PartitionKeyRange, List<NormalizedPartitionKey>> partitionRangePkMap =
+            groupPartitionKeysByPhysicalPartition(normalizedPartitionKeys, pkDefinition, routingMap);
 
         List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
 
@@ -4558,25 +4608,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         List<BatchDescriptor> allBatches = new ArrayList<>();
 
-        for (Map.Entry<PartitionKeyRange, List<PartitionKey>> entry : partitionRangePkMap.entrySet()) {
+        for (Map.Entry<PartitionKeyRange, List<NormalizedPartitionKey>> entry : partitionRangePkMap.entrySet()) {
             PartitionKeyRange pkRange = entry.getKey();
             Range<String> partitionScope = pkRange.toRange();
-            List<PartitionKey> allPks = entry.getValue();
+            List<NormalizedPartitionKey> allPks = entry.getValue();
 
-            // Sort PKs by EPK within each partition so that sub-batching is deterministic
-            // and the batchFilter range can be computed from first/last EPK in the batch.
-            allPks.sort(Comparator.comparing(pk -> getEffectivePartitionKeyString(pk, pkDefinition)));
-
+            // The per-range list already preserves the globally normalized EPK order,
+            // so no additional in-partition sort is required here.
             for (int i = 0; i < allPks.size(); i += maxPksPerPartitionQuery) {
                 int batchEnd = Math.min(i + maxPksPerPartitionQuery, allPks.size());
-                List<PartitionKey> batch = allPks.subList(i, batchEnd);
+                List<PartitionKey> batch = allPks.subList(i, batchEnd)
+                    .stream()
+                    .map(normalizedPk -> normalizedPk.partitionKey)
+                    .collect(Collectors.toList());
 
                 // batchFilter is [epk(first), maxExclusive) where maxExclusive is:
                 // - epk of the next PK after this batch (first PK of the next batch), or
                 // - partitionScope.getMax() if this is the last batch in the partition
-                String batchMinInclusive = getEffectivePartitionKeyString(batch.get(0), pkDefinition);
+                String batchMinInclusive = allPks.get(i).effectivePartitionKeyString;
                 String batchMaxExclusive = batchEnd < allPks.size()
-                    ? getEffectivePartitionKeyString(allPks.get(batchEnd), pkDefinition)
+                    ? allPks.get(batchEnd).effectivePartitionKeyString
                     : partitionScope.getMax();
                 Range<String> batchFilter = new Range<>(batchMinInclusive, batchMaxExclusive, true, false);
 
@@ -4598,7 +4649,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return buildSequentialBatchFlux(
             allBatches, null,
             resourceLink, state, diagnosticsFactory, klass,
-            collectionRid, queryHash);
+            collectionRid, queryHash, partitionKeySetHash);
     }
 
     /**
@@ -4608,7 +4659,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private <T> Flux<FeedResponse<T>> buildSequentialFluxFromContinuation(
         ReadManyByPartitionKeyContinuationToken parsedContinuation,
-        List<PartitionKey> partitionKeys,
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
         SqlQuerySpec customQuery,
         PartitionKeyDefinition pkDefinition,
         String resourceLink,
@@ -4616,7 +4667,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ScopedDiagnosticsFactory diagnosticsFactory,
         Class<T> klass,
         String collectionRid,
-        int queryHash) {
+        String queryHash,
+        String partitionKeySetHash) {
 
         List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
 
@@ -4632,31 +4684,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             baseParameters = new ArrayList<>();
         }
 
-        // Reconstruct batches from the continuation token's batch definitions.
-        // The current batch + remaining batches define the work left to do.
         ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatchDef =
             parsedContinuation.getCurrentBatch();
         List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingBatchDefs =
             parsedContinuation.getRemainingBatches();
         String initialBackendContinuation = parsedContinuation.getBackendContinuation();
 
-        // Build ordered list: current batch first, then remaining
         List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> allBatchDefs = new ArrayList<>();
         allBatchDefs.add(currentBatchDef);
         allBatchDefs.addAll(remainingBatchDefs);
 
-        // For each batch definition, filter PKs that belong to it by batchFilter EPK range
-        // (not partitionScope — which covers the entire physical partition).
-        // Use partitionScope for FeedRange routing; batchFilter for PK filtering.
         List<BatchDescriptor> allBatches = new ArrayList<>();
 
         for (ReadManyByPartitionKeyContinuationToken.BatchDefinition batchDef : allBatchDefs) {
             Range<String> partitionScope = batchDef.getPartitionScope();
             Range<String> batchFilter = batchDef.getBatchFilter();
 
-            // Filter PKs whose EPK falls within this batch's batchFilter range
             List<PartitionKey> batchPks = filterPartitionKeysByEpkRange(
-                partitionKeys, pkDefinition, batchFilter);
+                normalizedPartitionKeys, batchFilter);
 
             if (batchPks.isEmpty()) {
                 continue;
@@ -4677,23 +4722,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return buildSequentialBatchFlux(
             allBatches, initialBackendContinuation,
             resourceLink, state, diagnosticsFactory, klass,
-            collectionRid, queryHash);
+            collectionRid, queryHash, partitionKeySetHash);
     }
 
     /**
      * Filters partition keys to those whose EPK falls within the given range.
      */
     private List<PartitionKey> filterPartitionKeysByEpkRange(
-        List<PartitionKey> partitionKeys,
-        PartitionKeyDefinition pkDefinition,
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
         Range<String> epkRange) {
 
         List<PartitionKey> result = new ArrayList<>();
-        for (PartitionKey pk : partitionKeys) {
-            String epk = getEffectivePartitionKeyString(pk, pkDefinition);
-
-            if (epkRange.contains(epk)) {
-                result.add(pk);
+        for (NormalizedPartitionKey normalizedPk : normalizedPartitionKeys) {
+            if (epkRange.contains(normalizedPk.effectivePartitionKeyString)) {
+                result.add(normalizedPk.partitionKey);
             }
         }
         return result;
@@ -4711,7 +4753,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ScopedDiagnosticsFactory diagnosticsFactory,
         Class<T> klass,
         String collectionRid,
-        int queryHash) {
+        String queryHash,
+        String partitionKeySetHash) {
 
         List<Flux<FeedResponse<T>>> sequentialFluxes = new ArrayList<>();
         for (int i = 0; i < allBatches.size(); i++) {
@@ -4719,7 +4762,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             final BatchDescriptor bd = allBatches.get(i);
             final String backendContinuation = (i == 0) ? initialBackendContinuation : null;
 
-            // Remaining batch definitions for the continuation token (batches after the current one)
             final List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingAfterThis = new ArrayList<>();
             for (int j = batchIndex + 1; j < allBatches.size(); j++) {
                 BatchDescriptor remaining = allBatches.get(j);
@@ -4728,25 +4770,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         remaining.partitionScope, remaining.batchFilter));
             }
 
-            // Clone query options for this batch
             CosmosQueryRequestOptions batchQueryOptions = queryOptionsAccessor()
                 .clone(state.getQueryOptions());
             queryOptionsAccessor().disallowQueryPlanRetrieval(batchQueryOptions);
 
-            // Set FeedRange for routing via partitionScope EPK — handles splits transparently
             batchQueryOptions.setFeedRange(new FeedRangeEpkImpl(bd.partitionScope));
 
-            // Always set the continuation token on the cloned options — even when null.
-            // The cloned options may still carry the external caller's continuation token,
-            // which the backend wouldn't know how to interpret. For the first batch we pass
-            // the backend continuation from the composite token; for subsequent batches null
-            // (meaning "start from the beginning of this batch").
             ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
                 batchQueryOptions, backendContinuation);
 
-            // Execute the batch query using the standard query API with FeedRange for routing.
-            // FeedRangeEpkImpl(partitionScope) handles routing to the correct physical partition(s),
-            // including transparently handling partition splits.
             Flux<FeedResponse<T>> batchFlux = createQueryInternal(
                 diagnosticsFactory,
                 resourceLink,
@@ -4758,12 +4790,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 UUIDs.nonBlockingRandomUUID(),
                 new AtomicBoolean(false));
 
-            // Current batch as a BatchDefinition for the continuation token
             final ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatchDef =
                 new ReadManyByPartitionKeyContinuationToken.BatchDefinition(
                     bd.partitionScope, bd.batchFilter);
 
-            // Stamp each FeedResponse with the composite continuation token
             Flux<FeedResponse<T>> stampedFlux = batchFlux.map(feedResponse -> {
                 String backendCont = feedResponse.getContinuationToken();
                 boolean isLastBatch = remainingAfterThis.isEmpty();
@@ -4780,14 +4810,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             : Collections.emptyList();
                     ReadManyByPartitionKeyContinuationToken compositeContinuation =
                         new ReadManyByPartitionKeyContinuationToken(
-                            remaining, nextBatchDef, null, collectionRid, queryHash);
+                            remaining, nextBatchDef, null, collectionRid, queryHash, partitionKeySetHash);
                     ModelBridgeInternal.setFeedResponseContinuationToken(
                         compositeContinuation.serialize(), feedResponse);
                 } else {
                     ReadManyByPartitionKeyContinuationToken compositeContinuation =
                         new ReadManyByPartitionKeyContinuationToken(
                             remainingAfterThis, currentBatchDef, backendCont,
-                            collectionRid, queryHash);
+                            collectionRid, queryHash, partitionKeySetHash);
                     ModelBridgeInternal.setFeedResponseContinuationToken(
                         compositeContinuation.serialize(), feedResponse);
                 }
@@ -4797,24 +4827,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             sequentialFluxes.add(stampedFlux);
         }
 
-        return Flux.concat(sequentialFluxes);
+        int fluxConcurrency = Math.max(1, Math.min(Configs.getCPUCnt(), sequentialFluxes.size()));
+        return Flux.mergeSequential(sequentialFluxes, fluxConcurrency, 1);
     }
 
-    /**
-     * Returns the effective partition key string for a PartitionKey, handling PartitionKey.NONE
-     * by mapping to UndefinedPartitionKey.
-     */
-    private static String getEffectivePartitionKeyString(
-        PartitionKey pk,
-        PartitionKeyDefinition pkDefinition) {
+    private static final class NormalizedPartitionKey {
+        final PartitionKey partitionKey;
+        final PartitionKeyInternal effectivePkInternal;
+        final String effectivePartitionKeyString;
 
-        PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
-        PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
-            ? PartitionKeyInternal.UndefinedPartitionKey
-            : pkInternal;
+        private NormalizedPartitionKey(
+            PartitionKey partitionKey,
+            PartitionKeyInternal effectivePkInternal,
+            String effectivePartitionKeyString) {
 
-        return PartitionKeyInternalHelper
-            .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
+            this.partitionKey = partitionKey;
+            this.effectivePkInternal = effectivePkInternal;
+            this.effectivePartitionKeyString = effectivePartitionKeyString;
+        }
     }
 
     /**
@@ -4915,45 +4945,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Map<PartitionKeyRange, List<PartitionKey>> groupPartitionKeysByPhysicalPartition(
-        List<PartitionKey> partitionKeys,
+    private Map<PartitionKeyRange, List<NormalizedPartitionKey>> groupPartitionKeysByPhysicalPartition(
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
         PartitionKeyDefinition pkDefinition,
         CollectionRoutingMap routingMap) {
 
-        // Use LinkedHashMap so the downstream round-robin interleave is deterministic and the iteration
-        // order follows insertion order of partition keys (i.e. the order the caller provided).
-        Map<PartitionKeyRange, List<PartitionKey>> partitionRangePkMap = new LinkedHashMap<>();
+        Map<PartitionKeyRange, List<NormalizedPartitionKey>> partitionRangePkMap = new LinkedHashMap<>();
 
-        for (PartitionKey pk : partitionKeys) {
-            PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
-
-            // PartitionKey.NONE wraps NonePartitionKey which has components = null.
-            // For routing purposes, treat NONE as UndefinedPartitionKey - documents ingested
-            // without a partition key path are stored with the undefined EPK.
-            PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
-                ? PartitionKeyInternal.UndefinedPartitionKey
-                : pkInternal;
-
-            int componentCount = effectivePkInternal.getComponents().size();
+        for (NormalizedPartitionKey normalizedPk : normalizedPartitionKeys) {
+            int componentCount = normalizedPk.effectivePkInternal.getComponents().size();
             int definedPathCount = pkDefinition.getPaths().size();
 
             List<PartitionKeyRange> targetRanges;
 
             if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && componentCount < definedPathCount) {
-                // Partial HPK - compute EPK prefix range and find all overlapping physical partitions
                 Range<String> epkRange = PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(
-                    effectivePkInternal, pkDefinition);
+                    normalizedPk.effectivePkInternal, pkDefinition);
                 targetRanges = routingMap.getOverlappingRanges(epkRange);
             } else {
-                // Full PK - maps to exactly one physical partition
-                String effectivePartitionKeyString = PartitionKeyInternalHelper
-                    .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
-                PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(
+                    normalizedPk.effectivePartitionKeyString);
                 targetRanges = Collections.singletonList(range);
             }
 
             for (PartitionKeyRange range : targetRanges) {
-                partitionRangePkMap.computeIfAbsent(range, k -> new ArrayList<>()).add(pk);
+                partitionRangePkMap.computeIfAbsent(range, k -> new ArrayList<>()).add(normalizedPk);
             }
         }
 

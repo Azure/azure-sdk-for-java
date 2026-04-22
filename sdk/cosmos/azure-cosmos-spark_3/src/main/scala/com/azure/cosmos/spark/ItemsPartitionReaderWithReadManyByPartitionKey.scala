@@ -6,7 +6,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
-import com.azure.cosmos.BridgeInternal
 import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
@@ -157,18 +156,13 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
       }
     )
 
-  // Collect all PK values upfront - readManyByPartitionKeys needs the full list to
-  // group by physical partition (the SDK batches internally per physical partition).
-  // Deduplicate using the canonical PartitionKeyInternal JSON representation so that
-  // equivalent PKs built from different runtime types (Int vs Long vs Double) are
-  // collapsed, and distinct PKs that happen to toString() identically are not.
+  // Collect all PK values upfront - the SDK now owns normalization and deduplication,
+  // so Spark preserves the caller's input as-is and relies on the SDK's set-based semantics.
+  // Callers should still dedupe their DataFrame input when practical to avoid extra work.
   private lazy val pkList = {
-    val seen = new java.util.LinkedHashMap[String, PartitionKey]()
-    readManyPartitionKeys.foreach(pk => {
-      val key = BridgeInternal.getPartitionKeyInternal(pk).toJson
-      seen.putIfAbsent(key, pk)
-    })
-    new java.util.ArrayList[PartitionKey](seen.values())
+    val values = new java.util.ArrayList[PartitionKey]()
+    readManyPartitionKeys.foreach(values.add)
+    values
   }
 
   private val endToEndTimeoutPolicy =
@@ -216,22 +210,14 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
             // On the first call continuationToken is null (start from scratch); on retry
             // it is the continuation token from the last fully-drained page.
             private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (continuationToken: String) =>
-              // Clone options and set continuation token if provided so the SDK
-              // resumes from where the previous attempt left off.
-              val effectiveOptions = new CosmosReadManyRequestOptions(readManyOptions)
-              if (continuationToken != null) {
-                val effectiveImpl = ImplementationBridgeHelpers
-                  .CosmosReadManyRequestOptionsHelper
-                  .getCosmosReadManyRequestOptionsAccessor
-                  .getImpl(effectiveOptions)
-                  .asInstanceOf[com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl]
-                effectiveImpl.setRequestContinuation(continuationToken)
-              }
+              // Reuse the preconfigured request options and only update the continuation
+              // token so the SDK resumes from the last fully committed page.
+              readManyOptionsImpl.setRequestContinuation(continuationToken)
               customQueryOpt match {
                 case Some(query) =>
-                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, effectiveOptions, classOf[SparkRowItem])
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, readManyOptions, classOf[SparkRowItem])
                 case None =>
-                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, effectiveOptions, classOf[SparkRowItem])
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, readManyOptions, classOf[SparkRowItem])
               }
             }
 

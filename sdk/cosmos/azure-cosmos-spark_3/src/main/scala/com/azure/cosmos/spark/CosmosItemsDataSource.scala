@@ -166,18 +166,28 @@ object CosmosItemsDataSource {
             "'_partitionKeyIdentity' column produced by the GetCosmosPartitionKeyValue UDF.")
       }
 
-      // Check if ALL PK path columns exist in the DataFrame schema
+      // Allow DataFrames to provide a contiguous top-level prefix of the container's
+      // hierarchical partition key paths. For example: tenant, or tenant + region.
       val dfFieldNames = df.schema.fieldNames.toSet
-      val allPkColumnsPresent = pkPaths.forall(path => dfFieldNames.contains(path))
+      val matchedPrefix = pkPaths.takeWhile(path => dfFieldNames.contains(path))
+      val hasNonPrefixMatch = pkPaths.drop(matchedPrefix.size).exists(path => dfFieldNames.contains(path))
 
-      if (allPkColumnsPresent && pkPaths.nonEmpty) {
+      if (hasNonPrefixMatch) {
+        throw new IllegalArgumentException(
+          "DataFrame columns matching the container's partition key paths must form a contiguous top-level prefix " +
+            "(for example: tenant, or tenant + region). " +
+            "For nested or non-prefix partition key extraction, add a '_partitionKeyIdentity' column produced " +
+            "by the GetCosmosPartitionKeyValue UDF.")
+      }
+
+      if (matchedPrefix.nonEmpty) {
         Some((row: Row) => {
-          if (pkPaths.size == 1) {
-            buildPartitionKey(row.getAs[Any](pkPaths.head), treatNullAsNone)
+          if (matchedPrefix.size == 1) {
+            buildPartitionKey(row.getAs[Any](matchedPrefix.head), treatNullAsNone)
           } else {
             val builder = new PartitionKeyBuilder()
-            for (path <- pkPaths) {
-              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone, pkPaths.size)
+            for (path <- matchedPrefix) {
+              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone, matchedPrefix.size)
             }
             builder.build()
           }
@@ -193,7 +203,7 @@ object CosmosItemsDataSource {
         throw new IllegalArgumentException(
           "Cannot determine partition key extraction from the input DataFrame. " +
             "Either add a '_partitionKeyIdentity' column (using the GetCosmosPartitionKeyValue UDF) " +
-            "or ensure the DataFrame contains columns matching the container's partition key paths."))
+            "or ensure the DataFrame contains columns matching a top-level prefix of the container's partition key paths."))
 
     readManyReader.readManyByPartitionKeys(df.rdd, pkExtraction, readerState)
   }

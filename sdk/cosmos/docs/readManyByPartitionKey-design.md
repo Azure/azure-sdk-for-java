@@ -18,7 +18,7 @@ and additional filters. The SDK appends the auto-generated PK WHERE clause to it
 | Return type             | `CosmosPagedFlux<T>` (async) / `CosmosPagedIterable<T>` (sync)                                                                                                             |
 | Custom query format     | `SqlQuerySpec` — full query with parameters; SDK ANDs the PK filter                                                                                                        |
 | Partial HPK             | Supported from the start; prefix PKs fan out via `getOverlappingRanges`                                                                                                    |
-| PK deduplication        | Done at Spark layer only, not in the SDK                                                                                                                                   |
+| PK deduplication        | SDK normalizes and deduplicates the partition-key set by EPK before batching; Spark callers should still dedupe the input DataFrame when practical for efficiency         |
 | Spark UDF               | New `GetCosmosPartitionKeyValue` UDF                                                                                                                                       |
 | Custom query validation | Gateway query plan via the standard SDK query-plan retrieval path; reject aggregates/ORDER BY/DISTINCT/GROUP BY/DCount/OFFSET/LIMIT/non-streaming ORDER BY/vector/fulltext |
 | PK list size            | No hard upper-bound enforced; SDK batches internally per physical partition (default 100 PKs per batch, configurable via `COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE`)          |
@@ -148,7 +148,7 @@ Static entry points that accept a DataFrame and Cosmos config. PK extraction sup
 1. **UDF-produced column**: DataFrame contains `_partitionKeyIdentity` column (from `GetCosmosPartitionKeyValue` UDF).
 2. **Schema-matched columns**: DataFrame columns match the container's PK paths.
 
-Nested partition key paths are not resolved automatically from DataFrame columns and must use the UDF-produced `_partitionKeyIdentity` column.
+Top-level DataFrame columns may supply a full or prefix hierarchical partition key directly. Nested partition key paths are not resolved automatically and must use the UDF-produced `_partitionKeyIdentity` column.
 
 Falls back with `IllegalArgumentException` if neither mode is possible.
 
@@ -160,7 +160,7 @@ Orchestrator that resolves schema, initializes and broadcasts client state to ex
 
 Spark `PartitionReader[InternalRow]` that:
 
-- Deduplicates PKs via `LinkedHashMap` (by PK string representation).
+- Preserves the caller's PK list and lets the SDK normalize/dedupe by effective partition key; callers should still dedupe the DataFrame upstream when practical.
 - Passes the pre-built `CosmosReadManyRequestOptions` (with throughput control, diagnostics, custom serializer) to the SDK.
 - Uses `TransientIOErrorsRetryingIterator` for retry handling.
 - Short-circuits empty PK lists to avoid SDK rejection.
@@ -228,7 +228,7 @@ routing layer) with `isMinInclusive = true` and `isMaxExclusive = false`.
 ### Sequential batch execution
 
 Batches are sorted by `minInclusive` EPK (lexicographic) and processed one at a time
-via `Flux.concat` instead of `Flux.merge`. Each `FeedResponse` carries the composite
+via ordered sequential merging with a small amount of Reactor prefetch. Each `FeedResponse` carries the composite
 continuation token reflecting the current position:
 
 ```text

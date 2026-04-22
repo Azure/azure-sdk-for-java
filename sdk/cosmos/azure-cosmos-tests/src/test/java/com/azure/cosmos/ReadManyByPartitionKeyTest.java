@@ -633,6 +633,86 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         }
     }
 
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_continuationToken_resumesCorrectly_whenInputContainsDuplicatePartitionKeys() {
+        String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+        try {
+            System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "1");
+
+            createSinglePkItems("dupResumePk1", 2);
+            createSinglePkItems("dupResumePk2", 2);
+            createSinglePkItems("dupResumePk3", 2);
+
+            List<PartitionKey> pkValues = Arrays.asList(
+                new PartitionKey("dupResumePk2"),
+                new PartitionKey("dupResumePk1"),
+                new PartitionKey("dupResumePk2"),
+                new PartitionKey("dupResumePk3"),
+                new PartitionKey("dupResumePk1"));
+
+            CosmosAsyncContainer asyncContainer = client.asyncClient()
+                .getDatabase(preExistingDatabaseId)
+                .getContainer(singlePkContainer.getId());
+
+            List<FeedResponse<ObjectNode>> allPages = asyncContainer
+                .readManyByPartitionKeys(pkValues, ObjectNode.class)
+                .byPage()
+                .collectList()
+                .block();
+
+            assertThat(allPages).isNotNull();
+            assertThat(allPages.size()).isGreaterThan(1);
+
+            String continuationAfterFirstPage = allPages.get(0).getContinuationToken();
+            assertThat(continuationAfterFirstPage).isNotNull();
+            List<ObjectNode> itemsFromFirstPage = allPages.get(0).getResults();
+
+            com.azure.cosmos.models.CosmosReadManyRequestOptions options2 =
+                new com.azure.cosmos.models.CosmosReadManyRequestOptions();
+            ((CosmosReadManyRequestOptionsImpl)
+                ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper
+                    .getCosmosReadManyRequestOptionsAccessor()
+                    .getImpl(options2))
+                .setRequestContinuation(continuationAfterFirstPage);
+
+            List<FeedResponse<ObjectNode>> remainingPages = asyncContainer
+                .readManyByPartitionKeys(pkValues, options2, ObjectNode.class)
+                .byPage()
+                .collectList()
+                .block();
+
+            assertThat(remainingPages).isNotNull();
+
+            List<String> firstPageIds = itemsFromFirstPage.stream()
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+            List<String> remainingIds = remainingPages.stream()
+                .flatMap(p -> p.getResults().stream())
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+            List<String> allIds = allPages.stream()
+                .flatMap(p -> p.getResults().stream())
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+
+            List<String> combined = new ArrayList<>(firstPageIds);
+            combined.addAll(remainingIds);
+
+            assertThat(combined).hasSameElementsAs(allIds);
+            assertThat(combined).doesNotHaveDuplicates();
+            assertThat(combined).hasSize(6);
+
+            cleanupContainer(singlePkContainer);
+        } finally {
+            if (originalValue != null) {
+                System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", originalValue);
+            } else {
+                System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
+            }
+        }
+    }
+
     //endregion
 
     //region helper methods
