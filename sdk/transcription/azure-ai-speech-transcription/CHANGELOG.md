@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.3 (2026-04-22)
 
 ### Other Changes
+
+- Updated package metadata (display name and description) to align with Azure SDK guidelines.
+- Internal cleanup and lint fixes. No public API changes.
 
 ## 1.0.0-beta.2 (2026-02-05)
 

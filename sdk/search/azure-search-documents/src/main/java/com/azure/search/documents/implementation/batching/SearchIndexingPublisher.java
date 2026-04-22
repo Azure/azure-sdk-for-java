@@ -15,10 +15,10 @@ import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
-import com.azure.search.documents.options.OnActionAddedOptions;
-import com.azure.search.documents.options.OnActionErrorOptions;
-import com.azure.search.documents.options.OnActionSentOptions;
-import com.azure.search.documents.options.OnActionSucceededOptions;
+import com.azure.search.documents.models.OnActionAddedOptions;
+import com.azure.search.documents.models.OnActionErrorOptions;
+import com.azure.search.documents.models.OnActionSentOptions;
+import com.azure.search.documents.models.OnActionSucceededOptions;
 import reactor.util.function.Tuple2;
 
 import java.net.HttpURLConnection;
