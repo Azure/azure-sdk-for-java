@@ -440,7 +440,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private void setContinuationTokenInternal(String headerName, String continuationToken) {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
-        } else if (!this.header.isEmpty()) {
+        } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
             this.header.remove(headerName);
         }
     }
