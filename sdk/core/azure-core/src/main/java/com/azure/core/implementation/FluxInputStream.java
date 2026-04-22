@@ -269,8 +269,8 @@ public class FluxInputStream extends InputStream {
             throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'length' cannot be less than 0"));
         }
         if (offset > bytes.length) {
-            throw LOGGER.logExceptionAsError(
-                new IndexOutOfBoundsException("'offset' cannot be greater than 'bytes'.length"));
+            throw LOGGER
+                .logExceptionAsError(new IndexOutOfBoundsException("'offset' cannot be greater than 'bytes'.length"));
         }
         if (length > (bytes.length - offset)) {
             throw LOGGER.logExceptionAsError(

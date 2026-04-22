@@ -418,10 +418,8 @@ public abstract class HttpClientTests {
         assertArraysEqual(requestBody.toBytes(),
             response.getBodyAsInputStream().map(s -> BinaryData.fromStream(s).toBytes()).block());
 
-        assertArraysEqual(requestBody.toBytes(),
-            BinaryData.fromStream(response.getBodyAsInputStreamSync()).toBytes());
-        assertArraysEqual(requestBody.toBytes(),
-            BinaryData.fromStream(response.getBodyAsInputStreamSync()).toBytes());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromStream(response.getBodyAsInputStreamSync()).toBytes());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromStream(response.getBodyAsInputStreamSync()).toBytes());
 
         assertArraysEqual(requestBody.toBytes(),
             BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
