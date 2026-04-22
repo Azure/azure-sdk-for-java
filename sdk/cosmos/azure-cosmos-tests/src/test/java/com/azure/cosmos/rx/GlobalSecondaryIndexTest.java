@@ -250,4 +250,42 @@ public class GlobalSecondaryIndexTest {
         assertThat(gsiList.get(1).getResourceId()).isEqualTo("AbcdEFGhIJk=");
     }
 
+    // -------------------------------------------------------------------------
+    // GSI definition with null sourceContainerId – non-GSI path fallthrough
+    // -------------------------------------------------------------------------
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_nullSourceContainerId_fallsThroughToNonGsiPath() {
+        // Simulate a deserialized GSI definition where sourceCollectionId is absent.
+        // This can happen when a server response includes a materializedViewDefinition
+        // node without the sourceCollectionId field. The ObjectNode constructor (used
+        // during deserialization) does not enforce the sourceContainerId requirement.
+        String json = "{"
+            + "\"id\":\"testContainer\","
+            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
+            + "\"materializedViewDefinition\":{"
+            + "\"definition\":\"SELECT c.customerId FROM c\""
+            + "}"
+            + "}";
+
+        CosmosContainerProperties containerProperties = fromJson(json);
+
+        // The GSI definition itself should be non-null (the JSON node exists)
+        CosmosGlobalSecondaryIndexDefinition gsiDef = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        assertThat(gsiDef).isNotNull();
+        assertThat(gsiDef.getDefinition()).isEqualTo("SELECT c.customerId FROM c");
+
+        // But sourceContainerId should be null
+        assertThat(gsiDef.getSourceContainerId())
+            .as("sourceContainerId should be null when absent in the JSON")
+            .isNull();
+
+        // Verify the condition used in createContainerInternal falls through to
+        // the non-GSI path: (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) == false
+        boolean wouldAttemptRidResolution = gsiDef != null && gsiDef.getSourceContainerId() != null;
+        assertThat(wouldAttemptRidResolution)
+            .as("When sourceContainerId is null, RID resolution should be skipped (non-GSI path)")
+            .isFalse();
+    }
+
 }

@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -347,6 +348,111 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosContainerResponse readResponse = container.read().block();
 
             assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
+            assertThat(readResponse.getProperties().getGlobalSecondaryIndexes()).isNotNull().isEmpty();
+        } finally {
+            safeDeleteAllCollections(database);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // GSI creation verifies RID is resolved from source container
+    // ------------------------------------------------------------------
+
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
+    public void createGsiContainer_ridResolvedFromSourceContainer() {
+        // Create the source container
+        String sourceContainerId = "gsi-src-" + UUID.randomUUID();
+        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        database.createContainer(sourceContainerDef).block();
+
+        try {
+            // Read the source container to capture its RID for comparison
+            CosmosContainerResponse sourceReadResponse = database.getContainer(sourceContainerId).read().block();
+            assertThat(sourceReadResponse).isNotNull();
+            String expectedSourceRid = sourceReadResponse.getProperties().getResourceId();
+            assertThat(expectedSourceRid).isNotNull().isNotEmpty();
+
+            // Create a GSI container derived from the source
+            String gsiContainerId = "gsi-view-" + UUID.randomUUID();
+            CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
+            gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+                new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
+
+            CosmosContainerResponse createResponse = database.createContainer(gsiContainerDef).block();
+
+            // Verify the GSI definition in the response has the correct source RID
+            assertThat(createResponse).isNotNull();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            assertThat(gsiDef).isNotNull();
+            assertThat(gsiDef.getSourceContainerRid())
+                .as("sourceContainerRid should be resolved to the source container's RID")
+                .isNotNull()
+                .isNotEmpty()
+                .isEqualTo(expectedSourceRid);
+            assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
+        } finally {
+            safeDeleteAllCollections(database);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // GSI creation with non-existent source container → error propagation
+    // ------------------------------------------------------------------
+
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
+    public void createGsiContainer_nonExistentSourceContainer_throwsCosmosException() {
+        String nonExistentSourceId = "non-existent-source-" + UUID.randomUUID();
+
+        String gsiContainerId = "gsi-view-" + UUID.randomUUID();
+        CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
+        gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+            new CosmosGlobalSecondaryIndexDefinition(nonExistentSourceId, GSI_QUERY_DEFINITION));
+
+        try {
+            database.createContainer(gsiContainerDef).block();
+            // Should never reach here — the source container doesn't exist so RID
+            // resolution must fail before the create call is issued
+            assertThat(true)
+                .as("Expected CosmosException due to non-existent source container, but createContainer succeeded")
+                .isFalse();
+        } catch (CosmosException cosmosException) {
+            // The SDK tries to read the source container to resolve its RID.
+            // Since the source doesn't exist, a 404 (NotFound) should be propagated.
+            assertThat(cosmosException.getStatusCode())
+                .as("Expected 404 NotFound when source container does not exist")
+                .isEqualTo(404);
+        } finally {
+            safeDeleteAllCollections(database);
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Non-GSI container creation – regression guard
+    // ------------------------------------------------------------------
+
+    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
+    public void createNonGsiContainer_existingBehaviorPreserved() {
+        String containerId = "plain-" + UUID.randomUUID();
+        CosmosContainerProperties containerDef = getCollectionDefinition(containerId);
+
+        try {
+            CosmosContainerResponse createResponse = database.createContainer(containerDef).block();
+
+            // Verify creation succeeded
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getProperties()).isNotNull();
+            assertThat(createResponse.getProperties().getId()).isEqualTo(containerId);
+
+            // Verify no GSI definition or views are present
+            assertThat(createResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
+
+            // Read the container back and verify the same
+            CosmosAsyncContainer container = database.getContainer(containerId);
+            CosmosContainerResponse readResponse = container.read().block();
+
+            assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getProperties().getId()).isEqualTo(containerId);
             assertThat(readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
             assertThat(readResponse.getProperties().getGlobalSecondaryIndexes()).isNotNull().isEmpty();
         } finally {
