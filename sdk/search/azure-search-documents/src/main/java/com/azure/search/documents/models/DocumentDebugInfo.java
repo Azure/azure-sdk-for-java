@@ -10,8 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Contains debugging information that can be used to further explore your search results.
@@ -20,38 +18,16 @@ import java.util.Map;
 public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugInfo> {
 
     /*
-     * Contains debugging information specific to semantic ranking requests.
-     */
-    @Generated
-    private SemanticDebugInfo semantic;
-
-    /*
      * Contains debugging information specific to vector and hybrid search.
      */
     @Generated
     private VectorsDebugInfo vectors;
-
-    /*
-     * Contains debugging information specific to vectors matched within a collection of complex types.
-     */
-    @Generated
-    private Map<String, List<QueryResultDocumentInnerHit>> innerHits;
 
     /**
      * Creates an instance of DocumentDebugInfo class.
      */
     @Generated
     private DocumentDebugInfo() {
-    }
-
-    /**
-     * Get the semantic property: Contains debugging information specific to semantic ranking requests.
-     *
-     * @return the semantic value.
-     */
-    @Generated
-    public SemanticDebugInfo getSemantic() {
-        return this.semantic;
     }
 
     /**
@@ -62,17 +38,6 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     @Generated
     public VectorsDebugInfo getVectors() {
         return this.vectors;
-    }
-
-    /**
-     * Get the innerHits property: Contains debugging information specific to vectors matched within a collection of
-     * complex types.
-     *
-     * @return the innerHits value.
-     */
-    @Generated
-    public Map<String, List<QueryResultDocumentInnerHit>> getInnerHits() {
-        return this.innerHits;
     }
 
     /**
@@ -100,14 +65,8 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("semantic".equals(fieldName)) {
-                    deserializedDocumentDebugInfo.semantic = SemanticDebugInfo.fromJson(reader);
-                } else if ("vectors".equals(fieldName)) {
+                if ("vectors".equals(fieldName)) {
                     deserializedDocumentDebugInfo.vectors = VectorsDebugInfo.fromJson(reader);
-                } else if ("innerHits".equals(fieldName)) {
-                    Map<String, List<QueryResultDocumentInnerHit>> innerHits = reader.readMap(
-                        reader1 -> reader1.readArray(reader2 -> QueryResultDocumentInnerHit.fromJson(reader2)));
-                    deserializedDocumentDebugInfo.innerHits = innerHits;
                 } else {
                     reader.skipChildren();
                 }

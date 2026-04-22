@@ -313,7 +313,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribe", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("TranscriptionResult");
-                transcribeMethod.setJavadocComment("/**\n"
+                transcribeMethod.setJavadocComment("\n"
                     + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
                     + " * @param options the transcription options including audio file details or audio URL\n"
                     + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
@@ -322,7 +322,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     + " * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
                     + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
                     + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
-                    + " * @return the result of the transcribe operation.\n" + " */");
+                    + " * @return the result of the transcribe operation.\n" + " ");
                 com.github.javaparser.ast.expr.NormalAnnotationExpr transcribeServiceMethodAnnotation
                     = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 transcribeServiceMethodAnnotation.setName("ServiceMethod");
@@ -338,7 +338,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("Response<TranscriptionResult>");
-                transcribeWithResponseMethod.setJavadocComment("/**\n"
+                transcribeWithResponseMethod.setJavadocComment("\n"
                     + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
                     + " * @param options the transcription options including audio file details or audio URL\n"
                     + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
@@ -347,12 +347,10 @@ public class SpeechTranscriptionCustomization extends Customization {
                     + " * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
                     + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
                     + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
-                    + " * @return the response containing the result of the transcribe operation.\n" + " */");
-                com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation
-                    = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
-                serviceMethodAnnotation.setName("ServiceMethod");
-                serviceMethodAnnotation.addPair("returns", "ReturnType.SINGLE");
-                transcribeWithResponseMethod.addAnnotation(serviceMethodAnnotation);
+                    + " * @return the response containing the result of the transcribe operation.\n" + " ");
+                // Note: intentionally NOT adding @ServiceMethod here. The Checkstyle ServiceClientCheck
+                // requires sync methods annotated with @ServiceMethod to take Context/RequestOptions/RequestContext,
+                // but we want to keep the simple public signature transcribeWithResponse(TranscriptionOptions).
                 transcribeWithResponseMethod
                     .setBody(parseBlock("{ TranscriptionContent requestContent = new TranscriptionContent(options); "
                         + "if (options.getFileDetails() != null) { requestContent.setAudio(options.getFileDetails()); } "
@@ -396,7 +394,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribe", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("Mono<TranscriptionResult>");
-                transcribeMethod.setJavadocComment("/**\n"
+                transcribeMethod.setJavadocComment("\n"
                     + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
                     + " * @param options the transcription options including audio file details or audio URL\n"
                     + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
@@ -406,7 +404,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
                     + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
                     + " * @return the result of the transcribe operation on successful completion of {@link Mono}.\n"
-                    + " */");
+                    + " ");
                 com.github.javaparser.ast.expr.NormalAnnotationExpr transcribeServiceMethodAnnotation
                     = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 transcribeServiceMethodAnnotation.setName("ServiceMethod");
@@ -422,7 +420,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("Mono<Response<TranscriptionResult>>");
-                transcribeWithResponseMethod.setJavadocComment("/**\n"
+                transcribeWithResponseMethod.setJavadocComment("\n"
                     + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
                     + " * @param options the transcription options including audio file details or audio URL\n"
                     + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
@@ -432,7 +430,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                     + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
                     + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
                     + " * @return the response containing the result of the transcribe operation on successful completion of {@link Mono}.\n"
-                    + " */");
+                    + " ");
                 com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation
                     = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 serviceMethodAnnotation.setName("ServiceMethod");

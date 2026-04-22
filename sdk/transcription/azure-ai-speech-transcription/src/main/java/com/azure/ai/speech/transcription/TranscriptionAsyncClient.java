@@ -21,7 +21,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /**
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class, isAsync = true)
 public final class TranscriptionAsyncClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionAsyncClient.class);
 
     @Generated
     private final TranscriptionClientImpl serviceClient;
@@ -158,6 +155,7 @@ public final class TranscriptionAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TranscriptionResult>> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
         if (options.getFileDetails() != null) {
