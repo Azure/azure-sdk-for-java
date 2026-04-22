@@ -147,6 +147,7 @@ regular SDK queries.
   - `queryInfo.hasDCount()`
   - `queryInfo.hasOffset()`
   - `queryInfo.hasLimit()`
+  - `queryInfo.hasTop()`
   - `queryInfo.hasNonStreamingOrderBy()`
   - `partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()`
   - query plan details are unavailable (`queryInfo == null`)

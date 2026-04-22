@@ -160,7 +160,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         // NOTE - it is important to use HashMap over ConcurrentHashMap here because some keys/values might be null
         // and this is not allowed in ConcurrentHashMap - while it is ok in HashMap
-        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : null;
+        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : new HashMap<>();
 
         this.usageHeaders = toBeCloned.usageHeaders != null ? new HashMap<>(toBeCloned.usageHeaders) : null;
         this.quotaHeaders = toBeCloned.quotaHeaders != null ? new HashMap<>(toBeCloned.quotaHeaders) : null;

@@ -275,6 +275,58 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             .hasMessageContaining("PartitionKey.NONE is not supported for multi-path partition keys");
     }
 
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_twoPartialPrefixesAtDifferentDepths() {
+        // Two partial PKs at different prefix depths: (Redmond) and (Redmond, 98052).
+        // (Redmond) is a prefix of (Redmond, 98052), so (Redmond, 98052) should be collapsed.
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode", "/areaCode");
+
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKeyBuilder().add("Redmond").build(),
+            new PartitionKeyBuilder().add("Redmond").add("98052").build());
+
+        List<RxDocumentClientImpl.NormalizedPartitionKey> normalized =
+            RxDocumentClientImpl.normalizePartitionKeys(pkValues, pkDef);
+
+        assertThat(normalized)
+            .extracting(normalizedPk -> normalizedPk.effectivePkInternal.toJson())
+            .containsExactly("[\"Redmond\"]");
+    }
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_partialPkDoesNotSubsumeUnrelatedPk() {
+        // (Redmond) and (Seattle, 98052) are unrelated - neither subsumes the other.
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode", "/areaCode");
+
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKeyBuilder().add("Redmond").build(),
+            new PartitionKeyBuilder().add("Seattle").add("98052").build());
+
+        List<RxDocumentClientImpl.NormalizedPartitionKey> normalized =
+            RxDocumentClientImpl.normalizePartitionKeys(pkValues, pkDef);
+
+        assertThat(normalized).hasSize(2);
+        assertThat(normalized)
+            .extracting(normalizedPk -> normalizedPk.effectivePkInternal.toJson())
+            .containsExactly("[\"Redmond\"]", "[\"Seattle\",\"98052\"]");
+    }
+
+    @Test(groups = { "unit" })
+    public void normalizePartitionKeys_allPartialPksPreserved() {
+        // All PKs are partial (single-level) and unrelated - all should survive.
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode", "/areaCode");
+
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKeyBuilder().add("Redmond").build(),
+            new PartitionKeyBuilder().add("Seattle").build(),
+            new PartitionKeyBuilder().add("Pittsburgh").build());
+
+        List<RxDocumentClientImpl.NormalizedPartitionKey> normalized =
+            RxDocumentClientImpl.normalizePartitionKeys(pkValues, pkDef);
+
+        assertThat(normalized).hasSize(3);
+    }
     //endregion
 
     //region findTopLevelWhereIndex tests

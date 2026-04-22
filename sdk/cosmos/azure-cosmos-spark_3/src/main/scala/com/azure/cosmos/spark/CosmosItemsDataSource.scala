@@ -126,18 +126,11 @@ object CosmosItemsDataSource {
       userProvidedSchema,
       userConfig.asScala.toMap)
 
-    // Resolve the null-handling config up front so both the UDF path and the PK-column path honor it.
-    val sharedEffectiveConfig = CosmosConfig.getEffectiveConfig(
-      databaseName = None,
-      containerName = None,
-      userConfig.asScala.toMap)
-    val sharedReadConfig = CosmosReadConfig.parseCosmosReadConfig(sharedEffectiveConfig)
-    val sharedTreatNullAsNone = sharedReadConfig.readManyByPkTreatNullAsNone
-
-    // Initialize reader state once: resolves PK paths, infers schema, and broadcasts client caches
-    // in a single Loan block instead of three separate ones.
+    // Initialize reader state once: resolves PK paths, infers schema, broadcasts client caches,
+    // and returns the resolved treatNullAsNone flag from the reader's parsed config - avoiding
+    // duplicate config parsing between the data source and the reader.
     val readerState = readManyReader.initializeReaderState()
-    val (pkPaths, _, _) = readerState
+    val (pkPaths, _, _, sharedTreatNullAsNone) = readerState
 
     // Option 1: Look for the _partitionKeyIdentity column (produced by GetCosmosPartitionKeyValue UDF)
     val pkIdentityFieldExtraction = df
@@ -155,7 +148,7 @@ object CosmosItemsDataSource {
     val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
       None // no need to resolve PK paths - _partitionKeyIdentity column takes precedence
     } else {
-      val treatNullAsNone = sharedReadConfig.readManyByPkTreatNullAsNone
+      val treatNullAsNone = sharedTreatNullAsNone
 
       // Nested PK paths (containing /) cannot be resolved from top-level DataFrame columns.
       if (pkPaths.exists(_.contains("/"))) {

@@ -228,22 +228,38 @@ public final class ReadManyByPartitionKeyContinuationToken {
      * Duplicate and reordered inputs intentionally produce the same digest.
      */
     public static String computePartitionKeySetHash(List<String> partitionKeyEpks) {
+        return computePartitionKeySetHash(partitionKeyEpks, false);
+    }
+
+    /**
+     * Computes a stable hash for the normalized set of partition key EPK values.
+     * When {@code alreadySorted} is true, the input is assumed to be
+     * already sorted (e.g. from {@code normalizePartitionKeys}),
+     * skipping the O(n log n) sort pass.
+     */
+    public static String computePartitionKeySetHash(List<String> partitionKeyEpks, boolean alreadySorted) {
         if (partitionKeyEpks == null || partitionKeyEpks.isEmpty()) {
             return "0";
         }
 
-        List<String> normalizedEpks = new ArrayList<>(partitionKeyEpks.size());
-        for (String epk : partitionKeyEpks) {
-            if (epk != null) {
-                normalizedEpks.add(epk);
+        List<String> normalizedEpks = null;
+        if (alreadySorted) {
+            normalizedEpks = partitionKeyEpks;
+        } else {
+
+            normalizedEpks = new ArrayList<>(partitionKeyEpks.size());
+            for (String epk : partitionKeyEpks) {
+                if (epk != null) {
+                    normalizedEpks.add(epk);
+                }
             }
-        }
 
-        if (normalizedEpks.isEmpty()) {
-            return "0";
-        }
+            if (normalizedEpks.isEmpty()) {
+                return "0";
+            }
 
-        Collections.sort(normalizedEpks);
+            Collections.sort(normalizedEpks);
+        }
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         String previous = null;

@@ -51,7 +51,7 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
    *
    * @return (pkPaths, schema, broadcastClientStates)
    */
-  private[spark] def initializeReaderState(): (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots]) = {
+  private[spark] def initializeReaderState(): (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots], Boolean) = {
     val calledFrom = s"CosmosReadManyByPartitionKeyReader($tableName).initializeReaderState"
     Loan(
       List[Option[CosmosClientCacheItem]](
@@ -120,14 +120,14 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
         val broadcastStates = sparkSession.sparkContext.broadcast(metadataSnapshots)
 
-        (pkPaths, schema, broadcastStates)
+        (pkPaths, schema, broadcastStates, readConfig.readManyByPkTreatNullAsNone)
       })
   }
 
   def readManyByPartitionKeys(
     inputRdd: RDD[Row],
     pkExtraction: Row => PartitionKey,
-    readerState: (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots])): DataFrame = {
+    readerState: (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots], Boolean)): DataFrame = {
 
     val correlationActivityId = UUIDs.nonBlockingRandomUUID()
     val (_, schema, clientStates) = readerState

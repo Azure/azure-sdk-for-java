@@ -27,6 +27,12 @@ import scala.collection.JavaConverters._
  * FeedResponse and used as the resume point on retry. This avoids the correctness issues of
  * page-count-based skipping (where the server is not guaranteed to return the same page
  * boundaries across requests).
+ *
+ * Note: transient I/O failures can only occur during {@code hasNext} (which fetches the next
+ * FeedResponse page from the network). Once a page has been fetched, iterating over its
+ * in-memory items ({@code next()}) performs no I/O and cannot trigger a retry. Therefore,
+ * partially-consumed pages are never replayed and the iterator provides exactly-once
+ * delivery in practice.
  */
 private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSparkRow]
 (

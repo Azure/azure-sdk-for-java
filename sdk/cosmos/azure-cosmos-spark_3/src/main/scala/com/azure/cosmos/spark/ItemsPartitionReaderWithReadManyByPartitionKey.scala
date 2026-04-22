@@ -229,18 +229,29 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
             // Factory that creates a CosmosPagedFlux from an optional continuation token.
             // On the first call continuationToken is null (start from scratch); on retry
             // it is the continuation token from the last fully-drained page.
-            // NOTE: mutating the shared readManyOptions before each call is safe because
-            // the SDK clones the options internally at the start of each call, and the
-            // iterator is single-threaded (mutation in step N completes before step N+1).
+            // A fresh CosmosReadManyByPartitionKeysRequestOptions instance is created per
+            // call to avoid mutating the shared readManyOptions object, which would be
+            // fragile if the SDK ever stopped cloning options internally.
             private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (continuationToken: String) =>
-              // Reuse the preconfigured request options and only update the continuation
-              // token so the SDK resumes from the last fully committed page.
-              readManyOptions.setContinuationToken(continuationToken)
+              val perCallOptions = new CosmosReadManyByPartitionKeysRequestOptions()
+              perCallOptions.setMaxConcurrentBatchPrefetch(readConfig.readManyByPkMaxConcurrentBatchPrefetch)
+              perCallOptions.setContinuationToken(continuationToken)
+              val perCallOptionsImpl = ImplementationBridgeHelpers
+                .CosmosReadManyByPartitionKeysRequestOptionsHelper
+                .getCosmosReadManyByPartitionKeysRequestOptionsAccessor
+                .getImpl(perCallOptions)
+              ThroughputControlHelper.populateThroughputControlGroupName(perCallOptionsImpl, readConfig.throughputControlConfig)
+              perCallOptionsImpl.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
+              if (operationContextAndListenerTuple.isDefined) {
+                perCallOptionsImpl.setOperationContextAndListenerTuple(operationContextAndListenerTuple.get)
+              }
+              perCallOptionsImpl
+                .setCustomItemSerializer(readManyOptionsImpl.getCustomItemSerializer)
               customQueryOpt match {
                 case Some(query) =>
-                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, readManyOptions, classOf[SparkRowItem])
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, perCallOptions, classOf[SparkRowItem])
                 case None =>
-                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, readManyOptions, classOf[SparkRowItem])
+                  cosmosAsyncContainer.readManyByPartitionKeys(pkList, perCallOptions, classOf[SparkRowItem])
               }
             }
 

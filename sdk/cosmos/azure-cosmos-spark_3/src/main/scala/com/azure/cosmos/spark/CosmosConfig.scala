@@ -1160,10 +1160,10 @@ private object CosmosReadConfig {
     key = CosmosConfigNames.ReadManyByPkMaxConcurrentBatchPrefetch,
     mandatory = false,
     defaultValue = Some(1),
-    parseFromStringFunction = value => Math.max(1, value.toInt),
+    parseFromStringFunction = value => Math.min(64, Math.max(1, value.toInt)),
     helpMessage = "The maximum number of per-physical-partition batches whose first page is prefetched " +
       "concurrently inside a single Spark task by the SDK's readManyByPartitionKeys execution. The " +
-      "default is `1`, because Spark already parallelises across tasks - increase this when individual " +
+      "default is `1` - max is `64`, because Spark already parallelises across tasks - increase this when individual " +
       "tasks span many physical partitions and additional intra-task prefetch is desired."
   )
 

@@ -4562,7 +4562,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         List<PartitionKey> partitionKeys,
         PartitionKeyDefinition pkDefinition) {
 
-        Map<String, NormalizedPartitionKey> normalizedByEpk = new LinkedHashMap<>();
+        Map<String, NormalizedPartitionKey> normalizedByEpk = new HashMap<>();
 
         for (PartitionKey pk : partitionKeys) {
             PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
