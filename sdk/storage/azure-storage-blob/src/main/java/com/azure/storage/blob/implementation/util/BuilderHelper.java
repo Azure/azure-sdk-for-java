@@ -48,6 +48,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
@@ -139,7 +140,8 @@ public final class BuilderHelper {
             StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
                 = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
 
-            SessionOptions effectiveSessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+            SessionOptions effectiveSessionOptions
+                = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
             BlobServiceVersion effectiveServiceVersion
                 = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
 

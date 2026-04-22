@@ -94,7 +94,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private BlobServiceVersion version;
     private BlobAudience audience;
     private boolean anonymousAccess;
-    private SessionOptions sessionOptions;
+    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -149,13 +149,11 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     private HttpPipeline constructPipeline() {
-        // Not setting session options here because it would create a pipeline for the service client that has
-        // a session, when session is container scoped
         return (httpPipeline != null)
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER, null, null);
+                perRetryPolicies, configuration, audience, LOGGER, sessionOptions, null);
     }
 
     /**
@@ -604,7 +602,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * @return the updated BlobServiceClientBuilder object.
      */
     public BlobServiceClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = sessionOptions;
+        this.sessionOptions = SessionOptions.orDefault(sessionOptions);
         return this;
     }
 }
