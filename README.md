@@ -67,6 +67,8 @@ Format of the release tags are `<package-name>_<package-version>`. For more info
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
+The consolidated documentation hub for contributors (building, testing, versioning, release checklist, etc.) is at [`docs/`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/README.md).
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, view [Microsoft's CLA](https://cla.microsoft.com).
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
@@ -78,7 +80,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 Many people all over the world have helped make this project better.  You'll want to check out:
 
 - [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
-- [How to build and test your change](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#developer-guide)
+- [How to build and test your change](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
 - [How you can make a change happen!](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#pull-requests)
 - Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Java wiki](https://github.com/azure/azure-sdk-for-java/wiki).
 
@@ -92,12 +94,7 @@ Azure SDK for Java is licensed under the [MIT](https://github.com/Azure/azure-sd
 
 <!-- Links -->
 [java_guidelines]: https://azure.github.io/azure-sdk/java_introduction.html
-[latest_release_page]: https://azure.github.io/azure-sdk/releases/2020-03/java.html
-[feb_20_release_page]: https://azure.github.io/azure-sdk/releases/2020-02/java.html
-[jan_20_release_page]: https://azure.github.io/azure-sdk/releases/2020-01/java.html
-[dec_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-12/java.html
-[nov_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-11/java.html
-[oct_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-10-11/java.html
+[latest_release_page]: https://azure.github.io/azure-sdk/releases/latest/java.html
 [sep_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-09-17/java.html
 [aug_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-08-06/java.html
 [jul_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-07-10/java.html
