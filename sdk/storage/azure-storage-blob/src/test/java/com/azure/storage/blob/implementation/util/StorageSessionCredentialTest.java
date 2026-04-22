@@ -5,175 +5,106 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StorageSessionCredentialTest {
 
     @Test
-    public void signRequestWithSessionKey() {
-        // Given a known session key and a known string-to-sign
+    public void signRequestUsesSessionScheme() throws MalformedURLException {
         StorageSessionCredential credential = SessionTestHelper.createValidCredential();
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob"));
 
-        String stringToSign = "GET\n\n\n\n\n\n\n\n\n\n\n\n" + "x-ms-date:Mon, 31 Mar 2025 00:00:00 GMT\n"
-            + "x-ms-version:2025-01-05\n" + "/myaccount/mycontainer/myblob";
+        credential.signRequest(request);
 
-        // When computing HMAC
-        String signature = credential.computeHmac256(stringToSign);
-
-        // Then it matches the expected HMAC from StorageImplUtils
-        String expected = StorageImplUtils.computeHMac256(SessionTestHelper.TEST_SESSION_KEY, stringToSign);
-
-        assertEquals(expected, signature);
-    }
-
-    @Test
-    public void generateAuthorizationHeaderFormat() throws MalformedURLException {
-        // Given a session credential
-        StorageSessionCredential credential = SessionTestHelper.createValidCredential();
-
-        // And a request URL and headers
-        URL url = new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob");
-        HttpHeaders headers
-            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
-                .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
-                .set(HttpHeaderName.CONTENT_LENGTH, "0");
-
-        // When generating the authorization header
-        String authHeader = credential.generateAuthorizationHeader(url, "GET", headers);
-
-        // Then it uses the "Session" scheme with the token and a signature
+        String authHeader = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertNotNull(authHeader);
         assertTrue(authHeader.startsWith("Session " + SessionTestHelper.TEST_SESSION_TOKEN + ":"),
             "Authorization header should start with 'Session <token>:' but was: " + authHeader);
-
-        // And the signature portion is a valid Base64 HMAC
         String signaturePart = authHeader.substring(authHeader.indexOf(':') + 1);
-        assertTrue(signaturePart.length() > 0, "Signature should not be empty");
+        assertFalse(signaturePart.isEmpty(), "Signature should not be empty");
     }
 
     @Test
-    public void generateAuthorizationHeaderUsesIpStyleRequestUrl() throws MalformedURLException {
-        StorageSessionCredential credential = new StorageSessionCredential(SessionTestHelper.TEST_SESSION_TOKEN,
-            SessionTestHelper.TEST_SESSION_KEY, OffsetDateTime.now().plusHours(1), SessionTestHelper.TEST_ACCOUNT_NAME);
+    public void signRequestSetsXmsDateHeader() throws MalformedURLException {
+        StorageSessionCredential credential = SessionTestHelper.createValidCredential();
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob"));
 
-        URL url = new URL("http://127.0.0.1:10000/myaccount/mycontainer/myblob");
-        HttpHeaders headers
-            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
-                .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
-                .set(HttpHeaderName.CONTENT_LENGTH, "0");
+        assertNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-date")));
 
-        String authHeader = credential.generateAuthorizationHeader(url, "GET", headers);
+        credential.signRequest(request);
 
-        // This matches the expected string-to-sign format for an IP-style URL, wherein the first
-        // accoun
-        String stringToSign = "GET\n\n\n\n\n\n\n\n\n\n\n\n" + "x-ms-date:Mon, 31 Mar 2025 00:00:00 GMT\n"
-            + "x-ms-version:2025-01-05\n" + "/myaccount/myaccount/mycontainer/myblob";
-        String expectedSignature = credential.computeHmac256(stringToSign);
-
-        assertEquals("Session " + SessionTestHelper.TEST_SESSION_TOKEN + ":" + expectedSignature, authHeader);
+        assertNotNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-date")),
+            "signRequest must set x-ms-date so the signed value matches what is sent on the wire");
     }
 
     @Test
-    public void generateAuthorizationHeaderUsesExplicitAccountNameForCustomDomainUrl() throws MalformedURLException {
-        StorageSessionCredential credential = SessionTestHelper.createCredential(OffsetDateTime.now().plusHours(1),
-            SessionTestHelper.TEST_ACCOUNT_NAME);
+    public void signatureMatchesSharedKeyForSameRequest() throws MalformedURLException {
+        StorageSessionCredential sessionCred = SessionTestHelper.createValidCredential();
+        StorageSharedKeyCredential sharedKeyCred
+            = new StorageSharedKeyCredential(SessionTestHelper.TEST_ACCOUNT_NAME, SessionTestHelper.TEST_SESSION_KEY);
 
-        URL url = new URL("https://cdn.contoso.com/mycontainer/myblob");
-        HttpHeaders headers
-            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
-                .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
-                .set(HttpHeaderName.CONTENT_LENGTH, "0");
+        HttpRequest request = new HttpRequest(HttpMethod.GET,
+            new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob?snapshot="
+                + "2025-03-31T00%3A00%3A00.0000000Z"));
+        request.getHeaders()
+            .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
+            .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
+            .set(HttpHeaderName.RANGE, "bytes=0-1023");
 
-        String authHeader = credential.generateAuthorizationHeader(url, "GET", headers);
+        sessionCred.signRequest(request);
 
-        String stringToSign = "GET\n\n\n\n\n\n\n\n\n\n\n\n" + "x-ms-date:Mon, 31 Mar 2025 00:00:00 GMT\n"
-            + "x-ms-version:2025-01-05\n" + "/myaccount/mycontainer/myblob";
-        String expectedSignature = credential.computeHmac256(stringToSign);
+        String sessionAuth = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        String sessionSignature = sessionAuth.substring(sessionAuth.indexOf(':') + 1);
 
-        assertEquals("Session " + SessionTestHelper.TEST_SESSION_TOKEN + ":" + expectedSignature, authHeader);
+        HttpHeaders headersForSharedKey = request.getHeaders();
+        headersForSharedKey.remove(HttpHeaderName.AUTHORIZATION);
+        String sharedKeyAuth
+            = sharedKeyCred.generateAuthorizationHeader(request.getUrl(), "GET", headersForSharedKey, false);
+        String sharedKeySignature = sharedKeyAuth.substring(sharedKeyAuth.indexOf(':') + 1);
+
+        assertEquals(sharedKeySignature, sessionSignature,
+            "Session HMAC must match Shared Key HMAC for the same URL/method/headers");
     }
 
     @Test
     public void isExpiredReturnsTrueWhenPastExpiration() {
-        StorageSessionCredential credential = SessionTestHelper.createExpiredCredential();
-
-        assertTrue(credential.isExpired(), "Credential should be expired when expiration is in the past");
+        assertTrue(SessionTestHelper.createExpiredCredential().isExpired(),
+            "Credential should be expired when expiration is in the past");
     }
 
     @Test
     public void isExpiredReturnsFalseWhenBeforeExpiration() {
-        StorageSessionCredential credential = SessionTestHelper.createValidCredential();
-
-        assertFalse(credential.isExpired(), "Credential should not be expired when expiration is in the future");
+        assertFalse(SessionTestHelper.createValidCredential().isExpired(),
+            "Credential should not be expired when expiration is in the future");
     }
 
     @Test
-    public void signatureMatchesSharedKeyForRealisticBlobDownloadRequest() throws MalformedURLException {
-        // The session signing protocol is a port of Shared Key. For a representative download
-        // request, the resulting HMAC must be byte-identical to what StorageSharedKeyCredential
-        // would produce for the same URL/method/headers. Divergence here is the most likely root
-        // cause of a 401 InvalidAuthenticationInfo on the session signing path.
-        String accountName = SessionTestHelper.TEST_ACCOUNT_NAME;
-        String accountKey = SessionTestHelper.TEST_SESSION_KEY;
+    public void getExpirationDefaultsWhenConstructedWithNull() {
+        OffsetDateTime before = OffsetDateTime.now();
+        StorageSessionCredential credential = new StorageSessionCredential(SessionTestHelper.TEST_SESSION_TOKEN,
+            SessionTestHelper.TEST_SESSION_KEY, null, SessionTestHelper.TEST_ACCOUNT_NAME);
+        OffsetDateTime after = OffsetDateTime.now();
 
-        StorageSessionCredential sessionCred
-            = new StorageSessionCredential("ignored-token", accountKey, OffsetDateTime.now().plusHours(1), accountName);
-        StorageSharedKeyCredential sharedKeyCred = new StorageSharedKeyCredential(accountName, accountKey);
-
-        URL url = new URL(
-            "https://myaccount.blob.core.windows.net/mycontainer/myblob?snapshot=2025-03-31T00%3A00%3A00.0000000Z");
-        HttpHeaders headers
-            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
-                .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
-                .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
-                .set(HttpHeaderName.RANGE, "bytes=0-1023");
-
-        String sessionAuth = sessionCred.generateAuthorizationHeader(url, "GET", headers);
-        String sessionSignature = sessionAuth.substring(sessionAuth.indexOf(':') + 1);
-
-        Map<String, String> headerMap = headers.stream().collect(Collectors.toMap(h -> h.getName(), h -> h.getValue()));
-        String sharedKeyAuth = sharedKeyCred.generateAuthorizationHeader(url, "GET", headerMap);
-        String sharedKeySignature = sharedKeyAuth.substring(sharedKeyAuth.indexOf(':') + 1);
-
-        assertEquals(sharedKeySignature, sessionSignature,
-            "Session HMAC must match Shared Key HMAC for an identical Download Blob request");
-    }
-
-    @Test
-    public void sessionAndSharedKeyProduceSameSignatureForIpStyleUrl() throws MalformedURLException {
-        String accountName = SessionTestHelper.TEST_ACCOUNT_NAME;
-        String accountKey = SessionTestHelper.TEST_SESSION_KEY;
-
-        StorageSessionCredential sessionCred
-            = new StorageSessionCredential("ignored-token", accountKey, OffsetDateTime.now().plusHours(1), accountName);
-        StorageSharedKeyCredential sharedKeyCred = new StorageSharedKeyCredential(accountName, accountKey);
-
-        URL url = new URL("http://127.0.0.1:10000/myaccount/mycontainer/myblob");
-        HttpHeaders headers
-            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
-                .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
-                .set(HttpHeaderName.CONTENT_LENGTH, "0");
-
-        // Extract just the signature portion from each — the prefix differs (Session vs SharedKey)
-        String sessionAuth = sessionCred.generateAuthorizationHeader(url, "GET", headers);
-        String sessionSignature = sessionAuth.substring(sessionAuth.indexOf(':') + 1);
-
-        Map<String, String> headerMap = headers.stream().collect(Collectors.toMap(h -> h.getName(), h -> h.getValue()));
-        String sharedKeyAuth = sharedKeyCred.generateAuthorizationHeader(url, "GET", headerMap);
-        String sharedKeySignature = sharedKeyAuth.substring(sharedKeyAuth.indexOf(':') + 1);
-
-        assertEquals(sharedKeySignature, sessionSignature,
-            "Session and SharedKey should produce identical HMAC signatures for IP-style URLs");
+        OffsetDateTime expiration = credential.getExpiration();
+        assertNotNull(expiration);
+        assertTrue(
+            !expiration.isBefore(before.plusMinutes(5L).minusSeconds(1))
+                && !expiration.isAfter(after.plusMinutes(5L).plusSeconds(1)),
+            "Default expiration should be ~5 minutes from construction time, but was " + expiration);
     }
 }

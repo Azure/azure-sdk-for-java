@@ -2212,4 +2212,78 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             "ListBlobs should use Bearer auth, got: " + capturedAuthHeaders.get(capturedAuthHeaders.size() - 1));
     }
 
+    @Test
+    public void downloadBlobOverSessionAuth() {
+        int blobCount = 5;
+        List<String> blobNames = new ArrayList<>();
+        for (int i = 0; i < blobCount; i++) {
+            String blobName = generateBlobName();
+            ccAsync.getBlobAsyncClient(blobName)
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                .block();
+            blobNames.add(blobName);
+        }
+
+        java.util.List<String> capturedAuth = java.util.Collections.synchronizedList(new ArrayList<>());
+        java.util.List<String> capturedUrls = java.util.Collections.synchronizedList(new ArrayList<>());
+        java.util.List<Integer> capturedStatus = java.util.Collections.synchronizedList(new ArrayList<>());
+        HttpPipelinePolicy capture = (ctx, n) -> {
+            String auth = ctx.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String date = ctx.getHttpRequest().getHeaders().getValue(HttpHeaderName.fromString("x-ms-date"));
+            String range = ctx.getHttpRequest().getHeaders().getValue(HttpHeaderName.RANGE);
+            String cl = ctx.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            capturedAuth.add((auth == null ? "<none>" : (auth.length() > 30 ? auth.substring(0, 30) + "..." : auth))
+                + " date=" + date + " range=" + range + " cl=" + cl);
+            capturedUrls.add(ctx.getHttpRequest().getHttpMethod() + " " + ctx.getHttpRequest().getUrl().toString());
+            return n.process().doOnNext(r -> capturedStatus.add(r.getStatusCode()));
+        };
+
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+            .setContainerName(ccAsync.getBlobContainerName())
+            .setAccountName(ccAsync.getAccountName());
+        BlobContainerAsyncClient sessionCcAsync = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .addPolicy(capture)
+            .credential(
+                com.azure.storage.common.test.shared.StorageCommonTestUtils.getTokenCredential(interceptorManager))
+            .buildAsyncClient()
+            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+
+        try {
+            for (String blobName : blobNames) {
+                StepVerifier.create(sessionCcAsync.getBlobAsyncClient(blobName).downloadContent())
+                    .assertNext(downloaded -> assertEquals(DATA.getDefaultText(), downloaded.toString()))
+                    .verifyComplete();
+            }
+        } finally {
+            for (int i = 0; i < capturedUrls.size(); i++) {
+                String s = (i < capturedStatus.size()) ? String.valueOf(capturedStatus.get(i)) : "?";
+                System.err.println("[CAPTURE " + i + "] " + s + " " + capturedAuth.get(i) + " " + capturedUrls.get(i));
+            }
+        }
+    }
+
+    @Test
+    public void listBlobsOverSessionEnabledClient() {
+        String blobName = generateBlobName();
+        ccAsync.getBlobAsyncClient(blobName)
+            .getBlockBlobAsyncClient()
+            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .block();
+
+        BlobContainerAsyncClient sessionCcAsync = sessionEnabledContainerAsyncClient();
+
+        StepVerifier.create(sessionCcAsync.listBlobs().filter(b -> b.getName().equals(blobName)).hasElements())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    private BlobContainerAsyncClient sessionEnabledContainerAsyncClient() {
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+            .setContainerName(ccAsync.getBlobContainerName())
+            .setAccountName(ccAsync.getAccountName());
+        return getOAuthServiceAsyncClient(sessionOptions).getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+    }
+
 }
