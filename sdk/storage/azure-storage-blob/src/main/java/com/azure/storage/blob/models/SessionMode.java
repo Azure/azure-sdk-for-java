@@ -16,24 +16,29 @@ package com.azure.storage.blob.models;
 public enum SessionMode {
 
     /**
-     * The SDK never implicitly creates sessions. Use this mode when calling Create Session
-     * explicitly or when sending a very small number of requests where the overhead of an
-     * extra round-trip is not justified.
+     * Always use bearer token authentication. No session tokens are used.
      */
     NONE,
+
+    /**
+     * Default behavior. This is currently equivalent to {@link #NONE}
+     */
+    AUTO,
+
 
     /**
      * The SDK creates a session on the first request and keeps an active session until it
      * receives no requests for 5 minutes.
      */
-    ALWAYS,
+    SINGLE_SPECIFIED_CONTAINER;
 
     /**
-     * The SDK creates a session on the second request and keeps an active session until it
-     * receives no requests for 5 minutes. This avoids the overhead of session creation for
-     * one-shot operations while still benefiting from sessions for repeated access.
-     * <p>
-     * This is the default mode.
+     * Resolves {@link #AUTO} to its current effective mode. Today {@code AUTO} maps to
+     * {@link #NONE}; this may change in a future release without breaking callers that
+     * use {@code resolve()} consistently.
      */
-    AUTO
+    public SessionMode resolve() {
+        return this == AUTO ? NONE : this;
+    }
+
 }
