@@ -84,7 +84,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <!-- src_embed com.azure.data.applicationconfig.async.configurationclient.instantiation -->
  * <pre>
  * ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .endpoint&#40;endpoint&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.async.configurationclient.instantiation -->
@@ -1048,6 +1049,56 @@ public final class ConfigurationAsyncClient {
                 .onErrorResume(HttpResponseException.class,
                     (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
                 .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
+    }
+
+    /**
+     * Checks configuration settings using a HEAD request, returning only headers without the response body.
+     * This is useful for efficiently checking if settings have changed by comparing ETags.
+     *
+     * <p>The returned items will be empty since HEAD requests do not return a body. Use {@code byPage()} iteration
+     * to access page-level ETags for change detection.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Check all settings that use the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
+     * <pre>
+     * SettingSelector selector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;my-app&#47;*&quot;&#41;;
+     * client.checkConfigurationSettings&#40;selector&#41;
+     *     .byPage&#40;&#41;
+     *     .subscribe&#40;page -&gt; &#123;
+     *         System.out.println&#40;&quot;Status code: &quot; + page.getStatusCode&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Page ETag: &quot; + page.getHeaders&#40;&#41;.getValue&#40;com.azure.core.http.HttpHeaderName.ETAG&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
+     *
+     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @return A Flux of ConfigurationSettings with empty items. Use {@code byPage()} to access page-level ETags.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConfigurationSetting> checkConfigurationSettings(SettingSelector selector) {
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+        AtomicInteger pageETagIndex = new AtomicInteger(0);
+        return new PagedFlux<>(() -> withContext(context -> serviceClient
+            .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
+                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+            .map(Utility::toHeadPagedResponse)
+            .onErrorResume(HttpResponseException.class,
+                (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)),
+            afterToken -> withContext(context -> serviceClient
+                .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, afterToken, acceptDateTime, settingFields,
+                    null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+                .map(Utility::toHeadPagedResponse)
+                .onErrorResume(HttpResponseException.class,
+                    (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)));
     }
 
     /**

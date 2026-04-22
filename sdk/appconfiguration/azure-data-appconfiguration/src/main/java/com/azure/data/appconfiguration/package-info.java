@@ -34,7 +34,8 @@
  * <!-- src_embed com.azure.data.applicationconfig.async.configurationclient.instantiation  -->
  * <pre>
  * ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .endpoint&#40;endpoint&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.async.configurationclient.instantiation  -->
@@ -48,7 +49,8 @@
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.instantiation -->
  * <pre>
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .endpoint&#40;endpoint&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.instantiation -->

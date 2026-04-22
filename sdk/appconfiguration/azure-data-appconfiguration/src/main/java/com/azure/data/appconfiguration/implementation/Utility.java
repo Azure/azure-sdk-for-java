@@ -15,6 +15,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.models.CheckKeyValuesHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -209,5 +211,63 @@ public class Utility {
             tagsFilters = null;
         }
         return tagsFilters;
+    }
+
+    // Parse the 'after' query parameter value from the Link header.
+    // Link header format: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
+    public static String parseAfterParam(String linkHeader) {
+        String nextLink = parseNextLink(linkHeader);
+        if (nextLink == null) {
+            return null;
+        }
+        int afterIdx = nextLink.indexOf("after=");
+        if (afterIdx == -1) {
+            return null;
+        }
+        String afterValue = nextLink.substring(afterIdx + 6);
+        int ampIdx = afterValue.indexOf('&');
+        return ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
+    }
+
+    // Convert a HEAD response to a PagedResponse with empty items.
+    public static PagedResponse<ConfigurationSetting>
+        toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
+        String continuationToken = parseAfterParam(response.getHeaders().getValue(HttpHeaderName.LINK));
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            Collections.emptyList(), continuationToken, null);
+    }
+
+    // Handle 304 status code from HEAD request to a valid response - Async handler
+    public static Mono<PagedResponse<ConfigurationSetting>>
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error) {
+        HttpResponse httpResponse = error.getResponse();
+        if (httpResponse == null) {
+            return Mono.error(error);
+        }
+
+        String continuationToken = parseAfterParam(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        if (httpResponse.getStatusCode() == 304) {
+            return Mono.just(new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null));
+        }
+
+        return Mono.error(error);
+    }
+
+    // Handle 304 status code from HEAD request to a valid response - Sync handler
+    public static PagedResponse<ConfigurationSetting>
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error, ClientLogger logger, boolean isHead) {
+        HttpResponse httpResponse = error.getResponse();
+        if (httpResponse == null) {
+            throw logger.logExceptionAsError(error);
+        }
+
+        String continuationToken = parseAfterParam(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        if (httpResponse.getStatusCode() == 304) {
+            return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null);
+        }
+
+        throw logger.logExceptionAsError(error);
     }
 }
