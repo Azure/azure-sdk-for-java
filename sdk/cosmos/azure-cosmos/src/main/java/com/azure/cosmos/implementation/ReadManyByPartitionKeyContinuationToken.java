@@ -136,6 +136,15 @@ public final class ReadManyByPartitionKeyContinuationToken {
         }
 
         this.version = effectiveVersion;
+
+        if (remainingBatches == null) {
+            throw new IllegalArgumentException(
+                "Malformed readManyByPartitionKeys continuation token: 'remainingBatches' is required.");
+        }
+        if (currentBatch == null) {
+            throw new IllegalArgumentException(
+                "Malformed readManyByPartitionKeys continuation token: 'currentBatch' is required.");
+        }
         this.remainingBatches = remainingBatches;
         this.currentBatch = currentBatch;
         this.backendContinuation = backendContinuation;
@@ -309,12 +318,18 @@ public final class ReadManyByPartitionKeyContinuationToken {
             String json = new String(decoded, StandardCharsets.UTF_8);
             return Utils.getSimpleObjectMapper().readValue(json, ReadManyByPartitionKeyContinuationToken.class);
         } catch (IllegalArgumentException e) {
-            // Preserve our own version-mismatch IllegalArgumentException without wrapping.
+            // Preserve our own IllegalArgumentException (version mismatch, null fields) without wrapping.
             throw e;
         } catch (Exception e) {
+            // Jackson wraps constructor-thrown IllegalArgumentException inside JsonMappingException.
+            // Unwrap to preserve the actionable error message from our null checks.
+            Throwable cause = e.getCause();
+            if (cause instanceof IllegalArgumentException) {
+                throw (IllegalArgumentException) cause;
+            }
             throw new IllegalArgumentException(
-                "Failed to deserialize ReadManyByPartitionKeyContinuationToken. " +
-                    "The continuation token may be malformed or from an incompatible version.", e);
+                "Failed to deserialize ReadManyByPartitionKeyContinuationToken. "
+                    + "The continuation token may be malformed or from an incompatible version.", e);
         }
     }
 

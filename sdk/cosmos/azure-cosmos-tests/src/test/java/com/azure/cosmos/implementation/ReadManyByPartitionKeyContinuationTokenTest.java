@@ -174,6 +174,30 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
     }
 
     @Test(groups = { "unit" })
+    public void deserialize_nullRemainingBatches_throws() {
+        // Hand-craft a token with "rb":null - a malformed or tampered token.
+        String json = "{\"v\":1,\"rb\":null,\"cb\":{\"bf\":{\"min\":\"\",\"max\":\"FF\"}},"
+            + "\"bc\":null,\"cr\":\"" + TEST_COLLECTION_RID + "\",\"qh\":\"" + TEST_QUERY_HASH + "\",\"ph\":\"" + TEST_PARTITION_KEY_SET_HASH + "\"}";
+        String serialized = java.util.Base64.getEncoder().encodeToString(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+        assertThatThrownBy(() -> ReadManyByPartitionKeyContinuationToken.deserialize(serialized))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("remainingBatches");
+    }
+
+    @Test(groups = { "unit" })
+    public void deserialize_nullCurrentBatch_throws() {
+        // Hand-craft a token with "cb":null - a malformed or tampered token.
+        String json = "{\"v\":1,\"rb\":[],\"cb\":null,"
+            + "\"bc\":null,\"cr\":\"" + TEST_COLLECTION_RID + "\",\"qh\":\"" + TEST_QUERY_HASH + "\",\"ph\":\"" + TEST_PARTITION_KEY_SET_HASH + "\"}";
+        String serialized = java.util.Base64.getEncoder().encodeToString(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+        assertThatThrownBy(() -> ReadManyByPartitionKeyContinuationToken.deserialize(serialized))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("currentBatch");
+    }
+
+    @Test(groups = { "unit" })
     public void deserialize_unsupportedVersion_throws() {
         // Hand-craft a token JSON with version=999 (a future format) and ensure it is rejected.
         String json = "{\"v\":999,\"rb\":[],\"cb\":{\"bf\":{\"min\":\"\",\"max\":\"FF\"}},"
