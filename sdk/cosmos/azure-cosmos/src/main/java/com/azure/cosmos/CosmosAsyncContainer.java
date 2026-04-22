@@ -60,6 +60,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -126,6 +127,10 @@ public class CosmosAsyncContainer {
         return ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
     }
 
+    private static ImplementationBridgeHelpers.CosmosReadManyByPartitionKeyRequestOptionsHelper.CosmosReadManyByPartitionKeyRequestOptionsAccessor readManyByPkOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosReadManyByPartitionKeyRequestOptionsHelper.getCosmosReadManyByPartitionKeyRequestOptionsAccessor();
+    }
+
     private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
         return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     }
@@ -147,6 +152,12 @@ public class CosmosAsyncContainer {
     }
 
     private final static Logger logger = LoggerFactory.getLogger(CosmosAsyncContainer.class);
+
+    // Sentinel values for CosmosQueryRequestOptions.maxDegreeOfParallelism used when no
+    // caller-supplied value is present: 0 == "uninitialized / SDK-chooses",
+    // -1 == "unbounded" (the value RxDocumentClientImpl interprets as no concurrency cap).
+    private static final int DEFAULT_MAX_DEGREE_OF_PARALLELISM = 0;
+    private static final int UNBOUNDED_MAX_DEGREE_OF_PARALLELISM = -1;
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -1637,7 +1648,7 @@ public class CosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
-        CosmosReadManyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
         Class<T> classType) {
 
         return this.readManyByPartitionKeys(partitionKeys, null, requestOptions, classType);
@@ -1697,7 +1708,7 @@ public class CosmosAsyncContainer {
     public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
-        CosmosReadManyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
         Class<T> classType) {
 
         if (partitionKeys == null) {
@@ -1722,7 +1733,7 @@ public class CosmosAsyncContainer {
     private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeyInternalFunc(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
-        CosmosReadManyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
         Class<T> classType) {
 
         CosmosAsyncClient client = this.getDatabase().getClient();
@@ -1731,18 +1742,30 @@ public class CosmosAsyncContainer {
         // It will be set on the cloned CosmosQueryRequestOptions so that
         // QueryFeedOperationState picks it up automatically.
         String requestContinuation = requestOptions != null
-            ? readManyOptionsAccessor().getRequestContinuation(requestOptions)
+            ? readManyByPkOptionsAccessor().getContinuationToken(requestOptions)
             : null;
+
+        // Resolve the max-concurrent-batch-prefetch knob; default to availableProcessors() so
+        // the SDK fully utilises CPU when the caller does not override.
+        Integer prefetchOverride = requestOptions != null
+            ? readManyByPkOptionsAccessor().getMaxConcurrentBatchPrefetch(requestOptions)
+            : null;
+        int maxConcurrentBatchPrefetch = prefetchOverride != null
+            ? prefetchOverride
+            : Configs.getCPUCnt();
 
         return (pagedFluxOptions -> {
             CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
                 ? new CosmosQueryRequestOptions()
-                : queryOptionsAccessor().clone(readManyOptionsAccessor().getImpl(requestOptions));
-            // Honor any caller-provided MaxDegreeOfParallelism; only default to the "unbounded" sentinel
-            // (-1) when the value is still at the default (0). CosmosReadManyRequestOptions currently does not
-            // expose MDOP, so this branch is defensive in case it is plumbed through in the future.
-            if (queryRequestOptions.getMaxDegreeOfParallelism() == 0) {
-                queryRequestOptions.setMaxDegreeOfParallelism(-1);
+                : queryOptionsAccessor().clone(readManyByPkOptionsAccessor().getImpl(requestOptions));
+            // CosmosQueryRequestOptionsBase initializes MaxDegreeOfParallelism to 0 (the
+            // "uninitialized / SDK-chooses" sentinel); -1 is the "unbounded" sentinel that
+            // RxDocumentClientImpl recognizes for query parallelism. Honor any caller-provided
+            // value but default the uninitialized case to unbounded for readManyByPartitionKeys.
+            // CosmosReadManyRequestOptions does not currently expose MDOP, so this only matters
+            // if it is plumbed through in the future.
+            if (queryRequestOptions.getMaxDegreeOfParallelism() == DEFAULT_MAX_DEGREE_OF_PARALLELISM) {
+                queryRequestOptions.setMaxDegreeOfParallelism(UNBOUNDED_MAX_DEGREE_OF_PARALLELISM);
             }
             queryRequestOptions.setQueryName("readManyByPartitionKeys");
 
@@ -1777,6 +1800,7 @@ public class CosmosAsyncContainer {
                     customQuery,
                     BridgeInternal.getLink(this),
                     state,
+                    maxConcurrentBatchPrefetch,
                     classType)
                 .map(response -> prepareFeedResponse(response, false));
         });

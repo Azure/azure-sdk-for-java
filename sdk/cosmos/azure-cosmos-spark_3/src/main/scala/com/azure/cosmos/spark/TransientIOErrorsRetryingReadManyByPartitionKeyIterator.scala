@@ -133,6 +133,15 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
             feedResponse)
         }
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
+        // INVARIANT: it is safe to record the continuation token BEFORE the items in this
+        // FeedResponse have been drained because executeWithRetry only wraps `hasNext`,
+        // and the buffered iterator is always fully drained before the next page is fetched.
+        // If a transient failure occurs while draining items from the *current* page, the
+        // page is replayed from this continuation token, which is the start of *this* page
+        // (the server's continuation token points at the next page), so on retry the SDK
+        // re-issues the request that produced the page we were processing. Items already
+        // emitted to the caller may be re-emitted; readManyByPartitionKeys is idempotent
+        // and returns documents (not deltas), so duplicates from replay are acceptable.
         lastContinuationToken.set(feedResponse.getContinuationToken)
 
         if (iteratorCandidate.hasNext) {

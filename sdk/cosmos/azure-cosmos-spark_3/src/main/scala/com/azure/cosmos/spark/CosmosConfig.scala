@@ -93,6 +93,7 @@ private[spark] object CosmosConfigNames {
   val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
   val ReadManyByPkNullHandling = "spark.cosmos.read.readManyByPk.nullHandling"
+  val ReadManyByPkMaxConcurrentBatchPrefetch = "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val DiagnosticsSamplingMaxCount = "spark.cosmos.diagnostics.sampling.maxCount"
@@ -228,6 +229,7 @@ private[spark] object CosmosConfigNames {
     ReadRuntimeFilteringEnabled,
     ReadManyFilteringEnabled,
     ReadManyByPkNullHandling,
+    ReadManyByPkMaxConcurrentBatchPrefetch,
     ViewsRepositoryPath,
     DiagnosticsMode,
     DiagnosticsSamplingIntervalInSeconds,
@@ -1045,7 +1047,8 @@ private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStra
                                     runtimeFilteringEnabled: Boolean,
                                     readManyFilteringConfig: CosmosReadManyFilteringConfig,
                                     responseContinuationTokenLimitInKb: Option[Int] = None,
-                                    readManyByPkTreatNullAsNone: Boolean = false)
+                                    readManyByPkTreatNullAsNone: Boolean = false,
+                                    readManyByPkMaxConcurrentBatchPrefetch: Int = 1)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -1153,6 +1156,17 @@ private object CosmosReadConfig {
       "partitions - picking the wrong mode for your data will silently return zero rows."
   )
 
+  private val ReadManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadManyByPkMaxConcurrentBatchPrefetch,
+    mandatory = false,
+    defaultValue = Some(1),
+    parseFromStringFunction = value => Math.max(1, value.toInt),
+    helpMessage = "The maximum number of per-physical-partition batches whose first page is prefetched " +
+      "concurrently inside a single Spark task by the SDK's readManyByPartitionKeys execution. The " +
+      "default is `1`, because Spark already parallelises across tasks - increase this when individual " +
+      "tasks span many physical partitions and additional intra-task prefetch is desired."
+  )
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
@@ -1177,6 +1191,7 @@ private object CosmosReadConfig {
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
     val readManyByPkNullHandling = CosmosConfigEntry.parse(cfg, ReadManyByPkNullHandling)
     val readManyByPkTreatNullAsNone = readManyByPkNullHandling.getOrElse("Null").equalsIgnoreCase("None")
+    val readManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxConcurrentBatchPrefetch).getOrElse(1)
 
     val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
       readConsistencyStrategyOverride.get
@@ -1209,7 +1224,8 @@ private object CosmosReadConfig {
       runtimeFilteringEnabled.get,
       readManyFilteringConfig,
       responseContinuationTokenLimitInKb,
-      readManyByPkTreatNullAsNone)
+      readManyByPkTreatNullAsNone,
+      readManyByPkMaxConcurrentBatchPrefetch)
   }
 }
 

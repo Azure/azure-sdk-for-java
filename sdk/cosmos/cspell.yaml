@@ -4,3 +4,4 @@ overrides:
   - filename: "**/sdk/cosmos/*"
     words:
     - DCOUNT
+    - dedupe

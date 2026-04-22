@@ -5,8 +5,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -458,7 +456,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         List<ObjectNode> items = createSinglePkItems("pkOpts", 3);
 
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkOpts"));
-        com.azure.cosmos.models.CosmosReadManyRequestOptions options = new com.azure.cosmos.models.CosmosReadManyRequestOptions();
+        com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options = new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
         AtomicInteger deserializeCount = new AtomicInteger();
         options.setCustomItemSerializer(new CosmosItemSerializerNoExceptionWrapping() {
             @Override
@@ -585,13 +583,9 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             List<ObjectNode> itemsFromFirstPage = allPages.get(0).getResults();
 
             // Second pass: resume from the continuation token
-            com.azure.cosmos.models.CosmosReadManyRequestOptions options2 =
-                new com.azure.cosmos.models.CosmosReadManyRequestOptions();
-            ((com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl)
-                ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper
-                    .getCosmosReadManyRequestOptionsAccessor()
-                    .getImpl(options2))
-                .setRequestContinuation(continuationAfterFirstPage);
+            com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options2 =
+                new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+            options2.setContinuationToken(continuationAfterFirstPage);
 
             List<FeedResponse<ObjectNode>> remainingPages = asyncContainer
                 .readManyByPartitionKeys(pkValues, options2, ObjectNode.class)
@@ -668,13 +662,9 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             assertThat(continuationAfterFirstPage).isNotNull();
             List<ObjectNode> itemsFromFirstPage = allPages.get(0).getResults();
 
-            com.azure.cosmos.models.CosmosReadManyRequestOptions options2 =
-                new com.azure.cosmos.models.CosmosReadManyRequestOptions();
-            ((CosmosReadManyRequestOptionsImpl)
-                ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper
-                    .getCosmosReadManyRequestOptionsAccessor()
-                    .getImpl(options2))
-                .setRequestContinuation(continuationAfterFirstPage);
+            com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options2 =
+                new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+            options2.setContinuationToken(continuationAfterFirstPage);
 
             List<FeedResponse<ObjectNode>> remainingPages = asyncContainer
                 .readManyByPartitionKeys(pkValues, options2, ObjectNode.class)

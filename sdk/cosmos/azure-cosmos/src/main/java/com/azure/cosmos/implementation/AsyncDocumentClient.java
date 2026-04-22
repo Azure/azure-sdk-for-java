@@ -1594,6 +1594,8 @@ public interface AsyncDocumentClient {
      * @param customQuery optional custom query (for projections/additional filters) - null means SELECT * FROM c
      * @param collectionLink link for the documentcollection/container to be queried
      * @param state the query operation state (may carry a composite continuation token via requestContinuation)
+     * @param maxConcurrentBatchPrefetch the maximum number of per-physical-partition batches whose first
+     *                                   page is prefetched concurrently. Must be &gt;= 1.
      * @param klass class type
      * @param <T> the type parameter
      * @return a Flux with feed response pages of documents
@@ -1603,6 +1605,7 @@ public interface AsyncDocumentClient {
         SqlQuerySpec customQuery,
         String collectionLink,
         QueryFeedOperationState state,
+        int maxConcurrentBatchPrefetch,
         Class<T> klass);
 
     /**

@@ -26,32 +26,42 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <p>
  * Captures the state needed to resume a readManyByPartitionKeys operation:
  * <ul>
- *   <li>{@code remainingBatches} — batch definitions of batches not yet started</li>
- *   <li>{@code currentBatch} — batch definition of the batch currently being processed</li>
- *   <li>{@code backendContinuation} — backend query continuation within the current batch (nullable)</li>
+ *   <li>{@code remainingBatches} - batch definitions of batches not yet started</li>
+ *   <li>{@code currentBatch} - batch definition of the batch currently being processed</li>
+ *   <li>{@code backendContinuation} - backend query continuation within the current batch (nullable)</li>
  * </ul>
- * Each batch definition has two EPK ranges:
- * <ul>
- *   <li>{@code partitionScope} — the physical partition's EPK range at the time the operation
- *       started. Used for routing queries (via FeedRange). Only causes fan-out overhead if a
- *       split has actually occurred.</li>
- *   <li>{@code batchFilter} — the EPK sub-range that identifies which PKs belong to this batch.
- *       Within a physical partition, PKs are sorted by EPK and split into batches; the filter
- *       range spans the EPKs of the PKs in this batch. Used to reconstruct the exact same set
- *       of PKs per batch when resuming from a continuation token.</li>
- * </ul>
- * EPK ranges are used instead of PkRangeIds so the token survives partition splits.
+ * Each batch is identified solely by its {@link BatchDefinition#getBatchFilter() batchFilter}
+ * EPK range - the half-open range {@code [minInclusive, maxExclusive)} that contains the EPKs
+ * of all PKs assigned to the batch. The physical-partition routing range used at execution
+ * time (the FeedRange set on {@code CosmosQueryRequestOptions}) is <strong>not persisted</strong>;
+ * it is rederived at execution time from the current PartitionKeyRange cache by taking the
+ * union of all partition-key-range EPK ranges that overlap the batch filter
+ * ({@code [min(minEpk), max(maxEpk))}).
  * <p>
- * Serialized as JSON → Base64 to keep the token opaque.
+ * This means the token survives partition splits without ever encoding stale partition
+ * boundaries: after a split, the rederived routing range exactly matches the new physical
+ * partition boundaries (one or more of them), keeping query-RU cost minimal. It also keeps
+ * the serialized token small (one EPK range per batch instead of two).
+ * <p>
+ * Serialized as JSON -> Base64 to keep the token opaque. The serialized form embeds a
+ * {@code "v"} version field so future format evolutions can be detected and rejected
+ * (or migrated) cleanly without silently misinterpreting an older token.
  */
 public final class ReadManyByPartitionKeyContinuationToken {
 
+    /** Wire format version. Bump on any breaking change to the JSON shape. */
+    public static final int CURRENT_VERSION = 1;
+
+    private static final String VERSION_PROPERTY = "v";
     private static final String REMAINING_BATCHES_PROPERTY = "rb";
     private static final String CURRENT_BATCH_PROPERTY = "cb";
     private static final String BACKEND_CONTINUATION_PROPERTY = "bc";
     private static final String COLLECTION_RID_PROPERTY = "cr";
     private static final String QUERY_HASH_PROPERTY = "qh";
     private static final String PARTITION_KEY_SET_HASH_PROPERTY = "ph";
+
+    @JsonProperty(VERSION_PROPERTY)
+    private final int version;
 
     @JsonProperty(REMAINING_BATCHES_PROPERTY)
     private final List<BatchDefinitionDto> remainingBatches;
@@ -71,55 +81,12 @@ public final class ReadManyByPartitionKeyContinuationToken {
     @JsonProperty(PARTITION_KEY_SET_HASH_PROPERTY)
     private final String partitionKeySetHash;
 
-    @JsonCreator
-    ReadManyByPartitionKeyContinuationToken(
-        @JsonProperty(REMAINING_BATCHES_PROPERTY) List<BatchDefinitionDto> remainingBatches,
-        @JsonProperty(CURRENT_BATCH_PROPERTY) BatchDefinitionDto currentBatch,
-        @JsonProperty(BACKEND_CONTINUATION_PROPERTY) String backendContinuation,
-        @JsonProperty(COLLECTION_RID_PROPERTY) String collectionRid,
-        @JsonProperty(QUERY_HASH_PROPERTY) String queryHash,
-        @JsonProperty(PARTITION_KEY_SET_HASH_PROPERTY) String partitionKeySetHash) {
-
-        this.remainingBatches = remainingBatches;
-        this.currentBatch = currentBatch;
-        this.backendContinuation = backendContinuation;
-        this.collectionRid = collectionRid;
-        this.queryHash = queryHash;
-        this.partitionKeySetHash = partitionKeySetHash;
-    }
-
-    public ReadManyByPartitionKeyContinuationToken(
-        List<BatchDefinition> remainingBatches,
-        BatchDefinition currentBatch,
-        String backendContinuation,
-        String collectionRid,
-        int queryHash) {
-
-        this(remainingBatches, currentBatch, backendContinuation, collectionRid, String.valueOf(queryHash), "0");
-    }
-
-    public ReadManyByPartitionKeyContinuationToken(
-        List<BatchDefinition> remainingBatches,
-        BatchDefinition currentBatch,
-        String backendContinuation,
-        String collectionRid,
-        int queryHash,
-        int partitionKeySetHash) {
-
-        this(remainingBatches, currentBatch, backendContinuation, collectionRid,
-            String.valueOf(queryHash), String.valueOf(partitionKeySetHash));
-    }
-
-    public ReadManyByPartitionKeyContinuationToken(
-        List<BatchDefinition> remainingBatches,
-        BatchDefinition currentBatch,
-        String backendContinuation,
-        String collectionRid,
-        String queryHash) {
-
-        this(remainingBatches, currentBatch, backendContinuation, collectionRid, queryHash, "0");
-    }
-
+    /**
+     * Production constructor used by RxDocumentClientImpl when stamping each FeedResponse
+     * with a continuation token. Callers supply just the batch filter for both the current
+     * batch and every remaining batch, plus all three identity fingerprints
+     * (collectionRid + queryHash + partitionKeySetHash). Routing scopes are not persisted.
+     */
     public ReadManyByPartitionKeyContinuationToken(
         List<BatchDefinition> remainingBatches,
         BatchDefinition currentBatch,
@@ -131,6 +98,7 @@ public final class ReadManyByPartitionKeyContinuationToken {
         checkNotNull(currentBatch, "Argument 'currentBatch' must not be null.");
         checkNotNull(remainingBatches, "Argument 'remainingBatches' must not be null.");
 
+        this.version = CURRENT_VERSION;
         this.remainingBatches = new ArrayList<>(remainingBatches.size());
         for (BatchDefinition bd : remainingBatches) {
             this.remainingBatches.add(BatchDefinitionDto.fromBatchDefinition(bd));
@@ -143,64 +111,42 @@ public final class ReadManyByPartitionKeyContinuationToken {
     }
 
     /**
-     * Convenience constructor that accepts EPK ranges directly (without separate partitionScope/batchFilter).
-     * Each range is used as both the partitionScope and batchFilter in the BatchDefinition.
-     * This is an interim API until the full batch redesign with distinct partitionScope/batchFilter is wired up.
+     * Deserialization constructor invoked by Jackson. Validates the version field so a
+     * token from an incompatible future SDK is rejected with a clear error rather than
+     * being silently misinterpreted.
      */
-    public ReadManyByPartitionKeyContinuationToken(
-        List<Range<String>> remainingBatchRanges,
-        Range<String> currentBatchRange,
-        String backendContinuation,
-        String collectionRid,
-        int queryHash) {
+    @JsonCreator
+    ReadManyByPartitionKeyContinuationToken(
+        @JsonProperty(VERSION_PROPERTY) Integer version,
+        @JsonProperty(REMAINING_BATCHES_PROPERTY) List<BatchDefinitionDto> remainingBatches,
+        @JsonProperty(CURRENT_BATCH_PROPERTY) BatchDefinitionDto currentBatch,
+        @JsonProperty(BACKEND_CONTINUATION_PROPERTY) String backendContinuation,
+        @JsonProperty(COLLECTION_RID_PROPERTY) String collectionRid,
+        @JsonProperty(QUERY_HASH_PROPERTY) String queryHash,
+        @JsonProperty(PARTITION_KEY_SET_HASH_PROPERTY) String partitionKeySetHash) {
 
-        this(remainingBatchRanges, currentBatchRange, backendContinuation, collectionRid, String.valueOf(queryHash), "0");
-    }
-
-    public ReadManyByPartitionKeyContinuationToken(
-        List<Range<String>> remainingBatchRanges,
-        Range<String> currentBatchRange,
-        String backendContinuation,
-        String collectionRid,
-        int queryHash,
-        int partitionKeySetHash) {
-
-        this(remainingBatchRanges, currentBatchRange, backendContinuation, collectionRid,
-            String.valueOf(queryHash), String.valueOf(partitionKeySetHash));
-    }
-
-    public ReadManyByPartitionKeyContinuationToken(
-        List<Range<String>> remainingBatchRanges,
-        Range<String> currentBatchRange,
-        String backendContinuation,
-        String collectionRid,
-        String queryHash) {
-
-        this(remainingBatchRanges, currentBatchRange, backendContinuation, collectionRid, queryHash, "0");
-    }
-
-    public ReadManyByPartitionKeyContinuationToken(
-        List<Range<String>> remainingBatchRanges,
-        Range<String> currentBatchRange,
-        String backendContinuation,
-        String collectionRid,
-        String queryHash,
-        String partitionKeySetHash) {
-
-        checkNotNull(currentBatchRange, "Argument 'currentBatchRange' must not be null.");
-        checkNotNull(remainingBatchRanges, "Argument 'remainingBatchRanges' must not be null.");
-
-        this.remainingBatches = new ArrayList<>(remainingBatchRanges.size());
-        for (Range<String> range : remainingBatchRanges) {
-            BatchDefinition bd = new BatchDefinition(range, range);
-            this.remainingBatches.add(BatchDefinitionDto.fromBatchDefinition(bd));
+        // Tokens written before the version field existed will deserialize with version == null.
+        // Treat null as version 1 (the format that existed when this field was introduced) to
+        // remain forward-compatible with any tokens emitted by an in-flight pre-versioned beta.
+        int effectiveVersion = (version == null) ? CURRENT_VERSION : version;
+        if (effectiveVersion != CURRENT_VERSION) {
+            throw new IllegalArgumentException(
+                "Unsupported readManyByPartitionKeys continuation token version: " + effectiveVersion
+                    + ". This SDK supports version " + CURRENT_VERSION + ".");
         }
-        this.currentBatch = BatchDefinitionDto.fromBatchDefinition(
-            new BatchDefinition(currentBatchRange, currentBatchRange));
+
+        this.version = effectiveVersion;
+        this.remainingBatches = remainingBatches;
+        this.currentBatch = currentBatch;
         this.backendContinuation = backendContinuation;
         this.collectionRid = collectionRid;
         this.queryHash = queryHash;
         this.partitionKeySetHash = partitionKeySetHash;
+    }
+
+    @JsonIgnore
+    public int getVersion() {
+        return version;
     }
 
     @JsonIgnore
@@ -268,24 +214,6 @@ public final class ReadManyByPartitionKeyContinuationToken {
         }
     }
 
-    static int computeLegacyQueryHash(SqlQuerySpec querySpec) {
-        if (querySpec == null) {
-            return 0;
-        }
-        int hash = 17;
-        String queryText = querySpec.getQueryText();
-        hash = 31 * hash + (queryText != null ? queryText.hashCode() : 0);
-        List<SqlParameter> params = querySpec.getParameters();
-        if (params != null) {
-            for (SqlParameter param : params) {
-                hash = 31 * hash + (param.getName() != null ? param.getName().hashCode() : 0);
-                Object value = param.getValue(Object.class);
-                hash = 31 * hash + (value != null ? value.hashCode() : 0);
-            }
-        }
-        return hash;
-    }
-
     /**
      * Computes a stable hash for the normalized set of partition key EPK values.
      * Duplicate and reordered inputs intentionally produce the same digest.
@@ -322,41 +250,10 @@ public final class ReadManyByPartitionKeyContinuationToken {
         return murmurHash128Hex(output.toByteArray());
     }
 
-    static int computeLegacyPartitionKeySetHash(List<String> partitionKeyEpks) {
-        if (partitionKeyEpks == null || partitionKeyEpks.isEmpty()) {
-            return 0;
-        }
-
-        List<String> normalizedEpks = new ArrayList<>(partitionKeyEpks.size());
-        for (String epk : partitionKeyEpks) {
-            if (epk != null) {
-                normalizedEpks.add(epk);
-            }
-        }
-
-        if (normalizedEpks.isEmpty()) {
-            return 0;
-        }
-
-        Collections.sort(normalizedEpks);
-
-        int hash = 17;
-        String previous = null;
-        for (String epk : normalizedEpks) {
-            if (epk.equals(previous)) {
-                continue;
-            }
-
-            hash = 31 * hash + epk.hashCode();
-            previous = epk;
-        }
-
-        return hash;
-    }
-
     private static void updateHashInput(ByteArrayOutputStream output, String value) {
         if (value != null) {
-            output.writeBytes(value.getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+            output.write(bytes, 0, bytes.length);
         }
         output.write(0);
     }
@@ -411,6 +308,9 @@ public final class ReadManyByPartitionKeyContinuationToken {
             byte[] decoded = Base64.getDecoder().decode(serialized);
             String json = new String(decoded, StandardCharsets.UTF_8);
             return Utils.getSimpleObjectMapper().readValue(json, ReadManyByPartitionKeyContinuationToken.class);
+        } catch (IllegalArgumentException e) {
+            // Preserve our own version-mismatch IllegalArgumentException without wrapping.
+            throw e;
         } catch (Exception e) {
             throw new IllegalArgumentException(
                 "Failed to deserialize ReadManyByPartitionKeyContinuationToken. " +
@@ -419,28 +319,20 @@ public final class ReadManyByPartitionKeyContinuationToken {
     }
 
     /**
-     * Identifies a single batch in a readManyByPartitionKeys operation.
+     * Identifies a single batch in a readManyByPartitionKeys operation by its EPK filter range.
      * <p>
-     * Each batch has two EPK ranges:
-     * <ul>
-     *   <li>{@code partitionScope} — the physical partition's full EPK range. Used for routing
-     *       the query to the correct physical partition(s) via FeedRange.</li>
-     *   <li>{@code batchFilter} — the EPK sub-range within the partition that identifies which
-     *       PKs belong to this batch. PKs whose EPK falls within [filterMin, filterMax) are
-     *       part of this batch.</li>
-     * </ul>
+     * The {@code batchFilter} is the half-open EPK range {@code [minInclusive, maxExclusive)}
+     * containing the EPKs of all PKs assigned to the batch. It is the only piece of routing
+     * data persisted in the continuation token; the physical-partition scope used as the
+     * query FeedRange is rederived at execution time from the current PartitionKeyRange
+     * cache (union of overlapping partition-key-range EPK ranges) so partition splits do not
+     * cause stale routing information to be embedded in the token.
      */
     public static final class BatchDefinition {
-        private final Range<String> partitionScope;
         private final Range<String> batchFilter;
 
-        public BatchDefinition(Range<String> partitionScope, Range<String> batchFilter) {
-            this.partitionScope = checkNotNull(partitionScope, "Argument 'partitionScope' must not be null.");
+        public BatchDefinition(Range<String> batchFilter) {
             this.batchFilter = checkNotNull(batchFilter, "Argument 'batchFilter' must not be null.");
-        }
-
-        public Range<String> getPartitionScope() {
-            return partitionScope;
         }
 
         public Range<String> getBatchFilter() {
@@ -450,33 +342,25 @@ public final class ReadManyByPartitionKeyContinuationToken {
 
     /**
      * Compact DTO for JSON serialization of a batch definition.
+     * Persists only the batch filter; routing scope is rederived at execution time.
      */
     static final class BatchDefinitionDto {
-        private final EpkRangeDto ps;
         private final EpkRangeDto bf;
 
         @JsonCreator
-        BatchDefinitionDto(
-            @JsonProperty("ps") EpkRangeDto ps,
-            @JsonProperty("bf") EpkRangeDto bf) {
-            this.ps = ps;
+        BatchDefinitionDto(@JsonProperty("bf") EpkRangeDto bf) {
             this.bf = bf;
         }
-
-        @JsonProperty("ps")
-        EpkRangeDto getPs() { return ps; }
 
         @JsonProperty("bf")
         EpkRangeDto getBf() { return bf; }
 
         static BatchDefinitionDto fromBatchDefinition(BatchDefinition bd) {
-            return new BatchDefinitionDto(
-                EpkRangeDto.fromRange(bd.partitionScope),
-                EpkRangeDto.fromRange(bd.batchFilter));
+            return new BatchDefinitionDto(EpkRangeDto.fromRange(bd.batchFilter));
         }
 
         BatchDefinition toBatchDefinition() {
-            return new BatchDefinition(ps.toRange(), bf.toRange());
+            return new BatchDefinition(bf.toRange());
         }
     }
 

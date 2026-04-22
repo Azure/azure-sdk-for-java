@@ -108,20 +108,11 @@ public class ReadManyByPartitionKeyQueryHelper {
                 PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pkValues.get(i));
                 Object[] pkComponents = pkInternal.toObjectArray();
 
-                // PartitionKey.NONE - generate NOT IS_DEFINED for all PK paths
-                if (pkComponents == null) {
-                    pkFilter.append("(");
-                    for (int j = 0; j < partitionKeySelectors.size(); j++) {
-                        if (j > 0) {
-                            pkFilter.append(" AND ");
-                        }
-                        pkFilter.append("NOT IS_DEFINED(");
-                        pkFilter.append(tableAlias);
-                        pkFilter.append(partitionKeySelectors.get(j));
-                        pkFilter.append(")");
-                    }
-                    pkFilter.append(")");
-                } else {
+                // PartitionKey.NONE for hierarchical keys is impossible at this point: the builder
+                // (CosmosPartitionKeyHelper.validateNoneHandlingForPartitionKeyComponentCount and
+                // PartitionKeyBuilder.addNoneValue) reject NONE on multi-path PK definitions before
+                // reaching this code path. So pkComponents is guaranteed non-null here.
+                {
                     pkFilter.append("(");
                     for (int j = 0; j < pkComponents.length; j++) {
                         String pkParamName = PK_PARAM_PREFIX + paramCount;

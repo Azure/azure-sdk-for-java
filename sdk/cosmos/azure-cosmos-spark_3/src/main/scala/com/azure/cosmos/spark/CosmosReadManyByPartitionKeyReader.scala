@@ -100,9 +100,10 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             classOf[ObjectNode])
             .block()
         } catch {
-          case ex: CosmosException =>
-            logDebug(s"Warm-up readItem for metadata caches completed with exception: ${ex.getMessage}", ex)
-            None
+          case _: CosmosException =>
+            // Expected when the random read targets a non-existent item; we only need the
+            // routing map / collection cache populated as a side-effect of the call.
+            ()
         }
 
         // 4. Serialize and broadcast client state

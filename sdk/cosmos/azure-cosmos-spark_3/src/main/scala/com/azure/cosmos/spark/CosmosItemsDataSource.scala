@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.SparkBridgeInternal
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 import java.util

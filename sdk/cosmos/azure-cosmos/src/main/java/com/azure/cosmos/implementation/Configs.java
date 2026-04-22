@@ -828,17 +828,43 @@ public class Configs {
     }
 
     public static int getReadManyByPkMaxBatchSize() {
-        String valueFromSystemProperty = System.getProperty(READ_MANY_BY_PK_MAX_BATCH_SIZE);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Math.max(1, Integer.parseInt(valueFromSystemProperty));
+        Integer parsed = parsePositiveInt(System.getProperty(READ_MANY_BY_PK_MAX_BATCH_SIZE), READ_MANY_BY_PK_MAX_BATCH_SIZE);
+        if (parsed != null) {
+            return parsed;
         }
 
-        String valueFromEnvVariable = System.getenv(READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Math.max(1, Integer.parseInt(valueFromEnvVariable));
+        parsed = parsePositiveInt(System.getenv(READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE), READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE);
+        if (parsed != null) {
+            return parsed;
         }
 
         return DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE;
+    }
+
+    /**
+     * Parses a non-empty string as a positive integer (>= 1). On parse failure or
+     * non-positive result, logs a WARN and returns null so the caller can fall back
+     * to its default. A null/empty input is also treated as "no value".
+     */
+    private static Integer parsePositiveInt(String value, String configName) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        try {
+            int parsed = Integer.parseInt(value);
+            if (parsed < 1) {
+                logger.warn(
+                    "Ignoring invalid value '{}' for config '{}'. Value must be >= 1. Falling back to default.",
+                    value, configName);
+                return null;
+            }
+            return parsed;
+        } catch (NumberFormatException e) {
+            logger.warn(
+                "Ignoring non-numeric value '{}' for config '{}'. Falling back to default.",
+                value, configName);
+            return null;
+        }
     }
 
     public static int getMaxBulkMicroBatchConcurrency() {

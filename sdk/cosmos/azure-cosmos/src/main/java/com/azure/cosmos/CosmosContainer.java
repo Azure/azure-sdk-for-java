@@ -21,6 +21,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -574,7 +575,7 @@ public class CosmosContainer {
      */
     public <T> CosmosPagedIterable<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
-        CosmosReadManyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
         Class<T> classType) {
 
         return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKeys(partitionKeys, requestOptions, classType));
@@ -634,7 +635,7 @@ public class CosmosContainer {
     public <T> CosmosPagedIterable<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
-        CosmosReadManyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
         Class<T> classType) {
 
         return getCosmosPagedIterable(this.asyncContainer.readManyByPartitionKeys(partitionKeys, customQuery, requestOptions, classType));

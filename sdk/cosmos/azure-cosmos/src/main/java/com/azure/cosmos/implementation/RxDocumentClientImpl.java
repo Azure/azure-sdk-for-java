@@ -122,8 +122,8 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -4373,10 +4373,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         SqlQuerySpec customQuery,
         String collectionLink,
         QueryFeedOperationState state,
+        int maxConcurrentBatchPrefetch,
         Class<T> klass) {
 
         checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
         checkArgument(!partitionKeys.isEmpty(), "Argument 'partitionKeys' must not be empty.");
+        checkArgument(maxConcurrentBatchPrefetch >= 1,
+            "Argument 'maxConcurrentBatchPrefetch' must be greater than or equal to 1.");
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
         state.registerDiagnosticsFactory(
@@ -4398,7 +4401,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper
             .fluxInlineIfPossibleAsObs(
                 () -> readManyByPartitionKeys(
-                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, klass),
+                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, maxConcurrentBatchPrefetch, klass),
                 staleResourceRetryPolicy
             )
             .onErrorMap(throwable -> {
@@ -4438,6 +4441,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String collectionLink,
         QueryFeedOperationState state,
         ScopedDiagnosticsFactory diagnosticsFactory,
+        int maxConcurrentBatchPrefetch,
         Class<T> klass) {
 
         String requestContinuation = state.getRequestContinuation();
@@ -4474,7 +4478,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // construction - the token already contains the batch definitions. Only resolve
                 // the routing map and build batches on the very first call (no continuation).
                 if (requestContinuation != null) {
-                    // Continuation path: validate collection/query, then resume from token
+                    // Continuation path: validate collection/query, then resume from token.
+                    // The routing map is still required because the persisted token only carries
+                    // batch FILTER ranges; the FeedRange used at execution time (for low-RU
+                    // routing to a single physical partition) is rederived from the current
+                    // routing map per batch via resolvePartitionScopeFromBatchFilter().
                     ReadManyByPartitionKeyContinuationToken parsedContinuation =
                         ReadManyByPartitionKeyContinuationToken.deserialize(requestContinuation);
                     if (!collectionRid.equals(parsedContinuation.getCollectionRid())) {
@@ -4482,30 +4490,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             "Continuation token was created for a different collection (rid mismatch). " +
                                 "Expected: " + collectionRid + ", token has: " + parsedContinuation.getCollectionRid()));
                     }
-                    String legacyQueryHash = String.valueOf(
-                        ReadManyByPartitionKeyContinuationToken.computeLegacyQueryHash(customQuery));
-                    if (!queryHash.equals(parsedContinuation.getQueryHash())
-                        && !legacyQueryHash.equals(parsedContinuation.getQueryHash())) {
+                    if (!queryHash.equals(parsedContinuation.getQueryHash())) {
                         return Flux.error(new IllegalArgumentException(
                             "Continuation token was created with a different query (hash mismatch). " +
                                 "The same query must be used when resuming from a continuation token."));
                     }
-                    String legacyPartitionKeySetHash = String.valueOf(
-                        ReadManyByPartitionKeyContinuationToken.computeLegacyPartitionKeySetHash(
-                            normalizedPartitionKeys.stream()
-                                .map(normalizedPk -> normalizedPk.effectivePartitionKeyString)
-                                .collect(Collectors.toList())));
-                    if (!partitionKeySetHash.equals(parsedContinuation.getPartitionKeySetHash())
-                        && !legacyPartitionKeySetHash.equals(parsedContinuation.getPartitionKeySetHash())) {
+                    if (!partitionKeySetHash.equals(parsedContinuation.getPartitionKeySetHash())) {
                         return Flux.error(new IllegalArgumentException(
                             "Continuation token was created with a different partition-key set (hash mismatch). " +
                                 "The same normalized set of partition key values must be used when resuming."));
                     }
 
-                    return buildSequentialFluxFromContinuation(
-                        parsedContinuation, normalizedPartitionKeys, customQuery, pkDefinition,
-                        resourceLink, state, diagnosticsFactory, klass,
-                        collectionRid, queryHash, partitionKeySetHash);
+                    Mono<Utils.ValueHolder<CollectionRoutingMap>> resumeRoutingMapMono = partitionKeyRangeCache
+                        .tryLookupAsync(
+                            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                            collection.getResourceId(),
+                            null,
+                            null);
+
+                    return resumeRoutingMapMono.flatMapMany(resumeRoutingMapHolder -> {
+                        CollectionRoutingMap resumeRoutingMap = resumeRoutingMapHolder.v;
+                        if (resumeRoutingMap == null) {
+                            return Flux.error(new IllegalStateException(
+                                "Failed to get routing map for readManyByPartitionKeys continuation."));
+                        }
+                        return buildSequentialFluxFromContinuation(
+                            parsedContinuation, normalizedPartitionKeys, customQuery, pkDefinition,
+                            resumeRoutingMap, resourceLink, state, diagnosticsFactory, klass,
+                            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
+                    });
                 }
 
                 // First-call path: validate custom query, resolve routing map, build batches
@@ -4535,7 +4548,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return buildSequentialFluxFromScratch(
                             normalizedPartitionKeys, customQuery, pkDefinition, routingMap,
                             resourceLink, state, diagnosticsFactory, klass,
-                            collectionRid, queryHash, partitionKeySetHash);
+                            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
                     });
             });
     }
@@ -4585,7 +4598,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Class<T> klass,
         String collectionRid,
         String queryHash,
-        String partitionKeySetHash) {
+        String partitionKeySetHash,
+        int maxConcurrentBatchPrefetch) {
 
         Map<PartitionKeyRange, List<NormalizedPartitionKey>> partitionRangePkMap =
             groupPartitionKeysByPhysicalPartition(normalizedPartitionKeys, pkDefinition, routingMap);
@@ -4649,7 +4663,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return buildSequentialBatchFlux(
             allBatches, null,
             resourceLink, state, diagnosticsFactory, klass,
-            collectionRid, queryHash, partitionKeySetHash);
+            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
     }
 
     /**
@@ -4662,13 +4676,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         List<NormalizedPartitionKey> normalizedPartitionKeys,
         SqlQuerySpec customQuery,
         PartitionKeyDefinition pkDefinition,
+        CollectionRoutingMap routingMap,
         String resourceLink,
         QueryFeedOperationState state,
         ScopedDiagnosticsFactory diagnosticsFactory,
         Class<T> klass,
         String collectionRid,
         String queryHash,
-        String partitionKeySetHash) {
+        String partitionKeySetHash,
+        int maxConcurrentBatchPrefetch) {
 
         List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
 
@@ -4697,7 +4713,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         List<BatchDescriptor> allBatches = new ArrayList<>();
 
         for (ReadManyByPartitionKeyContinuationToken.BatchDefinition batchDef : allBatchDefs) {
-            Range<String> partitionScope = batchDef.getPartitionScope();
             Range<String> batchFilter = batchDef.getBatchFilter();
 
             List<PartitionKey> batchPks = filterPartitionKeysByEpkRange(
@@ -4706,6 +4721,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (batchPks.isEmpty()) {
                 continue;
             }
+
+            // Rederive the routing scope from the CURRENT routing map. After a partition
+            // split this naturally yields the new (potentially smaller) physical-partition
+            // boundaries that exactly cover this batch filter, keeping query RUs minimal.
+            // If the cache is briefly stale right after a split, the SDK's stale-resource
+            // retry will refresh it and rerun, so any RU-cost elevation is bounded.
+            Range<String> partitionScope = resolvePartitionScopeFromBatchFilter(batchFilter, routingMap);
 
             SqlQuerySpec querySpec = ReadManyByPartitionKeyQueryHelper
                 .createReadManyByPkQuerySpec(
@@ -4722,7 +4744,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return buildSequentialBatchFlux(
             allBatches, initialBackendContinuation,
             resourceLink, state, diagnosticsFactory, klass,
-            collectionRid, queryHash, partitionKeySetHash);
+            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
     }
 
     /**
@@ -4754,7 +4776,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Class<T> klass,
         String collectionRid,
         String queryHash,
-        String partitionKeySetHash) {
+        String partitionKeySetHash,
+        int maxConcurrentBatchPrefetch) {
 
         List<Flux<FeedResponse<T>>> sequentialFluxes = new ArrayList<>();
         for (int i = 0; i < allBatches.size(); i++) {
@@ -4765,9 +4788,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             final List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingAfterThis = new ArrayList<>();
             for (int j = batchIndex + 1; j < allBatches.size(); j++) {
                 BatchDescriptor remaining = allBatches.get(j);
+                // Only the batch FILTER is persisted; the routing scope is rederived per batch
+                // at resume time from the live routing-map cache.
                 remainingAfterThis.add(
-                    new ReadManyByPartitionKeyContinuationToken.BatchDefinition(
-                        remaining.partitionScope, remaining.batchFilter));
+                    new ReadManyByPartitionKeyContinuationToken.BatchDefinition(remaining.batchFilter));
             }
 
             CosmosQueryRequestOptions batchQueryOptions = queryOptionsAccessor()
@@ -4791,8 +4815,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 new AtomicBoolean(false));
 
             final ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatchDef =
-                new ReadManyByPartitionKeyContinuationToken.BatchDefinition(
-                    bd.partitionScope, bd.batchFilter);
+                new ReadManyByPartitionKeyContinuationToken.BatchDefinition(bd.batchFilter);
 
             Flux<FeedResponse<T>> stampedFlux = batchFlux.map(feedResponse -> {
                 String backendCont = feedResponse.getContinuationToken();
@@ -4827,8 +4850,48 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             sequentialFluxes.add(stampedFlux);
         }
 
-        int fluxConcurrency = Math.max(1, Math.min(Configs.getCPUCnt(), sequentialFluxes.size()));
+        int fluxConcurrency = Math.max(1, Math.min(maxConcurrentBatchPrefetch, sequentialFluxes.size()));
         return Flux.mergeSequential(sequentialFluxes, fluxConcurrency, 1);
+    }
+
+    /**
+     * Computes the EPK routing scope for a batch from its filter range and the current
+     * collection routing map. Looks up all partition-key ranges that overlap the batch
+     * filter and returns {@code [min(minInclusive), max(maxExclusive))} across them so
+     * the FeedRange set on the per-batch query options exactly aligns with one or more
+     * physical-partition boundaries (yielding minimal query RU cost).
+     * <p>
+     * If a partition split happened between the time the continuation token was emitted
+     * and resume time, the rederived scope reflects the post-split boundaries; the SDK's
+     * stale-resource retry refreshes the cache promptly if the local cache snapshot was
+     * still pre-split. Either way no stale boundary is encoded in the token itself.
+     *
+     * @throws IllegalStateException if the routing map has no overlap for the batch filter.
+     */
+    private static Range<String> resolvePartitionScopeFromBatchFilter(
+        Range<String> batchFilter,
+        CollectionRoutingMap routingMap) {
+
+        List<PartitionKeyRange> overlapping = routingMap.getOverlappingRanges(batchFilter);
+        if (overlapping == null || overlapping.isEmpty()) {
+            throw new IllegalStateException(
+                "Routing map returned no overlapping partition key ranges for batch filter "
+                    + batchFilter + ".");
+        }
+
+        String minInclusive = overlapping.get(0).getMinInclusive();
+        String maxExclusive = overlapping.get(0).getMaxExclusive();
+        for (int i = 1; i < overlapping.size(); i++) {
+            PartitionKeyRange r = overlapping.get(i);
+            if (r.getMinInclusive().compareTo(minInclusive) < 0) {
+                minInclusive = r.getMinInclusive();
+            }
+            if (r.getMaxExclusive().compareTo(maxExclusive) > 0) {
+                maxExclusive = r.getMaxExclusive();
+            }
+        }
+
+        return new Range<>(minInclusive, maxExclusive, true, false);
     }
 
     private static final class NormalizedPartitionKey {
@@ -4848,18 +4911,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     /**
-     * Descriptor for a single batch in readManyByPartitionKeys.
+     * Descriptor for a single batch during execution of readManyByPartitionKeys.
      * <p>
      * Each batch carries two EPK ranges:
      * <ul>
-     *   <li>{@code partitionScope} — the physical partition's full EPK range, used for
-     *       FeedRange-based routing (set on CosmosQueryRequestOptions). Survives splits
-     *       because FeedRangeEpkImpl transparently fans out.</li>
+     *   <li>{@code partitionScope} — the physical partition's EPK range, used as the
+     *       FeedRange on CosmosQueryRequestOptions so the backend query request is sent
+     *       to the matching physical partition with minimal RU overhead. This value is
+     *       <strong>not</strong> persisted in the continuation token; it is derived per
+     *       batch from the current routing map (via
+     *       {@link #resolvePartitionScopeFromBatchFilter}) so post-split refreshes are
+     *       reflected automatically.</li>
      *   <li>{@code batchFilter} — the EPK sub-range covering only the PKs in this batch.
-     *       When a physical partition has more PKs than maxBatchSize, multiple batches share
-     *       the same partitionScope but have distinct batchFilter ranges. Used to
-     *       reconstruct the correct PK set per batch when resuming from a continuation
-     *       token.</li>
+     *       This IS persisted in the continuation token. When a physical partition has
+     *       more PKs than maxBatchSize, multiple batches share the same partitionScope
+     *       at execution time but have distinct batchFilter ranges. Used to reconstruct
+     *       the correct PK set per batch when resuming.</li>
      * </ul>
      */
     private static final class BatchDescriptor {

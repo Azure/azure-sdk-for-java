@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemRequestOptions, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.udf.GetCosmosPartitionKeyValue
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.functions.expr
@@ -111,7 +111,7 @@ class SparkE2EQueryITest
         rows.map(_.getAs[String]("pk")).toSet shouldEqual Set("pkA", "pkB")
         rows.map(_.getAs[String]("payload")).toSet shouldEqual Set("value-pkA", "value-pkB")
     }
-    
+
     "spark readManyByPartitionKeys" can "require the UDF for nested partition key paths and succeed with it" in {
         val cosmosEndpoint = TestConfigurations.HOST
         val cosmosMasterKey = TestConfigurations.MASTER_KEY

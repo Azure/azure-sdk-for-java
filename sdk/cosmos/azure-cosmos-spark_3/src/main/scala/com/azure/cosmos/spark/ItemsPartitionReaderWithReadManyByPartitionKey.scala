@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
-import com.azure.cosmos.models.{CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
+import com.azure.cosmos.models.{CosmosReadManyByPartitionKeyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -43,14 +43,15 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
 
   private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val readManyOptions = new CosmosReadManyRequestOptions()
+  private val readManyOptions = new CosmosReadManyByPartitionKeyRequestOptions()
   private val readManyOptionsImpl = ImplementationBridgeHelpers
-    .CosmosReadManyRequestOptionsHelper
-    .getCosmosReadManyRequestOptionsAccessor
+    .CosmosReadManyByPartitionKeyRequestOptionsHelper
+    .getCosmosReadManyByPartitionKeyRequestOptionsAccessor
     .getImpl(readManyOptions)
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   ThroughputControlHelper.populateThroughputControlGroupName(readManyOptionsImpl, readConfig.throughputControlConfig)
+  readManyOptions.setMaxConcurrentBatchPrefetch(readConfig.readManyByPkMaxConcurrentBatchPrefetch)
 
   private val operationContext = {
     assert(taskContext != null)
@@ -120,13 +121,16 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
   readManyOptionsImpl
     .setCustomItemSerializer(
       new CosmosItemSerializerNoExceptionWrapping {
+        // The reader-side path of readManyByPartitionKeys never produces items that the
+        // SDK needs to serialize back out (no item bodies are sent on the wire other than
+        // SqlParameter values, which do not flow through this serializer). However, some
+        // generic SDK code paths (e.g. SqlParameter#getValueAsBytes via the configured
+        // serializer) will defensively call serialize() during diagnostics or during query
+        // plan handling. Delegating to the default Jackson-based serializer keeps those
+        // code paths working and avoids spurious UnsupportedOperationExceptions while we
+        // still own deserialization (the hot path) below.
         override def serialize[T](item: T): util.Map[String, AnyRef] = {
-          throw new UnsupportedOperationException(
-            s"Serialization is not supported by the custom item serializer in " +
-              s"ItemsPartitionReaderWithReadManyByPartitionKey; this serializer is intended " +
-              s"for deserializing read-many responses into SparkRowItem only. " +
-              s"Unexpected item type: ${if (item == null) "null" else item.getClass.getName}"
-          )
+          CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item)
         }
 
         override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
@@ -159,9 +163,25 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
   // Collect all PK values upfront - the SDK now owns normalization and deduplication,
   // so Spark preserves the caller's input as-is and relies on the SDK's set-based semantics.
   // Callers should still dedupe their DataFrame input when practical to avoid extra work.
+  //
+  // NOTE on memory footprint: every PartitionKey from this iterator is materialized into a
+  // single ArrayList here, and the SDK in turn keeps the normalized set, the EPK->PK map,
+  // and the per-batch BatchDescriptor lists alive for the lifetime of the reader. For a
+  // single Spark partition with O(N) input rows this is O(N) memory on the executor; if
+  // upstream Spark partitioning sends millions of distinct PKs to one task this can become
+  // a noticeable allocation. Repartition upstream when N is very large.
+  private val PK_COUNT_LARGE_INPUT_WARN_THRESHOLD = 200000
   private lazy val pkList = {
     val values = new java.util.ArrayList[PartitionKey]()
     readManyPartitionKeys.foreach(values.add)
+    if (values.size() > PK_COUNT_LARGE_INPUT_WARN_THRESHOLD) {
+      log.logWarning(
+        s"ItemsPartitionReaderWithReadManyByPartitionKey received ${values.size()} partition " +
+          s"keys for a single Spark partition (feedRange=$feedRange). Large PK lists materialize " +
+          s"the full set in memory plus the SDK's normalized batch metadata; consider increasing " +
+          s"upstream Spark parallelism so each task processes <= " +
+          s"$PK_COUNT_LARGE_INPUT_WARN_THRESHOLD distinct partition keys.")
+    }
     values
   }
 
@@ -212,7 +232,7 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
             private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (continuationToken: String) =>
               // Reuse the preconfigured request options and only update the continuation
               // token so the SDK resumes from the last fully committed page.
-              readManyOptionsImpl.setRequestContinuation(continuationToken)
+              readManyOptions.setContinuationToken(continuationToken)
               customQueryOpt match {
                 case Some(query) =>
                   cosmosAsyncContainer.readManyByPartitionKeys(pkList, query, readManyOptions, classOf[SparkRowItem])

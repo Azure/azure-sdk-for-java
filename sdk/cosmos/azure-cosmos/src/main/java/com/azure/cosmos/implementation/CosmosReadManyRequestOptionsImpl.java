@@ -3,9 +3,6 @@
 package com.azure.cosmos.implementation;
 
 public class CosmosReadManyRequestOptionsImpl extends CosmosQueryRequestOptionsBase<CosmosReadManyRequestOptionsImpl> {
-
-    private String requestContinuation;
-
     /**
      * Instantiates a new read many request options.
      */
@@ -19,27 +16,6 @@ public class CosmosReadManyRequestOptionsImpl extends CosmosQueryRequestOptionsB
      */
     public CosmosReadManyRequestOptionsImpl(CosmosReadManyRequestOptionsImpl options) {
         super(options);
-        this.requestContinuation = options.requestContinuation;
-    }
-
-    /**
-     * Gets the composite continuation token for readManyByPartitionKeys.
-     *
-     * @return the continuation token, or null if not set.
-     */
-    public String getRequestContinuation() {
-        return this.requestContinuation;
-    }
-
-    /**
-     * Sets the composite continuation token for readManyByPartitionKeys.
-     *
-     * @param requestContinuation the continuation token from a previous invocation.
-     * @return this instance.
-     */
-    public CosmosReadManyRequestOptionsImpl setRequestContinuation(String requestContinuation) {
-        this.requestContinuation = requestContinuation;
-        return this;
     }
 
     @Override

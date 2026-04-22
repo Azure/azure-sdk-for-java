@@ -24,17 +24,30 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
     private static final String TEST_QUERY_HASH = "12345";
     private static final String TEST_PARTITION_KEY_SET_HASH = "67890";
 
+    /**
+     * Builds a BatchDefinition whose batchFilter is the half-open EPK range [min, max).
+     */
+    private static ReadManyByPartitionKeyContinuationToken.BatchDefinition bd(String min, String max) {
+        return new ReadManyByPartitionKeyContinuationToken.BatchDefinition(
+            new Range<>(min, max, true, false));
+    }
+
+    private static List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> bds(
+        ReadManyByPartitionKeyContinuationToken.BatchDefinition... defs) {
+        return new ArrayList<>(Arrays.asList(defs));
+    }
+
     @Test(groups = { "unit" })
     public void roundtrip_withBackendContinuation() {
-        List<Range<String>> remaining = Arrays.asList(
-            new Range<>("05C1E0", "0BF333", true, false),
-            new Range<>("0BF333", "FF", true, false));
-        Range<String> current = new Range<>("", "05C1E0", true, false);
+        List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remaining = bds(
+            bd("05C1E0", "0BF333"),
+            bd("0BF333", "FF"));
+        ReadManyByPartitionKeyContinuationToken.BatchDefinition current = bd("", "05C1E0");
         String backendCont = "eyJDb21wb3NpdGVUb2tlbg==";
 
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                remaining, current, backendCont, TEST_COLLECTION_RID, TEST_QUERY_HASH);
+                remaining, current, backendCont, TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         assertThat(serialized).isNotNull().isNotEmpty();
@@ -45,64 +58,60 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
         assertThat(deserialized.getBackendContinuation()).isEqualTo(backendCont);
         assertThat(deserialized.getCollectionRid()).isEqualTo(TEST_COLLECTION_RID);
         assertThat(deserialized.getQueryHash()).isEqualTo(TEST_QUERY_HASH);
+        assertThat(deserialized.getPartitionKeySetHash()).isEqualTo(TEST_PARTITION_KEY_SET_HASH);
 
         ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatch = deserialized.getCurrentBatch();
-        assertThat(currentBatch.getPartitionScope().getMin()).isEqualTo("");
-        assertThat(currentBatch.getPartitionScope().getMax()).isEqualTo("05C1E0");
+        assertThat(currentBatch.getBatchFilter().getMin()).isEqualTo("");
+        assertThat(currentBatch.getBatchFilter().getMax()).isEqualTo("05C1E0");
 
         List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingBatches =
             deserialized.getRemainingBatches();
         assertThat(remainingBatches).hasSize(2);
-        assertThat(remainingBatches.get(0).getPartitionScope().getMin()).isEqualTo("05C1E0");
-        assertThat(remainingBatches.get(0).getPartitionScope().getMax()).isEqualTo("0BF333");
-        assertThat(remainingBatches.get(1).getPartitionScope().getMin()).isEqualTo("0BF333");
-        assertThat(remainingBatches.get(1).getPartitionScope().getMax()).isEqualTo("FF");
+        assertThat(remainingBatches.get(0).getBatchFilter().getMin()).isEqualTo("05C1E0");
+        assertThat(remainingBatches.get(0).getBatchFilter().getMax()).isEqualTo("0BF333");
+        assertThat(remainingBatches.get(1).getBatchFilter().getMin()).isEqualTo("0BF333");
+        assertThat(remainingBatches.get(1).getBatchFilter().getMax()).isEqualTo("FF");
     }
 
     @Test(groups = { "unit" })
     public void roundtrip_withNullBackendContinuation() {
-        List<Range<String>> remaining = Collections.singletonList(
-            new Range<>("0BF333", "FF", true, false));
-        Range<String> current = new Range<>("05C1E0", "0BF333", true, false);
-
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                remaining, current, null, TEST_COLLECTION_RID, TEST_QUERY_HASH);
+                bds(bd("0BF333", "FF")), bd("05C1E0", "0BF333"),
+                null, TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
             ReadManyByPartitionKeyContinuationToken.deserialize(serialized);
 
         assertThat(deserialized.getBackendContinuation()).isNull();
-        assertThat(deserialized.getCurrentBatch().getPartitionScope().getMin()).isEqualTo("05C1E0");
-        assertThat(deserialized.getCurrentBatch().getPartitionScope().getMax()).isEqualTo("0BF333");
+        assertThat(deserialized.getCurrentBatch().getBatchFilter().getMin()).isEqualTo("05C1E0");
+        assertThat(deserialized.getCurrentBatch().getBatchFilter().getMax()).isEqualTo("0BF333");
         assertThat(deserialized.getRemainingBatches()).hasSize(1);
     }
 
     @Test(groups = { "unit" })
     public void roundtrip_emptyRemainingBatches() {
-        Range<String> current = new Range<>("0BF333", "FF", true, false);
-
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                Collections.emptyList(), current, "someCont", TEST_COLLECTION_RID, TEST_QUERY_HASH);
+                Collections.emptyList(), bd("0BF333", "FF"),
+                "someCont", TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
             ReadManyByPartitionKeyContinuationToken.deserialize(serialized);
 
         assertThat(deserialized.getRemainingBatches()).isEmpty();
-        assertThat(deserialized.getCurrentBatch().getPartitionScope().getMin()).isEqualTo("0BF333");
+        assertThat(deserialized.getCurrentBatch().getBatchFilter().getMin()).isEqualTo("0BF333");
         assertThat(deserialized.getBackendContinuation()).isEqualTo("someCont");
     }
 
     @Test(groups = { "unit" })
     public void roundtrip_lastBatchNoContinuation() {
-        Range<String> current = new Range<>("0BF333", "FF", true, false);
-
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                Collections.emptyList(), current, null, TEST_COLLECTION_RID, TEST_QUERY_HASH);
+                Collections.emptyList(), bd("0BF333", "FF"),
+                null, TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
@@ -114,10 +123,11 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
     @Test(groups = { "unit" })
     public void deserialize_malformedInput_throws() {
+        // Either the base64 decoder or the JSON parsing layer rejects garbage; both raise
+        // IllegalArgumentException, which is the contract callers depend on.
         assertThatThrownBy(() ->
             ReadManyByPartitionKeyContinuationToken.deserialize("not-valid-base64!!!")
-        ).isInstanceOf(IllegalArgumentException.class)
-         .hasMessageContaining("Failed to deserialize");
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = { "unit" })
@@ -135,55 +145,99 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
     }
 
     @Test(groups = { "unit" })
-    public void serialized_isBase64() {
-        Range<String> current = new Range<>("", "FF", true, false);
+    public void deserialize_unsupportedVersion_throws() {
+        // Hand-craft a token JSON with version=999 (a future format) and ensure it is rejected.
+        String json = "{\"v\":999,\"rb\":[],\"cb\":{\"bf\":{\"min\":\"\",\"max\":\"FF\"}},"
+            + "\"bc\":null,\"cr\":\"" + TEST_COLLECTION_RID + "\",\"qh\":\"" + TEST_QUERY_HASH + "\",\"ph\":\"" + TEST_PARTITION_KEY_SET_HASH + "\"}";
+        String serialized = java.util.Base64.getEncoder().encodeToString(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+        // The root cause carries the precise "Unsupported version" message; the outer wrapper
+        // gives a generic "Failed to deserialize" hint. Match against the full chain.
+        assertThatThrownBy(() -> ReadManyByPartitionKeyContinuationToken.deserialize(serialized))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasStackTraceContaining("Unsupported readManyByPartitionKeys continuation token version");
+    }
+
+    @Test(groups = { "unit" })
+    public void serialized_includesVersionField_andIsBase64() {
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                Collections.emptyList(), current, null, TEST_COLLECTION_RID, 0);
+                Collections.emptyList(), bd("", "FF"), null,
+                TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
-
-        // Should be valid Base64 (no whitespace, no special chars except +/=)
         assertThat(serialized).matches("[A-Za-z0-9+/=]+");
 
-        // Decoding should produce valid JSON
         String json = new String(
             java.util.Base64.getDecoder().decode(serialized),
             java.nio.charset.StandardCharsets.UTF_8);
         assertThat(json).startsWith("{");
         assertThat(json).endsWith("}");
+        // The wire format must include the version field so future SDKs can detect/reject
+        // tokens from incompatible versions.
+        assertThat(json).contains("\"v\":1");
+    }
+
+    @Test(groups = { "unit" })
+    public void serialized_doesNotIncludePartitionScope() {
+        // The partition routing scope is intentionally NOT persisted in the continuation token.
+        // It is rederived at execution time from the live PartitionKeyRange cache so partition
+        // splits never cause stale routing information to be embedded in a token.
+        ReadManyByPartitionKeyContinuationToken token =
+            new ReadManyByPartitionKeyContinuationToken(
+                bds(bd("AA", "BB"), bd("BB", "CC")),
+                bd("", "AA"), null,
+                TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
+
+        String json = new String(
+            java.util.Base64.getDecoder().decode(token.serialize()),
+            java.nio.charset.StandardCharsets.UTF_8);
+
+        assertThat(json).doesNotContain("\"ps\"");
+        assertThat(json).contains("\"bf\"");
+    }
+
+    @Test(groups = { "unit" })
+    public void version_roundtripsAsCurrent() {
+        ReadManyByPartitionKeyContinuationToken token =
+            new ReadManyByPartitionKeyContinuationToken(
+                Collections.emptyList(), bd("", "FF"), null,
+                TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
+
+        ReadManyByPartitionKeyContinuationToken deserialized =
+            ReadManyByPartitionKeyContinuationToken.deserialize(token.serialize());
+
+        assertThat(deserialized.getVersion()).isEqualTo(ReadManyByPartitionKeyContinuationToken.CURRENT_VERSION);
+        assertThat(ReadManyByPartitionKeyContinuationToken.CURRENT_VERSION).isEqualTo(1);
     }
 
     @Test(groups = { "unit" })
     public void rangesPreserveMinMaxInclusive() {
-        Range<String> current = new Range<>("AB", "CD", true, false);
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                Collections.singletonList(new Range<>("CD", "EF", true, false)),
-                current, null, TEST_COLLECTION_RID, TEST_QUERY_HASH);
+                bds(bd("CD", "EF")), bd("AB", "CD"), null,
+                TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
             ReadManyByPartitionKeyContinuationToken.deserialize(serialized);
 
-        // Verify that deserialized ranges have the canonical min-inclusive, max-exclusive form
-        Range<String> currentScope = deserialized.getCurrentBatch().getPartitionScope();
-        assertThat(currentScope.isMinInclusive()).isTrue();
-        assertThat(currentScope.isMaxInclusive()).isFalse();
-        Range<String> remainingScope = deserialized.getRemainingBatches().get(0).getPartitionScope();
-        assertThat(remainingScope.isMinInclusive()).isTrue();
-        assertThat(remainingScope.isMaxInclusive()).isFalse();
+        Range<String> currentFilter = deserialized.getCurrentBatch().getBatchFilter();
+        assertThat(currentFilter.isMinInclusive()).isTrue();
+        assertThat(currentFilter.isMaxInclusive()).isFalse();
+        Range<String> remainingFilter = deserialized.getRemainingBatches().get(0).getBatchFilter();
+        assertThat(remainingFilter.isMinInclusive()).isTrue();
+        assertThat(remainingFilter.isMaxInclusive()).isFalse();
     }
 
     @Test(groups = { "unit" })
     public void collectionRidAndQueryHash_roundtrip() {
-        Range<String> current = new Range<>("", "FF", true, false);
         String rid = "dbs/myDb/colls/myColl";
         String hash = "98765";
 
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                Collections.emptyList(), current, null, rid, hash);
+                Collections.emptyList(), bd("", "FF"), null, rid, hash, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
@@ -195,11 +249,10 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
     @Test(groups = { "unit" })
     public void partitionKeySetHash_roundtrip() {
-        Range<String> current = new Range<>("", "FF", true, false);
-
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                Collections.emptyList(), current, null, TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
+                Collections.emptyList(), bd("", "FF"), null,
+                TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
@@ -216,7 +269,6 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
         assertThat(ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(epks1))
             .isEqualTo(ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(epks2));
     }
-
 
     @Test(groups = { "unit" })
     public void computePartitionKeySetHash_returnsStableHexDigest() {
@@ -272,34 +324,24 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
     @Test(groups = { "unit" })
     public void batchDefinition_roundtrip() {
-        Range<String> partitionScope = new Range<>("", "05C1E0", true, false);
-        Range<String> batchFilter = new Range<>("01", "03", true, false);
-
-        ReadManyByPartitionKeyContinuationToken.BatchDefinition bd =
-            new ReadManyByPartitionKeyContinuationToken.BatchDefinition(partitionScope, batchFilter);
-
-        List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remaining = Collections.singletonList(
-            new ReadManyByPartitionKeyContinuationToken.BatchDefinition(
-                new Range<>("05C1E0", "FF", true, false),
-                new Range<>("05C1E0", "0A", true, false)));
+        ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBd = bd("01", "03");
+        List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remaining =
+            Collections.singletonList(bd("05C1E0", "0A"));
 
         ReadManyByPartitionKeyContinuationToken token =
             new ReadManyByPartitionKeyContinuationToken(
-                remaining, bd, "cont", TEST_COLLECTION_RID, TEST_QUERY_HASH);
+                remaining, currentBd, "cont", TEST_COLLECTION_RID, TEST_QUERY_HASH, TEST_PARTITION_KEY_SET_HASH);
 
         String serialized = token.serialize();
         ReadManyByPartitionKeyContinuationToken deserialized =
             ReadManyByPartitionKeyContinuationToken.deserialize(serialized);
 
         ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatch = deserialized.getCurrentBatch();
-        assertThat(currentBatch.getPartitionScope().getMin()).isEqualTo("");
-        assertThat(currentBatch.getPartitionScope().getMax()).isEqualTo("05C1E0");
         assertThat(currentBatch.getBatchFilter().getMin()).isEqualTo("01");
         assertThat(currentBatch.getBatchFilter().getMax()).isEqualTo("03");
 
         ReadManyByPartitionKeyContinuationToken.BatchDefinition remainingBatch =
             deserialized.getRemainingBatches().get(0);
-        assertThat(remainingBatch.getPartitionScope().getMin()).isEqualTo("05C1E0");
         assertThat(remainingBatch.getBatchFilter().getMin()).isEqualTo("05C1E0");
         assertThat(remainingBatch.getBatchFilter().getMax()).isEqualTo("0A");
     }

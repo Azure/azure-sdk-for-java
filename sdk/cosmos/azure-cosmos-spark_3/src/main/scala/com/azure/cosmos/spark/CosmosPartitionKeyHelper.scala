@@ -34,7 +34,7 @@ private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
   //
   // (?i) : The whole matching is case-insensitive
   // pk[(](.*)[)]: partitionKey Value
-  private val cosmosPartitionKeyStringRegx = """(?i)pk[(](.*)[)]""".r
+  private val cosmosPartitionKeyStringRegx = """(?i)^pk\((.*)\)$""".r
   private val objectMapper = Utils.getSimpleObjectMapper
 
   def getCosmosPartitionKeyValueString(partitionKeyValue: List[Object]): String = {
