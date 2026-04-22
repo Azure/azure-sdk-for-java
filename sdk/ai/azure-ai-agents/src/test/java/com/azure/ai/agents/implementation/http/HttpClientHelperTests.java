@@ -26,6 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -160,6 +161,187 @@ class HttpClientHelperTests {
         assertEquals("Network error", cause.getMessage());
     }
 
+    // ========================================================================
+    // Streaming detection tests — verifies fix for issue #48726
+    // ========================================================================
+
+    @Test
+    void nonStreamingRequestSetsEagerlyReadToTrue() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // Non-streaming JSON body (no "stream":true)
+        String body = "{\"model\":\"gpt-4o\",\"input\":\"Hello\"}";
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("responses")
+            .body(new TestHttpRequestBody(body, "application/json"))
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertTrue((Boolean) eagerlyRead, "Non-streaming requests should have azure-eagerly-read-response=true");
+    }
+
+    @Test
+    void streamingRequestSetsEagerlyReadToFalse() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // Streaming JSON body (contains "stream":true)
+        String body = "{\"model\":\"gpt-4o\",\"input\":\"Hello\",\"stream\":true}";
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("responses")
+            .body(new TestHttpRequestBody(body, "application/json"))
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertFalse((Boolean) eagerlyRead, "Streaming requests should have azure-eagerly-read-response=false");
+    }
+
+    @Test
+    void streamingRequestWithWhitespaceSetsEagerlyReadToFalse() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // Streaming JSON body with spaces around the colon
+        String body = "{\"model\":\"gpt-4o\", \"stream\" : true, \"input\":\"Hello\"}";
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("responses")
+            .body(new TestHttpRequestBody(body, "application/json"))
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertFalse((Boolean) eagerlyRead,
+            "Streaming requests with whitespace around colon should have azure-eagerly-read-response=false");
+    }
+
+    @Test
+    void streamingAsyncRequestSetsEagerlyReadToFalse() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // Streaming JSON body
+        String body = "{\"model\":\"gpt-4o\",\"input\":\"Hello\",\"stream\":true}";
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("responses")
+            .body(new TestHttpRequestBody(body, "application/json"))
+            .build();
+
+        CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
+        try (com.openai.core.http.HttpResponse response = future.join()) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertFalse((Boolean) eagerlyRead, "Async streaming requests should have azure-eagerly-read-response=false");
+    }
+
+    @Test
+    void nonJsonBodySetsEagerlyReadToTrue() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // Non-JSON body that happens to contain "stream":true text
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .body(new TestHttpRequestBody("stream\":true", "text/plain"))
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertTrue((Boolean) eagerlyRead, "Non-JSON bodies should always have azure-eagerly-read-response=true");
+    }
+
+    @Test
+    void streamFalseInBodySetsEagerlyReadToTrue() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // JSON body with "stream":false
+        String body = "{\"model\":\"gpt-4o\",\"input\":\"Hello\",\"stream\":false}";
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("responses")
+            .body(new TestHttpRequestBody(body, "application/json"))
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertTrue((Boolean) eagerlyRead, "Requests with stream=false should have azure-eagerly-read-response=true");
+    }
+
+    @Test
+    void noBodySetsEagerlyReadToTrue() {
+        ContextCapturingHttpClient capturingClient = new ContextCapturingHttpClient();
+        com.openai.core.http.HttpClient openAiClient
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(capturingClient).build());
+
+        // GET request with no body
+        com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .addPathSegment("test")
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
+            assertEquals(200, response.statusCode());
+        }
+
+        Context capturedContext = capturingClient.getLastContext();
+        assertNotNull(capturedContext, "Context should have been captured");
+        Object eagerlyRead = capturedContext.getData("azure-eagerly-read-response").orElse(null);
+        assertTrue((Boolean) eagerlyRead, "Requests without a body should have azure-eagerly-read-response=true");
+    }
+
+    // ========================================================================
+    // Test helpers
+    // ========================================================================
+
     private static com.openai.core.http.HttpRequest createOpenAiRequest() {
         return com.openai.core.http.HttpRequest.builder()
             .method(com.openai.core.http.HttpMethod.POST)
@@ -216,6 +398,35 @@ class HttpClientHelperTests {
 
         int getSendCount() {
             return sendCount;
+        }
+    }
+
+    /**
+     * HTTP client that captures the Context passed to send(), allowing tests to verify
+     * context flags like azure-eagerly-read-response.
+     */
+    private static final class ContextCapturingHttpClient implements HttpClient {
+        private Context lastContext;
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return send(request, Context.NONE);
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            this.lastContext = context;
+            return Mono.just(createMockResponse(request, 200, new HttpHeaders(), "{}"));
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            this.lastContext = context;
+            return createMockResponse(request, 200, new HttpHeaders(), "{}");
+        }
+
+        Context getLastContext() {
+            return lastContext;
         }
     }
 

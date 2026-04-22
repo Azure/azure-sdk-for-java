@@ -41,6 +41,7 @@ import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
+import com.openai.credential.Credential;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -209,6 +210,49 @@ public final class AgentsClientBuilder
     }
 
     /*
+     * Custom header name carrying the API key (e.g. "api-key", "Ocp-Apim-Subscription-Key").
+     */
+    private String apiKeyHeaderName;
+
+    /*
+     * API key value sent on every request via {@link #apiKeyHeaderName}. When set, bearer-token
+     * authentication is bypassed and callers do not need to supply a {@link TokenCredential}.
+     */
+    private String apiKey;
+
+    /**
+     * Configures API-key authentication using the default {@code api-key} header, which matches
+     * the Azure OpenAI convention.
+     *
+     * @param apiKey the API key value
+     * @return the {@link AgentsClientBuilder}.
+     */
+    public AgentsClientBuilder apiKey(String apiKey) {
+        return apiKey("api-key", apiKey);
+    }
+
+    /**
+     * Configures API-key authentication using a caller-supplied header name. This is used when the
+     * agents endpoint is fronted by a gateway that requires a custom auth header (for example
+     * Azure API Management's {@code Ocp-Apim-Subscription-Key}).
+     *
+     * <p>When API-key auth is configured, {@link #credential(TokenCredential)} is ignored and the
+     * OpenAI client receives a placeholder bearer credential — auth is applied by the Azure
+     * pipeline via an {@link AddHeadersPolicy}.</p>
+     *
+     * @param headerName the header name carrying the API key
+     * @param apiKey the API key value
+     * @return the {@link AgentsClientBuilder}.
+     */
+    public AgentsClientBuilder apiKey(String headerName, String apiKey) {
+        Objects.requireNonNull(headerName, "'headerName' cannot be null.");
+        Objects.requireNonNull(apiKey, "'apiKey' value cannot be null. Ensure the API key is properly configured.");
+        this.apiKeyHeaderName = headerName;
+        this.apiKey = apiKey;
+        return this;
+    }
+
+    /*
      * The service endpoint
      */
     @Generated
@@ -306,7 +350,11 @@ public final class AgentsClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        if (tokenCredential != null) {
+        if (apiKey != null) {
+            HttpHeaders apiKeyHeaders = new HttpHeaders();
+            apiKeyHeaders.set(apiKeyHeaderName, apiKey);
+            policies.add(new AddHeadersPolicy(apiKeyHeaders));
+        } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         this.pipelinePolicies.stream()
@@ -366,9 +414,7 @@ public final class AgentsClientBuilder
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
-        OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+        OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder().credential(resolveOpenAICredential());
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
@@ -376,13 +422,28 @@ public final class AgentsClientBuilder
     }
 
     private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder() {
-        OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+        OpenAIOkHttpClientAsync.Builder builder
+            = OpenAIOkHttpClientAsync.builder().credential(resolveOpenAICredential());
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
+    }
+
+    // OpenAI SDK requires a non-null credential at build time. For API-key auth the real
+    // auth header is injected by the Azure pipeline (AddHeadersPolicy), so we hand the
+    // OpenAI client a placeholder bearer token that is never used by the server.
+    private static final String PLACEHOLDER_BEARER_TOKEN = "unused";
+
+    private Credential resolveOpenAICredential() {
+        if (apiKeyHeaderName != null) {
+            return BearerTokenCredential.create(PLACEHOLDER_BEARER_TOKEN);
+        }
+        if (tokenCredential == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "No credential configured: call apiKey() or credential() before building the client."));
+        }
+        return BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);

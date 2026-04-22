@@ -30,14 +30,17 @@ import com.openai.errors.UnauthorizedException;
 import com.openai.errors.UnexpectedStatusCodeException;
 import com.openai.errors.UnprocessableEntityException;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Pattern;
 
 /**
  * Utility entry point that adapts an Azure {@link com.azure.core.http.HttpClient} so it can be consumed by
@@ -87,9 +90,9 @@ public final class HttpClientHelper {
             Objects.requireNonNull(requestOptions, "requestOptions");
 
             try {
-                com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
-                return new AzureHttpResponseAdapter(
-                    this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
+                PreparedRequest prepared = buildAzureRequest(request);
+                return new AzureHttpResponseAdapter(this.httpPipeline.sendSync(prepared.azureRequest,
+                    buildRequestContext(requestOptions, prepared.isStreaming)));
             } catch (MalformedURLException exception) {
                 throw new OpenAIException("Invalid URL in request: " + exception.getMessage(),
                     LOGGER.logThrowableAsError(exception));
@@ -106,10 +109,20 @@ public final class HttpClientHelper {
             Objects.requireNonNull(request, "request");
             Objects.requireNonNull(requestOptions, "requestOptions");
 
+            // publishOn(boundedElastic) moves signal delivery off the reactor-http-nio
+            // thread before MonoToCompletableFuture completes the future. The OpenAI SDK
+            // chains .thenApply callbacks that synchronously parse the response body
+            // (JSON handler for non-stream, SSE parser for stream); both call
+            // AzureHttpResponseAdapter.body() which pulls from the underlying
+            // Flux<ByteBuffer> via BlockingIterable. BlockingIterable rejects iteration
+            // from non-blocking threads, so without this hop the whole chain fails with
+            // "Iterating over a toIterable() / toStream() is blocking".
             return Mono.fromCallable(() -> buildAzureRequest(request))
-                .flatMap(azureRequest -> this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions)))
+                .flatMap(prepared -> this.httpPipeline.send(prepared.azureRequest,
+                    buildRequestContext(requestOptions, prepared.isStreaming)))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
+                .publishOn(Schedulers.boundedElastic())
                 .toFuture();
         }
 
@@ -188,18 +201,50 @@ public final class HttpClientHelper {
         }
 
         /**
-         * Converts the OpenAI request metadata and body into an Azure {@link com.azure.core.http.HttpRequest}.
+         * Pattern that matches a top-level {@code "stream": true} JSON field, allowing for
+         * optional whitespace around the colon. This is used to detect streaming requests
+         * so the Azure pipeline does not eagerly buffer the SSE response body.
          */
-        private static com.azure.core.http.HttpRequest buildAzureRequest(HttpRequest request)
-            throws MalformedURLException {
+        private static final Pattern STREAM_TRUE_PATTERN = Pattern.compile("\"stream\"\\s*:\\s*true");
+
+        /**
+         * Holds the converted Azure request together with a flag indicating whether the
+         * original OpenAI request is a streaming request.
+         */
+        static final class PreparedRequest {
+            final com.azure.core.http.HttpRequest azureRequest;
+            final boolean isStreaming;
+
+            PreparedRequest(com.azure.core.http.HttpRequest azureRequest, boolean isStreaming) {
+                this.azureRequest = azureRequest;
+                this.isStreaming = isStreaming;
+            }
+        }
+
+        /**
+         * Converts the OpenAI request metadata and body into an Azure {@link com.azure.core.http.HttpRequest}
+         * and determines whether the request is a streaming request.
+         */
+        private static PreparedRequest buildAzureRequest(HttpRequest request) throws MalformedURLException {
             HttpRequestBody requestBody = request.body();
             String contentType = requestBody != null ? requestBody.contentType() : null;
             BinaryData bodyData = null;
+            boolean isStreaming = false;
 
             if (requestBody != null && requestBody.contentLength() != 0) {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 requestBody.writeTo(outputStream);
-                bodyData = BinaryData.fromBytes(outputStream.toByteArray());
+                byte[] bodyBytes = outputStream.toByteArray();
+                bodyData = BinaryData.fromBytes(bodyBytes);
+
+                // Detect streaming requests by checking for "stream": true in the JSON body.
+                // When the OpenAI SDK calls createStreaming(), it serializes stream=true into the
+                // request body. Streaming responses use SSE (Server-Sent Events) and must NOT be
+                // eagerly buffered by the Azure HTTP pipeline.
+                if (contentType != null && contentType.contains("json") && bodyBytes.length > 0) {
+                    String bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);
+                    isStreaming = STREAM_TRUE_PATTERN.matcher(bodyStr).find();
+                }
             }
 
             HttpHeaders headers = toAzureHeaders(request.headers());
@@ -214,7 +259,7 @@ public final class HttpClientHelper {
                 azureRequest.setBody(bodyData);
             }
 
-            return azureRequest;
+            return new PreparedRequest(azureRequest, isStreaming);
         }
 
         /**
@@ -236,11 +281,18 @@ public final class HttpClientHelper {
 
         /**
          * Builds the request context from the given request options.
+         *
+         * <p>When {@code isStreaming} is {@code true}, the {@code azure-eagerly-read-response}
+         * context flag is set to {@code false} so the Azure HTTP pipeline returns a live
+         * streaming body instead of buffering the entire response into memory. This is
+         * required for SSE (Server-Sent Events) streaming to deliver events incrementally.</p>
+         *
          * @param requestOptions OpenAI SDK request options
+         * @param isStreaming whether the request is a streaming request
          * @return Azure request {@link Context}
          */
-        private static Context buildRequestContext(RequestOptions requestOptions) {
-            Context context = new Context("azure-eagerly-read-response", true);
+        private static Context buildRequestContext(RequestOptions requestOptions, boolean isStreaming) {
+            Context context = new Context("azure-eagerly-read-response", !isStreaming);
             Timeout timeout = requestOptions.getTimeout();
             // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
