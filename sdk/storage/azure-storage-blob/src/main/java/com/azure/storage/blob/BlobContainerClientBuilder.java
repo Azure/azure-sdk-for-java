@@ -93,7 +93,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private SessionOptions sessionOptions;
+    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -191,25 +191,19 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         if (httpPipeline != null) {
             return httpPipeline;
         }
-        SessionOptions effectiveSessionOptions = sessionOptions;
-        if (effectiveSessionOptions != null) {
-            if (containerName != null) {
-                effectiveSessionOptions.setContainerName(containerName);
-            }
-            if (effectiveSessionOptions.getAccountName() == null) {
-                effectiveSessionOptions.setAccountName(accountName);
-            }
+        if (containerName != null) {
+            sessionOptions.setContainerName(containerName);
+        }
+        if (sessionOptions.getAccountName() == null) {
+            sessionOptions.setAccountName(accountName);
         }
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, effectiveSessionOptions, serviceVersion);
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
     }
 
     private void validateSessionMode() {
-        if (sessionOptions != null
-            && sessionOptions.getSessionMode() != null
-            && sessionOptions.getSessionMode() != SessionMode.NONE
-            && CoreUtils.isNullOrEmpty(containerName)) {
+        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
         }
@@ -648,7 +642,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * @return the updated BlobContainerClientBuilder object.
      */
     public BlobContainerClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = sessionOptions;
+        this.sessionOptions = SessionOptions.orDefault(sessionOptions);
         return this;
     }
 }
