@@ -21,12 +21,12 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
  * by maintaining a pending buffer and only advancing offsets when complete structures
  * have been fully read and validated.</p>
  *
- * <p>Key invariants:
- * <ul>
- *   <li>Never read partial headers - always check buffer remaining &gt;= required bytes</li>
- *   <li>Only advance messageOffset when bytes are fully consumed and validated</li>
- *   <li>lastCompleteSegmentStart always points to a valid segment boundary for retry</li>
- * </ul>
+ * <p>Emission guarantee: payload bytes for a segment are <strong>never</strong> emitted
+ * downstream until the segment payload has been fully read and, when CRC64 is enabled,
+ * its segment CRC footer has been validated. This matches the emission semantics used by
+ * {@code BlobDecryptionPolicy}/{@code DecryptorV2} (which only emits a decrypted region
+ * after the GCM tag is verified) and guarantees that no unvalidated bytes are ever
+ * exposed to callers, even under retries.</p>
  */
 public class StructuredMessageDecoder {
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageDecoder.class);
@@ -38,70 +38,25 @@ public class StructuredMessageDecoder {
     private final long expectedContentLength;
 
     // Offset tracking
-    private long messageOffset = 0;  // Absolute encoded bytes consumed from the message
-    private long totalDecodedPayloadBytes = 0;  // Total decoded (payload) bytes output
+    private long messageOffset = 0;
 
     // Current segment state
     private int currentSegmentNumber = 0;
     private long currentSegmentContentLength = 0;
     private long currentSegmentContentOffset = 0;
-    private int lastCompleteSegmentNumber = 0;
+    private boolean segmentHeaderRead = false;
 
     // CRC validation
     private long messageCrc64 = 0;
     private long segmentCrc64 = 0;
 
-    // Smart retry tracking - lastCompleteSegmentStart is the absolute offset where the last
-    // fully completed segment ended. This is the safe retry boundary.
-    private long lastCompleteSegmentStart = 0;
-
     // Pending buffer for handling partial headers/segments across chunks
     private final ByteArrayOutputStream pendingBytes = new ByteArrayOutputStream();
 
-    /**
-     * Decode result status codes.
-     */
-    public enum DecodeStatus {
-        /** Need more bytes to continue (partial header/segment) */
-        NEED_MORE_BYTES,
-        /** Decoding completed successfully */
-        COMPLETED,
-        /** Invalid data encountered */
-        INVALID
-    }
-
-    /**
-     * Result of a decode operation.
-     */
-    public static class DecodeResult {
-        private final DecodeStatus status;
-        private final ByteBuffer decodedPayload;
-        private final String message;
-        private final int bytesConsumed;
-
-        DecodeResult(DecodeStatus status, ByteBuffer decodedPayload, int bytesConsumed, String message) {
-            this.status = status;
-            this.decodedPayload = decodedPayload;
-            this.bytesConsumed = bytesConsumed;
-            this.message = message;
-        }
-
-        public DecodeStatus getStatus() {
-            return status;
-        }
-
-        public ByteBuffer getDecodedPayload() {
-            return decodedPayload;
-        }
-
-        public int getBytesConsumed() {
-            return bytesConsumed;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
+    // Payload bytes accumulated for the current segment. These are held back and NOT
+    // emitted until the segment CRC footer has been validated, so callers never observe
+    // bytes that could later fail validation.
+    private final ByteArrayOutputStream currentSegmentBuffer = new ByteArrayOutputStream();
 
     /**
      * Constructs a new StructuredMessageDecoder.
@@ -110,43 +65,6 @@ public class StructuredMessageDecoder {
      */
     public StructuredMessageDecoder(long expectedContentLength) {
         this.expectedContentLength = expectedContentLength;
-    }
-
-    /**
-     * Gets the byte offset where the last complete segment ended.
-     * This is used for smart retry to resume from a segment boundary.
-     *
-     * @return The byte offset of the last complete segment boundary.
-     */
-    public long getLastCompleteSegmentStart() {
-        return lastCompleteSegmentStart;
-    }
-
-    /**
-     * Gets the current message offset (total bytes consumed from the structured message).
-     *
-     * @return The current message offset.
-     */
-    public long getMessageOffset() {
-        return messageOffset;
-    }
-
-    /**
-     * Gets the total decoded payload bytes produced so far.
-     *
-     * @return The total decoded payload bytes.
-     */
-    public long getTotalDecodedPayloadBytes() {
-        return totalDecodedPayloadBytes;
-    }
-
-    /**
-     * Gets the expected message length from the header.
-     *
-     * @return The message length, or -1 if header not yet read.
-     */
-    public long getMessageLength() {
-        return messageLength;
     }
 
     /**
@@ -300,6 +218,7 @@ public class StructuredMessageDecoder {
         currentSegmentNumber = segmentNum;
         currentSegmentContentLength = segmentSize;
         currentSegmentContentOffset = 0;
+        currentSegmentBuffer.reset();
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             segmentCrc64 = 0;
@@ -309,13 +228,14 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Reads segment content bytes if available.
+     * Reads segment content bytes if available, accumulating them into the per-segment
+     * buffer. Bytes remain held in the buffer until the segment's CRC footer is
+     * validated; they are not returned to the caller here.
      *
      * @param buffer The buffer to read from.
-     * @param output The output stream to write decoded payload to.
-     * @return The number of payload bytes read, or -1 if more bytes needed for CRC.
+     * @return The number of payload bytes read into the segment buffer.
      */
-    private int tryReadSegmentContent(ByteBuffer buffer, ByteArrayOutputStream output) {
+    private int tryReadSegmentContent(ByteBuffer buffer) {
         long remaining = currentSegmentContentLength - currentSegmentContentOffset;
         if (remaining == 0) {
             return 0;
@@ -331,7 +251,7 @@ public class StructuredMessageDecoder {
 
         byte[] content = new byte[toRead];
         combined.get(content);
-        output.write(content, 0, toRead);
+        currentSegmentBuffer.write(content, 0, toRead);
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             segmentCrc64 = StorageCrc64Calculator.compute(content, segmentCrc64);
@@ -341,13 +261,15 @@ public class StructuredMessageDecoder {
         consumeBytes(toRead, buffer);
         messageOffset += toRead;
         currentSegmentContentOffset += toRead;
-        totalDecodedPayloadBytes += toRead;
 
         return toRead;
     }
 
     /**
-     * Reads the segment CRC footer if needed and available.
+     * Reads the segment CRC footer if needed and available. Does not advance into the
+     * message footer; callers drive message-footer consumption separately so that
+     * segment bytes can be flushed as soon as their CRC passes, even if the message
+     * footer is not yet available in the current chunk.
      *
      * @param buffer The buffer to read from.
      * @return true if footer was read (or not needed), false if more bytes needed.
@@ -358,16 +280,7 @@ public class StructuredMessageDecoder {
         }
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-            if (!tryConsumeCrc64Footer(buffer, segmentCrc64, " in segment " + currentSegmentNumber)) {
-                return false;
-            }
-        }
-
-        lastCompleteSegmentStart = messageOffset;
-        lastCompleteSegmentNumber = currentSegmentNumber;
-
-        if (currentSegmentNumber == numSegments) {
-            return tryReadMessageFooter(buffer);
+            return tryConsumeCrc64Footer(buffer, segmentCrc64, " in segment " + currentSegmentNumber);
         }
 
         return true;
@@ -387,63 +300,70 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Decodes as much as possible from the given buffer.
-     * This method properly handles partial headers and segments by buffering
-     * incomplete data and returning NEED_MORE_BYTES when more data is required.
+     * Decodes as much as possible from the given buffer and returns any fully validated
+     * payload bytes that are now safe to emit downstream.
+     *
+     * <p>The returned buffer will only ever contain bytes from segments whose CRC (when
+     * enabled) has already been verified. If no segments have been fully validated by
+     * this invocation the method returns {@code null}. Callers distinguish "more bytes
+     * needed" from "stream complete" via {@link #isComplete()}.</p>
      *
      * @param buffer The buffer containing encoded data.
-     * @return A DecodeResult indicating the outcome and any decoded payload.
+     * @return Validated payload bytes ready to emit, or {@code null} if none are ready.
+     * @throws IllegalArgumentException if the input is malformed or a CRC64 check fails.
      */
-    public DecodeResult decodeChunk(ByteBuffer buffer) {
+    public ByteBuffer decodeChunk(ByteBuffer buffer) {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
-        ByteArrayOutputStream decodedContent = new ByteArrayOutputStream();
-        int startPos = buffer.position();
+        ByteArrayOutputStream validatedOutput = new ByteArrayOutputStream();
 
-        try {
-            if (!tryReadMessageHeader(buffer)) {
-                return new DecodeResult(DecodeStatus.NEED_MORE_BYTES, null, 0, "Waiting for message header");
-            }
+        if (!tryReadMessageHeader(buffer)) {
+            return emptyOrNull(validatedOutput);
+        }
 
-            while (messageOffset < messageLength) {
-                if (lastCompleteSegmentNumber == currentSegmentNumber && currentSegmentNumber < numSegments) {
-                    if (!tryReadSegmentHeader(buffer)) {
+        while (messageOffset < messageLength) {
+            if (!segmentHeaderRead) {
+                // All segments are done; only the trailing message footer remains.
+                if (currentSegmentNumber == numSegments) {
+                    if (!tryReadMessageFooter(buffer)) {
                         break;
                     }
-                }
-
-                int payloadRead = tryReadSegmentContent(buffer, decodedContent);
-
-                if (currentSegmentContentOffset == currentSegmentContentLength) {
-                    if (!tryReadSegmentFooter(buffer)) {
-                        break;
-                    }
-                }
-
-                if (currentSegmentNumber == numSegments && messageOffset >= messageLength) {
-                    ByteBuffer result
-                        = decodedContent.size() > 0 ? ByteBuffer.wrap(decodedContent.toByteArray()) : null;
-                    return new DecodeResult(DecodeStatus.COMPLETED, result, buffer.position() - startPos,
-                        "Decode completed");
-                }
-
-                if (payloadRead == 0 && getAvailableBytes(buffer) == 0) {
                     break;
                 }
+                if (!tryReadSegmentHeader(buffer)) {
+                    break;
+                }
+                segmentHeaderRead = true;
             }
 
-            ByteBuffer result = decodedContent.size() > 0 ? ByteBuffer.wrap(decodedContent.toByteArray()) : null;
+            int payloadRead = tryReadSegmentContent(buffer);
 
-            if (messageOffset >= messageLength) {
-                return new DecodeResult(DecodeStatus.COMPLETED, result, buffer.position() - startPos,
-                    "Decode completed");
+            if (currentSegmentContentOffset == currentSegmentContentLength) {
+                if (!tryReadSegmentFooter(buffer)) {
+                    break;
+                }
+                // Segment is fully validated: safe to release the buffered payload.
+                try {
+                    currentSegmentBuffer.writeTo(validatedOutput);
+                } catch (java.io.IOException e) {
+                    // ByteArrayOutputStream.writeTo(ByteArrayOutputStream) cannot throw.
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+                }
+                currentSegmentBuffer.reset();
+                segmentHeaderRead = false;
+                // Loop continues: either consume the next segment header or the message footer.
+            } else if (payloadRead == 0 && getAvailableBytes(buffer) == 0) {
+                break;
             }
-
-            return new DecodeResult(DecodeStatus.NEED_MORE_BYTES, result, buffer.position() - startPos,
-                "Waiting for more data");
-
-        } catch (IllegalArgumentException e) {
-            return new DecodeResult(DecodeStatus.INVALID, null, buffer.position() - startPos, e.getMessage());
         }
+
+        return emptyOrNull(validatedOutput);
+    }
+
+    private static ByteBuffer emptyOrNull(ByteArrayOutputStream output) {
+        if (output.size() == 0) {
+            return null;
+        }
+        return ByteBuffer.wrap(output.toByteArray());
     }
 
     /**
@@ -456,14 +376,12 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Enriches an exception message with decoder offset information for debugging and retry.
-     * Format: "original message [decoderOffset=X,lastCompleteSegment=Y]"
+     * Enriches an exception message with decoder offset information for debugging.
      *
      * @param message The original exception message.
      * @return The enriched message with offset information.
      */
     private String enrichExceptionMessage(String message) {
-        return String.format("%s [decoderOffset=%d,lastCompleteSegment=%d]", message, messageOffset,
-            lastCompleteSegmentStart);
+        return String.format("%s [decoderOffset=%d]", message, messageOffset);
     }
 }

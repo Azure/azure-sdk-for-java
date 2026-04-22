@@ -1274,11 +1274,12 @@ public class BlobAsyncClientBase {
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        final Context baseContext = context == null
+        // The first range should eagerly convert headers as they'll be used to create response types.
+        Context firstRangeContext = context == null
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
-        final Context downloadContext = ContentValidationModeResolver.addStructuredMessageDecodingToContext(baseContext,
+        Context downloadContext = ContentValidationModeResolver.addStructuredMessageDecodingToContext(firstRangeContext,
             contentValidationAlgorithm);
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,

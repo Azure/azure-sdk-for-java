@@ -29,6 +29,11 @@ import java.nio.ByteBuffer;
  * ({@link StructuredMessageConstants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY}). It validates per-segment
  * CRC64 checksums during decoding. The policy is registered early in the pipeline; each retry re-enters the policy
  * with a fresh response body, so no cross-retry state management is needed in the policy.</p>
+ *
+ * <p>Emission guarantee: the policy only forwards payload bytes that the
+ * {@link StructuredMessageDecoder} has already CRC-validated at the segment boundary. Retries never expose
+ * partially validated bytes because each attempt creates a fresh decoder and the decoder itself withholds
+ * bytes until their enclosing segment passes validation.</p>
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
@@ -128,20 +133,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         }
 
         try {
-            StructuredMessageDecoder.DecodeResult result = decoder.decodeChunk(buffer);
-            switch (result.getStatus()) {
-                case NEED_MORE_BYTES:
-                    return emitDecodedPayload(result.getDecodedPayload());
-
-                case COMPLETED:
-                    return emitDecodedPayload(result.getDecodedPayload());
-
-                case INVALID:
-                    return Flux.error(new IOException("Failed to decode structured message: " + result.getMessage()));
-
-                default:
-                    return Flux.error(new IllegalStateException("Unknown decode status: " + result.getStatus()));
-            }
+            ByteBuffer validated = decoder.decodeChunk(buffer);
+            return emitDecodedPayload(validated);
+        } catch (IllegalArgumentException e) {
+            return Flux.error(new IOException("Failed to decode structured message: " + e.getMessage(), e));
         } catch (Exception e) {
             LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
             return Flux.error(new IOException("Failed to decode structured message chunk: " + e.getMessage(), e));
