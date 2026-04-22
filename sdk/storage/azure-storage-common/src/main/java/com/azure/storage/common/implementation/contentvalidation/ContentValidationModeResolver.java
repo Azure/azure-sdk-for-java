@@ -7,6 +7,7 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -145,6 +146,27 @@ public final class ContentValidationModeResolver {
      */
     public static boolean isCrc64OrAuto(ContentValidationAlgorithm algorithm) {
         return algorithm == ContentValidationAlgorithm.CRC64 || algorithm == ContentValidationAlgorithm.AUTO;
+    }
+
+    /**
+     * When the transfer validation mode is {@link ContentValidationAlgorithm#CRC64} or
+     * {@link ContentValidationAlgorithm#AUTO}, adds
+     * {@link StructuredMessageConstants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY} so the HTTP
+     * pipeline can decode/validate the structured message response. For {@code null} or
+     * {@link ContentValidationAlgorithm#NONE}, returns the context unchanged (no key added), matching "no
+     * structured-message validation" for that download.
+     *
+     * @param context The base {@link Context}; null is treated as {@link Context#NONE}.
+     * @param contentValidationAlgorithm The algorithm from download options, or null.
+     * @return The same context, or a copy with the decoding key set when applicable.
+     */
+    public static Context addStructuredMessageDecodingToContext(Context context,
+        ContentValidationAlgorithm contentValidationAlgorithm) {
+        Context base = context == null ? Context.NONE : context;
+        if (!isCrc64OrAuto(contentValidationAlgorithm)) {
+            return base;
+        }
+        return base.addData(STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
     }
 
     /**

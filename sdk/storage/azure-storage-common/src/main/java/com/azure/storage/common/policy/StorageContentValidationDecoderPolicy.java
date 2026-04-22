@@ -4,13 +4,14 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageDecoder;
 import reactor.core.publisher.Flux;
@@ -25,10 +26,9 @@ import java.nio.ByteBuffer;
  * is {@code CRC64} or {@code AUTO}).
  *
  * <p>The policy is activated by the presence of a boolean context key
- * ({@link Constants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY}). It validates per-segment
- * CRC64 checksums during decoding. Since this policy is placed at the front of the pipeline
- * (before the retry policy), each retry re-enters the policy with a fresh response body,
- * so no cross-retry state management is needed.</p>
+ * ({@link StructuredMessageConstants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY}). It validates per-segment
+ * CRC64 checksums during decoding. The policy is registered early in the pipeline; each retry re-enters the policy
+ * with a fresh response body, so no cross-retry state management is needed in the policy.</p>
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
@@ -58,10 +58,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             .set(X_MS_STRUCTURED_BODY, StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE);
 
         return next.process().map(httpResponse -> {
-            Long contentLength = ContentValidationDecoderUtils.getContentLength(httpResponse.getHeaders());
+            Long contentLength = getContentLength(httpResponse.getHeaders());
 
-            if (!ContentValidationDecoderUtils.isEligibleDownload(httpResponse, contentLength)) {
-                LOGGER.atVerbose().log("Not a download response with content, passing through");
+            if (!isEligibleDownload(httpResponse, contentLength)) {
                 return httpResponse;
             }
 
@@ -71,16 +70,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             StructuredMessageDecoder decoder = new StructuredMessageDecoder(expectedLength);
 
             Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoder);
-
-            LOGGER.atVerbose()
-                .addKeyValue("expectedLength", expectedLength)
-                .log("Returning DecodedResponse with structured message decoding");
             return new DecodedResponse(httpResponse, decodedStream);
         });
     }
 
     private boolean shouldApplyDecoding(HttpPipelineCallContext context) {
-        return context.getData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY)
+        return context.getData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY)
             .map(value -> value instanceof Boolean && (Boolean) value)
             .orElse(false);
     }
@@ -94,6 +89,29 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         }
     }
 
+    private static boolean isDownloadResponse(HttpResponse response) {
+        return response.getRequest().getHttpMethod() == HttpMethod.GET && response.getStatusCode() / 100 == 2;
+    }
+
+    /**
+     * @return The content length, or null if absent or unparseable.
+     */
+    private static Long getContentLength(HttpHeaders headers) {
+        String value = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (value != null) {
+            try {
+                return Long.parseLong(value);
+            } catch (NumberFormatException e) {
+                // Header invalid; treat as not eligible.
+            }
+        }
+        return null;
+    }
+
+    private static boolean isEligibleDownload(HttpResponse response, Long contentLength) {
+        return isDownloadResponse(response) && contentLength != null && contentLength > 0;
+    }
+
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, StructuredMessageDecoder decoder) {
         return encodedFlux.concatMap(buffer -> decodeBuffer(buffer, decoder))
             .onErrorResume(throwable -> handleStreamError(throwable, decoder))
@@ -102,9 +120,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     private Flux<ByteBuffer> decodeBuffer(ByteBuffer buffer, StructuredMessageDecoder decoder) {
         if (decoder.isComplete()) {
-            LOGGER.atVerbose()
-                .addKeyValue("bufferLength", buffer == null ? "null" : buffer.remaining())
-                .log("Decoder already completed; ignoring extra buffer");
             return Flux.empty();
         }
 
@@ -112,23 +127,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             return Flux.empty();
         }
 
-        LOGGER.atVerbose()
-            .addKeyValue("newBytes", buffer.remaining())
-            .addKeyValue("decoderOffset", decoder.getMessageOffset())
-            .addKeyValue("lastCompleteSegment", decoder.getLastCompleteSegmentStart())
-            .addKeyValue("totalDecodedPayload", decoder.getTotalDecodedPayloadBytes())
-            .log("Received buffer in decodeStream");
-
         try {
             StructuredMessageDecoder.DecodeResult result = decoder.decodeChunk(buffer);
-
-            LOGGER.atVerbose()
-                .addKeyValue("status", result.getStatus())
-                .addKeyValue("bytesConsumed", result.getBytesConsumed())
-                .addKeyValue("decoderOffset", decoder.getMessageOffset())
-                .addKeyValue("lastCompleteSegment", decoder.getLastCompleteSegmentStart())
-                .log("Decode chunk result");
-
             switch (result.getStatus()) {
                 case NEED_MORE_BYTES:
                     return emitDecodedPayload(result.getDecodedPayload());
@@ -137,7 +137,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                     return emitDecodedPayload(result.getDecodedPayload());
 
                 case INVALID:
-                    LOGGER.error("Invalid data during decode: {}", result.getMessage());
                     return Flux.error(new IOException("Failed to decode structured message: " + result.getMessage()));
 
                 default:
@@ -151,7 +150,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     private Flux<ByteBuffer> handleStreamError(Throwable throwable, StructuredMessageDecoder decoder) {
         if (decoder.isComplete()) {
-            LOGGER.atVerbose().log("Decoder complete; suppressing downstream error and completing successfully");
             return Flux.empty();
         }
 
@@ -160,19 +158,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     private Mono<ByteBuffer> handleStreamCompletion(StructuredMessageDecoder decoder) {
         if (!decoder.isComplete()) {
-            LOGGER.atVerbose()
-                .addKeyValue("messageOffset", decoder.getMessageOffset())
-                .addKeyValue("messageLength", decoder.getMessageLength())
-                .addKeyValue("totalDecodedPayload", decoder.getTotalDecodedPayloadBytes())
-                .addKeyValue("lastCompleteSegment", decoder.getLastCompleteSegmentStart())
-                .log("Stream ended but decode not finalized");
             return Mono.error(new IOException("Stream ended prematurely before structured message decoding completed"));
         }
-
-        LOGGER.atVerbose()
-            .addKeyValue("messageOffset", decoder.getMessageOffset())
-            .addKeyValue("totalDecodedPayload", decoder.getTotalDecodedPayloadBytes())
-            .log("Stream complete and decode finalized successfully");
         return Mono.empty();
     }
 

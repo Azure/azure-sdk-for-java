@@ -45,7 +45,6 @@ import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
-import com.azure.storage.blob.implementation.util.DownloadValidationUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
@@ -1263,11 +1262,13 @@ public class BlobAsyncClientBase {
         ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
 
-        final ContentValidationAlgorithm algorithm
-            = DownloadValidationUtils.resolveAlgorithm(contentValidationAlgorithm);
-        final boolean isStructuredMessageEnabled = DownloadValidationUtils.isStructuredMessageAlgorithm(algorithm);
+        ContentValidationModeResolver.validateTransactionalChecksumOptions(getRangeContentMd5,
+            contentValidationAlgorithm);
 
-        final Boolean finalGetMD5 = (!isStructuredMessageEnabled && getRangeContentMd5) ? true : null;
+        final Boolean getMD5
+            = (!ContentValidationModeResolver.isCrc64OrAuto(contentValidationAlgorithm) && getRangeContentMd5)
+                ? true
+                : null;
 
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
@@ -1277,9 +1278,10 @@ public class BlobAsyncClientBase {
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
-        final Context downloadContext = DownloadValidationUtils.applyStructuredMessageContext(baseContext, algorithm);
+        final Context downloadContext = ContentValidationModeResolver.addStructuredMessageDecodingToContext(baseContext,
+            contentValidationAlgorithm);
 
-        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), finalGetMD5,
+        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
             downloadContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
@@ -1306,25 +1308,24 @@ public class BlobAsyncClientBase {
                         return Mono.error(throwable);
                     }
 
+                    long newCount = finalCount - offset;
+
+                    /*
+                     * It's possible that the network stream will throw an error after emitting all data but before
+                     * completing. Issuing a retry at this stage would leave the download in a bad state with
+                     * incorrect count and offset values. Because we have read the intended amount of data, we can
+                     * ignore the error at the end of the stream.
+                     */
+                    if (newCount == 0) {
+                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network "
+                            + "but before stream signaled completion. Returning success as all data was downloaded. "
+                            + "Exception message: " + throwable.getMessage());
+                        return Mono.empty();
+                    }
+
                     try {
-                        long newCount = finalCount - offset;
-
-                        /*
-                         * It's possible that the network stream will throw an error after emitting all data but
-                         * before completing. Issuing a retry at this stage would leave the download in a bad
-                         * state with incorrect count and offset values. Because we have read the intended amount
-                         * of data, we can ignore the error at the end of the stream.
-                         */
-                        if (newCount == 0) {
-                            LOGGER.warning(
-                                "Exception encountered in ReliableDownload after all data read from the network "
-                                    + "but before stream signaled completion. Returning success as all data was "
-                                    + "downloaded. Exception message: " + throwable.getMessage());
-                            return Mono.empty();
-                        }
-
-                        BlobRange retryRange = new BlobRange(initialOffset + offset, newCount);
-                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, downloadContext);
+                        return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
+                            eTag, getMD5, downloadContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
@@ -1332,7 +1333,6 @@ public class BlobAsyncClientBase {
 
                 return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
-
     }
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,

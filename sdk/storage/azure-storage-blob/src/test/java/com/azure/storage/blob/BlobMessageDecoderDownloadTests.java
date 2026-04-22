@@ -52,7 +52,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
      * downloadStreamWithResponse with CRC64 content validation.
      */
     @Test
-    public void downloadStreamWithResponseContentValidationSync() {
+    public void downloadStreamWithResponseContentValidation() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
         bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
@@ -70,7 +70,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
      * downloadContentWithResponse with CRC64 content validation.
      */
     @Test
-    public void downloadContentWithResponseContentValidationSync() {
+    public void downloadContentWithResponseContentValidation() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
         bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
@@ -93,7 +93,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 512, 2048 })
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
-    public void downloadToFileWithResponseContentValidationSync(int blockSize) throws IOException {
+    public void downloadToFileWithResponseContentValidation(int blockSize) throws IOException {
         int payloadSize = (4 * blockSize) + 1;
         byte[] randomData = getRandomByteArray(payloadSize);
         bc.upload(Flux.just(ByteBuffer.wrap(randomData)), null, true).block();
