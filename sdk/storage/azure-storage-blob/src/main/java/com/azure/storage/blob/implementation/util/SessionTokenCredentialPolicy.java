@@ -223,9 +223,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     private void signRequest(HttpPipelineCallContext context, StorageSessionCredential cred) {
-        context.getHttpRequest()
-            .setHeader(HttpHeaderName.AUTHORIZATION, cred.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
-                context.getHttpRequest().getHttpMethod().toString(), context.getHttpRequest().getHeaders()));
+        cred.signRequest(context.getHttpRequest());
     }
 
     private void handleSessionExpiringHeader(HttpResponse response) {
