@@ -53,18 +53,6 @@ stages:
               Artifacts: ${{parameters.Artifacts}}
               ArtifactDirectory: $(Pipeline.Workspace)/packages
 
-          # Publish the ESRP signed directory. This will still be used by the
-          # Dev feed publish.
-          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-            parameters:
-              ArtifactPath: '$(Pipeline.Workspace)/packages'
-              ArtifactName: 'packages-signed'
-
-          # Downloading the ESRP signed artifacts
-          - download: current
-            displayName: 'Download Signed Artifacts'
-            artifact: packages-signed
-
           # Setup Maven mirror settings and authenticate with Azure Artifacts
           - template: /eng/pipelines/templates/steps/maven-authenticate.yml
             parameters:
@@ -76,9 +64,16 @@ stages:
           - template: tools/gpg/gpg.yml@azure-sdk-build-tools
           - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
             parameters:
-              ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
+              ArtifactDirectory: $(Pipeline.Workspace)/packages
               OutputDirectory: $(Pipeline.Workspace)/packages-esrp-gpg-signed
               FlattenedESRPDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
+
+          # Publish the ESRP signed directory. This will still be used by the
+          # Dev feed publish.
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactPath: '$(Pipeline.Workspace)/packages'
+              ArtifactName: 'packages-signed'
 
           # The packages-esrp-flattened will be used for the ESRP publish
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
