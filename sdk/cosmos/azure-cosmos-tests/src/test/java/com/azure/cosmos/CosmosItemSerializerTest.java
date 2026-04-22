@@ -28,19 +28,26 @@ import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,7 +98,8 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         CosmosItemSerializer[] itemSerializers = new CosmosItemSerializer[] {
             null,
             CosmosItemSerializer.DEFAULT_SERIALIZER,
-            EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
+            EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION,
+            BasicCustomItemSerializer.INSTANCE
         };
 
         List<Object[]> providers = new ArrayList<>();
@@ -199,13 +207,15 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             ? useTrackingIdForCreateAndReplace ? "WriteRetriesWithTrackingId|" : "WriteRetriesNoTrackingId|"
             : "NoWriteRetries|";
 
-        CosmosItemSerializer requestOptionsSerializer = (CosmosItemSerializer) row[0];
-        if (requestOptionsSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
-            prefix += "RequestOptions_DEFAULT";
-        } else if (requestOptionsSerializer == null) {
-            prefix += "RequestOptions_NULL";
-        } else {
-            prefix += "RequestOptions_" + requestOptionsSerializer.getClass().getSimpleName();
+        if (row != null && row.length > 0) {
+            CosmosItemSerializer requestOptionsSerializer = (CosmosItemSerializer) row[0];
+            if (requestOptionsSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+                prefix += "RequestOptions_DEFAULT";
+            } else if (requestOptionsSerializer == null) {
+                prefix += "RequestOptions_NULL";
+            } else {
+                prefix += "RequestOptions_" + requestOptionsSerializer.getClass().getSimpleName();
+            }
         }
 
         if (this.getClientBuilder().getCustomItemSerializer() == null) {
@@ -319,11 +329,11 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         Class<T> classType) {
 
         boolean useEnvelopeWrapper =
-            requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
+            requestLevelSerializer instanceof EnvelopWrappingItemSerializer
                 || (requestLevelSerializer == null
                 && this.getClientBuilder()
-                       .getCustomItemSerializer() == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
-        if (requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
+                       .getCustomItemSerializer() instanceof EnvelopWrappingItemSerializer);
+        if (requestLevelSerializer instanceof EnvelopWrappingItemSerializer
             && isContentOnWriteEnabled
             && nonIdempotentWriteRetriesEnabled
             && useTrackingIdForCreateAndReplace) {
@@ -693,6 +703,376 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithOrderByAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        String pkValue = UUID.randomUUID().toString();
+        List<String> createdIds = new ArrayList<>();
+        try {
+            for (int i = 0; i < 3; i++) {
+                String id = String.format("%s_%03d", pkValue, i);
+                TestDocument doc = TestDocument.create(id, pkValue);
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                    .setCustomItemSerializer(clientSerializer);
+                container.createItem(doc, new PartitionKey(pkValue), requestOptions);
+                createdIds.add(id);
+            }
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            List<TestDocument> results = container
+                .queryItems(
+                    "SELECT * FROM c WHERE c.mypk = '" + pkValue + "' ORDER BY c.id ASC",
+                    queryRequestOptions,
+                    TestDocument.class)
+                .stream().collect(Collectors.toList());
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(3);
+            for (int i = 0; i < results.size(); i++) {
+                assertThat(results.get(i).id).isEqualTo(createdIds.get(i));
+                assertThat(results.get(i).mypk).isEqualTo(pkValue);
+            }
+        } finally {
+            for (String id : createdIds) {
+                try {
+                    container.deleteItem(id, new PartitionKey(pkValue), new CosmosItemRequestOptions());
+                } catch (Exception ignored) { }
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithAggregateAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        boolean isEnvelopeWrapper = clientSerializer instanceof EnvelopWrappingItemSerializer;
+        if (isEnvelopeWrapper) {
+            return;
+        }
+
+        String pkValue = UUID.randomUUID().toString();
+        List<String> createdIds = new ArrayList<>();
+        try {
+            for (int i = 0; i < 3; i++) {
+                String id = UUID.randomUUID().toString();
+                TestDocument doc = TestDocument.create(id, pkValue);
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                    .setCustomItemSerializer(clientSerializer);
+                container.createItem(doc, new PartitionKey(pkValue), requestOptions);
+                createdIds.add(id);
+            }
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            // SELECT COUNT(1) returns an object (e.g. {"$1": 3}) rather than a scalar.
+            // Custom serializers work with Map<String, Object> which is object-level
+            // deserialization - they cannot handle scalar VALUE queries like
+            // SELECT VALUE COUNT(1) because the aggregate pipeline wraps the scalar
+            // in a {"_value": N} Document that can't be deserialized as Integer.
+            List<ObjectNode> results = container
+                .queryItems(
+                    "SELECT COUNT(1) FROM c WHERE c.mypk = '" + pkValue + "'",
+                    queryRequestOptions,
+                    ObjectNode.class)
+                .stream().collect(Collectors.toList());
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(1);
+            assertThat(results.get(0).get("$1").asInt()).isEqualTo(3);
+        } finally {
+            for (String id : createdIds) {
+                try {
+                    container.deleteItem(id, new PartitionKey(pkValue), new CosmosItemRequestOptions());
+                } catch (Exception ignored) { }
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithDistinctAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        boolean isEnvelopeWrapper = clientSerializer instanceof EnvelopWrappingItemSerializer;
+        if (isEnvelopeWrapper) {
+            return;
+        }
+
+        String pkValue = UUID.randomUUID().toString();
+        List<String> createdIds = new ArrayList<>();
+        try {
+            for (int i = 0; i < 3; i++) {
+                String id = UUID.randomUUID().toString();
+                TestDocument doc = TestDocument.create(id, pkValue);
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                    .setCustomItemSerializer(clientSerializer);
+                container.createItem(doc, new PartitionKey(pkValue), requestOptions);
+                createdIds.add(id);
+            }
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            List<ObjectNode> results = container
+                .queryItems(
+                    "SELECT DISTINCT c.mypk FROM c WHERE c.mypk = '" + pkValue + "'",
+                    queryRequestOptions,
+                    ObjectNode.class)
+                .stream().collect(Collectors.toList());
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(1);
+            assertThat(results.get(0).get("mypk").asText()).isEqualTo(pkValue);
+        } finally {
+            for (String id : createdIds) {
+                try {
+                    container.deleteItem(id, new PartitionKey(pkValue), new CosmosItemRequestOptions());
+                } catch (Exception ignored) { }
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithGroupByAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        boolean isEnvelopeWrapper = clientSerializer instanceof EnvelopWrappingItemSerializer;
+        if (isEnvelopeWrapper) {
+            return;
+        }
+
+        String pkValue = UUID.randomUUID().toString();
+        List<String> createdIds = new ArrayList<>();
+        try {
+            for (int i = 0; i < 3; i++) {
+                String id = UUID.randomUUID().toString();
+                TestDocument doc = TestDocument.create(id, pkValue);
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                    .setCustomItemSerializer(clientSerializer);
+                container.createItem(doc, new PartitionKey(pkValue), requestOptions);
+                createdIds.add(id);
+            }
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            List<ObjectNode> results = container
+                .queryItems(
+                    "SELECT c.mypk, COUNT(1) as cnt FROM c WHERE c.mypk = '" + pkValue + "' GROUP BY c.mypk",
+                    queryRequestOptions,
+                    ObjectNode.class)
+                .stream().collect(Collectors.toList());
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(1);
+            assertThat(results.get(0).get("mypk").asText()).isEqualTo(pkValue);
+            assertThat(results.get(0).get("cnt").asInt()).isEqualTo(3);
+        } finally {
+            for (String id : createdIds) {
+                try {
+                    container.deleteItem(id, new PartitionKey(pkValue), new CosmosItemRequestOptions());
+                } catch (Exception ignored) { }
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithSqlParameterAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        String id = UUID.randomUUID().toString();
+        TestDocument doc = TestDocument.create(id);
+        try {
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+            container.createItem(doc, new PartitionKey(id), requestOptions);
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            SqlQuerySpec querySpec = new SqlQuerySpec(
+                "SELECT * FROM c WHERE c.id = @id",
+                new SqlParameter("@id", id));
+
+            List<TestDocument> results = container
+                .queryItems(querySpec, queryRequestOptions, TestDocument.class)
+                .stream().collect(Collectors.toList());
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(1);
+            assertSameDocument(doc, results.get(0));
+        } finally {
+            try {
+                container.deleteItem(id, new PartitionKey(id), new CosmosItemRequestOptions());
+            } catch (Exception ignored) { }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithSqlParameterDateTimeAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        boolean isEnvelopeWrapper = clientSerializer instanceof EnvelopWrappingItemSerializer;
+        if (isEnvelopeWrapper) {
+            return;
+        }
+
+        // This test validates that when a custom serializer changes how values are
+        // stored (e.g. Instant as ISO-8601 string instead of a timestamp number),
+        // SqlParameter correctly applies the same serializer so that query filters
+        // match the stored representation.
+        String id = UUID.randomUUID().toString();
+        String pkValue = id;
+        Instant createdAt = Instant.parse("2026-03-15T10:30:00Z");
+        TestDocumentWithTimestamp doc = new TestDocumentWithTimestamp();
+        doc.id = id;
+        doc.mypk = pkValue;
+        doc.createdAt = createdAt;
+        doc.description = "test-datetime-serialization";
+
+        try {
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+            container.createItem(doc, new PartitionKey(pkValue), requestOptions);
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            // Query using SqlParameter with the same Instant value — the custom serializer
+            // must serialize the parameter the same way as the document field.
+            SqlQuerySpec querySpec = new SqlQuerySpec(
+                "SELECT * FROM c WHERE c.createdAt = @createdAt AND c.id = @id",
+                new SqlParameter("@createdAt", createdAt),
+                new SqlParameter("@id", id));
+
+            List<TestDocumentWithTimestamp> results = container
+                .queryItems(querySpec, queryRequestOptions, TestDocumentWithTimestamp.class)
+                .stream().collect(Collectors.toList());
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(1);
+            assertThat(results.get(0).id).isEqualTo(id);
+            assertThat(results.get(0).createdAt).isEqualTo(createdAt);
+            assertThat(results.get(0).description).isEqualTo("test-datetime-serialization");
+        } finally {
+            try {
+                container.deleteItem(id, new PartitionKey(pkValue), new CosmosItemRequestOptions());
+            } catch (Exception ignored) { }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT * 1000000)
+    public void queryWithConcurrentSqlQuerySpecReuseAndCustomSerializer() {
+        CosmosItemSerializer clientSerializer = this.getClientBuilder().getCustomItemSerializer();
+        if (clientSerializer == null || clientSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return;
+        }
+
+        boolean isEnvelopeWrapper = clientSerializer instanceof EnvelopWrappingItemSerializer;
+        if (isEnvelopeWrapper) {
+            return;
+        }
+
+        CosmosAsyncClient asyncClient = client.asyncClient();
+        CosmosAsyncContainer asyncContainer = asyncClient
+            .getDatabase(container.asyncContainer.getDatabase().getId())
+            .getContainer(container.asyncContainer.getId());
+
+        // Create multiple documents with Instant fields
+        String pkValue = UUID.randomUUID().toString();
+        int docCount = 5;
+        List<TestDocumentWithTimestamp> createdDocs = new ArrayList<>();
+        Instant createdAt = Instant.parse("2026-03-15T10:30:00Z");
+
+        try {
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            for (int i = 0; i < docCount; i++) {
+                TestDocumentWithTimestamp doc = new TestDocumentWithTimestamp();
+                doc.id = UUID.randomUUID().toString();
+                doc.mypk = pkValue;
+                doc.createdAt = createdAt;
+                doc.description = "concurrent-test-" + i;
+                asyncContainer.createItem(doc, new PartitionKey(pkValue), requestOptions).block();
+                createdDocs.add(doc);
+            }
+
+            // Build a single shared SqlQuerySpec — this is the scenario under test:
+            // the same instance is reused across concurrent queries.
+            SqlQuerySpec sharedQuerySpec = new SqlQuerySpec(
+                "SELECT * FROM c WHERE c.createdAt = @createdAt AND c.mypk = @pk",
+                new SqlParameter("@createdAt", createdAt),
+                new SqlParameter("@pk", pkValue));
+
+            // Capture original parameter values before concurrent execution
+            List<SqlParameter> originalParams = sharedQuerySpec.getParameters();
+            Object originalCreatedAtValue = originalParams.get(0).getValue(Object.class);
+            Object originalPkValue = originalParams.get(1).getValue(Object.class);
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCustomItemSerializer(clientSerializer);
+
+            int concurrentQueries = 10;
+
+            List<List<TestDocumentWithTimestamp>> allResults =
+                Flux.range(0, concurrentQueries)
+                    .flatMap(i ->
+                        asyncContainer
+                            .queryItems(sharedQuerySpec, queryRequestOptions, TestDocumentWithTimestamp.class)
+                            .byPage()
+                            .flatMapIterable(FeedResponse::getResults)
+                            .collectList(),
+                        concurrentQueries)
+                    .collectList()
+                    .block();
+
+            assertThat(allResults).isNotNull();
+            assertThat(allResults).hasSize(concurrentQueries);
+            for (List<TestDocumentWithTimestamp> results : allResults) {
+                assertThat(results).hasSize(docCount);
+                for (TestDocumentWithTimestamp result : results) {
+                    assertThat(result.createdAt).isEqualTo(createdAt);
+                    assertThat(result.mypk).isEqualTo(pkValue);
+                }
+            }
+
+            // Verify the original SqlQuerySpec parameters are unmodified
+            assertThat(sharedQuerySpec.getParameters()).hasSize(2);
+            assertThat(sharedQuerySpec.getParameters().get(0).getValue(Object.class))
+                .isEqualTo(originalCreatedAtValue);
+            assertThat(sharedQuerySpec.getParameters().get(1).getValue(Object.class))
+                .isEqualTo(originalPkValue);
+        } finally {
+            for (TestDocumentWithTimestamp doc : createdDocs) {
+                try {
+                    asyncContainer.deleteItem(doc.id, new PartitionKey(pkValue), new CosmosItemRequestOptions()).block();
+                } catch (Exception ignored) { }
+            }
+        }
+    }
+
     private <T> void runBatchAndChangeFeedTestCase(
         Function<String, T> docGenerator,
         CosmosItemSerializer requestLevelSerializer,
@@ -923,6 +1303,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         public String nullableField;
     }
 
+    private static class TestDocumentWithTimestamp {
+        public String id;
+        public String mypk;
+        public Instant createdAt;
+        public String description;
+    }
+
     private static class TestDocumentWrappedInEnvelope {
         public String id;
 
@@ -959,6 +1346,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             }
 
             Map<String, Object> unwrappedJsonTree = CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
+
+            // Non-document values (e.g., SQL parameter values like strings or numbers)
+            // don't have "id" — pass them through without wrapping.
+            if (!unwrappedJsonTree.containsKey("id")) {
+                return unwrappedJsonTree;
+            }
+
             if (unwrappedJsonTree.containsKey("wrappedContent")) {
                 throw new IllegalStateException("Double wrapping");
             }
@@ -1016,6 +1410,57 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                     CosmosItemSerializer.DEFAULT_SERIALIZER,
                     unwrappedContent,
                     classType);
+        }
+    }
+
+    /**
+     * A simple custom item serializer that mirrors the real-world use case from
+     * <a href="https://github.com/Azure/azure-sdk-for-java/issues/45521">issue #45521</a>.
+     * Uses a custom ObjectMapper with different settings (e.g., dates as ISO strings)
+     * without transforming the document structure (no wrapping/unwrapping).
+     */
+    @SuppressWarnings("unchecked")
+    private static class BasicCustomItemSerializer extends CosmosItemSerializer {
+        public static final BasicCustomItemSerializer INSTANCE = new BasicCustomItemSerializer();
+
+        private static final ObjectMapper customMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            .configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        private BasicCustomItemSerializer() {
+        }
+
+        @Override
+        public <T> Map<String, Object> serialize(T item) {
+            if (item == null) {
+                return null;
+            }
+
+            JsonNode jsonNode = customMapper.convertValue(item, JsonNode.class);
+            if (jsonNode == null) {
+                return null;
+            }
+
+            if (jsonNode.isObject()) {
+                return customMapper.convertValue(jsonNode, Map.class);
+            }
+
+            // For scalar values (e.g. Instant, String, numbers), return a single-entry
+            // map using the well-known primitive value key so the framework correctly
+            // sets it as a scalar in the JSON property bag.
+            Map<String, Object> primitiveMap = new HashMap<>();
+            primitiveMap.put("__primitive_json-node_value__", customMapper.convertValue(jsonNode, Object.class));
+            return primitiveMap;
+        }
+
+        @Override
+        public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+            if (jsonNodeMap == null) {
+                return null;
+            }
+            return customMapper.convertValue(jsonNodeMap, classType);
         }
     }
 }

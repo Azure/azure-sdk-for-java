@@ -59,11 +59,6 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
      */
     private BackendPoolType backendPoolType;
 
-    /*
-     * The health probing behavior for External Traffic Policy Cluster services.
-     */
-    private ClusterServiceLoadBalancerHealthProbeMode clusterServiceLoadBalancerHealthProbeMode;
-
     /**
      * Creates an instance of ManagedClusterLoadBalancerProfile class.
      */
@@ -229,29 +224,6 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
     }
 
     /**
-     * Get the clusterServiceLoadBalancerHealthProbeMode property: The health probing behavior for External Traffic
-     * Policy Cluster services.
-     * 
-     * @return the clusterServiceLoadBalancerHealthProbeMode value.
-     */
-    public ClusterServiceLoadBalancerHealthProbeMode clusterServiceLoadBalancerHealthProbeMode() {
-        return this.clusterServiceLoadBalancerHealthProbeMode;
-    }
-
-    /**
-     * Set the clusterServiceLoadBalancerHealthProbeMode property: The health probing behavior for External Traffic
-     * Policy Cluster services.
-     * 
-     * @param clusterServiceLoadBalancerHealthProbeMode the clusterServiceLoadBalancerHealthProbeMode value to set.
-     * @return the ManagedClusterLoadBalancerProfile object itself.
-     */
-    public ManagedClusterLoadBalancerProfile withClusterServiceLoadBalancerHealthProbeMode(
-        ClusterServiceLoadBalancerHealthProbeMode clusterServiceLoadBalancerHealthProbeMode) {
-        this.clusterServiceLoadBalancerHealthProbeMode = clusterServiceLoadBalancerHealthProbeMode;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -285,10 +257,6 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
         jsonWriter.writeBooleanField("enableMultipleStandardLoadBalancers", this.enableMultipleStandardLoadBalancers);
         jsonWriter.writeStringField("backendPoolType",
             this.backendPoolType == null ? null : this.backendPoolType.toString());
-        jsonWriter.writeStringField("clusterServiceLoadBalancerHealthProbeMode",
-            this.clusterServiceLoadBalancerHealthProbeMode == null
-                ? null
-                : this.clusterServiceLoadBalancerHealthProbeMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -333,9 +301,6 @@ public final class ManagedClusterLoadBalancerProfile implements JsonSerializable
                 } else if ("backendPoolType".equals(fieldName)) {
                     deserializedManagedClusterLoadBalancerProfile.backendPoolType
                         = BackendPoolType.fromString(reader.getString());
-                } else if ("clusterServiceLoadBalancerHealthProbeMode".equals(fieldName)) {
-                    deserializedManagedClusterLoadBalancerProfile.clusterServiceLoadBalancerHealthProbeMode
-                        = ClusterServiceLoadBalancerHealthProbeMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

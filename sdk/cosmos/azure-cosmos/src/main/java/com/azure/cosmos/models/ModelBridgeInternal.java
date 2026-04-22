@@ -771,5 +771,7 @@ public final class ModelBridgeInternal {
         CosmosContainerIdentity.initialize();
         PriorityLevel.initialize();
         CosmosGlobalSecondaryIndexDefinition.initialize();
+        SqlQuerySpec.initialize();
+        SqlParameter.initialize();
     }
 }

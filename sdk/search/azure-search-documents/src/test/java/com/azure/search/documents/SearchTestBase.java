@@ -259,6 +259,21 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    protected <T> SearchIndexingBufferedSenderBuilder<T> getBufferedSenderBuilder(String indexName, boolean isSync) {
+        SearchIndexingBufferedSenderBuilder<T> builder
+            = new SearchIndexingBufferedSenderBuilder<T>().endpoint(SEARCH_ENDPOINT)
+                .indexName(indexName)
+                .credential(getTestTokenCredential())
+                .httpClient(getHttpClient(interceptorManager, isSync))
+                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
     private static HttpClient getHttpClient(InterceptorManager interceptorManager, boolean isSync) {
         HttpClient httpClient
             = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
