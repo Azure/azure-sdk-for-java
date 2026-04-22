@@ -15,6 +15,7 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.types.StructType
 
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -153,11 +154,10 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             pkIterator)
 
           new Iterator[Row] {
-            private var isClosed = false
+            private val isClosed = new AtomicBoolean(false)
 
             private def closeReader(): Unit = {
-              if (!isClosed) {
-                isClosed = true
+              if (isClosed.compareAndSet(false, true)) {
                 reader.close()
               }
             }

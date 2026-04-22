@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.OperationCancelledException
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
@@ -13,8 +12,6 @@ import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.util.Random
-import scala.util.control.Breaks
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -47,7 +44,6 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
     5 + CosmosConstants.readOperationEndToEndTimeoutInSeconds,
     scala.concurrent.duration.SECONDS)
 
-  private val rnd = Random
   // scalastyle:off null
   private val lastContinuationToken = new AtomicReference[String](null)
   private val pendingContinuationToken = new AtomicReference[String](null)
@@ -184,52 +180,19 @@ private[spark] class TransientIOErrorsRetryingReadManyByPartitionKeyIterator[TSp
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
-    val loop = new Breaks()
-    var returnValue: Option[T] = None
-
-    loop.breakable {
-      while (true) {
-        val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
-
-        try {
-          returnValue = Some(func())
-          retryCount.set(0)
-          loop.break
-        }
-        catch {
-          case cosmosException: CosmosException =>
-            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
-              val retryCountSnapshot = retryCount.incrementAndGet()
-              if (retryCountSnapshot > maxRetryCount) {
-                logError(
-                  s"Too many transient failure retry attempts in " +
-                    s"TransientIOErrorsRetryingReadManyByPartitionKeyIterator.$methodName",
-                  cosmosException)
-                throw cosmosException
-              } else {
-                logWarning(
-                  s"Transient failure handled in " +
-                    s"TransientIOErrorsRetryingReadManyByPartitionKeyIterator.$methodName -" +
-                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms " +
-                    s"(continuationToken=$lastContinuationToken)",
-                  cosmosException)
-              }
-            } else {
-              throw cosmosException
-            }
-          case other: Throwable => throw other
-        }
-
+    TransientIOErrorsRetryingIterator.executeWithRetry(
+      "TransientIOErrorsRetryingReadManyByPartitionKeyIterator",
+      methodName,
+      func,
+      maxRetryCount,
+      maxRetryIntervalInMs,
+      retryCount,
+      () => {
         currentItemIterator = None
         currentFeedResponseIterator = None
         pendingContinuationToken.set(null)
-        Thread.sleep(retryIntervalInMs)
-      }
-    }
-
-    returnValue.get
+      })
   }
-
   override def close(): Unit = {
     currentItemIterator = None
     currentFeedResponseIterator = None

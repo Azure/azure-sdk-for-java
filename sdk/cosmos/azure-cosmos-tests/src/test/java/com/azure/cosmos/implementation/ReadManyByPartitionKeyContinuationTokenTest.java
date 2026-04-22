@@ -135,7 +135,7 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
         ModelBridgeInternal.setFeedResponseContinuationToken(null, emptyResponse);
 
         assertThat(emptyResponse.getContinuationToken()).isNull();
-        assertThat(emptyResponse.getResponseHeaders()).isNotSameAs(immutableEmptyHeaders);
+        assertThat(emptyResponse.getResponseHeaders()).isSameAs(immutableEmptyHeaders);
         assertThat(emptyResponse.getResponseHeaders()).isEmpty();
 
         Map<String, String> normalHeaders = new HashMap<>();

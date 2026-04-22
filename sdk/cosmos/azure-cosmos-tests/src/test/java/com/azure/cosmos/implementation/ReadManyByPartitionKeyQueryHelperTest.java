@@ -618,18 +618,18 @@ public class ReadManyByPartitionKeyQueryHelperTest {
     }
 
     @Test(groups = { "unit" })
-    public void hpk_nonePartitionKey_generatesNotIsDefinedForAllPaths() {
+    public void hpk_nonePartitionKey_throwsForMultiHash() {
         PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
         List<String> selectors = createSelectors(pkDef);
         List<PartitionKey> pkValues = Collections.singletonList(PartitionKey.NONE);
 
-        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
-            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef);
-
-        assertThat(result.getQueryText()).contains("NOT IS_DEFINED(c[\"city\"])");
-        assertThat(result.getQueryText()).contains("NOT IS_DEFINED(c[\"zipcode\"])");
-        assertThat(result.getQueryText()).contains("AND");
-        assertThat(result.getParameters()).isEmpty();
+        // PartitionKey.NONE is not supported for multi-path partition keys -
+        // the SDK rejects it in normalizePartitionKeys before reaching the query helper.
+        // The query helper itself also rejects it defensively.
+        assertThatThrownBy(() -> ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c", new ArrayList<>(), pkValues, selectors, pkDef))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("PartitionKey.NONE is not supported for multi-path partition keys");
     }
 
     //endregion

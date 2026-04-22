@@ -229,6 +229,9 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
             // Factory that creates a CosmosPagedFlux from an optional continuation token.
             // On the first call continuationToken is null (start from scratch); on retry
             // it is the continuation token from the last fully-drained page.
+            // NOTE: mutating the shared readManyOptions before each call is safe because
+            // the SDK clones the options internally at the start of each call, and the
+            // iterator is single-threaded (mutation in step N completes before step N+1).
             private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (continuationToken: String) =>
               // Reuse the preconfigured request options and only update the continuation
               // token so the SDK resumes from the last fully committed page.

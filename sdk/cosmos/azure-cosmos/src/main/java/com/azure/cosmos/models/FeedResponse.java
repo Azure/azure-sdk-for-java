@@ -55,6 +55,17 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
+    // All header maps are produced by the SDK's own query pipeline. Non-null maps
+    // are always mutable (HashMap or ConcurrentHashMap) - the SDK intentionally
+    // allows callers to add/modify headers on FeedResponse. The only known
+    // exception is empty-page responses where the query pipeline may pass null.
+    // We do NOT clone non-null maps here to avoid unnecessary allocations on every
+    // FeedResponse construction - the wider blast radius of cloning (every query,
+    // change feed, readMany response) is not justified by the narrow null case.
+    // If a future code path introduces an immutable non-null header map, the
+    // setContinuationTokenInternal method will fail fast with
+    // UnsupportedOperationException, and the fix should be to make the upstream
+    // pipeline emit a mutable map rather than adding defensive cloning here.
     private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
         return headers == null ? new HashMap<>() : headers;
     }
@@ -447,9 +458,9 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             // to remove it would not be robust enough against unknown headers
             // but since we only ever call our own query pipeline
             // avoiding cloning in all cases and gating on continuation header
-            // existence is a reaosnable trade-off - test coverage exists that uncovered
+            // existence is a reasonable trade-off - test coverage exists that uncovered
             // the problem - so, this acts as regression test as well
-            // --> the etst coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
+            // --> the test coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
             // it should "return empty results for non-existent partition keys"
             this.header.remove(headerName);
         }

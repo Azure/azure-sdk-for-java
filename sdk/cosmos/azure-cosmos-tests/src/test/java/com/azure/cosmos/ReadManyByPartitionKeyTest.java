@@ -482,6 +482,29 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         cleanupContainer(singlePkContainer);
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_readManyByPartitionKey_withRequestOptionsAndMaxConcurrentBatchPrefetch() {
+        // Regression test: passing non-null CosmosReadManyByPartitionKeyRequestOptions
+        // with maxConcurrentBatchPrefetch set should not throw NullPointerException
+        // from auto-unboxing a null MaxDegreeOfParallelism during options cloning.
+        List<ObjectNode> items = createSinglePkItems("pkMdop", 3);
+
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkMdop"));
+        com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options =
+            new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+        options.setMaxConcurrentBatchPrefetch(2);
+
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(
+            pkValues, options, ObjectNode.class);
+        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+
+        assertThat(resultList).hasSize(3);
+        resultList.forEach(item -> {
+            assertThat(item.get("mypk").asText()).isEqualTo("pkMdop");
+        });
+
+        cleanupContainer(singlePkContainer);
+    }
     //endregion
 
     //region Continuation token tests

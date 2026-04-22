@@ -1764,7 +1764,11 @@ public class CosmosAsyncContainer {
             // value but default the uninitialized case to unbounded for readManyByPartitionKeys.
             // CosmosReadManyRequestOptions does not currently expose MDOP, so this only matters
             // if it is plumbed through in the future.
-            if (queryRequestOptions.getMaxDegreeOfParallelism() == DEFAULT_MAX_DEGREE_OF_PARALLELISM) {
+            // When cloning from CosmosReadManyByPartitionKeyRequestOptionsImpl (which does not
+            // define maxDegreeOfParallelism), the cloned CosmosQueryRequestOptions may have a
+            // null backing Integer. Guard against NPE from auto-unboxing by checking for null.
+            Integer mdop = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxDegreeOfParallelism();
+            if (mdop == null || mdop == DEFAULT_MAX_DEGREE_OF_PARALLELISM) {
                 queryRequestOptions.setMaxDegreeOfParallelism(UNBOUNDED_MAX_DEGREE_OF_PARALLELISM);
             }
             queryRequestOptions.setQueryName("readManyByPartitionKeys");
