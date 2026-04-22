@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 1.0.0 (2026-03-26)
+## 1.0.0 (2026-04-07)
 
 - Azure Resource Manager Extensions client library for Java. This package contains Microsoft Azure SDK for Extensions Management SDK. Use these APIs to create extension resources through ARM, for Kubernetes Clusters. Package api-version 2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -40,8 +40,8 @@
 
 #### `models.AksIdentityType` was modified
 
-* `models.AksIdentityType[] values()` -> `java.util.Collection values()`
 * `valueOf(java.lang.String)` was removed
+* `models.AksIdentityType[] values()` -> `java.util.Collection<com.azure.resourcemanager.kubernetesconfiguration.extensions.models.AksIdentityType> values()`
 * `toString()` was removed
 
 #### `models.ExtensionPropertiesAksAssignedIdentity` was modified
@@ -68,16 +68,16 @@
 
 #### `models.PatchExtension` was modified
 
-* `autoUpgradeMode()` was added
 * `withAutoUpgradeMode(models.AutoUpgradeMode)` was added
+* `autoUpgradeMode()` was added
 
 #### `models.Extension` was modified
 
-* `autoUpgradeMode()` was added
-* `additionalDetails()` was added
-* `managementDetails()` was added
 * `extensionState()` was added
+* `additionalDetails()` was added
 * `managedBy()` was added
+* `managementDetails()` was added
+* `autoUpgradeMode()` was added
 
 #### `models.AksIdentityType` was modified
 
@@ -86,10 +86,10 @@
 
 #### `models.ExtensionPropertiesAksAssignedIdentity` was modified
 
-* `withClientId(java.lang.String)` was added
+* `resourceId()` was added
 * `withObjectId(java.lang.String)` was added
 * `clientId()` was added
-* `resourceId()` was added
+* `withClientId(java.lang.String)` was added
 * `withResourceId(java.lang.String)` was added
 * `objectId()` was added
 
