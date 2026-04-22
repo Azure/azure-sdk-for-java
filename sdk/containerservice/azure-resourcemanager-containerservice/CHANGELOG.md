@@ -2,6 +2,10 @@
 
 ## 2.60.0-beta.1 (2026-04-21)
 
+### Bugs Fixed
+
+- Fixed bug that `nodeImageVersion` was not settable in `ManagedClusterAgentPoolProfileProperties`. 
+
 ### Other Changes
 
 #### Dependency Updates
