@@ -130,7 +130,7 @@ class ServiceBusRetryTest {
         prepareConsumerProperties();
         consumerProperties.setMaxAttempts(3);
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        
+
         // Create a custom RetryTemplate
         RetryTemplate customRetryTemplate = new RetryTemplate();
         binder.setRetryTemplate(customRetryTemplate);
