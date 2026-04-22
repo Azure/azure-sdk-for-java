@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureS
 import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -120,7 +121,7 @@ class MergeAzureCommonPropertiesTest {
     }
 
     @Test
-    void testJdbcPropertiesGetCorrectScopeFromGlobalCloudType() {
+    void testJdbcPropertiesGetCorrectScopeFromChinaCloudTypeInGlobalProperties() {
         AzureGlobalProperties globalProperties = new AzureGlobalProperties();
         globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
 
@@ -136,7 +137,7 @@ class MergeAzureCommonPropertiesTest {
         assertEquals("https://ossrdbms-aad.database.chinacloudapi.cn/.default", result.getEffectiveScopes());
         // toPasswordlessProperties should include the correct cloud-type-aware scope
         assertEquals("https://ossrdbms-aad.database.chinacloudapi.cn/.default",
-            result.toPasswordlessProperties().getProperty("azure.scopes"));
+            result.toPasswordlessProperties().getProperty(AuthProperty.SCOPES.getPropertyKey()));
         assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, result.getProfile().getCloudType());
     }
 
@@ -155,6 +156,6 @@ class MergeAzureCommonPropertiesTest {
         assertEquals("https://custom-scope/.default", result.getScopes());
         assertEquals("https://custom-scope/.default", result.getEffectiveScopes());
         assertEquals("https://custom-scope/.default",
-            result.toPasswordlessProperties().getProperty("azure.scopes"));
+            result.toPasswordlessProperties().getProperty(AuthProperty.SCOPES.getPropertyKey()));
     }
 }
