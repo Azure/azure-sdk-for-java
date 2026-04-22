@@ -1,0 +1,111 @@
+# Using the Azure SDK for Java with AI tools
+
+AI-powered coding tools can help you write, understand, and debug applications
+that use the Azure SDK. This page lists common options and integrations available
+today.
+
+## AI coding tools
+
+Several tools support AI-assisted development with the Azure SDK:
+
+| Tool | Description |
+|------|-------------|
+| [VS Code](https://code.visualstudio.com/) | Code editor with built-in AI features and Copilot integration |
+| [GitHub Copilot](https://github.com/features/copilot) | AI code completion and chat inside VS Code, Visual Studio, JetBrains IDEs, and GitHub.com |
+| [Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli) | AI assistance for shell commands and Azure CLI usage |
+| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Terminal-based AI coding agent from Anthropic |
+| [Cursor](https://www.cursor.com/) | AI-first code editor with chat and inline editing |
+| [Aider](https://aider.chat/) | Terminal-based AI pair programming tool |
+
+This is not an exhaustive list — most AI coding tools that support chat or code
+generation can work with the Azure SDK.
+
+## Azure MCP Server
+
+The [Azure MCP Server](https://learn.microsoft.com/azure/developer/azure-mcp-server/get-started)
+exposes Azure resource operations to AI tools through the
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This lets an AI coding agent
+query, create, and manage Azure resources directly during a conversation.
+
+See the [getting started guide](https://learn.microsoft.com/azure/developer/azure-mcp-server/get-started)
+for setup instructions.
+
+## Azure SDK MCP Server (Java)
+
+The Azure SDK for Java ships its own MCP server for IDE-integrated automation,
+validation, and SDK-specific guidance. It is used by the Copilot agent inside
+VS Code and IntelliJ to run code-generation, build, and release workflows.
+
+Start the server (requires [PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell)):
+
+```powershell
+eng/common/mcp/azure-sdk-mcp.ps1 -Run
+```
+
+For VS Code, add the following to your MCP configuration:
+
+```json
+{
+  "servers": {
+    "azure-sdk-mcp": {
+      "type": "stdio",
+      "command": "pwsh",
+      "args": [
+        "<path-to-repo>/eng/common/mcp/azure-sdk-mcp.ps1",
+        "-Run"
+      ]
+    }
+  }
+}
+```
+
+See [`.github/copilot-instructions.md`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/.github/copilot-instructions.md) for the full IDE setup guide.
+
+## Azure SDK skills
+
+The Microsoft skills marketplace provides Azure SDK skills that give AI agents
+context about Azure SDK conventions, code generation, and package management.
+These skills work with CLI-based AI tools that support plugins, such as Claude Code
+and Copilot CLI.
+
+Install the Microsoft skills marketplace:
+
+```
+/plugin marketplace add Microsoft/skills
+```
+
+Install the Azure SDK skills plugin:
+
+```
+/plugin install azure-sdk-java@skills
+```
+
+Verify installation:
+
+```
+/plugin list
+```
+
+Update the plugin:
+
+```
+/plugin update azure-sdk-java@skills
+```
+
+Skills provide domain-specific context that helps AI tools generate more
+accurate SDK code.
+
+For operational Azure tasks (managing resources, querying services), see the
+[Azure skills](https://github.com/microsoft/azure-skills) repository.
+
+## Further reading
+
+- [Azure SDK for Java documentation](https://learn.microsoft.com/java/api/overview/azure/)
+- [Azure SDK design guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
+- [Azure MCP Server](https://learn.microsoft.com/azure/developer/azure-mcp-server/get-started)
+- [GitHub Copilot instructions for this repo](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/.github/copilot-instructions.md)
+
+## Feedback
+
+If you have feedback on your AI experience with the Azure SDK for Java,
+[open an issue](https://github.com/Azure/azure-sdk-for-java/issues/new/choose) on the repository.

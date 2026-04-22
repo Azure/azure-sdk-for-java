@@ -1694,6 +1694,109 @@
             "match": "class com\\.azure\\.resourcemanager\\.privatedns\\.models\\.(PrivateZoneListResult|RecordSetListResult|VirtualNetworkLinkListResult)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.monitor\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method java.util.List<com.azure.resourcemanager.monitor.models.AlertRuleLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition::anyOf()",
+          "justification": "ActivityLogAlertLeafCondition replaced by AlertRuleAnyOfOrLeafCondition in TypeSpec migration."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\.ConditionOperator.*"
+          },
+          "justification": "ConditionOperator changed from enum to ExpandableStringEnum; enum-specific methods removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.monitor.models.MetricAlertAction::webhookProperties()",
+          "justification": "webhookProperties() removed in TypeSpec migration."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\..*(List|ListResult|Collection|Response)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\.(DataContainer|DataStatus|OnboardingStatus|WorkspaceInfo|MetricAlertStatus|Operation|OperationDisplay|AlertRuleLeafCondition)"
+          },
+          "justification": "Classes only present in preview API versions not included in current TypeSpec scope."
+        },
+        {
+          "code": "java.class.kindChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: enum changed to ExpandableStringEnum."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old" : {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: enum changed to ExpandableStringEnum."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: base class changed."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old" : {
+            "matcher": "regex",
+            "match": "(enum|class) com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: super type changed."
+        },
+        {
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::allOf()",
+          "justification": "TypeSpec migration: allOf() return type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old" : "parameter com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::withAllOf(===java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition>===)",
+          "justification": "TypeSpec migration: withAllOf() parameter type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
+        },
+
+        {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.monitor.models.ConditionOperator::<init>(java.lang.String)",
+          "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, constructor visibility increased."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.monitor.models.ConditionOperator[] com.azure.resourcemanager.monitor.models.ConditionOperator::values()",
+          "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, values() return type changed."
         }
       ]
     }
