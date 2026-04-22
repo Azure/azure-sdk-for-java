@@ -165,6 +165,6 @@ mvn verify -f sdk/<service>/<module>/pom.xml
 
 ## See Also
 
-- [Serialization](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/serialization.md) — architecture of `azure-json` vs `JacksonAdapter`
+- [Serialization](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/serialization.md) — architecture of `azure-json` vs `JacksonAdapter`
 - [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md) — RevApi suppressions
 - [Working with AutoRest](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/autorest.md)

@@ -26,23 +26,63 @@ It is structured so that both humans and LLM/agent tooling can navigate directly
 
 ---
 
+## Getting Started
+
+The fastest way to start is to find your service in the [list of available packages](https://azure.github.io/azure-sdk/releases/latest/all/java.html)
+and follow that library's `README.md`.
+
+All client libraries:
+- Baseline on **Java 8** and are tested up to the latest Java LTS release.
+- Follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
+- Share common infrastructure (retry, logging, authentication, tracing) from `azure-core`.
+
+Add whatever library you need. Example for Azure Blob Storage:
+
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-storage-blob</artifactId>
+  <version>12.x.x</version>
+</dependency>
+```
+
+Or use the **Azure SDK BOM** to manage versions automatically:
+
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-sdk-bom</artifactId>
+      <version>1.2.x</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+
+See [BOM Guidelines](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/bom-guidelines.md) for details.
+
+---
+
 ## User Guides
 
 For **consumers** of the Azure SDK for Java libraries:
 
 | Guide | Description |
 |-------|-------------|
-| [User Guide Index](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/README.md) | Index of all user-facing guides |
-| [Frequently Asked Questions](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/faq.md) | Async gotchas, dependency conflicts, Security Manager |
-| [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/identity-examples.md) | All credential types with code samples |
-| [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/configuration.md) | Environment variables, HTTP client tuning, retries |
-| [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/performance-tuning.md) | SSL, connection pooling, async vs. sync |
-| [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/test-proxy-migration.md) | Migrate test recordings to the external assets repo |
-| [Azure JSON Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/azure-json-migration.md) | Replace Jackson with `azure-json` stream serialization |
-| [Serialization](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/serialization.md) | `JacksonAdapter`, `JsonSerializer`, default config |
-| [Protocol Methods](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/protocol-methods.md) | Direct low-level HTTP access via `RequestOptions` |
-| [Management Libraries](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/management.md) | Auth, sync/async calls, LROs for ARM libraries |
-| [Azure V2 — Logging & HTTP](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/azure-v2.md) | `clientcore` logging best practices, OkHttp |
+| [Frequently Asked Questions](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/faq.md) | Async gotchas, dependency conflicts, Security Manager |
+| [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/identity-examples.md) | All credential types with code samples |
+| [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/configuration.md) | Environment variables, HTTP client tuning, retries |
+| [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/performance-tuning.md) | SSL, connection pooling, async vs. sync |
+| [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md) | Migrate test recordings to the external assets repo |
+| [Azure JSON Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/azure-json-migration.md) | Replace Jackson with `azure-json` stream serialization |
+| [Serialization](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/serialization.md) | `JacksonAdapter`, `JsonSerializer`, default config |
+| [Protocol Methods](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/protocol-methods.md) | Direct low-level HTTP access via `RequestOptions` |
+| [Management Libraries](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/management.md) | Auth, sync/async calls, LROs for ARM libraries |
+| [Azure V2 — Logging & HTTP](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/azure-v2.md) | `clientcore` logging best practices, OkHttp |
+| [Using the SDK with AI tools](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/sdk_and_ai.md) | Copilot, MCP server, Azure SDK skills, AI coding tools |
 
 
 ---
@@ -77,6 +117,16 @@ For **developers building or maintaining** SDK libraries:
 ## Documentation Placement Decisions
 
 See [STRUCTURE.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/STRUCTURE.md) for the full rationale on what lives here versus in `eng/` or alongside individual SDK libraries.
+
+---
+
+## Need Help?
+
+- Reference documentation: [aka.ms/java-docs](https://aka.ms/java-docs)
+- Tutorials and quick starts: [Azure for Java Developers](https://docs.microsoft.com/java/azure/)
+- File a bug or feature request: [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
+- Community Q&A: [Stack Overflow `azure-java-sdk` tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
+- Commercial support: [Azure Support](https://azure.microsoft.com/support/options/)
 
 ---
 

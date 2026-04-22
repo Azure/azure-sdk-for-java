@@ -112,5 +112,5 @@ After changing a Swagger spec:
 ## See Also
 
 - [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md) — preferred for new services
-- [Azure Json Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/azure-json-migration.md) — move from Jackson to `azure-json`
+- [Azure Json Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/azure-json-migration.md) — move from Jackson to `azure-json`
 - [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)

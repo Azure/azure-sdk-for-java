@@ -43,7 +43,7 @@ mvn install -f sdk/appconfiguration/pom.xml -Dgpg.skip -Drevapi.skip -DskipTests
 
 Remove `-DskipTests` from any of the above commands.
 
-### Build only the Track 2 client libraries
+### Build the Track 2 client libraries
 
 ```bash
 mvn install -f pom.xml -Dgpg.skip -Drevapi.skip -DskipTests \

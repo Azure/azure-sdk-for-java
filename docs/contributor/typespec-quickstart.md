@@ -150,7 +150,7 @@ mvn test -f sdk/<service>/<module>/pom.xml
 
 ⚠️ Use `TestBase.setPlaybackSyncPollerPollInterval` on `SyncPoller` in LRO tests.
 
-See [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/test-proxy-migration.md) for recording infrastructure.
+See [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md) for recording infrastructure.
 
 ---
 
@@ -215,4 +215,4 @@ Key steps:
 - [Adding a Module](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/adding-a-module.md)
 - [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
 - [JavaDoc and Code Snippets](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md)
-- [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/test-proxy-migration.md)
+- [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md)

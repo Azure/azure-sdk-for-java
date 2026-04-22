@@ -2,7 +2,7 @@
 
 This directory contains guides for **developers building or maintaining** Azure SDK for Java libraries.
 
-If you are a **consumer** of the SDK looking for usage guidance, start at the [User Guide Index](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/README.md) instead.
+If you are a **consumer** of the SDK looking for usage guidance, start at the [User Guide Index](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/README.md) instead.
 
 ---
 

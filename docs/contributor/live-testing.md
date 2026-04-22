@@ -102,7 +102,7 @@ them offline without deployed Azure resources.
 | `LIVE` | Always hits the real service; no recording |
 
 See the [Test Proxy onboarding guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/testproxy/onboarding/README.md) and
-the [Test Proxy Migration guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/user/test-proxy-migration.md) for setup instructions.
+the [Test Proxy Migration guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md) for setup instructions.
 
 ---
 
