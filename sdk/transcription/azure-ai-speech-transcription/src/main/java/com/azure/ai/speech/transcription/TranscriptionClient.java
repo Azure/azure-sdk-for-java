@@ -20,15 +20,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous TranscriptionClient type.
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class)
 public final class TranscriptionClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClient.class);
 
     @Generated
     private final TranscriptionClientImpl serviceClient;
