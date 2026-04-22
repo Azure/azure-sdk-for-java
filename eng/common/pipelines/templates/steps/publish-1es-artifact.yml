@@ -16,34 +16,35 @@ parameters:
 steps:
   - pwsh: |
       $artifactName = "${{ parameters.ArtifactName }}"
-      $skipPublish = "false"
 
       if ($env:AGENT_JOBSTATUS -eq "Failed") {
         $artifactName = "${{ parameters.ArtifactName }}-FailedAttempt$(System.JobAttempt)"
         Write-Host "Setting artifact name to $artifactName because there were failures."
       } else {
-        # Check if the artifact already exists from a previous job attempt (re-run scenario).
-        # This avoids the "Artifact <name> already exists for build" error when re-running failed jobs.
+        # Delete the existing artifact if it exists from a previous job attempt (re-run scenario).
+        # This avoids the "Artifact <name> already exists for build" error when re-running failed jobs,
+        # while ensuring the artifact always reflects the latest build content.
         $headers = @{ Authorization = "Bearer $(System.AccessToken)" }
         $url = "$(System.CollectionUri)$(System.TeamProject)/_apis/build/builds/$(Build.BuildId)/artifacts?artifactName=$artifactName&api-version=7.0"
         try {
           $response = Invoke-RestMethod -Uri $url -Headers $headers -Method Get -MaximumRetryCount 3 -RetryIntervalSec 5 -ErrorAction Stop
           if ($response -and $response.name) {
-            Write-Host "Artifact '$artifactName' already exists from a previous attempt. Skipping publish."
-            $skipPublish = "true"
+            Write-Host "Artifact '$artifactName' already exists from a previous attempt. Deleting before re-publish."
+            $deleteUrl = "$(System.CollectionUri)$(System.TeamProject)/_apis/build/builds/$(Build.BuildId)/artifacts?artifactName=$artifactName&api-version=7.0"
+            Invoke-RestMethod -Uri $deleteUrl -Headers $headers -Method Delete -MaximumRetryCount 3 -RetryIntervalSec 5 -ErrorAction Stop
+            Write-Host "Successfully deleted existing artifact '$artifactName'."
           }
         } catch {
-          Write-Host "Failed to check if artifact '$artifactName' exists: $_. Proceeding with publish."
+          Write-Host "Failed to check/delete artifact '$artifactName': $_. Proceeding with publish."
         }
       }
 
       Write-Host "##vso[task.setvariable variable=PublishArtifactName;]$artifactName"
-      Write-Host "##vso[task.setvariable variable=SkipArtifactPublish;]$skipPublish"
     condition: and(succeededOrFailed(), ${{ parameters.CustomCondition }})
-    displayName: Set Artifact Variables
+    displayName: Set Artifact Name
 
   - task: 1ES.PublishPipelineArtifact@1
-    condition: and(succeededOrFailed(), ${{ parameters.CustomCondition }}, ne(variables['SkipArtifactPublish'], 'true'))
+    condition: and(succeededOrFailed(), ${{ parameters.CustomCondition }})
     displayName: 'Publish ${{ parameters.ArtifactName }} Artifacts'
     inputs:
       artifactName: '$(PublishArtifactName)'
