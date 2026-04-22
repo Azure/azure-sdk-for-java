@@ -13,6 +13,32 @@ Use the client library for Azure AI Content Understanding to:
 
 [Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_docs] | [Product documentation][product_docs]
 
+## Table of Contents
+
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Configuring Microsoft Foundry resource](#configuring-microsoft-foundry-resource)
+  - [Adding the package to your product](#adding-the-package-to-your-product)
+  - [Authenticate the client](#authenticate-the-client)
+- [Key concepts](#key-concepts)
+  - [Prebuilt analyzers](#prebuilt-analyzers)
+  - [Content types](#content-types)
+  - [Asynchronous operations](#asynchronous-operations)
+  - [Main classes](#main-classes)
+  - [Thread safety](#thread-safety)
+  - [Additional concepts](#additional-concepts)
+- [Examples](#examples)
+  - [Running samples](#running-samples)
+- [Troubleshooting](#troubleshooting)
+  - [Common issues](#common-issues)
+  - [Enable logging](#enable-logging)
+- [GitHub Copilot Skills](#github-copilot-skills)
+  - [Available Skills](#available-skills)
+  - [Using Skills in VS Code](#using-skills-in-vs-code)
+  - [Troubleshooting Skill Selection](#troubleshooting-skill-selection)
+- [Next steps](#next-steps)
+- [Contributing](#contributing)
+
 ## Getting started
 
 ### Prerequisites
@@ -417,11 +443,6 @@ ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
 
 For more information, see [Azure SDK for Java logging][logging].
 
-## Next steps
-
-* Explore the [samples directory][samples_directory] for complete code examples
-* Read the [Azure AI Content Understanding documentation][product_docs] for detailed service information
-
 ## GitHub Copilot Skills
 
 This package includes [GitHub Copilot][github_copilot] skills under `.github/skills/` that provide interactive, AI-assisted workflows for common tasks. In VS Code, Copilot can use these skills to help with environment setup, running samples, and understanding the service.
@@ -455,6 +476,13 @@ If Copilot does not use the expected skill, try the following:
 3. Ask for a step-by-step interactive flow when needed (for example: *"Guide me step by step to set up my environment"*).
 4. For build or runtime errors, mention the exact error text so Copilot can apply the right troubleshooting path.
 
+## Next steps
+
+* [Sample 00: Configure model deployment defaults][sample00] - Required one-time setup to configure model deployments for prebuilt and custom analyzers
+* [Sample 01: Analyze a document from binary data][sample01] - Analyze PDF files from disk using `prebuilt-documentSearch`
+* Explore the [samples directory][samples_directory] for complete code examples
+* Read the [Azure AI Content Understanding documentation][product_docs] for detailed service information
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide][contributing].
@@ -481,6 +509,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
+[sample00]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
+[sample01]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample01_AnalyzeBinary.java
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
