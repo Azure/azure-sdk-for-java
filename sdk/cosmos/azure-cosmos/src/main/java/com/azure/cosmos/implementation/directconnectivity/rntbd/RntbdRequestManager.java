@@ -84,7 +84,6 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClie
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
 
@@ -235,7 +234,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             } else {
 
                 final IllegalStateException error = new IllegalStateException(
-                    lenientFormat("expected message of %s, not %s: %s",
+                    String.format("expected message of %s, not %s: %s",
                         RntbdResponse.class,
                         message.getClass(),
                         message));
@@ -680,7 +679,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
-        final IllegalStateException error = new IllegalStateException(lenientFormat("message of %s: %s",
+        final IllegalStateException error = new IllegalStateException(String.format("message of %s: %s",
                 message.getClass(),
                 message));
 
@@ -920,7 +919,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             phrase = "closed exceptionally";
         }
 
-        final String message = lenientFormat("%s %s with %s pending requests", context, phrase, count);
+        final String message = String.format("%s %s with %s pending requests", context, phrase, count);
         final Exception cause;
 
         if (throwable instanceof ClosedChannelException) {

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RuntimeResumeApplicationUpgradeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuntimeResumeApplicationUpgradeParameters model
-            = BinaryData.fromString("{\"upgradeDomainName\":\"fhyhltrpmopjmcma\"}")
-                .toObject(RuntimeResumeApplicationUpgradeParameters.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.upgradeDomainName());
+        RuntimeResumeApplicationUpgradeParameters model = BinaryData.fromString("{\"upgradeDomainName\":\"xerf\"}")
+            .toObject(RuntimeResumeApplicationUpgradeParameters.class);
+        Assertions.assertEquals("xerf", model.upgradeDomainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuntimeResumeApplicationUpgradeParameters model
-            = new RuntimeResumeApplicationUpgradeParameters().withUpgradeDomainName("fhyhltrpmopjmcma");
+            = new RuntimeResumeApplicationUpgradeParameters().withUpgradeDomainName("xerf");
         model = BinaryData.fromObject(model).toObject(RuntimeResumeApplicationUpgradeParameters.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.upgradeDomainName());
+        Assertions.assertEquals("xerf", model.upgradeDomainName());
     }
 }

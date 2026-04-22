@@ -7,6 +7,7 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.ClusterInner;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -113,14 +114,14 @@ public interface Cluster {
      * 
      * @return the lastModifiedDate value.
      */
-    String lastModifiedDate();
+    OffsetDateTime lastModifiedDate();
 
     /**
      * Gets the createdDate property: The cluster creation time.
      * 
      * @return the createdDate value.
      */
-    String createdDate();
+    OffsetDateTime createdDate();
 
     /**
      * Gets the associatedWorkspaces property: The list of Log Analytics workspaces associated with the cluster.
@@ -135,6 +136,13 @@ public interface Cluster {
      * @return the capacityReservationProperties value.
      */
     CapacityReservationProperties capacityReservationProperties();
+
+    /**
+     * Gets the replication property: Cluster's replication properties.
+     * 
+     * @return the replication value.
+     */
+    ClusterReplicationProperties replication();
 
     /**
      * Gets the region of the resource.
@@ -222,7 +230,8 @@ public interface Cluster {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku,
             DefinitionStages.WithIsDoubleEncryptionEnabled, DefinitionStages.WithIsAvailabilityZonesEnabled,
             DefinitionStages.WithBillingType, DefinitionStages.WithKeyVaultProperties,
-            DefinitionStages.WithAssociatedWorkspaces, DefinitionStages.WithCapacityReservationProperties {
+            DefinitionStages.WithAssociatedWorkspaces, DefinitionStages.WithCapacityReservationProperties,
+            DefinitionStages.WithReplication {
             /**
              * Executes the create request.
              * 
@@ -362,6 +371,19 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withCapacityReservationProperties(CapacityReservationProperties capacityReservationProperties);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify replication.
+         */
+        interface WithReplication {
+            /**
+             * Specifies the replication property: Cluster's replication properties..
+             * 
+             * @param replication Cluster's replication properties.
+             * @return the next definition stage.
+             */
+            WithCreate withReplication(ClusterReplicationProperties replication);
         }
     }
 

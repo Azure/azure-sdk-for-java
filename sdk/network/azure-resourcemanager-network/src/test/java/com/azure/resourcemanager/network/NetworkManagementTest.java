@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.core.management.profile.AzureProfile;
@@ -51,6 +52,10 @@ public class NetworkManagementTest extends ResourceManagerTestProxyTestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        try {
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
+        } catch (ManagementException e) {
+            // ignore
+        }
     }
 }

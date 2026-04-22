@@ -1571,14 +1571,16 @@ public final class SchemasImpl {
     }
 
     /**
+     * Get list schema versions.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object received from the registry containing the list of schema versions and link to next batch page
-     * along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of all versions of one schema along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Integer>> getVersionsNextSinglePageAsync(String nextLink) {
@@ -1590,6 +1592,8 @@ public final class SchemasImpl {
     }
 
     /**
+     * Get list schema versions.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1597,8 +1601,8 @@ public final class SchemasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object received from the registry containing the list of schema versions and link to next batch page
-     * along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of all versions of one schema along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Integer>> getVersionsNextSinglePageAsync(String nextLink, Context context) {
@@ -1609,14 +1613,15 @@ public final class SchemasImpl {
     }
 
     /**
+     * Get list schema versions.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object received from the registry containing the list of schema versions and link to next batch page
-     * along with {@link PagedResponse}.
+     * @return the list of all versions of one schema along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Integer> getVersionsNextSinglePage(String nextLink) {
@@ -1628,6 +1633,8 @@ public final class SchemasImpl {
     }
 
     /**
+     * Get list schema versions.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1635,8 +1642,7 @@ public final class SchemasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object received from the registry containing the list of schema versions and link to next batch page
-     * along with {@link PagedResponse}.
+     * @return the list of all versions of one schema along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Integer> getVersionsNextSinglePage(String nextLink, Context context) {

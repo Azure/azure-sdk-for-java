@@ -106,7 +106,6 @@ public final class RuleMetricDataSource extends RuleDataSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

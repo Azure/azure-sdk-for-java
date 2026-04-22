@@ -708,7 +708,7 @@ public final class CertificateClient {
                     .getValue()
                     .toObject(DeletedCertificateBundle.class)));
         } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+            if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     pollingContext.getLatestResponse().getValue());
             } else {
@@ -799,7 +799,7 @@ public final class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the status code from the
      * server response when a response has been received.</p>
-    
+     *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string -->
      * <pre>
      * certificateClient.purgeDeletedCertificate&#40;&quot;certificateName&quot;&#41;;
@@ -823,7 +823,7 @@ public final class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the status code from the
      * server response when a response has been received.</p>
-    
+     *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context -->
      * <pre>
      * Response&lt;Void&gt; purgeResponse = certificateClient.purgeDeletedCertificateWithResponse&#40;&quot;certificateName&quot;,
@@ -841,7 +841,7 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
         return implClient.purgeDeletedCertificateWithResponse(certificateName,
-            new RequestOptions().setContext(context));
+            new RequestOptions().setContext(context).addHeader("Accept", "application/json"));
     }
 
     /**
@@ -896,7 +896,7 @@ public final class CertificateClient {
                     .getValue()
                     .toObject(CertificateBundle.class)));
         } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+            if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     pollingContext.getLatestResponse().getValue());
             } else {

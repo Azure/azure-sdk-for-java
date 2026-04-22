@@ -22,7 +22,7 @@ public final class NamespacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"xjumvq\",\"messaging\":{\"endpoints\":{\"rzpasccbiuimzdly\":{\"endpointType\":\"r\",\"address\":\"aiouaubrjt\",\"resourceId\":\"qxfuojrngif\"},\"eyzihgrky\":{\"endpointType\":\"fqwmkyoquf\",\"address\":\"vruzslzojhpctfnm\",\"resourceId\":\"otngfdgu\"},\"yhsgz\":{\"endpointType\":\"zabs\",\"address\":\"mfp\",\"resourceId\":\"ojeevy\"}}},\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"omfgbeglqgleohib\",\"tenantId\":\"nlu\",\"type\":\"None\"},\"location\":\"rrfx\",\"tags\":{\"z\":\"btijvacvbm\",\"wxacevehj\":\"qqxlajr\",\"aoqltfaey\":\"uyxoaf\",\"hriypoqeyhlqhy\":\"inmfgvxirp\"},\"id\":\"prlpy\",\"name\":\"nuciqdsmexiit\",\"type\":\"fuxtyasiibmiybnn\"}";
+            = "{\"properties\":{\"uuid\":\"zkzobgopxlhslnel\",\"messaging\":{\"endpoints\":{\"orq\":{\"endpointType\":\"ynllxe\",\"address\":\"wcrojphslhcaw\",\"resourceId\":\"tifdwfmvi\"},\"tyjedex\":{\"endpointType\":\"ttzhra\",\"address\":\"lkafhonqjuje\",\"resourceId\":\"kpzvcpopmxelnwc\"},\"aivmxyasflvgs\":{\"endpointType\":\"lfmk\",\"address\":\"scazuawxtzxpu\",\"resourceId\":\"wabzxrvxcushsp\"},\"ljhlnymzotq\":{\"endpointType\":\"wywa\",\"address\":\"oi\",\"resourceId\":\"nsmjbl\"}}},\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"cbm\",\"tenantId\":\"vxmvw\",\"type\":\"SystemAssigned\"},\"location\":\"ayxonsupeujl\",\"tags\":{\"gsxgnxfyqon\":\"hcvsqltnzoi\"},\"id\":\"p\",\"name\":\"ox\",\"type\":\"dofdbxiqx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,14 @@ public final class NamespacesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Namespace response = manager.namespaces()
-            .getByResourceGroupWithResponse("unqndyfpchrqb", "jjrcgegydc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dsxwaab", "mifrygznmma", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rrfx", response.location());
-        Assertions.assertEquals("btijvacvbm", response.tags().get("z"));
-        Assertions.assertEquals("r",
-            response.properties().messaging().endpoints().get("rzpasccbiuimzdly").endpointType());
-        Assertions.assertEquals("aiouaubrjt",
-            response.properties().messaging().endpoints().get("rzpasccbiuimzdly").address());
-        Assertions.assertEquals("qxfuojrngif",
-            response.properties().messaging().endpoints().get("rzpasccbiuimzdly").resourceId());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("ayxonsupeujl", response.location());
+        Assertions.assertEquals("hcvsqltnzoi", response.tags().get("gsxgnxfyqon"));
+        Assertions.assertEquals("ynllxe", response.properties().messaging().endpoints().get("orq").endpointType());
+        Assertions.assertEquals("wcrojphslhcaw", response.properties().messaging().endpoints().get("orq").address());
+        Assertions.assertEquals("tifdwfmvi", response.properties().messaging().endpoints().get("orq").resourceId());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }

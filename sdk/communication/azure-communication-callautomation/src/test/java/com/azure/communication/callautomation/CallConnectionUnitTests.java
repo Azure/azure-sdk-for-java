@@ -21,7 +21,9 @@ import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.SipHeaderPrefix;
+import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -166,6 +168,37 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void transferToParticipantCallMicrosoftTeamsAppIdentifier() {
+        CallConnection callConnection
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnection(CALL_CONNECTION_ID);
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        TransferCallResult transferCallResult = callConnection.transferCallToParticipant(teamsAppIdentifier);
+
+        assertNotNull(transferCallResult);
+        assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
+    }
+
+    @Test
+    public void transferToParticipantCallWithResponseMicrosoftTeamsAppIdentifier() {
+        CallConnection callConnection
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnection(CALL_CONNECTION_ID);
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
+            new TransferCallToParticipantOptions(teamsAppIdentifier).setOperationContext(CALL_OPERATION_CONTEXT),
+            Context.NONE);
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+
+    @Test
     public void transferToParticipantCallWithResponse() {
         CallConnection callConnection
             = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
@@ -239,6 +272,35 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
                 .getCallConnection(CALL_CONNECTION_ID);
 
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantWithResponse(
+            new AddParticipantOptions(callInvite).setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
+
+        assertNotNull(addParticipantsResultResponse);
+        assertEquals(202, addParticipantsResultResponse.getStatusCode());
+        assertNotNull(addParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void addParticipantWithMicrosoftTeamsAppIdentifier() {
+        CallConnection callConnection = getCallAutomationClient(
+            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateAddParticipantsResponse(), 202))))
+                .getCallConnection(CALL_CONNECTION_ID);
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        AddParticipantResult addParticipantsResult = callConnection.addParticipant(new CallInvite(teamsAppIdentifier));
+        assertNotNull(addParticipantsResult);
+    }
+
+    @Test
+    public void addParticipantWithResponseMicrosoftTeamsAppIdentifier() {
+        CallConnection callConnection = getCallAutomationClient(
+            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateAddParticipantsResponse(), 202))))
+                .getCallConnection(CALL_CONNECTION_ID);
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite callInvite = new CallInvite(teamsAppIdentifier);
         Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantWithResponse(
             new AddParticipantOptions(callInvite).setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
 

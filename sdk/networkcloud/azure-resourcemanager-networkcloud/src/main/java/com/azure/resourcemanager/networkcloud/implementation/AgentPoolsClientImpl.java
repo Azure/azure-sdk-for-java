@@ -82,8 +82,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         Mono<Response<AgentPoolList>> listByKubernetesCluster(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("kubernetesClusterName") String kubernetesClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("kubernetesClusterName") String kubernetesClusterName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools")
@@ -92,8 +92,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         Response<AgentPoolList> listByKubernetesClusterSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("kubernetesClusterName") String kubernetesClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("kubernetesClusterName") String kubernetesClusterName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
@@ -213,6 +213,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -221,7 +224,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterSinglePageAsync(String resourceGroupName,
-        String kubernetesClusterName) {
+        String kubernetesClusterName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -240,12 +243,35 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByKubernetesCluster(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, context))
+            .withContext(context -> service.listByKubernetesCluster(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName,
+                top, skipToken, accept, context))
             .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List agent pools of the Kubernetes cluster.
+     * 
+     * Get a list of agent pools for the provided Kubernetes cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of agent pools for the provided Kubernetes cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<AgentPoolInner> listByKubernetesClusterAsync(String resourceGroupName,
+        String kubernetesClusterName, Integer top, String skipToken) {
+        return new PagedFlux<>(
+            () -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName, top, skipToken),
+            nextLink -> listByKubernetesClusterNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -263,7 +289,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AgentPoolInner> listByKubernetesClusterAsync(String resourceGroupName,
         String kubernetesClusterName) {
-        return new PagedFlux<>(() -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(
+            () -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName, top, skipToken),
             nextLink -> listByKubernetesClusterNextSinglePageAsync(nextLink));
     }
 
@@ -274,6 +303,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -281,7 +313,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentPoolInner> listByKubernetesClusterSinglePage(String resourceGroupName,
-        String kubernetesClusterName) {
+        String kubernetesClusterName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -301,9 +333,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 .log(new IllegalArgumentException("Parameter kubernetesClusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<AgentPoolList> res
-            = service.listByKubernetesClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, Context.NONE);
+        Response<AgentPoolList> res = service.listByKubernetesClusterSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, top,
+            skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -315,6 +347,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,7 +358,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentPoolInner> listByKubernetesClusterSinglePage(String resourceGroupName,
-        String kubernetesClusterName, Context context) {
+        String kubernetesClusterName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -343,9 +378,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
                 .log(new IllegalArgumentException("Parameter kubernetesClusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<AgentPoolList> res
-            = service.listByKubernetesClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, context);
+        Response<AgentPoolList> res = service.listByKubernetesClusterSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, top,
+            skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -366,7 +401,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName,
         String kubernetesClusterName) {
-        return new PagedIterable<>(() -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(
+            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, top, skipToken),
             nextLink -> listByKubernetesClusterNextSinglePage(nextLink));
     }
 
@@ -377,6 +415,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,9 +427,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
-        Context context) {
+        Integer top, String skipToken, Context context) {
         return new PagedIterable<>(
-            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, context),
+            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, top, skipToken, context),
             nextLink -> listByKubernetesClusterNextSinglePage(nextLink, context));
     }
 
@@ -1688,14 +1729,16 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
+     * List agent pools of the Kubernetes cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentPoolList represents a list of Kubernetes cluster agent pools along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of agent pools for the provided Kubernetes cluster along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterNextSinglePageAsync(String nextLink) {
@@ -1716,13 +1759,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
+     * List agent pools of the Kubernetes cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentPoolList represents a list of Kubernetes cluster agent pools along with {@link PagedResponse}.
+     * @return a list of agent pools for the provided Kubernetes cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentPoolInner> listByKubernetesClusterNextSinglePage(String nextLink) {
@@ -1743,6 +1788,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
+     * List agent pools of the Kubernetes cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1750,7 +1797,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agentPoolList represents a list of Kubernetes cluster agent pools along with {@link PagedResponse}.
+     * @return a list of agent pools for the provided Kubernetes cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AgentPoolInner> listByKubernetesClusterNextSinglePage(String nextLink, Context context) {

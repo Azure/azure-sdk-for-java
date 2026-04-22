@@ -34,8 +34,8 @@ public final class L2NetworksImpl implements L2Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L2Network> list(Context context) {
-        PagedIterable<L2NetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<L2Network> list(Integer top, String skipToken, Context context) {
+        PagedIterable<L2NetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class L2NetworksImpl implements L2Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L2Network> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<L2NetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<L2Network> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<L2NetworkInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 

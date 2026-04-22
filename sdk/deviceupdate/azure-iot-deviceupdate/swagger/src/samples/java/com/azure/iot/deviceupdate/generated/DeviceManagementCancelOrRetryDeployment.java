@@ -18,10 +18,10 @@ public class DeviceManagementCancelOrRetryDeployment {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementstopdeployment.devicemanagementcancelorretrydeployment
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-stop-deployment.device-management-cancel-or-retry-deployment
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = deviceManagementClient.stopDeploymentWithResponse("TestGroup", "deviceClassId",
             "deploymentId", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementstopdeployment.devicemanagementcancelorretrydeployment
+        // END:com.azure.iot.deviceupdate.generated.device-management-stop-deployment.device-management-cancel-or-retry-deployment
     }
 }

@@ -27,7 +27,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.fluent.models.SubscriptionScopeMetricDefinitionInner;
 import com.azure.resourcemanager.monitor.models.MetricDefinitionCollection;
+import com.azure.resourcemanager.monitor.models.SubscriptionScopeMetricDefinitionCollection;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,8 +62,18 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientMetricD")
+    @ServiceInterface(name = "MonitorClientMetricDefinitions")
     public interface MetricDefinitionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricDefinitions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SubscriptionScopeMetricDefinitionCollection>> listAtSubscriptionScope(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("region") String region,
+            @QueryParam("metricnamespace") String metricnamespace, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
         @ExpectedResponses({ 200 })
@@ -73,10 +85,161 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
     }
 
     /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SubscriptionScopeMetricDefinitionInner>>
+        listAtSubscriptionScopeSinglePageAsync(String region, String metricnamespace) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listAtSubscriptionScope(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), apiVersion, region, metricnamespace, accept, context))
+            .<PagedResponse<SubscriptionScopeMetricDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SubscriptionScopeMetricDefinitionInner>>
+        listAtSubscriptionScopeSinglePageAsync(String region, String metricnamespace, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
+        final String apiVersion = "2021-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listAtSubscriptionScope(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, region,
+                metricnamespace, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region,
+        String metricnamespace) {
+        return new PagedFlux<>(() -> listAtSubscriptionScopeSinglePageAsync(region, metricnamespace));
+    }
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region) {
+        final String metricnamespace = null;
+        return new PagedFlux<>(() -> listAtSubscriptionScopeSinglePageAsync(region, metricnamespace));
+    }
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScopeAsync(String region,
+        String metricnamespace, Context context) {
+        return new PagedFlux<>(() -> listAtSubscriptionScopeSinglePageAsync(region, metricnamespace, context));
+    }
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScope(String region) {
+        final String metricnamespace = null;
+        return new PagedIterable<>(listAtSubscriptionScopeAsync(region, metricnamespace));
+    }
+
+    /**
+     * Lists the metric definitions for the subscription.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SubscriptionScopeMetricDefinitionInner> listAtSubscriptionScope(String region,
+        String metricnamespace, Context context) {
+        return new PagedIterable<>(listAtSubscriptionScopeAsync(region, metricnamespace, context));
+    }
+
+    /**
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,7 +255,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace,
@@ -106,7 +269,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -124,7 +287,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, accept, context)
@@ -136,7 +299,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,7 +329,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -197,7 +360,7 @@ public final class MetricDefinitionsClientImpl implements MetricDefinitionsClien
      * Lists the metric definitions for the resource.
      * 
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

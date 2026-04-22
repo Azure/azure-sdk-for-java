@@ -23,7 +23,7 @@ public final class ResourceCertificateAndAcsDetailsTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T09:38:17Z"), model.validFrom());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T05:23:49Z"), model.validTo());
         Assertions.assertEquals("wlrsffrzpwv", model.globalAcsNamespace());
-        Assertions.assertEquals("qdqgbi", model.globalAcsHostName());
+        Assertions.assertEquals("qdqgbi", model.globalAcsHostname());
         Assertions.assertEquals("ylihkaetckt", model.globalAcsRPRealm());
     }
 }

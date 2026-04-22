@@ -237,6 +237,6 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -46,6 +46,7 @@ public class Configs {
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
+    private static final String BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS = "COSMOS.BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
@@ -53,6 +54,18 @@ public class Configs {
     private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
+
+    private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
+
+    // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
+    // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
+    // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.
+    // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
+    private static final int DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_MS = 5_000;
+    private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_MS = "COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS";
+    private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_MS_VARIABLE = "COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_MS";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -105,6 +118,7 @@ public class Configs {
 
     private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
+    private static final int DEFAULT_BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS = 15;
 
     private static final int DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES = 6 * 1024 * 1024; //6MB
     private static final int DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH = 4096; //4KB
@@ -127,7 +141,9 @@ public class Configs {
 
     //  Reactor Netty Constants
     private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
+    private static final int DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_MS = 45_000;
+    private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS = "COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
+    private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS_VARIABLE = "COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -242,6 +258,10 @@ public class Configs {
     public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
     public static final int DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 1000;
 
+    public static final String BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = "COSMOS.BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final String BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final int DEFAULT_BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 500;
+
     // Config of CodingErrorAction on charset decoder for malformed input
     public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
     public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = StringUtils.EMPTY;
@@ -328,6 +348,17 @@ public class Configs {
     private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = "COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
     private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE = "COSMOS_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
 
+    // Config to indicate whether hostname validation for TLS connections to the Cosmos DB endpoints
+    // (Gateway and Backend) should be disabled
+    // By default Netty 4.1 is not enabling hostname validation - this is not ideal form security perspective
+    // because it makes man-in-the-middle attacks easier. It only impacts direct mode connections because
+    // connections to the Gateway always use ReactorNetty (which enables hostname validation). So all HTTP connections
+    // are fine - RNTBD is what is in scope for the configs below.
+    // By default, the Cosmos DB SDK enables hostname validation for RNTBD as well.
+    private static final boolean DEFAULT_HOSTNAME_VALIDATION_DISABLED = false;
+    private static final String HOSTNAME_VALIDATION_DISABLED = "COSMOS.HOSTNAME_VALIDATION_DISABLED";
+    private static final String HOSTNAME_VALIDATION_DISABLED_VARIABLE = "COSMOS_HOSTNAME_VALIDATION_DISABLED";
+
     // Config to indicate whether disable server certificate validation for emulator
     // Please note that this config should only during development or test, please do not use in prod env
     private static final boolean DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = false;
@@ -374,6 +405,20 @@ public class Configs {
 
     public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
+    // TODO @fabianm - Make test changes to enable leak detection from CI pipeline tests
+    private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = false;
+    private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
+
+    // Config for endpoint failover retry policy
+    // These can be overridden in tests to speed up NetworkFailureTest
+    private static final String CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS = "COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS";
+    private static final int DEFAULT_CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS = 1000;
+    private static final String CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = "COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT";
+    private static final int DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = 120;
+
+    private static final Object lockObject = new Object();
+    private static Boolean cachedIsHostnameValidationDisabled = null;
+
     public static int getCPUCnt() {
         return CPU_CNT;
     }
@@ -387,6 +432,8 @@ public class Configs {
 
             if (serverCertVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            } else if (!isHostnameValidationDisabled()) {
+                sslContextBuilder.endpointIdentificationAlgorithm("HTTPS");
             }
 
             if (http2Enabled) {
@@ -401,6 +448,7 @@ public class Configs {
                         )
                     );
             }
+
             return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
@@ -492,8 +540,37 @@ public class Configs {
         return DEFAULT_THINCLIENT_ENABLED;
     }
 
+    public static boolean isNettyHttpClientMetricsEnabled() {
+        return Boolean.parseBoolean(
+            System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED))));
+    }
+
+    public static boolean isClientLeakDetectionEnabled() {
+        String valueFromSystemProperty = System.getProperty(CLIENT_LEAK_DETECTION_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        return DEFAULT_CLIENT_LEAK_DETECTION_ENABLED;
+    }
+
+    public static int getEndpointFailoverRetryIntervalInMs() {
+        return getJVMConfigAsInt(CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS, DEFAULT_CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS);
+    }
+
+    public static int getEndpointFailoverMaxRetryCount() {
+        return getJVMConfigAsInt(CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT, DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT);
+    }
+
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
+    }
+
+    public int getBackgroundRefreshLocationJitterMaxInSeconds() {
+        return getJVMConfigAsInt(BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS, DEFAULT_BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS);
     }
 
     public static int getMaxHttpHeaderSize() {
@@ -525,7 +602,98 @@ public class Configs {
     }
 
     public static Duration getConnectionAcquireTimeout() {
-        return CONNECTION_ACQUIRE_TIMEOUT;
+        int timeoutInMs = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_MS;
+
+        String valueFromSystemProperty = System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_MS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                timeoutInMs = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    CONNECTION_ACQUIRE_TIMEOUT_IN_MS);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(CONNECTION_ACQUIRE_TIMEOUT_IN_MS_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    timeoutInMs = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException e) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}ms.",
+                        valueFromEnvVariable,
+                        CONNECTION_ACQUIRE_TIMEOUT_IN_MS_VARIABLE,
+                        DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_MS);
+                }
+            }
+        }
+
+        if (timeoutInMs < 500) {
+            logger.warn(
+                "Invalid connection acquire timeout: {}ms. Must be >= 500. Falling back to default: {}ms.",
+                timeoutInMs,
+                DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_MS);
+            timeoutInMs = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_MS;
+        }
+
+        return Duration.ofMillis(timeoutInMs);
+    }
+
+    /**
+     * Returns the TCP connect timeout for thin client data plane endpoints in milliseconds.
+     * Data plane requests routed via thinclientRegionalEndpoint (from RegionalRoutingContext)
+     * use this aggressive timeout to fail fast when the proxy is unreachable.
+     * Metadata requests on port 443 are unaffected and retain the full 45s timeout.
+     *
+     * Configurable via system property COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS
+     * or environment variable COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_MS.
+     * Default: 5000 milliseconds.
+     */
+    public static int getThinClientConnectionTimeoutInMs() {
+        int value = DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_MS;
+
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_CONNECTION_TIMEOUT_IN_MS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                value = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    THINCLIENT_CONNECTION_TIMEOUT_IN_MS);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(THINCLIENT_CONNECTION_TIMEOUT_IN_MS_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    value = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException e) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}ms.",
+                        valueFromEnvVariable,
+                        THINCLIENT_CONNECTION_TIMEOUT_IN_MS_VARIABLE,
+                        DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_MS);
+                }
+            }
+        }
+
+        // Guard against invalid values — timeout must be at least 500ms
+        if (value < 500) {
+            logger.warn(
+                "Invalid thin client connection timeout: {}ms. Must be >= 500. Falling back to default: {}ms.",
+                value,
+                DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_MS);
+            return DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_MS;
+        }
+
+        return value;
     }
 
     public static int getHttpResponseTimeoutInSeconds() {
@@ -680,6 +848,13 @@ public class Configs {
         }
 
         return DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS;
+    }
+
+    public static int getBulkTransactionalBatchFlushIntervalInMs() {
+        return Integer.parseInt(System.getProperty(BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE)),
+                String.valueOf(DEFAULT_BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS))));
     }
 
     public static int getMaxHttpRequestTimeout() {
@@ -1178,6 +1353,38 @@ public class Configs {
                 String.valueOf(DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED)));
 
         return Boolean.parseBoolean(certVerificationDisabledConfig);
+    }
+
+    private static boolean isHostnameValidationDisabledCore() {
+        String hostNameVerificationDisabledConfig = System.getProperty(
+            HOSTNAME_VALIDATION_DISABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HOSTNAME_VALIDATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HOSTNAME_VALIDATION_DISABLED)));
+
+        return Boolean.parseBoolean(hostNameVerificationDisabledConfig);
+    }
+
+    public static void resetIsHostnameValidationDisabledForTests() {
+        synchronized (lockObject) {
+            cachedIsHostnameValidationDisabled = null;
+        }
+    }
+
+    private static boolean isHostnameValidationDisabled() {
+        Boolean isHostnameValidationSnapshot = cachedIsHostnameValidationDisabled;
+        if (isHostnameValidationSnapshot != null) {
+            return isHostnameValidationSnapshot;
+        }
+
+        synchronized (lockObject) {
+            isHostnameValidationSnapshot = cachedIsHostnameValidationDisabled;
+            if (isHostnameValidationSnapshot != null) {
+                return isHostnameValidationSnapshot;
+            }
+
+            return cachedIsHostnameValidationDisabled = isHostnameValidationDisabledCore();
+        }
     }
 
     public static String getEmulatorHost() {

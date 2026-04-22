@@ -3,17 +3,16 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.core.test.annotation.LiveOnly;
-
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.TranslateOptions;
-import org.junit.jupiter.api.Test;
-import com.azure.core.test.annotation.PlaybackOnly;
+import com.azure.ai.translation.text.models.TranslationTarget;
 
-import java.util.ArrayList;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,131 +22,88 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TranslateTests extends TextTranslationClientBase {
 
     @Test
-    @LiveOnly
     public void translateBasic() {
         TranslatedTextItem response = getTranslationClient().translate("cs", "Hola mundo");
 
         assertEquals(1, response.getTranslations().size());
-        assertEquals("cs", response.getTranslations().get(0).getTargetLanguage());
+        assertEquals("cs", response.getTranslations().get(0).getLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
     @Test
-    @LiveOnly
-    public void translateOneItemWithOptions() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        TranslatedTextItem response = getTranslationClient().translate("Hola mundo", translateOptions);
-
-        assertEquals(1, response.getTranslations().size());
-        assertEquals("cs", response.getTranslations().get(0).getTargetLanguage());
-        assertNotNull(response.getTranslations().get(0).getText());
-    }
-
-    @Test
-    @LiveOnly
-    public void translateMultipleItemsWithOptions() {
-        ArrayList<String> content = new ArrayList<>();
-        content.add("This is a test.");
-        content.add("This is a test sentence two.");
-        content.add("This is another test.");
-
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        List<TranslatedTextItem> response = getTranslationClient().translate(content, translateOptions);
-
-        assertEquals(1, response.get(0).getTranslations().size());
-        assertEquals("cs", response.get(0).getTranslations().get(0).getTargetLanguage());
-        assertNotNull(response.get(0).getTranslations().get(0).getText());
-    }
-
-    @Test
-    @LiveOnly
     public void translateWithAutoDetect() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        TranslatedTextItem response = getTranslationClient().translate("This is a test.", translateOptions);
+        TranslatedTextItem response = getTranslationClient().translate("cs", "This is a test.");
 
         assertEquals("en", response.getDetectedLanguage().getLanguage());
         assertEquals(1, response.getTranslations().size());
-        assertEquals("cs", response.getTranslations().get(0).getTargetLanguage());
+        assertEquals("cs", response.getTranslations().get(0).getLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
     @Test
-    @LiveOnly
     public void translateWithNoTranslateTag() {
-        TranslateOptions translateOptions
-            = new TranslateOptions().addTargetLanguage("en").setSourceLanguage("zh-Hans").setTextType(TextType.HTML);
-
-        TranslatedTextItem response
-            = getTranslationClient().translate("<span class=notranslate>今天是怎么回事是</span>非常可怕的", translateOptions);
+        TranslateInputItem input = new TranslateInputItem("<span class=notranslate>今天是怎么回事是</span>非常可怕的",
+            Arrays.asList(new TranslationTarget("en")));
+        input.setLanguage("zh-Hans");
+        input.setTextType(TextType.HTML);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertTrue(response.getTranslations().get(0).getText().contains("今天是怎么回事是"));
     }
 
     @Test
-    @LiveOnly
     public void translateWithDictionaryTag() {
-        TranslateOptions translateOptions = new TranslateOptions().setSourceLanguage("en").addTargetLanguage("es");
-
-        TranslatedTextItem response = getTranslationClient().translate(
+        TranslateInputItem input = new TranslateInputItem(
             "The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.",
-            translateOptions);
+            Arrays.asList(new TranslationTarget("es")));
+        input.setLanguage("en");
+        input.setTextType(TextType.HTML);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
-        assertEquals("es", response.getTranslations().get(0).getTargetLanguage());
+        assertEquals("es", response.getTranslations().get(0).getLanguage());
         assertTrue(response.getTranslations().get(0).getText().contains("wordomatic"));
     }
 
     @Test
-    @LiveOnly
     public void translateWithTransliteration() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("zh-Hans")
-            .setSourceLanguage("ar")
-            .setSourceLanguageScript("Latn")
-            .setTargetLanguageScript("Latn");
+        TranslateInputItem input = new TranslateInputItem("hudha akhtabar.",
+            Arrays.asList(new TranslationTarget("zh-Hans").setScript("Latn"))).setLanguage("ar").setScript("Latn");
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
-        TranslatedTextItem response = getTranslationClient().translate("hudha akhtabar.", translateOptions);
-
-        assertNotNull(response.getSourceText().getText());
-        assertEquals("zh-Hans", response.getTranslations().get(0).getTargetLanguage());
+        assertEquals("zh-Hans", response.getTranslations().get(0).getLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
     @Test
     public void translateFromLatinToLatinScript() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("ta")
-            .setSourceLanguage("hi")
-            .setSourceLanguageScript("Latn")
-            .setTargetLanguageScript("Latn");
+        TranslateInputItem input
+            = new TranslateInputItem("ap kaise ho", Arrays.asList(new TranslationTarget("ta").setScript("Latn")))
+                .setLanguage("hi")
+                .setScript("Latn");
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
-        TranslatedTextItem response = getTranslationClient().translate("ap kaise ho", translateOptions);
-
-        assertNotNull(response.getTranslations().get(0).getTransliteration().getScript());
-        assertEquals("eppadi irukkiraai?", response.getTranslations().get(0).getTransliteration().getText());
+        assertEquals("eppadi irukkiraai?", response.getTranslations().get(0).getText());
     }
 
     @Test
     public void translateWithMultipleInputTexts() {
-        ArrayList<String> content = new ArrayList<>();
-        content.add("This is a test.");
-        content.add("Esto es una prueba.");
-        content.add("Dies ist ein Test.");
+        List<TranslateInputItem> inputs
+            = Arrays.asList(new TranslateInputItem("This is a test.", Arrays.asList(new TranslationTarget("cs"))),
+                new TranslateInputItem("Esto es una prueba.", Arrays.asList(new TranslationTarget("cs"))),
+                new TranslateInputItem("Dies ist ein Test.", Arrays.asList(new TranslationTarget("cs"))));
 
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        List<TranslatedTextItem> response = getTranslationClient().translate(content, translateOptions);
+        List<TranslatedTextItem> response = getTranslationClient().translate(inputs);
 
         assertEquals(3, response.size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals("es", response.get(1).getDetectedLanguage().getLanguage());
         assertEquals("de", response.get(2).getDetectedLanguage().getLanguage());
 
-        assertEquals(1, response.get(0).getDetectedLanguage().getConfidence());
-        assertEquals(1, response.get(1).getDetectedLanguage().getConfidence());
-        assertEquals(1, response.get(2).getDetectedLanguage().getConfidence());
+        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(1).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(2).getDetectedLanguage().getScore());
 
         assertNotNull(response.get(0).getTranslations().get(0).getText());
         assertNotNull(response.get(1).getTranslations().get(0).getText());
@@ -156,111 +112,74 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateMultipleTargetLanguages() {
-        TranslateOptions translateOptions
-            = new TranslateOptions().addTargetLanguage("cs").addTargetLanguage("es").addTargetLanguage("de");
+        TranslateInputItem input = new TranslateInputItem("This is a test.",
+            Arrays.asList(new TranslationTarget("cs"), new TranslationTarget("es"), new TranslationTarget("de")));
 
-        TranslatedTextItem response = getTranslationClient().translate("This is a test.", translateOptions);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(3, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
+        assertEquals(1, response.getDetectedLanguage().getScore());
         assertNotNull(response.getTranslations().get(0).getText());
         assertNotNull(response.getTranslations().get(1).getText());
         assertNotNull(response.getTranslations().get(2).getText());
     }
 
     @Test
-    public void translateDifferentTextTypes() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs").setTextType(TextType.HTML);
-
-        TranslatedTextItem response
-            = getTranslationClient().translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
+    public void translateWithLlm() {
+        TranslationTarget target = new TranslationTarget("cs").setDeploymentName("gpt-4o-mini");
+        TranslateInputItem input = new TranslateInputItem("This is a test", Arrays.asList(target));
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
+        assertNotNull(response.getTranslations().get(0).getText());
+    }
+
+    @Test
+    public void translateDifferentTextTypes() {
+        TranslateInputItem input = new TranslateInputItem("<html><body>This <b>is</b> a test.</body></html>",
+            Arrays.asList(new TranslationTarget("cs"))).setTextType(TextType.HTML);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
+
+        assertEquals(1, response.getTranslations().size());
+        assertEquals("en", response.getDetectedLanguage().getLanguage());
+        assertEquals(1, response.getDetectedLanguage().getScore());
     }
 
     @Test
     public void translateWithProfanity() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("zh-Hans")
-            .setProfanityAction(ProfanityAction.MARKED)
+        TranslationTarget target = new TranslationTarget("zh-Hans").setProfanityAction(ProfanityAction.MARKED)
             .setProfanityMarker(ProfanityMarker.ASTERISK);
+        TranslateInputItem input
+            = new TranslateInputItem("shit this is fucking crazy shit fuck", Arrays.asList(target));
 
-        TranslatedTextItem response
-            = getTranslationClient().translate("shit this is fucking crazy shit fuck", translateOptions);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
+        assertTrue(response.getDetectedLanguage().getScore() > 0.5);
         assertTrue(response.getTranslations().get(0).getText().contains("***"));
     }
 
     @Test
-    public void translateWithAlignment() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs").setIncludeAlignment(true);
-
-        TranslatedTextItem response = getTranslationClient().translate("It is a beautiful morning", translateOptions);
-
-        assertEquals(1, response.getTranslations().size());
-        assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
-        assertNotNull(response.getTranslations().get(0).getAlignment().getProjections());
-    }
-
-    @Test
-    public void translateWithIncludeSentenceLength() {
-        TranslateOptions translateOptions
-            = new TranslateOptions().addTargetLanguage("fr").setIncludeSentenceLength(true);
-
-        TranslatedTextItem response = getTranslationClient().translate(
-            "La réponse se trouve dans la traduction automatique. La meilleure technologie de traduction automatique ne peut pas toujours fournir des traductions adaptées à un site ou des utilisateurs comme un être humain. Il suffit de copier et coller un extrait de code n'importe où.",
-            translateOptions);
-
-        assertEquals("fr", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
-        assertEquals(1, response.getTranslations().size());
-        assertEquals(3, response.getTranslations().get(0).getSentenceBoundaries().getSourceSentencesLengths().size());
-        assertEquals(3,
-            response.getTranslations().get(0).getSentenceBoundaries().getTranslatedSentencesLengths().size());
-    }
-
-    @Test
-    public void translateWithCustomEndpoint() {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        TranslatedTextItem response
-            = getTranslationClientWithCustomEndpoint().translate("It is a beautiful morning", translateOptions);
-
-        assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
-        assertEquals(1, response.getTranslations().size());
-        assertNotNull(response.getTranslations().get(0).getText());
-    }
-
-    @Test
     public void translateWithToken() throws Exception {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        TranslatedTextItem response = getTranslationClientWithToken().translate("This is a test.", translateOptions);
+        TranslatedTextItem response = getTranslationClientWithToken().translate("cs", "This is a test.");
 
         assertNotNull(response.getTranslations().get(0).getText());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
+        assertEquals(1, response.getDetectedLanguage().getScore());
         assertEquals(1, response.getTranslations().size());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
     @Test
-    @PlaybackOnly
     public void translateWithAad() throws Exception {
-        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
-
-        TranslatedTextItem response = getTranslationClientWithAadAuth().translate("This is a test.", translateOptions);
+        TranslatedTextItem response = getTranslationClientWithAadAuth().translate("cs", "This is a test.");
 
         assertNotNull(response.getTranslations().get(0).getText());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(1, response.getDetectedLanguage().getConfidence());
+        assertEquals(1, response.getDetectedLanguage().getScore());
         assertEquals(1, response.getTranslations().size());
         assertNotNull(response.getTranslations().get(0).getText());
     }

@@ -158,9 +158,13 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
         jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

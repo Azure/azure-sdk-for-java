@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class DataflowProfileListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_ListByResourceGroup.

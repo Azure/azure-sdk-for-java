@@ -16,14 +16,19 @@
 
 package com.azure.xml.implementation.aalto.in;
 
-import java.io.*;
+import com.azure.xml.implementation.aalto.impl.LocationImpl;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
+import com.azure.xml.implementation.aalto.util.CharsetNames;
+import com.azure.xml.implementation.aalto.util.XmlConsts;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
-import com.azure.xml.implementation.aalto.impl.LocationImpl;
-import com.azure.xml.implementation.aalto.util.CharsetNames;
+import java.io.CharConversionException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Class that takes care of bootstrapping main document input from
@@ -108,7 +113,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         try {
             return doBootstrap();
         } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
+            throw new StreamExceptionBase(ioe);
         } finally {
             _config.freeSmallCBuffer(mKeyword);
         }
@@ -151,7 +156,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         if (normEnc.equals(CharsetNames.CS_UTF8)
             || normEnc.equals(CharsetNames.CS_ISO_LATIN1)
             || normEnc.equals(CharsetNames.CS_US_ASCII)) {
-            return new Utf8Scanner(_config, _in, _inputBuffer, _inputPtr, _inputLen);
+            return new StreamScanner(_config, _in, _inputBuffer, _inputPtr, _inputLen);
         } else if (normEnc.startsWith(CharsetNames.CS_UTF32)) {
             // Since this is such a rare encoding, we'll just create
             // a Reader, and dispatch it to reader scanner?
@@ -173,7 +178,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         try {
             return new ReaderScanner(_config, new InputStreamReader(in, normEnc));
         } catch (UnsupportedEncodingException usex) {
-            throw new IoStreamException("Unsupported encoding: " + usex.getMessage());
+            throw new StreamExceptionBase("Unsupported encoding: " + usex.getMessage());
         }
     }
 
@@ -319,7 +324,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
                     && _inputBuffer[_inputPtr + 2] == 'x'
                     && _inputBuffer[_inputPtr + 3] == 'm'
                     && _inputBuffer[_inputPtr + 4] == 'l'
-                    && ((_inputBuffer[_inputPtr + 5] & 0xFF) <= CHAR_SPACE)) {
+                    && ((_inputBuffer[_inputPtr + 5] & 0xFF) <= XmlConsts.CHAR_SPACE)) {
 
                     // Let's skip stuff so far:
                     _inputPtr += 6;
@@ -334,7 +339,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
                     && nextMultiByte() == 'x'
                     && nextMultiByte() == 'm'
                     && nextMultiByte() == 'l'
-                    && nextMultiByte() <= CHAR_SPACE) {
+                    && nextMultiByte() <= XmlConsts.CHAR_SPACE) {
                     return true;
                 }
                 _inputPtr = start; // push data back
@@ -479,9 +484,9 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
 
             if (mb) {
                 c = nextMultiByte();
-                if (c == CHAR_CR || c == CHAR_LF) {
+                if (c == XmlConsts.CHAR_CR || c == XmlConsts.CHAR_LF) {
                     skipMbLF(c);
-                    c = CHAR_LF;
+                    c = XmlConsts.CHAR_LF;
                 }
             } else {
                 byte b = (_inputPtr < _inputLen) ? _inputBuffer[_inputPtr++] : nextByte();
@@ -541,7 +546,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         while (true) {
             byte b = (_inputPtr < _inputLen) ? _inputBuffer[_inputPtr++] : nextByte();
 
-            if ((b & 0xFF) > CHAR_SPACE) {
+            if ((b & 0xFF) > XmlConsts.CHAR_SPACE) {
                 --_inputPtr;
                 break;
             }
@@ -582,7 +587,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             }
         }
 
-        return CHAR_NULL;
+        return XmlConsts.CHAR_NULL;
     }
 
     /*
@@ -626,22 +631,22 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         while (true) {
             int c = nextMultiByte();
 
-            if (c > CHAR_SPACE) {
+            if (c > XmlConsts.CHAR_SPACE) {
                 _inputPtr -= mBytesPerChar;
                 break;
             }
-            if (c == CHAR_CR || c == CHAR_LF) {
+            if (c == XmlConsts.CHAR_CR || c == XmlConsts.CHAR_LF) {
                 skipMbLF(c);
-            } else if (c == CHAR_NULL) {
+            } else if (c == XmlConsts.CHAR_NULL) {
                 reportNull();
             }
         }
     }
 
     private void skipMbLF(int lf) throws IOException, XMLStreamException {
-        if (lf == CHAR_CR) {
+        if (lf == XmlConsts.CHAR_CR) {
             int c = nextMultiByte();
-            if (c != CHAR_LF) {
+            if (c != XmlConsts.CHAR_LF) {
                 _inputPtr -= mBytesPerChar;
             }
         }
@@ -666,7 +671,7 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
             }
         }
 
-        return CHAR_NULL;
+        return XmlConsts.CHAR_NULL;
     }
 
     /*

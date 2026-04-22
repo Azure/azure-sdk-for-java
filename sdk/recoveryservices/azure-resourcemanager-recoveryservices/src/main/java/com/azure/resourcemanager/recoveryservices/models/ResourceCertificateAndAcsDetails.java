@@ -31,7 +31,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
     /*
      * Acs mgmt host name to connect to.
      */
-    private String globalAcsHostName;
+    private String globalAcsHostname;
 
     /*
      * Global ACS namespace RP realm.
@@ -65,12 +65,12 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
     }
 
     /**
-     * Get the globalAcsHostName property: Acs mgmt host name to connect to.
+     * Get the globalAcsHostname property: Acs mgmt host name to connect to.
      * 
-     * @return the globalAcsHostName value.
+     * @return the globalAcsHostname value.
      */
-    public String globalAcsHostName() {
-        return this.globalAcsHostName;
+    public String globalAcsHostname() {
+        return this.globalAcsHostname;
     }
 
     /**
@@ -99,7 +99,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
         jsonWriter.writeStringField("validTo",
             validTo() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validTo()));
         jsonWriter.writeStringField("globalAcsNamespace", this.globalAcsNamespace);
-        jsonWriter.writeStringField("globalAcsHostName", this.globalAcsHostName);
+        jsonWriter.writeStringField("globalAcsHostName", this.globalAcsHostname);
         jsonWriter.writeStringField("globalAcsRPRealm", this.globalAcsRPRealm);
         jsonWriter.writeStringField("authType", this.authType);
         return jsonWriter.writeEndObject();
@@ -144,7 +144,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
                 } else if ("globalAcsNamespace".equals(fieldName)) {
                     deserializedResourceCertificateAndAcsDetails.globalAcsNamespace = reader.getString();
                 } else if ("globalAcsHostName".equals(fieldName)) {
-                    deserializedResourceCertificateAndAcsDetails.globalAcsHostName = reader.getString();
+                    deserializedResourceCertificateAndAcsDetails.globalAcsHostname = reader.getString();
                 } else if ("globalAcsRPRealm".equals(fieldName)) {
                     deserializedResourceCertificateAndAcsDetails.globalAcsRPRealm = reader.getString();
                 } else if ("authType".equals(fieldName)) {

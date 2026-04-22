@@ -15,30 +15,31 @@ public final class DiscoveredInboundEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredInboundEndpoints model = BinaryData.fromString(
-            "{\"endpointType\":\"zpnfqntcypsxj\",\"address\":\"foimwkslircizjxv\",\"version\":\"fceacvlhvygd\",\"supportedAuthenticationMethods\":[\"Anonymous\"],\"additionalConfiguration\":\"rtwnawjslbi\",\"lastUpdatedOn\":\"2021-06-28T20:11:56Z\"}")
+            "{\"endpointType\":\"kokwbqplhlvnu\",\"address\":\"epzl\",\"version\":\"hw\",\"supportedAuthenticationMethods\":[\"Certificate\",\"Anonymous\",\"Anonymous\"],\"additionalConfiguration\":\"yuqdu\",\"lastUpdatedOn\":\"2021-08-14T17:59:55Z\"}")
             .toObject(DiscoveredInboundEndpoints.class);
-        Assertions.assertEquals("zpnfqntcypsxj", model.endpointType());
-        Assertions.assertEquals("foimwkslircizjxv", model.address());
-        Assertions.assertEquals("fceacvlhvygd", model.version());
-        Assertions.assertEquals(AuthenticationMethod.ANONYMOUS, model.supportedAuthenticationMethods().get(0));
-        Assertions.assertEquals("rtwnawjslbi", model.additionalConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T20:11:56Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("kokwbqplhlvnu", model.endpointType());
+        Assertions.assertEquals("epzl", model.address());
+        Assertions.assertEquals("hw", model.version());
+        Assertions.assertEquals(AuthenticationMethod.CERTIFICATE, model.supportedAuthenticationMethods().get(0));
+        Assertions.assertEquals("yuqdu", model.additionalConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T17:59:55Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveredInboundEndpoints model = new DiscoveredInboundEndpoints().withEndpointType("zpnfqntcypsxj")
-            .withAddress("foimwkslircizjxv")
-            .withVersion("fceacvlhvygd")
-            .withSupportedAuthenticationMethods(Arrays.asList(AuthenticationMethod.ANONYMOUS))
-            .withAdditionalConfiguration("rtwnawjslbi")
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-06-28T20:11:56Z"));
+        DiscoveredInboundEndpoints model = new DiscoveredInboundEndpoints().withEndpointType("kokwbqplhlvnu")
+            .withAddress("epzl")
+            .withVersion("hw")
+            .withSupportedAuthenticationMethods(Arrays.asList(AuthenticationMethod.CERTIFICATE,
+                AuthenticationMethod.ANONYMOUS, AuthenticationMethod.ANONYMOUS))
+            .withAdditionalConfiguration("yuqdu")
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-08-14T17:59:55Z"));
         model = BinaryData.fromObject(model).toObject(DiscoveredInboundEndpoints.class);
-        Assertions.assertEquals("zpnfqntcypsxj", model.endpointType());
-        Assertions.assertEquals("foimwkslircizjxv", model.address());
-        Assertions.assertEquals("fceacvlhvygd", model.version());
-        Assertions.assertEquals(AuthenticationMethod.ANONYMOUS, model.supportedAuthenticationMethods().get(0));
-        Assertions.assertEquals("rtwnawjslbi", model.additionalConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T20:11:56Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("kokwbqplhlvnu", model.endpointType());
+        Assertions.assertEquals("epzl", model.address());
+        Assertions.assertEquals("hw", model.version());
+        Assertions.assertEquals(AuthenticationMethod.CERTIFICATE, model.supportedAuthenticationMethods().get(0));
+        Assertions.assertEquals("yuqdu", model.additionalConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T17:59:55Z"), model.lastUpdatedOn());
     }
 }

@@ -133,9 +133,19 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
     private String comments;
 
     /*
+     * The device streams properties of iothub.
+     */
+    private IotHubPropertiesDeviceStreams deviceStreams;
+
+    /*
      * The capabilities and features enabled for the IoT hub.
      */
     private Capabilities features;
+
+    /*
+     * The encryption properties for the IoT hub.
+     */
+    private EncryptionPropertiesDescription encryption;
 
     /*
      * Primary and secondary location for iot hub
@@ -146,6 +156,21 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
      * This property when set to true, will enable data residency, thus, disabling disaster recovery.
      */
     private Boolean enableDataResidency;
+
+    /*
+     * This property store root certificate related information
+     */
+    private RootCertificateProperties rootCertificate;
+
+    /*
+     * This property specifies the IP Version the hub is currently utilizing.
+     */
+    private IpVersion ipVersion;
+
+    /*
+     * Represents properties related to the Azure Device Registry (ADR).
+     */
+    private DeviceRegistry deviceRegistry;
 
     /**
      * Creates an instance of IotHubProperties class.
@@ -565,6 +590,26 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
     }
 
     /**
+     * Get the deviceStreams property: The device streams properties of iothub.
+     * 
+     * @return the deviceStreams value.
+     */
+    public IotHubPropertiesDeviceStreams deviceStreams() {
+        return this.deviceStreams;
+    }
+
+    /**
+     * Set the deviceStreams property: The device streams properties of iothub.
+     * 
+     * @param deviceStreams the deviceStreams value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDeviceStreams(IotHubPropertiesDeviceStreams deviceStreams) {
+        this.deviceStreams = deviceStreams;
+        return this;
+    }
+
+    /**
      * Get the features property: The capabilities and features enabled for the IoT hub.
      * 
      * @return the features value.
@@ -581,6 +626,26 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
      */
     public IotHubProperties withFeatures(Capabilities features) {
         this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption properties for the IoT hub.
+     * 
+     * @return the encryption value.
+     */
+    public EncryptionPropertiesDescription encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption properties for the IoT hub.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withEncryption(EncryptionPropertiesDescription encryption) {
+        this.encryption = encryption;
         return this;
     }
 
@@ -612,6 +677,66 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
      */
     public IotHubProperties withEnableDataResidency(Boolean enableDataResidency) {
         this.enableDataResidency = enableDataResidency;
+        return this;
+    }
+
+    /**
+     * Get the rootCertificate property: This property store root certificate related information.
+     * 
+     * @return the rootCertificate value.
+     */
+    public RootCertificateProperties rootCertificate() {
+        return this.rootCertificate;
+    }
+
+    /**
+     * Set the rootCertificate property: This property store root certificate related information.
+     * 
+     * @param rootCertificate the rootCertificate value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withRootCertificate(RootCertificateProperties rootCertificate) {
+        this.rootCertificate = rootCertificate;
+        return this;
+    }
+
+    /**
+     * Get the ipVersion property: This property specifies the IP Version the hub is currently utilizing.
+     * 
+     * @return the ipVersion value.
+     */
+    public IpVersion ipVersion() {
+        return this.ipVersion;
+    }
+
+    /**
+     * Set the ipVersion property: This property specifies the IP Version the hub is currently utilizing.
+     * 
+     * @param ipVersion the ipVersion value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withIpVersion(IpVersion ipVersion) {
+        this.ipVersion = ipVersion;
+        return this;
+    }
+
+    /**
+     * Get the deviceRegistry property: Represents properties related to the Azure Device Registry (ADR).
+     * 
+     * @return the deviceRegistry value.
+     */
+    public DeviceRegistry deviceRegistry() {
+        return this.deviceRegistry;
+    }
+
+    /**
+     * Set the deviceRegistry property: Represents properties related to the Azure Device Registry (ADR).
+     * 
+     * @param deviceRegistry the deviceRegistry value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDeviceRegistry(DeviceRegistry deviceRegistry) {
+        this.deviceRegistry = deviceRegistry;
         return this;
     }
 
@@ -660,8 +785,20 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
         if (cloudToDevice() != null) {
             cloudToDevice().validate();
         }
+        if (deviceStreams() != null) {
+            deviceStreams().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
         if (locations() != null) {
             locations().forEach(e -> e.validate());
+        }
+        if (rootCertificate() != null) {
+            rootCertificate().validate();
+        }
+        if (deviceRegistry() != null) {
+            deviceRegistry().validate();
         }
     }
 
@@ -696,8 +833,13 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
         jsonWriter.writeBooleanField("enableFileUploadNotifications", this.enableFileUploadNotifications);
         jsonWriter.writeJsonField("cloudToDevice", this.cloudToDevice);
         jsonWriter.writeStringField("comments", this.comments);
+        jsonWriter.writeJsonField("deviceStreams", this.deviceStreams);
         jsonWriter.writeStringField("features", this.features == null ? null : this.features.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeBooleanField("enableDataResidency", this.enableDataResidency);
+        jsonWriter.writeJsonField("rootCertificate", this.rootCertificate);
+        jsonWriter.writeStringField("ipVersion", this.ipVersion == null ? null : this.ipVersion.toString());
+        jsonWriter.writeJsonField("deviceRegistry", this.deviceRegistry);
         return jsonWriter.writeEndObject();
     }
 
@@ -773,14 +915,24 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
                     deserializedIotHubProperties.cloudToDevice = CloudToDeviceProperties.fromJson(reader);
                 } else if ("comments".equals(fieldName)) {
                     deserializedIotHubProperties.comments = reader.getString();
+                } else if ("deviceStreams".equals(fieldName)) {
+                    deserializedIotHubProperties.deviceStreams = IotHubPropertiesDeviceStreams.fromJson(reader);
                 } else if ("features".equals(fieldName)) {
                     deserializedIotHubProperties.features = Capabilities.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedIotHubProperties.encryption = EncryptionPropertiesDescription.fromJson(reader);
                 } else if ("locations".equals(fieldName)) {
                     List<IotHubLocationDescription> locations
                         = reader.readArray(reader1 -> IotHubLocationDescription.fromJson(reader1));
                     deserializedIotHubProperties.locations = locations;
                 } else if ("enableDataResidency".equals(fieldName)) {
                     deserializedIotHubProperties.enableDataResidency = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rootCertificate".equals(fieldName)) {
+                    deserializedIotHubProperties.rootCertificate = RootCertificateProperties.fromJson(reader);
+                } else if ("ipVersion".equals(fieldName)) {
+                    deserializedIotHubProperties.ipVersion = IpVersion.fromString(reader.getString());
+                } else if ("deviceRegistry".equals(fieldName)) {
+                    deserializedIotHubProperties.deviceRegistry = DeviceRegistry.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

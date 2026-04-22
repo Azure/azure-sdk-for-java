@@ -10,8 +10,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 public final class QueryPacksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksDelete.json
      */
     /**
      * Sample code: QueryPacksDelete.

@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.http;
 
 
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
+import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -26,15 +29,21 @@ public class ReactorNettyHttpClientTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyHttpClientTest.class);
     private HttpClient reactorNettyHttpClient;
+    private volatile AutoCloseable disableNettyLeakDetectionScope;
 
     @BeforeClass(groups = "unit")
     public void before_ReactorNettyHttpClientTest() {
         this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(new Configs()));
+        this.disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope();
     }
 
-    @AfterClass(groups = "unit")
-    public void after_ReactorNettyHttpClientTest() {
+    @AfterClass(groups = "unit", alwaysRun = true)
+    public void after_ReactorNettyHttpClientTest() throws Exception {
+
         LifeCycleUtils.closeQuietly(reactorNettyHttpClient);
+        if (this.disableNettyLeakDetectionScope != null) {
+            this.disableNettyLeakDetectionScope.close();
+        }
     }
 
     @Test(groups = "unit")

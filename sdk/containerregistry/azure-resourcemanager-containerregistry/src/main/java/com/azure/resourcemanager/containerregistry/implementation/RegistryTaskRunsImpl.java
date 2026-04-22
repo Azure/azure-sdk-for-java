@@ -26,7 +26,7 @@ public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public PagedFlux<RegistryTaskRun> listByRegistryAsync(String rgName, String acrName) {
-        return PagedConverter.mapPage(this.registryManager.serviceClient().getRuns().listAsync(rgName, acrName),
+        return PagedConverter.mapPage(this.registryManager.taskClient().getRuns().listAsync(rgName, acrName),
             inner -> wrapModel(inner));
     }
 
@@ -37,7 +37,7 @@ public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public Mono<String> getLogSasUrlAsync(String rgName, String acrName, String runId) {
-        return this.registryManager.serviceClient()
+        return this.registryManager.taskClient()
             .getRuns()
             .getLogSasUrlAsync(rgName, acrName, runId)
             .map(runGetLogResultInner -> runGetLogResultInner.logLink());
@@ -50,7 +50,7 @@ public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public Mono<Void> cancelAsync(String rgName, String acrName, String runId) {
-        return this.registryManager.serviceClient().getRuns().cancelAsync(rgName, acrName, runId);
+        return this.registryManager.taskClient().getRuns().cancelAsync(rgName, acrName, runId);
     }
 
     @Override

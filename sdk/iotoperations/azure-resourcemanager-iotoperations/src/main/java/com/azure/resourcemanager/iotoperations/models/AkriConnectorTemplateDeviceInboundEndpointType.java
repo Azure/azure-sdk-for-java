@@ -18,9 +18,9 @@ import java.io.IOException;
 public final class AkriConnectorTemplateDeviceInboundEndpointType
     implements JsonSerializable<AkriConnectorTemplateDeviceInboundEndpointType> {
     /*
-     * A description of the device inbound endpoint.
+     * The display name of the device inbound endpoint.
      */
-    private String description;
+    private String displayName;
 
     /*
      * The type of the device inbound endpoint.
@@ -32,11 +32,6 @@ public final class AkriConnectorTemplateDeviceInboundEndpointType
      */
     private String version;
 
-    /*
-     * The configuration schema references for the device inbound endpoint.
-     */
-    private AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs configurationSchemaRefs;
-
     /**
      * Creates an instance of AkriConnectorTemplateDeviceInboundEndpointType class.
      */
@@ -44,22 +39,22 @@ public final class AkriConnectorTemplateDeviceInboundEndpointType
     }
 
     /**
-     * Get the description property: A description of the device inbound endpoint.
+     * Get the displayName property: The display name of the device inbound endpoint.
      * 
-     * @return the description value.
+     * @return the displayName value.
      */
-    public String description() {
-        return this.description;
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
-     * Set the description property: A description of the device inbound endpoint.
+     * Set the displayName property: The display name of the device inbound endpoint.
      * 
-     * @param description the description value to set.
+     * @param displayName the displayName value to set.
      * @return the AkriConnectorTemplateDeviceInboundEndpointType object itself.
      */
-    public AkriConnectorTemplateDeviceInboundEndpointType withDescription(String description) {
-        this.description = description;
+    public AkriConnectorTemplateDeviceInboundEndpointType withDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 
@@ -104,36 +99,14 @@ public final class AkriConnectorTemplateDeviceInboundEndpointType
     }
 
     /**
-     * Get the configurationSchemaRefs property: The configuration schema references for the device inbound endpoint.
-     * 
-     * @return the configurationSchemaRefs value.
-     */
-    public AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs configurationSchemaRefs() {
-        return this.configurationSchemaRefs;
-    }
-
-    /**
-     * Set the configurationSchemaRefs property: The configuration schema references for the device inbound endpoint.
-     * 
-     * @param configurationSchemaRefs the configurationSchemaRefs value to set.
-     * @return the AkriConnectorTemplateDeviceInboundEndpointType object itself.
-     */
-    public AkriConnectorTemplateDeviceInboundEndpointType withConfigurationSchemaRefs(
-        AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs configurationSchemaRefs) {
-        this.configurationSchemaRefs = configurationSchemaRefs;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpointType", this.endpointType);
-        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("version", this.version);
-        jsonWriter.writeJsonField("configurationSchemaRefs", this.configurationSchemaRefs);
         return jsonWriter.writeEndObject();
     }
 
@@ -156,13 +129,10 @@ public final class AkriConnectorTemplateDeviceInboundEndpointType
 
                 if ("endpointType".equals(fieldName)) {
                     deserializedAkriConnectorTemplateDeviceInboundEndpointType.endpointType = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedAkriConnectorTemplateDeviceInboundEndpointType.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAkriConnectorTemplateDeviceInboundEndpointType.displayName = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     deserializedAkriConnectorTemplateDeviceInboundEndpointType.version = reader.getString();
-                } else if ("configurationSchemaRefs".equals(fieldName)) {
-                    deserializedAkriConnectorTemplateDeviceInboundEndpointType.configurationSchemaRefs
-                        = AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

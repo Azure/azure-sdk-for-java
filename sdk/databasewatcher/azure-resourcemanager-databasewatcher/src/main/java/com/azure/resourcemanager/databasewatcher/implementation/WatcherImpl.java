@@ -152,20 +152,20 @@ public final class WatcherImpl implements Watcher, Watcher.Definition, Watcher.U
         return this;
     }
 
-    public Watcher start() {
-        return serviceManager.watchers().start(resourceGroupName, watcherName);
+    public void start() {
+        serviceManager.watchers().start(resourceGroupName, watcherName);
     }
 
-    public Watcher start(Context context) {
-        return serviceManager.watchers().start(resourceGroupName, watcherName, context);
+    public void start(Context context) {
+        serviceManager.watchers().start(resourceGroupName, watcherName, context);
     }
 
-    public Watcher stop() {
-        return serviceManager.watchers().stop(resourceGroupName, watcherName);
+    public void stop() {
+        serviceManager.watchers().stop(resourceGroupName, watcherName);
     }
 
-    public Watcher stop(Context context) {
-        return serviceManager.watchers().stop(resourceGroupName, watcherName, context);
+    public void stop(Context context) {
+        serviceManager.watchers().stop(resourceGroupName, watcherName, context);
     }
 
     public WatcherImpl withRegion(Region location) {

@@ -21,7 +21,7 @@ public class PipelinedDocumentQueryParams<T> {
     private final String collectionRid;
     private final ResourceType resourceTypeEnum;
     private final Class<T> resourceType;
-    private final SqlQuerySpec query;
+    private SqlQuerySpec query;
     private final String resourceLink;
     private final UUID correlatedActivityId;
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
@@ -99,6 +99,10 @@ public class PipelinedDocumentQueryParams<T> {
 
     public SqlQuerySpec getQuery() {
         return query;
+    }
+
+    public void setQuery(SqlQuerySpec query) {
+        this.query = query;
     }
 
     public String getResourceLink() {

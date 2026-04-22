@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptionsPatch;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +31,11 @@ public final class CloudServicesNetworkPatchProperties
      * The indicator of whether the platform default endpoints are allowed for the egress traffic.
      */
     private CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints;
+
+    /*
+     * The storage options for the cloud services network.
+     */
+    private CloudServicesNetworkStorageOptionsPatch storageOptions;
 
     /**
      * Creates an instance of CloudServicesNetworkPatchProperties class.
@@ -84,6 +90,27 @@ public final class CloudServicesNetworkPatchProperties
     }
 
     /**
+     * Get the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    public CloudServicesNetworkStorageOptionsPatch storageOptions() {
+        return this.storageOptions;
+    }
+
+    /**
+     * Set the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @param storageOptions the storageOptions value to set.
+     * @return the CloudServicesNetworkPatchProperties object itself.
+     */
+    public CloudServicesNetworkPatchProperties
+        withStorageOptions(CloudServicesNetworkStorageOptionsPatch storageOptions) {
+        this.storageOptions = storageOptions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -91,6 +118,9 @@ public final class CloudServicesNetworkPatchProperties
     public void validate() {
         if (additionalEgressEndpoints() != null) {
             additionalEgressEndpoints().forEach(e -> e.validate());
+        }
+        if (storageOptions() != null) {
+            storageOptions().validate();
         }
     }
 
@@ -104,6 +134,7 @@ public final class CloudServicesNetworkPatchProperties
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("enableDefaultEgressEndpoints",
             this.enableDefaultEgressEndpoints == null ? null : this.enableDefaultEgressEndpoints.toString());
+        jsonWriter.writeJsonField("storageOptions", this.storageOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,6 +162,9 @@ public final class CloudServicesNetworkPatchProperties
                 } else if ("enableDefaultEgressEndpoints".equals(fieldName)) {
                     deserializedCloudServicesNetworkPatchProperties.enableDefaultEgressEndpoints
                         = CloudServicesNetworkEnableDefaultEgressEndpoints.fromString(reader.getString());
+                } else if ("storageOptions".equals(fieldName)) {
+                    deserializedCloudServicesNetworkPatchProperties.storageOptions
+                        = CloudServicesNetworkStorageOptionsPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

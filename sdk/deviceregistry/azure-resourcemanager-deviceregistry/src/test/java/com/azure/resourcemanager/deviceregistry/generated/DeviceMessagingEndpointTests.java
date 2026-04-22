@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceMessagingEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceMessagingEndpoint model
-            = BinaryData.fromString("{\"endpointType\":\"ipfpubji\",\"address\":\"wwiftohqkvpuv\"}")
-                .toObject(DeviceMessagingEndpoint.class);
-        Assertions.assertEquals("ipfpubji", model.endpointType());
-        Assertions.assertEquals("wwiftohqkvpuv", model.address());
+        DeviceMessagingEndpoint model = BinaryData.fromString("{\"endpointType\":\"oz\",\"address\":\"osphyoul\"}")
+            .toObject(DeviceMessagingEndpoint.class);
+        Assertions.assertEquals("oz", model.endpointType());
+        Assertions.assertEquals("osphyoul", model.address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceMessagingEndpoint model
-            = new DeviceMessagingEndpoint().withEndpointType("ipfpubji").withAddress("wwiftohqkvpuv");
+        DeviceMessagingEndpoint model = new DeviceMessagingEndpoint().withEndpointType("oz").withAddress("osphyoul");
         model = BinaryData.fromObject(model).toObject(DeviceMessagingEndpoint.class);
-        Assertions.assertEquals("ipfpubji", model.endpointType());
-        Assertions.assertEquals("wwiftohqkvpuv", model.address());
+        Assertions.assertEquals("oz", model.endpointType());
+        Assertions.assertEquals("osphyoul", model.address());
     }
 }

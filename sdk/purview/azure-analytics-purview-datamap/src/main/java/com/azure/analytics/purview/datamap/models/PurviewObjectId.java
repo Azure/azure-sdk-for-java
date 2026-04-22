@@ -259,14 +259,24 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("guid", this.guid);
         jsonWriter.writeStringField("typeName", this.typeName);
-        jsonWriter.writeMapField("uniqueAttributes", this.uniqueAttributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("uniqueAttributes", this.uniqueAttributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("displayText", this.displayText);
         jsonWriter.writeStringField("itemPath", this.itemPath);
         jsonWriter.writeStringField("resourceId", this.resourceId);
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

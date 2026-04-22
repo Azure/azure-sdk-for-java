@@ -13,12 +13,11 @@ import java.util.Collection;
 public final class RollingUpgradeMode extends ExpandableStringEnum<RollingUpgradeMode> {
     /**
      * The upgrade will stop after completing each upgrade domain and automatically monitor health before proceeding.
-     * The value is 0.
      */
     public static final RollingUpgradeMode MONITORED = fromString("Monitored");
 
     /**
-     * The upgrade will proceed automatically without performing any health monitoring. The value is 1.
+     * The upgrade will proceed automatically without performing any health monitoring.
      */
     public static final RollingUpgradeMode UNMONITORED_AUTO = fromString("UnmonitoredAuto");
 

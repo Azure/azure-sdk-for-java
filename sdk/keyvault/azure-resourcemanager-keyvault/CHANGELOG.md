@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.56.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,53 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.55.1 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.7` to version `2.53.8`.
+- Upgraded `azure-security-keyvault-keys` from `4.10.5` to version `4.10.6`.
+- Upgraded `azure-security-keyvault-secrets` from `4.10.5` to version `4.10.6`.
+
+
+## 2.55.0 (2026-03-17)
+
+### Breaking Changes
+
+#### `models.ManagedHsmResource` was removed
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-02-01`.
+
+## 2.54.2 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.5` to version `2.53.6`.
+
+## 2.54.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
 
 ## 2.53.4 (2025-10-27)
 

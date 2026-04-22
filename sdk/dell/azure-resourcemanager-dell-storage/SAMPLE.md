@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class FileSystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MaximumSet_Gen.
@@ -74,7 +74,7 @@ public final class FileSystemsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MinimumSet_Gen.
@@ -124,7 +124,7 @@ public final class FileSystemsCreateOrUpdateSamples {
  */
 public final class FileSystemsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MaximumSet_Gen.
@@ -137,7 +137,7 @@ public final class FileSystemsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MinimumSet_Gen.
@@ -159,7 +159,7 @@ public final class FileSystemsDeleteSamples {
  */
 public final class FileSystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MaximumSet_Gen.
@@ -171,7 +171,7 @@ public final class FileSystemsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MinimumSet_Gen.
@@ -192,7 +192,7 @@ public final class FileSystemsGetByResourceGroupSamples {
  */
 public final class FileSystemsListSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListBySubscription_MinimumSet_Gen.
@@ -205,7 +205,7 @@ public final class FileSystemsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListBySubscription_MaximumSet_Gen.
@@ -227,7 +227,7 @@ public final class FileSystemsListSamples {
  */
 public final class FileSystemsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListByResourceGroup_MaximumSet_Gen.
@@ -240,7 +240,7 @@ public final class FileSystemsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListByResourceGroup_MinimumSet_Gen.
@@ -275,7 +275,7 @@ import java.util.Map;
  */
 public final class FileSystemsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MinimumSet_Gen.
@@ -295,7 +295,7 @@ public final class FileSystemsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MaximumSet_Gen.
@@ -346,7 +346,7 @@ public final class FileSystemsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -358,7 +358,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

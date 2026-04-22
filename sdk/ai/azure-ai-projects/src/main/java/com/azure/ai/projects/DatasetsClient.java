@@ -5,13 +5,13 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.AssetCredentialResult;
+import com.azure.ai.projects.models.BlobReferenceSasCredential;
+import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
-import com.azure.ai.projects.models.SasCredential;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -27,9 +27,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
@@ -37,7 +41,7 @@ import java.nio.file.Path;
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class DatasetsClient {
 
-    private final ClientLogger logger = new ClientLogger(DatasetsClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetsClient.class);
 
     @Generated
     private final DatasetsImpl serviceClient;
@@ -50,6 +54,173 @@ public final class DatasetsClient {
     @Generated
     DatasetsClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCredentialsWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getCredentialsWithResponse(name, version, requestOptions);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with a Dataset version.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS credential to access the storage account associated with a Dataset version.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetCredential getCredentials(String name, String version) {
+        // Generated convenience method for getCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCredentialsWithResponse(name, version, requestOptions).getValue().toObject(DatasetCredential.class);
+    }
+
+    /**
+     * Creates a dataset from a folder.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the folder containing files to upload.
+     * @return A FileDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath) {
+        return createDatasetWithFile(name, version, filePath, null);
+    }
+
+    /**
+     * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A FileDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a file.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath, String connectionName) {
+        if (!Files.isRegularFile(filePath)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
+        }
+        PendingUploadRequest body = new PendingUploadRequest();
+        if (connectionName != null) {
+            body.setConnectionName(connectionName);
+        }
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
+        BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
+        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl())
+            .blobName(filePath.getFileName().toString())
+            .buildClient();
+        blobClient.upload(BinaryData.fromFile(filePath), true);
+        RequestOptions requestOptions = new RequestOptions();
+        FileDatasetVersion datasetVersion = this
+            .createOrUpdateDatasetVersionWithResponse(name, version,
+                BinaryData.fromObject(new FileDatasetVersion().setDataUrl(blobClient.getBlobUrl())), requestOptions)
+            .getValue()
+            .toObject(FileDatasetVersion.class);
+        return datasetVersion;
+    }
+
+    /**
+     * Creates a dataset from a folder.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @return A FolderDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     * @throws UncheckedIOException if an I/ O error is thrown when accessing the starting file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath) {
+        return createDatasetWithFolder(name, version, folderPath, null);
+    }
+
+    /**
+     * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A FolderDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     * @throws UncheckedIOException if an I/O error is thrown when accessing the starting file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath,
+        String connectionName) {
+        if (!Files.isDirectory(folderPath)) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
+        }
+        PendingUploadRequest request = new PendingUploadRequest();
+        if (connectionName != null) {
+            request.setConnectionName(connectionName);
+        }
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
+        String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
+        BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
+        BlobContainerClient containerClient
+            = new BlobContainerClientBuilder().endpoint(credential.getSasUrl()).buildClient();
+        // Upload all files in the directory
+        try (Stream<Path> fileStream = Files.walk(folderPath)) {
+            fileStream.filter(Files::isRegularFile).forEach(filePath -> {
+                String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
+            });
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
+        }
+        RequestOptions requestOptions = new RequestOptions();
+        FolderDatasetVersion datasetVersion = this
+            .createOrUpdateDatasetVersionWithResponse(name, version,
+                BinaryData.fromObject(new FolderDatasetVersion().setDataUrl(containerUrl)), requestOptions)
+            .getValue()
+            .toObject(FolderDatasetVersion.class);
+        return datasetVersion;
     }
 
     /**
@@ -76,7 +247,7 @@ public final class DatasetsClient {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      *     pendingUploadId: String (Required)
@@ -104,41 +275,6 @@ public final class DatasetsClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     blobReference (Required): {
-     *         blobUri: String (Required)
-     *         storageAccountArmId: String (Required)
-     *         credential (Required): {
-     *             sasUri: String (Required)
-     *             type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCredentialsWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getCredentialsWithResponse(name, version, requestOptions);
-    }
-
-    /**
      * Start a new or get an existing pending upload of a dataset for a specific version.
      *
      * @param name The name of the resource.
@@ -163,98 +299,64 @@ public final class DatasetsClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param version The specific version id of the DatasetVersion to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the specific version of the DatasetVersion along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDatasetVersionWithResponse(name, version, requestOptions);
+    }
+
+    /**
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS credential to access the storage account associated with a Dataset version.
+     * @return the specific version of the DatasetVersion.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetCredentialResult getCredentials(String name, String version) {
-        // Generated convenience method for getCredentialsWithResponse
+    public DatasetVersion getDatasetVersion(String name, String version) {
+        // Generated convenience method for getDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCredentialsWithResponse(name, version, requestOptions).getValue()
-            .toObject(AssetCredentialResult.class);
-    }
-
-    /**
-     * Creates a dataset from a folder.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param filePath The path to the folder containing files to upload.
-     * @return A FileDatasetVersion representing the created dataset.
-     * @throws IllegalArgumentException If the provided path is not a file
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath) {
-        if (!Files.isRegularFile(filePath)) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
-        }
-        PendingUploadRequest body = new PendingUploadRequest();
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
-        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(name).buildClient();
-        blobClient.upload(BinaryData.fromFile(filePath));
-        RequestOptions requestOptions = new RequestOptions();
-        FileDatasetVersion datasetVersion = this
-            .createOrUpdateDatasetVersionWithResponse(name, version,
-                BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
-            .getValue()
-            .toObject(FileDatasetVersion.class);
-        return datasetVersion;
-    }
-
-    /**
-     * Creates a dataset from a folder.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param folderPath The path to the folder containing files to upload.
-     * @return A FolderDatasetVersion representing the created dataset.
-     * @throws IllegalArgumentException If the provided path is not a directory.
-     * @throws IOException if an I/ O error is thrown when accessing the starting file
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath)
-        throws IOException {
-        if (!Files.isDirectory(folderPath)) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
-        }
-        // Request a pending upload for the folder
-        PendingUploadRequest request = new PendingUploadRequest();
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
-        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
-        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
-        // Upload all files in the directory
-        Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
-            // Calculate relative path from the base folder
-            String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-            // Create blob client for each file
-            BlobClient blobClient
-                = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(relativePath).buildClient();
-            // Upload the file
-            blobClient.upload(BinaryData.fromFile(filePath), true);
-        });
-        // Create a FolderDatasetVersion with the container URL
-        RequestOptions requestOptions = new RequestOptions();
-        FolderDatasetVersion datasetVersion = this
-            .createOrUpdateDatasetVersionWithResponse(name, version,
-                BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
-            .getValue()
-            .toObject(FolderDatasetVersion.class);
-        return datasetVersion;
+        return getDatasetVersionWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
     }
 
     /**
@@ -329,45 +431,8 @@ public final class DatasetsClient {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDatasetVersionWithResponse(name, version, requestOptions);
-    }
-
-    /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -485,28 +550,8 @@ public final class DatasetsClient {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the DatasetVersion.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion getDatasetVersion(String name, String version) {
-        // Generated convenience method for getDatasetVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getDatasetVersionWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
-    }
-
-    /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.

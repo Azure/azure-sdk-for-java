@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.subscription.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -13,74 +12,119 @@ import com.azure.core.util.Context;
  */
 public interface Subscriptions {
     /**
-     * Gets all available geo-locations.
+     * The operation to cancel a subscription.
      * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Location> listLocations(String subscriptionId);
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedIterable}.
+     * @return the ID of the canceled subscription along with {@link Response}.
      */
-    PagedIterable<Location> listLocations(String subscriptionId, Context context);
+    Response<CanceledSubscriptionId> cancelWithResponse(String subscriptionId, Context context);
 
     /**
-     * Gets details about a specified subscription.
+     * The operation to cancel a subscription.
      * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the canceled subscription.
+     */
+    CanceledSubscriptionId cancel(String subscriptionId);
+
+    /**
+     * The operation to rename a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription along with {@link Response}.
+     * @return the ID of the subscriptions that is being renamed along with {@link Response}.
      */
-    Response<Subscription> getWithResponse(String subscriptionId, Context context);
+    Response<RenamedSubscriptionId> renameWithResponse(String subscriptionId, SubscriptionName body, Context context);
 
     /**
-     * Gets details about a specified subscription.
+     * The operation to rename a subscription.
      * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return the ID of the subscriptions that is being renamed.
      */
-    Subscription get(String subscriptionId);
+    RenamedSubscriptionId rename(String subscriptionId, SubscriptionName body);
 
     /**
-     * Gets all subscriptions for a tenant.
+     * The operation to enable a subscription.
      * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Subscription> list();
-
-    /**
-     * Gets all subscriptions for a tenant.
-     * 
+     * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
+     * @return the ID of the subscriptions that is being enabled along with {@link Response}.
      */
-    PagedIterable<Subscription> list(Context context);
+    Response<EnabledSubscriptionId> enableWithResponse(String subscriptionId, Context context);
+
+    /**
+     * The operation to enable a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being enabled.
+     */
+    EnabledSubscriptionId enable(String subscriptionId);
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body);
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body, Context context);
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response along with {@link Response}.
+     */
+    Response<AcceptOwnershipStatusResponse> acceptOwnershipStatusWithResponse(String subscriptionId, Context context);
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response.
+     */
+    AcceptOwnershipStatusResponse acceptOwnershipStatus(String subscriptionId);
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ScriptCmdletsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ScriptCmdlets_List.json
+     * x-ms-original-file: 2025-09-01/ScriptCmdlets_List.json
      */
     /**
      * Sample code: ScriptCmdlets_List.

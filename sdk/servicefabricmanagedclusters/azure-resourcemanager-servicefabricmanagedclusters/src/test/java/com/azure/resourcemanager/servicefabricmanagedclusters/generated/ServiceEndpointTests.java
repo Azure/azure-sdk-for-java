@@ -13,21 +13,22 @@ public final class ServiceEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceEndpoint model = BinaryData
-            .fromString("{\"service\":\"dvwvgpio\",\"locations\":[\"xrtfudxep\"],\"networkIdentifier\":\"yqagvrvm\"}")
+            .fromString(
+                "{\"service\":\"ayffim\",\"locations\":[\"tuzqogsexne\",\"fdnw\"],\"networkIdentifier\":\"mewzsyyc\"}")
             .toObject(ServiceEndpoint.class);
-        Assertions.assertEquals("dvwvgpio", model.service());
-        Assertions.assertEquals("xrtfudxep", model.locations().get(0));
-        Assertions.assertEquals("yqagvrvm", model.networkIdentifier());
+        Assertions.assertEquals("ayffim", model.service());
+        Assertions.assertEquals("tuzqogsexne", model.locations().get(0));
+        Assertions.assertEquals("mewzsyyc", model.networkIdentifier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceEndpoint model = new ServiceEndpoint().withService("dvwvgpio")
-            .withLocations(Arrays.asList("xrtfudxep"))
-            .withNetworkIdentifier("yqagvrvm");
+        ServiceEndpoint model = new ServiceEndpoint().withService("ayffim")
+            .withLocations(Arrays.asList("tuzqogsexne", "fdnw"))
+            .withNetworkIdentifier("mewzsyyc");
         model = BinaryData.fromObject(model).toObject(ServiceEndpoint.class);
-        Assertions.assertEquals("dvwvgpio", model.service());
-        Assertions.assertEquals("xrtfudxep", model.locations().get(0));
-        Assertions.assertEquals("yqagvrvm", model.networkIdentifier());
+        Assertions.assertEquals("ayffim", model.service());
+        Assertions.assertEquals("tuzqogsexne", model.locations().get(0));
+        Assertions.assertEquals("mewzsyyc", model.networkIdentifier());
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.SenderUsernameResource;
@@ -21,20 +21,20 @@ public final class SenderUsernamesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataLocation\":\"hfwdsjnkaljutiis\",\"username\":\"acffgdkzzewkfvhq\",\"displayName\":\"a\",\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"pfuflrw\",\"type\":\"mh\"}";
+            = "{\"properties\":{\"dataLocation\":\"yfkzik\",\"username\":\"jawneaiv\",\"displayName\":\"czelpcirel\",\"provisioningState\":\"Creating\"},\"id\":\"enwabfatk\",\"name\":\"ddxbjhwuaanoz\",\"type\":\"osphyoul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SenderUsernameResource response = manager.senderUsernames()
-            .getWithResponse("quuvxzxcl", "ithhqzon", "sg", "b", com.azure.core.util.Context.NONE)
+            .getWithResponse("himdbl", "gwimfn", "hfjx", "mszkkfo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("acffgdkzzewkfvhq", response.username());
-        Assertions.assertEquals("a", response.displayName());
+        Assertions.assertEquals("jawneaiv", response.username());
+        Assertions.assertEquals("czelpcirel", response.displayName());
     }
 }

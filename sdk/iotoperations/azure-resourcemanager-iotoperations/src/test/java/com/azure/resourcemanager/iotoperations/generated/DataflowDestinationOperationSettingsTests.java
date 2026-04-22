@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.iotoperations.models.DataflowDestinationHeaderAction;
 import com.azure.resourcemanager.iotoperations.models.DataflowDestinationOperationSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DataflowDestinationOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowDestinationOperationSettings model
-            = BinaryData.fromString("{\"endpointRef\":\"ervnaenqpehi\",\"dataDestination\":\"doy\"}")
-                .toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("ervnaenqpehi", model.endpointRef());
-        Assertions.assertEquals("doy", model.dataDestination());
+        DataflowDestinationOperationSettings model = BinaryData.fromString(
+            "{\"endpointRef\":\"xsrz\",\"dataDestination\":\"zucerscdntnev\",\"headers\":[{\"actionType\":\"DataflowDestinationHeaderAction\"}]}")
+            .toObject(DataflowDestinationOperationSettings.class);
+        Assertions.assertEquals("xsrz", model.endpointRef());
+        Assertions.assertEquals("zucerscdntnev", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowDestinationOperationSettings model
-            = new DataflowDestinationOperationSettings().withEndpointRef("ervnaenqpehi").withDataDestination("doy");
+        DataflowDestinationOperationSettings model = new DataflowDestinationOperationSettings().withEndpointRef("xsrz")
+            .withDataDestination("zucerscdntnev")
+            .withHeaders(Arrays.asList(new DataflowDestinationHeaderAction()));
         model = BinaryData.fromObject(model).toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("ervnaenqpehi", model.endpointRef());
-        Assertions.assertEquals("doy", model.dataDestination());
+        Assertions.assertEquals("xsrz", model.endpointRef());
+        Assertions.assertEquals("zucerscdntnev", model.dataDestination());
     }
 }

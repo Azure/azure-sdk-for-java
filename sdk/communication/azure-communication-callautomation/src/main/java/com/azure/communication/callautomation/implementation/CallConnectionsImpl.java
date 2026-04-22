@@ -1214,14 +1214,15 @@ public final class CallConnectionsImpl {
     }
 
     /**
+     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for getting participants of the call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return participants from a call along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CallParticipantInternal>> getParticipantsNextSinglePageAsync(String nextLink) {
@@ -1233,6 +1234,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
+     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1240,8 +1243,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for getting participants of the call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return participants from a call along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CallParticipantInternal>> getParticipantsNextSinglePageAsync(String nextLink,
@@ -1253,13 +1255,15 @@ public final class CallConnectionsImpl {
     }
 
     /**
+     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for getting participants of the call along with {@link PagedResponse}.
+     * @return participants from a call along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CallParticipantInternal> getParticipantsNextSinglePage(String nextLink) {
@@ -1267,6 +1271,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
+     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1274,7 +1280,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for getting participants of the call along with {@link PagedResponse}.
+     * @return participants from a call along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CallParticipantInternal> getParticipantsNextSinglePage(String nextLink, Context context) {

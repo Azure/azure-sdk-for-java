@@ -3,6 +3,14 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.DownloadToFileOptions;
+import com.azure.communication.callautomation.models.ParallelDownloadOptions;
+import com.azure.core.http.HttpRange;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,22 +19,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
-import java.util.AbstractMap.SimpleEntry;
 
-import com.azure.communication.callautomation.models.DownloadToFileOptions;
-import com.azure.communication.callautomation.models.ParallelDownloadOptions;
-import com.azure.core.http.HttpRange;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DownloadContentAsyncUnitTests {
 

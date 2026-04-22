@@ -25,7 +25,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
@@ -46,13 +45,15 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
+    private static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
 
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
     private Scheduler scheduler;
-   private static final ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor cosmosAsyncDatabaseAccessor =
-        ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -142,7 +143,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         // PKRange cache will run into 410/1002s (PartitionKeyRangeGone) if disable split handling is true
         // in getCurrentState and getEstimatedLag scenarios therefore disable split handling should explicitly be set to false
         if (isSplitHandlingDisabled) {
-            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+            changeFeedOptionsAccessor()
+                .disableSplitHandling(changeFeedRequestOptions);
         }
         return collectionLink
             .queryChangeFeed(changeFeedRequestOptions, klass)

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Definition of data collection endpoint.
@@ -37,6 +38,11 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
     private DataCollectionEndpointLogsIngestion logsIngestion;
 
     /*
+     * The endpoint used by clients to ingest metrics.
+     */
+    private DataCollectionEndpointMetricsIngestion metricsIngestion;
+
+    /*
      * Network access control rules for the endpoints.
      */
     private DataCollectionEndpointNetworkAcls networkAcls;
@@ -45,6 +51,24 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
      * The resource provisioning state. This property is READ-ONLY.
      */
     private KnownDataCollectionEndpointProvisioningState provisioningState;
+
+    /*
+     * List of Azure Monitor Private Link Scope Resources to which this data collection endpoint resource is associated.
+     * This property is READ-ONLY.
+     */
+    private List<PrivateLinkScopedResource> privateLinkScopedResources;
+
+    /*
+     * Metadata for the resource. This property can only be updated by Log Analytics Control Plane for Data Collection
+     * Endpoint with Log Analytics Destination.
+     */
+    private DataCollectionEndpointFailoverConfiguration failoverConfiguration;
+
+    /*
+     * Metadata for the resource. This property can only be updated by Log Analytics Control Plane for Data Collection
+     * Endpoint with Log Analytics Destination.
+     */
+    private DataCollectionEndpointMetadata metadata;
 
     /**
      * Creates an instance of DataCollectionEndpoint class.
@@ -136,6 +160,26 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
     }
 
     /**
+     * Get the metricsIngestion property: The endpoint used by clients to ingest metrics.
+     * 
+     * @return the metricsIngestion value.
+     */
+    public DataCollectionEndpointMetricsIngestion metricsIngestion() {
+        return this.metricsIngestion;
+    }
+
+    /**
+     * Set the metricsIngestion property: The endpoint used by clients to ingest metrics.
+     * 
+     * @param metricsIngestion the metricsIngestion value to set.
+     * @return the DataCollectionEndpoint object itself.
+     */
+    public DataCollectionEndpoint withMetricsIngestion(DataCollectionEndpointMetricsIngestion metricsIngestion) {
+        this.metricsIngestion = metricsIngestion;
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: Network access control rules for the endpoints.
      * 
      * @return the networkAcls value.
@@ -176,6 +220,73 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
     }
 
     /**
+     * Get the privateLinkScopedResources property: List of Azure Monitor Private Link Scope Resources to which this
+     * data collection endpoint resource is associated. This property is READ-ONLY.
+     * 
+     * @return the privateLinkScopedResources value.
+     */
+    public List<PrivateLinkScopedResource> privateLinkScopedResources() {
+        return this.privateLinkScopedResources;
+    }
+
+    /**
+     * Set the privateLinkScopedResources property: List of Azure Monitor Private Link Scope Resources to which this
+     * data collection endpoint resource is associated. This property is READ-ONLY.
+     * 
+     * @param privateLinkScopedResources the privateLinkScopedResources value to set.
+     * @return the DataCollectionEndpoint object itself.
+     */
+    DataCollectionEndpoint withPrivateLinkScopedResources(List<PrivateLinkScopedResource> privateLinkScopedResources) {
+        this.privateLinkScopedResources = privateLinkScopedResources;
+        return this;
+    }
+
+    /**
+     * Get the failoverConfiguration property: Metadata for the resource. This property can only be updated by Log
+     * Analytics Control Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @return the failoverConfiguration value.
+     */
+    public DataCollectionEndpointFailoverConfiguration failoverConfiguration() {
+        return this.failoverConfiguration;
+    }
+
+    /**
+     * Set the failoverConfiguration property: Metadata for the resource. This property can only be updated by Log
+     * Analytics Control Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @param failoverConfiguration the failoverConfiguration value to set.
+     * @return the DataCollectionEndpoint object itself.
+     */
+    DataCollectionEndpoint
+        withFailoverConfiguration(DataCollectionEndpointFailoverConfiguration failoverConfiguration) {
+        this.failoverConfiguration = failoverConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Metadata for the resource. This property can only be updated by Log Analytics Control
+     * Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @return the metadata value.
+     */
+    public DataCollectionEndpointMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Metadata for the resource. This property can only be updated by Log Analytics Control
+     * Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the DataCollectionEndpoint object itself.
+     */
+    DataCollectionEndpoint withMetadata(DataCollectionEndpointMetadata metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -187,8 +298,20 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
         if (logsIngestion() != null) {
             logsIngestion().validate();
         }
+        if (metricsIngestion() != null) {
+            metricsIngestion().validate();
+        }
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (privateLinkScopedResources() != null) {
+            privateLinkScopedResources().forEach(e -> e.validate());
+        }
+        if (failoverConfiguration() != null) {
+            failoverConfiguration().validate();
+        }
+        if (metadata() != null) {
+            metadata().validate();
         }
     }
 
@@ -202,6 +325,7 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
         jsonWriter.writeStringField("immutableId", this.immutableId);
         jsonWriter.writeJsonField("configurationAccess", this.configurationAccess);
         jsonWriter.writeJsonField("logsIngestion", this.logsIngestion);
+        jsonWriter.writeJsonField("metricsIngestion", this.metricsIngestion);
         jsonWriter.writeJsonField("networkAcls", this.networkAcls);
         return jsonWriter.writeEndObject();
     }
@@ -231,11 +355,23 @@ public class DataCollectionEndpoint implements JsonSerializable<DataCollectionEn
                 } else if ("logsIngestion".equals(fieldName)) {
                     deserializedDataCollectionEndpoint.logsIngestion
                         = DataCollectionEndpointLogsIngestion.fromJson(reader);
+                } else if ("metricsIngestion".equals(fieldName)) {
+                    deserializedDataCollectionEndpoint.metricsIngestion
+                        = DataCollectionEndpointMetricsIngestion.fromJson(reader);
                 } else if ("networkAcls".equals(fieldName)) {
                     deserializedDataCollectionEndpoint.networkAcls = DataCollectionEndpointNetworkAcls.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataCollectionEndpoint.provisioningState
                         = KnownDataCollectionEndpointProvisioningState.fromString(reader.getString());
+                } else if ("privateLinkScopedResources".equals(fieldName)) {
+                    List<PrivateLinkScopedResource> privateLinkScopedResources
+                        = reader.readArray(reader1 -> PrivateLinkScopedResource.fromJson(reader1));
+                    deserializedDataCollectionEndpoint.privateLinkScopedResources = privateLinkScopedResources;
+                } else if ("failoverConfiguration".equals(fieldName)) {
+                    deserializedDataCollectionEndpoint.failoverConfiguration
+                        = DataCollectionEndpointFailoverConfiguration.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedDataCollectionEndpoint.metadata = DataCollectionEndpointMetadata.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

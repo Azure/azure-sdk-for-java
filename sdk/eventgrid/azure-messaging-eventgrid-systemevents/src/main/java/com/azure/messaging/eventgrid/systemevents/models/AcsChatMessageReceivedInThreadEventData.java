@@ -122,7 +122,6 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
         jsonWriter.writeStringField("messageBody", this.messageBody);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

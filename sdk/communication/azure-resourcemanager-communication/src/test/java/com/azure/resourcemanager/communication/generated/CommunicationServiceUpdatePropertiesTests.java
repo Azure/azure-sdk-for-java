@@ -6,23 +6,30 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.communication.fluent.models.CommunicationServiceUpdateProperties;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class CommunicationServiceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationServiceUpdateProperties model
-            = BinaryData.fromString("{\"linkedDomains\":[\"fvzwdzuhty\",\"wisdkft\",\"wxmnteiwao\"]}")
-                .toObject(CommunicationServiceUpdateProperties.class);
-        Assertions.assertEquals("fvzwdzuhty", model.linkedDomains().get(0));
+        CommunicationServiceUpdateProperties model = BinaryData.fromString(
+            "{\"linkedDomains\":[\"idf\",\"zwdzuh\"],\"publicNetworkAccess\":\"Enabled\",\"disableLocalAuth\":true}")
+            .toObject(CommunicationServiceUpdateProperties.class);
+        Assertions.assertEquals("idf", model.linkedDomains().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertTrue(model.disableLocalAuth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationServiceUpdateProperties model = new CommunicationServiceUpdateProperties()
-            .withLinkedDomains(Arrays.asList("fvzwdzuhty", "wisdkft", "wxmnteiwao"));
+        CommunicationServiceUpdateProperties model
+            = new CommunicationServiceUpdateProperties().withLinkedDomains(Arrays.asList("idf", "zwdzuh"))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(true);
         model = BinaryData.fromObject(model).toObject(CommunicationServiceUpdateProperties.class);
-        Assertions.assertEquals("fvzwdzuhty", model.linkedDomains().get(0));
+        Assertions.assertEquals("idf", model.linkedDomains().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertTrue(model.disableLocalAuth());
     }
 }

@@ -43,7 +43,6 @@ public final class DataCollectionEndpointLogsIngestion extends LogsIngestionEndp
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

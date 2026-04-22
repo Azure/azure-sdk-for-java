@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.CertificateDescription;
@@ -22,23 +22,25 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"sjnhn\",\"expiry\":\"Thu, 15 Apr 2021 22:34:41 GMT\",\"thumbprint\":\"fq\",\"isVerified\":true,\"created\":\"Mon, 01 Mar 2021 20:41:09 GMT\",\"updated\":\"Sat, 17 Jul 2021 07:30:37 GMT\",\"certificate\":\"blwpcesutrgj\"},\"etag\":\"auutpwoqhihe\",\"id\":\"qg\",\"name\":\"zpnfqntcypsxj\",\"type\":\"foimwkslircizjxv\"}";
+            = "{\"properties\":{\"subject\":\"ojgcyzt\",\"expiry\":\"Sat, 12 Jun 2021 09:34:33 GMT\",\"thumbprint\":\"nbaeqphchqn\",\"isVerified\":false,\"created\":\"Sat, 24 Jul 2021 02:25:51 GMT\",\"updated\":\"Thu, 21 Jan 2021 00:49:26 GMT\",\"certificate\":\"wrykqgai\",\"policyResourceId\":\"viklb\"},\"etag\":\"vkhbejdznx\",\"id\":\"vdsrhnjiv\",\"name\":\"lvtno\",\"type\":\"qfzgemjdftul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateDescription response = manager.certificates()
-            .define("bgye")
-            .withExistingIotHub("ujviylwdshfs", "n")
-            .withProperties(new CertificateProperties().withIsVerified(true).withCertificate("oxoftpipiwycz"))
-            .withIfMatch("euzvx")
+            .define("risjnhnytxifqjz")
+            .withExistingIotHub("ucvpamrs", "euzvx")
+            .withProperties(
+                new CertificateProperties().withIsVerified(false).withCertificate("fqntcyp").withPolicyResourceId("jv"))
+            .withIfMatch("jslb")
             .create();
 
-        Assertions.assertEquals(true, response.properties().isVerified());
-        Assertions.assertEquals("blwpcesutrgj", response.properties().certificate());
+        Assertions.assertFalse(response.properties().isVerified());
+        Assertions.assertEquals("wrykqgai", response.properties().certificate());
+        Assertions.assertEquals("viklb", response.properties().policyResourceId());
     }
 }

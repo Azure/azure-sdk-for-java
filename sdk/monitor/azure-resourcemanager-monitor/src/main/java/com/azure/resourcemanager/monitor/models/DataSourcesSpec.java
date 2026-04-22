@@ -23,6 +23,11 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
     private List<PerfCounterDataSource> performanceCounters;
 
     /*
+     * The list of Open Telemetry performance counter data source configurations.
+     */
+    private List<PerformanceCountersOTelDataSource> performanceCountersOTel;
+
+    /*
      * The list of Windows Event Log data source configurations.
      */
     private List<WindowsEventLogDataSource> windowsEventLogs;
@@ -47,6 +52,46 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
      */
     private List<IisLogsDataSource> iisLogs;
 
+    /*
+     * The list of Windows Firewall logs source configurations.
+     */
+    private List<WindowsFirewallLogsDataSource> windowsFirewallLogs;
+
+    /*
+     * The list of Prometheus forwarder data source configurations.
+     */
+    private List<PrometheusForwarderDataSource> prometheusForwarder;
+
+    /*
+     * The list of platform telemetry configurations
+     */
+    private List<PlatformTelemetryDataSource> platformTelemetry;
+
+    /*
+     * Specifications of pull based data sources
+     */
+    private DataSourcesSpecDataImports dataImports;
+
+    /*
+     * The list of Otel Logs data source configurations.
+     */
+    private List<OtelLogsDataSource> otelLogs;
+
+    /*
+     * The list of Otel traces data source configurations.
+     */
+    private List<OtelTracesDataSource> otelTraces;
+
+    /*
+     * The list of OTel metrics data source configurations.
+     */
+    private List<OtelMetricsDataSource> otelMetrics;
+
+    /*
+     * The list of ETW providers data source configurations.
+     */
+    private List<EtwProviderDataSource> etwProviders;
+
     /**
      * Creates an instance of DataSourcesSpec class.
      */
@@ -70,6 +115,29 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
      */
     public DataSourcesSpec withPerformanceCounters(List<PerfCounterDataSource> performanceCounters) {
         this.performanceCounters = performanceCounters;
+        return this;
+    }
+
+    /**
+     * Get the performanceCountersOTel property: The list of Open Telemetry performance counter data source
+     * configurations.
+     * 
+     * @return the performanceCountersOTel value.
+     */
+    public List<PerformanceCountersOTelDataSource> performanceCountersOTel() {
+        return this.performanceCountersOTel;
+    }
+
+    /**
+     * Set the performanceCountersOTel property: The list of Open Telemetry performance counter data source
+     * configurations.
+     * 
+     * @param performanceCountersOTel the performanceCountersOTel value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec
+        withPerformanceCountersOTel(List<PerformanceCountersOTelDataSource> performanceCountersOTel) {
+        this.performanceCountersOTel = performanceCountersOTel;
         return this;
     }
 
@@ -174,6 +242,166 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
     }
 
     /**
+     * Get the windowsFirewallLogs property: The list of Windows Firewall logs source configurations.
+     * 
+     * @return the windowsFirewallLogs value.
+     */
+    public List<WindowsFirewallLogsDataSource> windowsFirewallLogs() {
+        return this.windowsFirewallLogs;
+    }
+
+    /**
+     * Set the windowsFirewallLogs property: The list of Windows Firewall logs source configurations.
+     * 
+     * @param windowsFirewallLogs the windowsFirewallLogs value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withWindowsFirewallLogs(List<WindowsFirewallLogsDataSource> windowsFirewallLogs) {
+        this.windowsFirewallLogs = windowsFirewallLogs;
+        return this;
+    }
+
+    /**
+     * Get the prometheusForwarder property: The list of Prometheus forwarder data source configurations.
+     * 
+     * @return the prometheusForwarder value.
+     */
+    public List<PrometheusForwarderDataSource> prometheusForwarder() {
+        return this.prometheusForwarder;
+    }
+
+    /**
+     * Set the prometheusForwarder property: The list of Prometheus forwarder data source configurations.
+     * 
+     * @param prometheusForwarder the prometheusForwarder value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withPrometheusForwarder(List<PrometheusForwarderDataSource> prometheusForwarder) {
+        this.prometheusForwarder = prometheusForwarder;
+        return this;
+    }
+
+    /**
+     * Get the platformTelemetry property: The list of platform telemetry configurations.
+     * 
+     * @return the platformTelemetry value.
+     */
+    public List<PlatformTelemetryDataSource> platformTelemetry() {
+        return this.platformTelemetry;
+    }
+
+    /**
+     * Set the platformTelemetry property: The list of platform telemetry configurations.
+     * 
+     * @param platformTelemetry the platformTelemetry value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withPlatformTelemetry(List<PlatformTelemetryDataSource> platformTelemetry) {
+        this.platformTelemetry = platformTelemetry;
+        return this;
+    }
+
+    /**
+     * Get the dataImports property: Specifications of pull based data sources.
+     * 
+     * @return the dataImports value.
+     */
+    public DataSourcesSpecDataImports dataImports() {
+        return this.dataImports;
+    }
+
+    /**
+     * Set the dataImports property: Specifications of pull based data sources.
+     * 
+     * @param dataImports the dataImports value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withDataImports(DataSourcesSpecDataImports dataImports) {
+        this.dataImports = dataImports;
+        return this;
+    }
+
+    /**
+     * Get the otelLogs property: The list of Otel Logs data source configurations.
+     * 
+     * @return the otelLogs value.
+     */
+    public List<OtelLogsDataSource> otelLogs() {
+        return this.otelLogs;
+    }
+
+    /**
+     * Set the otelLogs property: The list of Otel Logs data source configurations.
+     * 
+     * @param otelLogs the otelLogs value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withOtelLogs(List<OtelLogsDataSource> otelLogs) {
+        this.otelLogs = otelLogs;
+        return this;
+    }
+
+    /**
+     * Get the otelTraces property: The list of Otel traces data source configurations.
+     * 
+     * @return the otelTraces value.
+     */
+    public List<OtelTracesDataSource> otelTraces() {
+        return this.otelTraces;
+    }
+
+    /**
+     * Set the otelTraces property: The list of Otel traces data source configurations.
+     * 
+     * @param otelTraces the otelTraces value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withOtelTraces(List<OtelTracesDataSource> otelTraces) {
+        this.otelTraces = otelTraces;
+        return this;
+    }
+
+    /**
+     * Get the otelMetrics property: The list of OTel metrics data source configurations.
+     * 
+     * @return the otelMetrics value.
+     */
+    public List<OtelMetricsDataSource> otelMetrics() {
+        return this.otelMetrics;
+    }
+
+    /**
+     * Set the otelMetrics property: The list of OTel metrics data source configurations.
+     * 
+     * @param otelMetrics the otelMetrics value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withOtelMetrics(List<OtelMetricsDataSource> otelMetrics) {
+        this.otelMetrics = otelMetrics;
+        return this;
+    }
+
+    /**
+     * Get the etwProviders property: The list of ETW providers data source configurations.
+     * 
+     * @return the etwProviders value.
+     */
+    public List<EtwProviderDataSource> etwProviders() {
+        return this.etwProviders;
+    }
+
+    /**
+     * Set the etwProviders property: The list of ETW providers data source configurations.
+     * 
+     * @param etwProviders the etwProviders value to set.
+     * @return the DataSourcesSpec object itself.
+     */
+    public DataSourcesSpec withEtwProviders(List<EtwProviderDataSource> etwProviders) {
+        this.etwProviders = etwProviders;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -181,6 +409,9 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
     public void validate() {
         if (performanceCounters() != null) {
             performanceCounters().forEach(e -> e.validate());
+        }
+        if (performanceCountersOTel() != null) {
+            performanceCountersOTel().forEach(e -> e.validate());
         }
         if (windowsEventLogs() != null) {
             windowsEventLogs().forEach(e -> e.validate());
@@ -197,6 +428,30 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
         if (iisLogs() != null) {
             iisLogs().forEach(e -> e.validate());
         }
+        if (windowsFirewallLogs() != null) {
+            windowsFirewallLogs().forEach(e -> e.validate());
+        }
+        if (prometheusForwarder() != null) {
+            prometheusForwarder().forEach(e -> e.validate());
+        }
+        if (platformTelemetry() != null) {
+            platformTelemetry().forEach(e -> e.validate());
+        }
+        if (dataImports() != null) {
+            dataImports().validate();
+        }
+        if (otelLogs() != null) {
+            otelLogs().forEach(e -> e.validate());
+        }
+        if (otelTraces() != null) {
+            otelTraces().forEach(e -> e.validate());
+        }
+        if (otelMetrics() != null) {
+            otelMetrics().forEach(e -> e.validate());
+        }
+        if (etwProviders() != null) {
+            etwProviders().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -207,12 +462,25 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("performanceCounters", this.performanceCounters,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("performanceCountersOTel", this.performanceCountersOTel,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("windowsEventLogs", this.windowsEventLogs,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("syslog", this.syslog, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("logFiles", this.logFiles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("iisLogs", this.iisLogs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("windowsFirewallLogs", this.windowsFirewallLogs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("prometheusForwarder", this.prometheusForwarder,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("platformTelemetry", this.platformTelemetry,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dataImports", this.dataImports);
+        jsonWriter.writeArrayField("otelLogs", this.otelLogs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("otelTraces", this.otelTraces, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("otelMetrics", this.otelMetrics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("etwProviders", this.etwProviders, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -235,6 +503,10 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
                     List<PerfCounterDataSource> performanceCounters
                         = reader.readArray(reader1 -> PerfCounterDataSource.fromJson(reader1));
                     deserializedDataSourcesSpec.performanceCounters = performanceCounters;
+                } else if ("performanceCountersOTel".equals(fieldName)) {
+                    List<PerformanceCountersOTelDataSource> performanceCountersOTel
+                        = reader.readArray(reader1 -> PerformanceCountersOTelDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.performanceCountersOTel = performanceCountersOTel;
                 } else if ("windowsEventLogs".equals(fieldName)) {
                     List<WindowsEventLogDataSource> windowsEventLogs
                         = reader.readArray(reader1 -> WindowsEventLogDataSource.fromJson(reader1));
@@ -253,6 +525,36 @@ public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
                 } else if ("iisLogs".equals(fieldName)) {
                     List<IisLogsDataSource> iisLogs = reader.readArray(reader1 -> IisLogsDataSource.fromJson(reader1));
                     deserializedDataSourcesSpec.iisLogs = iisLogs;
+                } else if ("windowsFirewallLogs".equals(fieldName)) {
+                    List<WindowsFirewallLogsDataSource> windowsFirewallLogs
+                        = reader.readArray(reader1 -> WindowsFirewallLogsDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.windowsFirewallLogs = windowsFirewallLogs;
+                } else if ("prometheusForwarder".equals(fieldName)) {
+                    List<PrometheusForwarderDataSource> prometheusForwarder
+                        = reader.readArray(reader1 -> PrometheusForwarderDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.prometheusForwarder = prometheusForwarder;
+                } else if ("platformTelemetry".equals(fieldName)) {
+                    List<PlatformTelemetryDataSource> platformTelemetry
+                        = reader.readArray(reader1 -> PlatformTelemetryDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.platformTelemetry = platformTelemetry;
+                } else if ("dataImports".equals(fieldName)) {
+                    deserializedDataSourcesSpec.dataImports = DataSourcesSpecDataImports.fromJson(reader);
+                } else if ("otelLogs".equals(fieldName)) {
+                    List<OtelLogsDataSource> otelLogs
+                        = reader.readArray(reader1 -> OtelLogsDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.otelLogs = otelLogs;
+                } else if ("otelTraces".equals(fieldName)) {
+                    List<OtelTracesDataSource> otelTraces
+                        = reader.readArray(reader1 -> OtelTracesDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.otelTraces = otelTraces;
+                } else if ("otelMetrics".equals(fieldName)) {
+                    List<OtelMetricsDataSource> otelMetrics
+                        = reader.readArray(reader1 -> OtelMetricsDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.otelMetrics = otelMetrics;
+                } else if ("etwProviders".equals(fieldName)) {
+                    List<EtwProviderDataSource> etwProviders
+                        = reader.readArray(reader1 -> EtwProviderDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.etwProviders = etwProviders;
                 } else {
                     reader.skipChildren();
                 }

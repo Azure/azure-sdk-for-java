@@ -31,19 +31,16 @@ def update_monitor_matrix_json_file(filepath, test_spring_boot_version):
 
 
 def get_supported_spring_boot_version(filepath):
-    version3 = []
-    version2 = []
+    version4 = []
     scripts_dir = os.path.dirname(__file__)
     filepath = os.path.join(scripts_dir, '..', 'pipeline', 'spring-cloud-azure-supported-spring.json')
     with open(filepath, 'r', encoding='utf-8') as file:
         data = json.load(file)
     for entry in data:
         for key in entry:
-            if entry[key] == "SUPPORTED" and entry["spring-boot-version"].startswith("3."):
-                version3.append(entry["spring-boot-version"])
-            if entry[key] == "SUPPORTED" and entry["spring-boot-version"].startswith("2."):
-                version2.append(entry["spring-boot-version"])
-    supported_version_list = [max(version3), max(version2)]
+            if entry[key] == "SUPPORTED" and entry["spring-boot-version"].startswith("4."):
+                version4.append(entry["spring-boot-version"])
+    supported_version_list = [max(version4)]
     return supported_version_list
 
 

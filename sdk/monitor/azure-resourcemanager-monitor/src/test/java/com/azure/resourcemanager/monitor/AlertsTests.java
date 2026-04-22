@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.DynamicThresholdFailingPeriods;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -56,6 +58,7 @@ public class AlertsTests extends MonitorManagementTest {
                 .withRegion(Region.US_EAST2)
                 .withNewResourceGroup(rgName)
                 .withOnlyHttpsTraffic()
+                .disableSharedKeyAccess()
                 .create();
 
             ActionGroup ag = monitorManager.actionGroups()
@@ -338,6 +341,7 @@ public class AlertsTests extends MonitorManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
                 .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
                 .create();
 
             VirtualMachine vm2 = computeManager.virtualMachines()
@@ -350,6 +354,7 @@ public class AlertsTests extends MonitorManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
                 .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
                 .create();
 
             MetricAlert ma = monitorManager.alertRules()
@@ -378,7 +383,9 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(0, ma.dynamicAlertCriterias().size());
             Assertions.assertEquals("Percentage CPU", ma.alertCriterias().get("Metric1").metricName());
 
-            OffsetDateTime time30MinBefore = OffsetDateTime.now().minusMinutes(30);
+            // The date and time format should be: yyyy-dd-MMTHH:mm:ss.ffZ. For example: 2021-31-12T11:00:00.00Z.
+            OffsetDateTime time30MinBefore = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(30).withNano(0);
+
             ma.update()
                 .withDescription("This alert rule is for U3 - Multiple resource, dynamic criteria")
                 .withoutAlertCriteria("Metric1")

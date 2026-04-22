@@ -16,6 +16,7 @@ import reactor.util.function.Tuple2;
 /**
  * Resource manager for Service Bus topic.
  */
+@SuppressWarnings("deprecation")
 public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<String, String>, ServiceBusTopicProperties> {
 
     public ServiceBusTopicCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {

@@ -619,6 +619,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         String osDiskId = vm.osDiskId();

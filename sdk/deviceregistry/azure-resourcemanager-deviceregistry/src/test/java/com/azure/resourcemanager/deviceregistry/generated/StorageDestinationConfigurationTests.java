@@ -12,14 +12,14 @@ public final class StorageDestinationConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageDestinationConfiguration model
-            = BinaryData.fromString("{\"path\":\"svlxotogtwrup\"}").toObject(StorageDestinationConfiguration.class);
-        Assertions.assertEquals("svlxotogtwrup", model.path());
+            = BinaryData.fromString("{\"path\":\"tghfgblcgwxzvl\"}").toObject(StorageDestinationConfiguration.class);
+        Assertions.assertEquals("tghfgblcgwxzvl", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageDestinationConfiguration model = new StorageDestinationConfiguration().withPath("svlxotogtwrup");
+        StorageDestinationConfiguration model = new StorageDestinationConfiguration().withPath("tghfgblcgwxzvl");
         model = BinaryData.fromObject(model).toObject(StorageDestinationConfiguration.class);
-        Assertions.assertEquals("svlxotogtwrup", model.path());
+        Assertions.assertEquals("tghfgblcgwxzvl", model.path());
     }
 }

@@ -1,30 +1,15 @@
 # Code snippets and samples
 
 
-## CacheNodesOperations
-
-- [CreateorUpdate](#cachenodesoperations_createorupdate)
-- [Delete](#cachenodesoperations_delete)
-- [GetByResourceGroup](#cachenodesoperations_getbyresourcegroup)
-- [List](#cachenodesoperations_list)
-- [ListByResourceGroup](#cachenodesoperations_listbyresourcegroup)
-- [Update](#cachenodesoperations_update)
-
-## EnterpriseCustomerOperations
-
-- [CreateOrUpdate](#enterprisecustomeroperations_createorupdate)
-- [Delete](#enterprisecustomeroperations_delete)
-- [GetByResourceGroup](#enterprisecustomeroperations_getbyresourcegroup)
-- [List](#enterprisecustomeroperations_list)
-- [ListByResourceGroup](#enterprisecustomeroperations_listbyresourcegroup)
-- [Update](#enterprisecustomeroperations_update)
-
 ## EnterpriseMccCacheNodesOperations
 
 - [CreateOrUpdate](#enterprisemcccachenodesoperations_createorupdate)
 - [Delete](#enterprisemcccachenodesoperations_delete)
 - [Get](#enterprisemcccachenodesoperations_get)
+- [GetCacheNodeAutoUpdateHistory](#enterprisemcccachenodesoperations_getcachenodeautoupdatehistory)
 - [GetCacheNodeInstallDetails](#enterprisemcccachenodesoperations_getcachenodeinstalldetails)
+- [GetCacheNodeMccIssueDetailsHistory](#enterprisemcccachenodesoperations_getcachenodemccissuedetailshistory)
+- [GetCacheNodeTlsCertificateHistory](#enterprisemcccachenodesoperations_getcachenodetlscertificatehistory)
 - [ListByEnterpriseMccCustomerResource](#enterprisemcccachenodesoperations_listbyenterprisemcccustomerresource)
 - [Update](#enterprisemcccachenodesoperations_update)
 
@@ -43,7 +28,9 @@
 - [Delete](#ispcachenodesoperations_delete)
 - [Get](#ispcachenodesoperations_get)
 - [GetBgpCidrs](#ispcachenodesoperations_getbgpcidrs)
+- [GetCacheNodeAutoUpdateHistory](#ispcachenodesoperations_getcachenodeautoupdatehistory)
 - [GetCacheNodeInstallDetails](#ispcachenodesoperations_getcachenodeinstalldetails)
+- [GetCacheNodeMccIssueDetailsHistory](#ispcachenodesoperations_getcachenodemccissuedetailshistory)
 - [ListByIspCustomerResource](#ispcachenodesoperations_listbyispcustomerresource)
 - [Update](#ispcachenodesoperations_update)
 
@@ -59,370 +46,6 @@
 ## Operations
 
 - [List](#operations_list)
-### CacheNodesOperations_CreateorUpdate
-
-```java
-import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.connectedcache.models.CacheNodeOldResponse;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for CacheNodesOperations CreateorUpdate.
- */
-public final class CacheNodesOperationsCreateorUpdateSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/CacheNodesOperations_CreateorUpdate_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CacheNodesOperations_CreateorUpdate.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void
-        cacheNodesOperationsCreateorUpdate(com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.cacheNodesOperations()
-            .define("lwrsyhvfpcfrwrim")
-            .withRegion("westus")
-            .withExistingResourceGroup("rgConnectedCache")
-            .withTags(mapOf("key8256", "fakeTokenPlaceholder"))
-            .withProperties(new CacheNodeOldResponse().withStatusCode("fakeTokenPlaceholder")
-                .withStatusText("bjnsrpzaofjntleoesjwammgbi")
-                .withStatusDetails("quuziibkwtgf")
-                .withError(new ManagementError()))
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### CacheNodesOperations_Delete
-
-```java
-/**
- * Samples for CacheNodesOperations Delete.
- */
-public final class CacheNodesOperationsDeleteSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/CacheNodesOperations_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CacheNodesOperations_Delete.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void
-        cacheNodesOperationsDelete(com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.cacheNodesOperations()
-            .deleteByResourceGroupWithResponse("rgConnectedCache",
-                "otvtvhmovthjwzjzbsqkbnmpcmmeianpqxmmaspvdczmrenquxigrtuarmlcmvsnaclhcbw",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CacheNodesOperations_GetByResourceGroup
-
-```java
-/**
- * Samples for CacheNodesOperations GetByResourceGroup.
- */
-public final class CacheNodesOperationsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/CacheNodesOperations_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CacheNodesOperations_Get.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void cacheNodesOperationsGet(com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.cacheNodesOperations()
-            .getByResourceGroupWithResponse("rgConnectedCache", "nqoxkgorhuzbhjwcegymzqbeydzjupemekt",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CacheNodesOperations_List
-
-```java
-/**
- * Samples for CacheNodesOperations List.
- */
-public final class CacheNodesOperationsListSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/CacheNodesOperations_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CacheNodes Private Preview(Legacy) resource List by Subscription - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void cacheNodesPrivatePreviewLegacyResourceListBySubscriptionGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.cacheNodesOperations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CacheNodesOperations_ListByResourceGroup
-
-```java
-/**
- * Samples for CacheNodesOperations ListByResourceGroup.
- */
-public final class CacheNodesOperationsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/CacheNodesOperations_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CacheNodes Private Preview(Legacy) Get Operation List by Resource group - generated by [MaximumSet]
-     * rule.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void cacheNodesPrivatePreviewLegacyGetOperationListByResourceGroupGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.cacheNodesOperations().listByResourceGroup("rgConnectedCache", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CacheNodesOperations_Update
-
-```java
-import com.azure.resourcemanager.connectedcache.models.CacheNodePreviewResource;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for CacheNodesOperations Update.
- */
-public final class CacheNodesOperationsUpdateSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/CacheNodesOperations_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CacheNodes Private Preview(Legacy) Update Operation - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void cacheNodesPrivatePreviewLegacyUpdateOperationGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        CacheNodePreviewResource resource = manager.cacheNodesOperations()
-            .getByResourceGroupWithResponse("rgConnectedCache", "wlrwpdbcv", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("key5032", "fakeTokenPlaceholder")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### EnterpriseCustomerOperations_CreateOrUpdate
-
-```java
-import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.connectedcache.models.CacheNodeOldResponse;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for EnterpriseCustomerOperations CreateOrUpdate.
- */
-public final class EnterpriseCustomerOperationsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseCustomerOperations_CreateOrUpdate_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: EnterpriseCustomerOperations_CreateOrUpdate.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void enterpriseCustomerOperationsCreateOrUpdate(
-        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.enterpriseCustomerOperations()
-            .define("l")
-            .withRegion("zdzhhkjyogrqxwihkifnmeyhwpujbr")
-            .withExistingResourceGroup("rgConnectedCache")
-            .withTags(mapOf("key4215", "fakeTokenPlaceholder"))
-            .withProperties(new CacheNodeOldResponse().withStatusCode("fakeTokenPlaceholder")
-                .withStatusText("bs")
-                .withStatusDetails("lhwvcz")
-                .withError(new ManagementError()))
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### EnterpriseCustomerOperations_Delete
-
-```java
-/**
- * Samples for EnterpriseCustomerOperations Delete.
- */
-public final class EnterpriseCustomerOperationsDeleteSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseCustomerOperations_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: EnterpriseCustomerOperations_Delete.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void
-        enterpriseCustomerOperationsDelete(com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.enterpriseCustomerOperations()
-            .deleteByResourceGroupWithResponse("rgConnectedCache",
-                "jeubxmhiaihcusgnahblvvckbdcetacvqgwbohlrqucodtlwuyefpejskvamgrdnwgucziodcfpjhqy",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### EnterpriseCustomerOperations_GetByResourceGroup
-
-```java
-/**
- * Samples for EnterpriseCustomerOperations GetByResourceGroup.
- */
-public final class EnterpriseCustomerOperationsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseCustomerOperations_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: EnterpriseCustomerOperations_Get.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void
-        enterpriseCustomerOperationsGet(com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.enterpriseCustomerOperations()
-            .getByResourceGroupWithResponse("rgConnectedCache", "MCCTPTest2", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### EnterpriseCustomerOperations_List
-
-```java
-/**
- * Samples for EnterpriseCustomerOperations List.
- */
-public final class EnterpriseCustomerOperationsListSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseCustomerOperations_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: EnterpriseCustomerOperations_ListBySubscription.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void enterpriseCustomerOperationsListBySubscription(
-        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.enterpriseCustomerOperations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### EnterpriseCustomerOperations_ListByResourceGroup
-
-```java
-/**
- * Samples for EnterpriseCustomerOperations ListByResourceGroup.
- */
-public final class EnterpriseCustomerOperationsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseCustomerOperations_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: EnterpriseCustomerOperations_ListByResourceGroup.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void enterpriseCustomerOperationsListByResourceGroup(
-        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        manager.enterpriseCustomerOperations()
-            .listByResourceGroup("rgConnectedCache", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### EnterpriseCustomerOperations_Update
-
-```java
-import com.azure.resourcemanager.connectedcache.models.EnterprisePreviewResource;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for EnterpriseCustomerOperations Update.
- */
-public final class EnterpriseCustomerOperationsUpdateSamples {
-    /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseCustomerOperations_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: EnterpriseCustomerOperations_Update.
-     * 
-     * @param manager Entry point to ConnectedCacheManager.
-     */
-    public static void
-        enterpriseCustomerOperationsUpdate(com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
-        EnterprisePreviewResource resource = manager.enterpriseCustomerOperations()
-            .getByResourceGroupWithResponse("rgConnectedCache", "MCCTPTest2", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("key1653", "fakeTokenPlaceholder")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
 ### EnterpriseMccCacheNodesOperations_CreateOrUpdate
 
 ```java
@@ -442,7 +65,7 @@ import java.util.Map;
  */
 public final class EnterpriseMccCacheNodesOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Creates an enterpriseMccCacheNode resource - generated by [MaximumSet] rule.
@@ -479,7 +102,6 @@ public final class EnterpriseMccCacheNodesOperationsCreateOrUpdateSamples {
                             .withNginxMapping("cirlpkpuxg")))
                     .withBgpConfiguration(new BgpConfiguration().withAsnToIpAddressMapping("fjbggfvumrn"))
                     .withProxyUrlConfiguration(new ProxyUrlConfiguration().withProxyUrl("hplstyg"))
-                    .withProxyUrl("ihkzxlzvpcywtzrogupqozkdud")
                     .withOptionalProperty1("ph")
                     .withOptionalProperty2("soqqgpgcbhb")
                     .withOptionalProperty3("fpnycrbagptsujiotnjfuhlm")
@@ -514,7 +136,7 @@ public final class EnterpriseMccCacheNodesOperationsCreateOrUpdateSamples {
  */
 public final class EnterpriseMccCacheNodesOperationsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCacheNodesOperations Delete Operation - generated by [MaximumSet] rule.
@@ -538,7 +160,7 @@ public final class EnterpriseMccCacheNodesOperationsDeleteSamples {
  */
 public final class EnterpriseMccCacheNodesOperationsGetSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Gets enterpriseMccCacheNode resource information of an enterprise mcc customer parent resource -
@@ -556,6 +178,31 @@ public final class EnterpriseMccCacheNodesOperationsGetSamples {
 }
 ```
 
+### EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory
+
+```java
+/**
+ * Samples for EnterpriseMccCacheNodesOperations GetCacheNodeAutoUpdateHistory.
+ */
+public final class EnterpriseMccCacheNodesOperationsGetCacheNodeAutoUpdateHistorySamples {
+    /*
+     * x-ms-original-file:
+     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet.
+     * 
+     * @param manager Entry point to ConnectedCacheManager.
+     */
+    public static void enterpriseMccCacheNodesOperationsGetCacheNodeAutoUpdateHistoryMaximumSet(
+        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
+        manager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeAutoUpdateHistoryWithResponse("rgConnectedCache", "MccRPTest1", "MCCCachenode1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails
 
 ```java
@@ -565,7 +212,7 @@ public final class EnterpriseMccCacheNodesOperationsGetSamples {
 public final class EnterpriseMccCacheNodesOperationsGetCacheNodeInstallDetailsSamples {
     /*
      * x-ms-original-file:
-     * 2023-05-01-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
+     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
      */
     /**
      * Sample code: Gets required properties for enterprise Mcc CacheNode resource install key details - generated by
@@ -583,6 +230,56 @@ public final class EnterpriseMccCacheNodesOperationsGetCacheNodeInstallDetailsSa
 }
 ```
 
+### EnterpriseMccCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory
+
+```java
+/**
+ * Samples for EnterpriseMccCacheNodesOperations GetCacheNodeMccIssueDetailsHistory.
+ */
+public final class EnterpriseMccCacheNodesOperationsGetCacheNodeMccIssueDetailsHistorySamples {
+    /*
+     * x-ms-original-file:
+     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EnterpriseMccCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet.
+     * 
+     * @param manager Entry point to ConnectedCacheManager.
+     */
+    public static void enterpriseMccCacheNodesOperationsGetCacheNodeMccIssueDetailsHistoryMaximumSet(
+        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
+        manager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeMccIssueDetailsHistoryWithResponse("rgConnectedCache", "MccRPTest1", "MCCCachenode1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EnterpriseMccCacheNodesOperations_GetCacheNodeTlsCertificateHistory
+
+```java
+/**
+ * Samples for EnterpriseMccCacheNodesOperations GetCacheNodeTlsCertificateHistory.
+ */
+public final class EnterpriseMccCacheNodesOperationsGetCacheNodeTlsCertificateHistorySamples {
+    /*
+     * x-ms-original-file:
+     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeTlsCertificateHistory_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EnterpriseMccCacheNodesOperations_GetCacheNodeTlsCertificateHistory_MaximumSet.
+     * 
+     * @param manager Entry point to ConnectedCacheManager.
+     */
+    public static void enterpriseMccCacheNodesOperationsGetCacheNodeTlsCertificateHistoryMaximumSet(
+        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
+        manager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeTlsCertificateHistoryWithResponse("rgConnectedCache", "MccRPTest1", "MCCCachenode1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource
 
 ```java
@@ -592,7 +289,7 @@ public final class EnterpriseMccCacheNodesOperationsGetCacheNodeInstallDetailsSa
 public final class EnterpriseMccCacheNodesOperationsListByEnterpriseMccCustomerResourceSamples {
     /*
      * x-ms-original-file:
-     * 2023-05-01-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
+     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource.
@@ -619,7 +316,7 @@ import java.util.Map;
  */
 public final class EnterpriseMccCacheNodesOperationsUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCacheNodesOperations Update - generated by [MaximumSet] rule.
@@ -665,7 +362,7 @@ import java.util.Map;
  */
 public final class EnterpriseMccCustomersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCustomers_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_CreateOrUpdate.
@@ -731,7 +428,7 @@ public final class EnterpriseMccCustomersCreateOrUpdateSamples {
  */
 public final class EnterpriseMccCustomersDeleteSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCustomers_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_Delete.
@@ -753,7 +450,7 @@ public final class EnterpriseMccCustomersDeleteSamples {
  */
 public final class EnterpriseMccCustomersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCustomers_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_Get.
@@ -777,7 +474,7 @@ public final class EnterpriseMccCustomersGetByResourceGroupSamples {
  */
 public final class EnterpriseMccCustomersListSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_ListBySubscription.
@@ -799,7 +496,7 @@ public final class EnterpriseMccCustomersListSamples {
  */
 public final class EnterpriseMccCustomersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCustomers_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_ListByResourceGroup.
@@ -825,7 +522,7 @@ import java.util.Map;
  */
 public final class EnterpriseMccCustomersUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/EnterpriseMccCustomers_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_Update.
@@ -873,7 +570,7 @@ import java.util.Map;
  */
 public final class IspCacheNodesOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodesOperations_CreateOrUpdate.
@@ -909,7 +606,6 @@ public final class IspCacheNodesOperationsCreateOrUpdateSamples {
                             .withNginxMapping("lijygenjq")))
                         .withBgpConfiguration(new BgpConfiguration().withAsnToIpAddressMapping("pafcimhoog"))
                         .withProxyUrlConfiguration(new ProxyUrlConfiguration().withProxyUrl("hplstyg"))
-                        .withProxyUrl("qhux")
                         .withOptionalProperty1("hvpmt")
                         .withOptionalProperty2("talanelmsgxvksrzoeeontqkjzbpv")
                         .withOptionalProperty3("bxkoxq")
@@ -944,7 +640,7 @@ public final class IspCacheNodesOperationsCreateOrUpdateSamples {
  */
 public final class IspCacheNodesOperationsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodes delete Operation - generated by [MaximumSet] rule.
@@ -969,7 +665,7 @@ public final class IspCacheNodesOperationsDeleteSamples {
  */
 public final class IspCacheNodesOperationsGetSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodes Get resource - generated by [MaximumSet] rule.
@@ -994,7 +690,7 @@ public final class IspCacheNodesOperationsGetSamples {
  */
 public final class IspCacheNodesOperationsGetBgpCidrsSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_GetBgpCidrs_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_GetBgpCidrs_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodes resource BgpCidrs details - generated by [MaximumSet] rule.
@@ -1010,6 +706,30 @@ public final class IspCacheNodesOperationsGetBgpCidrsSamples {
 }
 ```
 
+### IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory
+
+```java
+/**
+ * Samples for IspCacheNodesOperations GetCacheNodeAutoUpdateHistory.
+ */
+public final class IspCacheNodesOperationsGetCacheNodeAutoUpdateHistorySamples {
+    /*
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet.
+     * 
+     * @param manager Entry point to ConnectedCacheManager.
+     */
+    public static void ispCacheNodesOperationsGetCacheNodeAutoUpdateHistoryMaximumSet(
+        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
+        manager.ispCacheNodesOperations()
+            .getCacheNodeAutoUpdateHistoryWithResponse("rgConnectedCache", "MccRPTest1", "MCCCachenode1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### IspCacheNodesOperations_GetCacheNodeInstallDetails
 
 ```java
@@ -1018,7 +738,7 @@ public final class IspCacheNodesOperationsGetBgpCidrsSamples {
  */
 public final class IspCacheNodesOperationsGetCacheNodeInstallDetailsSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
      */
     /**
      * Sample code: ispCacheNode resource get install details - generated by [MaximumSet] rule.
@@ -1034,6 +754,31 @@ public final class IspCacheNodesOperationsGetCacheNodeInstallDetailsSamples {
 }
 ```
 
+### IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory
+
+```java
+/**
+ * Samples for IspCacheNodesOperations GetCacheNodeMccIssueDetailsHistory.
+ */
+public final class IspCacheNodesOperationsGetCacheNodeMccIssueDetailsHistorySamples {
+    /*
+     * x-ms-original-file:
+     * 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet.
+     * 
+     * @param manager Entry point to ConnectedCacheManager.
+     */
+    public static void ispCacheNodesOperationsGetCacheNodeMccIssueDetailsHistoryMaximumSet(
+        com.azure.resourcemanager.connectedcache.ConnectedCacheManager manager) {
+        manager.ispCacheNodesOperations()
+            .getCacheNodeMccIssueDetailsHistoryWithResponse("rgConnectedCache", "MccRPTest1", "MCCCachenode1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### IspCacheNodesOperations_ListByIspCustomerResource
 
 ```java
@@ -1042,7 +787,7 @@ public final class IspCacheNodesOperationsGetCacheNodeInstallDetailsSamples {
  */
 public final class IspCacheNodesOperationsListByIspCustomerResourceSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_ListByIspCustomerResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_ListByIspCustomerResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodesOperations_ListByIspCustomerResource.
@@ -1069,7 +814,7 @@ import java.util.Map;
  */
 public final class IspCacheNodesOperationsUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodesOperations_Update.
@@ -1114,7 +859,7 @@ import java.util.Map;
  */
 public final class IspCustomersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCustomers_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCustomers_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ispCustomer CreateOrUpdate - generated by [MaximumSet] rule.
@@ -1180,7 +925,7 @@ public final class IspCustomersCreateOrUpdateSamples {
  */
 public final class IspCustomersDeleteSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCustomers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCustomers_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCustomers Delete - generated by [MaximumSet] rule.
@@ -1204,7 +949,7 @@ public final class IspCustomersDeleteSamples {
  */
 public final class IspCustomersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCustomers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCustomers_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCustomers Get - generated by [MaximumSet] rule.
@@ -1228,7 +973,7 @@ public final class IspCustomersGetByResourceGroupSamples {
  */
 public final class IspCustomersListSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCustomers_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCustomers_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ispCustomer List by Subscription - generated by [MaximumSet] rule.
@@ -1250,7 +995,7 @@ public final class IspCustomersListSamples {
  */
 public final class IspCustomersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCustomers_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCustomers_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCustomers resource List by Resource group - generated by [MaximumSet] rule.
@@ -1276,7 +1021,7 @@ import java.util.Map;
  */
 public final class IspCustomersUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCustomers_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCustomers_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ispCustomer Update details - generated by [MaximumSet] rule.
@@ -1313,7 +1058,7 @@ public final class IspCustomersUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: List the operations for the provider - generated by [MaximumSet] rule.

@@ -108,6 +108,37 @@ public interface Services {
         String applicationName, Context context);
 
     /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters, Context context);
+
+    /**
      * Get a Service Fabric service resource created or in the process of being created in the Service Fabric managed
      * application resource.
      * 

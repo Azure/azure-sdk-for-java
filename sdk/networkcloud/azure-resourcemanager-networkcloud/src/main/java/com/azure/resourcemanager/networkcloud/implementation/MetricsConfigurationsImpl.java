@@ -37,9 +37,9 @@ public final class MetricsConfigurationsImpl implements MetricsConfigurations {
     }
 
     public PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName,
-        Context context) {
+        Integer top, String skipToken, Context context) {
         PagedIterable<ClusterMetricsConfigurationInner> inner
-            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
     }

@@ -5,14 +5,17 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PathsHelper;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -24,6 +27,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +35,14 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 class QueryPlanRetriever {
-    private final static
-    ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private static final String TRUE = "True";
 
@@ -80,7 +89,6 @@ class QueryPlanRetriever {
 
         PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
 
-
         final Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY_PLAN_REQUEST, TRUE);
@@ -99,13 +107,19 @@ class QueryPlanRetriever {
                                                                                  resourceLink,
                                                                                  requestHeaders);
         queryPlanRequest.useGatewayMode = true;
-        queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
-        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
+        // Create a defensive copy to prevent concurrent modification of the shared
+        // SqlQuerySpec's internal ObjectNode when multiple threads retrieve the query
+        // plan simultaneously. Each copy has its own property bag, avoiding the race
+        // condition on the non-thread-safe ObjectNode/LinkedHashMap backing store.
+        SqlQuerySpec querySpecCopy = copyQuerySpec(sqlQuerySpec);
+        queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpecCopy));
+
+        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = queryOptionsAccessor()
             .getImpl(nonNullRequestOptions)
             .getCosmosEndToEndLatencyPolicyConfig();
 
-        List<String> excludeRegions = qryOptAccessor
+        List<String> excludeRegions = queryOptionsAccessor()
             .getImpl(nonNullRequestOptions)
             .getExcludedRegions();
 
@@ -139,6 +153,27 @@ class QueryPlanRetriever {
             () -> queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext),
             queryPlanRequest,
             executeFunc,
-            PathsHelper.getCollectionPath(resourceLink));
+            PathsHelper.getCollectionPath(resourceLink))
+            .onErrorMap(throwable -> {
+
+                if (throwable instanceof CosmosException) {
+
+                    CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                    if (HttpConstants.StatusCodes.NOTFOUND == (cosmosException.getStatusCode()) && HttpConstants.SubStatusCodes.UNKNOWN == (cosmosException.getSubStatusCode())) {
+                        cosmosExceptionAccessor().setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                    }
+
+                    return cosmosException;
+                }
+
+                return throwable;
+            });
+    }
+
+    private static SqlQuerySpec copyQuerySpec(SqlQuerySpec original) {
+        List<SqlParameter> params = original.getParameters();
+        List<SqlParameter> copiedParams = params != null ? new ArrayList<>(params) : null;
+        return new SqlQuerySpec(original.getQueryText(), copiedParams);
     }
 }

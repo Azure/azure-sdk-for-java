@@ -5,8 +5,6 @@ import io.netty.util.HashedWheelTimer;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-
 /**
  * A factory for creating daemon threads.
  * <p>
@@ -31,7 +29,7 @@ class RntbdThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(final Runnable runnable) {
 
-        final String name = lenientFormat(NAME_TEMPLATE, this.name, this.threadCount.incrementAndGet());
+        final String name = String.format(NAME_TEMPLATE, this.name, this.threadCount.incrementAndGet());
         final Thread thread = new Thread(runnable, name);
 
         if (thread.isDaemon() != this.daemon) {

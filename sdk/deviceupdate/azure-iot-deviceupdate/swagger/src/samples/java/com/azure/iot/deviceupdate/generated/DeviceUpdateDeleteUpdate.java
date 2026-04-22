@@ -18,10 +18,10 @@ public class DeviceUpdateDeleteUpdate {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-update-delete-update.device-update-delete-update
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, Void> response
             = deviceUpdateClient.beginDeleteUpdate("microsoft", "adu", "1.0.0.0", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
+        // END:com.azure.iot.deviceupdate.generated.device-update-delete-update.device-update-delete-update
     }
 }

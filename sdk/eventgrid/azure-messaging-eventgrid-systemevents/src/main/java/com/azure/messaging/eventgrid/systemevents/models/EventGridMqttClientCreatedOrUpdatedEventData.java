@@ -44,7 +44,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
      * The key-value attributes that are assigned to the client resource.
      */
     @Generated
-    private final Map<String, String> attributes;
+    private Map<String, String> attributes;
 
     /*
      * Name of the client resource in the Event Grid namespace.
@@ -60,17 +60,14 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
      * @param state the state value to set.
      * @param createdOn the createdOn value to set.
      * @param updatedOn the updatedOn value to set.
-     * @param attributes the attributes value to set.
      */
     @Generated
     private EventGridMqttClientCreatedOrUpdatedEventData(String clientAuthenticationName, String namespaceName,
-        EventGridMqttClientState state, OffsetDateTime createdOn, OffsetDateTime updatedOn,
-        Map<String, String> attributes) {
+        EventGridMqttClientState state, OffsetDateTime createdOn, OffsetDateTime updatedOn) {
         super(clientAuthenticationName, namespaceName);
         this.state = state;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
-        this.attributes = attributes;
     }
 
     /**
@@ -141,7 +138,6 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
             this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
         jsonWriter.writeStringField("updatedOn",
             this.updatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedOn));
-        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -189,8 +185,9 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
             }
             EventGridMqttClientCreatedOrUpdatedEventData deserializedEventGridMqttClientCreatedOrUpdatedEventData
                 = new EventGridMqttClientCreatedOrUpdatedEventData(clientAuthenticationName, namespaceName, state,
-                    createdOn, updatedOn, attributes);
+                    createdOn, updatedOn);
             deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientName = clientName;
+            deserializedEventGridMqttClientCreatedOrUpdatedEventData.attributes = attributes;
             return deserializedEventGridMqttClientCreatedOrUpdatedEventData;
         });
     }

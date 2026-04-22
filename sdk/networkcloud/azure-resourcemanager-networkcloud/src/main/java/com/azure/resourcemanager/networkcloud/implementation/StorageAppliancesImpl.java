@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInne
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliance;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliances;
 
 public final class StorageAppliancesImpl implements StorageAppliances {
@@ -35,8 +36,8 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageAppliance> list(Context context) {
-        PagedIterable<StorageApplianceInner> inner = this.serviceClient().list(context);
+    public PagedIterable<StorageAppliance> list(Integer top, String skipToken, Context context) {
+        PagedIterable<StorageApplianceInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
@@ -45,9 +46,10 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
         PagedIterable<StorageApplianceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
@@ -129,6 +131,29 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         OperationStatusResultInner inner = this.serviceClient()
             .enableRemoteVendorManagement(resourceGroupName, storageApplianceName,
                 storageApplianceEnableRemoteVendorManagementParameters, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+                context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,300 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.3 (2026-03-24)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.FleetUpdateStrategies` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Fleets` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.FleetMembers` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Gates` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.UpdateRuns` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AutoUpgradeProfiles` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.FleetUpdateStrategies` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateStageStatus` was modified
+
+* `maxConcurrency()` was added
+
+#### `models.Fleets` was modified
+
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateGroupStatus` was modified
+
+* `maxConcurrency()` was added
+
+#### `models.FleetMembers` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Gates` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateGroup` was modified
+
+* `withMaxConcurrency(java.lang.String)` was added
+* `maxConcurrency()` was added
+
+#### `models.UpdateRuns` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AutoUpgradeProfiles` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateStage` was modified
+
+* `maxConcurrency()` was added
+* `withMaxConcurrency(java.lang.String)` was added
+
+## 1.3.0-beta.2 (2025-12-03)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ApiServerAccessProfile` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.AgentProfile` was modified
+
+* `validate()` was removed
+
+#### `models.FleetStatus` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateStageStatus` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateGroupStatus` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateRunStrategy` was modified
+
+* `validate()` was removed
+
+#### `models.NodeImageSelectionStatus` was modified
+
+* `validate()` was removed
+
+#### `models.FleetMemberUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.FleetPatch` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateGroup` was modified
+
+* `validate()` was removed
+
+#### `models.SkipProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MemberUpdateStatus` was modified
+
+* `validate()` was removed
+
+#### `models.FleetCredentialResult` was modified
+
+* `validate()` was removed
+
+#### `models.SkipTarget` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateRunStatus` was modified
+
+* `validate()` was removed
+
+#### `models.GateConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.WaitStatus` was modified
+
+* `validate()` was removed
+
+#### `models.FleetHubProfile` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateRunGateStatus` was modified
+
+* `validate()` was removed
+
+#### `models.NodeImageSelection` was modified
+
+* `validate()` was removed
+
+#### `models.FleetMemberStatus` was modified
+
+* `validate()` was removed
+
+#### `models.GatePatch` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateStatus` was modified
+
+* `validate()` was removed
+
+#### `models.AutoUpgradeNodeImageSelection` was modified
+
+* `validate()` was removed
+
+#### `models.GatePatchProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedClusterUpgradeSpec` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateStage` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateRunGateTargetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GateTarget` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.NodeImageVersion` was modified
+
+* `validate()` was removed
+
+#### `models.AutoUpgradeProfileStatus` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.LabelSelector` was added
+
+* `models.AdoptionPolicy` was added
+
+* `models.FleetManagedNamespace$DefinitionStages` was added
+
+* `models.PropagationType` was added
+
+* `models.FleetManagedNamespaces` was added
+
+* `models.NetworkPolicy` was added
+
+* `models.DeletePolicy` was added
+
+* `models.LabelSelectorRequirement` was added
+
+* `models.FleetManagedNamespace` was added
+
+* `models.TolerationOperator` was added
+
+* `models.FleetManagedNamespaceProvisioningState` was added
+
+* `models.PlacementType` was added
+
+* `models.PolicyRule` was added
+
+* `models.Toleration` was added
+
+* `models.ClusterSelectorTerm` was added
+
+* `models.FleetManagedNamespace$UpdateStages` was added
+
+* `models.LabelSelectorOperator` was added
+
+* `models.ClusterResourcePlacementSpec` was added
+
+* `models.PropertySelectorRequirement` was added
+
+* `models.PlacementProfile` was added
+
+* `models.FleetManagedNamespace$Definition` was added
+
+* `models.ManagedNamespaceProperties` was added
+
+* `models.PropertySelector` was added
+
+* `models.ClusterAffinity` was added
+
+* `models.TaintEffect` was added
+
+* `models.FleetManagedNamespaceStatus` was added
+
+* `models.FleetManagedNamespacePatch` was added
+
+* `models.ClusterSelector` was added
+
+* `models.PropagationPolicy` was added
+
+* `models.ResourceQuota` was added
+
+* `models.PropertySelectorOperator` was added
+
+* `models.PlacementPolicy` was added
+
+* `models.FleetManagedNamespace$Update` was added
+
+* `models.Affinity` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `fleetManagedNamespaces()` was added
 
 ## 1.3.0-beta.1 (2025-08-07)
 

@@ -23,7 +23,7 @@ public final class NamespacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"mgixhcmavmqfou\",\"messaging\":{\"endpoints\":{\"or\":{\"endpointType\":\"gyyprotwy\",\"address\":\"undmbx\",\"resourceId\":\"gcmjkavl\"},\"bdb\":{\"endpointType\":\"ftpmdtzfjltfv\",\"address\":\"zcyjtot\",\"resourceId\":\"opv\"},\"sgqcwdho\":{\"endpointType\":\"gqqihedsvqwt\",\"address\":\"mkyi\",\"resourceId\":\"ysi\"}}},\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"cdzsu\",\"tenantId\":\"ohdxbzlmcmu\",\"type\":\"SystemAssigned\"},\"location\":\"vhdbevwqqxey\",\"tags\":{\"kfkbgbzbowxeqocl\":\"nqzi\",\"eokbze\":\"mygvkzqkj\",\"kwv\":\"ezrxcczurtleipqx\",\"pnodawopqhe\":\"gnzvdfbzdixzm\"},\"id\":\"jptmcgsbost\",\"name\":\"eln\",\"type\":\"la\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"mwwinhehfqpofv\",\"messaging\":{\"endpoints\":{\"swbzuwfmdurage\":{\"endpointType\":\"embnkbw\",\"address\":\"qvxkd\",\"resourceId\":\"qihebw\"},\"cmjdmspof\":{\"endpointType\":\"zvcjfelisdjubggb\",\"address\":\"igkxkbsazga\",\"resourceId\":\"acy\"},\"f\":{\"endpointType\":\"vuhrylni\",\"address\":\"frzgbzjed\",\"resourceId\":\"tkvnlvxbcuiiznkt\"},\"ophzfylsgcrp\":{\"endpointType\":\"snvpdibmi\",\"address\":\"ostbzbkiwb\",\"resourceId\":\"n\"}}},\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"ezzcez\",\"tenantId\":\"fwyfwlwxjwet\",\"type\":\"None\"},\"location\":\"ihclafzv\",\"tags\":{\"sqqw\":\"pt\"},\"id\":\"tcmwqkchc\",\"name\":\"waxfewzjkj\",\"type\":\"xfdeqvhpsyl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,16 @@ public final class NamespacesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Namespace> response
-            = manager.namespaces().listByResourceGroup("stgnl", com.azure.core.util.Context.NONE);
+            = manager.namespaces().listByResourceGroup("iiqbi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vhdbevwqqxey", response.iterator().next().location());
-        Assertions.assertEquals("nqzi", response.iterator().next().tags().get("kfkbgbzbowxeqocl"));
-        Assertions.assertEquals("gyyprotwy",
-            response.iterator().next().properties().messaging().endpoints().get("or").endpointType());
-        Assertions.assertEquals("undmbx",
-            response.iterator().next().properties().messaging().endpoints().get("or").address());
-        Assertions.assertEquals("gcmjkavl",
-            response.iterator().next().properties().messaging().endpoints().get("or").resourceId());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals("ihclafzv", response.iterator().next().location());
+        Assertions.assertEquals("pt", response.iterator().next().tags().get("sqqw"));
+        Assertions.assertEquals("embnkbw",
+            response.iterator().next().properties().messaging().endpoints().get("swbzuwfmdurage").endpointType());
+        Assertions.assertEquals("qvxkd",
+            response.iterator().next().properties().messaging().endpoints().get("swbzuwfmdurage").address());
+        Assertions.assertEquals("qihebw",
+            response.iterator().next().properties().messaging().endpoints().get("swbzuwfmdurage").resourceId());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

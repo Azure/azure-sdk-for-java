@@ -28,6 +28,11 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of BrokerAuthenticationProperties class.
      */
@@ -67,6 +72,15 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
     }
 
     /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -101,6 +115,9 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerAuthenticationProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedBrokerAuthenticationProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

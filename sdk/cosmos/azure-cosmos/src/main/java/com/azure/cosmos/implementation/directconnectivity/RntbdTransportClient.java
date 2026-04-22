@@ -69,10 +69,17 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRepo
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
 public class RntbdTransportClient extends TransportClient {
+
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
 
     // region Fields
 
@@ -344,7 +351,7 @@ public class RntbdTransportClient extends TransportClient {
                 }
 
                 error = new GoneException(
-                    lenientFormat("an unexpected %s occurred: %s", unexpectedError),
+                    String.format("an unexpected %s occurred: %s", unexpectedError.getClass(), unexpectedError),
                     address,
                     error instanceof Exception ? (Exception) error : new RuntimeException(error),
                     HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
@@ -377,9 +384,7 @@ public class RntbdTransportClient extends TransportClient {
                 OperationCancelledException operationCancelledException =
                     new OperationCancelledException(record.toString(), record.args().physicalAddressUri().getURI());
 
-                ImplementationBridgeHelpers
-                    .CosmosExceptionHelper
-                    .getCosmosExceptionAccessor()
+                cosmosExceptionAccessor()
                     .setRequestUri(operationCancelledException, addressUri);
                 this.populateExceptionWithRequestDetails(operationCancelledException, record);
 
@@ -422,7 +427,7 @@ public class RntbdTransportClient extends TransportClient {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            String message = lenientFormat("%s is closed", this);
+            String message = String.format("%s is closed", this);
             ClosedClientTransportException transportException
                 = new ClosedClientTransportException(message, null);
             throw new InternalServerErrorException(message, transportException, HttpConstants.SubStatusCodes.CLOSED_CLIENT);
@@ -431,21 +436,15 @@ public class RntbdTransportClient extends TransportClient {
 
     public EnumSet<MetricCategory> getMetricCategories() {
         return this.metricConfig != null ?
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
+            clientTelemetryConfigAccessor()
                 .getMetricCategories(this.metricConfig) : MetricCategory.DEFAULT_CATEGORIES;
     }
 
     public CosmosMeterOptions getMeterOptions(CosmosMetricName name) {
         return this.metricConfig != null ?
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
+            clientTelemetryConfigAccessor()
                 .getMeterOptions(this.metricConfig, name) :
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
+            clientTelemetryConfigAccessor()
                 .createDisabledMeterOptions(name);
     }
 
@@ -453,9 +452,7 @@ public class RntbdTransportClient extends TransportClient {
         RxDocumentServiceRequest request = record.args().serviceRequest();
 
         BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
-        ImplementationBridgeHelpers
-            .CosmosExceptionHelper
-            .getCosmosExceptionAccessor()
+        cosmosExceptionAccessor()
             .setRntbdChannelStatistics(cosmosException, record.channelStatistics());
         BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
         BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
@@ -464,16 +461,12 @@ public class RntbdTransportClient extends TransportClient {
         RequestTimeline requestTimeline = record.takeTimelineSnapshot();
         BridgeInternal.setRequestTimeline(cosmosException, requestTimeline);
         BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-        ImplementationBridgeHelpers
-            .CosmosExceptionHelper
-            .getCosmosExceptionAccessor()
+        cosmosExceptionAccessor()
             .setFaultInjectionRuleId(
                 cosmosException,
                 request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
 
-        ImplementationBridgeHelpers
-            .CosmosExceptionHelper
-            .getCosmosExceptionAccessor()
+        cosmosExceptionAccessor()
             .setFaultInjectionEvaluationResults(
                 cosmosException,
                 request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
@@ -582,7 +575,6 @@ public class RntbdTransportClient extends TransportClient {
          */
         @JsonProperty()
         private final boolean timeoutDetectionEnabled;
-
 
         /**
          * Used during Rntbd health check flow.
@@ -887,7 +879,7 @@ public class RntbdTransportClient extends TransportClient {
         }
 
         public String toDiagnosticsString() {
-            return lenientFormat("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
+            return String.format("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
                 connectTimeout,
                 tcpNetworkRequestTimeout,
                 idleChannelTimeout,

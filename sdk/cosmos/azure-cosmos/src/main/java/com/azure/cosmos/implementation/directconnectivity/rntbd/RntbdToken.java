@@ -17,7 +17,6 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
 final class RntbdToken {
@@ -84,7 +83,7 @@ final class RntbdToken {
                 this.value = codec.read(buffer);
                 this.hasConvertedValue = true;
             } catch (final CorruptedFrameException error) {
-                String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
+                String message = String.format("failed to read %s value: %s", this.getName(), error.getMessage());
                 throw new CorruptedFrameException(message);
             }
         } else {
@@ -160,7 +159,7 @@ final class RntbdToken {
 
         if (!this.isPresent()) {
             if (this.isRequired()) {
-                final String message = lenientFormat("Missing value for required header: %s", this);
+                final String message = String.format("Missing value for required header: %s", this);
                 throw new IllegalStateException(message);
             }
             return;

@@ -157,8 +157,8 @@ public final class AzureFileSystem extends FileSystem {
     private final Long blockSize;
     private final Long putBlobThreshold;
     private final Integer maxConcurrencyPerRequest;
-    private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
+    private final AzureSasCredential sasCredential;
     private FileStore defaultFileStore;
     private boolean closed;
 
@@ -177,7 +177,7 @@ public final class AzureFileSystem extends FileSystem {
             this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
             this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
             this.maxConcurrencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
-            this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
+            this.sasCredential = (AzureSasCredential) config.get(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL);
 
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
@@ -490,5 +490,9 @@ public final class AzureFileSystem extends FileSystem {
 
     Integer getMaxConcurrencyPerRequest() {
         return this.maxConcurrencyPerRequest;
+    }
+
+    AzureSasCredential getSasCredential() {
+        return this.sasCredential;
     }
 }

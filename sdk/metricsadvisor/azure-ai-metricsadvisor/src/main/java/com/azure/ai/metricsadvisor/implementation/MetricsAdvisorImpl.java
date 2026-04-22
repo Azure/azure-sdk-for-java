@@ -7647,6 +7647,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query anomalies under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7667,6 +7669,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query anomalies under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7687,6 +7691,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query anomalies under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7706,6 +7712,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query anomalies under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7726,6 +7734,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7746,6 +7756,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7766,6 +7778,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7785,6 +7799,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under a specific alert
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7805,6 +7821,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly alerting configurations for specific anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7825,6 +7843,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly alerting configurations for specific anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7847,6 +7867,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly alerting configurations for specific anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7867,6 +7889,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly alerting configurations for specific anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7889,6 +7913,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7909,6 +7935,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7928,6 +7956,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7946,6 +7976,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7966,6 +7998,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7986,6 +8020,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8006,6 +8042,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8025,6 +8063,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * Query incidents under anomaly detection configuration
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8045,6 +8085,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all credentials
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8063,6 +8105,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all credentials
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8082,6 +8126,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all credentials
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8100,6 +8146,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all credentials
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8119,6 +8167,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all data feeds
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8136,6 +8186,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all data feeds
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8154,6 +8206,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all data feeds
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8171,6 +8225,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all data feeds
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8189,6 +8245,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all hooks
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8206,6 +8264,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all hooks
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8224,6 +8284,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all hooks
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8241,6 +8303,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all hooks
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8259,6 +8323,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly detection configurations for specific metric
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8279,6 +8345,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly detection configurations for specific metric
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8298,6 +8366,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly detection configurations for specific metric
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8317,6 +8387,8 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
+     * List all anomaly detection configurations for specific metric
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

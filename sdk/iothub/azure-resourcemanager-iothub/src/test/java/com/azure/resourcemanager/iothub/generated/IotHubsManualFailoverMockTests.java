@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.FailoverInput;
@@ -26,10 +26,10 @@ public final class IotHubsManualFailoverMockTests {
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.iotHubs()
-            .manualFailover("dfcea", "vlhv", new FailoverInput().withFailoverRegion("gdyftumrtwna"),
+            .manualFailover("ltducea", "tmczuomejwcwwqi", new FailoverInput().withFailoverRegion("knssxmojm"),
                 com.azure.core.util.Context.NONE);
 
     }

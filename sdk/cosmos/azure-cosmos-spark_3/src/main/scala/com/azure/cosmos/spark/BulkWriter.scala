@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
-import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, ImplementationBridgeHelpers, UUIDs}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
@@ -69,7 +69,9 @@ private class BulkWriter
   // so multiplying by cpuCount in the default config is too aggressive
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
     .getOrElse(DefaultMaxPendingOperationPerCore)
-  private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
+
+  private val bulkExecutionConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutionConfigs]
+  private val maxConcurrentPartitions = bulkExecutionConfigs.maxConcurrentCosmosPartitions match {
     // using the provided maximum of concurrent partitions per Spark partition on the input data
     // multiplied by 2 to leave space for partition splits during ingestion
     case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
@@ -146,20 +148,20 @@ private class BulkWriter
 
   ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
-  writeConfig.maxMicroBatchPayloadSizeInBytes match {
+  bulkExecutionConfigs.maxMicroBatchPayloadSizeInBytes match {
     case Some(customMaxMicroBatchPayloadSizeInBytes) =>
       cosmosBulkExecutionOptionsImpl
         .setMaxMicroBatchPayloadSizeInBytes(customMaxMicroBatchPayloadSizeInBytes)
     case None =>
   }
 
-  writeConfig.initialMicroBatchSize match {
+  bulkExecutionConfigs.initialMicroBatchSize match {
     case Some(customInitialMicroBatchSize) =>
       cosmosBulkExecutionOptions.setInitialMicroBatchSize(Math.max(1, customInitialMicroBatchSize))
     case None =>
   }
 
-  writeConfig.maxMicroBatchSize match {
+  bulkExecutionConfigs.maxMicroBatchSize match {
     case Some(customMaxMicroBatchSize) =>
      cosmosBulkExecutionOptions.setMaxMicroBatchSize(
        Math.max(
@@ -267,7 +269,7 @@ private class BulkWriter
 
       // We start from using the bulk batch size and interval and concurrency
       // If in the future, there is a need to separate the configuration, can re-consider
-      val bulkBatchSize = writeConfig.maxMicroBatchSize match {
+      val bulkBatchSize = bulkExecutionConfigs.maxMicroBatchSize match {
         case Some(customMaxMicroBatchSize) => Math.min(
           BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
           Math.max(1, customMaxMicroBatchSize))
@@ -794,7 +796,18 @@ private class BulkWriter
       requestOptions.setFilterPredicate(patchConfigs.filter.get)
     }
 
-    CosmosBulkOperations.getPatchItemOperation(itemId, partitionKey, cosmosPatchOperations, requestOptions, context)
+    // for patch operation, BulkItemOperations.getItem does not refer to the original object node,
+    // so track it in the source item
+    val patchOperationContext = new OperationContext(
+      context.itemId,
+      context.partitionKeyValue,
+      context.eTag,
+      context.attemptNumber,
+      context.sequenceNumber,
+      Some(objectNode) // track the original object node, which is needed during retry
+    )
+
+    CosmosBulkOperations.getPatchItemOperation(itemId, partitionKey, cosmosPatchOperations, requestOptions, patchOperationContext)
   }
 
   //scalastyle:off method.length
@@ -845,11 +858,13 @@ private class BulkWriter
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=$exceptionMessage,  " +
         s"Context: {${operationContext.toString}} $getThreadInfo")
 
-      // If the write strategy is patchBulkUpdate, the OperationContext.sourceItem will not be the original objectNode,
+      // 1. If the write strategy is patchBulkUpdate, the ItemBulkOperation.getItem will not be the original objectNode,
       // It is computed through read item from cosmosdb, and then patch the item locally.
       // During retry, it is important to use the original objectNode (for example for preCondition failure, it requires to go through the readMany step again)
+      // 2. If the write strategy is patch or patchIfExists, then ItemBulkOperation.getItem will be CosmosPatchOperations which is not the original objectNode,
+      // so it also needs to use sourceItem to figure out the original objectNode
       val sourceItem = itemOperation match {
-          case _: ItemBulkOperation[ObjectNode, OperationContext] =>
+          case _: ItemBulkOperation[_, OperationContext] =>
               context.sourceItem match {
                   case Some(bulkOperationSourceItem) => bulkOperationSourceItem
                   case None => itemOperation.getItem.asInstanceOf[ObjectNode]
@@ -873,7 +888,7 @@ private class BulkWriter
 
       val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
         s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
-        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}]"
+        s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], attemptNumber=${context.attemptNumber}"
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
@@ -914,6 +929,11 @@ private class BulkWriter
         sb.append("->")
         val ctx = itemOperation.getContext[OperationContext]
         sb.append(s"${ctx.partitionKeyValue}/${ctx.itemId}/${ctx.eTag}(${ctx.attemptNumber})")
+        itemOperation match {
+          case op: ItemBulkOperation[_, _] =>
+            sb.append(s", statusHistory=${op.getStatusTracker.toString}")
+          case _ =>
+        }
       })
 
     // add readMany snapshot logs

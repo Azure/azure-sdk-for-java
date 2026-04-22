@@ -20,6 +20,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.GatewaysClient;
 import reactor.core.publisher.Mono;
 
@@ -52,13 +53,22 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "OperationalInsightsM")
+    @ServiceInterface(name = "OperationalInsightsManagementClientGateways")
     public interface GatewaysService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("gatewayId") String gatewayId, @QueryParam("api-version") String apiVersion, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("gatewayId") String gatewayId, @QueryParam("api-version") String apiVersion, Context context);
@@ -96,50 +106,10 @@ public final class GatewaysClientImpl implements GatewaysClient {
         if (gatewayId == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, gatewayId, apiVersion, context))
+                resourceGroupName, workspaceName, gatewayId, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a Log Analytics gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param gatewayId The Log Analytics gateway Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
-        String gatewayId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (gatewayId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, gatewayId, apiVersion, context);
     }
 
     /**
@@ -173,7 +143,30 @@ public final class GatewaysClientImpl implements GatewaysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String gatewayId,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, gatewayId, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (gatewayId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
+        }
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, gatewayId, this.client.getApiVersion(), context);
     }
 
     /**
@@ -190,4 +183,6 @@ public final class GatewaysClientImpl implements GatewaysClient {
     public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
         deleteWithResponse(resourceGroupName, workspaceName, gatewayId, Context.NONE);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GatewaysClientImpl.class);
 }

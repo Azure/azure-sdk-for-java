@@ -14,8 +14,8 @@ import java.util.Map;
 public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksCreateNoName.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksCreateNoName.json
      */
     /**
      * Sample code: QueryPackCreateNoName.
@@ -30,8 +30,8 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
 
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackUpdateNoName.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackUpdateNoName.json
      */
     /**
      * Sample code: QueryPackUpdateNoName.

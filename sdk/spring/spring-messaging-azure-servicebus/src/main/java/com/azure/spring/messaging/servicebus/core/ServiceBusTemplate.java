@@ -34,6 +34,7 @@ import java.util.UUID;
  * via related {@link NamespaceProperties} or producer {@link PropertiesSupplier}.
  * </p>
  */
+@SuppressWarnings("deprecation")
 public class ServiceBusTemplate implements SendOperation {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();

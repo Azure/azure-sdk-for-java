@@ -38,8 +38,8 @@ public final class ClustersImpl implements Clusters {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Cluster> list(Context context) {
-        PagedIterable<ClusterInner> inner = this.serviceClient().list(context);
+    public PagedIterable<Cluster> list(Integer top, String skipToken, Context context) {
+        PagedIterable<ClusterInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
@@ -48,8 +48,10 @@ public final class ClustersImpl implements Clusters {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<ClusterInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 

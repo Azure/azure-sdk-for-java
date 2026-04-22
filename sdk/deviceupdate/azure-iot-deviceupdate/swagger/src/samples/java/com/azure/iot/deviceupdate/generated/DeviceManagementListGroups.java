@@ -18,9 +18,9 @@ public class DeviceManagementListGroups {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistgroups.devicemanagementlistgroups
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-groups.device-management-list-groups
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = deviceManagementClient.listGroups(requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistgroups.devicemanagementlistgroups
+        // END:com.azure.iot.deviceupdate.generated.device-management-list-groups.device-management-list-groups
     }
 }

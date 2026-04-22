@@ -17,25 +17,27 @@ public final class SchemaRegistryUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"cev\",\"tenantId\":\"gtltdhlf\",\"type\":\"None\"},\"tags\":{\"vgtrdcnifmzzs\":\"py\",\"g\":\"ymbrnysuxmpraf\",\"roud\":\"khocxvdfffwaf\",\"hrv\":\"spave\"},\"properties\":{\"displayName\":\"n\",\"description\":\"zudhcxg\"}}")
+            "{\"identity\":{\"principalId\":\"yqxtjjfzql\",\"tenantId\":\"ycavodggxdbees\",\"type\":\"None\"},\"tags\":{\"wqfbylyrfgiagt\":\"nlrariaawiuagy\",\"zjvusfzldmo\":\"ojocqwogf\",\"own\":\"uxylfsbtkadpy\",\"isofieypefojyqd\":\"tgkbugrjqctojc\"},\"properties\":{\"displayName\":\"plcplcwkhi\",\"description\":\"hlhzdsqtzbsrgno\"}}")
             .toObject(SchemaRegistryUpdate.class);
         Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("py", model.tags().get("vgtrdcnifmzzs"));
-        Assertions.assertEquals("n", model.properties().displayName());
-        Assertions.assertEquals("zudhcxg", model.properties().description());
+        Assertions.assertEquals("nlrariaawiuagy", model.tags().get("wqfbylyrfgiagt"));
+        Assertions.assertEquals("plcplcwkhi", model.properties().displayName());
+        Assertions.assertEquals("hlhzdsqtzbsrgno", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryUpdate model = new SchemaRegistryUpdate()
             .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
-            .withTags(mapOf("vgtrdcnifmzzs", "py", "g", "ymbrnysuxmpraf", "roud", "khocxvdfffwaf", "hrv", "spave"))
-            .withProperties(new SchemaRegistryUpdateProperties().withDisplayName("n").withDescription("zudhcxg"));
+            .withTags(mapOf("wqfbylyrfgiagt", "nlrariaawiuagy", "zjvusfzldmo", "ojocqwogf", "own", "uxylfsbtkadpy",
+                "isofieypefojyqd", "tgkbugrjqctojc"))
+            .withProperties(
+                new SchemaRegistryUpdateProperties().withDisplayName("plcplcwkhi").withDescription("hlhzdsqtzbsrgno"));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryUpdate.class);
         Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("py", model.tags().get("vgtrdcnifmzzs"));
-        Assertions.assertEquals("n", model.properties().displayName());
-        Assertions.assertEquals("zudhcxg", model.properties().description());
+        Assertions.assertEquals("nlrariaawiuagy", model.tags().get("wqfbylyrfgiagt"));
+        Assertions.assertEquals("plcplcwkhi", model.properties().displayName());
+        Assertions.assertEquals("hlhzdsqtzbsrgno", model.properties().description());
     }
 
     // Use "Map.of" if available

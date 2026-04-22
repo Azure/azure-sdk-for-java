@@ -12,8 +12,8 @@ public final class NodeTypeListSkuResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeListSkuResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"dlgzibthostgkt\",\"sku\":{\"name\":\"dxeclzedqbcvh\",\"tier\":\"h\"},\"capacity\":{\"minimum\":751350709,\"maximum\":695028965,\"default\":1774431759,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"fbumlkx\"}")
+            "{\"value\":[{\"resourceType\":\"gf\",\"sku\":{\"name\":\"sofbshrn\",\"tier\":\"buswdvzyy\"},\"capacity\":{\"minimum\":449257280,\"maximum\":81774332,\"default\":1155428031,\"scaleType\":\"Manual\"}}],\"nextLink\":\"kfawnopqgikyz\"}")
             .toObject(NodeTypeListSkuResult.class);
-        Assertions.assertEquals("fbumlkx", model.nextLink());
+        Assertions.assertEquals("kfawnopqgikyz", model.nextLink());
     }
 }

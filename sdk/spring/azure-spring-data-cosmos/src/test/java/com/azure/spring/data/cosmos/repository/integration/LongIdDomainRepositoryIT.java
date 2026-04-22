@@ -11,16 +11,15 @@ import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.LongIdDomainRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +32,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class LongIdDomainRepositoryIT {
 
@@ -47,7 +47,7 @@ public class LongIdDomainRepositoryIT {
     private static final LongIdDomain DOMAIN_1 = new LongIdDomain(ID_1, NAME_1);
     private static final LongIdDomain DOMAIN_2 = new LongIdDomain(ID_2, NAME_2);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -56,7 +56,7 @@ public class LongIdDomainRepositoryIT {
     @Autowired
     private LongIdDomainRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, LongIdDomain.class);
         this.repository.save(DOMAIN_1);
@@ -66,43 +66,44 @@ public class LongIdDomainRepositoryIT {
     @Test
     public void testLongIdDomain() {
         this.repository.deleteAll();
-        Assert.assertFalse(this.repository.findById(ID_1).isPresent());
+        Assertions.assertFalse(this.repository.findById(ID_1).isPresent());
 
         this.repository.save(DOMAIN_1);
         final Optional<LongIdDomain> foundOptional = this.repository.findById(ID_1);
 
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
-        Assert.assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
+        Assertions.assertTrue(foundOptional.isPresent());
+        assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
+        assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
 
         this.repository.delete(DOMAIN_1);
 
-        Assert.assertFalse(this.repository.findById(ID_1).isPresent());
+        Assertions.assertFalse(this.repository.findById(ID_1).isPresent());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, Long>(InvalidDomain.class));
     }
 
     @Test
     public void testBasicQuery() {
         final LongIdDomain save = this.repository.save(DOMAIN_1);
-        Assert.assertNotNull(save);
+        Assertions.assertNotNull(save);
     }
 
     @Test
     public void testSaveAndFindById() {
-        Assert.assertNotNull(this.repository.save(DOMAIN_1));
+        Assertions.assertNotNull(this.repository.save(DOMAIN_1));
 
         final Optional<LongIdDomain> savedEntity = this.repository.findById(DOMAIN_1.getNumber());
-        Assert.assertTrue(savedEntity.isPresent());
-        Assert.assertEquals(DOMAIN_1, savedEntity.get());
+        Assertions.assertTrue(savedEntity.isPresent());
+        assertEquals(DOMAIN_1, savedEntity.get());
     }
 
     @Test
     public void testSaveAllAndFindAll() {
-        Assert.assertTrue(this.repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(this.repository.findAll().iterator().hasNext());
 
         final Set<LongIdDomain> entitiesToSave = Stream.of(DOMAIN_1, DOMAIN_2).collect(Collectors.toSet());
         this.repository.saveAll(entitiesToSave);
@@ -110,14 +111,14 @@ public class LongIdDomainRepositoryIT {
         final Set<LongIdDomain> savedEntities = StreamSupport.stream(this.repository.findAll().spliterator(), false)
                                                              .collect(Collectors.toSet());
 
-        Assert.assertTrue(entitiesToSave.containsAll(savedEntities));
+        Assertions.assertTrue(entitiesToSave.containsAll(savedEntities));
     }
 
     @Test
     public void testFindAllById() {
         final Iterable<LongIdDomain> allById =
             TestUtils.toList(this.repository.findAllById(Arrays.asList(DOMAIN_1.getNumber(), DOMAIN_2.getNumber())));
-        Assert.assertTrue(((ArrayList) allById).size() == 2);
+        Assertions.assertTrue(((ArrayList) allById).size() == 2);
         Iterator<LongIdDomain> it = allById.iterator();
         assertLongIdDomainEquals(Arrays.asList(it.next(), it.next()), Arrays.asList(DOMAIN_1, DOMAIN_2));
     }
@@ -125,12 +126,12 @@ public class LongIdDomainRepositoryIT {
     private void assertLongIdDomainEquals(List<LongIdDomain> cur, List<LongIdDomain> reference) {
         cur.sort(Comparator.comparing(LongIdDomain::getNumber));
         reference.sort(Comparator.comparing(LongIdDomain::getNumber));
-        Assert.assertEquals(reference, cur);
+        assertEquals(reference, cur);
     }
 
     @Test
     public void testCount() {
-        Assert.assertEquals(2, repository.count());
+        assertEquals(2, repository.count());
     }
 
     @Test
@@ -139,26 +140,30 @@ public class LongIdDomainRepositoryIT {
         this.repository.save(DOMAIN_2);
         this.repository.deleteById(DOMAIN_1.getNumber());
         this.repository.deleteById(DOMAIN_2.getNumber());
-        Assert.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosNotFoundException.class)
+    @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.deleteById(DOMAIN_1.getNumber());
+        assertThrows(CosmosNotFoundException.class, () ->{
+            this.repository.deleteAll();
+            this.repository.deleteById(DOMAIN_1.getNumber());
+        });
     }
 
     @Test
     public void testDelete() {
         this.repository.save(DOMAIN_1);
         this.repository.delete(DOMAIN_1);
-        Assert.assertEquals(1, this.repository.count());
+        assertEquals(1, this.repository.count());
     }
 
-    @Test(expected = CosmosNotFoundException.class)
+    @Test
     public void testDeleteShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.delete(DOMAIN_1);
+        assertThrows(CosmosNotFoundException.class, () ->{
+            this.repository.deleteAll();
+            this.repository.delete(DOMAIN_1);
+        });
     }
 
     @Test
@@ -166,13 +171,13 @@ public class LongIdDomainRepositoryIT {
         this.repository.save(DOMAIN_1);
         this.repository.save(DOMAIN_2);
         this.repository.deleteAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
-        Assert.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
     public void testExistsById() {
         this.repository.save(DOMAIN_1);
-        Assert.assertTrue(this.repository.existsById(DOMAIN_1.getNumber()));
+        Assertions.assertTrue(this.repository.existsById(DOMAIN_1.getNumber()));
     }
 
     @Test
@@ -185,19 +190,19 @@ public class LongIdDomainRepositoryIT {
         final List<LongIdDomain> ascending = StreamSupport
             .stream(this.repository.findAll(ascSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assert.assertEquals(3, ascending.size());
-        Assert.assertEquals(DOMAIN_1, ascending.get(0));
-        Assert.assertEquals(other, ascending.get(1));
-        Assert.assertEquals(DOMAIN_2, ascending.get(2));
+        assertEquals(3, ascending.size());
+        assertEquals(DOMAIN_1, ascending.get(0));
+        assertEquals(other, ascending.get(1));
+        assertEquals(DOMAIN_2, ascending.get(2));
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
         final List<LongIdDomain> descending = StreamSupport
             .stream(this.repository.findAll(descSort).spliterator(), false)
             .collect(Collectors.toList());
-        Assert.assertEquals(3, descending.size());
-        Assert.assertEquals(DOMAIN_2, descending.get(0));
-        Assert.assertEquals(other, descending.get(1));
-        Assert.assertEquals(DOMAIN_1, descending.get(2));
+        assertEquals(3, descending.size());
+        assertEquals(DOMAIN_2, descending.get(0));
+        assertEquals(other, descending.get(1));
+        assertEquals(DOMAIN_1, descending.get(2));
 
     }
 
@@ -208,18 +213,18 @@ public class LongIdDomainRepositoryIT {
 
         final Page<LongIdDomain> page1 = this.repository.findAll(new CosmosPageRequest(0, 1, null));
         final Iterator<LongIdDomain> page1Iterator = page1.iterator();
-        Assert.assertTrue(page1Iterator.hasNext());
-        Assert.assertEquals(DOMAIN_1, page1Iterator.next());
+        Assertions.assertTrue(page1Iterator.hasNext());
+        assertEquals(DOMAIN_1, page1Iterator.next());
 
         final Page<LongIdDomain> page2 = this.repository.findAll(new CosmosPageRequest(1, 1, null));
         final Iterator<LongIdDomain> page2Iterator = page2.iterator();
-        Assert.assertTrue(page2Iterator.hasNext());
-        Assert.assertEquals(DOMAIN_2, page2Iterator.next());
+        Assertions.assertTrue(page2Iterator.hasNext());
+        assertEquals(DOMAIN_2, page2Iterator.next());
 
         final Page<LongIdDomain> page3 = this.repository.findAll(new CosmosPageRequest(2, 1, null));
         final Iterator<LongIdDomain> page3Iterator = page3.iterator();
-        Assert.assertTrue(page3Iterator.hasNext());
-        Assert.assertEquals(other, page3Iterator.next());
+        Assertions.assertTrue(page3Iterator.hasNext());
+        assertEquals(other, page3Iterator.next());
     }
 
     private static class InvalidDomain {

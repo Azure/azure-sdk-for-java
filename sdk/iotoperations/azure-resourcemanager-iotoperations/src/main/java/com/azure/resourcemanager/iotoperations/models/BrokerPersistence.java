@@ -28,13 +28,6 @@ import java.io.IOException;
 @Fluent
 public final class BrokerPersistence implements JsonSerializable<BrokerPersistence> {
     /*
-     * Client sets the specified user property key/value in the CONNECT/SUBSCRIBE/PUBLISH.
-     * Optionally, if the customer specifies a configurable user property, it will work to enable persistence
-     * dynamically. The default user property key is 'aio-persistence' and value 'true'.
-     */
-    private BrokerPersistenceDynamicSettings dynamicSettings;
-
-    /*
      * The max size of the message buffer on disk. If a PVC template is specified using persistentVolumeClaimSpec Then
      * this size is used as the request and limit sizes of that template. If a PVC template isn't specified Then
      * local-path provisioner is requested with this size limit. Required.
@@ -78,32 +71,6 @@ public final class BrokerPersistence implements JsonSerializable<BrokerPersisten
      * Creates an instance of BrokerPersistence class.
      */
     public BrokerPersistence() {
-    }
-
-    /**
-     * Get the dynamicSettings property: Client sets the specified user property key/value in the
-     * CONNECT/SUBSCRIBE/PUBLISH.
-     * Optionally, if the customer specifies a configurable user property, it will work to enable persistence
-     * dynamically. The default user property key is 'aio-persistence' and value 'true'.
-     * 
-     * @return the dynamicSettings value.
-     */
-    public BrokerPersistenceDynamicSettings dynamicSettings() {
-        return this.dynamicSettings;
-    }
-
-    /**
-     * Set the dynamicSettings property: Client sets the specified user property key/value in the
-     * CONNECT/SUBSCRIBE/PUBLISH.
-     * Optionally, if the customer specifies a configurable user property, it will work to enable persistence
-     * dynamically. The default user property key is 'aio-persistence' and value 'true'.
-     * 
-     * @param dynamicSettings the dynamicSettings value to set.
-     * @return the BrokerPersistence object itself.
-     */
-    public BrokerPersistence withDynamicSettings(BrokerPersistenceDynamicSettings dynamicSettings) {
-        this.dynamicSettings = dynamicSettings;
-        return this;
     }
 
     /**
@@ -257,7 +224,6 @@ public final class BrokerPersistence implements JsonSerializable<BrokerPersisten
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("maxSize", this.maxSize);
-        jsonWriter.writeJsonField("dynamicSettings", this.dynamicSettings);
         jsonWriter.writeJsonField("persistentVolumeClaimSpec", this.persistentVolumeClaimSpec);
         jsonWriter.writeJsonField("retain", this.retain);
         jsonWriter.writeJsonField("stateStore", this.stateStore);
@@ -284,8 +250,6 @@ public final class BrokerPersistence implements JsonSerializable<BrokerPersisten
 
                 if ("maxSize".equals(fieldName)) {
                     deserializedBrokerPersistence.maxSize = reader.getString();
-                } else if ("dynamicSettings".equals(fieldName)) {
-                    deserializedBrokerPersistence.dynamicSettings = BrokerPersistenceDynamicSettings.fromJson(reader);
                 } else if ("persistentVolumeClaimSpec".equals(fieldName)) {
                     deserializedBrokerPersistence.persistentVolumeClaimSpec = VolumeClaimSpec.fromJson(reader);
                 } else if ("retain".equals(fieldName)) {

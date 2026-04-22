@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 /**
  *
  */
+@SuppressWarnings("deprecation")
 public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannelProvisioner {
 
     private final String namespace;

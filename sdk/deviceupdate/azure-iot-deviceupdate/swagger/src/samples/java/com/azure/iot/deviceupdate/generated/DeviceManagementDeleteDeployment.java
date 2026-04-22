@@ -17,10 +17,10 @@ public class DeviceManagementDeleteDeployment {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementdeletedeployment.devicemanagementdeletedeployment
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-delete-deployment.device-management-delete-deployment
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response
             = deviceManagementClient.deleteDeploymentWithResponse("TestGroup", "deploymentId", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementdeletedeployment.devicemanagementdeletedeployment
+        // END:com.azure.iot.deviceupdate.generated.device-management-delete-deployment.device-management-delete-deployment
     }
 }

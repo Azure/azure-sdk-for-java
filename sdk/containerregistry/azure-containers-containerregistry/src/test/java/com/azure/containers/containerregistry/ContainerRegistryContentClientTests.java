@@ -96,7 +96,7 @@ public class ContainerRegistryContentClientTests {
     }
 
     private MessageDigest sha256;
-    private Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
+    private final Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
     @BeforeEach
     void beforeEach() {
@@ -289,7 +289,7 @@ public class ContainerRegistryContentClientTests {
         sha256.update(full.asReadOnlyBuffer());
 
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
-        StepVerifier.create(BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)))
+        StepVerifier.create(BinaryData.fromFlux(content).flatMap(asyncClient::uploadBlob))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -308,7 +308,7 @@ public class ContainerRegistryContentClientTests {
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(() -> "foo"));
         assertThrows(IllegalStateException.class, () -> client.uploadBlob(BinaryData.fromFlux(content).block()));
 
-        StepVerifier.create(BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)))
+        StepVerifier.create(BinaryData.fromFlux(content).flatMap(asyncClient::uploadBlob))
             .expectError(IllegalStateException.class)
             .verify();
     }
@@ -359,7 +359,7 @@ public class ContainerRegistryContentClientTests {
 
         BiFunction<HttpRequest, Integer, HttpResponse> onChunk = (r, c) -> {
             if (c == 3) {
-                HttpHeaders responseHeaders = new HttpHeaders().add("Content-Type", String.valueOf("application/json"));
+                HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
                 String error
                     = "{\"errors\":[{\"code\":\"BLOB_UPLOAD_INVALID\",\"message\":\"blob upload invalid\"}, {\"code\":\"BLOB_UPLOAD_FOO\",\"message\":\"blob upload foo\"}]}";
                 return new MockHttpResponse(r, 404, responseHeaders, error.getBytes(StandardCharsets.UTF_8));
@@ -376,13 +376,12 @@ public class ContainerRegistryContentClientTests {
         ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class,
             () -> SyncAsyncExtension.execute(() -> client.uploadBlob(content), () -> asyncClient.uploadBlob(content)));
 
-        assertAcrException(ex, "BLOB_UPLOAD_INVALID");
+        assertAcrException(ex);
     }
 
-    private void assertAcrException(HttpResponseException ex, String code) {
-        assertInstanceOf(ResponseError.class, ex.getValue());
-        ResponseError error = (ResponseError) ex.getValue();
-        assertEquals(code, error.getCode());
+    private void assertAcrException(HttpResponseException ex) {
+        ResponseError error = assertInstanceOf(ResponseError.class, ex.getValue());
+        assertEquals("BLOB_UPLOAD_INVALID", error.getCode());
     }
 
     @SyncAsyncTest
@@ -454,7 +453,7 @@ public class ContainerRegistryContentClientTests {
                     fail(e);
                 }
 
-                HttpHeaders headers = new HttpHeaders().add("Content-Range",
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_RANGE,
                     contentRange != null ? contentRange : String.format("bytes %s-%s/%s", start, end, contentLength))
                     .add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(response.length));
 
@@ -486,7 +485,8 @@ public class ContainerRegistryContentClientTests {
         AtomicInteger callNumber = new AtomicInteger();
         return new MockHttpClient(request -> {
             String expectedReceivedLocation = String.valueOf(callNumber.getAndIncrement());
-            HttpHeaders responseHeaders = new HttpHeaders().add("Location", String.valueOf(callNumber.get()));
+            HttpHeaders responseHeaders
+                = new HttpHeaders().set(HttpHeaderName.LOCATION, String.valueOf(callNumber.get()));
             if (request.getHttpMethod() == HttpMethod.POST) { // start upload
                 assertEquals(0, callNumber.get() - 1);
                 return new MockHttpResponse(request, 202, responseHeaders);
@@ -517,7 +517,7 @@ public class ContainerRegistryContentClientTests {
     }
 
     public static HttpClient createUploadContentClient(Supplier<String> calculateDigest) {
-        return createUploadContentClient(calculateDigest, (r, c) -> null);
+        return createUploadContentClient(calculateDigest, (ignored1, ignored2) -> null);
     }
 
     private BinaryData getDataSync(int size, MessageDigest sha256) {

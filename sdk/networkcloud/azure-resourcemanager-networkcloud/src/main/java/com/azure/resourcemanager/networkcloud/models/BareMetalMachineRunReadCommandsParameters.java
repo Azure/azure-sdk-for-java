@@ -26,9 +26,9 @@ public final class BareMetalMachineRunReadCommandsParameters
     private List<BareMetalMachineCommandSpecification> commands;
 
     /*
-     * The maximum time the commands are allowed to run.
-     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
-     * captured, and the exit code matching a timeout will be returned (252).
+     * The maximum time the commands are allowed to run. If the execution time exceeds the maximum, the script will be
+     * stopped, any output produced until then will be captured, and the exit code matching a timeout will be returned
+     * (252).
      */
     private long limitTimeSeconds;
 
@@ -59,9 +59,9 @@ public final class BareMetalMachineRunReadCommandsParameters
     }
 
     /**
-     * Get the limitTimeSeconds property: The maximum time the commands are allowed to run.
-     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
-     * captured, and the exit code matching a timeout will be returned (252).
+     * Get the limitTimeSeconds property: The maximum time the commands are allowed to run. If the execution time
+     * exceeds the maximum, the script will be stopped, any output produced until then will be captured, and the exit
+     * code matching a timeout will be returned (252).
      * 
      * @return the limitTimeSeconds value.
      */
@@ -70,9 +70,9 @@ public final class BareMetalMachineRunReadCommandsParameters
     }
 
     /**
-     * Set the limitTimeSeconds property: The maximum time the commands are allowed to run.
-     * If the execution time exceeds the maximum, the script will be stopped, any output produced until then will be
-     * captured, and the exit code matching a timeout will be returned (252).
+     * Set the limitTimeSeconds property: The maximum time the commands are allowed to run. If the execution time
+     * exceeds the maximum, the script will be stopped, any output produced until then will be captured, and the exit
+     * code matching a timeout will be returned (252).
      * 
      * @param limitTimeSeconds the limitTimeSeconds value to set.
      * @return the BareMetalMachineRunReadCommandsParameters object itself.

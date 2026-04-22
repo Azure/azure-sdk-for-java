@@ -12,8 +12,8 @@ public final class ScriptPackagesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackagesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"t\",\"version\":\"sfraoyzko\",\"company\":\"tlmngu\",\"uri\":\"wqaldsyu\"},\"id\":\"imerqfobwyznk\",\"name\":\"ykutwpf\",\"type\":\"pagmhrskdsnf\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"kgtdlmkkze\",\"version\":\"l\",\"company\":\"wpusdsttwvogv\",\"uri\":\"ejdcngqqmoakuf\"},\"id\":\"jzrwrdgrtw\",\"name\":\"enuuzkopbm\",\"type\":\"nrfdw\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"ziuiefozbhdm\",\"version\":\"l\",\"company\":\"qhoftrmaequiah\",\"uri\":\"cslfaoqzpiyylha\"},\"id\":\"swhccsphk\",\"name\":\"ivwitqscywugg\",\"type\":\"oluhczbwemh\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"rgzdwmsweyp\",\"version\":\"dxggicccnxqhuexm\",\"company\":\"tlstvlzywem\",\"uri\":\"rncsdtclu\"},\"id\":\"ypbsfgytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}],\"nextLink\":\"olppvksrpqvujz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"vrwxkv\",\"version\":\"k\",\"company\":\"lqwjygvjayvblm\",\"uri\":\"k\"},\"id\":\"hbxvvyhgsopbyrqu\",\"name\":\"egxuvwzf\",\"type\":\"nhlmctlpdng\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"mhrixkwmyijejve\",\"version\":\"hbpnaixexccbd\",\"company\":\"ax\",\"uri\":\"exdrrvqahqkg\"},\"id\":\"pwijnhy\",\"name\":\"svfycxzbfv\",\"type\":\"owvrvmtgjqppyos\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"myhgfipnsxkmc\",\"version\":\"ekrrjr\",\"company\":\"fxtsgum\",\"uri\":\"glikkxwslolb\"},\"id\":\"vuzlm\",\"name\":\"felfktg\",\"type\":\"lcrpw\"}],\"nextLink\":\"eznoig\"}")
             .toObject(ScriptPackagesList.class);
-        Assertions.assertEquals("olppvksrpqvujz", model.nextLink());
+        Assertions.assertEquals("eznoig", model.nextLink());
     }
 }

@@ -11,11 +11,12 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuZoneDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuZoneDetails model = BinaryData.fromString(
-            "{\"name\":[\"tezlwff\",\"iakp\"],\"capabilities\":[{\"name\":\"qqmtedltmmji\",\"value\":\"yeozphvwauyqncy\"},{\"name\":\"upkvipmdsc\",\"value\":\"xqupevzhf\"}]}")
+        ResourceSkuZoneDetails model = BinaryData
+            .fromString(
+                "{\"name\":[\"hgkfmin\"],\"capabilities\":[{\"name\":\"owzfttsttkt\",\"value\":\"ahbqactxtgzuk\"}]}")
             .toObject(ResourceSkuZoneDetails.class);
-        Assertions.assertEquals("tezlwff", model.name().get(0));
-        Assertions.assertEquals("qqmtedltmmji", model.capabilities().get(0).name());
-        Assertions.assertEquals("yeozphvwauyqncy", model.capabilities().get(0).value());
+        Assertions.assertEquals("hgkfmin", model.name().get(0));
+        Assertions.assertEquals("owzfttsttkt", model.capabilities().get(0).name());
+        Assertions.assertEquals("ahbqactxtgzuk", model.capabilities().get(0).value());
     }
 }

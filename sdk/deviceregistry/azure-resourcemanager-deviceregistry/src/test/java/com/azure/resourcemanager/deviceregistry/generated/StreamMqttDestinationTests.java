@@ -15,25 +15,25 @@ public final class StreamMqttDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StreamMqttDestination model = BinaryData.fromString(
-            "{\"target\":\"Mqtt\",\"configuration\":{\"topic\":\"yfjfcnjbkcn\",\"retain\":\"Never\",\"qos\":\"Qos1\",\"ttl\":2825151831912713640}}")
+            "{\"target\":\"Mqtt\",\"configuration\":{\"topic\":\"rtzju\",\"retain\":\"Never\",\"qos\":\"Qos0\",\"ttl\":5304844297296220991}}")
             .toObject(StreamMqttDestination.class);
-        Assertions.assertEquals("yfjfcnjbkcn", model.configuration().topic());
+        Assertions.assertEquals("rtzju", model.configuration().topic());
         Assertions.assertEquals(TopicRetainType.NEVER, model.configuration().retain());
-        Assertions.assertEquals(MqttDestinationQos.QOS1, model.configuration().qos());
-        Assertions.assertEquals(2825151831912713640L, model.configuration().ttl());
+        Assertions.assertEquals(MqttDestinationQos.QOS0, model.configuration().qos());
+        Assertions.assertEquals(5304844297296220991L, model.configuration().ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StreamMqttDestination model
-            = new StreamMqttDestination().withConfiguration(new MqttDestinationConfiguration().withTopic("yfjfcnjbkcn")
+            = new StreamMqttDestination().withConfiguration(new MqttDestinationConfiguration().withTopic("rtzju")
                 .withRetain(TopicRetainType.NEVER)
-                .withQos(MqttDestinationQos.QOS1)
-                .withTtl(2825151831912713640L));
+                .withQos(MqttDestinationQos.QOS0)
+                .withTtl(5304844297296220991L));
         model = BinaryData.fromObject(model).toObject(StreamMqttDestination.class);
-        Assertions.assertEquals("yfjfcnjbkcn", model.configuration().topic());
+        Assertions.assertEquals("rtzju", model.configuration().topic());
         Assertions.assertEquals(TopicRetainType.NEVER, model.configuration().retain());
-        Assertions.assertEquals(MqttDestinationQos.QOS1, model.configuration().qos());
-        Assertions.assertEquals(2825151831912713640L, model.configuration().ttl());
+        Assertions.assertEquals(MqttDestinationQos.QOS0, model.configuration().qos());
+        Assertions.assertEquals(5304844297296220991L, model.configuration().ttl());
     }
 }

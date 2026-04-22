@@ -4,12 +4,17 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.batch.BulkOperationStatusTracker;
+import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
@@ -40,6 +45,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -58,11 +65,14 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
-        ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
-            .setMaxRetryAttemptsOnThrottledRequests(1000000)
-            .setMaxRetryWaitTime(Duration.ofDays(1));
-        this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
-        bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
+        executeWithRetry(() -> {
+            safeClose(this.bulkClient);
+            ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
+                .setMaxRetryAttemptsOnThrottledRequests(1000000)
+                .setMaxRetryWaitTime(Duration.ofDays(1));
+            this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
+            bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
+        }, 3, "CosmosBulkAsyncTest setup");
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -70,7 +80,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
         runBulkTest(true);
     }
@@ -757,6 +767,54 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_tooManyRequest_recordStatusHistory() {
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        String partitionKey = UUID.randomUUID().toString();
+        TestDoc testDoc = this.populateTestDoc(partitionKey);
+        cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+
+        FaultInjectionRule tooManyRequestRule = injectBatchFailure(
+            "statusTracker-429-" + UUID.randomUUID(),
+            FaultInjectionServerErrorType.TOO_MANY_REQUEST,
+            2,
+            Duration.ZERO);
+
+        try {
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(bulkAsyncContainer, Collections.singletonList(tooManyRequestRule))
+                .block();
+
+            List<CosmosBulkOperationResponse<Object>> responses =
+                bulkAsyncContainer
+                    .<Object>executeBulkOperations(Flux.fromIterable(cosmosItemOperations), new CosmosBulkExecutionOptions())
+                    .collectList()
+                    .block();
+
+            assertThat(responses).isNotNull();
+            assertThat(responses.size()).isEqualTo(1);
+
+            for (CosmosBulkOperationResponse<Object> response : responses) {
+                assertThat(response.getResponse()).isNotNull();
+                assertThat(response.getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+
+                CosmosItemOperation operation = response.getOperation();
+                assertThat(operation).isInstanceOf(ItemBulkOperation.class);
+
+                BulkOperationStatusTracker statusTracker =
+                    ((ItemBulkOperation<?, ?>) operation).getStatusTracker();
+                assertThat(statusTracker).isNotNull();
+
+                String statusHistory = statusTracker.toString();
+                assertThat(statusHistory).contains("429/");
+                assertThat(statusHistory).contains("count=2");
+            }
+        } finally {
+            tooManyRequestRule.disable();
+        }
+    }
+
     private void createItemsAndVerify(List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations) {
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
@@ -806,8 +864,19 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         };
     }
 
-    private FaultInjectionRule injectBatchFailure(String id, FaultInjectionServerErrorType serverErrorType, int hitLimit) {
+    private FaultInjectionRule injectBatchFailure(
+        String id,
+        FaultInjectionServerErrorType serverErrorType,
+        int hitLimit) {
 
+        return injectBatchFailure(id, serverErrorType, hitLimit, Duration.ofSeconds(1));
+    }
+
+    private FaultInjectionRule injectBatchFailure(
+        String id,
+        FaultInjectionServerErrorType serverErrorType,
+        int hitLimit,
+        Duration startDelay) {
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(serverErrorType)
@@ -833,7 +902,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         return new FaultInjectionRuleBuilder(id)
             .condition(condition)
             .result(result)
-            .startDelay(Duration.ofSeconds(1))
+            .startDelay(startDelay)
             .hitLimit(hitLimit)
             .build();
     }

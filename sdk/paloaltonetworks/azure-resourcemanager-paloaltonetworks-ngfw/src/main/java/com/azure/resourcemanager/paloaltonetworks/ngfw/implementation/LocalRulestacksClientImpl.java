@@ -437,7 +437,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListAppIdResponseInner>> listAppIdsNext(
@@ -445,7 +445,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ListAppIdResponseInner> listAppIdsNextSync(
@@ -453,7 +453,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CountriesResponseInner>> listCountriesNext(
@@ -461,7 +461,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<CountriesResponseInner> listCountriesNextSync(
@@ -469,7 +469,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategoriesNext(
@@ -477,7 +477,7 @@ public final class LocalRulestacksClientImpl implements LocalRulestacksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesNextSync(

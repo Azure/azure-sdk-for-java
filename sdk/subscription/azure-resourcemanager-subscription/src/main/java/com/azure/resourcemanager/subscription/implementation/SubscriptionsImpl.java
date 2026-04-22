@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.subscription.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.fluent.SubscriptionsClient;
-import com.azure.resourcemanager.subscription.fluent.models.LocationInner;
-import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
-import com.azure.resourcemanager.subscription.models.Location;
-import com.azure.resourcemanager.subscription.models.Subscription;
+import com.azure.resourcemanager.subscription.fluent.models.AcceptOwnershipStatusResponseInner;
+import com.azure.resourcemanager.subscription.fluent.models.CanceledSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.models.AcceptOwnershipRequest;
+import com.azure.resourcemanager.subscription.models.AcceptOwnershipStatusResponse;
+import com.azure.resourcemanager.subscription.models.CanceledSubscriptionId;
+import com.azure.resourcemanager.subscription.models.EnabledSubscriptionId;
+import com.azure.resourcemanager.subscription.models.RenamedSubscriptionId;
+import com.azure.resourcemanager.subscription.models.SubscriptionName;
 import com.azure.resourcemanager.subscription.models.Subscriptions;
 
 public final class SubscriptionsImpl implements Subscriptions {
@@ -29,43 +34,92 @@ public final class SubscriptionsImpl implements Subscriptions {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Location> listLocations(String subscriptionId) {
-        PagedIterable<LocationInner> inner = this.serviceClient().listLocations(subscriptionId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Location> listLocations(String subscriptionId, Context context) {
-        PagedIterable<LocationInner> inner = this.serviceClient().listLocations(subscriptionId, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
-    }
-
-    public Response<Subscription> getWithResponse(String subscriptionId, Context context) {
-        Response<SubscriptionInner> inner = this.serviceClient().getWithResponse(subscriptionId, context);
+    public Response<CanceledSubscriptionId> cancelWithResponse(String subscriptionId, Context context) {
+        Response<CanceledSubscriptionIdInner> inner = this.serviceClient().cancelWithResponse(subscriptionId, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SubscriptionImpl(inner.getValue(), this.manager()));
+                new CanceledSubscriptionIdImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Subscription get(String subscriptionId) {
-        SubscriptionInner inner = this.serviceClient().get(subscriptionId);
+    public CanceledSubscriptionId cancel(String subscriptionId) {
+        CanceledSubscriptionIdInner inner = this.serviceClient().cancel(subscriptionId);
         if (inner != null) {
-            return new SubscriptionImpl(inner, this.manager());
+            return new CanceledSubscriptionIdImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public PagedIterable<Subscription> list() {
-        PagedIterable<SubscriptionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
+    public Response<RenamedSubscriptionId> renameWithResponse(String subscriptionId, SubscriptionName body,
+        Context context) {
+        Response<RenamedSubscriptionIdInner> inner
+            = this.serviceClient().renameWithResponse(subscriptionId, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RenamedSubscriptionIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<Subscription> list(Context context) {
-        PagedIterable<SubscriptionInner> inner = this.serviceClient().list(context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
+    public RenamedSubscriptionId rename(String subscriptionId, SubscriptionName body) {
+        RenamedSubscriptionIdInner inner = this.serviceClient().rename(subscriptionId, body);
+        if (inner != null) {
+            return new RenamedSubscriptionIdImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<EnabledSubscriptionId> enableWithResponse(String subscriptionId, Context context) {
+        Response<EnabledSubscriptionIdInner> inner = this.serviceClient().enableWithResponse(subscriptionId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnabledSubscriptionIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EnabledSubscriptionId enable(String subscriptionId) {
+        EnabledSubscriptionIdInner inner = this.serviceClient().enable(subscriptionId);
+        if (inner != null) {
+            return new EnabledSubscriptionIdImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body) {
+        this.serviceClient().acceptOwnership(subscriptionId, body);
+    }
+
+    public void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body, Context context) {
+        this.serviceClient().acceptOwnership(subscriptionId, body, context);
+    }
+
+    public Response<AcceptOwnershipStatusResponse> acceptOwnershipStatusWithResponse(String subscriptionId,
+        Context context) {
+        Response<AcceptOwnershipStatusResponseInner> inner
+            = this.serviceClient().acceptOwnershipStatusWithResponse(subscriptionId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AcceptOwnershipStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AcceptOwnershipStatusResponse acceptOwnershipStatus(String subscriptionId) {
+        AcceptOwnershipStatusResponseInner inner = this.serviceClient().acceptOwnershipStatus(subscriptionId);
+        if (inner != null) {
+            return new AcceptOwnershipStatusResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private SubscriptionsClient serviceClient() {

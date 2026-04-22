@@ -13,7 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
+import com.azure.resourcemanager.monitor.models.Identity;
 import com.azure.resourcemanager.monitor.models.Kind;
+import com.azure.resourcemanager.monitor.models.RuleResolveConfiguration;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
 import java.io.IOException;
 import java.time.Duration;
@@ -25,6 +27,11 @@ import java.util.Map;
  */
 @Fluent
 public final class ScheduledQueryRuleResourceInner extends Resource {
+    /*
+     * The identity of the resource.
+     */
+    private Identity identity;
+
     /*
      * Indicates the type of scheduled query rule. The default is LogAlert.
      */
@@ -49,9 +56,9 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     private ScheduledQueryRuleProperties innerProperties = new ScheduledQueryRuleProperties();
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -59,14 +66,34 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ScheduledQueryRuleResourceInner class.
      */
     public ScheduledQueryRuleResourceInner() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     * 
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the ScheduledQueryRuleResourceInner object itself.
+     */
+    public ScheduledQueryRuleResourceInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -120,13 +147,13 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -140,13 +167,13 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -568,11 +595,39 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
+     * Get the resolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only for
+     * rules of the kind LogAlert.
+     * 
+     * @return the resolveConfiguration value.
+     */
+    public RuleResolveConfiguration resolveConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().resolveConfiguration();
+    }
+
+    /**
+     * Set the resolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only for
+     * rules of the kind LogAlert.
+     * 
+     * @param resolveConfiguration the resolveConfiguration value to set.
+     * @return the ScheduledQueryRuleResourceInner object itself.
+     */
+    public ScheduledQueryRuleResourceInner withResolveConfiguration(RuleResolveConfiguration resolveConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledQueryRuleProperties();
+        }
+        this.innerProperties().withResolveConfiguration(resolveConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -593,6 +648,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -628,6 +684,8 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedScheduledQueryRuleResourceInner.innerProperties
                         = ScheduledQueryRuleProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.identity = Identity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedScheduledQueryRuleResourceInner.kind = Kind.fromString(reader.getString());
                 } else if ("etag".equals(fieldName)) {

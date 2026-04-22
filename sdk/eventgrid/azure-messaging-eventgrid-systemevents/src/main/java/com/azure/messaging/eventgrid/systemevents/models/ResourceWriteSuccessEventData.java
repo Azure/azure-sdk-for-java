@@ -71,7 +71,7 @@ public final class ResourceWriteSuccessEventData implements JsonSerializable<Res
      * The properties of the claims.
      */
     @Generated
-    private final Map<String, String> claims;
+    private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
@@ -89,14 +89,11 @@ public final class ResourceWriteSuccessEventData implements JsonSerializable<Res
      * Creates an instance of ResourceWriteSuccessEventData class.
      *
      * @param authorization the authorization value to set.
-     * @param claims the claims value to set.
      * @param httpRequest the httpRequest value to set.
      */
     @Generated
-    private ResourceWriteSuccessEventData(ResourceAuthorization authorization, Map<String, String> claims,
-        ResourceHttpRequest httpRequest) {
+    private ResourceWriteSuccessEventData(ResourceAuthorization authorization, ResourceHttpRequest httpRequest) {
         this.authorization = authorization;
-        this.claims = claims;
         this.httpRequest = httpRequest;
     }
 
@@ -218,7 +215,6 @@ public final class ResourceWriteSuccessEventData implements JsonSerializable<Res
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("authorization", this.authorization);
-        jsonWriter.writeMapField("claims", this.claims, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("httpRequest", this.httpRequest);
         jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
@@ -284,7 +280,8 @@ public final class ResourceWriteSuccessEventData implements JsonSerializable<Res
                 }
             }
             ResourceWriteSuccessEventData deserializedResourceWriteSuccessEventData
-                = new ResourceWriteSuccessEventData(authorization, claims, httpRequest);
+                = new ResourceWriteSuccessEventData(authorization, httpRequest);
+            deserializedResourceWriteSuccessEventData.claims = claims;
             deserializedResourceWriteSuccessEventData.tenantId = tenantId;
             deserializedResourceWriteSuccessEventData.subscriptionId = subscriptionId;
             deserializedResourceWriteSuccessEventData.resourceGroup = resourceGroup;

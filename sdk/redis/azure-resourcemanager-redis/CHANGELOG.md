@@ -4,11 +4,38 @@
 
 ### Features Added
 
+- Supported enabling/disabling authentication through access keys for `RedisCache`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.53.7 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.5` to version `2.54.0`.
+
+
+## 2.53.6 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.53.5 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.4 (2025-10-27)
 

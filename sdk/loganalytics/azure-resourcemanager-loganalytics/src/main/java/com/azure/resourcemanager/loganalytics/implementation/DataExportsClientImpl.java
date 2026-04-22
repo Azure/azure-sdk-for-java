@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.DataExportsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
 import com.azure.resourcemanager.loganalytics.models.DataExportListResult;
@@ -63,7 +64,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "OperationalInsightsM")
+    @ServiceInterface(name = "OperationalInsightsManagementClientDataExports")
     public interface DataExportsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports")
@@ -75,10 +76,30 @@ public final class DataExportsClientImpl implements DataExportsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataExportListResult> listByWorkspaceSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataExportInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dataExportName") String dataExportName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataExportInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataExportInner> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("dataExportName") String dataExportName, @QueryParam("api-version") String apiVersion,
@@ -96,10 +117,30 @@ public final class DataExportsClientImpl implements DataExportsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataExportInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dataExportName") String dataExportName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dataExportName") String dataExportName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataExports/{dataExportName}")
+        @ExpectedResponses({ 200, 404 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("dataExportName") String dataExportName, @QueryParam("api-version") String apiVersion,
@@ -135,54 +176,13 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, apiVersion, accept, context))
+                resourceGroupName, workspaceName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<DataExportInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the data export instances within a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataExportInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
-        String workspaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                workspaceName, apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
     }
 
     /**
@@ -205,16 +205,77 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list data exports along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataExportInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DataExportListResult> res
+            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * Lists the data export instances within a workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports as paginated response with {@link PagedFlux}.
+     * @return result of the request to list data exports along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataExportInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataExportInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName,
         Context context) {
-        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DataExportListResult> res
+            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -229,7 +290,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataExportInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName));
+        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName));
     }
 
     /**
@@ -246,7 +307,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataExportInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
-        return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
+        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -288,59 +349,12 @@ public final class DataExportsClientImpl implements DataExportsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, dataExportName, apiVersion, parameters, accept, context))
+                resourceGroupName, workspaceName, dataExportName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Create or update a data export.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param parameters The parameters required to create or update a data export.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataExportInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String workspaceName, String dataExportName, DataExportInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (dataExportName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2020-08-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, dataExportName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -378,8 +392,37 @@ public final class DataExportsClientImpl implements DataExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataExportInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String dataExportName, DataExportInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dataExportName, parameters, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (dataExportName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, dataExportName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -433,52 +476,11 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, dataExportName, apiVersion, accept, context))
+                resourceGroupName, workspaceName, dataExportName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a data export instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataExportInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
-        String dataExportName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (dataExportName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
-            dataExportName, apiVersion, accept, context);
     }
 
     /**
@@ -513,7 +515,31 @@ public final class DataExportsClientImpl implements DataExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataExportInner> getWithResponse(String resourceGroupName, String workspaceName,
         String dataExportName, Context context) {
-        return getWithResponseAsync(resourceGroupName, workspaceName, dataExportName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (dataExportName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, dataExportName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -564,52 +590,11 @@ public final class DataExportsClientImpl implements DataExportsClient {
         if (dataExportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, dataExportName, apiVersion, accept, context))
+                resourceGroupName, workspaceName, dataExportName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes the specified data export in a given workspace..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
-        String dataExportName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (dataExportName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
-        }
-        final String apiVersion = "2020-08-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, dataExportName, apiVersion, accept, context);
     }
 
     /**
@@ -644,7 +629,31 @@ public final class DataExportsClientImpl implements DataExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, dataExportName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (dataExportName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataExportName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, dataExportName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -661,4 +670,6 @@ public final class DataExportsClientImpl implements DataExportsClient {
     public void delete(String resourceGroupName, String workspaceName, String dataExportName) {
         deleteWithResponse(resourceGroupName, workspaceName, dataExportName, Context.NONE);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataExportsClientImpl.class);
 }

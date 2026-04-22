@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
@@ -49,6 +50,7 @@ import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -70,6 +72,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
@@ -394,7 +397,7 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null,
-                null, metadata, requestConditions, context));
+                null, metadata, requestConditions, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -447,7 +450,8 @@ public class ShareFileAsyncClient {
             StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
-                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
+                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(),
+                options.getFilePropertySemantics(), options.getData(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -455,24 +459,37 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
-        Context context) {
-        context = context == null ? Context.NONE : context;
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
+        FilePosixProperties filePosixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
+        FilePropertySemantics filePropertySemantics, BinaryData binaryData, Context context) {
+        final Context contextLocal = context == null ? Context.NONE : context;
+        final ShareRequestConditions requestConditionsLocal
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        final FileSmbProperties smbPropertiesLocal = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        final FilePosixProperties filePosixPropertiesLocal
+            = filePosixProperties == null ? new FilePosixProperties() : filePosixProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbPropertiesLocal.getFilePermissionKey());
 
-        return azureFileStorageClient.getFiles()
+        Mono<UploadUtils.FluxMd5Wrapper> contentMD5Mono;
+        Long contentLength;
+        if (binaryData != null) {
+            contentLength = binaryData.getLength();
+            contentMD5Mono = UploadUtils.computeMd5(binaryData.toFluxByteBuffer(), true, LOGGER);
+        } else {
+            contentLength = null;
+            contentMD5Mono = UploadUtils.computeMd5(null, false, LOGGER);
+        }
+
+        return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
-                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
-                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
-                httpHeaders, context)
-            .map(ModelHelper::createFileInfoResponse);
+                smbPropertiesLocal.getFilePermissionKey(), smbPropertiesLocal.getNtfsFileAttributesString(),
+                smbPropertiesLocal.getFileCreationTimeString(), smbPropertiesLocal.getFileLastWriteTimeString(),
+                smbPropertiesLocal.getFileChangeTimeString(), requestConditionsLocal.getLeaseId(),
+                filePosixPropertiesLocal.getOwner(), filePosixPropertiesLocal.getGroup(),
+                filePosixPropertiesLocal.getFileMode(), filePosixPropertiesLocal.getFileType(), fluxMD5wrapper.getMd5(),
+                filePropertySemantics, contentLength, null, null, fluxMD5wrapper.getData(), httpHeaders, contextLocal)
+            .map(ModelHelper::createFileInfoResponse));
     }
 
     /**
@@ -3483,5 +3500,37 @@ public class ShareFileAsyncClient {
         return this.azureFileStorageClient.getFiles()
             .getSymbolicLinkWithResponseAsync(shareName, filePath, null, snapshot, null, context)
             .map(ModelHelper::getSymbolicLinkResponse);
+    }
+
+    /**
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }

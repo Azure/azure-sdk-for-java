@@ -50,7 +50,9 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
                     BinderTypeRegistry binderTypeRegistry = applicationContext.getBean(BinderTypeRegistry.class);
                     Map<String, BinderType> allBinders = binderTypeRegistry.getAll();
                     // Only kafka binder on the classpath.
-                    if (allBinders != null && allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && allBinders.size() == 1) {
+                    boolean onlyKafkaBinderOnClasspath = allBinders != null && allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && allBinders.size() == 1;
+                    boolean useKafkaAsDefaultBinder = allBinders != null && allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && DEFAULT_KAFKA_BINDER_NAME.equalsIgnoreCase(defaultBinder);
+                    if (onlyKafkaBinderOnClasspath || useKafkaAsDefaultBinder) {
                         Map<String, Object> environment = new HashMap<>();
                         Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
                         configureSpringMainSources(springMainPropertiesMap);

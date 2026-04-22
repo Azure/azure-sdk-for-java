@@ -80,9 +80,8 @@ public interface ClusterManager {
     String analyticsWorkspaceId();
 
     /**
-     * Gets the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
-     * allocation process and will be removed in a future version. The Azure availability zones within the region that
-     * will be used to support the cluster manager resource.
+     * Gets the availabilityZones property: The Azure availability zones within the region that will be used to support
+     * the cluster manager resource.
      * 
      * @return the availabilityZones value.
      */
@@ -144,9 +143,7 @@ public interface ClusterManager {
     ClusterManagerProvisioningState provisioningState();
 
     /**
-     * Gets the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
-     * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
-     * cluster manager resource.
+     * Gets the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
      */
@@ -316,13 +313,11 @@ public interface ClusterManager {
          */
         interface WithAvailabilityZones {
             /**
-             * Specifies the availabilityZones property: Field deprecated, this value will no longer influence the
-             * cluster manager allocation process and will be removed in a future version. The Azure availability zones
-             * within the region that will be used to support the cluster manager resource..
+             * Specifies the availabilityZones property: The Azure availability zones within the region that will be
+             * used to support the cluster manager resource..
              * 
-             * @param availabilityZones Field deprecated, this value will no longer influence the cluster manager
-             * allocation process and will be removed in a future version. The Azure availability zones within the
-             * region that will be used to support the cluster manager resource.
+             * @param availabilityZones The Azure availability zones within the region that will be used to support the
+             * cluster manager resource.
              * @return the next definition stage.
              */
             WithCreate withAvailabilityZones(List<String> availabilityZones);
@@ -349,13 +344,10 @@ public interface ClusterManager {
          */
         interface WithVmSize {
             /**
-             * Specifies the vmSize property: Field deprecated, this value will no longer influence the cluster manager
-             * allocation process and will be removed in a future version. The size of the Azure virtual machines to use
-             * for hosting the cluster manager resource..
+             * Specifies the vmSize property: The size of the Azure virtual machines to use for hosting the cluster
+             * manager resource..
              * 
-             * @param vmSize Field deprecated, this value will no longer influence the cluster manager allocation
-             * process and will be removed in a future version. The size of the Azure virtual machines to use for
-             * hosting the cluster manager resource.
+             * @param vmSize The size of the Azure virtual machines to use for hosting the cluster manager resource.
              * @return the next definition stage.
              */
             WithCreate withVmSize(String vmSize);

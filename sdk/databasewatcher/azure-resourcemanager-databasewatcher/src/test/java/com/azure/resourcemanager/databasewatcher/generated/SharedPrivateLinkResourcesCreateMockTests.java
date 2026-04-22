@@ -22,7 +22,7 @@ public final class SharedPrivateLinkResourcesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateLinkResourceId\":\"washr\",\"groupId\":\"dtkcnqxwbpokulp\",\"requestMessage\":\"ujw\",\"dnsZone\":\"sipqii\",\"status\":\"Pending\",\"provisioningState\":\"Succeeded\"},\"id\":\"rpqlp\",\"name\":\"wcciuqgbdbu\",\"type\":\"auvfbtkuwhhmhyk\"}";
+            = "{\"properties\":{\"privateLinkResourceId\":\"slswtm\",\"groupId\":\"eriofzpyqs\",\"requestMessage\":\"mwabnetshhszhedp\",\"dnsZone\":\"wiwubm\",\"status\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"dnkwwtppjflcxog\",\"name\":\"okonzmnsikvmkqz\",\"type\":\"qqkdltfzxmhhvhgu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class SharedPrivateLinkResourcesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SharedPrivateLinkResource response = manager.sharedPrivateLinkResources()
-            .define("kcbcue")
-            .withExistingWatcher("helxprglya", "dd")
-            .withProperties(new SharedPrivateLinkResourceProperties().withPrivateLinkResourceId("jxgciqibrh")
-                .withGroupId("sxsdqrhzoymibm")
-                .withRequestMessage("qyib")
-                .withDnsZone("wfluszdt"))
+            .define("aolps")
+            .withExistingWatcher("vhqlkthumaqo", "bgycduiertgccym")
+            .withProperties(new SharedPrivateLinkResourceProperties().withPrivateLinkResourceId("qlfmmdnbb")
+                .withGroupId("lzpswiydm")
+                .withRequestMessage("wyhzdx")
+                .withDnsZone("adbzmnvdfznud"))
             .create();
 
-        Assertions.assertEquals("washr", response.properties().privateLinkResourceId());
-        Assertions.assertEquals("dtkcnqxwbpokulp", response.properties().groupId());
-        Assertions.assertEquals("ujw", response.properties().requestMessage());
-        Assertions.assertEquals("sipqii", response.properties().dnsZone());
+        Assertions.assertEquals("slswtm", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("eriofzpyqs", response.properties().groupId());
+        Assertions.assertEquals("mwabnetshhszhedp", response.properties().requestMessage());
+        Assertions.assertEquals("wiwubm", response.properties().dnsZone());
     }
 }

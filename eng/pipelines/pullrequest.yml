@@ -29,7 +29,6 @@ pr:
     - sdk/e2e/ # no pipeline, nothing to build
     - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
     - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
-    - sdk/mediaservices/microsoft-azure-media/ # track 1
     - sdk/servicebus/microsoft-azure-servicebus/ # track 1
     - sdk/spring/
 
@@ -77,6 +76,5 @@ extends:
     - sdk/e2e/ # no pipeline, nothing to build
     - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
     - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
-    - sdk/mediaservices/microsoft-azure-media/ # track 1
     - sdk/servicebus/microsoft-azure-servicebus/ # track 1
     - sdk/spring/

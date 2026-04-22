@@ -34,9 +34,10 @@ public final class BmcKeySetsImpl implements BmcKeySets {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BmcKeySetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BmcKeySet> listByCluster(String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<BmcKeySet> listByCluster(String resourceGroupName, String clusterName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<BmcKeySetInner> inner
-            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BmcKeySetImpl(inner1, this.manager()));
     }
 

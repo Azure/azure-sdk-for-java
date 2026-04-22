@@ -22,7 +22,7 @@ public final class AkriConnectorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"name\":\"xwdofdb\",\"type\":\"CustomLocation\"},\"id\":\"xeiiq\",\"name\":\"imht\",\"type\":\"wwinhehf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"allocatedDevices\":[{\"deviceInboundEndpointName\":\"pibudqwyxebeybpm\",\"deviceName\":\"znrtffyaqit\"}],\"healthState\":\"Degraded\"},\"extendedLocation\":{\"name\":\"ioqaqhvs\",\"type\":\"CustomLocation\"},\"id\":\"uqyrxpdl\",\"name\":\"gql\",\"type\":\"ismjqfrddgamqu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,11 @@ public final class AkriConnectorsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AkriConnectorResource response = manager.akriConnectors()
-            .getWithResponse("peujlzqn", "cvsql", "nzoibgsxgnx", "yqo", com.azure.core.util.Context.NONE)
+            .getWithResponse("f", "xnmwmqtibxyijddt", "qcttadijaeukmrsi", "ekpndzaapmudq",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xwdofdb", response.extendedLocation().name());
+        Assertions.assertEquals("ioqaqhvs", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

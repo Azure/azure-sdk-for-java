@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import java.io.IOException;
 import java.util.List;
 
@@ -53,6 +54,17 @@ public final class CommunicationServiceProperties implements JsonSerializable<Co
      * List of email Domain resource Ids.
      */
     private List<String> linkedDomains;
+
+    /*
+     * Allow, disallow, or let network security perimeter configuration control public network access to the protected
+     * resource. Value is optional but if passed in, it must be 'Enabled', 'Disabled' or 'SecuredByPerimeter'.
+     */
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Disable local authentication for the CommunicationService.
+     */
+    private Boolean disableLocalAuth;
 
     /**
      * Creates an instance of CommunicationServiceProperties class.
@@ -147,6 +159,50 @@ public final class CommunicationServiceProperties implements JsonSerializable<Co
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow, disallow, or let network security perimeter configuration control
+     * public network access to the protected resource. Value is optional but if passed in, it must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow, disallow, or let network security perimeter configuration control
+     * public network access to the protected resource. Value is optional but if passed in, it must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the CommunicationServiceProperties object itself.
+     */
+    public CommunicationServiceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disable local authentication for the CommunicationService.
+     * 
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disable local authentication for the CommunicationService.
+     * 
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the CommunicationServiceProperties object itself.
+     */
+    public CommunicationServiceProperties withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -170,6 +226,9 @@ public final class CommunicationServiceProperties implements JsonSerializable<Co
         jsonWriter.writeStringField("dataLocation", this.dataLocation);
         jsonWriter.writeArrayField("linkedDomains", this.linkedDomains,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         return jsonWriter.writeEndObject();
     }
 
@@ -206,6 +265,12 @@ public final class CommunicationServiceProperties implements JsonSerializable<Co
                 } else if ("linkedDomains".equals(fieldName)) {
                     List<String> linkedDomains = reader.readArray(reader1 -> reader1.getString());
                     deserializedCommunicationServiceProperties.linkedDomains = linkedDomains;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedCommunicationServiceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedCommunicationServiceProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

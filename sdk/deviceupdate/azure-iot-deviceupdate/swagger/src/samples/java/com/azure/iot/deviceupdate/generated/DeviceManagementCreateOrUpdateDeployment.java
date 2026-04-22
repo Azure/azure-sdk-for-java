@@ -18,12 +18,12 @@ public class DeviceManagementCreateOrUpdateDeployment {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-create-or-update-deployment.device-management-create-or-update-deployment
         BinaryData deployment = BinaryData.fromString(
             "{\"deploymentId\":\"deploymentId\",\"groupId\":\"TestGroup\",\"rollbackPolicy\":{\"failure\":{\"devicesFailedCount\":100,\"devicesFailedPercentage\":50},\"update\":{\"updateId\":{\"name\":\"name\",\"provider\":\"provider\",\"version\":\"1.2.3.3\"}}},\"startDateTime\":\"2020-04-22T12:12:12.0000000+00:00\",\"update\":{\"updateId\":{\"name\":\"name\",\"provider\":\"provider\",\"version\":\"1.2.3.4\"}}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = deviceManagementClient.createOrUpdateDeploymentWithResponse("TestGroup",
             "deploymentId", deployment, requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
+        // END:com.azure.iot.deviceupdate.generated.device-management-create-or-update-deployment.device-management-create-or-update-deployment
     }
 }

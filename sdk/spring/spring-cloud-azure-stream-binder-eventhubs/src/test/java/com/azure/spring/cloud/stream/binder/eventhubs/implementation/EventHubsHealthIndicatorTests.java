@@ -21,8 +21,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.Status;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
@@ -78,6 +78,7 @@ public class EventHubsHealthIndicatorTests {
     public void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
         binder.setApplicationContext(context);
         healthIndicator = new EventHubsHealthIndicator(binder);
     }

@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -29,12 +30,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 class ChangeFeedQueryImpl<T> {
 
-    private final static
-    ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    private static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    }
 
-    private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedRequestOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
     private static final int INITIAL_TOP_VALUE = -1;
 
@@ -51,6 +53,7 @@ class ChangeFeedQueryImpl<T> {
     private final OperationContextAndListenerTuple operationContextAndListener;
     private final CosmosItemSerializer itemSerializer;
     private final DiagnosticsClientContext diagnosticsClientContext;
+    private final CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -59,7 +62,8 @@ class ChangeFeedQueryImpl<T> {
         String collectionLink,
         String collectionRid,
         CosmosChangeFeedRequestOptions requestOptions,
-        DiagnosticsClientContext diagnosticsClientContext) {
+        DiagnosticsClientContext diagnosticsClientContext, CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext) {
+        this.crossRegionAvailabilityContext = crossRegionAvailabilityContext;
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
@@ -86,9 +90,7 @@ class ChangeFeedQueryImpl<T> {
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
         this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
-        this.operationContextAndListener = ImplementationBridgeHelpers
-                .CosmosChangeFeedRequestOptionsHelper
-                .getCosmosChangeFeedRequestOptionsAccessor()
+        this.operationContextAndListener = changeFeedOptionsAccessor()
                 .getOperationContext(options);
         this.diagnosticsClientContext = diagnosticsClientContext;
 
@@ -119,13 +121,9 @@ class ChangeFeedQueryImpl<T> {
             this.options.getMaxPrefetchPageCount(),
             ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options),
             this.options.isCompleteAfterAllCurrentChangesRetrieved(),
-            ImplementationBridgeHelpers
-                .CosmosChangeFeedRequestOptionsHelper
-                .getCosmosChangeFeedRequestOptionsAccessor()
+            changeFeedOptionsAccessor()
                 .getEndLSN(this.options),
-            ImplementationBridgeHelpers
-                .CosmosChangeFeedRequestOptionsHelper
-                .getCosmosChangeFeedRequestOptionsAccessor()
+            changeFeedOptionsAccessor()
                 .getOperationContext(this.options),
             this.diagnosticsClientContext
         );
@@ -135,7 +133,7 @@ class ChangeFeedQueryImpl<T> {
         Map<String, String> headers = new HashMap<>();
 
         Map<String, String> customOptions =
-            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getHeaders(this.options);
+            changeFeedOptionsAccessor().getHeaders(this.options);
         if (customOptions != null) {
             headers.putAll(customOptions);
         }
@@ -181,11 +179,7 @@ class ChangeFeedQueryImpl<T> {
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
-            request.requestContext.setCrossRegionAvailabilityContext(
-                new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
-                    new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink),
-                    null,
-                    new AvailabilityStrategyContext(false, false)));
+            request.requestContext.setCrossRegionAvailabilityContext(this.crossRegionAvailabilityContext);
         }
 
         return request;
@@ -195,7 +189,7 @@ class ChangeFeedQueryImpl<T> {
         if (this.operationContextAndListener == null) {
             return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)
-                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
+                .map(rsp -> feedResponseAccessor().createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -209,7 +203,7 @@ class ChangeFeedQueryImpl<T> {
                 .map(rsp -> {
                     listener.responseListener(operationContext, rsp);
 
-                    final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
+                    final FeedResponse<T> feedResponse = feedResponseAccessor().createChangeFeedResponse(
                         rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics());
 
                     Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
@@ -259,8 +253,8 @@ class ChangeFeedQueryImpl<T> {
                                 checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");
                                 checkNotNull(collectionRoutingMapValueHolder.v, "Argument 'collectionRoutingMapValueHolder.v' cannot be null!");
 
-                                changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
-                                changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
+                                changeFeedOptionsAccessor().setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
+                                changeFeedOptionsAccessor().setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = this.client
                                     .setPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(

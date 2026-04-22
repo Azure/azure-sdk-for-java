@@ -19,7 +19,7 @@ public final class ClusterSku implements JsonSerializable<ClusterSku> {
     /*
      * The capacity reservation level in Gigabytes for this cluster.
      */
-    private Capacity capacity;
+    private Long capacity;
 
     /*
      * The SKU (tier) of a cluster.
@@ -37,7 +37,7 @@ public final class ClusterSku implements JsonSerializable<ClusterSku> {
      * 
      * @return the capacity value.
      */
-    public Capacity capacity() {
+    public Long capacity() {
         return this.capacity;
     }
 
@@ -47,7 +47,7 @@ public final class ClusterSku implements JsonSerializable<ClusterSku> {
      * @param capacity the capacity value to set.
      * @return the ClusterSku object itself.
      */
-    public ClusterSku withCapacity(Capacity capacity) {
+    public ClusterSku withCapacity(Long capacity) {
         this.capacity = capacity;
         return this;
     }
@@ -86,7 +86,7 @@ public final class ClusterSku implements JsonSerializable<ClusterSku> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("capacity", this.capacity == null ? null : this.capacity.toLong());
+        jsonWriter.writeNumberField("capacity", this.capacity);
         jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
         return jsonWriter.writeEndObject();
     }
@@ -107,7 +107,7 @@ public final class ClusterSku implements JsonSerializable<ClusterSku> {
                 reader.nextToken();
 
                 if ("capacity".equals(fieldName)) {
-                    deserializedClusterSku.capacity = Capacity.fromLong(reader.getLong());
+                    deserializedClusterSku.capacity = reader.getNullable(JsonReader::getLong);
                 } else if ("name".equals(fieldName)) {
                     deserializedClusterSku.name = ClusterSkuNameEnum.fromString(reader.getString());
                 } else {

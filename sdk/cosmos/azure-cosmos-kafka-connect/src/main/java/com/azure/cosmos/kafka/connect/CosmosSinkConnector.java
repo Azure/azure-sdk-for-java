@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
@@ -134,13 +135,15 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
 
         // read a random item from throughput control container if it is enabled and use the same account config as the cosmos client
         CosmosThroughputControlConfig cosmosThroughputControlConfig = this.sinkConfig.getThroughputControlConfig();
-        if (cosmosThroughputControlConfig.isThroughputControlEnabled()) {
-            if (cosmosThroughputControlConfig.getThroughputControlAccountConfig() == null) {
+        if (cosmosThroughputControlConfig.isThroughputControlEnabled()
+            && cosmosThroughputControlConfig instanceof CosmosSDKThroughputControlConfig) {
+            CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) cosmosThroughputControlConfig;
+            if (sdkConfig.getThroughputControlAccountConfig() == null) {
                 CosmosAsyncContainer throughputControlContainer =
                     this.cosmosClientItem
                         .getClient()
-                        .getDatabase(cosmosThroughputControlConfig.getGlobalThroughputControlDatabaseName())
-                        .getContainer(cosmosThroughputControlConfig.getGlobalThroughputControlContainerName());
+                        .getDatabase(sdkConfig.getGlobalThroughputControlDatabaseName())
+                        .getContainer(sdkConfig.getGlobalThroughputControlContainerName());
                 readRandomItemFromContainer(throughputControlContainer);
             }
         }
@@ -154,20 +157,23 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
 
         try {
             if (throughputControlConfig.isThroughputControlEnabled()
-                && throughputControlConfig.getThroughputControlAccountConfig() != null) {
-                throughputControlClientItem = CosmosClientCache.getCosmosClient(
-                    throughputControlConfig.getThroughputControlAccountConfig(),
-                    this.connectorName
-                );
-            }
+                && throughputControlConfig instanceof CosmosSDKThroughputControlConfig) {
+                CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) throughputControlConfig;
+                if (sdkConfig.getThroughputControlAccountConfig() != null) {
+                    throughputControlClientItem = CosmosClientCache.getCosmosClient(
+                        sdkConfig.getThroughputControlAccountConfig(),
+                        this.connectorName
+                    );
+                }
 
-            if (throughputControlClientItem != null) {
-                readRandomItemFromContainer(
-                    throughputControlClientItem
-                        .getClient()
-                        .getDatabase(throughputControlConfig.getGlobalThroughputControlDatabaseName())
-                        .getContainer(throughputControlConfig.getGlobalThroughputControlContainerName()));
-                return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
+                if (throughputControlClientItem != null) {
+                    readRandomItemFromContainer(
+                        throughputControlClientItem
+                            .getClient()
+                            .getDatabase(sdkConfig.getGlobalThroughputControlDatabaseName())
+                            .getContainer(sdkConfig.getGlobalThroughputControlContainerName()));
+                    return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
+                }
             }
 
             return null;

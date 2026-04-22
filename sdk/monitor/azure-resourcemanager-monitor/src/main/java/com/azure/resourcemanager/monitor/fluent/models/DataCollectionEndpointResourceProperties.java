@@ -10,16 +10,39 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpoint;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointConfigurationAccess;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointFailoverConfiguration;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointLogsIngestion;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointMetadata;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointMetricsIngestion;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointProvisioningState;
+import com.azure.resourcemanager.monitor.models.PrivateLinkScopedResource;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * Resource properties.
+ * The DataCollectionEndpointResourceProperties model.
  */
 @Fluent
 public final class DataCollectionEndpointResourceProperties extends DataCollectionEndpoint {
+    /*
+     * Metadata for the resource. This property can only be updated by Log Analytics Control Plane for Data Collection
+     * Endpoint with Log Analytics Destination.
+     */
+    private DataCollectionEndpointMetadata metadata;
+
+    /*
+     * Metadata for the resource. This property can only be updated by Log Analytics Control Plane for Data Collection
+     * Endpoint with Log Analytics Destination.
+     */
+    private DataCollectionEndpointFailoverConfiguration failoverConfiguration;
+
+    /*
+     * List of Azure Monitor Private Link Scope Resources to which this data collection endpoint resource is associated.
+     * This property is READ-ONLY.
+     */
+    private List<PrivateLinkScopedResource> privateLinkScopedResources;
+
     /*
      * The resource provisioning state. This property is READ-ONLY.
      */
@@ -29,6 +52,39 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
      * Creates an instance of DataCollectionEndpointResourceProperties class.
      */
     public DataCollectionEndpointResourceProperties() {
+    }
+
+    /**
+     * Get the metadata property: Metadata for the resource. This property can only be updated by Log Analytics Control
+     * Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @return the metadata value.
+     */
+    @Override
+    public DataCollectionEndpointMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Get the failoverConfiguration property: Metadata for the resource. This property can only be updated by Log
+     * Analytics Control Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @return the failoverConfiguration value.
+     */
+    @Override
+    public DataCollectionEndpointFailoverConfiguration failoverConfiguration() {
+        return this.failoverConfiguration;
+    }
+
+    /**
+     * Get the privateLinkScopedResources property: List of Azure Monitor Private Link Scope Resources to which this
+     * data collection endpoint resource is associated. This property is READ-ONLY.
+     * 
+     * @return the privateLinkScopedResources value.
+     */
+    @Override
+    public List<PrivateLinkScopedResource> privateLinkScopedResources() {
+        return this.privateLinkScopedResources;
     }
 
     /**
@@ -83,6 +139,16 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
      * {@inheritDoc}
      */
     @Override
+    public DataCollectionEndpointResourceProperties
+        withMetricsIngestion(DataCollectionEndpointMetricsIngestion metricsIngestion) {
+        super.withMetricsIngestion(metricsIngestion);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DataCollectionEndpointResourceProperties withNetworkAcls(DataCollectionEndpointNetworkAcls networkAcls) {
         super.withNetworkAcls(networkAcls);
         return this;
@@ -95,7 +161,27 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
      */
     @Override
     public void validate() {
-        super.validate();
+        if (configurationAccess() != null) {
+            configurationAccess().validate();
+        }
+        if (logsIngestion() != null) {
+            logsIngestion().validate();
+        }
+        if (metricsIngestion() != null) {
+            metricsIngestion().validate();
+        }
+        if (networkAcls() != null) {
+            networkAcls().validate();
+        }
+        if (privateLinkScopedResources() != null) {
+            privateLinkScopedResources().forEach(e -> e.validate());
+        }
+        if (failoverConfiguration() != null) {
+            failoverConfiguration().validate();
+        }
+        if (metadata() != null) {
+            metadata().validate();
+        }
     }
 
     /**
@@ -108,6 +194,7 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
         jsonWriter.writeStringField("immutableId", immutableId());
         jsonWriter.writeJsonField("configurationAccess", configurationAccess());
         jsonWriter.writeJsonField("logsIngestion", logsIngestion());
+        jsonWriter.writeJsonField("metricsIngestion", metricsIngestion());
         jsonWriter.writeJsonField("networkAcls", networkAcls());
         return jsonWriter.writeEndObject();
     }
@@ -138,12 +225,26 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
                 } else if ("logsIngestion".equals(fieldName)) {
                     deserializedDataCollectionEndpointResourceProperties
                         .withLogsIngestion(DataCollectionEndpointLogsIngestion.fromJson(reader));
+                } else if ("metricsIngestion".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties
+                        .withMetricsIngestion(DataCollectionEndpointMetricsIngestion.fromJson(reader));
                 } else if ("networkAcls".equals(fieldName)) {
                     deserializedDataCollectionEndpointResourceProperties
                         .withNetworkAcls(DataCollectionEndpointNetworkAcls.fromJson(reader));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataCollectionEndpointResourceProperties.provisioningState
                         = KnownDataCollectionEndpointProvisioningState.fromString(reader.getString());
+                } else if ("privateLinkScopedResources".equals(fieldName)) {
+                    List<PrivateLinkScopedResource> privateLinkScopedResources
+                        = reader.readArray(reader1 -> PrivateLinkScopedResource.fromJson(reader1));
+                    deserializedDataCollectionEndpointResourceProperties.privateLinkScopedResources
+                        = privateLinkScopedResources;
+                } else if ("failoverConfiguration".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties.failoverConfiguration
+                        = DataCollectionEndpointFailoverConfiguration.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceProperties.metadata
+                        = DataCollectionEndpointMetadata.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

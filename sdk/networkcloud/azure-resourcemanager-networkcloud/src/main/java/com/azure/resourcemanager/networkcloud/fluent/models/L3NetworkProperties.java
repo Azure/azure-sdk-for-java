@@ -74,14 +74,12 @@ public final class L3NetworkProperties implements JsonSerializable<L3NetworkProp
     private IpAllocationType ipAllocationType;
 
     /*
-     * The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP allocation type
-     * is IPV4 or DualStack.
+     * The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP allocation type is IPV4 or DualStack.
      */
     private String ipv4ConnectedPrefix;
 
     /*
-     * The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP allocation type
-     * is IPV6 or DualStack.
+     * The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP allocation type is IPV6 or DualStack.
      */
     private String ipv6ConnectedPrefix;
 
@@ -249,8 +247,7 @@ public final class L3NetworkProperties implements JsonSerializable<L3NetworkProp
 
     /**
      * Get the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @return the ipv4ConnectedPrefix value.
      */
@@ -260,8 +257,7 @@ public final class L3NetworkProperties implements JsonSerializable<L3NetworkProp
 
     /**
      * Set the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @param ipv4ConnectedPrefix the ipv4ConnectedPrefix value to set.
      * @return the L3NetworkProperties object itself.
@@ -273,8 +269,7 @@ public final class L3NetworkProperties implements JsonSerializable<L3NetworkProp
 
     /**
      * Get the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @return the ipv6ConnectedPrefix value.
      */
@@ -284,8 +279,7 @@ public final class L3NetworkProperties implements JsonSerializable<L3NetworkProp
 
     /**
      * Set the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @param ipv6ConnectedPrefix the ipv6ConnectedPrefix value to set.
      * @return the L3NetworkProperties object itself.

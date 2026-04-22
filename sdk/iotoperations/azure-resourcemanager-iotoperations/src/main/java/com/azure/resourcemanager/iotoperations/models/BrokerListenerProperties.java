@@ -37,6 +37,11 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of BrokerListenerProperties class.
      */
@@ -113,6 +118,15 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
     }
 
     /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -150,6 +164,9 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerListenerProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedBrokerListenerProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

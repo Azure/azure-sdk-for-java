@@ -37,9 +37,9 @@ public final class KubernetesClusterFeaturesImpl implements KubernetesClusterFea
     }
 
     public PagedIterable<KubernetesClusterFeature> listByKubernetesCluster(String resourceGroupName,
-        String kubernetesClusterName, Context context) {
-        PagedIterable<KubernetesClusterFeatureInner> inner
-            = this.serviceClient().listByKubernetesCluster(resourceGroupName, kubernetesClusterName, context);
+        String kubernetesClusterName, Integer top, String skipToken, Context context) {
+        PagedIterable<KubernetesClusterFeatureInner> inner = this.serviceClient()
+            .listByKubernetesCluster(resourceGroupName, kubernetesClusterName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterFeatureImpl(inner1, this.manager()));
     }
 

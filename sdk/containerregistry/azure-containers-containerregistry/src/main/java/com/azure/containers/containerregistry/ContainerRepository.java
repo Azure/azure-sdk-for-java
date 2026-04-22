@@ -316,7 +316,7 @@ public final class ContainerRepository {
     private PagedIterable<ArtifactManifestProperties> listManifestPropertiesSync(ArtifactManifestOrder order,
         Context context) {
         return new PagedIterable<>((pageSize) -> listManifestPropertiesSinglePageSync(pageSize, order, context),
-            (token, pageSize) -> listManifestPropertiesNextSinglePageSync(token, context));
+            (token, ignored) -> listManifestPropertiesNextSinglePageSync(token, context));
     }
 
     private PagedResponse<ArtifactManifestProperties> listManifestPropertiesSinglePageSync(Integer pageSize,

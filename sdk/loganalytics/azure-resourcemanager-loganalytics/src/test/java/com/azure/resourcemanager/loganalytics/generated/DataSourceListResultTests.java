@@ -17,42 +17,36 @@ public final class DataSourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataSourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":\"dataeamdp\",\"etag\":\"g\",\"kind\":\"CustomLog\",\"tags\":{\"ow\":\"uxwgipwho\",\"injep\":\"gshwankixz\"},\"id\":\"ttmrywnuzoqf\",\"name\":\"iyqzrnk\",\"type\":\"qvyxlwhzlsicoho\"},{\"properties\":\"dataqnwvlrya\",\"etag\":\"hheunmmqhgyx\",\"kind\":\"ChangeTrackingDataTypeConfiguration\",\"tags\":{\"conuqszfkbeype\":\"ocukoklyax\"},\"id\":\"rmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"},{\"properties\":\"dataqylihkaetckt\",\"etag\":\"civfsnkymuctq\",\"kind\":\"SqlDataClassification\",\"tags\":{\"fuwutttxf\":\"ebrjcxe\",\"hfnljkyq\":\"jrbirphxepcyv\",\"uujqgidokgjljyo\":\"j\",\"bgsncghkjeszzhb\":\"gvcl\"},\"id\":\"jhtxfvgxbfsmxne\",\"name\":\"mpvecxgodebfqk\",\"type\":\"rbmpukgri\"},{\"properties\":\"dataflz\",\"etag\":\"bxzpuzycisp\",\"kind\":\"CustomLogCollection\",\"tags\":{\"hibnuqqkpika\":\"hmgkbrpyy\",\"buynhijggm\":\"rgvtqag\"},\"id\":\"bfs\",\"name\":\"arbu\",\"type\":\"rcvpnazzmhjrunmp\"}],\"nextLink\":\"tdbhrbnla\"}")
+            "{\"value\":[{\"properties\":\"databciqfouflm\",\"etag\":\"kzsmodm\",\"kind\":\"ChangeTrackingServices\",\"tags\":{\"uqktap\":\"gpbkwtmut\",\"kdosvqw\":\"pwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"},{\"properties\":\"databexppb\",\"etag\":\"q\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"jgzjaoyfhrtx\":\"fpfpsalgbquxigj\"},\"id\":\"lnerkujysvleju\",\"name\":\"fqawrlyxw\",\"type\":\"kcprbnw\"},{\"properties\":\"dataxgjvtbv\",\"etag\":\"sszdnru\",\"kind\":\"SecurityEventCollectionConfiguration\",\"tags\":{\"uitnwuiz\":\"hmuouqfprwzwbn\",\"x\":\"a\",\"hr\":\"fizuckyf\",\"zwdzuh\":\"idf\"},\"id\":\"ymwisdkft\",\"name\":\"wxmnteiwao\",\"type\":\"vkmijcmmxdcuf\"}],\"nextLink\":\"srp\"}")
             .toObject(DataSourceListResult.class);
-        Assertions.assertEquals("g", model.value().get(0).etag());
-        Assertions.assertEquals(DataSourceKind.CUSTOM_LOG, model.value().get(0).kind());
-        Assertions.assertEquals("uxwgipwho", model.value().get(0).tags().get("ow"));
-        Assertions.assertEquals("tdbhrbnla", model.nextLink());
+        Assertions.assertEquals("kzsmodm", model.value().get(0).etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_SERVICES, model.value().get(0).kind());
+        Assertions.assertEquals("gpbkwtmut", model.value().get(0).tags().get("uqktap"));
+        Assertions.assertEquals("srp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataSourceListResult model
-            = new DataSourceListResult()
-                .withValue(Arrays.asList(
-                    new DataSourceInner().withProperties("dataeamdp")
-                        .withEtag("g")
-                        .withKind(DataSourceKind.CUSTOM_LOG)
-                        .withTags(mapOf("ow", "uxwgipwho", "injep", "gshwankixz")),
-                    new DataSourceInner().withProperties("dataqnwvlrya")
-                        .withEtag("hheunmmqhgyx")
-                        .withKind(DataSourceKind.CHANGE_TRACKING_DATA_TYPE_CONFIGURATION)
-                        .withTags(mapOf("conuqszfkbeype", "ocukoklyax")),
-                    new DataSourceInner().withProperties("dataqylihkaetckt")
-                        .withEtag("civfsnkymuctq")
-                        .withKind(DataSourceKind.SQL_DATA_CLASSIFICATION)
-                        .withTags(mapOf("fuwutttxf", "ebrjcxe", "hfnljkyq", "jrbirphxepcyv", "uujqgidokgjljyo", "j",
-                            "bgsncghkjeszzhb", "gvcl")),
-                    new DataSourceInner().withProperties("dataflz")
-                        .withEtag("bxzpuzycisp")
-                        .withKind(DataSourceKind.CUSTOM_LOG_COLLECTION)
-                        .withTags(mapOf("hibnuqqkpika", "hmgkbrpyy", "buynhijggm", "rgvtqag"))))
-                .withNextLink("tdbhrbnla");
+        DataSourceListResult model = new DataSourceListResult()
+            .withValue(Arrays.asList(
+                new DataSourceInner().withProperties("databciqfouflm")
+                    .withEtag("kzsmodm")
+                    .withKind(DataSourceKind.CHANGE_TRACKING_SERVICES)
+                    .withTags(mapOf("uqktap", "gpbkwtmut", "kdosvqw", "pwgcuertu")),
+                new DataSourceInner().withProperties("databexppb")
+                    .withEtag("q")
+                    .withKind(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION)
+                    .withTags(mapOf("jgzjaoyfhrtx", "fpfpsalgbquxigj")),
+                new DataSourceInner().withProperties("dataxgjvtbv")
+                    .withEtag("sszdnru")
+                    .withKind(DataSourceKind.SECURITY_EVENT_COLLECTION_CONFIGURATION)
+                    .withTags(mapOf("uitnwuiz", "hmuouqfprwzwbn", "x", "a", "hr", "fizuckyf", "zwdzuh", "idf"))))
+            .withNextLink("srp");
         model = BinaryData.fromObject(model).toObject(DataSourceListResult.class);
-        Assertions.assertEquals("g", model.value().get(0).etag());
-        Assertions.assertEquals(DataSourceKind.CUSTOM_LOG, model.value().get(0).kind());
-        Assertions.assertEquals("uxwgipwho", model.value().get(0).tags().get("ow"));
-        Assertions.assertEquals("tdbhrbnla", model.nextLink());
+        Assertions.assertEquals("kzsmodm", model.value().get(0).etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_SERVICES, model.value().get(0).kind());
+        Assertions.assertEquals("gpbkwtmut", model.value().get(0).tags().get("uqktap"));
+        Assertions.assertEquals("srp", model.nextLink());
     }
 
     // Use "Map.of" if available

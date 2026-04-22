@@ -913,6 +913,41 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void listBlobsFlatOptionsStartsFrom() {
+        String blob1 = "a" + generateBlobName();
+        String blob2 = "b" + generateBlobName();
+        String blob3 = "c" + generateBlobName();
+        cc.getBlobClient(blob1).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob2).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob3).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+
+        ListBlobsOptions options = new ListBlobsOptions().setStartFrom(blob2);
+        Iterator<BlobItem> blobs = cc.listBlobs(options, null).iterator();
+
+        assertEquals(blob2, blobs.next().getName());
+        assertEquals(blob3, blobs.next().getName());
+        assertFalse(blobs.hasNext());
+    }
+
+    @Test
+    public void listBlobsByHierarchyOptionsStartsFrom() {
+        String blob1 = "a" + generateBlobName();
+        String blob2 = "b" + generateBlobName();
+        String blob3 = "c" + generateBlobName();
+
+        cc.getBlobClient(blob1).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob2).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob3).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+
+        ListBlobsOptions options = new ListBlobsOptions().setStartFrom(blob2);
+        Iterator<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).iterator();
+
+        assertEquals(blob2, blobs.next().getName());
+        assertEquals(blob3, blobs.next().getName());
+        assertFalse(blobs.hasNext());
+    }
+
+    @Test
     public void listBlobsFlatOptionsMaxResults() {
         int pageSize = 2;
         ListBlobsOptions options = new ListBlobsOptions().setDetails(
@@ -1968,6 +2003,16 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertEquals(400, exception.getStatusCode());
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+    }
+
+    // Tests that the container name is URL encoded. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void getBlobContainerUrlEncodesContainerName() {
+        String containerName = "my container";
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName);
+
+        assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

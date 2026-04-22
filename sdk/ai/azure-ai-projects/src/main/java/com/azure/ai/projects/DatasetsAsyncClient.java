@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.AssetCredentialResult;
+import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.FolderDatasetVersion;
@@ -26,13 +26,17 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,8 +49,6 @@ public final class DatasetsAsyncClient {
     @Generated
     private final DatasetsImpl serviceClient;
 
-    private final ClientLogger logger = new ClientLogger(DatasetsAsyncClient.class);
-
     /**
      * Initializes an instance of DatasetsAsyncClient class.
      *
@@ -55,6 +57,182 @@ public final class DatasetsAsyncClient {
     @Generated
     DatasetsAsyncClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCredentialsWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getCredentialsWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with a Dataset version.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS credential to access the storage account associated with a Dataset version on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatasetCredential> getCredentials(String name, String version) {
+        // Generated convenience method for getCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCredentialsWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
+    }
+
+    /**
+     * Creates a dataset from a file.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath) {
+        return createDatasetWithFile(name, version, filePath, null);
+    }
+
+    /**
+     * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath,
+        String connectionName) {
+        if (!Files.isRegularFile(filePath)) {
+            return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
+        }
+        PendingUploadRequest request = new PendingUploadRequest();
+        if (connectionName != null) {
+            request.setConnectionName(connectionName);
+        }
+        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
+            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
+            BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri)
+                .blobName(filePath.getFileName().toString())
+                .buildAsyncClient();
+            return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
+        }).flatMap(blobUrl -> {
+            RequestOptions requestOptions = new RequestOptions();
+            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
+            return this
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
+                    requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(data -> data.toObject(FileDatasetVersion.class));
+        });
+    }
+
+    /**
+     * Creates a dataset from a folder.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @return A Mono that completes with a FolderDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath) {
+        return createDatasetWithFolder(name, version, folderPath, null);
+    }
+
+    /**
+     * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A Mono that completes with a FolderDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath,
+        String connectionName) {
+        if (!Files.isDirectory(folderPath)) {
+            return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
+        }
+        PendingUploadRequest request = new PendingUploadRequest();
+        if (connectionName != null) {
+            request.setConnectionName(connectionName);
+        }
+        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
+            String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
+            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
+            BlobContainerAsyncClient containerClient
+                = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
+            try {
+                List<Path> files;
+                try (Stream<Path> fileStream = Files.walk(folderPath)) {
+                    files = fileStream.filter(Files::isRegularFile).collect(Collectors.toList());
+                }
+                return Flux.fromIterable(files).flatMap(filePath -> {
+                    String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                    return containerClient.getBlobAsyncClient(relativePath).upload(BinaryData.fromFile(filePath), true);
+                }).then(Mono.just(containerUrl));
+            } catch (IOException e) {
+                return Mono.error(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
+            } catch (RuntimeException e) {
+                return Mono.error(e);
+            }
+        }).flatMap(containerUrl -> {
+            RequestOptions requestOptions = new RequestOptions();
+            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
+            return this
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(folderDataset),
+                    requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(data -> data.toObject(FolderDatasetVersion.class));
+        });
     }
 
     /**
@@ -81,7 +259,7 @@ public final class DatasetsAsyncClient {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      *     pendingUploadId: String (Required)
@@ -110,42 +288,6 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     blobReference (Required): {
-     *         blobUri: String (Required)
-     *         storageAccountArmId: String (Required)
-     *         credential (Required): {
-     *             sasUri: String (Required)
-     *             type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCredentialsWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getCredentialsWithResponseAsync(name, version, requestOptions);
-    }
-
-    /**
      * Start a new or get an existing pending upload of a dataset for a specific version.
      *
      * @param name The name of the resource.
@@ -171,105 +313,66 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
      *
      * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param version The specific version id of the DatasetVersion to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the specific version of the DatasetVersion along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getDatasetVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDatasetVersionWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS credential to access the storage account associated with a Dataset version on successful
-     * completion of {@link Mono}.
+     * @return the specific version of the DatasetVersion on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AssetCredentialResult> getCredentials(String name, String version) {
-        // Generated convenience method for getCredentialsWithResponse
+    public Mono<DatasetVersion> getDatasetVersion(String name, String version) {
+        // Generated convenience method for getDatasetVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCredentialsWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AssetCredentialResult.class));
-    }
-
-    /**
-     * Creates a dataset from a file.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param filePath The path to the file to upload.
-     * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
-     * @throws IllegalArgumentException If the provided path is not a file
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath) {
-        if (!Files.isRegularFile(filePath)) {
-            return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
-        }
-        PendingUploadRequest request = new PendingUploadRequest();
-        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
-            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUri();
-            BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri).blobName(name).buildAsyncClient();
-            return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
-        }).flatMap(blobUrl -> {
-            RequestOptions requestOptions = new RequestOptions();
-            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUri(blobUrl);
-            return this
-                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
-                    requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(data -> data.toObject(FileDatasetVersion.class));
-        });
-    }
-
-    /**
-     * Creates a dataset from a folder.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param folderPath The path to the folder containing files to upload.
-     * @return A Mono that completes with a FolderDatasetVersion representing the created dataset.
-     * @throws IllegalArgumentException If the provided path is not a directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath) {
-        if (!Files.isDirectory(folderPath)) {
-            return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
-        }
-        // Request a pending upload for the folder
-        PendingUploadRequest request = new PendingUploadRequest();
-        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
-            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUri();
-            String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
-            // Find all files in the directory
-            try {
-                List<Path> files = Files.walk(folderPath).filter(Files::isRegularFile).collect(Collectors.toList());
-                // Upload each file in the directory one after another
-                return Flux.fromIterable(files).flatMap(filePath -> {
-                    // Calculate relative path from the base folder
-                    String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-                    // Create blob client for each file
-                    BlobAsyncClient blobClient
-                        = new BlobClientBuilder().endpoint(sasUri).blobName(relativePath).buildAsyncClient();
-                    // Upload the file
-                    return blobClient.upload(BinaryData.fromFile(filePath), true);
-                }).then(Mono.just(containerUrl));
-            } catch (Exception e) {
-                return Mono.error(new RuntimeException("Error walking through folder path", e));
-            }
-        }).flatMap(containerUrl -> {
-            // Create a FolderDatasetVersion with the container URL
-            RequestOptions requestOptions = new RequestOptions();
-            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
-            return this
-                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(folderDataset),
-                    requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(data -> data.toObject(FolderDatasetVersion.class));
-        });
+        return getDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
     }
 
     /**
@@ -344,46 +447,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDatasetVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDatasetVersionWithResponseAsync(name, version, requestOptions);
-    }
-
-    /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -524,29 +589,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the DatasetVersion on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetVersion> getDatasetVersion(String name, String version) {
-        // Generated convenience method for getDatasetVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getDatasetVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
-    }
-
-    /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.

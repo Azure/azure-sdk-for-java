@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 /**
  * To handle and throw a cosmos db exception when access the database
  */
+@SuppressWarnings("deprecation")
 public class CosmosExceptionUtils {
 
     /**

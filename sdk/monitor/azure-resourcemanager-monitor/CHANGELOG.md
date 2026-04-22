@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.53.7 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.5` to version `2.54.0`.
+
+
+## 2.53.6 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.53.5 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0-beta.1 (2025-11-06)
+
+### Other Changes
+
+- Updated `api-version` of metric alert to `2024-03-01-preview`.
+- Updated `api-version` of metric definitions to `2021-05-01`.
+- Updated `api-version` of metrics to `2021-05-01`.
+- Updated `api-version` of scheduled query rule to `2023-12-01`.
+- Updated `api-version` of data collection to `2024-03-11`.
 
 ## 2.53.4 (2025-10-27)
 

@@ -21,7 +21,7 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"yttlrcxiv\",\"extendedLocation\":{\"name\":\"bkut\",\"type\":\"umltwjflu\"},\"properties\":{\"attachedTo\":[\"bpvzlqywau\",\"qnjckhmocg\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ouarhwvixqqggljk\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"rcl\",\"sizeMiB\":3961785627886521610},\"location\":\"qnrbc\",\"tags\":{\"eitaneqadynzjahw\":\"pjhxpcvrdn\",\"axwspcaxikhfjqeb\":\"iuomzczfkiceevs\"},\"id\":\"lcxkxgzzromv\",\"name\":\"g\",\"type\":\"sem\"}";
+            = "{\"etag\":\"gmusaictdscnkzzo\",\"extendedLocation\":{\"name\":\"nrddclzeqoz\",\"type\":\"ehlbzqixbnjrqvzy\"},\"properties\":{\"allocatedSizeMiB\":6346244026146843114,\"attachedTo\":[\"nynpameudpabcre\",\"wzosgy\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"vasormrexzvdubew\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"baduvecovsdq\",\"sizeMiB\":8704273485806855158,\"storageApplianceId\":\"dbakr\"},\"location\":\"mz\",\"tags\":{\"clngy\":\"pkeqsifj\",\"ombcdtajdopggo\":\"nhr\",\"qtrotpvclp\":\"wj\",\"vhxccbmkakmkoo\":\"fyrlmwkptskwxj\"},\"id\":\"bputmgvmuyakml\",\"name\":\"ktfowzkroyrdur\",\"type\":\"flzqjimejtgzjxx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,15 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Volume response
-            = manager.volumes().getByResourceGroupWithResponse("r", "kd", com.azure.core.util.Context.NONE).getValue();
+        Volume response = manager.volumes()
+            .getByResourceGroupWithResponse("gwjfkainjmuy", "vecvzts", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("qnrbc", response.location());
-        Assertions.assertEquals("pjhxpcvrdn", response.tags().get("eitaneqadynzjahw"));
-        Assertions.assertEquals("bkut", response.extendedLocation().name());
-        Assertions.assertEquals("umltwjflu", response.extendedLocation().type());
-        Assertions.assertEquals(3961785627886521610L, response.sizeMiB());
+        Assertions.assertEquals("mz", response.location());
+        Assertions.assertEquals("pkeqsifj", response.tags().get("clngy"));
+        Assertions.assertEquals("nrddclzeqoz", response.extendedLocation().name());
+        Assertions.assertEquals("ehlbzqixbnjrqvzy", response.extendedLocation().type());
+        Assertions.assertEquals(8704273485806855158L, response.sizeMiB());
+        Assertions.assertEquals("dbakr", response.storageApplianceId());
     }
 }

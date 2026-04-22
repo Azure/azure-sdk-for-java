@@ -27,7 +27,7 @@ import java.util.Arrays;
  */
 public final class BrokerListenerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate.
@@ -65,7 +65,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-10-01/BrokerListener_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Simple.
@@ -85,7 +85,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-10-01/BrokerListener_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Complex.

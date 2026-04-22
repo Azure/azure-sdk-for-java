@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Request Timeout Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosRequestTimeoutException extends CosmosAccessException {
 
     /**

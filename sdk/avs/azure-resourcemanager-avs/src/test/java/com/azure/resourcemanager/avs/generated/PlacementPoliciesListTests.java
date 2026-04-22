@@ -13,10 +13,10 @@ public final class PlacementPoliciesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementPoliciesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"j\",\"provisioningState\":\"Canceled\"},\"id\":\"ok\",\"name\":\"jljyoxgv\",\"type\":\"ltbgsncghkj\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"bijhtxfvgxbf\",\"provisioningState\":\"Deleting\"},\"id\":\"eh\",\"name\":\"pvecxgodeb\",\"type\":\"qkkrb\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"riwflzlfb\",\"provisioningState\":\"Building\"},\"id\":\"zycispn\",\"name\":\"zahmgkbrpyydhibn\",\"type\":\"qqkpikadrg\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"n\",\"provisioningState\":\"Canceled\"},\"id\":\"hijggme\",\"name\":\"fsiarbutr\",\"type\":\"vpnazzm\"}],\"nextLink\":\"runmp\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ilpjzuaejxdult\",\"provisioningState\":\"Canceled\"},\"id\":\"btdzumveekg\",\"name\":\"wozuhkf\",\"type\":\"bsjyofdx\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"ttouwaboekqvkel\",\"provisioningState\":\"Succeeded\"},\"id\":\"bxwyjsflhhcaa\",\"name\":\"n\",\"type\":\"ixisxyawjoy\"}],\"nextLink\":\"cslyjpk\"}")
             .toObject(PlacementPoliciesList.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals("j", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("runmp", model.nextLink());
+        Assertions.assertEquals("ilpjzuaejxdult", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("cslyjpk", model.nextLink());
     }
 }

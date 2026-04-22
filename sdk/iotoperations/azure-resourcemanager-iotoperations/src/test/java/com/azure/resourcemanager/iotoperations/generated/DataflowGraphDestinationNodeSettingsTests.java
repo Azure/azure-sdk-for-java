@@ -5,37 +5,31 @@
 package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationHeaderAction;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNodeSettings;
-import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSerializationFormat;
-import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DataflowGraphDestinationNodeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphDestinationNodeSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"xqtvcofu\",\"dataDestination\":\"f\",\"outputSchemaSettings\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"jub\"}}")
+            "{\"endpointRef\":\"ooaojkniodkooebw\",\"dataDestination\":\"ujhemmsbvdkcrodt\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]}")
             .toObject(DataflowGraphDestinationNodeSettings.class);
-        Assertions.assertEquals("xqtvcofu", model.endpointRef());
-        Assertions.assertEquals("f", model.dataDestination());
-        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.DELTA,
-            model.outputSchemaSettings().serializationFormat());
-        Assertions.assertEquals("jub", model.outputSchemaSettings().schemaRef());
+        Assertions.assertEquals("ooaojkniodkooebw", model.endpointRef());
+        Assertions.assertEquals("ujhemmsbvdkcrodt", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowGraphDestinationNodeSettings model
-            = new DataflowGraphDestinationNodeSettings().withEndpointRef("xqtvcofu")
-                .withDataDestination("f")
-                .withOutputSchemaSettings(new DataflowGraphDestinationSchemaSettings()
-                    .withSerializationFormat(DataflowGraphDestinationSchemaSerializationFormat.DELTA)
-                    .withSchemaRef("jub"));
+            = new DataflowGraphDestinationNodeSettings().withEndpointRef("ooaojkniodkooebw")
+                .withDataDestination("ujhemmsbvdkcrodt")
+                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction(),
+                    new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction(),
+                    new DataflowGraphDestinationHeaderAction()));
         model = BinaryData.fromObject(model).toObject(DataflowGraphDestinationNodeSettings.class);
-        Assertions.assertEquals("xqtvcofu", model.endpointRef());
-        Assertions.assertEquals("f", model.dataDestination());
-        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.DELTA,
-            model.outputSchemaSettings().serializationFormat());
-        Assertions.assertEquals("jub", model.outputSchemaSettings().schemaRef());
+        Assertions.assertEquals("ooaojkniodkooebw", model.endpointRef());
+        Assertions.assertEquals("ujhemmsbvdkcrodt", model.dataDestination());
     }
 }

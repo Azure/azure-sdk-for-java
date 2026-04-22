@@ -15,42 +15,46 @@ public final class NamespaceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDataset model = BinaryData.fromString(
-            "{\"name\":\"wpn\",\"dataSource\":\"t\",\"typeRef\":\"nermcl\",\"datasetConfiguration\":\"lphox\",\"destinations\":[{\"target\":\"DatasetDestination\"},{\"target\":\"DatasetDestination\"}],\"dataPoints\":[{\"name\":\"abgy\",\"dataSource\":\"psbjta\",\"dataPointConfiguration\":\"ugxywpmueef\",\"typeRef\":\"wfqkquj\"},{\"name\":\"dsuyonobgla\",\"dataSource\":\"cq\",\"dataPointConfiguration\":\"ccm\",\"typeRef\":\"udxytlmoyrx\"}]}")
+            "{\"name\":\"srknftguv\",\"dataSource\":\"uhprwmdyvxqt\",\"typeRef\":\"riwwroy\",\"datasetConfiguration\":\"exrmcqibycnojvk\",\"destinations\":[{\"target\":\"DatasetDestination\"}],\"dataPoints\":[{\"name\":\"sgzvahapjyzhpv\",\"dataSource\":\"qzcjrvxdj\",\"dataPointConfiguration\":\"mwlxk\",\"typeRef\":\"gfhzovawjvzunlut\"},{\"name\":\"nnprn\",\"dataSource\":\"i\",\"dataPointConfiguration\":\"ilpjzuaejxdult\",\"typeRef\":\"zbbtdzumveek\"},{\"name\":\"pwo\",\"dataSource\":\"uh\",\"dataPointConfiguration\":\"p\",\"typeRef\":\"jyofdxluusdtto\"}]}")
             .toObject(NamespaceDataset.class);
-        Assertions.assertEquals("wpn", model.name());
-        Assertions.assertEquals("t", model.dataSource());
-        Assertions.assertEquals("nermcl", model.typeRef());
-        Assertions.assertEquals("lphox", model.datasetConfiguration());
-        Assertions.assertEquals("abgy", model.dataPoints().get(0).name());
-        Assertions.assertEquals("psbjta", model.dataPoints().get(0).dataSource());
-        Assertions.assertEquals("ugxywpmueef", model.dataPoints().get(0).dataPointConfiguration());
-        Assertions.assertEquals("wfqkquj", model.dataPoints().get(0).typeRef());
+        Assertions.assertEquals("srknftguv", model.name());
+        Assertions.assertEquals("uhprwmdyvxqt", model.dataSource());
+        Assertions.assertEquals("riwwroy", model.typeRef());
+        Assertions.assertEquals("exrmcqibycnojvk", model.datasetConfiguration());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.dataPoints().get(0).name());
+        Assertions.assertEquals("qzcjrvxdj", model.dataPoints().get(0).dataSource());
+        Assertions.assertEquals("mwlxk", model.dataPoints().get(0).dataPointConfiguration());
+        Assertions.assertEquals("gfhzovawjvzunlut", model.dataPoints().get(0).typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDataset model = new NamespaceDataset().withName("wpn")
-            .withDataSource("t")
-            .withTypeRef("nermcl")
-            .withDatasetConfiguration("lphox")
-            .withDestinations(Arrays.asList(new DatasetDestination(), new DatasetDestination()))
+        NamespaceDataset model = new NamespaceDataset().withName("srknftguv")
+            .withDataSource("uhprwmdyvxqt")
+            .withTypeRef("riwwroy")
+            .withDatasetConfiguration("exrmcqibycnojvk")
+            .withDestinations(Arrays.asList(new DatasetDestination()))
             .withDataPoints(Arrays.asList(
-                new NamespaceDatasetDataPoint().withName("abgy")
-                    .withDataSource("psbjta")
-                    .withDataPointConfiguration("ugxywpmueef")
-                    .withTypeRef("wfqkquj"),
-                new NamespaceDatasetDataPoint().withName("dsuyonobgla")
-                    .withDataSource("cq")
-                    .withDataPointConfiguration("ccm")
-                    .withTypeRef("udxytlmoyrx")));
+                new NamespaceDatasetDataPoint().withName("sgzvahapjyzhpv")
+                    .withDataSource("qzcjrvxdj")
+                    .withDataPointConfiguration("mwlxk")
+                    .withTypeRef("gfhzovawjvzunlut"),
+                new NamespaceDatasetDataPoint().withName("nnprn")
+                    .withDataSource("i")
+                    .withDataPointConfiguration("ilpjzuaejxdult")
+                    .withTypeRef("zbbtdzumveek"),
+                new NamespaceDatasetDataPoint().withName("pwo")
+                    .withDataSource("uh")
+                    .withDataPointConfiguration("p")
+                    .withTypeRef("jyofdxluusdtto")));
         model = BinaryData.fromObject(model).toObject(NamespaceDataset.class);
-        Assertions.assertEquals("wpn", model.name());
-        Assertions.assertEquals("t", model.dataSource());
-        Assertions.assertEquals("nermcl", model.typeRef());
-        Assertions.assertEquals("lphox", model.datasetConfiguration());
-        Assertions.assertEquals("abgy", model.dataPoints().get(0).name());
-        Assertions.assertEquals("psbjta", model.dataPoints().get(0).dataSource());
-        Assertions.assertEquals("ugxywpmueef", model.dataPoints().get(0).dataPointConfiguration());
-        Assertions.assertEquals("wfqkquj", model.dataPoints().get(0).typeRef());
+        Assertions.assertEquals("srknftguv", model.name());
+        Assertions.assertEquals("uhprwmdyvxqt", model.dataSource());
+        Assertions.assertEquals("riwwroy", model.typeRef());
+        Assertions.assertEquals("exrmcqibycnojvk", model.datasetConfiguration());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.dataPoints().get(0).name());
+        Assertions.assertEquals("qzcjrvxdj", model.dataPoints().get(0).dataSource());
+        Assertions.assertEquals("mwlxk", model.dataPoints().get(0).dataPointConfiguration());
+        Assertions.assertEquals("gfhzovawjvzunlut", model.dataPoints().get(0).typeRef());
     }
 }

@@ -23,7 +23,7 @@ public final class PlacementPoliciesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ngwflqqmpizruwn\",\"provisioningState\":\"Succeeded\"},\"id\":\"xiw\",\"name\":\"cng\",\"type\":\"saasiixtmkzj\"}";
+            = "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"drwjjkhvyom\",\"provisioningState\":\"Succeeded\"},\"id\":\"zvxnqmhrp\",\"name\":\"pd\",\"type\":\"wmkoisq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PlacementPoliciesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PlacementPolicy response = manager.placementPolicies()
-            .define("jkwrusnkq")
-            .withExistingCluster("lmjjyuo", "qtobaxkjeyt", "nlb")
+            .define("dlrgms")
+            .withExistingCluster("oaedsxjwuivedwcg", "eewxeiqbpsmg", "mguaml")
             .withProperties(
-                new PlacementPolicyProperties().withState(PlacementPolicyState.ENABLED).withDisplayName("qunjqh"))
+                new PlacementPolicyProperties().withState(PlacementPolicyState.ENABLED).withDisplayName("ufcshhvnew"))
             .create();
 
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, response.properties().state());
-        Assertions.assertEquals("ngwflqqmpizruwn", response.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, response.properties().state());
+        Assertions.assertEquals("drwjjkhvyom", response.properties().displayName());
     }
 }

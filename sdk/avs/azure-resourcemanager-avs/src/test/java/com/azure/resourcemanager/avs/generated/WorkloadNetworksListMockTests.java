@@ -21,7 +21,7 @@ public final class WorkloadNetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"dtjwfljhznamt\",\"name\":\"atmzw\",\"type\":\"jj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"ndnelqkaadlknw\",\"name\":\"oanniyopetxi\",\"type\":\"cnrly\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class WorkloadNetworksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadNetwork> response
-            = manager.workloadNetworks().list("jxcx", "rzdcgdzbenribcaw", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().list("yrucpcunnuzdq", "moenodnaien", com.azure.core.util.Context.NONE);
 
     }
 }

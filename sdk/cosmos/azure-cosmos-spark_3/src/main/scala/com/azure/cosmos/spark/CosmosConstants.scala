@@ -58,6 +58,10 @@ private[cosmos] object CosmosConstants {
     val BadRequest: Int = HttpConstants.StatusCodes.BADREQUEST
   }
 
+  object SubstatusCodes {
+    val PartitionKeyRangeGone: Int = HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+  }
+
   object SystemProperties {
     val LineSeparator: String = System.getProperty("line.separator")
   }
@@ -70,6 +74,7 @@ private[cosmos] object CosmosConstants {
     val IndexingPolicy = "IndexingPolicy"
     val DefaultTtlInSeconds = "DefaultTtlInSeconds"
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
+    val VectorEmbeddingPolicy = "VectorEmbeddingPolicy"
   }
 
   object ChangeFeedMetricsConfigs {

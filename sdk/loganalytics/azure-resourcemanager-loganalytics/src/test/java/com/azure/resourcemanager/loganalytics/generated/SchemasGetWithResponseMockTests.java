@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.SearchGetSchemaResponse;
@@ -22,44 +22,44 @@ public final class SchemasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"metadata\":{\"requestId\":\"lg\",\"resultType\":\"txd\",\"total\":7982443333722102241,\"top\":2221953429879798985,\"id\":\"zvlnsnnjz\",\"coreSummaries\":[{\"status\":\"olpy\",\"numberOfDocuments\":117086894031994632},{\"status\":\"xqzragp\",\"numberOfDocuments\":5124334742263421163},{\"status\":\"t\",\"numberOfDocuments\":5064204054792112038},{\"status\":\"a\",\"numberOfDocuments\":1817616718311848555}],\"status\":\"jchcsrlzknmzla\",\"startTime\":\"2021-01-20T21:47:05Z\",\"lastUpdated\":\"2021-11-08T10:57:25Z\",\"eTag\":\"vnphc\",\"sort\":[{\"name\":\"pjhmqrhvthl\",\"order\":\"desc\"}],\"requestTime\":1106480050332233961,\"aggregatedValueField\":\"mlzzhzdtxetlgyd\",\"aggregatedGroupingFields\":\"qvlnnpxybafiqgea\",\"sum\":3246800772078835427,\"max\":7730272397217059241,\"schema\":{\"name\":\"klbyulidwcw\",\"version\":1795651624}},\"value\":[{\"name\":\"o\",\"displayName\":\"hj\",\"type\":\"wgdnqzbr\",\"indexed\":true,\"stored\":true,\"facet\":false,\"ownerType\":[\"zmtksjci\",\"digsxcdgl\"]}]}";
+            = "{\"metadata\":{\"requestId\":\"hrweftkw\",\"resultType\":\"jp\",\"total\":2377130180811265800,\"top\":3632648174501059306,\"id\":\"pwamcxtczhupeuk\",\"coreSummaries\":[{\"status\":\"uyyes\",\"numberOfDocuments\":5177486878531490465},{\"status\":\"fbocyvhh\",\"numberOfDocuments\":7086241339877476619},{\"status\":\"ywikd\",\"numberOfDocuments\":1557781167596850119},{\"status\":\"kuflgbh\",\"numberOfDocuments\":6099044169152299925}],\"status\":\"cdixmx\",\"startTime\":\"2021-07-21T10:11:29Z\",\"lastUpdated\":\"2021-10-28T11:16:26Z\",\"eTag\":\"jqgdkfnozoeo\",\"sort\":[{\"name\":\"h\",\"order\":\"asc\"},{\"name\":\"wbmqjchntas\",\"order\":\"desc\"},{\"name\":\"xbulpzealbmqkyo\",\"order\":\"asc\"}],\"requestTime\":6096246762150938167,\"aggregatedValueField\":\"btsuahxs\",\"aggregatedGroupingFields\":\"jcmmzrrscub\",\"sum\":1482066446768394569,\"max\":9101534338635329443,\"schema\":{\"name\":\"wodiffjxc\",\"version\":1719649030}},\"value\":[{\"name\":\"bwi\",\"displayName\":\"jogjonmc\",\"type\":\"foyzbamwineof\",\"indexed\":false,\"stored\":false,\"facet\":true,\"ownerType\":[\"oldtvevboclzhz\"]},{\"name\":\"n\",\"displayName\":\"xgvttxp\",\"type\":\"upzaamrdixtre\",\"indexed\":false,\"stored\":false,\"facet\":true,\"ownerType\":[\"skbruffgllukkut\",\"lxhrp\"]},{\"name\":\"vmblcouqe\",\"displayName\":\"hbcdsziry\",\"type\":\"ndo\",\"indexed\":true,\"stored\":false,\"facet\":false,\"ownerType\":[\"oormkfqlwxldyka\"]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SearchGetSchemaResponse response
-            = manager.schemas().getWithResponse("cdxfzzzwyjafitl", "guyn", com.azure.core.util.Context.NONE).getValue();
+            = manager.schemas().getWithResponse("llizs", "ac", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("lg", response.metadata().searchId());
-        Assertions.assertEquals("txd", response.metadata().resultType());
-        Assertions.assertEquals(7982443333722102241L, response.metadata().total());
-        Assertions.assertEquals(2221953429879798985L, response.metadata().top());
-        Assertions.assertEquals("zvlnsnnjz", response.metadata().id());
-        Assertions.assertEquals("olpy", response.metadata().coreSummaries().get(0).status());
-        Assertions.assertEquals(117086894031994632L, response.metadata().coreSummaries().get(0).numberOfDocuments());
-        Assertions.assertEquals("jchcsrlzknmzla", response.metadata().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T21:47:05Z"), response.metadata().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T10:57:25Z"), response.metadata().lastUpdated());
-        Assertions.assertEquals("vnphc", response.metadata().etag());
-        Assertions.assertEquals("pjhmqrhvthl", response.metadata().sort().get(0).name());
-        Assertions.assertEquals(SearchSortEnum.DESC, response.metadata().sort().get(0).order());
-        Assertions.assertEquals(1106480050332233961L, response.metadata().requestTime());
-        Assertions.assertEquals("mlzzhzdtxetlgyd", response.metadata().aggregatedValueField());
-        Assertions.assertEquals("qvlnnpxybafiqgea", response.metadata().aggregatedGroupingFields());
-        Assertions.assertEquals(3246800772078835427L, response.metadata().sum());
-        Assertions.assertEquals(7730272397217059241L, response.metadata().max());
-        Assertions.assertEquals("klbyulidwcw", response.metadata().schema().name());
-        Assertions.assertEquals(1795651624, response.metadata().schema().version());
-        Assertions.assertEquals("o", response.value().get(0).name());
-        Assertions.assertEquals("hj", response.value().get(0).displayName());
-        Assertions.assertEquals("wgdnqzbr", response.value().get(0).type());
-        Assertions.assertEquals(true, response.value().get(0).indexed());
-        Assertions.assertEquals(true, response.value().get(0).stored());
-        Assertions.assertEquals(false, response.value().get(0).facet());
-        Assertions.assertEquals("zmtksjci", response.value().get(0).ownerType().get(0));
+        Assertions.assertEquals("hrweftkw", response.metadata().searchId());
+        Assertions.assertEquals("jp", response.metadata().resultType());
+        Assertions.assertEquals(2377130180811265800L, response.metadata().total());
+        Assertions.assertEquals(3632648174501059306L, response.metadata().top());
+        Assertions.assertEquals("pwamcxtczhupeuk", response.metadata().id());
+        Assertions.assertEquals("uyyes", response.metadata().coreSummaries().get(0).status());
+        Assertions.assertEquals(5177486878531490465L, response.metadata().coreSummaries().get(0).numberOfDocuments());
+        Assertions.assertEquals("cdixmx", response.metadata().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T10:11:29Z"), response.metadata().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T11:16:26Z"), response.metadata().lastUpdated());
+        Assertions.assertEquals("jqgdkfnozoeo", response.metadata().etag());
+        Assertions.assertEquals("h", response.metadata().sort().get(0).name());
+        Assertions.assertEquals(SearchSortEnum.ASC, response.metadata().sort().get(0).order());
+        Assertions.assertEquals(6096246762150938167L, response.metadata().requestTime());
+        Assertions.assertEquals("btsuahxs", response.metadata().aggregatedValueField());
+        Assertions.assertEquals("jcmmzrrscub", response.metadata().aggregatedGroupingFields());
+        Assertions.assertEquals(1482066446768394569L, response.metadata().sum());
+        Assertions.assertEquals(9101534338635329443L, response.metadata().max());
+        Assertions.assertEquals("wodiffjxc", response.metadata().schema().name());
+        Assertions.assertEquals(1719649030, response.metadata().schema().version());
+        Assertions.assertEquals("bwi", response.value().get(0).name());
+        Assertions.assertEquals("jogjonmc", response.value().get(0).displayName());
+        Assertions.assertEquals("foyzbamwineof", response.value().get(0).type());
+        Assertions.assertFalse(response.value().get(0).indexed());
+        Assertions.assertFalse(response.value().get(0).stored());
+        Assertions.assertTrue(response.value().get(0).facet());
+        Assertions.assertEquals("oldtvevboclzhz", response.value().get(0).ownerType().get(0));
     }
 }

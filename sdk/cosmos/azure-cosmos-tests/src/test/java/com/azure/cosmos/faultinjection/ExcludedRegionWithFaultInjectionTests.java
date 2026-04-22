@@ -2422,13 +2422,13 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
-            safeCloseAsync(clientWithPreferredRegions);
+            safeClose(clientWithPreferredRegions);
         }
     }
 
     @AfterClass(groups = {"multi-master"})
     public void afterClass() {
-        safeCloseAsync(this.cosmosAsyncClient);
+        safeClose(this.cosmosAsyncClient);
     }
 
     private static List<FaultInjectionRule> buildFaultInjectionRules(

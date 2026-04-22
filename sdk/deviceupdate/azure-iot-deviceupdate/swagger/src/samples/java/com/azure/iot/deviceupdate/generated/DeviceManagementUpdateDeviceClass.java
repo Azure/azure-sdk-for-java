@@ -18,11 +18,11 @@ public class DeviceManagementUpdateDeviceClass {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementupdatedeviceclass.devicemanagementupdatedeviceclass
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-update-device-class.device-management-update-device-class
         BinaryData deviceClassPatch = BinaryData.fromString("{\"friendlyName\":\"GA Webcams\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceManagementClient.updateDeviceClassWithResponse("deviceClassId", deviceClassPatch, requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementupdatedeviceclass.devicemanagementupdatedeviceclass
+        // END:com.azure.iot.deviceupdate.generated.device-management-update-device-class.device-management-update-device-class
     }
 }

@@ -14,33 +14,33 @@ public final class UsageMetricInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageMetricInner model = BinaryData.fromString(
-            "{\"name\":{\"value\":\"yjsflhhcaalnji\",\"localizedValue\":\"sxyawjoyaqcs\"},\"unit\":\"jpkiidzyexznelix\",\"currentValue\":16.42737179588487,\"limit\":65.0090874045316,\"nextResetTime\":\"2021-01-11T05:27:37Z\",\"quotaPeriod\":\"nxknalaulp\"}")
+            "{\"name\":{\"value\":\"hmtnvy\",\"localizedValue\":\"atkzwpcnpw\"},\"unit\":\"jaesgvvsccya\",\"currentValue\":7.14281993849214,\"limit\":21.496629598428008,\"nextResetTime\":\"2021-07-19T23:39:28Z\",\"quotaPeriod\":\"lvdnkfx\"}")
             .toObject(UsageMetricInner.class);
-        Assertions.assertEquals("yjsflhhcaalnji", model.name().value());
-        Assertions.assertEquals("sxyawjoyaqcs", model.name().localizedValue());
-        Assertions.assertEquals("jpkiidzyexznelix", model.unit());
-        Assertions.assertEquals(16.42737179588487D, model.currentValue());
-        Assertions.assertEquals(65.0090874045316D, model.limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T05:27:37Z"), model.nextResetTime());
-        Assertions.assertEquals("nxknalaulp", model.quotaPeriod());
+        Assertions.assertEquals("hmtnvy", model.name().value());
+        Assertions.assertEquals("atkzwpcnpw", model.name().localizedValue());
+        Assertions.assertEquals("jaesgvvsccya", model.unit());
+        Assertions.assertEquals(7.14281993849214D, model.currentValue());
+        Assertions.assertEquals(21.496629598428008D, model.limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T23:39:28Z"), model.nextResetTime());
+        Assertions.assertEquals("lvdnkfx", model.quotaPeriod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageMetricInner model = new UsageMetricInner()
-            .withName(new MetricName().withValue("yjsflhhcaalnji").withLocalizedValue("sxyawjoyaqcs"))
-            .withUnit("jpkiidzyexznelix")
-            .withCurrentValue(16.42737179588487D)
-            .withLimit(65.0090874045316D)
-            .withNextResetTime(OffsetDateTime.parse("2021-01-11T05:27:37Z"))
-            .withQuotaPeriod("nxknalaulp");
+        UsageMetricInner model
+            = new UsageMetricInner().withName(new MetricName().withValue("hmtnvy").withLocalizedValue("atkzwpcnpw"))
+                .withUnit("jaesgvvsccya")
+                .withCurrentValue(7.14281993849214D)
+                .withLimit(21.496629598428008D)
+                .withNextResetTime(OffsetDateTime.parse("2021-07-19T23:39:28Z"))
+                .withQuotaPeriod("lvdnkfx");
         model = BinaryData.fromObject(model).toObject(UsageMetricInner.class);
-        Assertions.assertEquals("yjsflhhcaalnji", model.name().value());
-        Assertions.assertEquals("sxyawjoyaqcs", model.name().localizedValue());
-        Assertions.assertEquals("jpkiidzyexznelix", model.unit());
-        Assertions.assertEquals(16.42737179588487D, model.currentValue());
-        Assertions.assertEquals(65.0090874045316D, model.limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T05:27:37Z"), model.nextResetTime());
-        Assertions.assertEquals("nxknalaulp", model.quotaPeriod());
+        Assertions.assertEquals("hmtnvy", model.name().value());
+        Assertions.assertEquals("atkzwpcnpw", model.name().localizedValue());
+        Assertions.assertEquals("jaesgvvsccya", model.unit());
+        Assertions.assertEquals(7.14281993849214D, model.currentValue());
+        Assertions.assertEquals(21.496629598428008D, model.limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T23:39:28Z"), model.nextResetTime());
+        Assertions.assertEquals("lvdnkfx", model.quotaPeriod());
     }
 }

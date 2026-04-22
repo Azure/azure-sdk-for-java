@@ -1,2 +1,2 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloud.integration.tests.AzureCloudTypeEnvironmentPostProcessor
-org.springframework.boot.BootstrapRegistryInitializer=com.azure.spring.cloud.integration.tests.keyvault.secret.TestBootstrapRegistryInitializer
+org.springframework.boot.EnvironmentPostProcessor=com.azure.spring.cloud.integration.tests.AzureCloudTypeEnvironmentPostProcessor
+org.springframework.boot.bootstrap.BootstrapRegistryInitializer=com.azure.spring.cloud.integration.tests.keyvault.secret.TestBootstrapRegistryInitializer

@@ -137,7 +137,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     public void before_UserDefinedFunctionQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         for(int i = 0; i < 5; i++) {
             createdUDF.add(createUserDefinedFunction(createdCollection));

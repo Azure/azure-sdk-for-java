@@ -25,6 +25,7 @@ class EventHubsMessageHandlerTests extends DefaultMessageHandlerTests<EventHubsT
     @SuppressWarnings("unchecked")
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
+        super.setUp();
         this.sendOperation = mock(EventHubsTemplate.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(mono);
         when(

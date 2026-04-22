@@ -36,6 +36,9 @@ public interface TrunkedNetworksClient {
      * 
      * Get a list of trunked networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +46,7 @@ public interface TrunkedNetworksClient {
      * @return a list of trunked networks in the provided subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TrunkedNetworkInner> list(Context context);
+    PagedIterable<TrunkedNetworkInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List trunked networks in the resource group.
@@ -66,6 +69,9 @@ public interface TrunkedNetworksClient {
      * Get a list of trunked networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,7 +80,8 @@ public interface TrunkedNetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the trunked network.

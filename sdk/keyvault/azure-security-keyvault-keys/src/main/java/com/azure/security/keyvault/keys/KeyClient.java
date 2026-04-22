@@ -1104,7 +1104,7 @@ public final class KeyClient {
                         .getValue()
                         .toObject(DeletedKeyBundle.class)));
             } catch (HttpResponseException e) {
-                if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue());
                 } else {
@@ -1285,7 +1285,7 @@ public final class KeyClient {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createKeyVaultKey(
                     implClient.getKeyWithResponse(keyName, null, EMPTY_OPTIONS).getValue().toObject(KeyBundle.class)));
             } catch (HttpResponseException e) {
-                if (e.getResponse().getStatusCode() == 404) {
+                if (e.getResponse() != null && e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue());
                 } else {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.EmailServiceResource;
@@ -21,21 +21,21 @@ public final class EmailServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Running\",\"dataLocation\":\"gylgqgitxmedjvcs\"},\"location\":\"n\",\"tags\":{\"zhxgktrmgucn\":\"ncw\",\"llwptfdy\":\"pkteo\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\",\"izpost\":\"lzdahzxctobgbkdm\"},\"id\":\"grcfb\",\"name\":\"nrmfqjhhk\",\"type\":\"bpvjymjhx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"dataLocation\":\"odfvuefywsbp\"},\"location\":\"mwyhr\",\"tags\":{\"yzvqt\":\"yftaakcpw\",\"zksmondj\":\"nubexk\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EmailServiceResource response = manager.emailServices()
-            .getByResourceGroupWithResponse("bnxknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("iyq", "luicpdggkzzlvmbm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("n", response.location());
-        Assertions.assertEquals("ncw", response.tags().get("zhxgktrmgucn"));
-        Assertions.assertEquals("gylgqgitxmedjvcs", response.dataLocation());
+        Assertions.assertEquals("mwyhr", response.location());
+        Assertions.assertEquals("yftaakcpw", response.tags().get("yzvqt"));
+        Assertions.assertEquals("odfvuefywsbp", response.dataLocation());
     }
 }

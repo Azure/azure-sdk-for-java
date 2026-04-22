@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
+import com.azure.resourcemanager.monitor.models.RuleResolveConfiguration;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
 import java.io.IOException;
 import java.time.Duration;
@@ -123,6 +124,11 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
      * only for rules of the kind LogAlert.
      */
     private Boolean autoMitigate;
+
+    /*
+     * Defines the configuration for resolving fired alerts. Relevant only for rules of the kind LogAlert.
+     */
+    private RuleResolveConfiguration resolveConfiguration;
 
     /**
      * Creates an instance of ScheduledQueryRuleProperties class.
@@ -486,6 +492,28 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
     }
 
     /**
+     * Get the resolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only for
+     * rules of the kind LogAlert.
+     * 
+     * @return the resolveConfiguration value.
+     */
+    public RuleResolveConfiguration resolveConfiguration() {
+        return this.resolveConfiguration;
+    }
+
+    /**
+     * Set the resolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only for
+     * rules of the kind LogAlert.
+     * 
+     * @param resolveConfiguration the resolveConfiguration value to set.
+     * @return the ScheduledQueryRuleProperties object itself.
+     */
+    public ScheduledQueryRuleProperties withResolveConfiguration(RuleResolveConfiguration resolveConfiguration) {
+        this.resolveConfiguration = resolveConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -497,6 +525,9 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
         if (actions() != null) {
             actions().validate();
         }
+        if (resolveConfiguration() != null) {
+            resolveConfiguration().validate();
+        }
     }
 
     /**
@@ -507,7 +538,7 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeNumberField("severity", this.severity == null ? null : this.severity.getValue());
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("evaluationFrequency",
@@ -525,6 +556,7 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
             this.checkWorkspaceAlertsStorageConfigured);
         jsonWriter.writeBooleanField("skipQueryValidation", this.skipQueryValidation);
         jsonWriter.writeBooleanField("autoMitigate", this.autoMitigate);
+        jsonWriter.writeJsonField("resolveConfiguration", this.resolveConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -553,7 +585,7 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
                 } else if ("displayName".equals(fieldName)) {
                     deserializedScheduledQueryRuleProperties.displayName = reader.getString();
                 } else if ("severity".equals(fieldName)) {
-                    deserializedScheduledQueryRuleProperties.severity = AlertSeverity.fromLong(reader.getLong());
+                    deserializedScheduledQueryRuleProperties.severity = AlertSeverity.fromValue(reader.getLong());
                 } else if ("enabled".equals(fieldName)) {
                     deserializedScheduledQueryRuleProperties.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("scopes".equals(fieldName)) {
@@ -589,6 +621,9 @@ public final class ScheduledQueryRuleProperties implements JsonSerializable<Sche
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("autoMitigate".equals(fieldName)) {
                     deserializedScheduledQueryRuleProperties.autoMitigate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resolveConfiguration".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.resolveConfiguration
+                        = RuleResolveConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

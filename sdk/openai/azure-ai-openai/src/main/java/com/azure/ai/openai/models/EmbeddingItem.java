@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertFloatListToBase64;
-
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;

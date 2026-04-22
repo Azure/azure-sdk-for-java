@@ -13,22 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class NodeTypeActionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeTypeActionParameters model
-            = BinaryData.fromString("{\"nodes\":[\"ckpyklyhplu\"],\"force\":false,\"updateType\":\"Default\"}")
-                .toObject(NodeTypeActionParameters.class);
-        Assertions.assertEquals("ckpyklyhplu", model.nodes().get(0));
-        Assertions.assertFalse(model.force());
-        Assertions.assertEquals(UpdateType.DEFAULT, model.updateType());
+        NodeTypeActionParameters model = BinaryData.fromString(
+            "{\"nodes\":[\"ogczhonnxkrlg\",\"yhmossxkkg\",\"h\",\"rghxjb\"],\"force\":true,\"updateType\":\"ByUpgradeDomain\"}")
+            .toObject(NodeTypeActionParameters.class);
+        Assertions.assertEquals("ogczhonnxkrlg", model.nodes().get(0));
+        Assertions.assertTrue(model.force());
+        Assertions.assertEquals(UpdateType.BY_UPGRADE_DOMAIN, model.updateType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeActionParameters model = new NodeTypeActionParameters().withNodes(Arrays.asList("ckpyklyhplu"))
-            .withForce(false)
-            .withUpdateType(UpdateType.DEFAULT);
+        NodeTypeActionParameters model
+            = new NodeTypeActionParameters().withNodes(Arrays.asList("ogczhonnxkrlg", "yhmossxkkg", "h", "rghxjb"))
+                .withForce(true)
+                .withUpdateType(UpdateType.BY_UPGRADE_DOMAIN);
         model = BinaryData.fromObject(model).toObject(NodeTypeActionParameters.class);
-        Assertions.assertEquals("ckpyklyhplu", model.nodes().get(0));
-        Assertions.assertFalse(model.force());
-        Assertions.assertEquals(UpdateType.DEFAULT, model.updateType());
+        Assertions.assertEquals("ogczhonnxkrlg", model.nodes().get(0));
+        Assertions.assertTrue(model.force());
+        Assertions.assertEquals(UpdateType.BY_UPGRADE_DOMAIN, model.updateType());
     }
 }

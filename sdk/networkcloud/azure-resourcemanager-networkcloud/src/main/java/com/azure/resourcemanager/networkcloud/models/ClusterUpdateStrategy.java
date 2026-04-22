@@ -51,8 +51,8 @@ public final class ClusterUpdateStrategy implements JsonSerializable<ClusterUpda
 
     /**
      * Get the maxUnavailable property: The maximum number of worker nodes that can be offline within the increment of
-     * update, e.g., rack-by-rack.
-     * Limited by the maximum number of machines in the increment. Defaults to the whole increment size.
+     * update, e.g., rack-by-rack. Limited by the maximum number of machines in the increment. Defaults to the whole
+     * increment size.
      * 
      * @return the maxUnavailable value.
      */
@@ -62,8 +62,8 @@ public final class ClusterUpdateStrategy implements JsonSerializable<ClusterUpda
 
     /**
      * Set the maxUnavailable property: The maximum number of worker nodes that can be offline within the increment of
-     * update, e.g., rack-by-rack.
-     * Limited by the maximum number of machines in the increment. Defaults to the whole increment size.
+     * update, e.g., rack-by-rack. Limited by the maximum number of machines in the increment. Defaults to the whole
+     * increment size.
      * 
      * @param maxUnavailable the maxUnavailable value to set.
      * @return the ClusterUpdateStrategy object itself.

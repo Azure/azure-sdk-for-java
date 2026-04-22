@@ -7,14 +7,18 @@ package com.azure.resourcemanager.iotoperations.generated;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateAioMetadata;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointType;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDiagnostics;
-import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateHelmConfiguration;
-import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateHelmConfigurationSettings;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateManagedConfiguration;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateProperties;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfiguration;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfigurationSettings;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsContainerRegistry;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsContainerRegistrySettings;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsDiagnosticsLogs;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsMqttConnectionConfiguration;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsMqttProtocolType;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsServiceAccountAuthentication;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsServiceAccountTokenSettings;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsTag;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
 import com.azure.resourcemanager.iotoperations.models.OperationalMode;
@@ -26,7 +30,7 @@ import java.util.Arrays;
  */
 public final class AkriConnectorTemplateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_CreateOrUpdate_MaximumSet.
@@ -41,10 +45,13 @@ public final class AkriConnectorTemplateCreateOrUpdateSamples {
             .withProperties(new AkriConnectorTemplateProperties()
                 .withAioMetadata(
                     new AkriConnectorTemplateAioMetadata().withAioMinVersion("1.2.0").withAioMaxVersion("1.4.0"))
-                .withRuntimeConfiguration(new AkriConnectorTemplateHelmConfiguration().withHelmConfigurationSettings(
-                    new AkriConnectorTemplateHelmConfigurationSettings().withReleaseName("my-install")
-                        .withRepositoryName("my-repo")
-                        .withVersion("1.0.0")))
+                .withRuntimeConfiguration(new AkriConnectorTemplateManagedConfiguration()
+                    .withManagedConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfiguration()
+                        .withImageConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfigurationSettings()
+                            .withImageName("akri-connectors/rest")
+                            .withRegistrySettings(new AkriConnectorsContainerRegistry().withContainerRegistrySettings(
+                                new AkriConnectorsContainerRegistrySettings().withRegistry("akribuilds.azurecr.io")))
+                            .withTagDigestSettings(new AkriConnectorsTag().withTag("0.5.0-20250825.4")))))
                 .withDiagnostics(new AkriConnectorTemplateDiagnostics()
                     .withLogs(new AkriConnectorsDiagnosticsLogs().withLevel("info")))
                 .withDeviceInboundEndpointTypes(Arrays

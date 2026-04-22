@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * RegistryEndpoint properties.
@@ -32,9 +33,14 @@ public final class RegistryEndpointProperties implements JsonSerializable<Regist
     private ProvisioningState provisioningState;
 
     /*
-     * Trust settings for the registry endpoint
+     * The health state of the resource.
      */
-    private RegistryEndpointTrustedSettings trustSettings;
+    private ResourceHealthState healthState;
+
+    /*
+     * The signing certificate authorities used by artifacts in the registry endpoint
+     */
+    private List<RegistryEndpointTrustedSigningKey> codeSigningCas;
 
     /**
      * Creates an instance of RegistryEndpointProperties class.
@@ -92,22 +98,31 @@ public final class RegistryEndpointProperties implements JsonSerializable<Regist
     }
 
     /**
-     * Get the trustSettings property: Trust settings for the registry endpoint.
+     * Get the healthState property: The health state of the resource.
      * 
-     * @return the trustSettings value.
+     * @return the healthState value.
      */
-    public RegistryEndpointTrustedSettings trustSettings() {
-        return this.trustSettings;
+    public ResourceHealthState healthState() {
+        return this.healthState;
     }
 
     /**
-     * Set the trustSettings property: Trust settings for the registry endpoint.
+     * Get the codeSigningCas property: The signing certificate authorities used by artifacts in the registry endpoint.
      * 
-     * @param trustSettings the trustSettings value to set.
+     * @return the codeSigningCas value.
+     */
+    public List<RegistryEndpointTrustedSigningKey> codeSigningCas() {
+        return this.codeSigningCas;
+    }
+
+    /**
+     * Set the codeSigningCas property: The signing certificate authorities used by artifacts in the registry endpoint.
+     * 
+     * @param codeSigningCas the codeSigningCas value to set.
      * @return the RegistryEndpointProperties object itself.
      */
-    public RegistryEndpointProperties withTrustSettings(RegistryEndpointTrustedSettings trustSettings) {
-        this.trustSettings = trustSettings;
+    public RegistryEndpointProperties withCodeSigningCas(List<RegistryEndpointTrustedSigningKey> codeSigningCas) {
+        this.codeSigningCas = codeSigningCas;
         return this;
     }
 
@@ -119,7 +134,8 @@ public final class RegistryEndpointProperties implements JsonSerializable<Regist
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("host", this.host);
         jsonWriter.writeJsonField("authentication", this.authentication);
-        jsonWriter.writeJsonField("trustSettings", this.trustSettings);
+        jsonWriter.writeArrayField("codeSigningCas", this.codeSigningCas,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -147,9 +163,13 @@ public final class RegistryEndpointProperties implements JsonSerializable<Regist
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRegistryEndpointProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
-                } else if ("trustSettings".equals(fieldName)) {
-                    deserializedRegistryEndpointProperties.trustSettings
-                        = RegistryEndpointTrustedSettings.fromJson(reader);
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedRegistryEndpointProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
+                } else if ("codeSigningCas".equals(fieldName)) {
+                    List<RegistryEndpointTrustedSigningKey> codeSigningCas
+                        = reader.readArray(reader1 -> RegistryEndpointTrustedSigningKey.fromJson(reader1));
+                    deserializedRegistryEndpointProperties.codeSigningCas = codeSigningCas;
                 } else {
                     reader.skipChildren();
                 }

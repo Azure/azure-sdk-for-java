@@ -22,7 +22,7 @@ public final class SchemaRegistriesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"xibdafhrkmdyo\",\"namespace\":\"kxfbvfbhdyirhp\",\"displayName\":\"gddeimaw\",\"description\":\"vgkk\",\"storageAccountContainerUrl\":\"muikjcjcaztbws\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"xwc\",\"tenantId\":\"likytwvczcswka\",\"type\":\"None\"},\"location\":\"jyfdvlv\",\"tags\":{\"th\":\"rnfxtgddp\",\"naoyank\":\"hn\",\"swankltytmh\":\"oe\"},\"id\":\"roznnhdrlktgj\",\"name\":\"sggux\",\"type\":\"eml\"}";
+            = "{\"properties\":{\"uuid\":\"vsqxfxjelgcmpzqj\",\"namespace\":\"hhqxuwyvcacoyviv\",\"displayName\":\"izus\",\"description\":\"zlbscmnlziji\",\"storageAccountContainerUrl\":\"fehgmv\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"v\",\"tenantId\":\"xrerlniylylyf\",\"type\":\"SystemAssigned\"},\"location\":\"utgqztwh\",\"tags\":{\"abe\":\"upgxyjtcdxabbujf\",\"e\":\"bbklqpxzuca\"},\"id\":\"dwwnl\",\"name\":\"a\",\"type\":\"wxudgn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class SchemaRegistriesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaRegistry response = manager.schemaRegistries()
-            .getByResourceGroupWithResponse("wjksghudgzhxo", "jggsvo", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ypsjoq", "jenkyh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jyfdvlv", response.location());
-        Assertions.assertEquals("rnfxtgddp", response.tags().get("th"));
-        Assertions.assertEquals("kxfbvfbhdyirhp", response.properties().namespace());
-        Assertions.assertEquals("gddeimaw", response.properties().displayName());
-        Assertions.assertEquals("vgkk", response.properties().description());
-        Assertions.assertEquals("muikjcjcaztbws", response.properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("utgqztwh", response.location());
+        Assertions.assertEquals("upgxyjtcdxabbujf", response.tags().get("abe"));
+        Assertions.assertEquals("hhqxuwyvcacoyviv", response.properties().namespace());
+        Assertions.assertEquals("izus", response.properties().displayName());
+        Assertions.assertEquals("zlbscmnlziji", response.properties().description());
+        Assertions.assertEquals("fehgmv", response.properties().storageAccountContainerUrl());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }

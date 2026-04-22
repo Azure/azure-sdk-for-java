@@ -71,7 +71,7 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      * The properties of the claims.
      */
     @Generated
-    private final Map<String, String> claims;
+    private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
@@ -89,14 +89,11 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      * Creates an instance of ResourceActionFailureEventData class.
      *
      * @param authorization the authorization value to set.
-     * @param claims the claims value to set.
      * @param httpRequest the httpRequest value to set.
      */
     @Generated
-    private ResourceActionFailureEventData(ResourceAuthorization authorization, Map<String, String> claims,
-        ResourceHttpRequest httpRequest) {
+    private ResourceActionFailureEventData(ResourceAuthorization authorization, ResourceHttpRequest httpRequest) {
         this.authorization = authorization;
-        this.claims = claims;
         this.httpRequest = httpRequest;
     }
 
@@ -218,7 +215,6 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("authorization", this.authorization);
-        jsonWriter.writeMapField("claims", this.claims, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("httpRequest", this.httpRequest);
         jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
@@ -284,7 +280,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
                 }
             }
             ResourceActionFailureEventData deserializedResourceActionFailureEventData
-                = new ResourceActionFailureEventData(authorization, claims, httpRequest);
+                = new ResourceActionFailureEventData(authorization, httpRequest);
+            deserializedResourceActionFailureEventData.claims = claims;
             deserializedResourceActionFailureEventData.tenantId = tenantId;
             deserializedResourceActionFailureEventData.subscriptionId = subscriptionId;
             deserializedResourceActionFailureEventData.resourceGroup = resourceGroup;

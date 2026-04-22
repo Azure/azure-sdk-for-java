@@ -15,59 +15,59 @@ public final class ManagementGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementGroup model = BinaryData.fromString(
-            "{\"name\":\"wuwprzqlv\",\"dataSource\":\"alupjm\",\"managementGroupConfiguration\":\"fxobbcsws\",\"typeRef\":\"jriplrbpbewtghf\",\"defaultTopic\":\"lcgwxzvlvqh\",\"defaultTimeoutInSeconds\":1823532721,\"actions\":[{\"name\":\"ibtnmxiebwwaloay\",\"actionConfiguration\":\"gwrtzju\",\"targetUri\":\"gwyzm\",\"typeRef\":\"xongmtsavjcbpwxq\",\"topic\":\"rknftguvriuhprwm\",\"actionType\":\"Call\",\"timeoutInSeconds\":1468047146},{\"name\":\"tayriwwroyqbex\",\"actionConfiguration\":\"cqibycnojv\",\"targetUri\":\"nmefqsgzvahapj\",\"typeRef\":\"hpvgqz\",\"topic\":\"rvxdjzlmw\",\"actionType\":\"Write\",\"timeoutInSeconds\":413444138}]}")
+            "{\"name\":\"fbkrvrnsvs\",\"dataSource\":\"johxcrsb\",\"managementGroupConfiguration\":\"vasrruvwb\",\"typeRef\":\"qfsubcgjbirx\",\"defaultTopic\":\"ybsrfbjfdtwss\",\"defaultTimeoutInSeconds\":772106102,\"actions\":[{\"name\":\"vjz\",\"actionConfiguration\":\"xilzznf\",\"targetUri\":\"q\",\"typeRef\":\"wpmqt\",\"topic\":\"uoujmkcjhwqy\",\"actionType\":\"Call\",\"timeoutInSeconds\":778428037},{\"name\":\"n\",\"actionConfiguration\":\"ewgdrjervn\",\"targetUri\":\"enq\",\"typeRef\":\"hin\",\"topic\":\"ygmi\",\"actionType\":\"Read\",\"timeoutInSeconds\":1092081926}]}")
             .toObject(ManagementGroup.class);
-        Assertions.assertEquals("wuwprzqlv", model.name());
-        Assertions.assertEquals("alupjm", model.dataSource());
-        Assertions.assertEquals("fxobbcsws", model.managementGroupConfiguration());
-        Assertions.assertEquals("jriplrbpbewtghf", model.typeRef());
-        Assertions.assertEquals("lcgwxzvlvqh", model.defaultTopic());
-        Assertions.assertEquals(1823532721, model.defaultTimeoutInSeconds());
-        Assertions.assertEquals("ibtnmxiebwwaloay", model.actions().get(0).name());
-        Assertions.assertEquals("gwrtzju", model.actions().get(0).actionConfiguration());
-        Assertions.assertEquals("gwyzm", model.actions().get(0).targetUri());
-        Assertions.assertEquals("xongmtsavjcbpwxq", model.actions().get(0).typeRef());
-        Assertions.assertEquals("rknftguvriuhprwm", model.actions().get(0).topic());
+        Assertions.assertEquals("fbkrvrnsvs", model.name());
+        Assertions.assertEquals("johxcrsb", model.dataSource());
+        Assertions.assertEquals("vasrruvwb", model.managementGroupConfiguration());
+        Assertions.assertEquals("qfsubcgjbirx", model.typeRef());
+        Assertions.assertEquals("ybsrfbjfdtwss", model.defaultTopic());
+        Assertions.assertEquals(772106102, model.defaultTimeoutInSeconds());
+        Assertions.assertEquals("vjz", model.actions().get(0).name());
+        Assertions.assertEquals("xilzznf", model.actions().get(0).actionConfiguration());
+        Assertions.assertEquals("q", model.actions().get(0).targetUri());
+        Assertions.assertEquals("wpmqt", model.actions().get(0).typeRef());
+        Assertions.assertEquals("uoujmkcjhwqy", model.actions().get(0).topic());
         Assertions.assertEquals(ManagementActionType.CALL, model.actions().get(0).actionType());
-        Assertions.assertEquals(1468047146, model.actions().get(0).timeoutInSeconds());
+        Assertions.assertEquals(778428037, model.actions().get(0).timeoutInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroup model = new ManagementGroup().withName("wuwprzqlv")
-            .withDataSource("alupjm")
-            .withManagementGroupConfiguration("fxobbcsws")
-            .withTypeRef("jriplrbpbewtghf")
-            .withDefaultTopic("lcgwxzvlvqh")
-            .withDefaultTimeoutInSeconds(1823532721)
+        ManagementGroup model = new ManagementGroup().withName("fbkrvrnsvs")
+            .withDataSource("johxcrsb")
+            .withManagementGroupConfiguration("vasrruvwb")
+            .withTypeRef("qfsubcgjbirx")
+            .withDefaultTopic("ybsrfbjfdtwss")
+            .withDefaultTimeoutInSeconds(772106102)
             .withActions(Arrays.asList(
-                new ManagementAction().withName("ibtnmxiebwwaloay")
-                    .withActionConfiguration("gwrtzju")
-                    .withTargetUri("gwyzm")
-                    .withTypeRef("xongmtsavjcbpwxq")
-                    .withTopic("rknftguvriuhprwm")
+                new ManagementAction().withName("vjz")
+                    .withActionConfiguration("xilzznf")
+                    .withTargetUri("q")
+                    .withTypeRef("wpmqt")
+                    .withTopic("uoujmkcjhwqy")
                     .withActionType(ManagementActionType.CALL)
-                    .withTimeoutInSeconds(1468047146),
-                new ManagementAction().withName("tayriwwroyqbex")
-                    .withActionConfiguration("cqibycnojv")
-                    .withTargetUri("nmefqsgzvahapj")
-                    .withTypeRef("hpvgqz")
-                    .withTopic("rvxdjzlmw")
-                    .withActionType(ManagementActionType.WRITE)
-                    .withTimeoutInSeconds(413444138)));
+                    .withTimeoutInSeconds(778428037),
+                new ManagementAction().withName("n")
+                    .withActionConfiguration("ewgdrjervn")
+                    .withTargetUri("enq")
+                    .withTypeRef("hin")
+                    .withTopic("ygmi")
+                    .withActionType(ManagementActionType.READ)
+                    .withTimeoutInSeconds(1092081926)));
         model = BinaryData.fromObject(model).toObject(ManagementGroup.class);
-        Assertions.assertEquals("wuwprzqlv", model.name());
-        Assertions.assertEquals("alupjm", model.dataSource());
-        Assertions.assertEquals("fxobbcsws", model.managementGroupConfiguration());
-        Assertions.assertEquals("jriplrbpbewtghf", model.typeRef());
-        Assertions.assertEquals("lcgwxzvlvqh", model.defaultTopic());
-        Assertions.assertEquals(1823532721, model.defaultTimeoutInSeconds());
-        Assertions.assertEquals("ibtnmxiebwwaloay", model.actions().get(0).name());
-        Assertions.assertEquals("gwrtzju", model.actions().get(0).actionConfiguration());
-        Assertions.assertEquals("gwyzm", model.actions().get(0).targetUri());
-        Assertions.assertEquals("xongmtsavjcbpwxq", model.actions().get(0).typeRef());
-        Assertions.assertEquals("rknftguvriuhprwm", model.actions().get(0).topic());
+        Assertions.assertEquals("fbkrvrnsvs", model.name());
+        Assertions.assertEquals("johxcrsb", model.dataSource());
+        Assertions.assertEquals("vasrruvwb", model.managementGroupConfiguration());
+        Assertions.assertEquals("qfsubcgjbirx", model.typeRef());
+        Assertions.assertEquals("ybsrfbjfdtwss", model.defaultTopic());
+        Assertions.assertEquals(772106102, model.defaultTimeoutInSeconds());
+        Assertions.assertEquals("vjz", model.actions().get(0).name());
+        Assertions.assertEquals("xilzznf", model.actions().get(0).actionConfiguration());
+        Assertions.assertEquals("q", model.actions().get(0).targetUri());
+        Assertions.assertEquals("wpmqt", model.actions().get(0).typeRef());
+        Assertions.assertEquals("uoujmkcjhwqy", model.actions().get(0).topic());
         Assertions.assertEquals(ManagementActionType.CALL, model.actions().get(0).actionType());
-        Assertions.assertEquals(1468047146, model.actions().get(0).timeoutInSeconds());
+        Assertions.assertEquals(778428037, model.actions().get(0).timeoutInSeconds());
     }
 }

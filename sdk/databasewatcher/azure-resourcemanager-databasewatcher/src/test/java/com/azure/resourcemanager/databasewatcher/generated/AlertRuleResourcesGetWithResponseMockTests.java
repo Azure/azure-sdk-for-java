@@ -22,7 +22,7 @@ public final class AlertRuleResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alertRuleResourceId\":\"qzvszjf\",\"createdWithProperties\":\"None\",\"creationTime\":\"2021-03-12T20:34:44Z\",\"provisioningState\":\"Failed\",\"alertRuleTemplateId\":\"dxxiv\",\"alertRuleTemplateVersion\":\"tvtc\"},\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}";
+            = "{\"properties\":{\"alertRuleResourceId\":\"twm\",\"createdWithProperties\":\"None\",\"creationTime\":\"2021-01-06T11:18:17Z\",\"provisioningState\":\"Canceled\",\"alertRuleTemplateId\":\"x\",\"alertRuleTemplateVersion\":\"it\"},\"id\":\"rjaw\",\"name\":\"qwgxhniskx\",\"type\":\"bkpyc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class AlertRuleResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AlertRuleResource response = manager.alertRuleResources()
-            .getWithResponse("n", "u", "ivkrtsw", com.azure.core.util.Context.NONE)
+            .getWithResponse("cjooxdjebwpucwwf", "ovbvmeueciv", "hzceuojgjrwjue", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qzvszjf", response.properties().alertRuleResourceId());
+        Assertions.assertEquals("twm", response.properties().alertRuleResourceId());
         Assertions.assertEquals(AlertRuleCreationProperties.NONE, response.properties().createdWithProperties());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T20:34:44Z"), response.properties().creationTime());
-        Assertions.assertEquals("dxxiv", response.properties().alertRuleTemplateId());
-        Assertions.assertEquals("tvtc", response.properties().alertRuleTemplateVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T11:18:17Z"), response.properties().creationTime());
+        Assertions.assertEquals("x", response.properties().alertRuleTemplateId());
+        Assertions.assertEquals("it", response.properties().alertRuleTemplateVersion());
     }
 }

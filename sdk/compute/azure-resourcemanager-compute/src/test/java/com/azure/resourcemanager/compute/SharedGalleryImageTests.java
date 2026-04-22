@@ -222,6 +222,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withLocation(region)
             .withIdentifier("JavaSDKTeam", "JDK", "Jdk-9")
             .withGeneralizedLinux()
+            .withHyperVGeneration(HyperVGeneration.V1)
             .create();
         //
         // Create a custom image to base the version on

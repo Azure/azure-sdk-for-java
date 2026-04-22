@@ -3,16 +3,26 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.QueueAccessPolicy;
+import com.azure.storage.queue.models.QueueErrorCode;
+import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
 import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.SendMessageResult;
+import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.sas.QueueSasPermission;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +34,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getTidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
+import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueueSasClientTests extends QueueTestBase {
     private QueueClient sasClient;
@@ -171,5 +188,168 @@ public class QueueSasClientTests extends QueueTestBase {
             = values.generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential()).encode();
 
         assertEquals(deprecatedStringToSign, client.generateSas(values));
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void queueSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            QueueServiceSasSignatureValues sasValues
+                = new QueueServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            QueueClient client = instrument(
+                new QueueClientBuilder().endpoint(sasClient.getQueueUrl()).sasToken(sas).credential(tokenCredential))
+                    .buildClient();
+
+            Response<QueueProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
+            verifySasAndTokenInRequest(response);
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void queueSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            QueueServiceSasSignatureValues sasValues
+                = new QueueServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            QueueClient client
+                = instrument(new QueueClientBuilder().endpoint(sasClient.getQueueUrl()).sasToken(sas)).buildClient();
+
+            QueueStorageException e
+                = assertThrows(QueueStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
+            assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED);
+        });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void sendMessageUserDelegationSAS() {
+        liveTestScenarioWithRetry(() -> {
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
+                .setAddPermission(true)
+                .setProcessPermission(true)
+                .setUpdatePermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            QueueServiceSasSignatureValues sasValues = new QueueServiceSasSignatureValues(expiryTime, permissions);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            QueueClient client
+                = instrument(new QueueClientBuilder().endpoint(sasClient.getQueueUrl()).sasToken(sas)).buildClient();
+
+            client.sendMessage(DATA.getDefaultBinaryData());
+            Iterator<QueueMessageItem> dequeueMsgIter = client.receiveMessages(2).iterator();
+            assertTrue(dequeueMsgIter.hasNext());
+            dequeueMsgIter.next(); // Skip the first message, which is the one we sent in the setup
+            assertArrayEquals(DATA.getDefaultBytes(), dequeueMsgIter.next().getBody().toBytes());
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
+    public void queueUserDelegationSasDelegatedTenantId() {
+        liveTestScenarioWithRetry(() -> {
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            QueueGetUserDelegationKeyOptions options
+                = new QueueGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthQueueServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            QueueServiceSasSignatureValues sasValues
+                = new QueueServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            // Validate SAS token contains required parameters
+            assertTrue(sas.contains("sduoid=" + oid));
+            assertTrue(sas.contains("skdutid=" + tid));
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            QueueClient client = instrument(
+                new QueueClientBuilder().endpoint(sasClient.getQueueUrl()).sasToken(sas).credential(tokenCredential))
+                    .buildClient();
+
+            Response<QueueProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
+            verifySasAndTokenInRequest(response);
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
+    public void queueUserDelegationSasDelegatedTenantIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String tid = getTidFromToken(tokenCredential);
+
+            QueueGetUserDelegationKeyOptions options
+                = new QueueGetUserDelegationKeyOptions(expiryTime).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthQueueServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            QueueServiceSasSignatureValues sasValues = new QueueServiceSasSignatureValues(expiryTime, permissions);
+            String sas = sasClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            // Validate SAS token contains required parameters
+            assertTrue(sas.contains("skdutid=" + tid));
+            assertFalse(sas.contains("sduoid="));
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. The sas must also contain the delegated user object id.
+            QueueClient client = instrument(
+                new QueueClientBuilder().endpoint(sasClient.getQueueUrl()).sasToken(sas).credential(tokenCredential))
+                    .buildClient();
+
+            QueueStorageException e
+                = assertThrows(QueueStorageException.class, () -> client.getPropertiesWithResponse(null, Context.NONE));
+            assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED);
+        });
+    }
+
+    protected UserDelegationKey getUserDelegationInfo() {
+        UserDelegationKey key = getOAuthQueueServiceClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
+            testResourceNamer.now().plusDays(1));
+        String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
+        key.setSignedObjectId(keyOid);
+        String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
+        key.setSignedTenantId(keyTid);
+        return key;
     }
 }

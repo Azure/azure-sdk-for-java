@@ -9,12 +9,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.fluent.AliasClient;
-import com.azure.resourcemanager.subscription.fluent.models.PutAliasListResultInner;
-import com.azure.resourcemanager.subscription.fluent.models.PutAliasResponseInner;
+import com.azure.resourcemanager.subscription.fluent.models.SubscriptionAliasListResultInner;
+import com.azure.resourcemanager.subscription.fluent.models.SubscriptionAliasResponseInner;
 import com.azure.resourcemanager.subscription.models.Alias;
-import com.azure.resourcemanager.subscription.models.PutAliasListResult;
 import com.azure.resourcemanager.subscription.models.PutAliasRequest;
-import com.azure.resourcemanager.subscription.models.PutAliasResponse;
+import com.azure.resourcemanager.subscription.models.SubscriptionAliasListResult;
+import com.azure.resourcemanager.subscription.models.SubscriptionAliasResponse;
 
 public final class AliasImpl implements Alias {
     private static final ClientLogger LOGGER = new ClientLogger(AliasImpl.class);
@@ -29,38 +29,38 @@ public final class AliasImpl implements Alias {
         this.serviceManager = serviceManager;
     }
 
-    public PutAliasResponse create(String aliasName, PutAliasRequest body) {
-        PutAliasResponseInner inner = this.serviceClient().create(aliasName, body);
+    public SubscriptionAliasResponse create(String aliasName, PutAliasRequest body) {
+        SubscriptionAliasResponseInner inner = this.serviceClient().create(aliasName, body);
         if (inner != null) {
-            return new PutAliasResponseImpl(inner, this.manager());
+            return new SubscriptionAliasResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public PutAliasResponse create(String aliasName, PutAliasRequest body, Context context) {
-        PutAliasResponseInner inner = this.serviceClient().create(aliasName, body, context);
+    public SubscriptionAliasResponse create(String aliasName, PutAliasRequest body, Context context) {
+        SubscriptionAliasResponseInner inner = this.serviceClient().create(aliasName, body, context);
         if (inner != null) {
-            return new PutAliasResponseImpl(inner, this.manager());
+            return new SubscriptionAliasResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<PutAliasResponse> getWithResponse(String aliasName, Context context) {
-        Response<PutAliasResponseInner> inner = this.serviceClient().getWithResponse(aliasName, context);
+    public Response<SubscriptionAliasResponse> getWithResponse(String aliasName, Context context) {
+        Response<SubscriptionAliasResponseInner> inner = this.serviceClient().getWithResponse(aliasName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PutAliasResponseImpl(inner.getValue(), this.manager()));
+                new SubscriptionAliasResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PutAliasResponse get(String aliasName) {
-        PutAliasResponseInner inner = this.serviceClient().get(aliasName);
+    public SubscriptionAliasResponse get(String aliasName) {
+        SubscriptionAliasResponseInner inner = this.serviceClient().get(aliasName);
         if (inner != null) {
-            return new PutAliasResponseImpl(inner, this.manager());
+            return new SubscriptionAliasResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -74,20 +74,20 @@ public final class AliasImpl implements Alias {
         this.serviceClient().delete(aliasName);
     }
 
-    public Response<PutAliasListResult> listWithResponse(Context context) {
-        Response<PutAliasListResultInner> inner = this.serviceClient().listWithResponse(context);
+    public Response<SubscriptionAliasListResult> listWithResponse(Context context) {
+        Response<SubscriptionAliasListResultInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PutAliasListResultImpl(inner.getValue(), this.manager()));
+                new SubscriptionAliasListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PutAliasListResult list() {
-        PutAliasListResultInner inner = this.serviceClient().list();
+    public SubscriptionAliasListResult list() {
+        SubscriptionAliasListResultInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new PutAliasListResultImpl(inner, this.manager());
+            return new SubscriptionAliasListResultImpl(inner, this.manager());
         } else {
             return null;
         }

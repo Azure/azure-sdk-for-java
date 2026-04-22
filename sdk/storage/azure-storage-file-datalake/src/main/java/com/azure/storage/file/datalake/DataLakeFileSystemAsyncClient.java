@@ -25,6 +25,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -250,7 +251,7 @@ public class DataLakeFileSystemAsyncClient {
      * @return the URL.
      */
     public String getFileSystemUrl() {
-        return azureDataLakeStorage.getUrl() + "/" + fileSystemName;
+        return azureDataLakeStorage.getUrl() + "/" + Utility.urlEncode(fileSystemName);
     }
 
     /**
@@ -744,7 +745,8 @@ public class DataLakeFileSystemAsyncClient {
                     finalOptions = new ListPathsOptions().setMaxResults(pageSize)
                         .setPath(options.getPath())
                         .setRecursive(options.isRecursive())
-                        .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned());
+                        .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned())
+                        .setStartFrom(options.getStartFrom());
                 }
             } else {
                 finalOptions = options;
@@ -767,7 +769,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return StorageImplUtils.applyOptionalTimeout(this.azureDataLakeStorage.getFileSystems()
             .listPathsWithResponseAsync(options.isRecursive(), null, null, marker, options.getPath(),
-                options.getMaxResults(), options.isUserPrincipalNameReturned(), Context.NONE),
+                options.getMaxResults(), options.isUserPrincipalNameReturned(), options.getStartFrom(), Context.NONE),
             timeout);
     }
 

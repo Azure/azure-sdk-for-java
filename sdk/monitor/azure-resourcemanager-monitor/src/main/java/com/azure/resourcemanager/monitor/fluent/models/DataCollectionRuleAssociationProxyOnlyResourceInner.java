@@ -20,7 +20,7 @@ import java.io.IOException;
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends ProxyResource {
     /*
-     * Resource properties.
+     * The properties property.
      */
     private DataCollectionRuleAssociationProxyOnlyResourceProperties innerProperties;
 
@@ -35,9 +35,9 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -45,9 +45,9 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceInner class.
@@ -56,7 +56,7 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
+     * Get the innerProperties property: The properties property.
      * 
      * @return the innerProperties value.
      */
@@ -83,13 +83,13 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -103,13 +103,13 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**

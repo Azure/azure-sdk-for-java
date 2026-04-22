@@ -6,29 +6,67 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
+import com.azure.resourcemanager.storagemover.models.Frequency;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionUpdateParameters;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
+import com.azure.resourcemanager.storagemover.models.SchedulerTime;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class JobDefinitionUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionUpdateParameters model = BinaryData
-            .fromString(
-                "{\"properties\":{\"description\":\"zpfzabglc\",\"copyMode\":\"Mirror\",\"agentName\":\"tcty\"}}")
+        JobDefinitionUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"ceoveilovno\",\"copyMode\":\"Additive\",\"agentName\":\"fcnj\",\"connections\":[\"nxdhbt\"],\"dataIntegrityValidation\":\"None\",\"schedule\":{\"frequency\":\"Weekly\",\"isActive\":false,\"executionTime\":{\"hour\":224051014,\"minute\":30},\"startDate\":\"2021-01-19T13:13:37Z\",\"daysOfWeek\":[\"clfp\",\"phoxus\",\"rpabg\",\"epsbjtazqu\"],\"daysOfMonth\":[2007801220,856340492,1245972135,931082725],\"cronExpression\":\"ef\",\"endDate\":\"2021-05-04T20:06:55Z\"}}}")
             .toObject(JobDefinitionUpdateParameters.class);
-        Assertions.assertEquals("zpfzabglc", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("tcty", model.agentName());
+        Assertions.assertEquals("ceoveilovno", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("fcnj", model.agentName());
+        Assertions.assertEquals("nxdhbt", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.NONE, model.dataIntegrityValidation());
+        Assertions.assertEquals(Frequency.WEEKLY, model.schedule().frequency());
+        Assertions.assertFalse(model.schedule().isActive());
+        Assertions.assertEquals(224051014, model.schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.THREE_ZERO, model.schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T13:13:37Z"), model.schedule().startDate());
+        Assertions.assertEquals("clfp", model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(2007801220, model.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("ef", model.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T20:06:55Z"), model.schedule().endDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionUpdateParameters model = new JobDefinitionUpdateParameters().withDescription("zpfzabglc")
-            .withCopyMode(CopyMode.MIRROR)
-            .withAgentName("tcty");
+        JobDefinitionUpdateParameters model = new JobDefinitionUpdateParameters().withDescription("ceoveilovno")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withAgentName("fcnj")
+            .withConnections(Arrays.asList("nxdhbt"))
+            .withDataIntegrityValidation(DataIntegrityValidation.NONE)
+            .withSchedule(new ScheduleInfo().withFrequency(Frequency.WEEKLY)
+                .withIsActive(false)
+                .withExecutionTime(new SchedulerTime().withHour(224051014).withMinute(Minute.THREE_ZERO))
+                .withStartDate(OffsetDateTime.parse("2021-01-19T13:13:37Z"))
+                .withDaysOfWeek(Arrays.asList("clfp", "phoxus", "rpabg", "epsbjtazqu"))
+                .withDaysOfMonth(Arrays.asList(2007801220, 856340492, 1245972135, 931082725))
+                .withCronExpression("ef")
+                .withEndDate(OffsetDateTime.parse("2021-05-04T20:06:55Z")));
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateParameters.class);
-        Assertions.assertEquals("zpfzabglc", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("tcty", model.agentName());
+        Assertions.assertEquals("ceoveilovno", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("fcnj", model.agentName());
+        Assertions.assertEquals("nxdhbt", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.NONE, model.dataIntegrityValidation());
+        Assertions.assertEquals(Frequency.WEEKLY, model.schedule().frequency());
+        Assertions.assertFalse(model.schedule().isActive());
+        Assertions.assertEquals(224051014, model.schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.THREE_ZERO, model.schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T13:13:37Z"), model.schedule().startDate());
+        Assertions.assertEquals("clfp", model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(2007801220, model.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("ef", model.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T20:06:55Z"), model.schedule().endDate());
     }
 }

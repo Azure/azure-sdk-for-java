@@ -34,8 +34,8 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CloudServicesNetwork> list(Context context) {
-        PagedIterable<CloudServicesNetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<CloudServicesNetwork> list(Integer top, String skipToken, Context context) {
+        PagedIterable<CloudServicesNetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
@@ -44,9 +44,10 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<CloudServicesNetworkInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 

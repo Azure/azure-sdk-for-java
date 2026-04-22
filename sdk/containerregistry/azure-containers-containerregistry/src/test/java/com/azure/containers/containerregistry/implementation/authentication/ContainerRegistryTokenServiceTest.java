@@ -48,7 +48,7 @@ public class ContainerRegistryTokenServiceTest {
         AuthenticationsImpl authenticationsImpl = new AzureContainerRegistryImpl(pipeline, "https://mytest.azurecr.io",
             ContainerRegistryServiceVersion.getLatest().toString()).getAuthentications();
         AtomicInteger callCount = new AtomicInteger();
-        TokenCredential refreshTokenCredential = tokenRequestContext -> {
+        TokenCredential refreshTokenCredential = ignored -> {
             int count = callCount.getAndIncrement();
             if (count == 0) {
                 return Mono.just(new AccessToken(accessToken.getAccessToken(), OffsetDateTime.now().plusHours(1)));
@@ -64,7 +64,7 @@ public class ContainerRegistryTokenServiceTest {
 
         int count = 10;
         StepVerifier.create(Flux.range(1, count)
-            .flatMap(i -> service.getToken(new ContainerRegistryTokenRequestContext("serviceName", "scope")))
+            .flatMap(ignored -> service.getToken(new ContainerRegistryTokenRequestContext("serviceName", "scope")))
             .subscribeOn(Schedulers.newParallel("pool", count))).expectNextCount(count).verifyComplete();
 
         // We call the refreshToken method only once.

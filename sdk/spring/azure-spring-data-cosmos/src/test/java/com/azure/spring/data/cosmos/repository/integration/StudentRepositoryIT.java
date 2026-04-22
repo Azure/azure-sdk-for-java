@@ -9,24 +9,23 @@ import com.azure.spring.data.cosmos.domain.Student;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.StudentRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class StudentRepositoryIT {
     public static final String ID_0 = "id-0";
@@ -59,7 +58,7 @@ public class StudentRepositoryIT {
     private static final List<Student> PEOPLE =
         Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3, STUDENT_4, STUDENT_5);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -68,13 +67,13 @@ public class StudentRepositoryIT {
     @Autowired
     private StudentRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Student.class);
         this.repository.saveAll(PEOPLE);
     }
 
-    @AfterClass
+    @AfterAll
     public static void teardown() {
         collectionManager.deleteContainer(new CosmosEntityInformation<>(Student.class));
     }
@@ -156,7 +155,7 @@ public class StudentRepositoryIT {
         people.sort(Comparator.comparing(Student::getId));
         reference.sort(Comparator.comparing(Student::getId));
 
-        Assert.assertEquals(reference, people);
+        assertEquals(reference, people);
     }
 
     @Test

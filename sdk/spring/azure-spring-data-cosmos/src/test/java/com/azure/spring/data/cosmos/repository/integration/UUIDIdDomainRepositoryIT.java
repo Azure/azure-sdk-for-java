@@ -10,14 +10,13 @@ import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.UUIDIdDomainRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +30,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class UUIDIdDomainRepositoryIT {
 
@@ -45,7 +45,7 @@ public class UUIDIdDomainRepositoryIT {
     private static final UUIDIdDomain DOMAIN_1 = new UUIDIdDomain(ID_1, NAME_1);
     private static final UUIDIdDomain DOMAIN_2 = new UUIDIdDomain(ID_2, NAME_2);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -54,7 +54,7 @@ public class UUIDIdDomainRepositoryIT {
     @Autowired
     private UUIDIdDomainRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, UUIDIdDomain.class);
         this.repository.save(DOMAIN_1);
@@ -64,43 +64,45 @@ public class UUIDIdDomainRepositoryIT {
     @Test
     public void testUUIDIdDomain() {
         this.repository.deleteAll();
-        Assert.assertFalse(this.repository.findById(ID_1).isPresent());
+        Assertions.assertFalse(this.repository.findById(ID_1).isPresent());
 
         this.repository.save(DOMAIN_1);
         final Optional<UUIDIdDomain> foundOptional = this.repository.findById(ID_1);
 
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
-        Assert.assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
+        Assertions.assertTrue(foundOptional.isPresent());
+        assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
+        assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
 
         this.repository.delete(DOMAIN_1);
 
-        Assert.assertFalse(this.repository.findById(ID_1).isPresent());
+        Assertions.assertFalse(this.repository.findById(ID_1).isPresent());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidDomain() {
-        new CosmosEntityInformation<InvalidDomain, UUID>(InvalidDomain.class);
+        assertThrows(IllegalArgumentException.class, () ->
+            new CosmosEntityInformation<InvalidDomain, UUID>(InvalidDomain.class));
+
     }
 
     @Test
     public void testBasicQuery() {
         final UUIDIdDomain save = this.repository.save(DOMAIN_1);
-        Assert.assertNotNull(save);
+        Assertions.assertNotNull(save);
     }
 
     @Test
     public void testSaveAndFindById() {
-        Assert.assertNotNull(this.repository.save(DOMAIN_1));
+        Assertions.assertNotNull(this.repository.save(DOMAIN_1));
 
         final Optional<UUIDIdDomain> savedEntity = this.repository.findById(DOMAIN_1.getNumber());
-        Assert.assertTrue(savedEntity.isPresent());
-        Assert.assertEquals(DOMAIN_1, savedEntity.get());
+        Assertions.assertTrue(savedEntity.isPresent());
+        assertEquals(DOMAIN_1, savedEntity.get());
     }
 
     @Test
     public void testSaveAllAndFindAll() {
-        Assert.assertTrue(this.repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(this.repository.findAll().iterator().hasNext());
 
         final Set<UUIDIdDomain> entitiesToSave = Stream.of(DOMAIN_1, DOMAIN_2).collect(Collectors.toSet());
         this.repository.saveAll(entitiesToSave);
@@ -108,14 +110,14 @@ public class UUIDIdDomainRepositoryIT {
         final Set<UUIDIdDomain> savedEntities = StreamSupport.stream(this.repository.findAll().spliterator(), false)
                                                              .collect(Collectors.toSet());
 
-        Assert.assertTrue(entitiesToSave.containsAll(savedEntities));
+        Assertions.assertTrue(entitiesToSave.containsAll(savedEntities));
     }
 
     @Test
     public void testFindAllById() {
         final Iterable<UUIDIdDomain> allById =
             TestUtils.toList(this.repository.findAllById(Arrays.asList(DOMAIN_1.getNumber(), DOMAIN_2.getNumber())));
-        Assert.assertTrue(((ArrayList) allById).size() == 2);
+        Assertions.assertTrue(((ArrayList) allById).size() == 2);
         Iterator<UUIDIdDomain> it = allById.iterator();
         assertUUIDIdDomainEquals(Arrays.asList(it.next(), it.next()), Arrays.asList(DOMAIN_1, DOMAIN_2));
     }
@@ -123,12 +125,12 @@ public class UUIDIdDomainRepositoryIT {
     private void assertUUIDIdDomainEquals(List<UUIDIdDomain> cur, List<UUIDIdDomain> reference) {
         cur.sort(Comparator.comparing(UUIDIdDomain::getNumber));
         reference.sort(Comparator.comparing(UUIDIdDomain::getNumber));
-        Assert.assertEquals(reference, cur);
+        assertEquals(reference, cur);
     }
 
     @Test
     public void testCount() {
-        Assert.assertEquals(2, repository.count());
+        assertEquals(2, repository.count());
     }
 
     @Test
@@ -137,26 +139,30 @@ public class UUIDIdDomainRepositoryIT {
         this.repository.save(DOMAIN_2);
         this.repository.deleteById(DOMAIN_1.getNumber());
         this.repository.deleteById(DOMAIN_2.getNumber());
-        Assert.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosNotFoundException.class)
+    @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.deleteById(DOMAIN_1.getNumber());
+        assertThrows(CosmosNotFoundException.class, () -> {
+            this.repository.deleteAll();
+            this.repository.deleteById(DOMAIN_1.getNumber());
+        });
     }
 
     @Test
     public void testDelete() {
         this.repository.save(DOMAIN_1);
         this.repository.delete(DOMAIN_1);
-        Assert.assertEquals(1, this.repository.count());
+        assertEquals(1, this.repository.count());
     }
 
-    @Test(expected = CosmosNotFoundException.class)
+    @Test
     public void testDeleteShouldFailIfNothingToDelete() {
-        this.repository.deleteAll();
-        this.repository.delete(DOMAIN_1);
+        assertThrows(CosmosNotFoundException.class, () -> {
+            this.repository.deleteAll();
+            this.repository.delete(DOMAIN_1);
+        });
     }
 
     @Test
@@ -164,13 +170,13 @@ public class UUIDIdDomainRepositoryIT {
         this.repository.save(DOMAIN_1);
         this.repository.save(DOMAIN_2);
         this.repository.deleteAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
-        Assert.assertEquals(0, this.repository.count());
+        assertEquals(0, this.repository.count());
     }
 
     @Test
     public void testExistsById() {
         this.repository.save(DOMAIN_1);
-        Assert.assertTrue(this.repository.existsById(DOMAIN_1.getNumber()));
+        Assertions.assertTrue(this.repository.existsById(DOMAIN_1.getNumber()));
     }
 
     private static class InvalidDomain {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.PurgeState;
@@ -28,10 +28,10 @@ public final class WorkspacePurgesGetPurgeStatusWithResponseMockTests {
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkspacePurgeStatusResponse response = manager.workspacePurges()
-            .getPurgeStatusWithResponse("yrrleaesinuqt", "jqo", "bpihehcecybmrqbr", com.azure.core.util.Context.NONE)
+            .getPurgeStatusWithResponse("osewxi", "pxvkqma", "pxvpifdfaif", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PurgeState.COMPLETED, response.status());

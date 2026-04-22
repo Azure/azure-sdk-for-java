@@ -30,9 +30,9 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -40,9 +40,9 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DiagnosticSettingsCategoryResourceInner class.
@@ -69,13 +69,13 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -89,13 +89,13 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -108,40 +108,12 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     }
 
     /**
-     * Set the categoryType property: The type of the diagnostic settings category.
-     * 
-     * @param categoryType the categoryType value to set.
-     * @return the DiagnosticSettingsCategoryResourceInner object itself.
-     */
-    public DiagnosticSettingsCategoryResourceInner withCategoryType(CategoryType categoryType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DiagnosticSettingsCategory();
-        }
-        this.innerProperties().withCategoryType(categoryType);
-        return this;
-    }
-
-    /**
      * Get the categoryGroups property: the collection of what category groups are supported.
      * 
      * @return the categoryGroups value.
      */
     public List<String> categoryGroups() {
         return this.innerProperties() == null ? null : this.innerProperties().categoryGroups();
-    }
-
-    /**
-     * Set the categoryGroups property: the collection of what category groups are supported.
-     * 
-     * @param categoryGroups the categoryGroups value to set.
-     * @return the DiagnosticSettingsCategoryResourceInner object itself.
-     */
-    public DiagnosticSettingsCategoryResourceInner withCategoryGroups(List<String> categoryGroups) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DiagnosticSettingsCategory();
-        }
-        this.innerProperties().withCategoryGroups(categoryGroups);
-        return this;
     }
 
     /**

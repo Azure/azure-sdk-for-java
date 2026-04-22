@@ -564,7 +564,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(generateRandomResourceName("aks", 15))
             .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.31.8")
+            .withVersion("1.32.4")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -578,11 +578,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.31.8", kubernetesCluster.version());
-
-        kubernetesCluster.update().withVersion("1.32.4").apply();
-        kubernetesCluster.refresh();
         Assertions.assertEquals("1.32.4", kubernetesCluster.version());
+
+        kubernetesCluster.update().withVersion("1.33.1").apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals("1.33.1", kubernetesCluster.version());
     }
 
     @Test
@@ -593,7 +593,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(aksName)
             .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.30.3")
+            .withVersion("1.32.4")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()

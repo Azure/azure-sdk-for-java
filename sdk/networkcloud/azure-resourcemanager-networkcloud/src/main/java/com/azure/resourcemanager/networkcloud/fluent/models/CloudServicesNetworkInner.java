@@ -14,6 +14,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkProvisioningState;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptions;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageStatus;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import java.io.IOException;
@@ -24,10 +26,10 @@ import java.util.Map;
  * CloudServicesNetwork represents additional egress information that will be used by associated virtual machines or
  * hybrid AKS clusters.
  * 
- * Upon creation, the additional services that are provided by the platform will be allocated and
- * represented in the status of this resource. All resources associated with this cloud services network will be part
- * of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
- * virtual machines and/or Hybrid AKS clusters.
+ * Upon creation, the additional services that are provided by the platform will be allocated and represented in the
+ * status of this resource. All resources associated with this cloud services network will be part of the same layer 2
+ * (L2) isolation domain. At least one service network must be created but may be reused across many virtual machines
+ * and/or Hybrid AKS clusters.
  */
 @Fluent
 public final class CloudServicesNetworkInner extends Resource {
@@ -293,6 +295,38 @@ public final class CloudServicesNetworkInner extends Resource {
      */
     public CloudServicesNetworkProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    public CloudServicesNetworkStorageOptions storageOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageOptions();
+    }
+
+    /**
+     * Set the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @param storageOptions the storageOptions value to set.
+     * @return the CloudServicesNetworkInner object itself.
+     */
+    public CloudServicesNetworkInner withStorageOptions(CloudServicesNetworkStorageOptions storageOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CloudServicesNetworkProperties();
+        }
+        this.innerProperties().withStorageOptions(storageOptions);
+        return this;
+    }
+
+    /**
+     * Get the storageStatus property: The storage status for the cloud services network.
+     * 
+     * @return the storageStatus value.
+     */
+    public CloudServicesNetworkStorageStatus storageStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageStatus();
     }
 
     /**

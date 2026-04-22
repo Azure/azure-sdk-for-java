@@ -26,9 +26,13 @@ import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerPr
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsBatchMessageConverter;
 import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.integration.channel.DirectChannel;
 import reactor.core.publisher.Mono;
 
@@ -55,12 +59,16 @@ class EventHubsInboundChannelAdapterTests {
     private EventHubsInboundChannelAdapter adapter;
     private EventHubsProcessorFactory processorFactory;
     private EventHubsContainerProperties containerProperties;
+    @Mock
+    private BeanFactory beanFactory;
+    private AutoCloseable closeable;
 
     private static final String CONSUMER_GROUP = "group";
     private static final String EVENT_HUB = "dest";
 
     @BeforeEach
     void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.processorFactory = mock(EventHubsProcessorFactory.class);
         when(processorFactory.createProcessor(eq(EVENT_HUB), eq(CONSUMER_GROUP), isA(EventHubsContainerProperties.class))).thenReturn(mock(EventProcessorClient.class));
 
@@ -70,6 +78,11 @@ class EventHubsInboundChannelAdapterTests {
 
         this.adapter = new EventHubsInboundChannelAdapter(
             new EventHubsMessageListenerContainer(processorFactory, containerProperties));
+    }
+
+    @AfterEach
+    void close() throws Exception {
+        closeable.close();
     }
 
     @Test
@@ -132,6 +145,7 @@ class EventHubsInboundChannelAdapterTests {
 
     @Test
     void setPayloadType() {
+        this.adapter.setBeanFactory(this.beanFactory);
         this.adapter.afterPropertiesSet();
         assertThat(this.adapter).extracting("recordListener").extracting("payloadType").isEqualTo(byte[].class);
         this.adapter.setPayloadType(Long.class);

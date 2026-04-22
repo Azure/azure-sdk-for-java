@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
@@ -12,12 +13,16 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.ResourceLeakDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,10 +38,11 @@ import java.util.Map;
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
 
-    private String globalDatabaseAccountName = null;
+    private volatile String globalDatabaseAccountName = null;
     private final Map<String, String> defaultHeaders;
 
     public ThinClientStoreModel(
@@ -102,48 +108,76 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
-        if (content.readableBytes() == 0) {
+        if (content.refCnt() == 0) {
+            // ByteBuf was already released (e.g., stream RST due to responseTimeout on HTTP/2).
+            // Treat as empty response to avoid IllegalReferenceCountException during decoding.
+            logger.debug("Content ByteBuf already released (refCnt=0) in unwrapToStoreResponse, treating as empty");
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+        }
 
-            content.release();
+        if (content.readableBytes() == 0) {
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
         if (leakDetectionDebuggingEnabled) {
-            content.touch(this);
+            content.touch("ThinClientStoreModel.unwrapToStoreResponse - refCnt: " + content.refCnt());
         }
-        if (RntbdFramer.canDecodeHead(content)) {
 
-            final RntbdResponse response = RntbdResponse.decode(content);
+        try {
+            if (RntbdFramer.canDecodeHead(content)) {
 
-            if (response != null) {
-                ByteBuf payloadBuf = response.getContent();
+                final RntbdResponse response = RntbdResponse.decode(content);
 
-                if (payloadBuf != Unpooled.EMPTY_BUFFER && leakDetectionDebuggingEnabled) {
-                    content.touch(this);
+                if (response != null) {
+                    ByteBuf payloadBuf = response.getContent();
+
+                    if (payloadBuf != Unpooled.EMPTY_BUFFER && leakDetectionDebuggingEnabled) {
+                        payloadBuf.touch("ThinClientStoreModel.after RNTBD decoding - refCnt: " + payloadBuf.refCnt());
+                    }
+
+                    try {
+                        StoreResponse storeResponse = super.unwrapToStoreResponse(
+                            endpoint,
+                            request,
+                            response.getStatus().code(),
+                            new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
+                            payloadBuf
+                        );
+
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                            safeSilentRelease(content);
+                        }
+
+                        return storeResponse;
+                    } catch (Throwable t) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                            safeSilentRelease(content);
+                        }
+
+                        throw t;
+                    }
                 }
 
-                StoreResponse storeResponse = super.unwrapToStoreResponse(
-                    endpoint,
-                    request,
-                    response.getStatus().code(),
-                    new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
-                    payloadBuf
-                );
-
-                if (payloadBuf == Unpooled.EMPTY_BUFFER) {
-                    // means the original RNTBD payload did not have any payload - so, we can release it
-                    content.release();
+                if (content.refCnt() > 0) {
+                    safeSilentRelease(content);
                 }
-
-                return storeResponse;
+                return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
             }
 
-            content.release();
-            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, null);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
+            throw new IllegalStateException("Invalid rntbd response");
+        } catch (Throwable t) {
+            // Ensure container is not leaked on any unexpected path
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
+            throw t;
         }
-
-        content.release();
-        throw new IllegalStateException("Invalid rntbd response");
     }
 
     @Override
@@ -152,12 +186,42 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             && request.requestContext.resolvedPartitionKeyRange == null
             && request.getPartitionKeyRangeIdentity() != null;
     }
+
+    @Override
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        // Ensure partitionKeyDefinition is resolved from the collection cache before
+        // reaching wrapInHttpRequest, which needs it for client-side EPK computation.
+        // This handles cases where clone() or other code paths didn't propagate partitionKeyDefinition.
+        if (request.getPartitionKeyInternal() != null && request.getPartitionKeyDefinition() == null) {
+            RxClientCollectionCache cache = this.getCollectionCache();
+            if (cache != null) {
+                return cache
+                    .resolveCollectionAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        request)
+                    .flatMap(collectionHolder -> {
+                        if (collectionHolder.v != null) {
+                            request.setPartitionKeyDefinition(collectionHolder.v.getPartitionKey());
+                        } else {
+                            throw new NullPointerException(
+                                "Collection cache returned null for request to "
+                                    + request.getResourceAddress()
+                                    + ". Cannot resolve partitionKeyDefinition for client-side EPK computation.");
+                        }
+                        return super.performRequestInternal(request, requestUri);
+                    });
+            }
+        }
+
+        return super.performRequestInternal(request, requestUri);
+    }
+
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {
             this.globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
         }
-        // todo - neharao1 - validate b/w name() v/s toString()
+
         request.setThinclientHeaders(
             request.getOperationType(),
             request.getResourceType(),
@@ -193,18 +257,23 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
+        try {
+            rntbdRequest.encode(byteBuf, true);
 
-        rntbdRequest.encode(byteBuf, true);
+            byte[] contentAsByteArray = ByteBufUtil.getBytes(byteBuf, 0, byteBuf.writerIndex(), false);
 
-        byte[] contentAsByteArray = new byte[byteBuf.writerIndex()];
-        byteBuf.getBytes(0, contentAsByteArray, 0, byteBuf.writerIndex());
-
-        return new HttpRequest(
-            HttpMethod.POST,
-            requestUri,
-            requestUri.getPort(),
-            headers,
-            Flux.just(contentAsByteArray));
+            return new HttpRequest(
+                HttpMethod.POST,
+                requestUri,
+                requestUri.getPort(),
+                headers,
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
+        } finally {
+            if (byteBuf.refCnt() > 0) {
+                safeSilentRelease(byteBuf);
+            }
+        }
     }
 
     @Override

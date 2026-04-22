@@ -52,6 +52,18 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     private final boolean unavailableForMatching;
 
     /*
+     * Router Jobs events Tags
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Router Job events Labels
+     */
+    @Generated
+    private Map<String, String> labels;
+
+    /*
      * Router Job events Queue Id
      */
     @Generated
@@ -73,16 +85,14 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * Creates an instance of AcsRouterJobWaitingForActivationEventData class.
      *
      * @param jobId the jobId value to set.
-     * @param labels the labels value to set.
-     * @param tags the tags value to set.
      * @param priority the priority value to set.
      * @param scheduledOn the scheduledOn value to set.
      * @param unavailableForMatching the unavailableForMatching value to set.
      */
     @Generated
-    private AcsRouterJobWaitingForActivationEventData(String jobId, Map<String, String> labels,
-        Map<String, String> tags, int priority, OffsetDateTime scheduledOn, boolean unavailableForMatching) {
-        super(jobId, labels, tags);
+    private AcsRouterJobWaitingForActivationEventData(String jobId, int priority, OffsetDateTime scheduledOn,
+        boolean unavailableForMatching) {
+        super(jobId);
         this.priority = priority;
         this.scheduledOn = scheduledOn;
         this.unavailableForMatching = unavailableForMatching;
@@ -140,6 +150,28 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     }
 
     /**
+     * Get the tags property: Router Jobs events Tags.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the labels property: Router Job events Labels.
+     *
+     * @return the labels value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getLabels() {
+        return this.labels;
+    }
+
+    /**
      * Get the queueId property: Router Job events Queue Id.
      *
      * @return the queueId value.
@@ -180,8 +212,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("jobId", getJobId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
@@ -248,8 +278,9 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
                 }
             }
             AcsRouterJobWaitingForActivationEventData deserializedAcsRouterJobWaitingForActivationEventData
-                = new AcsRouterJobWaitingForActivationEventData(jobId, labels, tags, priority, scheduledOn,
-                    unavailableForMatching);
+                = new AcsRouterJobWaitingForActivationEventData(jobId, priority, scheduledOn, unavailableForMatching);
+            deserializedAcsRouterJobWaitingForActivationEventData.labels = labels;
+            deserializedAcsRouterJobWaitingForActivationEventData.tags = tags;
             deserializedAcsRouterJobWaitingForActivationEventData.channelReference = channelReference;
             deserializedAcsRouterJobWaitingForActivationEventData.channelId = channelId;
             deserializedAcsRouterJobWaitingForActivationEventData.queueId = queueId;

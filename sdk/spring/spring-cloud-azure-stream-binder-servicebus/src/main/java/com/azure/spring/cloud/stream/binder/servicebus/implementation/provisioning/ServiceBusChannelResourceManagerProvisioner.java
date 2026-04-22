@@ -26,6 +26,7 @@ import static com.azure.spring.cloud.service.servicebus.properties.ServiceBusEnt
 /**
  *
  */
+@SuppressWarnings("deprecation")
 public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 
     private final String namespace;

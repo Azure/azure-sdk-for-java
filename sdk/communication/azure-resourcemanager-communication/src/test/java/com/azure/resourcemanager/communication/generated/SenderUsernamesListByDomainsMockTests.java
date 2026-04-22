@@ -7,8 +7,8 @@ package com.azure.resourcemanager.communication.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.SenderUsernameResource;
@@ -22,19 +22,19 @@ public final class SenderUsernamesListByDomainsMockTests {
     @Test
     public void testListByDomains() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataLocation\":\"tmuwlauwzi\",\"username\":\"xbmp\",\"displayName\":\"jefuzmuvpbttdumo\",\"provisioningState\":\"Succeeded\"},\"id\":\"ebmnzbtbhjpglk\",\"name\":\"gohdneuelfphsd\",\"type\":\"htozfikdow\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataLocation\":\"v\",\"username\":\"tkwqqtchealm\",\"displayName\":\"tdaaygdvwvg\",\"provisioningState\":\"Running\"},\"id\":\"g\",\"name\":\"xrtfudxep\",\"type\":\"gyqagvrvmnpkuk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SenderUsernameResource> response = manager.senderUsernames()
-            .listByDomains("ebxmubyynt", "lrb", "tkoievseotgq", com.azure.core.util.Context.NONE);
+        PagedIterable<SenderUsernameResource> response
+            = manager.senderUsernames().listByDomains("v", "vvcnayr", "yrnxxmueedn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xbmp", response.iterator().next().username());
-        Assertions.assertEquals("jefuzmuvpbttdumo", response.iterator().next().displayName());
+        Assertions.assertEquals("tkwqqtchealm", response.iterator().next().username());
+        Assertions.assertEquals("tdaaygdvwvg", response.iterator().next().displayName());
     }
 }

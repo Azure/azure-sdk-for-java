@@ -10,6 +10,21 @@
 
 ### Other Changes
 
+## 1.16.3 (2026-01-15)
+
+### Bugs Fixed
+
+- Fixed a bug where `CONNECT` timeout wasn't used when connecting to a proxy. ([#47554](https://github.com/Azure/azure-sdk-for-java/pull/47554))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+- Upgraded Reactor Netty from `1.2.10` to `1.2.13`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+- Upgraded Netty dependencies from `4.1.127.Final` to `4.1.130.Final`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+
 ## 1.16.2 (2025-10-06)
 
 ### Bugs Fixed

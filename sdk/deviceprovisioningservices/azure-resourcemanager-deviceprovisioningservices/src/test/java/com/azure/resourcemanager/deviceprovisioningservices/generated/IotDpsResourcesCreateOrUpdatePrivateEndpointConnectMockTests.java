@@ -25,7 +25,7 @@ public final class IotDpsResourcesCreateOrUpdatePrivateEndpointConnectMockTests 
     @Test
     public void testCreateOrUpdatePrivateEndpointConnection() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"pzk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ondjmq\",\"actionsRequired\":\"vypomgkopkwho\"}},\"id\":\"pajqgxysm\",\"name\":\"cmbqfqvmk\",\"type\":\"xozap\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"ox\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"suiizynkedyat\",\"actionsRequired\":\"yhqmibzyhwi\"}},\"id\":\"mypyynpcdpu\",\"name\":\"nzgmwznmabik\",\"type\":\"sorgj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,20 +36,20 @@ public final class IotDpsResourcesCreateOrUpdatePrivateEndpointConnectMockTests 
 
         PrivateEndpointConnection response
             = manager.iotDpsResources()
-                .definePrivateEndpointConnection("yqsluic")
-                .withExistingProvisioningService("mutwuoe", "rpkhjwn")
-                .withProperties(
-                    new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
-                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
-                            .withDescription("lvmbmpaxmodfvuef")
-                            .withActionsRequired("sbpfvmwyhr")))
+                .definePrivateEndpointConnection("iipfpubj")
+                .withExistingProvisioningService("nzar", "wlquuijfqkace")
+                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                        .withDescription("kvpuvksgplsaknyn")
+                        .withActionsRequired("ynl")))
                 .create();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ondjmq", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("vypomgkopkwho",
+        Assertions.assertEquals("suiizynkedyat",
+            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("yhqmibzyhwi",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

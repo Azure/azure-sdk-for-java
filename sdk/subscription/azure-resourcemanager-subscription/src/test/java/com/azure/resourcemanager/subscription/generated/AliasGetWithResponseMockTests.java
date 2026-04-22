@@ -6,12 +6,13 @@ package com.azure.resourcemanager.subscription.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.subscription.SubscriptionManager;
 import com.azure.resourcemanager.subscription.models.ProvisioningState;
-import com.azure.resourcemanager.subscription.models.PutAliasResponse;
+import com.azure.resourcemanager.subscription.models.SubscriptionAliasResponse;
+import com.azure.resourcemanager.subscription.models.Workload;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,17 +23,26 @@ public final class AliasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subscriptionId\":\"eyy\",\"provisioningState\":\"Failed\"},\"id\":\"jbdlwtgrhpdjpju\",\"name\":\"asxazjpqyegualhb\",\"type\":\"xhejjzzvdud\"}";
+            = "{\"properties\":{\"subscriptionId\":\"ryocfsfksymdd\",\"displayName\":\"tki\",\"provisioningState\":\"Failed\",\"acceptOwnershipUrl\":\"qyud\",\"acceptOwnershipState\":\"Expired\",\"billingScope\":\"qn\",\"workload\":\"Production\",\"resellerId\":\"zvyifqrvkdvj\",\"subscriptionOwnerId\":\"lrmv\",\"managementGroupId\":\"f\",\"createdTime\":\"t\",\"tags\":{\"ruwiqzbqjvsov\":\"pulexxbczw\"}},\"id\":\"okacspk\",\"name\":\"lhzdobp\",\"type\":\"jmflbvvnch\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SubscriptionManager manager = SubscriptionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PutAliasResponse response = manager.alias().getWithResponse("f", com.azure.core.util.Context.NONE).getValue();
+        SubscriptionAliasResponse response
+            = manager.alias().getWithResponse("surex", com.azure.core.util.Context.NONE).getValue();
 
+        Assertions.assertEquals("tki", response.properties().displayName());
         Assertions.assertEquals(ProvisioningState.FAILED, response.properties().provisioningState());
+        Assertions.assertEquals("qn", response.properties().billingScope());
+        Assertions.assertEquals(Workload.PRODUCTION, response.properties().workload());
+        Assertions.assertEquals("zvyifqrvkdvj", response.properties().resellerId());
+        Assertions.assertEquals("lrmv", response.properties().subscriptionOwnerId());
+        Assertions.assertEquals("f", response.properties().managementGroupId());
+        Assertions.assertEquals("t", response.properties().createdTime());
+        Assertions.assertEquals("pulexxbczw", response.properties().tags().get("ruwiqzbqjvsov"));
     }
 }

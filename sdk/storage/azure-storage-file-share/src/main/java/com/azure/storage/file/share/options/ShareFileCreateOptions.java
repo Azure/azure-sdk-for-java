@@ -4,9 +4,11 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import java.util.Map;
@@ -25,6 +27,8 @@ public class ShareFileCreateOptions {
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
     private FilePosixProperties posixProperties;
+    private FilePropertySemantics filePropertySemantics;
+    private BinaryData binaryData;
 
     /**
      * Creates a new instance of {@link ShareFileCreateOptions}.
@@ -188,6 +192,56 @@ public class ShareFileCreateOptions {
      */
     public ShareFileCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
         this.posixProperties = posixProperties;
+        return this;
+    }
+
+    /**
+     * Optional, only applicable to SMB files. Gets how attributes and permissions should be set on the file.
+     * New: automatically adds the ARCHIVE file attribute flag to the file and uses Windows create file permissions
+     * semantics (ex: inherit from parent).
+     * Restore: does not modify file attribute flag and uses Windows update file permissions semantics.
+     * If Restore is specified, the file permission must also be provided, otherwise PropertySemantics will default to New.
+     *
+     * @return {@link FilePropertySemantics}
+     */
+    public FilePropertySemantics getFilePropertySemantics() {
+        return filePropertySemantics;
+    }
+
+    /**
+     * Optional, only applicable to SMB files. Sets how attributes and permissions should be set on the file.
+     * New: automatically adds the ARCHIVE file attribute flag to the file and uses Windows create file permissions
+     * semantics (ex: inherit from parent).
+     * Restore: does not modify file attribute flag and uses Windows update file permissions semantics.
+     * If Restore is specified, the file permission must also be provided, otherwise PropertySemantics will default to New.
+     *
+     * @param filePropertySemantics {@link FilePropertySemantics}
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        this.filePropertySemantics = filePropertySemantics;
+        return this;
+    }
+
+    /**
+     * Optional, valid for version 2026-02-06 and later.
+     * Gets the content to upload to the file when it is created. Must be less than or equal to 4 MiB in size.
+     *
+     * @return The {@link BinaryData}.
+     */
+    public BinaryData getData() {
+        return binaryData;
+    }
+
+    /**
+     * Optional, valid for version 2026-02-06 and later.
+     * Sets the content to upload to the file when it is created. Must be less than or equal to 4 MiB in size.
+     *
+     * @param binaryData The {@link BinaryData}.
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setData(BinaryData binaryData) {
+        this.binaryData = binaryData;
         return this;
     }
 }

@@ -101,7 +101,6 @@ public final class RuleEmailAction extends RuleAction {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

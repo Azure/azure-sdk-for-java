@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The operator used to compare the metric value against the threshold.
+ * The operator used to compare the metric value against the threshold. Previously undocumented values might be
+ * returned.
  */
 public final class DynamicThresholdOperator extends ExpandableStringEnum<DynamicThresholdOperator> {
     /**

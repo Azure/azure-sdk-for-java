@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosQueryRequestOptionsBase, ImplementationBridgeHelpers}
+import com.azure.cosmos.implementation.{CosmosQueryRequestOptionsBase, CosmosTransactionalBulkExecutionOptionsImpl, ImplementationBridgeHelpers}
 import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, PriorityLevel}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, ReadConsistencyStrategy, ThroughputControlGroupConfigBuilder}
@@ -21,31 +21,75 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         val container = cacheItem.cosmosClient.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
 
         if (throughputControlConfigOpt.isDefined) {
-            val throughputControlConfig = throughputControlConfigOpt.get
-
-            if (throughputControlConfig.globalControlUseDedicatedContainer) {
-                assert(throughputControlCacheItemOpt.isDefined)
-                val throughputControlCacheItem = throughputControlCacheItemOpt.get
-
-                this.enableGlobalThroughputControlGroup(
-                    userConfig,
-                    cosmosContainerConfig,
-                    container,
-                    cacheItem,
-                    throughputControlCacheItem,
-                    throughputControlConfig)
-            } else {
-                this.enableLocalThroughputControlGroup(
-                    userConfig,
-                    cosmosContainerConfig,
-                    container,
-                    cacheItem,
-                    throughputControlConfig
-                )
-            }
+          throughputControlConfigOpt.get match {
+            case cosmosSDKThroughputControlConfig: CosmosSDKThroughputControlConfig => enableSDKThroughputControl(
+              userConfig,
+              cosmosContainerConfig,
+              cacheItem,
+              container,
+              cosmosSDKThroughputControlConfig,
+              throughputControlCacheItemOpt
+            )
+            case serverThroughputControlConfig: CosmosServerThroughputControlConfig => enableServerThroughputControl(container, serverThroughputControlConfig)
+            case otherConfig => throw new IllegalStateException(s"Throughput control config type ${otherConfig.getClass} is not supported")
+          }
         }
 
         container
+    }
+
+    private def enableSDKThroughputControl(
+                                            userConfig: Map[String, String],
+                                            cosmosContainerConfig: CosmosContainerConfig,
+                                            cacheItem: CosmosClientCacheItem,
+                                            container: CosmosAsyncContainer,
+                                            throughputControlConfig: CosmosSDKThroughputControlConfig,
+                                            throughputControlCacheItemOpt: Option[CosmosClientCacheItem]): Unit = {
+      if (throughputControlConfig.globalControlUseDedicatedContainer) {
+        assert(throughputControlCacheItemOpt.isDefined)
+        val throughputControlCacheItem = throughputControlCacheItemOpt.get
+
+        this.enableGlobalThroughputControlGroup(
+          userConfig,
+          cosmosContainerConfig,
+          container,
+          cacheItem,
+          throughputControlCacheItem,
+          throughputControlConfig)
+      } else {
+        this.enableLocalThroughputControlGroup(
+          userConfig,
+          cosmosContainerConfig,
+          container,
+          cacheItem,
+          throughputControlConfig
+        )
+      }
+    }
+
+    private def enableServerThroughputControl(
+                                               container: CosmosAsyncContainer,
+                                               throughputControlConfig: CosmosServerThroughputControlConfig): Unit = {
+      val groupConfigBuilder =
+        new ThroughputControlGroupConfigBuilder()
+          .groupName(throughputControlConfig.groupName)
+
+      groupConfigBuilder.throughputBucket(throughputControlConfig.throughputBucket)
+
+      if (throughputControlConfig.priorityLevel.isDefined) {
+        groupConfigBuilder.priorityLevel(parsePriorityLevel(throughputControlConfig.priorityLevel.get))
+      }
+
+      container.enableServerThroughputControlGroup(groupConfigBuilder.build())
+    }
+
+    def populateThroughputControlGroupName(
+                                              transactionalBulkExecutionOptions: CosmosTransactionalBulkExecutionOptionsImpl,
+                                              throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
+                                          ): Unit = {
+        if (throughputControlConfigOpt.isDefined) {
+            transactionalBulkExecutionOptions.setThroughputControlGroupName(throughputControlConfigOpt.get.groupName)
+        }
     }
 
     def populateThroughputControlGroupName(
@@ -90,7 +134,7 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                                                       container: CosmosAsyncContainer,
                                                       cacheItem: CosmosClientCacheItem,
                                                       throughputControlCacheItem: CosmosClientCacheItem,
-                                                      throughputControlConfig: CosmosThroughputControlConfig): Unit = {
+                                                      throughputControlConfig: CosmosSDKThroughputControlConfig): Unit = {
         val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
             .groupName(throughputControlConfig.groupName)
 
@@ -140,7 +184,7 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                                           cosmosContainerConfig: CosmosContainerConfig,
                                           container: CosmosAsyncContainer,
                                           cacheItem: CosmosClientCacheItem,
-                                          throughputControlConfig: CosmosThroughputControlConfig): Unit = {
+                                          throughputControlConfig: CosmosSDKThroughputControlConfig): Unit = {
 
         val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
             .groupName(throughputControlConfig.groupName)
@@ -194,22 +238,28 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         val diagnosticConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig)
 
         if (throughputControlConfigOpt.isDefined) {
-            val throughputControlClientConfig =
+          throughputControlConfigOpt.get match {
+            case sdkThroughputControlConfig: CosmosSDKThroughputControlConfig => {
+              val throughputControlClientConfig =
                 CosmosClientConfiguration.apply(
-                  throughputControlConfigOpt.get.cosmosAccountConfig,
+                  sdkThroughputControlConfig.cosmosAccountConfig,
                   diagnosticConfig,
                   ReadConsistencyStrategy.DEFAULT,
                   sparkEnvironmentInfo)
 
-            val throughputControlClientMetadata =
+              val throughputControlClientMetadata =
                 cosmosClientStateHandles match {
-                    case None => None
-                    case Some(_) => cosmosClientStateHandles.get.value.throughputControlClientMetadataCaches
+                  case None => None
+                  case Some(_) => cosmosClientStateHandles.get.value.throughputControlClientMetadataCaches
                 }
-            Some(CosmosClientCache.apply(
+              Some(CosmosClientCache.apply(
                 throughputControlClientConfig,
                 throughputControlClientMetadata,
                 s"ThroughputControl: $calledFrom"))
+            }
+            case _ => None
+          }
+
         } else {
             None
         }

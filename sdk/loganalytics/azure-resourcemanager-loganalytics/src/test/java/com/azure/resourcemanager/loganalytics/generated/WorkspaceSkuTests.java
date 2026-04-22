@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.loganalytics.models.CapacityReservationLevel;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 import org.junit.jupiter.api.Assertions;
@@ -13,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceSku model = BinaryData
-            .fromString("{\"name\":\"Standalone\",\"capacityReservationLevel\":5000,\"lastSkuUpdate\":\"sj\"}")
+        WorkspaceSku model = BinaryData.fromString(
+            "{\"name\":\"CapacityReservation\",\"capacityReservationLevel\":173772181,\"lastSkuUpdate\":\"2020-12-31T22:39:11Z\"}")
             .toObject(WorkspaceSku.class);
-        Assertions.assertEquals(WorkspaceSkuNameEnum.STANDALONE, model.name());
-        Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, model.capacityReservationLevel());
+        Assertions.assertEquals(WorkspaceSkuNameEnum.CAPACITY_RESERVATION, model.name());
+        Assertions.assertEquals(173772181, model.capacityReservationLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceSku model = new WorkspaceSku().withName(WorkspaceSkuNameEnum.STANDALONE)
-            .withCapacityReservationLevel(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO);
+        WorkspaceSku model = new WorkspaceSku().withName(WorkspaceSkuNameEnum.CAPACITY_RESERVATION)
+            .withCapacityReservationLevel(173772181);
         model = BinaryData.fromObject(model).toObject(WorkspaceSku.class);
-        Assertions.assertEquals(WorkspaceSkuNameEnum.STANDALONE, model.name());
-        Assertions.assertEquals(CapacityReservationLevel.FIVE_ZERO_ZERO_ZERO, model.capacityReservationLevel());
+        Assertions.assertEquals(WorkspaceSkuNameEnum.CAPACITY_RESERVATION, model.name());
+        Assertions.assertEquals(173772181, model.capacityReservationLevel());
     }
 }

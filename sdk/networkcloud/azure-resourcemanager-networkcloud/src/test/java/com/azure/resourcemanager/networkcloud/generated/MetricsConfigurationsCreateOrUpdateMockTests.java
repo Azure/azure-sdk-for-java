@@ -25,7 +25,7 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"jqqwmtqsmoxsazu\",\"extendedLocation\":{\"name\":\"ejgwe\",\"type\":\"ywnfyszzaczs\"},\"properties\":{\"collectionInterval\":2399079207304654323,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"ddbboz\",\"disabledMetrics\":[\"rmkjmyitrchwudlx\",\"eihtpmnoejh\",\"lfmsibzoyrfg\",\"kydpmypgfqvmtywh\"],\"enabledMetrics\":[\"xpejpewpy\"],\"provisioningState\":\"Succeeded\"},\"location\":\"ampqcrzgeuq\",\"tags\":{\"kgd\":\"iatwfaujegqdtadr\",\"tnqsktx\":\"hjkrukizyhgs\",\"iwdhdmncgbfzu\":\"fpjbqggwe\",\"mlhxdfbklcii\":\"cstu\"},\"id\":\"hgjsysmvxo\",\"name\":\"gwxfkzsi\",\"type\":\"cuvbdujgcwxvec\"}";
+            = "{\"etag\":\"xsdpla\",\"extendedLocation\":{\"name\":\"mydmhweqjfyxydgt\",\"type\":\"kvqb\"},\"properties\":{\"collectionInterval\":453336181139262277,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"zpvxak\",\"disabledMetrics\":[\"p\",\"esrfgamqiydvx\"],\"enabledMetrics\":[\"hyhgo\"],\"provisioningState\":\"Succeeded\"},\"location\":\"yqyxyjrcbqpbis\",\"tags\":{\"o\":\"q\",\"fwjlof\":\"tdahneaoovtyjzti\"},\"id\":\"ekfsrm\",\"name\":\"uklajvcfoc\",\"type\":\"hapejov\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,23 +35,23 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .define("tbfjtdyotnplf")
-            .withRegion("qjoghdsai")
-            .withExistingCluster("uwhldxwhieproqks", "fxmcvprstvk")
-            .withExtendedLocation(new ExtendedLocation().withName("rhutf").withType("oadtxopgehpadkmd"))
-            .withCollectionInterval(4141296414546241521L)
-            .withTags(mapOf("xxurntujmoilunwe", "normov"))
-            .withEnabledMetrics(Arrays.asList("xxc"))
-            .withIfMatch("xvgjbfi")
-            .withIfNoneMatch("bpnjodf")
+            .define("dwxmda")
+            .withRegion("pwfkc")
+            .withExistingCluster("dgfttmd", "fgeoagfuoftnx")
+            .withExtendedLocation(new ExtendedLocation().withName("vmdmzenlr").withType("tgfczljdncidtjva"))
+            .withCollectionInterval(7260754244675782444L)
+            .withTags(mapOf("avcpfpdofuckclbt", "u"))
+            .withEnabledMetrics(Arrays.asList("ejidbdqzsq", "nycwz", "lv", "wsnmrkkyjt"))
+            .withIfMatch("wpdkktpmbmxbmb")
+            .withIfNoneMatch("wgzzxljb")
             .create();
 
-        Assertions.assertEquals("ampqcrzgeuq", response.location());
-        Assertions.assertEquals("iatwfaujegqdtadr", response.tags().get("kgd"));
-        Assertions.assertEquals("ejgwe", response.extendedLocation().name());
-        Assertions.assertEquals("ywnfyszzaczs", response.extendedLocation().type());
-        Assertions.assertEquals(2399079207304654323L, response.collectionInterval());
-        Assertions.assertEquals("xpejpewpy", response.enabledMetrics().get(0));
+        Assertions.assertEquals("yqyxyjrcbqpbis", response.location());
+        Assertions.assertEquals("q", response.tags().get("o"));
+        Assertions.assertEquals("mydmhweqjfyxydgt", response.extendedLocation().name());
+        Assertions.assertEquals("kvqb", response.extendedLocation().type());
+        Assertions.assertEquals(453336181139262277L, response.collectionInterval());
+        Assertions.assertEquals("hyhgo", response.enabledMetrics().get(0));
     }
 
     // Use "Map.of" if available

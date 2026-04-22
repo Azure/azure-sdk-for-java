@@ -13,6 +13,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
@@ -26,6 +27,7 @@ import java.util.Collections;
  */
 public class QueueTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
+    protected static final TestDataFactory DATA = TestDataFactory.getInstance();
 
     protected String prefix;
 
@@ -88,7 +90,7 @@ public class QueueTestBase extends TestProxyTestBase {
         return getOAuthServiceClientBuilder().buildClient();
     }
 
-    protected QueueServiceAsyncClient getOAuthQueueAsyncServiceClient() {
+    protected QueueServiceAsyncClient getOAuthQueueServiceAsyncClient() {
         return getOAuthServiceClientBuilder().buildAsyncClient();
     }
 
@@ -144,5 +146,27 @@ public class QueueTestBase extends TestProxyTestBase {
 
     protected String getPrimaryConnectionString() {
         return ENVIRONMENT.getPrimaryAccount().getConnectionString();
+    }
+
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+
+        // Try up to 4 times
+        while (retry < 4) {
+            try {
+                runnable.run();
+                return; // success
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+        // Final attempt (5th try)
+        runnable.run();
     }
 }

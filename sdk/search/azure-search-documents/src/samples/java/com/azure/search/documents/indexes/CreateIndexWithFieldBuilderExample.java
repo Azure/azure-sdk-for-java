@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -31,13 +30,12 @@ public class CreateIndexWithFieldBuilderExample {
             .buildClient();
 
         // Use the SearchIndexClient to create SearchFields from your own model that has fields or methods annotated
-        // with @SimpleField or @SearchableField.
-        List<SearchField> indexFields = SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions());
+        // with @BasicField or @ComplexField.
+        List<SearchField> indexFields = SearchIndexClient.buildSearchFields(Hotel.class);
+        indexFields.add(
+            new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true).setFilterable(true).setSortable(true));
         String indexName = "hotels";
-        List<SearchField> searchFieldList = new ArrayList<>();
-        searchFieldList.add(
-            new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true).setFilterable(true).setSortable(true));
-        SearchIndex newIndex = new SearchIndex(indexName, indexFields).setFields(searchFieldList);
+        SearchIndex newIndex = new SearchIndex(indexName, indexFields);
         // Create index.
         client.createIndex(newIndex);
         // Cleanup index resource.
@@ -48,22 +46,25 @@ public class CreateIndexWithFieldBuilderExample {
      * A hotel.
      */
     public static final class Hotel {
-        @SimpleField(isKey = true, isFilterable = true, isSortable = true)
         private final String hotelId;
 
-        @SearchableField(isFilterable = true, isSortable = true)
+        @BasicField(
+            name = "HotelName",
+            isSearchable = BasicField.BooleanHelper.TRUE,
+            isSortable = BasicField.BooleanHelper.TRUE)
         private String hotelName;
 
-        @SearchableField(analyzerName = "en.lucene")
+        @BasicField(name = "Description", isSearchable = BasicField.BooleanHelper.TRUE)
         private String description;
 
-        @SearchableField(analyzerName = "fr.lucene")
+        @BasicField(name = "DescriptionFr")
         private String descriptionFr;
 
-        @SearchableField(isFilterable = true, isFacetable = true)
+        @BasicField(
+            name = "Tags", isFacetable = BasicField.BooleanHelper.TRUE, isFilterable = BasicField.BooleanHelper.TRUE)
         private List<String> tags;
 
-        // Complex fields are included automatically in an index if not ignored.
+        @ComplexField(name = "Address")
         private Address address;
 
         /**
@@ -189,23 +190,27 @@ public class CreateIndexWithFieldBuilderExample {
      * An address.
      */
     public static final class Address {
-        @SearchableField
+        @BasicField(name = "StreetAddress")
         private String streetAddress;
 
-        @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
+        @BasicField(
+            name = "City", isFacetable = BasicField.BooleanHelper.TRUE, isFilterable = BasicField.BooleanHelper.TRUE)
         private String city;
 
-        @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
+        @BasicField(
+            name = "StateProvince",
+            isFacetable = BasicField.BooleanHelper.TRUE,
+            isFilterable = BasicField.BooleanHelper.TRUE)
         private String stateProvince;
 
-        @SearchableField(
-            synonymMapNames = { "synonymMapName" },
-            isFilterable = true,
-            isSortable = true,
-            isFacetable = true)
+        @BasicField(
+            name = "Country", isFacetable = BasicField.BooleanHelper.TRUE, isFilterable = BasicField.BooleanHelper.TRUE)
         private String country;
 
-        @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
+        @BasicField(
+            name = "PostalCode",
+            isFacetable = BasicField.BooleanHelper.TRUE,
+            isFilterable = BasicField.BooleanHelper.TRUE)
         private String postalCode;
 
         /**

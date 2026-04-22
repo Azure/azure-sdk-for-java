@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.data.repository.query.Parameter;
-import org.springframework.data.util.TypeInformation;
+import org.springframework.data.core.TypeInformation;
 
 /**
  * A single cosmos parameter of a query method.

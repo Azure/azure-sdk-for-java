@@ -10,7 +10,7 @@ import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.spring.cloud.autoconfigure.implementation.redis.properties.AzureRedisProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.data.redis.core.RedisOperations;
@@ -105,15 +105,15 @@ class AzureRedisAutoConfigurationTests {
                     assertThat(azureRedisProperties.getName()).isEqualTo("redis");
                     assertThat(azureRedisProperties.getResource().getResourceGroup()).isEqualTo("rg");
 
-                    assertThat(context).hasSingleBean(RedisProperties.class);
-                    RedisProperties redisProperties = context.getBean(RedisProperties.class);
+                    assertThat(context).hasSingleBean(DataRedisProperties.class);
+                    DataRedisProperties redisProperties = context.getBean(DataRedisProperties.class);
                     assertThat(redisProperties.getPassword()).isEqualTo(KEY);
                     assertThat(redisProperties.getHost()).isEqualTo(HOST);
                     assertThat(redisProperties.getPort()).isEqualTo(PORT);
-                    Method isSsl = ReflectionUtils.findMethod(RedisProperties.class, "isSsl");
+                    Method isSsl = ReflectionUtils.findMethod(DataRedisProperties.class, "isSsl");
                     if (isSsl == null) {
-                        Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
-                        Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
+                        Object ssl = ReflectionUtils.findMethod(DataRedisProperties.class, "getSsl").invoke(redisProperties);
+                        Class<?>[] innerClasses = DataRedisProperties.class.getDeclaredClasses();
                         Class<?> targetInnerClass = null;
                         for (Class<?> innerClass : innerClasses) {
                             if (innerClass.getSimpleName().equals("Ssl")) {

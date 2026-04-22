@@ -60,21 +60,17 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
     $xmlPomFile.Load($file.FullName)
     $library = $xmlPomFile.project.groupId + ":" + $xmlPomFile.project.artifactId
     $serviceDirectory = (Get-Item $file).Directory.Parent
-    # This if check is only necessary because resourcemanager and resourcemanagerhybrid contain the
-    # exact same group/artifact ids
-    if ($file.FullName.Split([IO.Path]::DirectorySeparatorChar) -notcontains "resourcemanagerhybrid") {
-        # The directories for sparse checkout and ServiceDirectories need the $SourcesDirectory
-        # stripped off
-        $tempDir = $serviceDirectory.FullName.Replace("$SourcesDirectory", "")
-        $tempDir = $tempDir.Replace([IO.Path]::DirectorySeparatorChar, '/')
-        $sparseCheckoutDirHash.Add($library, $tempDir)
-        if ($tempDir.StartsWith("/sdk/")) {
-            # Strip off the "/sdk/" to get the service directory. A ServiceDirectory will always have
-            # the format of /SDK/<ServiceDirectory>. Whereas sparse checkout can have other directories
-            # outside of /SDK, eg. /common
-            $tempDir = $tempDir.Replace("/sdk/", "")
-            $serviceDirHash.Add($library, $tempDir)
-        }
+    # The directories for sparse checkout and ServiceDirectories need the $SourcesDirectory
+    # stripped off
+    $tempDir = $serviceDirectory.FullName.Replace("$SourcesDirectory", "")
+    $tempDir = $tempDir.Replace([IO.Path]::DirectorySeparatorChar, '/')
+    $sparseCheckoutDirHash.Add($library, $tempDir)
+    if ($tempDir.StartsWith("/sdk/")) {
+        # Strip off the "/sdk/" to get the service directory. A ServiceDirectory will always have
+        # the format of /SDK/<ServiceDirectory>. Whereas sparse checkout can have other directories
+        # outside of /SDK, eg. /common
+        $tempDir = $tempDir.Replace("/sdk/", "")
+        $serviceDirHash.Add($library, $tempDir)
     }
 }
 
@@ -91,13 +87,7 @@ foreach ($project in $ProjectList) {
     }
 }
 
-# This is sad. Because resourcemanager and resourcemanagerhybrid contain the some of the same
-# artifacts and we don't know which one is actually needed, if resourcemanager is in the list
-# then add resourcemanagerhybrid.
 Write-Host "sparseCheckoutDirectories=$sparseCheckoutDirectories"
-if ($sparseCheckoutDirectories.Contains("/sdk/resourcemanager")) {
-    $sparseCheckoutDirectories += "/sdk/resourcemanagerhybrid"
-}
 
 # Unreleased_ libraries are special. They're the only case, outside of FromSource runs where
 # libraries from other service directories, outside of the one we're building, need to get built.

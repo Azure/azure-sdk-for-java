@@ -19,12 +19,12 @@ import java.util.Map;
 @Fluent
 public final class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
     /*
-     * specifies the type of the alert criteria.
+     * Specifies the type of the alert criteria. Previously undocumented values might be returned
      */
     private Odatatype odataType = Odatatype.MICROSOFT_AZURE_MONITOR_MULTIPLE_RESOURCE_MULTIPLE_METRIC_CRITERIA;
 
     /*
-     * the list of multiple metric criteria for this 'all of' operation.
+     * The list of multiple metric criteria for this 'all of' operation.
      */
     private List<MultiMetricCriteria> allOf;
 
@@ -35,7 +35,8 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     }
 
     /**
-     * Get the odataType property: specifies the type of the alert criteria.
+     * Get the odataType property: Specifies the type of the alert criteria. Previously undocumented values might be
+     * returned.
      * 
      * @return the odataType value.
      */
@@ -45,7 +46,7 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     }
 
     /**
-     * Get the allOf property: the list of multiple metric criteria for this 'all of' operation.
+     * Get the allOf property: The list of multiple metric criteria for this 'all of' operation.
      * 
      * @return the allOf value.
      */
@@ -54,7 +55,7 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     }
 
     /**
-     * Set the allOf property: the list of multiple metric criteria for this 'all of' operation.
+     * Set the allOf property: The list of multiple metric criteria for this 'all of' operation.
      * 
      * @param allOf the allOf value to set.
      * @return the MetricAlertMultipleResourceMultipleMetricCriteria object itself.
@@ -71,7 +72,6 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
      */
     @Override
     public void validate() {
-        super.validate();
         if (allOf() != null) {
             allOf().forEach(e -> e.validate());
         }

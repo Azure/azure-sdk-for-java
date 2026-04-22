@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class AkriConnectorGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/AkriConnector_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/AkriConnector_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_Get_MaximumSet.

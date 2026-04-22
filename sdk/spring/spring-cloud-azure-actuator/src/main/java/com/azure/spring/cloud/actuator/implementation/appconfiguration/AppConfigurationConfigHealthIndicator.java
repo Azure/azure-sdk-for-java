@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.actuator.implementation.appconfiguration;
 
-import org.springframework.boot.actuate.health.AbstractHealthIndicator;
-import org.springframework.boot.actuate.health.Health.Builder;
+import org.springframework.boot.health.contributor.AbstractHealthIndicator;
+import org.springframework.boot.health.contributor.Health.Builder;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;

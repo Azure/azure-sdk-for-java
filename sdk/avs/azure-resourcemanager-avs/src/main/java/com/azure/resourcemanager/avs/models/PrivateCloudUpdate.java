@@ -284,6 +284,23 @@ public final class PrivateCloudUpdate implements JsonSerializable<PrivateCloudUp
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

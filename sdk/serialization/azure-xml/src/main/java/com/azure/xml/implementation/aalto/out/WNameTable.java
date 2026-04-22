@@ -24,7 +24,7 @@ import com.azure.xml.implementation.aalto.util.NameTable;
  * This is a symbol table implementation used for storing byte-based
  * <code>WName</code>s.
  */
-public final class WNameTable extends NameTable {
+public final class WNameTable implements NameTable {
     final static int MIN_HASH_SIZE = 16;
 
     final static int INITIAL_COLLISION_LEN = 32;

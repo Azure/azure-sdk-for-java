@@ -68,6 +68,13 @@ public interface ContainerServiceFleetManagementClient {
     FleetMembersClient getFleetMembers();
 
     /**
+     * Gets the FleetManagedNamespacesClient object to access its operations.
+     * 
+     * @return the FleetManagedNamespacesClient object.
+     */
+    FleetManagedNamespacesClient getFleetManagedNamespaces();
+
+    /**
      * Gets the GatesClient object to access its operations.
      * 
      * @return the GatesClient object.

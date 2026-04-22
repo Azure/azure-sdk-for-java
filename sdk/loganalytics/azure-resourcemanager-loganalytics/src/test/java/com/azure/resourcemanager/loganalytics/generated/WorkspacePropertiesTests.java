@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceProperties;
-import com.azure.resourcemanager.loganalytics.models.CapacityReservationLevel;
 import com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceFailoverProperties;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceReplicationProperties;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 import java.util.HashMap;
@@ -20,54 +23,63 @@ public final class WorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"ProvisioningAccount\",\"customerId\":\"ijnhyjsvfycxzbf\",\"sku\":{\"name\":\"LACluster\",\"capacityReservationLevel\":2000,\"lastSkuUpdate\":\"vmtgjqppy\"},\"retentionInDays\":768184156,\"workspaceCapping\":{\"dailyQuotaGb\":15.525265144439715,\"quotaNextResetTime\":\"yhgfipnsx\",\"dataIngestionStatus\":\"ForceOff\"},\"createdDate\":\"a\",\"modifiedDate\":\"rrjreafxtsgu\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":false,\"privateLinkScopedResources\":[{\"resourceId\":\"slol\",\"scopeId\":\"pvuzlmv\"},{\"resourceId\":\"lfktgplcrpwjxe\",\"scopeId\":\"oi\"},{\"resourceId\":\"rnjwmw\",\"scopeId\":\"nbsazejjoqkag\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"zxnfaaz\",\"disableLocalAuth\":false,\"\":{\"ou\":\"datakdmkqjjlwuenvrkp\"}},\"defaultDataCollectionRuleResourceId\":\"bre\"}")
+            "{\"provisioningState\":\"Deleting\",\"customerId\":\"v\",\"sku\":{\"name\":\"PerNode\",\"capacityReservationLevel\":1036527354,\"lastSkuUpdate\":\"2021-03-30T03:00:35Z\"},\"retentionInDays\":1960555856,\"workspaceCapping\":{\"dailyQuotaGb\":74.87413920302748,\"quotaNextResetTime\":\"uljltduceamtmcz\",\"dataIngestionStatus\":\"RespectQuota\"},\"createdDate\":\"2021-10-02T15:37:14Z\",\"modifiedDate\":\"2021-01-27T20:06:14Z\",\"publicNetworkAccessForIngestion\":\"SecuredByPerimeter\",\"publicNetworkAccessForQuery\":\"Disabled\",\"forceCmkForQuery\":true,\"privateLinkScopedResources\":[{\"resourceId\":\"xmojmsvpkjp\",\"scopeId\":\"kwcf\"},{\"resourceId\":\"ljyxgtczhe\",\"scopeId\":\"bsdshmkxmaehvbbx\"}],\"features\":{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"tbaxk\",\"disableLocalAuth\":false,\"unifiedSentinelBillingOnly\":false,\"associations\":[\"pyklyhpluodpvru\",\"dlgzibthostgkt\"],\"lhpl\":\"datadxeclzedqbcvh\",\"lkxt\":\"datadqkdlwwqfbu\"},\"defaultDataCollectionRuleResourceId\":\"jfsmlmbtxhwgfwsr\",\"replication\":{\"location\":\"coezbrhubskh\",\"enabled\":false,\"provisioningState\":\"Succeeded\",\"createdDate\":\"2021-02-04T04:44:46Z\",\"lastModifiedDate\":\"2021-10-06T17:04:50Z\"},\"failover\":{\"state\":\"Failed\",\"lastModifiedDate\":\"2021-07-12T13:05:01Z\"}}")
             .toObject(WorkspaceProperties.class);
-        Assertions.assertEquals(WorkspaceSkuNameEnum.LACLUSTER, model.sku().name());
-        Assertions.assertEquals(CapacityReservationLevel.TWO_ZERO_ZERO_ZERO, model.sku().capacityReservationLevel());
-        Assertions.assertEquals(768184156, model.retentionInDays());
-        Assertions.assertEquals(15.525265144439715D, model.workspaceCapping().dailyQuotaGb());
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.publicNetworkAccessForIngestion());
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccessForQuery());
-        Assertions.assertEquals(false, model.forceCmkForQuery());
-        Assertions.assertEquals(true, model.features().enableDataExport());
-        Assertions.assertEquals(true, model.features().immediatePurgeDataOn30Days());
-        Assertions.assertEquals(false, model.features().enableLogAccessUsingOnlyResourcePermissions());
-        Assertions.assertEquals("zxnfaaz", model.features().clusterResourceId());
-        Assertions.assertEquals(false, model.features().disableLocalAuth());
-        Assertions.assertEquals("bre", model.defaultDataCollectionRuleResourceId());
+        Assertions.assertEquals(WorkspaceSkuNameEnum.PER_NODE, model.sku().name());
+        Assertions.assertEquals(1036527354, model.sku().capacityReservationLevel());
+        Assertions.assertEquals(1960555856, model.retentionInDays());
+        Assertions.assertEquals(74.87413920302748D, model.workspaceCapping().dailyQuotaGb());
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.publicNetworkAccessForIngestion());
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.publicNetworkAccessForQuery());
+        Assertions.assertTrue(model.forceCmkForQuery());
+        Assertions.assertTrue(model.features().enableDataExport());
+        Assertions.assertTrue(model.features().immediatePurgeDataOn30Days());
+        Assertions.assertFalse(model.features().enableLogAccessUsingOnlyResourcePermissions());
+        Assertions.assertEquals("tbaxk", model.features().clusterResourceId());
+        Assertions.assertFalse(model.features().disableLocalAuth());
+        Assertions.assertEquals("jfsmlmbtxhwgfwsr", model.defaultDataCollectionRuleResourceId());
+        Assertions.assertEquals("coezbrhubskh", model.replication().location());
+        Assertions.assertFalse(model.replication().enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceProperties model = new WorkspaceProperties()
-            .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.LACLUSTER)
-                .withCapacityReservationLevel(CapacityReservationLevel.TWO_ZERO_ZERO_ZERO))
-            .withRetentionInDays(768184156)
-            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(15.525265144439715D))
-            .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
-            .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
-            .withForceCmkForQuery(false)
-            .withFeatures(new WorkspaceFeatures().withEnableDataExport(true)
-                .withImmediatePurgeDataOn30Days(true)
-                .withEnableLogAccessUsingOnlyResourcePermissions(false)
-                .withClusterResourceId("zxnfaaz")
-                .withDisableLocalAuth(false)
-                .withAdditionalProperties(mapOf()))
-            .withDefaultDataCollectionRuleResourceId("bre");
+        WorkspaceProperties model
+            = new WorkspaceProperties()
+                .withSku(
+                    new WorkspaceSku().withName(WorkspaceSkuNameEnum.PER_NODE).withCapacityReservationLevel(1036527354))
+                .withRetentionInDays(1960555856)
+                .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(74.87413920302748D))
+                .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.SECURED_BY_PERIMETER)
+                .withPublicNetworkAccessForQuery(PublicNetworkAccessType.DISABLED)
+                .withForceCmkForQuery(true)
+                .withFeatures(new WorkspaceFeatures().withEnableDataExport(true)
+                    .withImmediatePurgeDataOn30Days(true)
+                    .withEnableLogAccessUsingOnlyResourcePermissions(false)
+                    .withClusterResourceId("tbaxk")
+                    .withDisableLocalAuth(false)
+                    .withAdditionalProperties(mapOf("associations", JacksonAdapter.createDefaultSerializerAdapter()
+                        .deserialize("[\"pyklyhpluodpvru\",\"dlgzibthostgkt\"]", Object.class, SerializerEncoding.JSON),
+                        "lkxt", "datadqkdlwwqfbu", "lhpl", "datadxeclzedqbcvh", "unifiedSentinelBillingOnly", false)))
+                .withDefaultDataCollectionRuleResourceId("jfsmlmbtxhwgfwsr")
+                .withReplication(new WorkspaceReplicationProperties().withLocation("coezbrhubskh").withEnabled(false))
+                .withFailover(new WorkspaceFailoverProperties());
         model = BinaryData.fromObject(model).toObject(WorkspaceProperties.class);
-        Assertions.assertEquals(WorkspaceSkuNameEnum.LACLUSTER, model.sku().name());
-        Assertions.assertEquals(CapacityReservationLevel.TWO_ZERO_ZERO_ZERO, model.sku().capacityReservationLevel());
-        Assertions.assertEquals(768184156, model.retentionInDays());
-        Assertions.assertEquals(15.525265144439715D, model.workspaceCapping().dailyQuotaGb());
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.publicNetworkAccessForIngestion());
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccessForQuery());
-        Assertions.assertEquals(false, model.forceCmkForQuery());
-        Assertions.assertEquals(true, model.features().enableDataExport());
-        Assertions.assertEquals(true, model.features().immediatePurgeDataOn30Days());
-        Assertions.assertEquals(false, model.features().enableLogAccessUsingOnlyResourcePermissions());
-        Assertions.assertEquals("zxnfaaz", model.features().clusterResourceId());
-        Assertions.assertEquals(false, model.features().disableLocalAuth());
-        Assertions.assertEquals("bre", model.defaultDataCollectionRuleResourceId());
+        Assertions.assertEquals(WorkspaceSkuNameEnum.PER_NODE, model.sku().name());
+        Assertions.assertEquals(1036527354, model.sku().capacityReservationLevel());
+        Assertions.assertEquals(1960555856, model.retentionInDays());
+        Assertions.assertEquals(74.87413920302748D, model.workspaceCapping().dailyQuotaGb());
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.publicNetworkAccessForIngestion());
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.publicNetworkAccessForQuery());
+        Assertions.assertTrue(model.forceCmkForQuery());
+        Assertions.assertTrue(model.features().enableDataExport());
+        Assertions.assertTrue(model.features().immediatePurgeDataOn30Days());
+        Assertions.assertFalse(model.features().enableLogAccessUsingOnlyResourcePermissions());
+        Assertions.assertEquals("tbaxk", model.features().clusterResourceId());
+        Assertions.assertFalse(model.features().disableLocalAuth());
+        Assertions.assertEquals("jfsmlmbtxhwgfwsr", model.defaultDataCollectionRuleResourceId());
+        Assertions.assertEquals("coezbrhubskh", model.replication().location());
+        Assertions.assertFalse(model.replication().enabled());
     }
 
     // Use "Map.of" if available

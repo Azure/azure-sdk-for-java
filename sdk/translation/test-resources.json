@@ -82,7 +82,7 @@
       },
       "kind": "TextTranslation",
       "identity": {
-          "type": "SystemAssigned"
+        "type": "SystemAssigned"
       },
       "properties": {
         "customSubDomainName": "[variables('uniqueSubDomainName')]"
@@ -99,7 +99,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2019-04-01",
       "name": "[variables('storageAccountName')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -112,8 +112,7 @@
         "supportsHttpsTrafficOnly": true,
         "allowSharedKeyAccess": false,
         "encryption": "[variables('encryption')]",
-        "accessTier": "Hot",
-        "minimumTlsVersion": "TLS1_2"
+        "accessTier": "Hot"
       }
     },
     {
@@ -133,38 +132,65 @@
     },
     {
       "type": "Microsoft.CognitiveServices/accounts",
-      "apiVersion": "2017-04-18",
+      "apiVersion": "2023-05-01",
       "name": "[variables('txtUniqueSubDomainName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "S1"
+        "name": "S0"
       },
-      "kind": "TextTranslation",
+      "kind": "AIServices",
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "properties": {
-        "customSubDomainName": "[variables('txtUniqueSubDomainName')]"
-      }
+        "customSubDomainName": "[variables('txtUniqueSubDomainName')]",
+        "publicNetworkAccess": "Enabled"
+      },
+      "resources": [
+        {
+          "type": "deployments",
+          "apiVersion": "2023-05-01",
+          "name": "gpt-4o-mini",
+          "dependsOn": [
+            "[resourceId('Microsoft.CognitiveServices/accounts', variables('txtUniqueSubDomainName'))]"
+          ],
+          "sku": {
+            "name": "Standard",
+            "capacity": 10
+          },
+          "properties": {
+            "model": {
+              "format": "OpenAI",
+              "name": "gpt-4o-mini",
+              "version": "2024-07-18"
+            },
+            "versionUpgradeOption": "OnceNewDefaultVersionAvailable"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(concat('foundryUserRoleId', resourceGroup().id))]",
+      "properties": {
+        "roleDefinitionId": "[variables('roleDefinitionId')]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('txtUniqueSubDomainName')), '2023-05-01', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('txtUniqueSubDomainName'))]"
+      ]
     }
   ],
   "outputs": {
-    "DOCUMENT_TRANSLATION_API_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('uniqueSubDomainName')), '2017-04-18').key1]"
-    },
-    "DOCUMENT_TRANSLATION_ENDPOINT": {
-      "type": "string",
-      "value": "[variables('endpointValue')]"
-    },
-    "DOCUMENT_TRANSLATION_STORAGE_NAME": {
-      "type": "string",
-      "value": "[variables('storageAccountName')]"
-    },
-    "TEXT_TRANSLATION_API_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('txtUniqueSubDomainName')), '2017-04-18').key1]"
-    },
     "TEXT_TRANSLATION_ENDPOINT": {
       "type": "string",
       "value": "[variables('txtEndpointValue')]"
+    },
+    "TEXT_TRANSLATION_API_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('txtUniqueSubDomainName')), '2023-05-01').key1]"
     },
     "TEXT_TRANSLATION_CUSTOM_ENDPOINT": {
       "type": "string",
@@ -174,9 +200,29 @@
       "type": "string",
       "value": "[variables('txtRegionValue')]"
     },
+    "DOCUMENT_TRANSLATION_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('endpointValue')]"
+    },
+    "DOCUMENT_TRANSLATION_API_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('uniqueSubDomainName')), '2017-04-18').key1]"
+    },
+    "DOCUMENT_TRANSLATION_STORAGE_NAME": {
+      "type": "string",
+      "value": "[variables('storageAccountName')]"
+    },
     "TEXT_TRANSLATION_TOKEN_URL": {
       "type": "string",
       "value": "[variables('tokenURLValue')]"
+    },
+    "TEXT_TRANSLATION_AAD_REGION": {
+      "type": "string",
+      "value": "[variables('txtRegionValue')]"
+    },
+    "TEXT_TRANSLATION_AAD_RESOURCE_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.CognitiveServices/accounts', variables('txtUniqueSubDomainName'))]"
     }
   }
 }

@@ -20,7 +20,7 @@ import java.time.Duration
 import java.util.UUID
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
-import scala.jdk.CollectionConverters.asScalaBufferConverter
+import scala.jdk.CollectionConverters._
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
@@ -248,7 +248,6 @@ class SparkE2EChangeFeedITest
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
     CosmosClientMetrics.meterRegistry.isDefined shouldEqual true
-    val meterRegistry = CosmosClientMetrics.meterRegistry.get
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val sinkContainerName = cosmosClient
@@ -535,8 +534,10 @@ class SparkE2EChangeFeedITest
 
     val collectedFrame = groupedFrame.collect()
     collectedFrame.foreach(row => {
-      val wrappedArray = row.get(1).asInstanceOf[mutable.WrappedArray[String]]
-      val array = wrappedArray.array
+      val array = row.get(1) match {
+        case seq: Seq[String] => seq.toArray
+        case _ => throw new IllegalArgumentException("Unexpected type of array")
+      }
       row.get(0) match {
         case "create" =>
           validateArraysUnordered(createdObjectIds, array)
@@ -859,7 +860,7 @@ class SparkE2EChangeFeedITest
     hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileBackupLocation))
     hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
 
-    var remainingFromLastBatchOfTen = 10;
+    var remainingFromLastBatchOfTen = 10
     while(remainingFromLastBatchOfTen > 0) {
       hdfs.copyToLocalFile(true, new Path(startOffsetFileBackupLocation), new Path(startOffsetFileLocation))
       hdfs.delete(new Path(latestOffsetFileLocation), true)

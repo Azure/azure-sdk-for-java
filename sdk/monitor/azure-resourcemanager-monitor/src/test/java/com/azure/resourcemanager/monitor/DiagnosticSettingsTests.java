@@ -8,8 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
@@ -23,6 +21,7 @@ import com.azure.resourcemanager.resources.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -55,7 +54,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     public void canCRUDDiagnosticSettings() {
 
         // make sure there exists a VM
-        Region region = Region.US_WEST;
+        Region region = Region.US_WEST3;
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
         VirtualMachine vm = ensureVM(region, resourceGroup, vmName, "10.0.0.0/28");
@@ -73,18 +72,21 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(vm.region())
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
-        EventHubNamespace namespace = eventHubManager.namespaces()
-            .define(ehName)
-            // EventHub should be in the same region as resource
-            .withRegion(vm.region())
-            .withNewResourceGroup(rgName)
-            .withNewManageRule("mngRule1")
-            .withNewSendRule("sndRule1")
-            .create();
+        // TODO(v-huizhu2): This request was denied due to internal policy. Local authentication methods are not allowed
+        // Will add back when local authentication is supported.
+        // EventHubNamespace namespace = eventHubManager.namespaces()
+        //     .define(ehName)
+        //     // EventHub should be in the same region as resource
+        //     .withRegion(vm.region())
+        //     .withNewResourceGroup(rgName)
+        //     .withNewManageRule("mngRule1")
+        //     .withNewSendRule("sndRule1")
+        //     .create();
 
-        EventHubNamespaceAuthorizationRule evenHubNsRule = namespace.listAuthorizationRules().iterator().next();
+        // EventHubNamespaceAuthorizationRule evenHubNsRule = namespace.listAuthorizationRules().iterator().next();
 
         List<DiagnosticSettingsCategory> categories
             = monitorManager.diagnosticSettings().listCategoriesByResource(vm.id());
@@ -96,23 +98,25 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .define(dsName)
             .withResource(vm.id())
             .withStorageAccount(sa.id())
-            .withEventHub(evenHubNsRule.id())
-            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            // .withEventHub(evenHubNsRule.id())
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 0)
             .create();
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
         assertResourceIdEquals(sa.id(), setting.storageAccountId());
-        assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
+        // assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
         Assertions.assertNull(setting.eventHubName());
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertTrue(setting.logs().isEmpty());
         Assertions.assertFalse(setting.metrics().isEmpty());
 
-        setting.update().withoutStorageAccount().withoutLogs().apply();
+        // At least one data sink needs to be specified.
+        // setting.update().withoutStorageAccount().withoutLogs().apply();
+        setting.update().withoutLogs().apply();
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
-        assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
-        Assertions.assertNull(setting.storageAccountId());
+        // assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
+        assertResourceIdEquals(sa.id(), setting.storageAccountId());
         Assertions.assertNull(setting.eventHubName());
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertTrue(setting.logs().isEmpty());
@@ -145,9 +149,10 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
-        String resourceId = "subscriptions/" + monitorManager.subscriptionId();
+        String resourceId = "/subscriptions/" + monitorManager.subscriptionId();
 
         DiagnosticSetting setting = monitorManager.diagnosticSettings()
             .define(dsName)
@@ -205,6 +210,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         Vault vault = ensureVault(region, rgName);
@@ -226,7 +232,9 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .define(dsName)
             .withResource(vault.id())
             .withStorageAccount(sa.id())
-            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            // Diagnostic settings does not support retention for new diagnostic settings.
+            // https://learn.microsoft.com/azure/azure-monitor/platform/migrate-to-azure-storage-lifecycle-policy?tabs=cli
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 0)
             .create();
 
         Assertions.assertTrue(vault.id().equalsIgnoreCase(setting.resourceId()));
@@ -273,7 +281,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         // verify category logs and category group logs can both be present during update
         // issue: https://github.com/Azure/azure-sdk-for-java/issues/35425
         // mixture of category group and category logs aren't supported
-        Assertions.assertThrows(ManagementException.class, () -> setting.update().withLog("AuditEvent", 7).apply());
+        Assertions.assertThrows(ManagementException.class, () -> setting.update().withLog("AuditEvent", 0).apply());
 
         setting.refresh();
 
@@ -316,6 +324,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         // diagnostic setting
@@ -323,7 +332,8 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .define(dsName)
             .withResource(wpsResource.id())
             .withStorageAccount(sa.id())
-            .withLog("MessagingLogs", 7)
+            // Diagnostic settings does not support retention for new diagnostic settings.
+            .withLog("MessagingLogs", 0)
             .create();
 
         // add category group "audit" to log settings
@@ -342,7 +352,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertTrue(setting.logs().stream().anyMatch(ls -> "audit".equals(ls.categoryGroup())));
 
         // update to add metric
-        setting.update().withMetric("AllMetrics", Duration.ofMinutes(5), 7).apply();
+        setting.update().withMetric("AllMetrics", Duration.ofMinutes(5), 0).apply();
 
         // verify category group "audit"
         setting = monitorManager.diagnosticSettings().listByResource(wpsResource.id()).iterator().next();
@@ -352,6 +362,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled("Azure SQL Server should have Microsoft Entra-only authentication enabled during creation.")
     public void canCRUDDiagnosticSettingsWithResourceIdWhiteSpace() {
         Region region = Region.US_EAST;
 
@@ -360,6 +371,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withTag("tag1", "value1")
+            .disableSharedKeyAccess()
             .create();
 
         SqlElasticPool sqlElasticPool = ensureElasticPoolWithWhiteSpace(region, rgName);

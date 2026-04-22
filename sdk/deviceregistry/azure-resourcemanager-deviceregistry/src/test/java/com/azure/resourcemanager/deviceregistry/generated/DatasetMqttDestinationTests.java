@@ -15,25 +15,25 @@ public final class DatasetMqttDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetMqttDestination model = BinaryData.fromString(
-            "{\"target\":\"Mqtt\",\"configuration\":{\"topic\":\"wzbaiue\",\"retain\":\"Keep\",\"qos\":\"Qos0\",\"ttl\":7484019295322681584}}")
+            "{\"target\":\"Mqtt\",\"configuration\":{\"topic\":\"l\",\"retain\":\"Never\",\"qos\":\"Qos1\",\"ttl\":3335905424967181903}}")
             .toObject(DatasetMqttDestination.class);
-        Assertions.assertEquals("wzbaiue", model.configuration().topic());
-        Assertions.assertEquals(TopicRetainType.KEEP, model.configuration().retain());
-        Assertions.assertEquals(MqttDestinationQos.QOS0, model.configuration().qos());
-        Assertions.assertEquals(7484019295322681584L, model.configuration().ttl());
+        Assertions.assertEquals("l", model.configuration().topic());
+        Assertions.assertEquals(TopicRetainType.NEVER, model.configuration().retain());
+        Assertions.assertEquals(MqttDestinationQos.QOS1, model.configuration().qos());
+        Assertions.assertEquals(3335905424967181903L, model.configuration().ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatasetMqttDestination model
-            = new DatasetMqttDestination().withConfiguration(new MqttDestinationConfiguration().withTopic("wzbaiue")
-                .withRetain(TopicRetainType.KEEP)
-                .withQos(MqttDestinationQos.QOS0)
-                .withTtl(7484019295322681584L));
+            = new DatasetMqttDestination().withConfiguration(new MqttDestinationConfiguration().withTopic("l")
+                .withRetain(TopicRetainType.NEVER)
+                .withQos(MqttDestinationQos.QOS1)
+                .withTtl(3335905424967181903L));
         model = BinaryData.fromObject(model).toObject(DatasetMqttDestination.class);
-        Assertions.assertEquals("wzbaiue", model.configuration().topic());
-        Assertions.assertEquals(TopicRetainType.KEEP, model.configuration().retain());
-        Assertions.assertEquals(MqttDestinationQos.QOS0, model.configuration().qos());
-        Assertions.assertEquals(7484019295322681584L, model.configuration().ttl());
+        Assertions.assertEquals("l", model.configuration().topic());
+        Assertions.assertEquals(TopicRetainType.NEVER, model.configuration().retain());
+        Assertions.assertEquals(MqttDestinationQos.QOS1, model.configuration().qos());
+        Assertions.assertEquals(3335905424967181903L, model.configuration().ttl());
     }
 }

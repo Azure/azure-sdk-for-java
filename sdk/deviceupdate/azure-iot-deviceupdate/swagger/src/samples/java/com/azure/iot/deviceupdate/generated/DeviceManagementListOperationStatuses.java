@@ -18,9 +18,9 @@ public class DeviceManagementListOperationStatuses {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistoperationstatuses.devicemanagementlistoperationstatuses
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-operation-statuses.device-management-list-operation-statuses
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = deviceManagementClient.listOperationStatuses(requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistoperationstatuses.devicemanagementlistoperationstatuses
+        // END:com.azure.iot.deviceupdate.generated.device-management-list-operation-statuses.device-management-list-operation-statuses
     }
 }

@@ -16,9 +16,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.data.redis.autoconfigure.LettuceClientConfigurationBuilderCustomizer;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,9 +38,9 @@ import reactor.core.publisher.Mono;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({LettuceConnection.class, RedisCredentials.class})
 @ConditionalOnExpression("${spring.data.redis.azure.passwordless-enabled:false}")
-@AutoConfigureBefore(RedisAutoConfiguration.class)
+@AutoConfigureBefore(DataRedisAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "spring.data.redis", name = {"host"})
-@EnableConfigurationProperties(RedisProperties.class)
+@EnableConfigurationProperties(DataRedisProperties.class)
 public class AzureLettucePasswordlessAutoConfiguration {
 
     @Bean
@@ -51,7 +51,7 @@ public class AzureLettucePasswordlessAutoConfiguration {
 
     @Bean(name = "azureRedisCredentials")
     @ConditionalOnMissingBean
-    AzureRedisCredentials azureRedisCredentials(RedisProperties redisProperties,
+    AzureRedisCredentials azureRedisCredentials(DataRedisProperties redisProperties,
                                                 AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
                                                 AzureGlobalProperties azureGlobalProperties) {
         AzureRedisPasswordlessProperties redisPasswordlessProperties = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties);

@@ -50,13 +50,13 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.SocketException;
 import java.net.URI;
@@ -67,7 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -533,14 +532,10 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
     public static void validateSuccess(Mono<ShouldRetryResult> single,
                                        ShouldRetryValidator validator,
                                        long timeout) {
-        TestSubscriber<ShouldRetryResult> testSubscriber = new TestSubscriber<>();
-
-        single.flux().subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertComplete();
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     private static RxDocumentServiceRequest createRequest(

@@ -238,7 +238,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Flux<AmqpShutdownSignal> getShutdownSignals() {
-        return shutdownSignalSink.asMono().cache().flux();
+        return shutdownSignalSink.asMono().flux();
     }
 
     @Override

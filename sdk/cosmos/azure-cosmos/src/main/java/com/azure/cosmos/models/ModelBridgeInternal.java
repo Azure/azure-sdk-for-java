@@ -12,9 +12,9 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -60,6 +60,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class ModelBridgeInternal {
 
     private ModelBridgeInternal() {}
+
+    private static CosmosItemSerializer internalDefaultSerializer() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer();
+    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosConflictResponse createCosmosConflictResponse(ResourceResponse<Conflict> response) {
@@ -406,7 +410,7 @@ public final class ModelBridgeInternal {
         return sqlQuerySpec
             .getJsonSerializable()
             .serializeJsonToByteBuffer(
-                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                internalDefaultSerializer(),
                 null,
                 false);
     }
@@ -624,14 +628,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions disableSplitHandling(
-        CosmosChangeFeedRequestOptions requestOptions) {
-
-        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
-        return requestOptions.disableSplitHandling();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ChangeFeedState getChangeFeedContinuationState(
         CosmosChangeFeedRequestOptions requestOptions) {
 
@@ -770,5 +766,7 @@ public final class ModelBridgeInternal {
         CosmosClientTelemetryConfig.initialize();
         CosmosContainerIdentity.initialize();
         PriorityLevel.initialize();
+        SqlQuerySpec.initialize();
+        SqlParameter.initialize();
     }
 }

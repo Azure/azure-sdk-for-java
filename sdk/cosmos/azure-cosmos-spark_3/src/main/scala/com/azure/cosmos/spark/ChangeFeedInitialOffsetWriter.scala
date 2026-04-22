@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import org.apache.commons.io.IOUtils
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.execution.streaming.{HDFSMetadataLog, MetadataVersionUtil}
+import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 
 import java.io.{BufferedWriter, InputStream, InputStreamReader, OutputStream, OutputStreamWriter}
 import java.nio.charset.StandardCharsets
@@ -25,7 +24,7 @@ private class ChangeFeedInitialOffsetWriter
   }
 
   override def deserialize(in: InputStream): String = {
-    val content = IOUtils.toString(new InputStreamReader(in, StandardCharsets.UTF_8))
+    val content = readerToString(new InputStreamReader(in, StandardCharsets.UTF_8))
     // HDFSMetadataLog would never create a partial file.
     require(content.nonEmpty)
     val indexOfNewLine = content.indexOf("\n")
@@ -34,7 +33,60 @@ private class ChangeFeedInitialOffsetWriter
         "Log file was malformed: failed to detect the log file version line.")
     }
 
-    MetadataVersionUtil.validateVersion(content.substring(0, indexOfNewLine), VERSION)
+    ChangeFeedInitialOffsetWriter.validateVersion(content.substring(0, indexOfNewLine), VERSION)
     content.substring(indexOfNewLine + 1)
+  }
+
+  private def readerToString(reader: java.io.Reader): String = {
+    val writer = new StringBuilderWriter
+    val buffer = new Array[Char](4096)
+    Stream.continually(reader.read(buffer)).takeWhile(_ != -1).foreach(writer.write(buffer, 0, _))
+    writer.toString
+  }
+
+  private class StringBuilderWriter extends java.io.Writer {
+    private val stringBuilder = new StringBuilder
+
+    override def write(cbuf: Array[Char], off: Int, len: Int): Unit = {
+      stringBuilder.appendAll(cbuf, off, len)
+    }
+
+    override def flush(): Unit = {}
+
+    override def close(): Unit = {}
+
+    override def toString: String = stringBuilder.toString()
+  }
+}
+
+private[spark] object ChangeFeedInitialOffsetWriter {
+  /**
+   * Validates the version string from the log file.
+   * This is inlined to avoid a runtime dependency on MetadataVersionUtil,
+   * which has been relocated in some Spark distributions (e.g. Databricks Runtime 17.3+).
+   */
+  def validateVersion(versionText: String, maxSupportedVersion: Int): Int = {
+    if (versionText.nonEmpty && versionText(0) == 'v') {
+      val version =
+        try {
+          versionText.substring(1).toInt
+        } catch {
+          case _: NumberFormatException =>
+            throw new IllegalStateException(
+              s"Log file was malformed: failed to read correct log version from $versionText.")
+        }
+      if (version > 0 && version <= maxSupportedVersion) {
+        return version
+      }
+      if (version > maxSupportedVersion) {
+        throw new IllegalStateException(
+          s"UnsupportedLogVersion: maximum supported log version " +
+            s"is v$maxSupportedVersion, but encountered v$version. " +
+            s"The log file was produced by a newer version of Spark and cannot be read by this version. " +
+            s"Please upgrade.")
+      }
+    }
+    throw new IllegalStateException(
+      s"Log file was malformed: failed to read correct log version from $versionText.")
   }
 }

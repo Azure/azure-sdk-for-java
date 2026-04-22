@@ -16,18 +16,18 @@ import com.azure.core.util.serializer.SerializerAdapter;
  */
 public final class TimezoneClientImpl {
     /**
-     * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
-     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Indicates the account intended for use with the Microsoft Entra ID security model. This unique ID for the Azure
+     * Maps account can be obtained from the [Azure Maps management plane Account
+     * API](/rest/api/maps-management/accounts). For more information on using Microsoft Entra ID security in Azure
+     * Maps, see [Manage authentication in Azure Maps](/azure/azure-maps/how-to-manage-authentication).
      */
     private final String clientId;
 
     /**
-     * Gets Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
-     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Gets Indicates the account intended for use with the Microsoft Entra ID security model. This unique ID for the
+     * Azure Maps account can be obtained from the [Azure Maps management plane Account
+     * API](/rest/api/maps-management/accounts). For more information on using Microsoft Entra ID security in Azure
+     * Maps, see [Manage authentication in Azure Maps](/azure/azure-maps/how-to-manage-authentication).
      * 
      * @return the clientId value.
      */
@@ -108,10 +108,10 @@ public final class TimezoneClientImpl {
     /**
      * Initializes an instance of TimezoneClient client.
      * 
-     * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
-     * model. It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management
-     * plane Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * @param clientId Indicates the account intended for use with the Microsoft Entra ID security model. This unique ID
+     * for the Azure Maps account can be obtained from the [Azure Maps management plane Account
+     * API](/rest/api/maps-management/accounts). For more information on using Microsoft Entra ID security in Azure
+     * Maps, see [Manage authentication in Azure Maps](/azure/azure-maps/how-to-manage-authentication).
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
@@ -124,10 +124,10 @@ public final class TimezoneClientImpl {
      * Initializes an instance of TimezoneClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
-     * model. It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management
-     * plane Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * @param clientId Indicates the account intended for use with the Microsoft Entra ID security model. This unique ID
+     * for the Azure Maps account can be obtained from the [Azure Maps management plane Account
+     * API](/rest/api/maps-management/accounts). For more information on using Microsoft Entra ID security in Azure
+     * Maps, see [Manage authentication in Azure Maps](/azure/azure-maps/how-to-manage-authentication).
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
@@ -140,10 +140,10 @@ public final class TimezoneClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
-     * model. It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management
-     * plane Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * @param clientId Indicates the account intended for use with the Microsoft Entra ID security model. This unique ID
+     * for the Azure Maps account can be obtained from the [Azure Maps management plane Account
+     * API](/rest/api/maps-management/accounts). For more information on using Microsoft Entra ID security in Azure
+     * Maps, see [Manage authentication in Azure Maps](/azure/azure-maps/how-to-manage-authentication).
      * @param host server parameter.
      * @param apiVersion Api Version.
      */

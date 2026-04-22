@@ -16,6 +16,7 @@ import java.util.Locale;
  * Abstract implementation of {@link WritableResource} for reading and writing objects in Azure StorageAccount.
  *
  */
+@SuppressWarnings("deprecation")
 abstract class AzureStorageResource extends AbstractResource implements WritableResource {
     private static final String PATH_DELIMITER = "/";
 

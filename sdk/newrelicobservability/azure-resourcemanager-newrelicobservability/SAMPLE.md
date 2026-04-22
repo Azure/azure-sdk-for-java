@@ -15,7 +15,7 @@
 
 ## MonitoredSubscriptions
 
-- [CreateorUpdate](#monitoredsubscriptions_createorupdate)
+- [CreateOrUpdate](#monitoredsubscriptions_createorupdate)
 - [Delete](#monitoredsubscriptions_delete)
 - [Get](#monitoredsubscriptions_get)
 - [List](#monitoredsubscriptions_list)
@@ -28,12 +28,16 @@
 - [GetByResourceGroup](#monitors_getbyresourcegroup)
 - [GetMetricRules](#monitors_getmetricrules)
 - [GetMetricStatus](#monitors_getmetricstatus)
+- [LatestLinkedSaaS](#monitors_latestlinkedsaas)
+- [LinkSaaS](#monitors_linksaas)
 - [List](#monitors_list)
 - [ListAppServices](#monitors_listappservices)
 - [ListByResourceGroup](#monitors_listbyresourcegroup)
 - [ListHosts](#monitors_listhosts)
 - [ListLinkedResources](#monitors_listlinkedresources)
 - [ListMonitoredResources](#monitors_listmonitoredresources)
+- [RefreshIngestionKey](#monitors_refreshingestionkey)
+- [Resubscribe](#monitors_resubscribe)
 - [SwitchBilling](#monitors_switchbilling)
 - [Update](#monitors_update)
 - [VmHostPayload](#monitors_vmhostpayload)
@@ -50,6 +54,10 @@
 
 - [List](#plans_list)
 
+## SaaS
+
+- [ActivateResource](#saas_activateresource)
+
 ## TagRules
 
 - [CreateOrUpdate](#tagrules_createorupdate)
@@ -65,8 +73,7 @@
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Accounts_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Accounts_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MinimumSet_Gen.
@@ -79,8 +86,7 @@ public final class AccountsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Accounts_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Accounts_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MaximumSet_Gen.
@@ -102,8 +108,7 @@ public final class AccountsListSamples {
  */
 public final class BillingInfoGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/BillingInfo_Get.json
+     * x-ms-original-file: 2025-05-01-preview/BillingInfo_Get.json
      */
     /**
      * Sample code: BillingInfo_Get.
@@ -125,8 +130,7 @@ public final class BillingInfoGetSamples {
  */
 public final class ConnectedPartnerResourcesListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * ConnectedPartnerResources_List.json
+     * x-ms-original-file: 2025-05-01-preview/ConnectedPartnerResources_List.json
      */
     /**
      * Sample code: ConnectedPartnerResources_List.
@@ -141,18 +145,17 @@ public final class ConnectedPartnerResourcesListSamples {
 }
 ```
 
-### MonitoredSubscriptions_CreateorUpdate
+### MonitoredSubscriptions_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
 
 /**
- * Samples for MonitoredSubscriptions CreateorUpdate.
+ * Samples for MonitoredSubscriptions CreateOrUpdate.
  */
-public final class MonitoredSubscriptionsCreateorUpdateSamples {
+public final class MonitoredSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * MonitoredSubscriptions_CreateorUpdate.json
+     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: Monitors_AddMonitoredSubscriptions.
@@ -179,8 +182,7 @@ import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
  */
 public final class MonitoredSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * MonitoredSubscriptions_Delete.json
+     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_Delete.json
      */
     /**
      * Sample code: Monitors_DeleteMonitoredSubscriptions.
@@ -205,8 +207,7 @@ import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
  */
 public final class MonitoredSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * MonitoredSubscriptions_Get.json
+     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_Get.json
      */
     /**
      * Sample code: Monitors_GetMonitoredSubscriptions.
@@ -230,8 +231,7 @@ public final class MonitoredSubscriptionsGetSamples {
  */
 public final class MonitoredSubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * MonitoredSubscriptions_List.json
+     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_List.json
      */
     /**
      * Sample code: Monitors_GetMonitoredSubscriptions.
@@ -256,8 +256,7 @@ import com.azure.resourcemanager.newrelicobservability.models.MonitoredSubscript
  */
 public final class MonitoredSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * MonitoredSubscriptions_Update.json
+     * x-ms-original-file: 2025-05-01-preview/MonitoredSubscriptions_Update.json
      */
     /**
      * Sample code: Monitors_UpdateMonitoredSubscriptions.
@@ -280,7 +279,6 @@ public final class MonitoredSubscriptionsUpdateSamples {
 ```java
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.AccountInfo;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountProperties;
@@ -289,6 +287,7 @@ import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.OrganizationInfo;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.SingleSignOnStates;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
 import com.azure.resourcemanager.newrelicobservability.models.UserAssignedIdentity;
@@ -302,8 +301,7 @@ import java.util.Map;
  */
 public final class MonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_CreateOrUpdate_MaximumSet_Gen.
@@ -335,9 +333,11 @@ public final class MonitorsCreateOrUpdateSamples {
                 .withPhoneNumber("krf")
                 .withCountry("hslqnwdanrconqyekwbnttaetv"))
             .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.YEARLY)
+                .withBillingCycle("Yearly")
                 .withPlanDetails("tbbiaga")
                 .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withSaaSData(new SaaSData().withSaaSResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"))
             .withOrgCreationSource(OrgCreationSource.LIFTR)
             .withAccountCreationSource(AccountCreationSource.LIFTR)
             .withSubscriptionState("Suspended")
@@ -367,8 +367,7 @@ public final class MonitorsCreateOrUpdateSamples {
  */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MinimumSet_Gen.
@@ -378,13 +377,12 @@ public final class MonitorsDeleteSamples {
     public static void monitorsDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         manager.monitors()
-            .delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
+            .delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "ruxvg@xqkmdhrnoo.hlmbpm",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MaximumSet_Gen.
@@ -394,7 +392,7 @@ public final class MonitorsDeleteSamples {
     public static void monitorsDeleteMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         manager.monitors()
-            .delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
+            .delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "ruxvg@xqkmdhrnoo.hlmbpm",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -408,8 +406,7 @@ public final class MonitorsDeleteSamples {
  */
 public final class MonitorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Get_MaximumSet_Gen.
@@ -433,8 +430,7 @@ import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
  */
 public final class MonitorsGetMetricRulesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_GetMetricRules_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_GetMetricRules_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MinimumSet_Gen.
@@ -449,8 +445,7 @@ public final class MonitorsGetMetricRulesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_GetMetricRules_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_GetMetricRules_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MaximumSet_Gen.
@@ -477,8 +472,7 @@ import java.util.Arrays;
  */
 public final class MonitorsGetMetricStatusSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_GetMetricStatus_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_GetMetricStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MinimumSet_Gen.
@@ -496,8 +490,7 @@ public final class MonitorsGetMetricStatusSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_GetMetricStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_GetMetricStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MaximumSet_Gen.
@@ -516,6 +509,70 @@ public final class MonitorsGetMetricStatusSamples {
 }
 ```
 
+### Monitors_LatestLinkedSaaS
+
+```java
+/**
+ * Samples for Monitors LatestLinkedSaaS.
+ */
+public final class MonitorsLatestLinkedSaaSSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Monitors_LatestLinkedSaaS_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: Monitors_LatestLinkedSaaS_MinimumSet_Gen.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsLatestLinkedSaaSMinimumSetGen(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitors()
+            .latestLinkedSaaSWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Monitors_LatestLinkedSaaS_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Monitors_LatestLinkedSaaS_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsLatestLinkedSaaSMaximumSetGen(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitors()
+            .latestLinkedSaaSWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Monitors_LinkSaaS
+
+```java
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
+
+/**
+ * Samples for Monitors LinkSaaS.
+ */
+public final class MonitorsLinkSaaSSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Monitors_LinkSaaS.json
+     */
+    /**
+     * Sample code: Monitors_LinkSaaS.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void
+        monitorsLinkSaaS(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitors()
+            .linkSaaS("myResourceGroup", "myMonitor", new SaaSData().withSaaSResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Monitors_List
 
 ```java
@@ -524,8 +581,7 @@ public final class MonitorsGetMetricStatusSamples {
  */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListBySubscription_MaximumSet_Gen.
@@ -550,8 +606,7 @@ import java.util.Arrays;
  */
 public final class MonitorsListAppServicesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListAppServices_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListAppServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MaximumSet_Gen.
@@ -569,8 +624,7 @@ public final class MonitorsListAppServicesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListAppServices_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListAppServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MinimumSet_Gen.
@@ -597,8 +651,7 @@ public final class MonitorsListAppServicesSamples {
  */
 public final class MonitorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListByResourceGroup_MaximumSet_Gen.
@@ -623,8 +676,7 @@ import java.util.Arrays;
  */
 public final class MonitorsListHostsSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListHosts_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListHosts_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MinimumSet_Gen.
@@ -641,8 +693,7 @@ public final class MonitorsListHostsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListHosts_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListHosts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MaximumSet_Gen.
@@ -668,9 +719,7 @@ public final class MonitorsListHostsSamples {
  */
 public final class MonitorsListLinkedResourcesSamples {
     /*
-     * x-ms-original-file:
-     * specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/LinkedResources_List.
-     * json
+     * x-ms-original-file: 2025-05-01-preview/LinkedResources_List.json
      */
     /**
      * Sample code: Monitors_ListLinkedResources.
@@ -692,8 +741,7 @@ public final class MonitorsListLinkedResourcesSamples {
  */
 public final class MonitorsListMonitoredResourcesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListMonitoredResources_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListMonitoredResources_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MinimumSet_Gen.
@@ -707,8 +755,7 @@ public final class MonitorsListMonitoredResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_ListMonitoredResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_ListMonitoredResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MaximumSet_Gen.
@@ -723,10 +770,55 @@ public final class MonitorsListMonitoredResourcesSamples {
 }
 ```
 
+### Monitors_RefreshIngestionKey
+
+```java
+/**
+ * Samples for Monitors RefreshIngestionKey.
+ */
+public final class MonitorsRefreshIngestionKeySamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Monitors_RefreshIngestionKey.json
+     */
+    /**
+     * Sample code: Monitors_RefreshIngestionKey.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsRefreshIngestionKey(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitors()
+            .refreshIngestionKeyWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Monitors_Resubscribe
+
+```java
+
+/**
+ * Samples for Monitors Resubscribe.
+ */
+public final class MonitorsResubscribeSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/Monitors_Resubscribe.json
+     */
+    /**
+     * Sample code: Monitors_Resubscribe.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void
+        monitorsResubscribe(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitors().resubscribe("myResourceGroup", "myMonitor", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Monitors_SwitchBilling
 
 ```java
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
@@ -737,8 +829,7 @@ import java.time.OffsetDateTime;
  */
 public final class MonitorsSwitchBillingSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_SwitchBilling_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_SwitchBilling_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_SwitchBilling_MinimumSet_Gen.
@@ -753,8 +844,7 @@ public final class MonitorsSwitchBillingSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_SwitchBilling_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_SwitchBilling_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_SwitchBilling_MaximumSet_Gen.
@@ -769,7 +859,7 @@ public final class MonitorsSwitchBillingSamples {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")
                     .withOrganizationId("k")
                     .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                        .withBillingCycle(BillingCycle.YEARLY)
+                        .withBillingCycle("Yearly")
                         .withPlanDetails("tbbiaga")
                         .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
                     .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
@@ -783,7 +873,6 @@ public final class MonitorsSwitchBillingSamples {
 ```java
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.AccountInfo;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountProperties;
@@ -806,8 +895,7 @@ import java.util.Map;
  */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Update_MaximumSet_Gen.
@@ -839,7 +927,7 @@ public final class MonitorsUpdateSamples {
                 .withPhoneNumber("krf")
                 .withCountry("hslqnwdanrconqyekwbnttaetv"))
             .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.YEARLY)
+                .withBillingCycle("Yearly")
                 .withPlanDetails("tbbiaga")
                 .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
             .withOrgCreationSource(OrgCreationSource.LIFTR)
@@ -869,8 +957,7 @@ public final class MonitorsUpdateSamples {
  */
 public final class MonitorsVmHostPayloadSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_VmHostPayload_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_VmHostPayload_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_VmHostPayload_MinimumSet_Gen.
@@ -884,8 +971,7 @@ public final class MonitorsVmHostPayloadSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Monitors_VmHostPayload_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Monitors_VmHostPayload_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_VmHostPayload_MaximumSet_Gen.
@@ -908,8 +994,7 @@ public final class MonitorsVmHostPayloadSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -922,8 +1007,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
@@ -945,8 +1029,7 @@ public final class OperationsListSamples {
  */
 public final class OrganizationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Organizations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Organizations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MinimumSet_Gen.
@@ -959,8 +1042,7 @@ public final class OrganizationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Organizations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Organizations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MaximumSet_Gen.
@@ -982,8 +1064,7 @@ public final class OrganizationsListSamples {
  */
 public final class PlansListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Plans_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Plans_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MaximumSet_Gen.
@@ -996,8 +1077,7 @@ public final class PlansListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * Plans_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/Plans_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MinimumSet_Gen.
@@ -1007,6 +1087,34 @@ public final class PlansListSamples {
     public static void
         plansListMinimumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         manager.plans().list(null, "hilawwjz", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SaaS_ActivateResource
+
+```java
+import com.azure.resourcemanager.newrelicobservability.models.ActivateSaaSParameterRequest;
+
+/**
+ * Samples for SaaS ActivateResource.
+ */
+public final class SaaSActivateResourceSamples {
+    /*
+     * x-ms-original-file: 2025-05-01-preview/ActivateSaaS.json
+     */
+    /**
+     * Sample code: ActivateSaaS.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void
+        activateSaaS(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.saaS()
+            .activateResourceWithResponse(
+                new ActivateSaaSParameterRequest().withSaasGuid("00000000-0000-0000-0000-000005430000")
+                    .withPublisherId("publisherId"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1028,8 +1136,7 @@ import java.util.Arrays;
  */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MaximumSet_Gen.
@@ -1056,8 +1163,7 @@ public final class TagRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MinimumSet_Gen.
@@ -1082,8 +1188,7 @@ public final class TagRulesCreateOrUpdateSamples {
  */
 public final class TagRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MinimumSet_Gen.
@@ -1098,8 +1203,7 @@ public final class TagRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MaximumSet_Gen.
@@ -1123,8 +1227,7 @@ public final class TagRulesDeleteSamples {
  */
 public final class TagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MinimumSet_Gen.
@@ -1139,8 +1242,7 @@ public final class TagRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MaximumSet_Gen.
@@ -1164,8 +1266,7 @@ public final class TagRulesGetSamples {
  */
 public final class TagRulesListByNewRelicMonitorResourceSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.
@@ -1180,8 +1281,7 @@ public final class TagRulesListByNewRelicMonitorResourceSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.
@@ -1215,8 +1315,7 @@ import java.util.Arrays;
  */
 public final class TagRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MaximumSet_Gen.
@@ -1245,8 +1344,7 @@ public final class TagRulesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
-     * TagRules_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-05-01-preview/TagRules_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MinimumSet_Gen.

@@ -18,14 +18,6 @@ public interface JsonTokenId {
     int ID_NOT_AVAILABLE = -1;
 
     /**
-     * Id used to represent the case where no {@link JsonToken}
-     * is available: either because {@link JsonParser} has not been
-     * advanced to first token, or because no more tokens will be
-     * available (end-of-input or explicit closing of parser}.
-     */
-    int ID_NO_TOKEN = 0;
-
-    /**
      * Id used to represent {@link JsonToken#START_OBJECT}
      */
     int ID_START_OBJECT = 1;

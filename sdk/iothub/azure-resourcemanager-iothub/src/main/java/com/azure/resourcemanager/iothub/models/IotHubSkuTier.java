@@ -21,7 +21,12 @@ public enum IotHubSkuTier {
     /**
      * Enum value Basic.
      */
-    BASIC("Basic");
+    BASIC("Basic"),
+
+    /**
+     * Enum value Generation2.
+     */
+    GENERATION2("Generation2");
 
     /**
      * The actual serialized value for a IotHubSkuTier instance.

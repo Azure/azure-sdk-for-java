@@ -15,28 +15,25 @@ public final class PrivateLinkResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourcesInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"ohgwxrtfudxepxg\",\"name\":\"agvrvmnpkuk\",\"type\":\"i\",\"properties\":{\"groupId\":\"blxgwimf\",\"requiredMembers\":[\"fjxwmsz\"],\"requiredZoneNames\":[\"oqreyfkzikfjawn\",\"a\",\"vxwc\"]}},{\"id\":\"lpcirelsf\",\"name\":\"enwabfatk\",\"type\":\"dxbjhwuaanozj\",\"properties\":{\"groupId\":\"ph\",\"requiredMembers\":[\"l\",\"jrvxaglrv\"],\"requiredZoneNames\":[\"wosytxitcskf\",\"k\",\"qumiek\",\"ez\"]}},{\"id\":\"khly\",\"name\":\"hdgqggeb\",\"type\":\"nyga\",\"properties\":{\"groupId\":\"idb\",\"requiredMembers\":[\"t\",\"xllrxcyjm\"],\"requiredZoneNames\":[\"su\",\"arm\",\"wdmjsjqbjhhyx\",\"rw\"]}}]}")
+            "{\"value\":[{\"id\":\"foqreyfkzik\",\"name\":\"aw\",\"type\":\"a\",\"properties\":{\"groupId\":\"xwczelpcire\",\"requiredMembers\":[\"eae\",\"wabfatkl\"],\"requiredZoneNames\":[\"bjhwuaan\",\"zjosp\",\"youlp\",\"rvxaglrvimjwosy\"]}},{\"id\":\"itc\",\"name\":\"fcktqumiekke\",\"type\":\"ikh\",\"properties\":{\"groupId\":\"fjhdg\",\"requiredMembers\":[\"ebdunyg\",\"eqidbqfatpx\",\"lr\"],\"requiredZoneNames\":[\"jmoadsuv\",\"r\"]}}]}")
             .toObject(PrivateLinkResourcesInner.class);
-        Assertions.assertEquals("blxgwimf", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("fjxwmsz", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("oqreyfkzikfjawn", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("xwczelpcire", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("eae", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("bjhwuaan", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkResourcesInner model = new PrivateLinkResourcesInner().withValue(Arrays.asList(
-            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("blxgwimf")
-                .withRequiredMembers(Arrays.asList("fjxwmsz"))
-                .withRequiredZoneNames(Arrays.asList("oqreyfkzikfjawn", "a", "vxwc"))),
-            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("ph")
-                .withRequiredMembers(Arrays.asList("l", "jrvxaglrv"))
-                .withRequiredZoneNames(Arrays.asList("wosytxitcskf", "k", "qumiek", "ez"))),
-            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("idb")
-                .withRequiredMembers(Arrays.asList("t", "xllrxcyjm"))
-                .withRequiredZoneNames(Arrays.asList("su", "arm", "wdmjsjqbjhhyx", "rw")))));
+            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("xwczelpcire")
+                .withRequiredMembers(Arrays.asList("eae", "wabfatkl"))
+                .withRequiredZoneNames(Arrays.asList("bjhwuaan", "zjosp", "youlp", "rvxaglrvimjwosy"))),
+            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("fjhdg")
+                .withRequiredMembers(Arrays.asList("ebdunyg", "eqidbqfatpx", "lr"))
+                .withRequiredZoneNames(Arrays.asList("jmoadsuv", "r")))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourcesInner.class);
-        Assertions.assertEquals("blxgwimf", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("fjxwmsz", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("oqreyfkzikfjawn", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("xwczelpcire", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("eae", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("bjhwuaan", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

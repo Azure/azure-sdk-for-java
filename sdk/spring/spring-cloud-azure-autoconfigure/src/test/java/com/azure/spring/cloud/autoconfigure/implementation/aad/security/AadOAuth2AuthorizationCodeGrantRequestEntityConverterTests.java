@@ -7,9 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplicationCon
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -19,13 +17,12 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResp
 import org.springframework.util.MultiValueMap;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
+class AadOAuth2AuthorizationCodeGrantRequestConvertersTests {
 
     private WebApplicationContextRunner getContextRunner() {
         return WebApplicationContextRunnerUtils
@@ -65,14 +62,13 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
                     (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
-            AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-                    new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
+            AadOAuth2AuthorizationCodeGrantRequestParametersConverter converter =
+                    new AadOAuth2AuthorizationCodeGrantRequestParametersConverter(repository.getAzureClientAccessTokenScopes());
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             OAuth2AuthorizationCodeGrantRequest request = createCodeGrantRequest(azure);
             // Convert method execute 2 times
             converter.convert(request);
-            RequestEntity<?> entity = converter.convert(request);
-            MultiValueMap<String, String> map = WebApplicationContextRunnerUtils.toMultiValueMap(entity);
+            MultiValueMap<String, String> map = converter.convert(request);
             assertEquals(1, map.get("scope").size());
         });
     }
@@ -83,7 +79,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
             AadClientRegistrationRepository repository =
                     (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
-            HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(azure));
+            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(azure));
             testHttpHeaders(httpHeaders);
         });
     }
@@ -94,35 +90,30 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
             AadClientRegistrationRepository repository =
                     (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
-            HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(arm));
+            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(arm));
             testHttpHeaders(httpHeaders);
         });
     }
 
-    private HttpHeaders convertedHeaderOf(AadClientRegistrationRepository repository,
-                                          OAuth2AuthorizationCodeGrantRequest request) {
-        AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-                new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
-        RequestEntity<?> entity = converter.convert(request);
-        return Optional.ofNullable(entity)
-                .map(HttpEntity::getHeaders)
-                .orElse(null);
+    private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
+        AadOAuth2AuthorizationCodeGrantRequestHeadersConverter converter =
+                new AadOAuth2AuthorizationCodeGrantRequestHeadersConverter();
+        return converter.convert(request);
     }
 
     private void testHttpHeaders(HttpHeaders headers) {
-        assertTrue(headers.containsKey("x-client-SKU"));
+        assertTrue(headers.containsHeader("x-client-SKU"));
         assertEquals(Collections.singletonList(AzureSpringIdentifier.AZURE_SPRING_AAD), headers.get("x-client-SKU"));
-        assertTrue(headers.containsKey("x-client-VER"));
+        assertTrue(headers.containsHeader("x-client-VER"));
         assertEquals(Collections.singletonList(AzureSpringIdentifier.VERSION), headers.get("x-client-VER"));
-        assertTrue(headers.containsKey("client-request-id"));
+        assertTrue(headers.containsHeader("client-request-id"));
     }
 
     private MultiValueMap<String, String> convertedBodyOf(AadClientRegistrationRepository repository,
                                                           OAuth2AuthorizationCodeGrantRequest request) {
-        AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-                new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
-        RequestEntity<?> entity = converter.convert(request);
-        return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
+        AadOAuth2AuthorizationCodeGrantRequestParametersConverter converter =
+                new AadOAuth2AuthorizationCodeGrantRequestParametersConverter(repository.getAzureClientAccessTokenScopes());
+        return converter.convert(request);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {

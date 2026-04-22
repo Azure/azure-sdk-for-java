@@ -18,10 +18,10 @@ public class DeviceUpdateGetUpdate {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdategetupdate.deviceupdategetupdate
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-update-get-update.device-update-get-update
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceUpdateClient.getUpdateWithResponse("microsoft", "adu", "1.0.0.0", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.deviceupdategetupdate.deviceupdategetupdate
+        // END:com.azure.iot.deviceupdate.generated.device-update-get-update.device-update-get-update
     }
 }

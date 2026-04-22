@@ -69,7 +69,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
 
     @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        for (int i = 0; i < 5; i ++) {
+        for (int i = 0; i < createdDatabases.size(); i ++) {
             safeDeleteDatabase(client.getDatabase(createdDatabases.get(i).getId()));
         }
         safeClose(client);

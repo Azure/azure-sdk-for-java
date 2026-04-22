@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * The list of Log Analytics workspaces associated with the cluster.
@@ -19,7 +22,7 @@ public final class AssociatedWorkspace implements JsonSerializable<AssociatedWor
     /*
      * Associated workspace immutable id.
      */
-    private String workspaceId;
+    private UUID workspaceId;
 
     /*
      * Associated workspace resource name.
@@ -36,7 +39,7 @@ public final class AssociatedWorkspace implements JsonSerializable<AssociatedWor
     /*
      * The time of workspace association.
      */
-    private String associateDate;
+    private OffsetDateTime associateDate;
 
     /**
      * Creates an instance of AssociatedWorkspace class.
@@ -49,7 +52,7 @@ public final class AssociatedWorkspace implements JsonSerializable<AssociatedWor
      * 
      * @return the workspaceId value.
      */
-    public String workspaceId() {
+    public UUID workspaceId() {
         return this.workspaceId;
     }
 
@@ -77,7 +80,7 @@ public final class AssociatedWorkspace implements JsonSerializable<AssociatedWor
      * 
      * @return the associateDate value.
      */
-    public String associateDate() {
+    public OffsetDateTime associateDate() {
         return this.associateDate;
     }
 
@@ -114,13 +117,15 @@ public final class AssociatedWorkspace implements JsonSerializable<AssociatedWor
                 reader.nextToken();
 
                 if ("workspaceId".equals(fieldName)) {
-                    deserializedAssociatedWorkspace.workspaceId = reader.getString();
+                    deserializedAssociatedWorkspace.workspaceId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("workspaceName".equals(fieldName)) {
                     deserializedAssociatedWorkspace.workspaceName = reader.getString();
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedAssociatedWorkspace.resourceId = reader.getString();
                 } else if ("associateDate".equals(fieldName)) {
-                    deserializedAssociatedWorkspace.associateDate = reader.getString();
+                    deserializedAssociatedWorkspace.associateDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

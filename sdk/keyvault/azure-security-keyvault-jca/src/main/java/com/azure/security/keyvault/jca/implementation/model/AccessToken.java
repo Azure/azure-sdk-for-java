@@ -25,6 +25,23 @@ public class AccessToken implements JsonSerializable<AccessToken> {
     private long expiresIn;
 
     /**
+     * Default constructor.
+     */
+    public AccessToken() {
+    }
+
+    /**
+     * Constructor with access token and expiration.
+     *
+     * @param accessToken The access token.
+     * @param expiresIn The life duration of the access token in seconds.
+     */
+    public AccessToken(String accessToken, long expiresIn) {
+        this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+    }
+
+    /**
      * Get the life duration of the access token in seconds.
      *
      * @return The life duration of the access token in seconds.

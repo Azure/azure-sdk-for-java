@@ -1,0 +1,24 @@
+# Release History
+
+## 1.0.0-beta.3 (2026-04-22)
+
+### Other Changes
+
+- Updated package metadata (display name and description) to align with Azure SDK guidelines.
+- Internal cleanup and lint fixes. No public API changes.
+
+## 1.0.0-beta.2 (2026-02-05)
+
+### Bugs Fixed
+
+- Fixed `EnhancedModeOptions` to properly serialize the `enabled` field in JSON requests, enabling translation and other enhanced mode features to work correctly.
+
+### Other Changes
+
+- Updated enhanced mode samples to demonstrate transcribe, translate, prompt tuning, and diarization scenarios.
+
+## 1.0.0-beta.1 (2026-01-05)
+
+### Features Added
+
+- Initial release of Azure AI Speech Transcription client library for Java.

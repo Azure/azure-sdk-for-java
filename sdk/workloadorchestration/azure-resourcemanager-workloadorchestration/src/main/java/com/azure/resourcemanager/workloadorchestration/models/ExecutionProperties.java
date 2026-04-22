@@ -109,8 +109,13 @@ public final class ExecutionProperties implements JsonSerializable<ExecutionProp
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("workflowVersionId", this.workflowVersionId);
-        jsonWriter.writeMapField("specification", this.specification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("specification", this.specification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

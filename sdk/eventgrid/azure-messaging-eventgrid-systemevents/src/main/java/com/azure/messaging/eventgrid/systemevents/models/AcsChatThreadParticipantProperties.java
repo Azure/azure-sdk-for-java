@@ -85,7 +85,6 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("participantCommunicationIdentifier", this.participantCommunicationIdentifier);
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

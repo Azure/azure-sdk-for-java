@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class BrokerListenerGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/BrokerListener_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/BrokerListener_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Get.

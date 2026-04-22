@@ -6,22 +6,20 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.jwk.TestJwks;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadJwtBearerGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.OAuth2ClientAuthenticationJwkResolver;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.endpoint.DefaultJwtBearerTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
-import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequestEntityConverter;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.RestClientJwtBearerTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -253,19 +251,15 @@ class AadOAuth2ClientConfigurationTests {
             });
     }
 
-    @SuppressWarnings({"deprecation", "removal", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     private MultiValueMap<String, String> convertParameters(JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
                                                             ClientRegistrationRepository clientRepository) {
         OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> client =
-                (OAuth2AccessTokenResponseClient<JwtBearerGrantRequest>) ReflectionTestUtils.getField(jwtBearerProvider, "accessTokenResponseClient");
-        assertThat(client.getClass().getSimpleName()).isEqualTo(DefaultJwtBearerTokenResponseClient.class.getSimpleName());
-
-        JwtBearerGrantRequestEntityConverter requestEntityConverter =
-                (JwtBearerGrantRequestEntityConverter) ReflectionTestUtils.getField(client, "requestEntityConverter");
-        assertThat(requestEntityConverter.getClass().getSimpleName()).isEqualTo(AadJwtBearerGrantRequestEntityConverter.class.getSimpleName());
+            (OAuth2AccessTokenResponseClient<JwtBearerGrantRequest>) ReflectionTestUtils.getField(jwtBearerProvider, "accessTokenResponseClient");
+        assertThat(client.getClass().getSimpleName()).isEqualTo(RestClientJwtBearerTokenResponseClient.class.getSimpleName());
 
         Converter<JwtBearerGrantRequest, MultiValueMap<String, String>> parametersConverter =
-                (Converter<JwtBearerGrantRequest, MultiValueMap<String, String>>) ReflectionTestUtils.getField(requestEntityConverter, "parametersConverter");
+            (Converter<JwtBearerGrantRequest, MultiValueMap<String, String>>) ReflectionTestUtils.getField(client, "parametersConverter");
         JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRepository.findByRegistrationId("graph"), mock(Jwt.class));
         return parametersConverter.convert(request);
     }

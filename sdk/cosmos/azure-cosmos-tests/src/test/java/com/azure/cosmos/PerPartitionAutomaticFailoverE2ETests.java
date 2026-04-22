@@ -69,9 +69,11 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.util.ReferenceCountUtil;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -95,6 +97,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -212,6 +215,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
+    private CosmosAsyncClient sharedClient;
     private CosmosAsyncDatabase sharedDatabase;
     private CosmosAsyncContainer sharedSinglePartitionContainer;
     private AccountLevelLocationContext accountLevelLocationReadableLocationContext;
@@ -460,12 +464,12 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-region", "fi-thinclient-multi-region"})
     public void beforeClass() {
-        CosmosAsyncClient cosmosAsyncClient = getClientBuilder().buildAsyncClient();
+        this.sharedClient = getClientBuilder().buildAsyncClient();
 
-        this.sharedDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
-        this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(cosmosAsyncClient);
+        this.sharedDatabase = getSharedCosmosDatabase(this.sharedClient);
+        this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(this.sharedClient);
 
         ONLY_GATEWAY_MODE.add(ConnectionMode.GATEWAY);
         ONLY_DIRECT_MODE.add(ConnectionMode.DIRECT);
@@ -473,11 +477,18 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         ALL_CONNECTION_MODES.add(ConnectionMode.DIRECT);
         ALL_CONNECTION_MODES.add(ConnectionMode.GATEWAY);
 
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(this.sharedClient);
         GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
         DatabaseAccount databaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
 
         this.accountLevelLocationReadableLocationContext = getAccountLevelLocationContext(databaseAccountSnapshot, false);
+    }
+
+    @AfterClass(groups = {"multi-region", "fi-thinclient-multi-region"})
+    public void afterClass() throws InterruptedException {
+        safeClose(this.sharedClient);
+        System.gc();
+        Thread.sleep(10_000);
     }
 
     @DataProvider(name = "ppafTestConfigsWithWriteOps")
@@ -1247,7 +1258,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      *   <li>Success vs failure based on phase and configuration.</li>
      * </ul>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
         OperationType operationType,
@@ -1266,6 +1277,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         if (connectionMode == ConnectionMode.DIRECT) {
@@ -1428,9 +1444,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+                String baseEndpoint = readableRegionNameToEndpoint.get(regionWithIssues);
+
+                URI locationEndpointWithIssues = new URI(baseEndpoint + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                // When thin client is enabled, data requests route through thinProxy (ThinClientStoreModel)
+                // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
+                // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
+                // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
+                if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+                    ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
+                }
 
                 setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccount, successStatusCode);
 
@@ -1510,7 +1536,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Expectations are provided by the data provider: when disabled, the request should not succeed;
      * when enabled, it should succeed. Works for both DIRECT and GATEWAY connection modes.</p>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodesWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
@@ -1529,6 +1555,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         // DIRECT flow: swap transport client, inject error for primary region/PK range, and verify phase-by-phase
@@ -1679,10 +1710,20 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+                String baseEndpoint = readableRegionNameToEndpoint.get(regionWithIssues);
+
+                URI locationEndpointWithIssues = new URI(baseEndpoint + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
                 // Redirect gateway calls through our mocked HttpClient
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                // When thin client is enabled, data requests route through thinProxy (ThinClientStoreModel)
+                // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
+                // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
+                // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
+                if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+                    ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
+                }
 
                 setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccountForResponses, successStatusCode);
 
@@ -1777,7 +1818,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Dynamic enablement is achieved by overriding GlobalEndpointManager's owner to
      * inject the PPAF flag into DatabaseAccount snapshots.</p>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
     public void testFailoverBehaviorForNonWriteOperationsWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
@@ -1791,6 +1832,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         final int consecutiveFaults = 10;
@@ -2049,6 +2095,15 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     expectedDuringWindow,
                     expectedAfterWindow);
 
+                // Validate thin client endpoint was used when thin client is enabled
+                if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+                    ResponseWrapper<?> probeResponse = dataPlaneOperation.apply(params);
+                    CosmosDiagnostics diag = extractDiagnostics(probeResponse);
+                    if (diag != null) {
+                        assertThinClientEndpointUsed(diag.getDiagnosticsContext());
+                    }
+                }
+
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -2076,6 +2131,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         // Stabilized post-window request
         ResponseWrapper<?> postWindow = dataPlaneOperation.apply(params);
         this.validateExpectedResponseCharacteristics.accept(postWindow, expectedAfterWindow);
+    }
+
+    private static CosmosDiagnostics extractDiagnostics(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics();
+        }
+        return null;
     }
 
     private static class DelegatingDatabaseAccountManagerInternal implements DatabaseAccountManagerInternal {
@@ -2821,32 +2889,49 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
             @Override
             public Mono<ByteBuf> body() {
-                try {
-
-                    if (resourceType == ResourceType.DatabaseAccount) {
-                        return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, databaseAccount.toJson()));
-                    }
-
-                    if (operationType == OperationType.Batch) {
-                        FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
-
-                        fakeBatchResponse
-                            .seteTag("1")
-                            .setStatusCode(HttpConstants.StatusCodes.OK)
-                            .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
-                            .setRequestCharge(1.0d)
-                            .setResourceBody(getTestPojoObject())
-                            .setRetryAfterMilliseconds("1");
-
-                        return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
-                            OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse))));
-                    }
-
-                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
-                        OBJECT_MAPPER.writeValueAsString(testPojo)));
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
+                if (resourceType == ResourceType.DatabaseAccount) {
+                    return createAutoReleasingMono(
+                        () -> ByteBufUtil.writeUtf8(
+                            ByteBufAllocator.DEFAULT,
+                            databaseAccount.toJson()
+                        ));
                 }
+
+                if (operationType == OperationType.Batch) {
+                    FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
+
+                    fakeBatchResponse
+                        .seteTag("1")
+                        .setStatusCode(HttpConstants.StatusCodes.OK)
+                        .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
+                        .setRequestCharge(1.0d)
+                        .setResourceBody(getTestPojoObject())
+                        .setRetryAfterMilliseconds("1");
+
+                    return createAutoReleasingMono(
+                        () -> {
+                            try {
+                                return ByteBufUtil.writeUtf8(
+                                    ByteBufAllocator.DEFAULT,
+                                    OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse))
+                                );
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                }
+
+                return createAutoReleasingMono(
+                    () -> {
+                        try {
+                            return ByteBufUtil.writeUtf8(
+                                ByteBufAllocator.DEFAULT,
+                                OBJECT_MAPPER.writeValueAsString(testPojo)
+                            );
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
             }
 
             @Override
@@ -2883,5 +2968,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         } catch (URISyntaxException e) {
             return httpResponse;
         }
+    }
+
+    private Mono<ByteBuf> createAutoReleasingMono(Supplier<ByteBuf> bufferSupplier) {
+        final AtomicReference<ByteBuf> output = new AtomicReference<>(null);
+
+        return Mono
+            .fromCallable(() -> {
+                ByteBuf buf = bufferSupplier.get();
+                output.set(buf);
+
+                return buf;
+            })
+            .doOnDiscard(ByteBuf.class, ReferenceCountUtil::safeRelease)
+            .doFinally(signalType -> ReferenceCountUtil.safeRelease(output.get()));
     }
 }

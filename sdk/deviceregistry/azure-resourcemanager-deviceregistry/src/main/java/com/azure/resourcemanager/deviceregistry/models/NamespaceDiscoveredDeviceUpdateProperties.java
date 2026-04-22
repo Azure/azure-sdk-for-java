@@ -186,8 +186,13 @@ public final class NamespaceDiscoveredDeviceUpdateProperties
         jsonWriter.writeStringField("externalDeviceId", this.externalDeviceId);
         jsonWriter.writeJsonField("endpoints", this.endpoints);
         jsonWriter.writeStringField("operatingSystemVersion", this.operatingSystemVersion);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("discoveryId", this.discoveryId);
         jsonWriter.writeNumberField("version", this.version);
         return jsonWriter.writeEndObject();

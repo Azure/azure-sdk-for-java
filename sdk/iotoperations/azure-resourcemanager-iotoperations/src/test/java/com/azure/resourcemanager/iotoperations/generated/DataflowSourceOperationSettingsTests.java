@@ -14,27 +14,27 @@ public final class DataflowSourceOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowSourceOperationSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"grcfb\",\"assetRef\":\"rmfqjhhkxbpvj\",\"serializationFormat\":\"Json\",\"schemaRef\":\"xxjyngudivkrtsw\",\"dataSources\":[\"qzvszjf\",\"uvjfdxxive\",\"vtcqaqtdo\"]}")
+            "{\"endpointRef\":\"q\",\"assetRef\":\"wpmqt\",\"serializationFormat\":\"Json\",\"schemaRef\":\"ujmkcjhwqy\",\"dataSources\":[\"r\",\"bnw\",\"ewgdrjervn\",\"enq\"]}")
             .toObject(DataflowSourceOperationSettings.class);
-        Assertions.assertEquals("grcfb", model.endpointRef());
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.assetRef());
+        Assertions.assertEquals("q", model.endpointRef());
+        Assertions.assertEquals("wpmqt", model.assetRef());
         Assertions.assertEquals(SourceSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("xxjyngudivkrtsw", model.schemaRef());
-        Assertions.assertEquals("qzvszjf", model.dataSources().get(0));
+        Assertions.assertEquals("ujmkcjhwqy", model.schemaRef());
+        Assertions.assertEquals("r", model.dataSources().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowSourceOperationSettings model = new DataflowSourceOperationSettings().withEndpointRef("grcfb")
-            .withAssetRef("rmfqjhhkxbpvj")
+        DataflowSourceOperationSettings model = new DataflowSourceOperationSettings().withEndpointRef("q")
+            .withAssetRef("wpmqt")
             .withSerializationFormat(SourceSerializationFormat.JSON)
-            .withSchemaRef("xxjyngudivkrtsw")
-            .withDataSources(Arrays.asList("qzvszjf", "uvjfdxxive", "vtcqaqtdo"));
+            .withSchemaRef("ujmkcjhwqy")
+            .withDataSources(Arrays.asList("r", "bnw", "ewgdrjervn", "enq"));
         model = BinaryData.fromObject(model).toObject(DataflowSourceOperationSettings.class);
-        Assertions.assertEquals("grcfb", model.endpointRef());
-        Assertions.assertEquals("rmfqjhhkxbpvj", model.assetRef());
+        Assertions.assertEquals("q", model.endpointRef());
+        Assertions.assertEquals("wpmqt", model.assetRef());
         Assertions.assertEquals(SourceSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("xxjyngudivkrtsw", model.schemaRef());
-        Assertions.assertEquals("qzvszjf", model.dataSources().get(0));
+        Assertions.assertEquals("ujmkcjhwqy", model.schemaRef());
+        Assertions.assertEquals("r", model.dataSources().get(0));
     }
 }

@@ -20,16 +20,16 @@ public final class DataflowGraphPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphProperties model = BinaryData.fromString(
-            "{\"mode\":\"Enabled\",\"requestDiskPersistence\":\"Disabled\",\"nodes\":[{\"nodeType\":\"DataflowGraphNode\",\"name\":\"dmjsjqb\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"hhyxxrw\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"yc\"},{\"nodeType\":\"DataflowGraphNode\",\"name\":\"duhpk\"}],\"nodeConnections\":[{\"from\":{\"name\":\"gymare\",\"schema\":{\"serializationFormat\":\"Parquet\",\"schemaRef\":\"qugjhkycube\"}},\"to\":{\"name\":\"dgssofwqmzqal\"}},{\"from\":{\"name\":\"rmnjijpx\",\"schema\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"dfnbyxbaaabjyv\"}},\"to\":{\"name\":\"yffimrzrtuzqogs\"}},{\"from\":{\"name\":\"xnevfdnwn\",\"schema\":{\"serializationFormat\":\"Parquet\",\"schemaRef\":\"syyceuzsoibjud\"}},\"to\":{\"name\":\"frxtrthzvaytdwk\"}},{\"from\":{\"name\":\"brqubp\",\"schema\":{\"serializationFormat\":\"Json\",\"schemaRef\":\"iilivpdtiirqtd\"}},\"to\":{\"name\":\"oaxoruzfgsqu\"}}],\"provisioningState\":\"Succeeded\"}")
+            "{\"mode\":\"Enabled\",\"requestDiskPersistence\":\"Disabled\",\"nodes\":[{\"nodeType\":\"DataflowGraphNode\",\"name\":\"yf\"}],\"nodeConnections\":[{\"from\":{\"name\":\"dgqggebdu\",\"schema\":{\"serializationFormat\":\"Avro\",\"schemaRef\":\"qidbqfatpxllrxcy\"}},\"to\":{\"name\":\"moadsuvarmy\"}},{\"from\":{\"name\":\"dmjsjqb\",\"schema\":{\"serializationFormat\":\"Parquet\",\"schemaRef\":\"xrwlyc\"}},\"to\":{\"name\":\"duhpk\"}}],\"provisioningState\":\"Succeeded\",\"healthState\":\"Unknown\"}")
             .toObject(DataflowGraphProperties.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
         Assertions.assertEquals(OperationalMode.DISABLED, model.requestDiskPersistence());
-        Assertions.assertEquals("dmjsjqb", model.nodes().get(0).name());
-        Assertions.assertEquals("gymare", model.nodeConnections().get(0).from().name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.PARQUET,
+        Assertions.assertEquals("yf", model.nodes().get(0).name());
+        Assertions.assertEquals("dgqggebdu", model.nodeConnections().get(0).from().name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO,
             model.nodeConnections().get(0).from().schema().serializationFormat());
-        Assertions.assertEquals("qugjhkycube", model.nodeConnections().get(0).from().schema().schemaRef());
-        Assertions.assertEquals("dgssofwqmzqal", model.nodeConnections().get(0).to().name());
+        Assertions.assertEquals("qidbqfatpxllrxcy", model.nodeConnections().get(0).from().schema().schemaRef());
+        Assertions.assertEquals("moadsuvarmy", model.nodeConnections().get(0).to().name());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,49 +37,33 @@ public final class DataflowGraphPropertiesTests {
         DataflowGraphProperties model
             = new DataflowGraphProperties().withMode(OperationalMode.ENABLED)
                 .withRequestDiskPersistence(OperationalMode.DISABLED)
-                .withNodes(Arrays.asList(new DataflowGraphNode().withName("dmjsjqb"),
-                    new DataflowGraphNode().withName("hhyxxrw"), new DataflowGraphNode().withName("yc"),
-                    new DataflowGraphNode().withName("duhpk")))
+                .withNodes(Arrays.asList(new DataflowGraphNode().withName("yf")))
                 .withNodeConnections(
                     Arrays
                         .asList(
                             new DataflowGraphNodeConnection()
                                 .withFrom(
-                                    new DataflowGraphConnectionInput().withName("gymare")
+                                    new DataflowGraphConnectionInput().withName("dgqggebdu")
                                         .withSchema(new DataflowGraphConnectionSchemaSettings()
                                             .withSerializationFormat(
-                                                DataflowGraphConnectionSchemaSerializationFormat.PARQUET)
-                                            .withSchemaRef("qugjhkycube")))
-                                .withTo(new DataflowGraphConnectionOutput().withName("dgssofwqmzqal")),
+                                                DataflowGraphConnectionSchemaSerializationFormat.AVRO)
+                                            .withSchemaRef("qidbqfatpxllrxcy")))
+                                .withTo(new DataflowGraphConnectionOutput().withName("moadsuvarmy")),
                             new DataflowGraphNodeConnection()
-                                .withFrom(
-                                    new DataflowGraphConnectionInput().withName("rmnjijpx")
-                                        .withSchema(new DataflowGraphConnectionSchemaSettings()
-                                            .withSerializationFormat(
-                                                DataflowGraphConnectionSchemaSerializationFormat.DELTA)
-                                            .withSchemaRef("dfnbyxbaaabjyv")))
-                                .withTo(new DataflowGraphConnectionOutput().withName("yffimrzrtuzqogs")),
-                            new DataflowGraphNodeConnection()
-                                .withFrom(new DataflowGraphConnectionInput().withName("xnevfdnwn")
+                                .withFrom(new DataflowGraphConnectionInput().withName("dmjsjqb")
                                     .withSchema(new DataflowGraphConnectionSchemaSettings()
                                         .withSerializationFormat(
                                             DataflowGraphConnectionSchemaSerializationFormat.PARQUET)
-                                        .withSchemaRef("syyceuzsoibjud")))
-                                .withTo(new DataflowGraphConnectionOutput().withName("frxtrthzvaytdwk")),
-                            new DataflowGraphNodeConnection()
-                                .withFrom(new DataflowGraphConnectionInput().withName("brqubp")
-                                    .withSchema(new DataflowGraphConnectionSchemaSettings()
-                                        .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.JSON)
-                                        .withSchemaRef("iilivpdtiirqtd")))
-                                .withTo(new DataflowGraphConnectionOutput().withName("oaxoruzfgsqu"))));
+                                        .withSchemaRef("xrwlyc")))
+                                .withTo(new DataflowGraphConnectionOutput().withName("duhpk"))));
         model = BinaryData.fromObject(model).toObject(DataflowGraphProperties.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
         Assertions.assertEquals(OperationalMode.DISABLED, model.requestDiskPersistence());
-        Assertions.assertEquals("dmjsjqb", model.nodes().get(0).name());
-        Assertions.assertEquals("gymare", model.nodeConnections().get(0).from().name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.PARQUET,
+        Assertions.assertEquals("yf", model.nodes().get(0).name());
+        Assertions.assertEquals("dgqggebdu", model.nodeConnections().get(0).from().name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO,
             model.nodeConnections().get(0).from().schema().serializationFormat());
-        Assertions.assertEquals("qugjhkycube", model.nodeConnections().get(0).from().schema().schemaRef());
-        Assertions.assertEquals("dgssofwqmzqal", model.nodeConnections().get(0).to().name());
+        Assertions.assertEquals("qidbqfatpxllrxcy", model.nodeConnections().get(0).from().schema().schemaRef());
+        Assertions.assertEquals("moadsuvarmy", model.nodeConnections().get(0).to().name());
     }
 }

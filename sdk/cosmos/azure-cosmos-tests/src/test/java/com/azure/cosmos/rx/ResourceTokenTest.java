@@ -6,6 +6,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -22,7 +23,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
+// Uses rx.TestSuiteBase (local package)
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -95,7 +96,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private static final String PERMISSION_FOR_DOC = "PermissionForDoc";
     private static final String PERMISSION_FOR_DOC_WITH_NAME = "PermissionForDocWithName";
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public ResourceTokenTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -329,7 +330,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "fast" }, dataProvider = "resourceToken", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "resourceToken", timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void readDocumentFromResouceToken(String resourceToken) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
@@ -421,7 +422,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
-            validateFailure(readObservable, validator);
+            validateResourceResponseFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -453,7 +454,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
-            validateFailure(readObservable, validator);
+            validateResourceResponseFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -463,6 +464,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     public void queryItemFromResourceToken(DocumentCollection documentCollection, Permission permission, PartitionKey partitionKey) throws Exception {
 
         AsyncDocumentClient asyncClientResourceToken = null;
+        QueryFeedOperationState dummyState = null;
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(permission);
@@ -479,11 +481,15 @@ public class ResourceTokenTest extends TestSuiteBase {
 
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             queryRequestOptions.setPartitionKey(partitionKey);
+
+            dummyState = TestUtils
+                .createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, asyncClientResourceToken);
+
             Flux<FeedResponse<Document>> queryObservable =
                 asyncClientResourceToken.queryDocuments(
                     documentCollection.getAltLink(),
                     "select * from c",
-                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, asyncClientResourceToken),
+                    dummyState,
                     Document.class);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
@@ -494,12 +500,17 @@ public class ResourceTokenTest extends TestSuiteBase {
             validateQuerySuccess(queryObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
+            safeClose(dummyState);
         }
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId);
+        try {
+            safeDeleteDatabase(client, databaseId);
+        } catch (Exception e) {
+            logger.warn("Failed to delete database during cleanup", e);
+        }
         safeClose(client);
     }
 

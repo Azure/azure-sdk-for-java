@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataSource;
@@ -24,27 +24,27 @@ public final class DataSourcesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":\"dataejjtbxqmul\",\"etag\":\"lxqzvn\",\"kind\":\"ChangeTrackingDataTypeConfiguration\",\"tags\":{\"qbsms\":\"ycucrwnamikzeb\",\"kzruswh\":\"ziqgfuh\",\"ycjsx\":\"hczznvf\",\"xqhndvnoamlds\":\"wwixzvumw\"},\"id\":\"haohdjhhflzokxc\",\"name\":\"xpelnjetagltsx\",\"type\":\"atftgzpnpbsw\"}";
+            = "{\"properties\":\"datactctbrxkjz\",\"etag\":\"gxffmshkwf\",\"kind\":\"CustomLogCollection\",\"tags\":{\"clnapxbiygnugjkn\":\"zxwopdbydpizq\",\"oiquvrehmrnjhvs\":\"smfcttuxuuyilfl\"},\"id\":\"jztczytqj\",\"name\":\"w\",\"type\":\"auunfprnjletlx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataSource response = manager.dataSources()
-            .define("jx")
-            .withExistingWorkspace("bffmbmxz", "rgywwp")
-            .withProperties("datanptfujgi")
-            .withKind(DataSourceKind.LINUX_SYSLOG)
-            .withTags(mapOf("gehkfkimrtixokff", "mxswvruunzz", "qwhix", "yinljqe", "i", "onsts"))
-            .withEtag("aaoepttaqut")
+            .define("wfl")
+            .withExistingWorkspace("p", "gqoweyirdhlisn")
+            .withProperties("dataqmp")
+            .withKind(DataSourceKind.CHANGE_TRACKING_PATH)
+            .withTags(mapOf("xtmkzjvkviir", "ngjsaasi"))
+            .withEtag("ruwnpqxpx")
             .create();
 
-        Assertions.assertEquals("lxqzvn", response.etag());
-        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_DATA_TYPE_CONFIGURATION, response.kind());
-        Assertions.assertEquals("ycucrwnamikzeb", response.tags().get("qbsms"));
+        Assertions.assertEquals("gxffmshkwf", response.etag());
+        Assertions.assertEquals(DataSourceKind.CUSTOM_LOG_COLLECTION, response.kind());
+        Assertions.assertEquals("zxwopdbydpizq", response.tags().get("clnapxbiygnugjkn"));
     }
 
     // Use "Map.of" if available

@@ -12,21 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkSegmentSubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkSegmentSubnet model = BinaryData
-            .fromString(
-                "{\"dhcpRanges\":[\"wtjjguktalhsnv\",\"cdmxzrpoaiml\",\"wiaaomylweaz\"],\"gatewayAddress\":\"cse\"}")
-            .toObject(WorkloadNetworkSegmentSubnet.class);
-        Assertions.assertEquals("wtjjguktalhsnv", model.dhcpRanges().get(0));
-        Assertions.assertEquals("cse", model.gatewayAddress());
+        WorkloadNetworkSegmentSubnet model
+            = BinaryData.fromString("{\"dhcpRanges\":[\"xzmqpnodawop\"],\"gatewayAddress\":\"ewjptmcg\"}")
+                .toObject(WorkloadNetworkSegmentSubnet.class);
+        Assertions.assertEquals("xzmqpnodawop", model.dhcpRanges().get(0));
+        Assertions.assertEquals("ewjptmcg", model.gatewayAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkSegmentSubnet model = new WorkloadNetworkSegmentSubnet()
-            .withDhcpRanges(Arrays.asList("wtjjguktalhsnv", "cdmxzrpoaiml", "wiaaomylweaz"))
-            .withGatewayAddress("cse");
+        WorkloadNetworkSegmentSubnet model
+            = new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("xzmqpnodawop"))
+                .withGatewayAddress("ewjptmcg");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkSegmentSubnet.class);
-        Assertions.assertEquals("wtjjguktalhsnv", model.dhcpRanges().get(0));
-        Assertions.assertEquals("cse", model.gatewayAddress());
+        Assertions.assertEquals("xzmqpnodawop", model.dhcpRanges().get(0));
+        Assertions.assertEquals("ewjptmcg", model.gatewayAddress());
     }
 }

@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.models.PartitionKey
 import com.fasterxml.jackson.databind.node.ObjectNode
 
-private  trait AsyncItemWriter {
+private trait AsyncItemWriter {
   /**
     * Schedule a write to happen in async and return immediately
     * @param partitionKeyValue the partition key value

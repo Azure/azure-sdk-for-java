@@ -15,6 +15,7 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.models.Vault;
@@ -82,6 +83,7 @@ public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
     }
 

@@ -13,36 +13,36 @@ public final class ManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementGroupProperties model = BinaryData.fromString(
-            "{\"serverCount\":741975656,\"isGateway\":true,\"name\":\"alupjm\",\"id\":\"fxobbcsws\",\"created\":\"2021-04-25T18:58:37Z\",\"dataReceived\":\"2021-09-18T23:40:57Z\",\"version\":\"lrbpbewtghfgbl\",\"sku\":\"wxzvlvqhjkb\"}")
+            "{\"serverCount\":2101228547,\"isGateway\":false,\"name\":\"mopjmc\",\"id\":\"tuo\",\"created\":\"2021-09-23T02:42:43Z\",\"dataReceived\":\"2021-10-23T10:51:29Z\",\"version\":\"uaodsfcpk\",\"sku\":\"odpuozmyzydag\"}")
             .toObject(ManagementGroupProperties.class);
-        Assertions.assertEquals(741975656, model.serverCount());
-        Assertions.assertEquals(true, model.isGateway());
-        Assertions.assertEquals("alupjm", model.name());
-        Assertions.assertEquals("fxobbcsws", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T18:58:37Z"), model.created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T23:40:57Z"), model.dataReceived());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.version());
-        Assertions.assertEquals("wxzvlvqhjkb", model.sku());
+        Assertions.assertEquals(2101228547, model.serverCount());
+        Assertions.assertFalse(model.isGateway());
+        Assertions.assertEquals("mopjmc", model.name());
+        Assertions.assertEquals("tuo", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T02:42:43Z"), model.created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T10:51:29Z"), model.dataReceived());
+        Assertions.assertEquals("uaodsfcpk", model.version());
+        Assertions.assertEquals("odpuozmyzydag", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupProperties model = new ManagementGroupProperties().withServerCount(741975656)
-            .withIsGateway(true)
-            .withName("alupjm")
-            .withId("fxobbcsws")
-            .withCreated(OffsetDateTime.parse("2021-04-25T18:58:37Z"))
-            .withDataReceived(OffsetDateTime.parse("2021-09-18T23:40:57Z"))
-            .withVersion("lrbpbewtghfgbl")
-            .withSku("wxzvlvqhjkb");
+        ManagementGroupProperties model = new ManagementGroupProperties().withServerCount(2101228547)
+            .withIsGateway(false)
+            .withName("mopjmc")
+            .withId("tuo")
+            .withCreated(OffsetDateTime.parse("2021-09-23T02:42:43Z"))
+            .withDataReceived(OffsetDateTime.parse("2021-10-23T10:51:29Z"))
+            .withVersion("uaodsfcpk")
+            .withSku("odpuozmyzydag");
         model = BinaryData.fromObject(model).toObject(ManagementGroupProperties.class);
-        Assertions.assertEquals(741975656, model.serverCount());
-        Assertions.assertEquals(true, model.isGateway());
-        Assertions.assertEquals("alupjm", model.name());
-        Assertions.assertEquals("fxobbcsws", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T18:58:37Z"), model.created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T23:40:57Z"), model.dataReceived());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.version());
-        Assertions.assertEquals("wxzvlvqhjkb", model.sku());
+        Assertions.assertEquals(2101228547, model.serverCount());
+        Assertions.assertFalse(model.isGateway());
+        Assertions.assertEquals("mopjmc", model.name());
+        Assertions.assertEquals("tuo", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T02:42:43Z"), model.created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T10:51:29Z"), model.dataReceived());
+        Assertions.assertEquals("uaodsfcpk", model.version());
+        Assertions.assertEquals("odpuozmyzydag", model.sku());
     }
 }

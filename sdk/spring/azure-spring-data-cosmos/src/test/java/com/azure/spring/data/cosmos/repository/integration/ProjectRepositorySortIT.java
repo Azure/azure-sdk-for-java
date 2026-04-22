@@ -11,17 +11,15 @@ import com.azure.spring.data.cosmos.exception.CosmosBadRequestException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.SortedProjectRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,8 +28,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.common.PageTestUtils.validateLastPage;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ProjectRepositorySortIT {
 
@@ -79,7 +78,7 @@ public class ProjectRepositorySortIT {
     private static final List<SortedProject> PROJECTS = Arrays.asList(PROJECT_4, PROJECT_3,
         PROJECT_2, PROJECT_1, PROJECT_0);
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -88,7 +87,7 @@ public class ProjectRepositorySortIT {
     @Autowired
     private SortedProjectRepository repository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, SortedProject.class);
         this.repository.saveAll(PROJECTS);
@@ -101,8 +100,8 @@ public class ProjectRepositorySortIT {
 
         PROJECTS.sort(Comparator.comparing(SortedProject::getStarCount));
 
-        Assert.assertEquals(PROJECTS.size(), projects.size());
-        Assert.assertEquals(PROJECTS, projects);
+        assertEquals(PROJECTS.size(), projects.size());
+        assertEquals(PROJECTS, projects);
     }
 
     @Test
@@ -112,8 +111,8 @@ public class ProjectRepositorySortIT {
 
         PROJECTS.sort(Comparator.comparing(SortedProject::getCreator).reversed());
 
-        Assert.assertEquals(PROJECTS.size(), projects.size());
-        Assert.assertEquals(PROJECTS, projects);
+        assertEquals(PROJECTS.size(), projects.size());
+        assertEquals(PROJECTS, projects);
     }
 
     @Test
@@ -124,30 +123,36 @@ public class ProjectRepositorySortIT {
         PROJECTS.sort(Comparator.comparing(SortedProject::getId));
         projects.sort(Comparator.comparing(SortedProject::getId));
 
-        Assert.assertEquals(PROJECTS.size(), projects.size());
-        Assert.assertEquals(PROJECTS, projects);
+        assertEquals(PROJECTS.size(), projects.size());
+        assertEquals(PROJECTS, projects);
     }
 
-    @Test(expected = CosmosBadRequestException.class)
+    @Test
     public void testFindAllSortMoreThanOneOrderException() {
-        final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
+        assertThrows(CosmosBadRequestException.class, () -> {
+            final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
 
-        this.repository.findAll(sort).iterator().next();
+            this.repository.findAll(sort).iterator().next();
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFindAllSortIgnoreCaseException() {
-        final Sort.Order order = Sort.Order.by("name").ignoreCase();
-        final Sort sort = Sort.by(order);
+        assertThrows(IllegalArgumentException.class, () -> {
+            final Sort.Order order = Sort.Order.by("name").ignoreCase();
+            final Sort sort = Sort.by(order);
 
-        this.repository.findAll(sort);
+            this.repository.findAll(sort);
+        });
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test
     public void testFindAllSortMissMatchException() {
-        final Sort sort = Sort.by(Sort.Direction.ASC, "fake-name");
+        assertThrows(CosmosAccessException.class, () -> {
+            final Sort sort = Sort.by(Sort.Direction.ASC, "fake-name");
 
-        this.repository.findAll(sort).iterator().next();
+            this.repository.findAll(sort).iterator().next();
+        });
     }
 
     public void testFindAllSortWithIdName() {
@@ -159,7 +164,7 @@ public class ProjectRepositorySortIT {
             false)
                                                          .collect(Collectors.toList());
 
-        Assert.assertEquals(projectListSortedById, results);
+        assertEquals(projectListSortedById, results);
     }
 
     @Test
@@ -171,8 +176,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getStarCount));
 
-        Assert.assertEquals(references.size(), projects.size());
-        Assert.assertEquals(references, projects);
+        assertEquals(references.size(), projects.size());
+        assertEquals(references, projects);
     }
 
     @Test
@@ -184,8 +189,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getStarCount));
 
-        Assert.assertEquals(references.size(), projects.size());
-        Assert.assertEquals(references, projects);
+        assertEquals(references.size(), projects.size());
+        assertEquals(references, projects);
     }
 
     @Test
@@ -196,8 +201,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getName).reversed());
 
-        Assert.assertEquals(references.size(), projects.size());
-        Assert.assertEquals(references, projects);
+        assertEquals(references.size(), projects.size());
+        assertEquals(references, projects);
     }
 
     @Test
@@ -210,8 +215,8 @@ public class ProjectRepositorySortIT {
         final List<SortedProject> references = Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_3, PROJECT_4);
         references.sort(Comparator.comparing(SortedProject::getName).reversed());
 
-        Assert.assertEquals(references.size(), result.getContent().size());
-        Assert.assertEquals(references, result.getContent());
+        assertEquals(references.size(), result.getContent().size());
+        assertEquals(references, result.getContent());
         validateLastPage(result, 5);
     }
 
@@ -226,8 +231,8 @@ public class ProjectRepositorySortIT {
 
         references.sort(Comparator.comparing(SortedProject::getName).reversed());
 
-        Assert.assertEquals(references.size(), result.getContent().size());
-        Assert.assertEquals(references, result.getContent());
+        assertEquals(references.size(), result.getContent().size());
+        assertEquals(references, result.getContent());
         validateLastPage(result, 5);
     }
 }

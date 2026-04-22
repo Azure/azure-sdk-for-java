@@ -31,8 +31,12 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
     private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
     @Override
-    public void init(HttpSecurity builder) throws Exception {
-        super.init(builder);
+    public void init(HttpSecurity builder) {
+        try {
+            super.init(builder);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize AadResourceServerHttpSecurityConfigurer", e);
+        }
         ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
         this.properties = context.getBean(AadResourceServerProperties.class);
         // @formatter:off

@@ -12,6 +12,7 @@ import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 /**
  * Listens for AppConfigurationRefreshEvents and sets the App Configuration watch interval to zero.
  */
+@SuppressWarnings("deprecation")
 public final class AppConfigurationRefreshEventListener implements ApplicationListener<AppConfigurationRefreshEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEventListener.class);

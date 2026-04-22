@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -65,7 +65,7 @@ public final class DeploymentsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 

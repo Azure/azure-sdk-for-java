@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -28,12 +29,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loganalytics.fluent.WorkspacesClient;
+import com.azure.resourcemanager.loganalytics.fluent.models.NetworkSecurityPerimeterConfigurationInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceInner;
+import com.azure.resourcemanager.loganalytics.models.NetworkSecurityPerimeterConfigurationListResult;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceListResult;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePatch;
 import java.nio.ByteBuffer;
@@ -70,13 +75,21 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "OperationalInsightsM")
+    @ServiceInterface(name = "OperationalInsightsManagementClientWorkspaces")
     public interface WorkspacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkspaceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WorkspaceListResult> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -89,10 +102,28 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WorkspaceListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") WorkspaceInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") WorkspaceInner parameters, @HeaderParam("Accept") String accept,
@@ -108,10 +139,28 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             @QueryParam("force") Boolean force, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("force") Boolean force, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkspaceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WorkspaceInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
@@ -125,6 +174,128 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") WorkspacePatch parameters, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<WorkspaceInner> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") WorkspacePatch parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/locations/{location}/workspaces/{workspaceName}/failover")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> failover(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("workspaceName") String workspaceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/locations/{location}/workspaces/{workspaceName}/failover")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> failoverSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("workspaceName") String workspaceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/failback")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> failback(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/failback")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> failbackSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkSecurityPerimeterConfigurationListResult>> listNsp(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NetworkSecurityPerimeterConfigurationListResult> listNspSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getNsp(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("networkSecurityPerimeterConfigurationName") String networkSecurityPerimeterConfigurationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NetworkSecurityPerimeterConfigurationInner> getNspSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("networkSecurityPerimeterConfigurationName") String networkSecurityPerimeterConfigurationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> reconcileNsp(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("networkSecurityPerimeterConfigurationName") String networkSecurityPerimeterConfigurationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> reconcileNspSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("networkSecurityPerimeterConfigurationName") String networkSecurityPerimeterConfigurationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkSecurityPerimeterConfigurationListResult>> listNspNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NetworkSecurityPerimeterConfigurationListResult> listNspNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -145,42 +316,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<WorkspaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the workspaces in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspaces in a subscription along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkspaceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2022-10-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
     }
 
     /**
@@ -198,15 +340,55 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     /**
      * Gets the workspaces in a subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the workspaces in a subscription along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkspaceInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkspaceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * Gets the workspaces in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspaces in a subscription as paginated response with {@link PagedFlux}.
+     * @return the workspaces in a subscription along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkspaceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkspaceInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkspaceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -218,7 +400,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage());
     }
 
     /**
@@ -232,7 +414,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context));
     }
 
     /**
@@ -258,49 +440,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                apiVersion, this.client.getSubscriptionId(), accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<WorkspaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets workspaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspaces in a resource group along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkspaceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2022-10-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion,
-                this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
     }
 
     /**
@@ -321,15 +467,65 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * Gets workspaces in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspaces in a resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkspaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * Gets workspaces in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspaces in a resource group as paginated response with {@link PagedFlux}.
+     * @return workspaces in a resource group along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkspaceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkspaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -343,7 +539,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName));
     }
 
     /**
@@ -358,7 +554,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context));
     }
 
     /**
@@ -396,12 +592,54 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, workspaceName,
-                apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create or update a workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param parameters The parameters required to create or update a workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the top level Workspace resource container along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspaceInner parameters) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, Context.NONE);
     }
 
     /**
@@ -414,37 +652,38 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level Workspace resource container along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the top level Workspace resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String workspaceName, WorkspaceInner parameters, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspaceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
-            this.client.getSubscriptionId(), parameters, accept, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -473,28 +712,6 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to create or update a workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the top level Workspace resource container.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String workspaceName, WorkspaceInner parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, parameters, context);
-        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            WorkspaceInner.class, WorkspaceInner.class, context);
-    }
-
-    /**
-     * Create or update a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param parameters The parameters required to create or update a workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -503,7 +720,9 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, WorkspaceInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, parameters);
+        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
+            WorkspaceInner.class, Context.NONE);
     }
 
     /**
@@ -521,7 +740,10 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, WorkspaceInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters, context).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, workspaceName, parameters, context);
+        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
+            WorkspaceInner.class, context);
     }
 
     /**
@@ -548,25 +770,6 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to create or update a workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level Workspace resource container on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
-        WorkspaceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param parameters The parameters required to create or update a workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,7 +777,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, parameters).block();
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, parameters).getFinalResult();
     }
 
     /**
@@ -592,7 +795,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner parameters,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, parameters, context).block();
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, parameters, context).getFinalResult();
     }
 
     /**
@@ -627,12 +830,50 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName,
-                apiVersion, this.client.getSubscriptionId(), force, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), force, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
+     * subscription, resource group and location. The name is kept for 14 days and cannot be used for another workspace.
+     * To remove the workspace completely and release the name, use the force flag.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param force Deletes the workspace without the recovery option. A workspace that was deleted with this flag
+     * cannot be recovered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, Boolean force) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), force, accept, Context.NONE);
     }
 
     /**
@@ -648,31 +889,32 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
-        Boolean force, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, Boolean force,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
-            this.client.getSubscriptionId(), force, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), force, accept, context);
     }
 
     /**
@@ -726,20 +968,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @param workspaceName The name of the workspace.
      * @param force Deletes the workspace without the recovery option. A workspace that was deleted with this flag
      * cannot be recovered.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
-        Boolean force, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, workspaceName, force, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        Boolean force) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, force);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -757,7 +995,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
         final Boolean force = null;
-        return this.beginDeleteAsync(resourceGroupName, workspaceName, force).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, force);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -778,7 +1017,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, Boolean force,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, workspaceName, force, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, force, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -827,27 +1067,6 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param force Deletes the workspace without the recovery option. A workspace that was deleted with this flag
-     * cannot be recovered.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, force, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
-     * subscription, resource group and location. The name is kept for 14 days and cannot be used for another workspace.
-     * To remove the workspace completely and release the name, use the force flag.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -855,7 +1074,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName) {
         final Boolean force = null;
-        deleteAsync(resourceGroupName, workspaceName, force).block();
+        beginDelete(resourceGroupName, workspaceName, force).getFinalResult();
     }
 
     /**
@@ -874,7 +1093,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, Boolean force, Context context) {
-        deleteAsync(resourceGroupName, workspaceName, force, context).block();
+        beginDelete(resourceGroupName, workspaceName, force, context).getFinalResult();
     }
 
     /**
@@ -905,48 +1124,11 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                workspaceName, apiVersion, this.client.getSubscriptionId(), accept, context))
+                workspaceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a workspace instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace instance along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String workspaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2022-10-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -979,7 +1161,27 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, workspaceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1032,55 +1234,11 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, workspaceName,
-                apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Updates a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param parameters The parameters required to patch a workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level Workspace resource container along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceInner>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
-        WorkspacePatch parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2022-10-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
-            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1116,7 +1274,33 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> updateWithResponse(String resourceGroupName, String workspaceName,
         WorkspacePatch parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, workspaceName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1134,4 +1318,1112 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     public WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspacePatch parameters) {
         return updateWithResponse(resourceGroupName, workspaceName, parameters, Context.NONE).getValue();
     }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String location,
+        String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.failover(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, location, workspaceName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> failoverWithResponse(String resourceGroupName, String location, String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.failoverSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            location, workspaceName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> failoverWithResponse(String resourceGroupName, String location, String workspaceName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.failoverSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            location, workspaceName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String location,
+        String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, location, workspaceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String location,
+        String workspaceName) {
+        Response<BinaryData> response = failoverWithResponse(resourceGroupName, location, workspaceName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String location,
+        String workspaceName, Context context) {
+        Response<BinaryData> response = failoverWithResponse(resourceGroupName, location, workspaceName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> failoverAsync(String resourceGroupName, String location, String workspaceName) {
+        return beginFailoverAsync(resourceGroupName, location, workspaceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failover(String resourceGroupName, String location, String workspaceName) {
+        beginFailover(resourceGroupName, location, workspaceName).getFinalResult();
+    }
+
+    /**
+     * Activates failover for the specified workspace.
+     * 
+     * The specified replication location must match the location of the enabled replication for this workspace. The
+     * failover operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be
+     * checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failover(String resourceGroupName, String location, String workspaceName, Context context) {
+        beginFailover(resourceGroupName, location, workspaceName, context).getFinalResult();
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> failbackWithResponseAsync(String resourceGroupName, String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.failback(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> failbackWithResponse(String resourceGroupName, String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.failbackSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> failbackWithResponse(String resourceGroupName, String workspaceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.failbackSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFailbackAsync(String resourceGroupName, String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = failbackWithResponseAsync(resourceGroupName, workspaceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFailback(String resourceGroupName, String workspaceName) {
+        Response<BinaryData> response = failbackWithResponse(resourceGroupName, workspaceName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFailback(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<BinaryData> response = failbackWithResponse(resourceGroupName, workspaceName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> failbackAsync(String resourceGroupName, String workspaceName) {
+        return beginFailbackAsync(resourceGroupName, workspaceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failback(String resourceGroupName, String workspaceName) {
+        beginFailback(resourceGroupName, workspaceName).getFinalResult();
+    }
+
+    /**
+     * Deactivates failover for the specified workspace.
+     * 
+     * The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can
+     * be checked using the operationId returned in the response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failback(String resourceGroupName, String workspaceName, Context context) {
+        beginFailback(resourceGroupName, workspaceName, context).getFinalResult();
+    }
+
+    /**
+     * Gets a list of NSP configurations for specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>
+        listNspSinglePageAsync(String resourceGroupName, String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listNsp(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>map(
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of NSP configurations for specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NetworkSecurityPerimeterConfigurationInner> listNspAsync(String resourceGroupName,
+        String workspaceName) {
+        return new PagedFlux<>(() -> listNspSinglePageAsync(resourceGroupName, workspaceName),
+            nextLink -> listNspNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of NSP configurations for specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNspSinglePage(String resourceGroupName,
+        String workspaceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NetworkSecurityPerimeterConfigurationListResult> res
+            = service.listNspSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets a list of NSP configurations for specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNspSinglePage(String resourceGroupName,
+        String workspaceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NetworkSecurityPerimeterConfigurationListResult> res
+            = service.listNspSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets a list of NSP configurations for specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listNsp(String resourceGroupName,
+        String workspaceName) {
+        return new PagedIterable<>(() -> listNspSinglePage(resourceGroupName, workspaceName),
+            nextLink -> listNspNextSinglePage(nextLink));
+    }
+
+    /**
+     * Gets a list of NSP configurations for specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkSecurityPerimeterConfigurationInner> listNsp(String resourceGroupName,
+        String workspaceName, Context context) {
+        return new PagedIterable<>(() -> listNspSinglePage(resourceGroupName, workspaceName, context),
+            nextLink -> listNspNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Gets a network security perimeter configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network security perimeter configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getNspWithResponseAsync(String resourceGroupName,
+        String workspaceName, String networkSecurityPerimeterConfigurationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkSecurityPerimeterConfigurationName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getNsp(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), networkSecurityPerimeterConfigurationName,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a network security perimeter configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network security perimeter configuration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkSecurityPerimeterConfigurationInner> getNspAsync(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        return getNspWithResponseAsync(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a network security perimeter configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network security perimeter configuration along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkSecurityPerimeterConfigurationInner> getNspWithResponse(String resourceGroupName,
+        String workspaceName, String networkSecurityPerimeterConfigurationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkSecurityPerimeterConfigurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getNspSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), networkSecurityPerimeterConfigurationName,
+            accept, context);
+    }
+
+    /**
+     * Gets a network security perimeter configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network security perimeter configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkSecurityPerimeterConfigurationInner getNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        return getNspWithResponse(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reconcileNspWithResponseAsync(String resourceGroupName,
+        String workspaceName, String networkSecurityPerimeterConfigurationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkSecurityPerimeterConfigurationName == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.reconcileNsp(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), networkSecurityPerimeterConfigurationName,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reconcileNspWithResponse(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkSecurityPerimeterConfigurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.reconcileNspSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), networkSecurityPerimeterConfigurationName,
+            accept, Context.NONE);
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reconcileNspWithResponse(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkSecurityPerimeterConfigurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter networkSecurityPerimeterConfigurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.reconcileNspSync(this.client.getEndpoint(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), networkSecurityPerimeterConfigurationName,
+            accept, context);
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginReconcileNspAsync(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = reconcileNspWithResponseAsync(resourceGroupName, workspaceName,
+            networkSecurityPerimeterConfigurationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReconcileNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        Response<BinaryData> response
+            = reconcileNspWithResponse(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReconcileNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName, Context context) {
+        Response<BinaryData> response = reconcileNspWithResponse(resourceGroupName, workspaceName,
+            networkSecurityPerimeterConfigurationName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> reconcileNspAsync(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        return beginReconcileNspAsync(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reconcileNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        beginReconcileNsp(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName).getFinalResult();
+    }
+
+    /**
+     * Reconcile network security perimeter configuration for Workspace resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param networkSecurityPerimeterConfigurationName The name for a network security perimeter configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reconcileNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName, Context context) {
+        beginReconcileNsp(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, context)
+            .getFinalResult();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>
+        listNspNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listNspNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkSecurityPerimeterConfigurationInner>>map(
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNspNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NetworkSecurityPerimeterConfigurationListResult> res
+            = service.listNspNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSP configurations for specified workspace along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNspNextSinglePage(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NetworkSecurityPerimeterConfigurationListResult> res
+            = service.listNspNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacesClientImpl.class);
 }

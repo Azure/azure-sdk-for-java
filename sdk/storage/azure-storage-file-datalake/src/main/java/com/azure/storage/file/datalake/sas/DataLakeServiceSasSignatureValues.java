@@ -12,6 +12,7 @@ import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Data Lake Storage service. Once all
@@ -44,6 +45,9 @@ public final class DataLakeServiceSasSignatureValues {
     private String agentObjectId; /* suoid */
     private String correlationId;
     private String encryptionScope;
+    private String delegatedUserObjectId;
+    private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParameters;
 
     /**
      * Creates an object with the specified expiry time and permissions
@@ -448,6 +452,82 @@ public final class DataLakeServiceSasSignatureValues {
      */
     public DataLakeServiceSasSignatureValues setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @return The Entra ID of the user that is authorized to use the resulting SAS URL.
+     */
+    public String getDelegatedUserObjectId() {
+        return delegatedUserObjectId;
+    }
+
+    /**
+     * Optional. Beginning in version 2025-07-05, this value specifies the Entra ID of the user that is authorized to
+     * use the resulting SAS URL. The resulting SAS URL must be used in conjunction with an Entra ID token that has been
+     * issued to the user specified in this value.
+     *
+     * @param delegatedUserObjectId The Entra ID of the user that is authorized to use the resulting SAS URL.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
+        this.delegatedUserObjectId = delegatedUserObjectId;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @return The custom request headers to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @param requestHeaders The custom request headers to be set when the SAS is used.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setRequestHeaders(Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @return The custom query parameters to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestQueryParameters() {
+        return requestQueryParameters;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @param requestQueryParameters The custom query parameters to be set when the SAS is used.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setRequestQueryParameters(Map<String, String> requestQueryParameters) {
+        this.requestQueryParameters = requestQueryParameters;
         return this;
     }
 }

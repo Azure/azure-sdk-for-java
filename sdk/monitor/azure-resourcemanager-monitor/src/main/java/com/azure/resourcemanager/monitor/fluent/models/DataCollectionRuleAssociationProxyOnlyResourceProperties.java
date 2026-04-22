@@ -14,34 +14,24 @@ import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleAssociati
 import java.io.IOException;
 
 /**
- * Resource properties.
+ * The DataCollectionRuleAssociationProxyOnlyResourceProperties model.
  */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceProperties extends DataCollectionRuleAssociation {
-    /*
-     * The resource provisioning state.
-     */
-    private KnownDataCollectionRuleAssociationProvisioningState provisioningState;
-
     /*
      * Metadata about the resource
      */
     private DataCollectionRuleAssociationMetadata metadata;
 
+    /*
+     * The resource provisioning state.
+     */
+    private KnownDataCollectionRuleAssociationProvisioningState provisioningState;
+
     /**
      * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class.
      */
     public DataCollectionRuleAssociationProxyOnlyResourceProperties() {
-    }
-
-    /**
-     * Get the provisioningState property: The resource provisioning state.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public KnownDataCollectionRuleAssociationProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -52,6 +42,16 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceProperties exte
     @Override
     public DataCollectionRuleAssociationMetadata metadata() {
         return this.metadata;
+    }
+
+    /**
+     * Get the provisioningState property: The resource provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public KnownDataCollectionRuleAssociationProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -90,7 +90,9 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceProperties exte
      */
     @Override
     public void validate() {
-        super.validate();
+        if (metadata() != null) {
+            metadata().validate();
+        }
     }
 
     /**

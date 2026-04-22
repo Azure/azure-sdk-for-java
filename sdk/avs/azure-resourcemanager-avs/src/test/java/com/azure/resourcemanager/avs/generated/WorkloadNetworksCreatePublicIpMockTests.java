@@ -21,7 +21,7 @@ public final class WorkloadNetworksCreatePublicIpMockTests {
     @Test
     public void testCreatePublicIp() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"elyuj\",\"numberOfPublicIPs\":6634006946603195801,\"publicIPBlock\":\"mpckyeclcdigpta\",\"provisioningState\":\"Succeeded\"},\"id\":\"mqxuc\",\"name\":\"ci\",\"type\":\"oclxiut\"}";
+            = "{\"properties\":{\"displayName\":\"fciatxtjrr\",\"numberOfPublicIPs\":8335518650939106212,\"publicIPBlock\":\"kjhhxdlajf\",\"provisioningState\":\"Succeeded\"},\"id\":\"scv\",\"name\":\"lxlhuavkrm\",\"type\":\"kmyjmkxett\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class WorkloadNetworksCreatePublicIpMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .definePublicIp("aqylkjztji")
-            .withExistingPrivateCloud("rzmwn", "opagttmvmmag")
-            .withDisplayName("jcg")
-            .withNumberOfPublicIPs(2391492533044709833L)
+            .definePublicIp("drlefgnaavuag")
+            .withExistingPrivateCloud("cvjqdv", "wkqp")
+            .withDisplayName("taoutnpdct")
+            .withNumberOfPublicIPs(8872726298912170000L)
             .create();
 
-        Assertions.assertEquals("elyuj", response.displayName());
-        Assertions.assertEquals(6634006946603195801L, response.numberOfPublicIPs());
+        Assertions.assertEquals("fciatxtjrr", response.displayName());
+        Assertions.assertEquals(8335518650939106212L, response.numberOfPublicIPs());
     }
 }

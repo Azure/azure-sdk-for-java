@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LinkedService;
@@ -24,27 +24,27 @@ public final class LinkedServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceId\":\"psw\",\"writeAccessResourceId\":\"mvkhlggd\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"jfpgpicrmn\":\"qkzszuwiwtglxxh\",\"mqgjsxvpq\":\"hr\",\"bakclacjfrnxous\":\"bfrmbodthsqqgvri\"},\"id\":\"au\",\"name\":\"lwvsgm\",\"type\":\"ohqfzizv\"}";
+            = "{\"properties\":{\"resourceId\":\"n\",\"writeAccessResourceId\":\"xjawrt\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"vnekhenlusfnrdtj\":\"yccxlzhcox\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\"},\"id\":\"wkasiziesf\",\"name\":\"ughtuqfecjxeygtu\",\"type\":\"xu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LinkedService response = manager.linkedServices()
-            .define("yp")
-            .withExistingWorkspace("aglqivbgkcvkh", "zvuqdflvon")
-            .withTags(mapOf("fgpikqm", "bgqjxgpnrhgo"))
-            .withResourceId("ubcpzgpxti")
-            .withWriteAccessResourceId("j")
-            .withProvisioningState(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT)
+            .define("obkauxofsh")
+            .withExistingWorkspace("c", "uahokq")
+            .withTags(mapOf("gsnnf", "fgf", "coc", "yetefyp", "urmlmuo", "fjgtixrjvzuy"))
+            .withResourceId("hwpnulaiywzejywh")
+            .withWriteAccessResourceId("wkojpllndnpd")
+            .withProvisioningState(LinkedServiceEntityStatus.UPDATING)
             .create();
 
-        Assertions.assertEquals("qkzszuwiwtglxxh", response.tags().get("jfpgpicrmn"));
-        Assertions.assertEquals("psw", response.resourceId());
-        Assertions.assertEquals("mvkhlggd", response.writeAccessResourceId());
+        Assertions.assertEquals("yccxlzhcox", response.tags().get("vnekhenlusfnrdtj"));
+        Assertions.assertEquals("n", response.resourceId());
+        Assertions.assertEquals("xjawrt", response.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.SUCCEEDED, response.provisioningState());
     }
 

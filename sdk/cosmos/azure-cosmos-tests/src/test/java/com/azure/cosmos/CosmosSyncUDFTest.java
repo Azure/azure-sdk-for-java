@@ -38,8 +38,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        safeCloseSyncClient(this.client);
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)

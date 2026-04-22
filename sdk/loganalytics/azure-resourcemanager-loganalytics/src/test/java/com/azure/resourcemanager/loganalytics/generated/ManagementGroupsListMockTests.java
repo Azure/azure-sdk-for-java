@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.ManagementGroup;
@@ -22,26 +22,26 @@ public final class ManagementGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serverCount\":1980561633,\"isGateway\":false,\"name\":\"tcjuahokqto\",\"id\":\"auxofshfph\",\"created\":\"2021-08-16T03:23:29Z\",\"dataReceived\":\"2021-07-09T19:35:04Z\",\"version\":\"iywzejy\",\"sku\":\"slwkojpl\"}}]}";
+            = "{\"value\":[{\"properties\":{\"serverCount\":2014474860,\"isGateway\":true,\"name\":\"vnqvcd\",\"id\":\"uaucmf\",\"created\":\"2021-12-08T13:34:35Z\",\"dataReceived\":\"2021-10-13T05:52:15Z\",\"version\":\"xpunjqi\",\"sku\":\"zvvitacgxmfcs\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagementGroup> response
-            = manager.managementGroups().list("taboidvmf", "hppubowsepdfgkmt", com.azure.core.util.Context.NONE);
+            = manager.managementGroups().list("yjqtt", "wkpqhjpenuygbq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1980561633, response.iterator().next().serverCount());
-        Assertions.assertEquals(false, response.iterator().next().isGateway());
-        Assertions.assertEquals("tcjuahokqto", response.iterator().next().name());
-        Assertions.assertEquals("auxofshfph", response.iterator().next().id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T03:23:29Z"), response.iterator().next().created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T19:35:04Z"),
+        Assertions.assertEquals(2014474860, response.iterator().next().serverCount());
+        Assertions.assertTrue(response.iterator().next().isGateway());
+        Assertions.assertEquals("vnqvcd", response.iterator().next().name());
+        Assertions.assertEquals("uaucmf", response.iterator().next().id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T13:34:35Z"), response.iterator().next().created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T05:52:15Z"),
             response.iterator().next().dataReceived());
-        Assertions.assertEquals("iywzejy", response.iterator().next().version());
-        Assertions.assertEquals("slwkojpl", response.iterator().next().sku());
+        Assertions.assertEquals("xpunjqi", response.iterator().next().version());
+        Assertions.assertEquals("zvvitacgxmfcs", response.iterator().next().sku());
     }
 }

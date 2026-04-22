@@ -17,6 +17,7 @@ import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 /**
  * Listens for ServletRequestHandledEvents to check if the configurations need to be updated.
  */
+@SuppressWarnings("deprecation")
 public final class AppConfigurationEventListener implements ApplicationListener<ServletRequestHandledEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationEventListener.class);

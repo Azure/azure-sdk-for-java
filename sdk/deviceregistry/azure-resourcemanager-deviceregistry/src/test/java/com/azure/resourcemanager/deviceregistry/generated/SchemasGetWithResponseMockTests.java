@@ -23,7 +23,7 @@ public final class SchemasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"bfihw\",\"displayName\":\"vctafsrb\",\"description\":\"blml\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Deleting\",\"tags\":{\"xwqagnepzw\":\"p\",\"rxaomzisglrrcze\":\"klsbsbqqqagw\",\"hltnjadhqoawjq\":\"k\",\"byrrueqth\":\"yueayfbpcmsp\"}},\"id\":\"gnmbscbbxigdhx\",\"name\":\"idlopedbwdpy\",\"type\":\"yybxubmdnafcbqw\"}";
+            = "{\"properties\":{\"uuid\":\"nwqjwgokn\",\"displayName\":\"jjjkxybwfdbk\",\"description\":\"ztensvkzykjtj\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"fbpkuw\":\"shcdpkupnqrmg\"}},\"id\":\"oiojfizfavkjzwfb\",\"name\":\"yay\",\"type\":\"mmfz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class SchemasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .getWithResponse("ldefxrdcoxn", "kkjanurnnqbnqbp", "zxqltgrdogypx", com.azure.core.util.Context.NONE)
+            .getWithResponse("bksdqhjvyklxesl", "hhus", "cpoq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vctafsrb", response.properties().displayName());
-        Assertions.assertEquals("blml", response.properties().description());
+        Assertions.assertEquals("jjjkxybwfdbk", response.properties().displayName());
+        Assertions.assertEquals("ztensvkzykjtj", response.properties().description());
         Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, response.properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.properties().schemaType());
-        Assertions.assertEquals("p", response.properties().tags().get("xwqagnepzw"));
+        Assertions.assertEquals("shcdpkupnqrmg", response.properties().tags().get("fbpkuw"));
     }
 }

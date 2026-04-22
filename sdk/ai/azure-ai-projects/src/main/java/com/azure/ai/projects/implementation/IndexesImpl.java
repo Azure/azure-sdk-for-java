@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -67,7 +67,7 @@ public final class IndexesImpl {
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
@@ -515,7 +515,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -551,7 +551,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -587,7 +587,8 @@ public final class IndexesImpl {
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      * 
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -606,7 +607,8 @@ public final class IndexesImpl {
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      * 
      * @param name The name of the resource.
      * @param version The version of the Index to delete.

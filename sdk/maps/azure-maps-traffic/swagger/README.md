@@ -42,10 +42,10 @@ directive:
       $["security"] = []; 
 
 title: TrafficClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Traffic/preview/1.0/traffic.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Traffic/stable/1.0/traffic.json
 namespace: com.azure.maps.traffic
 java: true
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.62'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0

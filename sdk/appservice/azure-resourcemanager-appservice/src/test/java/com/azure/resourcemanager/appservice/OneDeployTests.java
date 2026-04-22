@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -40,6 +40,7 @@ import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -61,7 +62,7 @@ public class OneDeployTests extends AppServiceTest {
         = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/helloworld.jar";
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canDeployZip() {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
@@ -79,14 +80,14 @@ public class OneDeployTests extends AppServiceTest {
         webApp1.deploy(DeployType.ZIP, zipFile);
 
         // wait a bit
-        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+        ResourceManagerUtils.sleep(Duration.ofSeconds(60));
 
         String response = curl("https://" + webAppName1 + ".azurewebsites.net/" + "helloworld/").getValue();
         Assertions.assertTrue(response.contains("Hello"));
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canPushDeployJar() throws Exception {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
@@ -143,7 +144,8 @@ public class OneDeployTests extends AppServiceTest {
     }
 
     // test uses storage account key and connection string to configure the function app
-    @DoNotRecord(skipInPlayback = true)
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void canDeployFlexConsumptionFunctionApp(boolean pushDeploy) throws FileNotFoundException {
@@ -232,7 +234,8 @@ public class OneDeployTests extends AppServiceTest {
         // Flex does not support slot
     }
 
-    @DoNotRecord(skipInPlayback = true)
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void canDeployFunctionApp(boolean pushDeploy) {

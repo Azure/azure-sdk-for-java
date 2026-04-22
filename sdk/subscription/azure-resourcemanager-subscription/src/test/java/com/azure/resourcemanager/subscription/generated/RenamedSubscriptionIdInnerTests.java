@@ -11,7 +11,7 @@ public final class RenamedSubscriptionIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RenamedSubscriptionIdInner model
-            = BinaryData.fromString("{\"subscriptionId\":\"ngbwjz\"}").toObject(RenamedSubscriptionIdInner.class);
+            = BinaryData.fromString("{\"subscriptionId\":\"upi\"}").toObject(RenamedSubscriptionIdInner.class);
     }
 
     @org.junit.jupiter.api.Test

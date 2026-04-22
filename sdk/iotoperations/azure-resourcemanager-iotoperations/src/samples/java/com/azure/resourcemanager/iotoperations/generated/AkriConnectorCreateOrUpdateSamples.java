@@ -13,7 +13,7 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
  */
 public final class AkriConnectorCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_CreateOrUpdate_MaximumSet.

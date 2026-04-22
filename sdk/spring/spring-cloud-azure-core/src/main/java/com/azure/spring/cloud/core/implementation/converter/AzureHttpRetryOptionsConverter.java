@@ -15,6 +15,7 @@ import org.springframework.lang.NonNull;
 /**
  * Converts a {@link RetryOptionsProvider.RetryOptions} to a {@link RetryOptions}.
  */
+@SuppressWarnings("deprecation")
 public final class AzureHttpRetryOptionsConverter implements Converter<RetryOptionsProvider.RetryOptions, RetryOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpRetryOptionsConverter.class);

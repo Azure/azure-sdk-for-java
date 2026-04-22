@@ -16,19 +16,18 @@
 
 package com.azure.xml.implementation.aalto.in;
 
-import java.io.*;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
+import com.azure.xml.implementation.aalto.util.XmlConsts;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.aalto.WFCException;
-import com.azure.xml.implementation.aalto.util.XmlConsts;
+import java.io.IOException;
 
 /**
  * Abstract base class that defines shared functionality between different
  * bootstrappers (byte stream, char Readers, block input)
  */
-public abstract class InputBootstrapper implements XmlConsts {
+public abstract class InputBootstrapper {
     /*
     /**********************************************************************
     /* Shared string consts
@@ -182,7 +181,7 @@ public abstract class InputBootstrapper implements XmlConsts {
      */
     private int readXmlVersion() throws IOException, XMLStreamException {
         int c = checkKeyword(XmlConsts.XML_DECL_KW_VERSION);
-        if (c != CHAR_NULL) {
+        if (c != XmlConsts.CHAR_NULL) {
             reportUnexpectedChar(c, XmlConsts.XML_DECL_KW_VERSION);
         }
         c = handleEq(XmlConsts.XML_DECL_KW_VERSION);
@@ -216,7 +215,7 @@ public abstract class InputBootstrapper implements XmlConsts {
 
     private String readXmlEncoding() throws IOException, XMLStreamException {
         int c = checkKeyword(XmlConsts.XML_DECL_KW_ENCODING);
-        if (c != CHAR_NULL) {
+        if (c != XmlConsts.CHAR_NULL) {
             reportUnexpectedChar(c, XmlConsts.XML_DECL_KW_ENCODING);
         }
         c = handleEq(XmlConsts.XML_DECL_KW_ENCODING);
@@ -238,7 +237,7 @@ public abstract class InputBootstrapper implements XmlConsts {
 
     private String readXmlStandalone() throws IOException, XMLStreamException {
         int c = checkKeyword(XmlConsts.XML_DECL_KW_STANDALONE);
-        if (c != CHAR_NULL) {
+        if (c != XmlConsts.CHAR_NULL) {
             reportUnexpectedChar(c, XmlConsts.XML_DECL_KW_STANDALONE);
         }
         c = handleEq(XmlConsts.XML_DECL_KW_STANDALONE);
@@ -331,7 +330,7 @@ public abstract class InputBootstrapper implements XmlConsts {
      */
 
     protected void reportXmlProblem(String msg) throws XMLStreamException {
-        throw new WFCException(msg, getLocation());
+        throw new StreamExceptionBase(msg, getLocation());
     }
 
     protected void reportNull() throws XMLStreamException {

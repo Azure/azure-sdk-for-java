@@ -83,7 +83,7 @@ public final class DeviceUpdatesImpl {
      * perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "DeviceUpdateClientDe")
+    @ServiceInterface(name = "DeviceUpdateClientDeviceUpdates")
     public interface DeviceUpdatesService {
         @Get("/deviceUpdate/{instanceId}/updates")
         @ExpectedResponses({ 200 })
@@ -2479,7 +2479,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of updates along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(String nextLink,
@@ -2545,7 +2546,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of updates along with {@link PagedResponse}.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listUpdatesNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2572,8 +2574,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(String nextLink,
@@ -2601,7 +2603,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listProvidersNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2628,8 +2631,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of all update names that match the specified provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(String nextLink,
@@ -2658,7 +2661,7 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
+     * @return a list of all update names that match the specified provider along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listNamesNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2685,8 +2688,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of all update versions that match the specified provider and name along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(String nextLink,
@@ -2714,7 +2717,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
+     * @return a list of all update versions that match the specified provider and name along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2741,8 +2745,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of all update file identifiers for the specified version along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(String nextLink,
@@ -2771,7 +2775,7 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse}.
+     * @return a list of all update file identifiers for the specified version along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listFilesNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2830,8 +2834,8 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of operations with server paging support along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of all import update operations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(String nextLink,
@@ -2892,7 +2896,7 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of operations with server paging support along with {@link PagedResponse}.
+     * @return a list of all import update operations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOperationStatusesNextSinglePage(String nextLink,

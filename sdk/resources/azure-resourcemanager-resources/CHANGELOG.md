@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.54.0 (2026-03-19)
+
+### Other Changes
+
+- Updated `api-version` of policy to `2025-03-01`.
+
+## 2.53.6 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-core-management` from `1.19.2` to version `1.19.3`.
+
+## 2.53.5 (2025-11-17)
+
+### Other Changes
+
+- Optimized `AzureServiceClient` to load library versions during class initialization.
 
 ## 2.53.4 (2025-10-27)
 

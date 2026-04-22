@@ -18,8 +18,9 @@ import java.io.IOException;
 public final class CountryRegion implements JsonSerializable<CountryRegion> {
 
     /*
-     * The IP Address's 2-character code [(ISO 3166-1)](https://www.iso.org/iso-3166-country-codes.html) of the country
-     * or region. Please note, IP address in ranges reserved for special purpose will return Null for country/region.
+     * The IP address's 2-character country or region code ([ISO
+     * 3166-1](https://www.iso.org/iso-3166-country-codes.html)). Note that IP addresses in ranges reserved for special
+     * purposes will return Null for country/region.
      */
     @Generated
     private String isoCode;
@@ -32,9 +33,9 @@ public final class CountryRegion implements JsonSerializable<CountryRegion> {
     }
 
     /**
-     * Get the isoCode property: The IP Address's 2-character code [(ISO
-     * 3166-1)](https://www.iso.org/iso-3166-country-codes.html) of the country or region. Please note, IP address in
-     * ranges reserved for special purpose will return Null for country/region.
+     * Get the isoCode property: The IP address's 2-character country or region code ([ISO
+     * 3166-1](https://www.iso.org/iso-3166-country-codes.html)). Note that IP addresses in ranges reserved for special
+     * purposes will return Null for country/region.
      *
      * @return the isoCode value.
      */

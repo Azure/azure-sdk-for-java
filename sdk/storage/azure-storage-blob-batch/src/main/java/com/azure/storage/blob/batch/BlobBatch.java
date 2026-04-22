@@ -125,13 +125,14 @@ public final class BlobBatch {
      * <!-- end com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String -->
      *
      * @param containerName The container of the blob.
-     * @param blobName The name of the blob.
+     * @param blobName The name of the blob. If the blob name contains special characters, it should be URL encoded.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), null, null);
+        return deleteBlobHelper(Utility.urlEncode(containerName) + "/" + Utility.urlEncode(Utility.urlDecode(blobName)),
+            null, null);
     }
 
     /**
@@ -149,7 +150,7 @@ public final class BlobBatch {
      * <!-- end com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions -->
      *
      * @param containerName The container of the blob.
-     * @param blobName The name of the blob.
+     * @param blobName The name of the blob. If the blob name contains special characters, it should be URL encoded.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobRequestConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -158,8 +159,8 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName, DeleteSnapshotsOptionType deleteOptions,
         BlobRequestConditions blobRequestConditions) {
-        return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), deleteOptions,
-            blobRequestConditions);
+        return deleteBlobHelper(Utility.urlEncode(containerName) + "/" + Utility.urlEncode(Utility.urlDecode(blobName)),
+            deleteOptions, blobRequestConditions);
     }
 
     /**
@@ -227,15 +228,16 @@ public final class BlobBatch {
      * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier -->
      *
      * @param containerName The container of the blob.
-     * @param blobName The name of the blob.
+     * @param blobName The name of the blob. If the blob name contains special characters, it should be URL encoded.
      * @param accessTier The tier to set on the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier,
-            null, null, null);
+        return setBlobAccessTierHelper(
+            Utility.urlEncode(containerName) + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier, null,
+            null, null);
     }
 
     /**
@@ -251,7 +253,7 @@ public final class BlobBatch {
      * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String -->
      *
      * @param containerName The container of the blob.
-     * @param blobName The name of the blob.
+     * @param blobName The name of the blob. If the blob name contains special characters, it should be URL encoded.
      * @param accessTier The tier to set on the blob.
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -260,8 +262,9 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         String leaseId) {
-        return setBlobAccessTierHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier,
-            null, leaseId, null);
+        return setBlobAccessTierHelper(
+            Utility.urlEncode(containerName) + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier, null,
+            leaseId, null);
     }
 
     /**

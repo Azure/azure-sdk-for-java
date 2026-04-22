@@ -33,16 +33,10 @@ public final class ObservedLocation extends ObservedValue {
     private List<Source> sources;
 
     /*
-     * The firstSeen property.
+     * The recent property.
      */
     @Generated
-    private OffsetDateTime firstSeen;
-
-    /*
-     * The lastSeen property.
-     */
-    @Generated
-    private OffsetDateTime lastSeen;
+    private Boolean recent;
 
     /*
      * The count property.
@@ -51,10 +45,16 @@ public final class ObservedLocation extends ObservedValue {
     private Long count;
 
     /*
-     * The recent property.
+     * The lastSeen property.
      */
     @Generated
-    private Boolean recent;
+    private OffsetDateTime lastSeen;
+
+    /*
+     * The firstSeen property.
+     */
+    @Generated
+    private OffsetDateTime firstSeen;
 
     /**
      * Creates an instance of ObservedLocation class.
@@ -84,25 +84,14 @@ public final class ObservedLocation extends ObservedValue {
     }
 
     /**
-     * Get the firstSeen property: The firstSeen property.
+     * Get the recent property: The recent property.
      *
-     * @return the firstSeen value.
+     * @return the recent value.
      */
     @Generated
     @Override
-    public OffsetDateTime getFirstSeen() {
-        return this.firstSeen;
-    }
-
-    /**
-     * Get the lastSeen property: The lastSeen property.
-     *
-     * @return the lastSeen value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getLastSeen() {
-        return this.lastSeen;
+    public Boolean isRecent() {
+        return this.recent;
     }
 
     /**
@@ -117,14 +106,25 @@ public final class ObservedLocation extends ObservedValue {
     }
 
     /**
-     * Get the recent property: The recent property.
+     * Get the lastSeen property: The lastSeen property.
      *
-     * @return the recent value.
+     * @return the lastSeen value.
      */
     @Generated
     @Override
-    public Boolean isRecent() {
-        return this.recent;
+    public OffsetDateTime getLastSeen() {
+        return this.lastSeen;
+    }
+
+    /**
+     * Get the firstSeen property: The firstSeen property.
+     *
+     * @return the firstSeen value.
+     */
+    @Generated
+    @Override
+    public OffsetDateTime getFirstSeen() {
+        return this.firstSeen;
     }
 
     /**

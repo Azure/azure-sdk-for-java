@@ -16,6 +16,7 @@ import reactor.util.function.Tuples;
 /**
  * Resource manager for Service Bus topic subscription.
  */
+@SuppressWarnings("deprecation")
 public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
     Tuple3<String, String, String>, ServiceBusTopicProperties> {
 

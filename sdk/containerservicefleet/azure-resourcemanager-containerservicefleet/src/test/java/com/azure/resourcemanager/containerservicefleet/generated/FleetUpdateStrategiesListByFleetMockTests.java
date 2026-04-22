@@ -23,7 +23,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"klff\",\"groups\":[{\"name\":\"uwqlgzrfzeey\"}],\"afterStageWaitInSeconds\":32622439,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"ybbqwrv\",\"id\":\"dgmfpgvmpipasl\",\"name\":\"haq\",\"type\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"lds\",\"groups\":[{\"name\":\"tjb\"},{\"name\":\"kdmflvestmjlx\"},{\"name\":\"ril\"}],\"afterStageWaitInSeconds\":1058689711,\"maxConcurrency\":\"eewchpxlktw\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"uztcktyhjtqed\",\"groups\":[{\"name\":\"ulwm\"},{\"name\":\"rqzz\"},{\"name\":\"rjvpglydzgkrvqee\"},{\"name\":\"toepryu\"}],\"afterStageWaitInSeconds\":479918870,\"maxConcurrency\":\"tpzdmovzvfvaawzq\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"iglaecx\",\"id\":\"t\",\"name\":\"cokpv\",\"type\":\"mlqtmldgxob\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies()
-            .listByFleet("jxbkzbzkdvn", "jabudurgkakmo", com.azure.core.util.Context.NONE);
+            .listByFleet("xrkjpvdw", "fzwiivwzjbhyz", 954639384, "jrkambtrnegvmnv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("klff", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("uwqlgzrfzeey",
-            response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(32622439,
+        Assertions.assertEquals("lds", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("tjb", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1058689711,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("eewchpxlktw", response.iterator().next().strategy().stages().get(0).maxConcurrency());
         Assertions.assertEquals(GateType.APPROVAL,
             response.iterator().next().strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL,

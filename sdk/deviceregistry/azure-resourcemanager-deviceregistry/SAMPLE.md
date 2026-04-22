@@ -24,6 +24,15 @@
 - [Get](#billingcontainers_get)
 - [List](#billingcontainers_list)
 
+## Credentials
+
+- [CreateOrUpdate](#credentials_createorupdate)
+- [Delete](#credentials_delete)
+- [Get](#credentials_get)
+- [ListByResourceGroup](#credentials_listbyresourcegroup)
+- [Synchronize](#credentials_synchronize)
+- [Update](#credentials_update)
+
 ## NamespaceAssets
 
 - [CreateOrReplace](#namespaceassets_createorreplace)
@@ -38,6 +47,7 @@
 - [Delete](#namespacedevices_delete)
 - [Get](#namespacedevices_get)
 - [ListByResourceGroup](#namespacedevices_listbyresourcegroup)
+- [Revoke](#namespacedevices_revoke)
 - [Update](#namespacedevices_update)
 
 ## NamespaceDiscoveredAssets
@@ -73,6 +83,16 @@
 ## Operations
 
 - [List](#operations_list)
+
+## Policies
+
+- [ActivateBringYourOwnRoot](#policies_activatebringyourownroot)
+- [CreateOrUpdate](#policies_createorupdate)
+- [Delete](#policies_delete)
+- [Get](#policies_get)
+- [ListByResourceGroup](#policies_listbyresourcegroup)
+- [RevokeIssuer](#policies_revokeissuer)
+- [Update](#policies_update)
 
 ## SchemaRegistries
 
@@ -111,7 +131,7 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.
@@ -137,7 +157,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile.json
      */
     /**
      * Sample code: CreateOrReplace_AssetEndpointProfile.
@@ -183,7 +203,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
  */
 public final class AssetEndpointProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_AssetEndpointProfile.json
      */
     /**
      * Sample code: Delete_AssetEndpointProfile.
@@ -206,7 +226,7 @@ public final class AssetEndpointProfilesDeleteSamples {
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-03-01-preview/Get_AssetEndpointProfile.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile.
@@ -220,7 +240,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_AssetEndpointProfile_With_SyncStatus.json
+     * x-ms-original-file: 2026-03-01-preview/Get_AssetEndpointProfile_With_SyncStatus.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile_With_SyncStatus.
@@ -244,7 +264,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
  */
 public final class AssetEndpointProfilesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_AssetEndpointProfiles_BySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/List_AssetEndpointProfiles_BySubscription.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_BySubscription.
@@ -266,7 +286,7 @@ public final class AssetEndpointProfilesListSamples {
  */
 public final class AssetEndpointProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_AssetEndpointProfiles_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_ByResourceGroup.
@@ -291,7 +311,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdat
  */
 public final class AssetEndpointProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_AssetEndpointProfile.json
+     * x-ms-original-file: 2026-03-01-preview/Update_AssetEndpointProfile.json
      */
     /**
      * Sample code: Update_AssetEndpointProfile.
@@ -333,7 +353,7 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_Without_DisplayName.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_Without_DisplayName.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_DisplayName.
@@ -398,7 +418,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_DiscoveredAssetRefs.
@@ -465,7 +485,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_Without_ExternalAssetId.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_Without_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_ExternalAssetId.
@@ -530,7 +550,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_With_ExternalAssetId.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Asset_With_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_ExternalAssetId.
@@ -617,7 +637,7 @@ public final class AssetsCreateOrReplaceSamples {
  */
 public final class AssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_Asset.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_Asset.json
      */
     /**
      * Sample code: Delete_Asset.
@@ -638,7 +658,7 @@ public final class AssetsDeleteSamples {
  */
 public final class AssetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Asset_With_SyncStatus.json
+     * x-ms-original-file: 2026-03-01-preview/Get_Asset_With_SyncStatus.json
      */
     /**
      * Sample code: Get_Asset_With_SyncStatus.
@@ -651,7 +671,7 @@ public final class AssetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_Asset.json
+     * x-ms-original-file: 2026-03-01-preview/Get_Asset.json
      */
     /**
      * Sample code: Get_Asset.
@@ -673,7 +693,7 @@ public final class AssetsGetByResourceGroupSamples {
  */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Assets_BySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/List_Assets_BySubscription.json
      */
     /**
      * Sample code: List_Assets_BySubscription.
@@ -695,7 +715,7 @@ public final class AssetsListSamples {
  */
 public final class AssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Assets_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_Assets_ByResourceGroup.json
      */
     /**
      * Sample code: List_Assets_ByResourceGroup.
@@ -720,7 +740,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  */
 public final class AssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_Asset.json
+     * x-ms-original-file: 2026-03-01-preview/Update_Asset.json
      */
     /**
      * Sample code: Update_Asset.
@@ -746,7 +766,7 @@ public final class AssetsUpdateSamples {
  */
 public final class BillingContainersGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_BillingContainer.json
+     * x-ms-original-file: 2026-03-01-preview/Get_BillingContainer.json
      */
     /**
      * Sample code: Get_BillingContainer.
@@ -767,7 +787,7 @@ public final class BillingContainersGetSamples {
  */
 public final class BillingContainersListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_BillingContainers_BySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/List_BillingContainers_BySubscription.json
      */
     /**
      * Sample code: List_BillingContainers_BySubscription.
@@ -781,6 +801,175 @@ public final class BillingContainersListSamples {
 }
 ```
 
+### Credentials_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.deviceregistry.fluent.models.CredentialInner;
+import com.azure.resourcemanager.deviceregistry.models.CredentialProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Credentials CreateOrUpdate.
+ */
+public final class CredentialsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Credentials.json
+     */
+    /**
+     * Sample code: CreateOrReplace_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createOrReplaceCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials()
+            .createOrUpdate("rgdeviceregistry", "mynamespace",
+                new CredentialInner().withLocation("East US 2")
+                    .withTags(mapOf("key7121", "fakeTokenPlaceholder"))
+                    .withProperties(new CredentialProperties()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Credentials_Delete
+
+```java
+/**
+ * Samples for Credentials Delete.
+ */
+public final class CredentialsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Delete_Credentials.json
+     */
+    /**
+     * Sample code: Delete_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void deleteCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().delete("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_Get
+
+```java
+/**
+ * Samples for Credentials Get.
+ */
+public final class CredentialsGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Get_Credentials.json
+     */
+    /**
+     * Sample code: Get_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().getWithResponse("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_ListByResourceGroup
+
+```java
+/**
+ * Samples for Credentials ListByResourceGroup.
+ */
+public final class CredentialsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/List_Credentials_ByResourceGroup.json
+     */
+    /**
+     * Sample code: List_Credentials_ByResourceGroup.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listCredentialsByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().listByResourceGroup("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_Synchronize
+
+```java
+/**
+ * Samples for Credentials Synchronize.
+ */
+public final class CredentialsSynchronizeSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Credentials_Synchronize.json
+     */
+    /**
+     * Sample code: Credentials_Synchronize.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void credentialsSynchronize(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials().synchronize("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Credentials_Update
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CredentialUpdate;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Credentials Update.
+ */
+public final class CredentialsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Update_Credentials.json
+     */
+    /**
+     * Sample code: Update_Credentials.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void updateCredentials(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.credentials()
+            .update("rgdeviceregistry", "mynamespace",
+                new CredentialUpdate().withTags(mapOf("key9580", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### NamespaceAssets_CreateOrReplace
 
 ```java
@@ -788,7 +977,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
-import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.ManagementAction;
@@ -799,8 +987,6 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDatasetDataPoint;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceEvent;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceStream;
 import com.azure.resourcemanager.deviceregistry.models.StorageDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.StreamMqttDestination;
@@ -816,7 +1002,7 @@ import java.util.Map;
  */
 public final class NamespaceAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceAsset.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceAsset.
@@ -880,23 +1066,6 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
                             .withDataPointConfiguration(
                                 "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
                             .withTypeRef("dataset1DataPoint2TypeRef")))))
-                .withEventGroups(Arrays.asList(new NamespaceEventGroup().withName("default")
-                    .withEvents(Arrays.asList(
-                        new NamespaceEvent().withName("event1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5")
-                            .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
-                            .withDestinations(Arrays.asList(new EventMqttDestination()
-                                .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
-                                    .withRetain(TopicRetainType.KEEP)
-                                    .withQos(MqttDestinationQos.QOS0)
-                                    .withTtl(7200L))))
-                            .withTypeRef("event1Ref"),
-                        new NamespaceEvent().withName("event2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt8")
-                            .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
-                            .withDestinations(Arrays.asList(new EventStorageDestination()
-                                .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/event2"))))
-                            .withTypeRef("event2Ref")))))
                 .withStreams(Arrays.asList(
                     new NamespaceStream().withName("stream1")
                         .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
@@ -963,7 +1132,7 @@ public final class NamespaceAssetsCreateOrReplaceSamples {
  */
 public final class NamespaceAssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceAsset.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceAsset.json
      */
     /**
      * Sample code: Delete_NamespaceAsset.
@@ -986,7 +1155,7 @@ public final class NamespaceAssetsDeleteSamples {
  */
 public final class NamespaceAssetsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceAsset.json
+     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceAsset.json
      */
     /**
      * Sample code: Get_NamespaceAsset.
@@ -1008,7 +1177,7 @@ public final class NamespaceAssetsGetSamples {
  */
 public final class NamespaceAssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceAssets_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_NamespaceAssets_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceAssets_ByResourceGroup.
@@ -1034,7 +1203,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceAssetUpdatePrope
  */
 public final class NamespaceAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceAsset.json
+     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceAsset.json
      */
     /**
      * Sample code: Update_NamespaceAssets.
@@ -1078,7 +1247,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_x509.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
      */
     /**
      * Sample code: Create edge enabled device with x509 inbound authentication.
@@ -1094,26 +1263,22 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(
                 new NamespaceDeviceProperties().withEnabled(true)
                     .withExternalDeviceId("unique-edge-device-identifier")
-                    .withEndpoints(
-                        new MessagingEndpoints().withInbound(mapOf("theV1OPCUAEndpoint",
-                            new InboundEndpoints().withEndpointType("microsoft.opcua")
-                                .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
-                                .withVersion("2")
-                                .withAuthentication(new HostAuthentication()
-                                    .withMethod(AuthenticationMethod.CERTIFICATE)
+                    .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theV1OPCUAEndpoint",
+                        new InboundEndpoints().withEndpointType("microsoft.opcua")
+                            .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
+                            .withVersion("2")
+                            .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
+                                .withX509Credentials(new X509CertificateCredentials()
+                                    .withCertificateSecretName("fakeTokenPlaceholder"))),
+                        "theV2OPCUAEndpoint",
+                        new InboundEndpoints().withEndpointType("microsoft.opcua")
+                            .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
+                            .withVersion("2")
+                            .withAuthentication(
+                                new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
                                     .withX509Credentials(new X509CertificateCredentials()
-                                        .withCertificateSecretName("fakeTokenPlaceholder")
-                                        .withKeySecretName("fakeTokenPlaceholder")
-                                        .withIntermediateCertificatesSecretName("fakeTokenPlaceholder"))),
-                            "theV2OPCUAEndpoint",
-                            new InboundEndpoints().withEndpointType("microsoft.opcua")
-                                .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
-                                .withVersion("2")
-                                .withAuthentication(
-                                    new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
-                                        .withX509Credentials(new X509CertificateCredentials()
-                                            .withCertificateSecretName("fakeTokenPlaceholder")))
-                                .withTrustSettings(new TrustSettings().withTrustList("trust-secret-reference")))))
+                                        .withCertificateSecretName("fakeTokenPlaceholder")))
+                            .withTrustSettings(new TrustSettings().withTrustList("trust-secret-reference")))))
                     .withAttributes(
                         mapOf("deviceType", BinaryData.fromBytes("OPCUAServers".getBytes(StandardCharsets.UTF_8)),
                             "deviceOwner", BinaryData.fromBytes("OT".getBytes(StandardCharsets.UTF_8)),
@@ -1125,7 +1290,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
      */
     /**
      * Sample code: Create edge enabled device with anonymous host authentication.
@@ -1141,7 +1306,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
                 .withExternalDeviceId("unique-edge-device-identifier")
                 .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theOnlyOPCUABroker",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua")
+                    new InboundEndpoints().withEndpointType("microsoft.opcua:v1")
                         .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
                         .withVersion("2")
                         .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.ANONYMOUS)))))
@@ -1156,7 +1321,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
      */
     /**
      * Sample code: Create edge enabled device with UsernamesPassword inbound authentication.
@@ -1172,7 +1337,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
                 .withExternalDeviceId("unique-edge-device-identifier")
                 .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theOnlyOPCUABroker",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua")
+                    new InboundEndpoints().withEndpointType("microsoft.opcua:v1")
                         .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
                         .withVersion("2")
                         .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.USERNAME_PASSWORD)
@@ -1189,7 +1354,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDevice.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDevices.
@@ -1203,11 +1368,10 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withRegion("West Europe")
             .withExistingNamespace("myResourceGroup", "adr-namespace-gbk0925-n01")
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
-                .withExternalDeviceId("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f")
-                .withEndpoints(new MessagingEndpoints()
-                    .withOutbound(new OutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
+                .withEndpoints(
+                    new MessagingEndpoints().withOutbound(new OutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
                 .withAttributes(mapOf("deviceType", BinaryData.fromBytes("sensor".getBytes(StandardCharsets.UTF_8)),
                     "deviceOwner", BinaryData.fromBytes("IT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",
                     BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8)))))
@@ -1236,7 +1400,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
  */
 public final class NamespaceDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDevice.
@@ -1259,7 +1423,7 @@ public final class NamespaceDevicesDeleteSamples {
  */
 public final class NamespaceDevicesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDeviceWithEndpointErrorStatus.json
+     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDeviceWithEndpointErrorStatus.json
      */
     /**
      * Sample code: Get NamespaceDevice with Endpoint Error Status.
@@ -1273,7 +1437,7 @@ public final class NamespaceDevicesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDevice.json
      */
     /**
      * Sample code: Get_NamespaceDevice.
@@ -1295,7 +1459,7 @@ public final class NamespaceDevicesGetSamples {
  */
 public final class NamespaceDevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceDevices_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_NamespaceDevices_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceDevices_ByResourceGroup.
@@ -1306,6 +1470,46 @@ public final class NamespaceDevicesListByResourceGroupSamples {
         listNamespaceDevicesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaceDevices()
             .listByResourceGroup("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NamespaceDevices_Revoke
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.DeviceCredentialsRevokeRequest;
+
+/**
+ * Samples for NamespaceDevices Revoke.
+ */
+public final class NamespaceDevicesRevokeSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/NamespaceDevices_Revoke.json
+     */
+    /**
+     * Sample code: NamespaceDevices_Revoke.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void namespaceDevicesRevoke(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaceDevices()
+            .revoke("rgdeviceregistry", "mynamespace", "device1",
+                new DeviceCredentialsRevokeRequest().withDisable(true), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/NamespaceDevices_RevokeFailure.json
+     */
+    /**
+     * Sample code: NamespaceDevices_RevokeFailure.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        namespaceDevicesRevokeFailure(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.namespaceDevices()
+            .revoke("rgdeviceregistry", "mynamespace", "device1",
+                new DeviceCredentialsRevokeRequest().withDisable(true), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1328,7 +1532,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDevice.json
      */
     /**
      * Sample code: Update_NamespaceDevices.
@@ -1342,10 +1546,10 @@ public final class NamespaceDevicesUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new NamespaceDeviceUpdateProperties()
-                .withEndpoints(new MessagingEndpoints()
-                    .withOutbound(new OutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
+                .withEndpoints(
+                    new MessagingEndpoints().withOutbound(new OutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
                 .withAttributes(mapOf("deviceType", BinaryData.fromBytes("sensor".getBytes(StandardCharsets.UTF_8)),
                     "deviceOwner", BinaryData.fromBytes("IT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",
                     BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8))))
@@ -1374,7 +1578,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
-import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.MqttDestinationConfiguration;
@@ -1382,8 +1585,6 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDatasetDataPoint;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredEvent;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementAction;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementActionType;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementGroup;
@@ -1403,7 +1604,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredAsset.
@@ -1468,25 +1669,6 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
                             .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
                             .withTypeRef("dataset1DataPoint2TypeRef")))
                     .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
-                .withEventGroups(Arrays.asList(new NamespaceDiscoveredEventGroup().withName("default")
-                    .withEvents(Arrays.asList(
-                        new NamespaceDiscoveredEvent().withName("event1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                            .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
-                            .withDestinations(Arrays.asList(new EventMqttDestination()
-                                .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
-                                    .withRetain(TopicRetainType.KEEP)
-                                    .withQos(MqttDestinationQos.QOS0)
-                                    .withTtl(7200L))))
-                            .withTypeRef("event1Ref")
-                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")),
-                        new NamespaceDiscoveredEvent().withName("event2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                            .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withDestinations(Arrays.asList(new EventStorageDestination()
-                                .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/event2"))))
-                            .withTypeRef("event2Ref")
-                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))))
                 .withStreams(Arrays.asList(
                     new NamespaceDiscoveredStream().withName("stream1")
                         .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
@@ -1558,7 +1740,7 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
  */
 public final class NamespaceDiscoveredAssetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredAsset.
@@ -1581,7 +1763,7 @@ public final class NamespaceDiscoveredAssetsDeleteSamples {
  */
 public final class NamespaceDiscoveredAssetsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Get_NamespaceDiscoveredAsset.
@@ -1605,7 +1787,7 @@ public final class NamespaceDiscoveredAssetsGetSamples {
  */
 public final class NamespaceDiscoveredAssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceDiscoveredAssets_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_NamespaceDiscoveredAssets_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceDiscoveredAssets_ByResourceGroup.
@@ -1631,7 +1813,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetU
  */
 public final class NamespaceDiscoveredAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredAsset.
@@ -1668,7 +1850,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredDevice.
@@ -1687,9 +1869,9 @@ public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
             .withTags(mapOf("site", "building-1"))
             .withProperties(new NamespaceDiscoveredDeviceProperties()
                 .withEndpoints(new DiscoveredMessagingEndpoints()
-                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
+                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
                 .withDiscoveryId("discoveryId1")
                 .withVersion(1L))
             .create();
@@ -1717,7 +1899,7 @@ public final class NamespaceDiscoveredDevicesCreateOrReplaceSamples {
  */
 public final class NamespaceDiscoveredDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Delete_NamespaceDiscoveredDevice.
@@ -1740,7 +1922,7 @@ public final class NamespaceDiscoveredDevicesDeleteSamples {
  */
 public final class NamespaceDiscoveredDevicesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Get_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Get_NamespaceDiscoveredDevice.
@@ -1764,7 +1946,7 @@ public final class NamespaceDiscoveredDevicesGetSamples {
  */
 public final class NamespaceDiscoveredDevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_NamespaceDiscoveredDevices_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_NamespaceDiscoveredDevices_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceDiscoveredDevices_ByResourceGroup.
@@ -1795,7 +1977,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_NamespaceDiscoveredDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDiscoveredDevice.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredDevice.
@@ -1811,9 +1993,9 @@ public final class NamespaceDiscoveredDevicesUpdateSamples {
         resource.update()
             .withProperties(
                 new NamespaceDiscoveredDeviceUpdateProperties().withEndpoints(new DiscoveredMessagingEndpoints()
-                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("newEventGridEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                            .withAddress("https://myneweventgridtopic.westeurope-1.eventgrid.azure.net/api/events"))))))
+                    .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("newIothubEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                            .withAddress("https://iothub-for-dps.azure-devices.net"))))))
             .apply();
     }
 
@@ -1837,8 +2019,6 @@ public final class NamespaceDiscoveredDevicesUpdateSamples {
 import com.azure.resourcemanager.deviceregistry.models.Messaging;
 import com.azure.resourcemanager.deviceregistry.models.MessagingEndpoint;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1847,7 +2027,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
      */
     /**
      * Sample code: CreateOrReplace_Namespace_With_Endpoints.
@@ -1861,14 +2041,16 @@ public final class NamespacesCreateOrReplaceSamples {
             .withRegion("North Europe")
             .withExistingResourceGroup("myResourceGroup")
             .withProperties(
-                new NamespaceProperties().withMessaging(new Messaging().withEndpoints(mapOf("eventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                        .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
-                    "anotherEventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                        .withAddress("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events")))))
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+                new NamespaceProperties()
+                    .withMessaging(
+                        new Messaging()
+                            .withEndpoints(
+                                mapOf("iothubEndpoint",
+                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                                        .withAddress("https://iothub-for-dps.azure-devices.net"),
+                                    "anotherIothubEndpoint",
+                                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                                        .withAddress("https://iothub-for-dps-2.azure-devices.net")))))
             .create();
     }
 
@@ -1894,7 +2076,7 @@ public final class NamespacesCreateOrReplaceSamples {
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_Namespace.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_Namespace.json
      */
     /**
      * Sample code: Delete_Namespace.
@@ -1915,7 +2097,7 @@ public final class NamespacesDeleteSamples {
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Namespace.json
+     * x-ms-original-file: 2026-03-01-preview/Get_Namespace.json
      */
     /**
      * Sample code: Get_Namespace.
@@ -1938,7 +2120,7 @@ public final class NamespacesGetByResourceGroupSamples {
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Namespace_BySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/List_Namespace_BySubscription.json
      */
     /**
      * Sample code: List_Namespaces_BySubscription.
@@ -1960,7 +2142,7 @@ public final class NamespacesListSamples {
  */
 public final class NamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Namespace_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_Namespace_ByResourceGroup.json
      */
     /**
      * Sample code: List_Namespaces_ByResourceGroup.
@@ -1986,7 +2168,7 @@ import java.util.Arrays;
  */
 public final class NamespacesMigrateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Migrate_Assets_Namespace.json
+     * x-ms-original-file: 2026-03-01-preview/Migrate_Assets_Namespace.json
      */
     /**
      * Sample code: Namespace Migrate.
@@ -2020,7 +2202,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_Namespace_Endpoints.json
+     * x-ms-original-file: 2026-03-01-preview/Update_Namespace_Endpoints.json
      */
     /**
      * Sample code: Update_Namespace_Endpoints.
@@ -2035,9 +2217,9 @@ public final class NamespacesUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf("eventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                        .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
+                new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf("iothubEndpoint",
+                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                        .withAddress("https://iothub-for-dps.azure-devices.net")))))
             .apply();
     }
 
@@ -2063,7 +2245,7 @@ public final class NamespacesUpdateSamples {
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_OperationStatus.json
+     * x-ms-original-file: 2026-03-01-preview/Get_OperationStatus.json
      */
     /**
      * Sample code: Get_OperationStatus.
@@ -2085,7 +2267,7 @@ public final class OperationStatusGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Operations.json
+     * x-ms-original-file: 2026-03-01-preview/List_Operations.json
      */
     /**
      * Sample code: List_Operations.
@@ -2094,6 +2276,189 @@ public final class OperationsListSamples {
      */
     public static void listOperations(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_ActivateBringYourOwnRoot
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.ActivateBringYourOwnRootRequest;
+
+/**
+ * Samples for Policies ActivateBringYourOwnRoot.
+ */
+public final class PoliciesActivateBringYourOwnRootSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Policies_ActivateBringYourOwnRoot.json
+     */
+    /**
+     * Sample code: Policies_ActivateBringYourOwnRoot.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        policiesActivateBringYourOwnRoot(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies()
+            .activateBringYourOwnRoot("rgdeviceregistry", "mynamespace", "mypolicy",
+                new ActivateBringYourOwnRootRequest().withCertificateChain(
+                    "-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAKL0UG+mRkmWMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\nBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX\naWRnaXRzIFB0eSBMdGQwHhcNMjQwMTAxMDAwMDAwWhcNMjUwMTAxMDAwMDAwWjBF\nMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50\nZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEAw...\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAKL0UG+mRkmXMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\nBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX\naWRnaXRzIFB0eSBMdGQwHhcNMjQwMTAxMDAwMDAwWhcNMjUwMTAxMDAwMDAwWjBF\nMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50\nZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEAx...\n-----END CERTIFICATE-----"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.BringYourOwnRoot;
+import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
+import com.azure.resourcemanager.deviceregistry.models.SupportedKeyType;
+
+/**
+ * Samples for Policies CreateOrUpdate.
+ */
+public final class PoliciesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Policies.json
+     */
+    /**
+     * Sample code: CreateOrReplace_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createOrReplacePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies()
+            .define("mypolicy")
+            .withExistingNamespace("rgdeviceregistry", "mynamespace")
+            .withProperties(new PolicyProperties().withCertificate(new CertificateConfiguration()
+                .withCertificateAuthorityConfiguration(
+                    new CertificateAuthorityConfiguration().withKeyType(SupportedKeyType.ECC)
+                        .withBringYourOwnRoot(new BringYourOwnRoot().withEnabled(true)))
+                .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
+            .create();
+    }
+}
+```
+
+### Policies_Delete
+
+```java
+/**
+ * Samples for Policies Delete.
+ */
+public final class PoliciesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Delete_Policies.json
+     */
+    /**
+     * Sample code: Delete_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void deletePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies().delete("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_Get
+
+```java
+/**
+ * Samples for Policies Get.
+ */
+public final class PoliciesGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Get_Policies.json
+     */
+    /**
+     * Sample code: Get_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getPolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "myPolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_ListByResourceGroup
+
+```java
+/**
+ * Samples for Policies ListByResourceGroup.
+ */
+public final class PoliciesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/List_Policies_ByResourceGroup.json
+     */
+    /**
+     * Sample code: List_Policies_ByResourceGroup.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listPoliciesByResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies().listByResourceGroup("rgdeviceregistry", "mynamespace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_RevokeIssuer
+
+```java
+/**
+ * Samples for Policies RevokeIssuer.
+ */
+public final class PoliciesRevokeIssuerSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Policies_RevokeIssuer.json
+     */
+    /**
+     * Sample code: Policies_RevokeIssuer.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void policiesRevokeIssuer(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.policies()
+            .revokeIssuer("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Policies_Update
+
+```java
+import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
+import com.azure.resourcemanager.deviceregistry.models.Policy;
+import com.azure.resourcemanager.deviceregistry.models.PolicyUpdateProperties;
+
+/**
+ * Samples for Policies Update.
+ */
+public final class PoliciesUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Update_Policies.json
+     */
+    /**
+     * Sample code: Update_Policies.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void updatePolicies(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        Policy resource = manager.policies()
+            .getWithResponse("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new PolicyUpdateProperties().withCertificate(new CertificateConfiguration()
+                .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
+            .apply();
     }
 }
 ```
@@ -2110,7 +2475,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_SchemaRegistry.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_SchemaRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaRegistry.
@@ -2153,7 +2518,7 @@ public final class SchemaRegistriesCreateOrReplaceSamples {
  */
 public final class SchemaRegistriesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_SchemaRegistry.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_SchemaRegistry.json
      */
     /**
      * Sample code: Delete_SchemaRegistry.
@@ -2174,7 +2539,7 @@ public final class SchemaRegistriesDeleteSamples {
  */
 public final class SchemaRegistriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_SchemaRegistry.json
+     * x-ms-original-file: 2026-03-01-preview/Get_SchemaRegistry.json
      */
     /**
      * Sample code: Get_SchemaRegistry.
@@ -2196,7 +2561,7 @@ public final class SchemaRegistriesGetByResourceGroupSamples {
  */
 public final class SchemaRegistriesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_SchemaRegistries_BySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/List_SchemaRegistries_BySubscription.json
      */
     /**
      * Sample code: List_SchemaRegistries_Subscription.
@@ -2218,7 +2583,7 @@ public final class SchemaRegistriesListSamples {
  */
 public final class SchemaRegistriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_SchemaRegistries_ByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/List_SchemaRegistries_ByResourceGroup.json
      */
     /**
      * Sample code: List_SchemaRegistries_ResourceGroup.
@@ -2245,7 +2610,7 @@ import java.util.Map;
  */
 public final class SchemaRegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Update_SchemaRegistry.json
+     * x-ms-original-file: 2026-03-01-preview/Update_SchemaRegistry.json
      */
     /**
      * Sample code: Update_SchemaRegistry.
@@ -2287,7 +2652,7 @@ import com.azure.resourcemanager.deviceregistry.models.SchemaVersionProperties;
  */
 public final class SchemaVersionsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_SchemaVersion.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_SchemaVersion.json
      */
     /**
      * Sample code: CreateOrReplace_SchemaVersion.
@@ -2315,7 +2680,7 @@ public final class SchemaVersionsCreateOrReplaceSamples {
  */
 public final class SchemaVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_SchemaVersion.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_SchemaVersion.json
      */
     /**
      * Sample code: Delete_SchemaVersion.
@@ -2337,7 +2702,7 @@ public final class SchemaVersionsDeleteSamples {
  */
 public final class SchemaVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_SchemaVersion.json
+     * x-ms-original-file: 2026-03-01-preview/Get_SchemaVersion.json
      */
     /**
      * Sample code: Get_SchemaVersion.
@@ -2360,7 +2725,7 @@ public final class SchemaVersionsGetSamples {
  */
 public final class SchemaVersionsListBySchemaSamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_SchemaVersions_BySchema.json
+     * x-ms-original-file: 2026-03-01-preview/List_SchemaVersions_BySchema.json
      */
     /**
      * Sample code: List_SchemaVersions_Schema.
@@ -2389,7 +2754,7 @@ import java.util.Map;
  */
 public final class SchemasCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Schema.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Schema.json
      */
     /**
      * Sample code: CreateOrReplace_Schema.
@@ -2430,7 +2795,7 @@ public final class SchemasCreateOrReplaceSamples {
  */
 public final class SchemasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Delete_Schema.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_Schema.json
      */
     /**
      * Sample code: Delete_Schema.
@@ -2452,7 +2817,7 @@ public final class SchemasDeleteSamples {
  */
 public final class SchemasGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Get_Schema.json
+     * x-ms-original-file: 2026-03-01-preview/Get_Schema.json
      */
     /**
      * Sample code: Schemas_Get.
@@ -2474,7 +2839,7 @@ public final class SchemasGetSamples {
  */
 public final class SchemasListBySchemaRegistrySamples {
     /*
-     * x-ms-original-file: 2025-10-01/List_Schemas_BySchemaRegistry.json
+     * x-ms-original-file: 2026-03-01-preview/List_Schemas_BySchemaRegistry.json
      */
     /**
      * Sample code: List_Schemas_SchemaRegistry.

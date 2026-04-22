@@ -61,12 +61,11 @@ public class CosmosClientBuilderTest {
 
     @Test(groups = "unit")
     public void validateBadPreferredRegions2() {
-        try {
-            CosmosAsyncClient client = new CosmosClientBuilder()
+        try (CosmosAsyncClient client = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(hostName)
                 .preferredRegions(Arrays.asList(" "))
-                .buildAsyncClient();
+                .buildAsyncClient()) {
             client.close();
         } catch (Exception e) {
             assertThat(e).isInstanceOf(RuntimeException.class);
@@ -92,9 +91,11 @@ public class CosmosClientBuilderTest {
             ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
          accessor.setCosmosClientApiType(cosmosClientBuilder, apiType);
 
-        RxDocumentClientImpl documentClient =
-            (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClientBuilder.buildAsyncClient());
-        assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
+         try (CosmosAsyncClient cosmosClient = cosmosClientBuilder.buildAsyncClient()) {
+             RxDocumentClientImpl documentClient =
+                 (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClient);
+             assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
+         }
     }
 
     @Test(groups = "emulator", dataProvider = "regionScopedSessionContainerConfigs")
@@ -111,23 +112,24 @@ public class CosmosClientBuilderTest {
                 .key(TestConfigurations.MASTER_KEY)
                 .userAgentSuffix("custom-direct-client");
 
-            CosmosAsyncClient client = cosmosClientBuilder.buildAsyncClient();
-            RxDocumentClientImpl documentClient =
-                (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+            try (CosmosAsyncClient client = cosmosClientBuilder.buildAsyncClient()) {
+                RxDocumentClientImpl documentClient =
+                    (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
 
-            if (documentClient.getDefaultConsistencyLevelOfAccount() != ConsistencyLevel.SESSION) {
-                throw new SkipException("This test is only applicable when default account-level consistency is Session.");
+                if (documentClient.getDefaultConsistencyLevelOfAccount() != ConsistencyLevel.SESSION) {
+                    throw new SkipException("This test is only applicable when default account-level consistency is Session.");
+                }
+
+                ISessionContainer sessionContainer = documentClient.getSession();
+
+                if (System.getProperty("COSMOS.SESSION_CAPTURING_TYPE") != null && System.getProperty("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
+                    assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+                } else {
+                    assertThat(sessionContainer instanceof SessionContainer).isTrue();
+                }
+
+                assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
             }
-
-            ISessionContainer sessionContainer = documentClient.getSession();
-
-            if (System.getProperty("COSMOS.SESSION_CAPTURING_TYPE") != null && System.getProperty("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
-                assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
-            } else {
-                assertThat(sessionContainer instanceof SessionContainer).isTrue();
-            }
-
-            assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
         } finally {
             System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
         }
@@ -144,23 +146,24 @@ public class CosmosClientBuilderTest {
                 .key(TestConfigurations.MASTER_KEY)
                 .userAgentSuffix("custom-direct-client");
 
-            CosmosAsyncClient client = cosmosClientBuilder.buildAsyncClient();
-            RxDocumentClientImpl documentClient =
-                (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+            try (CosmosAsyncClient client = cosmosClientBuilder.buildAsyncClient()) {
+                RxDocumentClientImpl documentClient =
+                    (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
 
-            if (documentClient.getDefaultConsistencyLevelOfAccount() != ConsistencyLevel.SESSION) {
-                throw new SkipException("This test is only applicable when default account-level consistency is Session.");
+                if (documentClient.getDefaultConsistencyLevelOfAccount() != ConsistencyLevel.SESSION) {
+                    throw new SkipException("This test is only applicable when default account-level consistency is Session.");
+                }
+
+                ISessionContainer sessionContainer = documentClient.getSession();
+
+                if (System.getenv("COSMOS.SESSION_CAPTURING_TYPE") != null && System.getenv("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
+                    assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+                } else {
+                    assertThat(sessionContainer instanceof SessionContainer).isTrue();
+                }
+
+                assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
             }
-
-            ISessionContainer sessionContainer = documentClient.getSession();
-
-            if (System.getenv("COSMOS.SESSION_CAPTURING_TYPE") != null && System.getenv("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
-                assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
-            } else {
-                assertThat(sessionContainer instanceof SessionContainer).isTrue();
-            }
-
-            assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
         } finally {
             System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
         }
@@ -168,102 +171,108 @@ public class CosmosClientBuilderTest {
 
     @Test(groups = "emulator")
     public void validateContainerCreationInterceptor() {
-        CosmosClient clientWithoutInterceptor = new CosmosClientBuilder()
+        try (CosmosClient clientWithoutInterceptor = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .userAgentSuffix("noInterceptor")
-            .buildClient();
+            .buildClient()) {
 
-        ConcurrentMap<CacheKey, List<?>> queryCache = new ConcurrentHashMap<>();
+            ConcurrentMap<CacheKey, List<?>> queryCache = new ConcurrentHashMap<>();
 
-        CosmosClient clientWithInterceptor = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .userAgentSuffix("withInterceptor")
-            .containerCreationInterceptor(originalContainer -> new CacheAndValidateQueriesContainer(originalContainer, queryCache))
-            .buildClient();
+            try (CosmosClient clientWithInterceptor = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .userAgentSuffix("withInterceptor")
+                .containerCreationInterceptor(originalContainer -> new CacheAndValidateQueriesContainer(originalContainer, queryCache))
+                .buildClient()) {
 
-        CosmosAsyncClient asyncClientWithInterceptor = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .userAgentSuffix("withInterceptor")
-            .containerCreationInterceptor(originalContainer -> new CacheAndValidateQueriesContainer(originalContainer, queryCache))
-            .buildAsyncClient();
+                try (CosmosAsyncClient asyncClientWithInterceptor = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .userAgentSuffix("withInterceptor")
+                    .containerCreationInterceptor(originalContainer -> new CacheAndValidateQueriesContainer(originalContainer, queryCache))
+                    .buildAsyncClient()) {
 
-        CosmosContainer normalContainer = clientWithoutInterceptor
-            .getDatabase("TestDB")
-            .getContainer("TestContainer");
-        assertThat(normalContainer).isNotNull();
-        assertThat(normalContainer.getClass()).isEqualTo(CosmosContainer.class);
-        assertThat(normalContainer.asyncContainer.getClass()).isEqualTo(CosmosAsyncContainer.class);
+                    CosmosContainer normalContainer = clientWithoutInterceptor
+                        .getDatabase("TestDB")
+                        .getContainer("TestContainer");
+                    assertThat(normalContainer).isNotNull();
+                    assertThat(normalContainer.getClass()).isEqualTo(CosmosContainer.class);
+                    assertThat(normalContainer.asyncContainer.getClass()).isEqualTo(CosmosAsyncContainer.class);
 
-        CosmosContainer customSyncContainer = clientWithInterceptor
-            .getDatabase("TestDB")
-            .getContainer("TestContainer");
-        assertThat(customSyncContainer).isNotNull();
-        assertThat(customSyncContainer.getClass()).isEqualTo(CosmosContainer.class);
-        assertThat(customSyncContainer.asyncContainer.getClass()).isEqualTo(CacheAndValidateQueriesContainer.class);
+                    CosmosContainer customSyncContainer = clientWithInterceptor
+                        .getDatabase("TestDB")
+                        .getContainer("TestContainer");
+                    assertThat(customSyncContainer).isNotNull();
+                    assertThat(customSyncContainer.getClass()).isEqualTo(CosmosContainer.class);
+                    assertThat(customSyncContainer.asyncContainer.getClass()).isEqualTo(CacheAndValidateQueriesContainer.class);
 
-        CosmosAsyncContainer customAsyncContainer = asyncClientWithInterceptor
-            .getDatabase("TestDB")
-            .getContainer("TestContainer");
-        assertThat(customAsyncContainer).isNotNull();
-        assertThat(customAsyncContainer.getClass()).isEqualTo(CacheAndValidateQueriesContainer.class);
+                    CosmosAsyncContainer customAsyncContainer = asyncClientWithInterceptor
+                        .getDatabase("TestDB")
+                        .getContainer("TestContainer");
+                    assertThat(customAsyncContainer).isNotNull();
+                    assertThat(customAsyncContainer.getClass()).isEqualTo(CacheAndValidateQueriesContainer.class);
 
-        try {
-            customSyncContainer.queryItems("SELECT * from c", null, ObjectNode.class);
-            fail("Unparameterized query should throw");
-        } catch (IllegalStateException expectedError) {}
+                    try {
+                        customSyncContainer.queryItems("SELECT * from c", null, ObjectNode.class);
+                        fail("Unparameterized query should throw");
+                    } catch (IllegalStateException expectedError) {
+                    }
 
-        try {
-            customAsyncContainer.queryItems("SELECT * from c", null, ObjectNode.class);
-            fail("Unparameterized query should throw");
-        } catch (IllegalStateException expectedError) {}
+                    try {
+                        customAsyncContainer.queryItems("SELECT * from c", null, ObjectNode.class);
+                        fail("Unparameterized query should throw");
+                    } catch (IllegalStateException expectedError) {
+                    }
 
-        try {
-            customAsyncContainer.queryItems("SELECT * from c", ObjectNode.class);
-            fail("Unparameterized query should throw");
-        } catch (IllegalStateException expectedError) {}
+                    try {
+                        customAsyncContainer.queryItems("SELECT * from c", ObjectNode.class);
+                        fail("Unparameterized query should throw");
+                    } catch (IllegalStateException expectedError) {
+                    }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec().setQueryText("SELECT * from c");
-        assertThat(queryCache).size().isEqualTo(0);
+                    SqlQuerySpec querySpec = new SqlQuerySpec().setQueryText("SELECT * from c");
+                    assertThat(queryCache).size().isEqualTo(0);
 
-        try {
-            List<ObjectNode> items = customSyncContainer
-                .queryItems(querySpec, null, ObjectNode.class)
-                .stream().collect(Collectors.toList());
-            fail("Not yet cached - the query above should always throw");
-        } catch (CosmosException cosmosException) {
-            // Container does not exist - when not cached should fail
-            assertThat(cosmosException.getStatusCode()).isEqualTo(404);
-            assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
-        }
+                    try {
+                        List<ObjectNode> items = customSyncContainer
+                            .queryItems(querySpec, null, ObjectNode.class)
+                            .stream().collect(Collectors.toList());
+                        fail("Not yet cached - the query above should always throw");
+                    } catch (CosmosException cosmosException) {
+                        // Container does not exist - when not cached should fail
+                        assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+                        assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
+                    }
 
-        queryCache.putIfAbsent(new CacheKey(ObjectNode.class.getCanonicalName(), querySpec), new ArrayList<>());
-        assertThat(queryCache).size().isEqualTo(1);
+                    queryCache.putIfAbsent(new CacheKey(ObjectNode.class.getCanonicalName(), querySpec), new ArrayList<>());
+                    assertThat(queryCache).size().isEqualTo(1);
 
-        // Validate that CacheKey equality check works
-        queryCache.putIfAbsent(new CacheKey(ObjectNode.class.getCanonicalName(), querySpec), new ArrayList<>());
-        assertThat(queryCache).size().isEqualTo(1);
+                    // Validate that CacheKey equality check works
+                    queryCache.putIfAbsent(new CacheKey(ObjectNode.class.getCanonicalName(), querySpec), new ArrayList<>());
+                    assertThat(queryCache).size().isEqualTo(1);
 
-        // Validate that form cache the results can be served
-        List<ObjectNode> items = customSyncContainer
-            .queryItems(querySpec, null, ObjectNode.class)
-            .stream().collect(Collectors.toList());
+                    // Validate that form cache the results can be served
+                    List<ObjectNode> items = customSyncContainer
+                        .queryItems(querySpec, null, ObjectNode.class)
+                        .stream().collect(Collectors.toList());
 
-        querySpec = new SqlQuerySpec().setQueryText("SELECT * from c");
-        CosmosPagedFlux<ObjectNode> cachedPagedFlux = customAsyncContainer
-            .queryItems(querySpec, null, ObjectNode.class);
-        assertThat(cachedPagedFlux.getClass().getName()).startsWith("com.azure.cosmos.util.CosmosPagedFluxStaticListImpl");
+                    querySpec = new SqlQuerySpec().setQueryText("SELECT * from c");
+                    CosmosPagedFlux<ObjectNode> cachedPagedFlux = customAsyncContainer
+                        .queryItems(querySpec, null, ObjectNode.class);
+                    assertThat(cachedPagedFlux.getClass().getName()).startsWith("com.azure.cosmos.util.CosmosPagedFluxStaticListImpl");
 
-        // Validate that uncached query form async Container also fails with 404 due to non-existing Container
-        querySpec = new SqlQuerySpec().setQueryText("SELECT * from r");
-        try {
-            CosmosPagedFlux<ObjectNode> uncachedPagedFlux = customAsyncContainer
-                .queryItems(querySpec, null, ObjectNode.class);
-        } catch (CosmosException cosmosException) {
-            assertThat(cosmosException.getStatusCode()).isEqualTo(404);
-            assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
+                    // Validate that uncached query form async Container also fails with 404 due to non-existing Container
+                    querySpec = new SqlQuerySpec().setQueryText("SELECT * from r");
+                    try {
+                        CosmosPagedFlux<ObjectNode> uncachedPagedFlux = customAsyncContainer
+                            .queryItems(querySpec, null, ObjectNode.class);
+                    } catch (CosmosException cosmosException) {
+                        assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+                        assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
+                    }
+                }
+            }
         }
     }
 

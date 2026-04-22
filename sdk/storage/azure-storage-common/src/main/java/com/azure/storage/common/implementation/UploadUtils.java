@@ -149,6 +149,25 @@ public class UploadUtils {
     }
 
     /**
+     * It computes the MD5 of the provided buffer
+     * @param data The data.
+     * @param logger Logger to log errors.
+     * @return The md5 of the data.
+     */
+    public static byte[] computeMd5(ByteBuffer data, ClientLogger logger) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(data.duplicate().asReadOnlyBuffer());
+            return digest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
      * Computes the md5 of the data and wraps it with the data.
      *
      * @param data The data.

@@ -73,9 +73,7 @@ public class AkriConnectorTemplateRuntimeConfiguration
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("HelmConfiguration".equals(discriminatorValue)) {
-                    return AkriConnectorTemplateHelmConfiguration.fromJson(readerToUse.reset());
-                } else if ("ManagedConfiguration".equals(discriminatorValue)) {
+                if ("ManagedConfiguration".equals(discriminatorValue)) {
                     return AkriConnectorTemplateManagedConfiguration.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

@@ -81,6 +81,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     URI serviceEndpoint();
 
+    URI serverKeyUsedAsActualRemoteAddress();
+
     void injectConnectionErrors(
         String faultInjectionRuleId,
         double threshold,

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
@@ -22,18 +22,18 @@ public final class QueryPacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"queryPackId\":\"pkxztmoobkl\",\"timeCreated\":\"2021-05-25T12:15:23Z\",\"timeModified\":\"2021-09-03T03:39:31Z\",\"provisioningState\":\"cwq\"},\"location\":\"pimaqxzhemjyh\",\"tags\":{\"lkb\":\"jswtwkozzwc\"},\"id\":\"wpfaj\",\"name\":\"jwltlwtjjgu\",\"type\":\"talhsnvkcdmxzr\"}]}";
+            = "{\"value\":[{\"properties\":{\"queryPackId\":\"ycsxzu\",\"timeCreated\":\"2021-06-18T01:50:48Z\",\"timeModified\":\"2021-11-03T00:52:43Z\",\"provisioningState\":\"mdesqp\"},\"location\":\"vmjcdoewb\",\"tags\":{\"xvgpiude\":\"vteo\",\"axwk\":\"gfsxzec\",\"znabaobns\":\"fykhvuhxepmru\",\"ihywartspph\":\"ujdjltymkmvg\"},\"id\":\"ixkykxd\",\"name\":\"sj\",\"type\":\"emmucfxh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LogAnalyticsQueryPack> response = manager.queryPacks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pimaqxzhemjyh", response.iterator().next().location());
-        Assertions.assertEquals("jswtwkozzwc", response.iterator().next().tags().get("lkb"));
+        Assertions.assertEquals("vmjcdoewb", response.iterator().next().location());
+        Assertions.assertEquals("vteo", response.iterator().next().tags().get("xvgpiude"));
     }
 }

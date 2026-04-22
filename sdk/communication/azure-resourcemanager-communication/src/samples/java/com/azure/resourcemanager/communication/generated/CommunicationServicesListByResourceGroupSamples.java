@@ -10,7 +10,7 @@ package com.azure.resourcemanager.communication.generated;
 public final class CommunicationServicesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/listByResourceGroup.json
      */
     /**
