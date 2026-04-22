@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
-import com.azure.cosmos.models.{CosmosReadManyByPartitionKeyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
+import com.azure.cosmos.models.{CosmosReadManyByPartitionKeysRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition, SqlQuerySpec}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -43,10 +43,10 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
 
   private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val readManyOptions = new CosmosReadManyByPartitionKeyRequestOptions()
+  private val readManyOptions = new CosmosReadManyByPartitionKeysRequestOptions()
   private val readManyOptionsImpl = ImplementationBridgeHelpers
-    .CosmosReadManyByPartitionKeyRequestOptionsHelper
-    .getCosmosReadManyByPartitionKeyRequestOptionsAccessor
+    .CosmosReadManyByPartitionKeysRequestOptionsHelper
+    .getCosmosReadManyByPartitionKeysRequestOptionsAccessor
     .getImpl(readManyOptions)
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)

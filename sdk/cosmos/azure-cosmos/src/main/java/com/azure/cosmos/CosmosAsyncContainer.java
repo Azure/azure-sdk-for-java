@@ -60,7 +60,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -127,8 +127,8 @@ public class CosmosAsyncContainer {
         return ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
     }
 
-    private static ImplementationBridgeHelpers.CosmosReadManyByPartitionKeyRequestOptionsHelper.CosmosReadManyByPartitionKeyRequestOptionsAccessor readManyByPkOptionsAccessor() {
-        return ImplementationBridgeHelpers.CosmosReadManyByPartitionKeyRequestOptionsHelper.getCosmosReadManyByPartitionKeyRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper.CosmosReadManyByPartitionKeysRequestOptionsAccessor readManyByPkOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper.getCosmosReadManyByPartitionKeysRequestOptionsAccessor();
     }
 
     private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
@@ -1648,7 +1648,7 @@ public class CosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
-        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
         Class<T> classType) {
 
         return this.readManyByPartitionKeys(partitionKeys, null, requestOptions, classType);
@@ -1714,7 +1714,7 @@ public class CosmosAsyncContainer {
     public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
-        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
         Class<T> classType) {
 
         if (partitionKeys == null) {
@@ -1739,7 +1739,7 @@ public class CosmosAsyncContainer {
     private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeysInternalFunc(
         List<PartitionKey> partitionKeys,
         SqlQuerySpec customQuery,
-        CosmosReadManyByPartitionKeyRequestOptions requestOptions,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
         Class<T> classType) {
 
         CosmosAsyncClient client = this.getDatabase().getClient();
@@ -1770,7 +1770,7 @@ public class CosmosAsyncContainer {
             // value but default the uninitialized case to unbounded for readManyByPartitionKeys.
             // CosmosReadManyRequestOptions does not currently expose MDOP, so this only matters
             // if it is plumbed through in the future.
-            // When cloning from CosmosReadManyByPartitionKeyRequestOptionsImpl (which does not
+            // When cloning from CosmosReadManyByPartitionKeysRequestOptionsImpl (which does not
             // define maxDegreeOfParallelism), the cloned CosmosQueryRequestOptions may have a
             // null backing Integer. Guard against NPE from auto-unboxing by checking for null.
             Integer mdop = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxDegreeOfParallelism();

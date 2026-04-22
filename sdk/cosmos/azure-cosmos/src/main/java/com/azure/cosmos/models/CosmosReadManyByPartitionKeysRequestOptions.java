@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
-import com.azure.cosmos.implementation.CosmosReadManyByPartitionKeyRequestOptionsImpl;
+import com.azure.cosmos.implementation.CosmosReadManyByPartitionKeysRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.util.Beta;
 
@@ -26,14 +26,14 @@ import java.util.Set;
  * query parallelism inside a single physical partition or a feed range filter are
  * intentionally not exposed because the operation is fully managed by the SDK.
  */
-public final class CosmosReadManyByPartitionKeyRequestOptions {
-    private final CosmosReadManyByPartitionKeyRequestOptionsImpl actualRequestOptions;
+public final class CosmosReadManyByPartitionKeysRequestOptions {
+    private final CosmosReadManyByPartitionKeysRequestOptionsImpl actualRequestOptions;
 
     /**
      * Instantiates a new readManyByPartitionKeys request options.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions() {
-        this.actualRequestOptions = new CosmosReadManyByPartitionKeyRequestOptionsImpl();
+    public CosmosReadManyByPartitionKeysRequestOptions() {
+        this.actualRequestOptions = new CosmosReadManyByPartitionKeysRequestOptionsImpl();
     }
 
     /**
@@ -41,8 +41,8 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      *
      * @param options the options to copy.
      */
-    CosmosReadManyByPartitionKeyRequestOptions(CosmosReadManyByPartitionKeyRequestOptions options) {
-        this.actualRequestOptions = new CosmosReadManyByPartitionKeyRequestOptionsImpl(options.actualRequestOptions);
+    CosmosReadManyByPartitionKeysRequestOptions(CosmosReadManyByPartitionKeysRequestOptions options) {
+        this.actualRequestOptions = new CosmosReadManyByPartitionKeysRequestOptionsImpl(options.actualRequestOptions);
     }
 
     /**
@@ -62,9 +62,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * partition-key set and the same custom query.
      *
      * @param continuationToken the composite continuation token from a previous invocation.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setContinuationToken(String continuationToken) {
+    public CosmosReadManyByPartitionKeysRequestOptions setContinuationToken(String continuationToken) {
         this.actualRequestOptions.setContinuationToken(continuationToken);
         return this;
     }
@@ -89,10 +89,10 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * network/CPU and additional prefetch only adds memory pressure.
      *
      * @param maxConcurrentBatchPrefetch the max concurrent batch prefetch (must be &gt;= 1).
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      * @throws IllegalArgumentException if {@code maxConcurrentBatchPrefetch} is &lt; 1.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setMaxConcurrentBatchPrefetch(int maxConcurrentBatchPrefetch) {
+    public CosmosReadManyByPartitionKeysRequestOptions setMaxConcurrentBatchPrefetch(int maxConcurrentBatchPrefetch) {
         if (maxConcurrentBatchPrefetch < 1) {
             throw new IllegalArgumentException(
                 "Argument 'maxConcurrentBatchPrefetch' must be greater than or equal to 1.");
@@ -115,10 +115,10 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the read consistency strategy required for the request.
      *
      * @param readConsistencyStrategy the read consistency strategy.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosReadManyByPartitionKeyRequestOptions setReadConsistencyStrategy(
+    public CosmosReadManyByPartitionKeysRequestOptions setReadConsistencyStrategy(
         ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
@@ -137,9 +137,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the session token for use with session consistency.
      *
      * @param sessionToken the session token.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setSessionToken(String sessionToken) {
+    public CosmosReadManyByPartitionKeysRequestOptions setSessionToken(String sessionToken) {
         this.actualRequestOptions.setSessionToken(sessionToken);
         return this;
     }
@@ -153,9 +153,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * also carries the remaining batch definitions, query hash, and partition-key-set hash.
      *
      * @param limitInKb backend continuation token size limit (must be &gt;= 1).
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setMaxBackendContinuationTokenSizeInKb(int limitInKb) {
+    public CosmosReadManyByPartitionKeysRequestOptions setMaxBackendContinuationTokenSizeInKb(int limitInKb) {
         this.actualRequestOptions.setResponseContinuationTokenLimitInKb(limitInKb);
         return this;
     }
@@ -183,9 +183,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the maximum number of items returned in a single page.
      *
      * @param maxItemCount the maximum number of items per page.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setMaxItemCount(int maxItemCount) {
+    public CosmosReadManyByPartitionKeysRequestOptions setMaxItemCount(int maxItemCount) {
         this.actualRequestOptions.setMaxItemCount(maxItemCount);
         return this;
     }
@@ -194,9 +194,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request.
      *
      * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(
+    public CosmosReadManyByPartitionKeysRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(
         CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this.actualRequestOptions
             .setCosmosEndToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig);
@@ -207,9 +207,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * List of regions to be excluded for the request/retries.
      *
      * @param excludeRegions the regions to exclude
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions}
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions}
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setExcludedRegions(List<String> excludeRegions) {
+    public CosmosReadManyByPartitionKeysRequestOptions setExcludedRegions(List<String> excludeRegions) {
         this.actualRequestOptions.setExcludedRegions(excludeRegions);
         return this;
     }
@@ -236,9 +236,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the option to enable/disable query metrics.
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+    public CosmosReadManyByPartitionKeysRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
         this.actualRequestOptions.setQueryMetricsEnabled(queryMetricsEnabled);
         return this;
     }
@@ -256,9 +256,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the throughput control group name.
      *
      * @param throughputControlGroupName the throughput control group name.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+    public CosmosReadManyByPartitionKeysRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.actualRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
         return this;
     }
@@ -276,9 +276,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the dedicated gateway request options.
      *
      * @param dedicatedGatewayRequestOptions the dedicated gateway request options.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setDedicatedGatewayRequestOptions(
+    public CosmosReadManyByPartitionKeysRequestOptions setDedicatedGatewayRequestOptions(
         DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.actualRequestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         return this;
@@ -297,9 +297,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the latency threshold for diagnostics on tracer.
      *
      * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setThresholdForDiagnosticsOnTracer(
+    public CosmosReadManyByPartitionKeysRequestOptions setThresholdForDiagnosticsOnTracer(
         Duration thresholdForDiagnosticsOnTracer) {
         this.actualRequestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
         return this;
@@ -309,9 +309,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Allows overriding the diagnostic thresholds for a specific operation.
      *
      * @param operationSpecificThresholds the diagnostic threshold override for this operation
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setDiagnosticsThresholds(
+    public CosmosReadManyByPartitionKeysRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
         this.actualRequestOptions.setDiagnosticsThresholds(operationSpecificThresholds);
         return this;
@@ -339,9 +339,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets a custom item serializer to be used for this operation.
      *
      * @param customItemSerializer the custom item serializer for this operation.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setCustomItemSerializer(
+    public CosmosReadManyByPartitionKeysRequestOptions setCustomItemSerializer(
         CosmosItemSerializer customItemSerializer) {
         this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
         return this;
@@ -351,9 +351,9 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
      * Sets the custom keyword identifiers.
      *
      * @param keywordIdentifiers the custom keyword identifiers.
-     * @return the {@link CosmosReadManyByPartitionKeyRequestOptions} for fluent chaining.
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    public CosmosReadManyByPartitionKeyRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+    public CosmosReadManyByPartitionKeysRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
         this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return this;
     }
@@ -375,24 +375,24 @@ public final class CosmosReadManyByPartitionKeyRequestOptions {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
-        ImplementationBridgeHelpers.CosmosReadManyByPartitionKeyRequestOptionsHelper
-            .setCosmosReadManyByPartitionKeyRequestOptionsAccessor(
-                new ImplementationBridgeHelpers.CosmosReadManyByPartitionKeyRequestOptionsHelper
-                    .CosmosReadManyByPartitionKeyRequestOptionsAccessor() {
+        ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper
+            .setCosmosReadManyByPartitionKeysRequestOptionsAccessor(
+                new ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper
+                    .CosmosReadManyByPartitionKeysRequestOptionsAccessor() {
                     @Override
                     public CosmosQueryRequestOptionsBase<?> getImpl(
-                        CosmosReadManyByPartitionKeyRequestOptions options) {
+                        CosmosReadManyByPartitionKeysRequestOptions options) {
                         return options.actualRequestOptions;
                     }
 
                     @Override
-                    public String getContinuationToken(CosmosReadManyByPartitionKeyRequestOptions options) {
+                    public String getContinuationToken(CosmosReadManyByPartitionKeysRequestOptions options) {
                         return options.actualRequestOptions.getContinuationToken();
                     }
 
                     @Override
                     public Integer getMaxConcurrentBatchPrefetch(
-                        CosmosReadManyByPartitionKeyRequestOptions options) {
+                        CosmosReadManyByPartitionKeysRequestOptions options) {
                         return options.actualRequestOptions.getMaxConcurrentBatchPrefetch();
                     }
                 });

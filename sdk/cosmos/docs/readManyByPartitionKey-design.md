@@ -57,21 +57,21 @@ flowchart TD
 ```java
 <T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys, Class<T> classType)
 <T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys,
-                                               CosmosReadManyRequestOptions requestOptions,
+                                               CosmosReadManyByPartitionKeysRequestOptions requestOptions,
                                                Class<T> classType)
 <T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys,
                                                SqlQuerySpec customQuery,
                                                Class<T> classType)
 <T> CosmosPagedFlux<T> readManyByPartitionKeys(List<PartitionKey> partitionKeys,
                                                SqlQuerySpec customQuery,
-                                               CosmosReadManyByPartitionKeyRequestOptions requestOptions,
+                                               CosmosReadManyByPartitionKeysRequestOptions requestOptions,
                                                Class<T> classType)
 ```
 
 All four overloads delegate to a private `readManyByPartitionKeyInternalFunc(...)`.
 
 > **Note:** the request-options type for `readManyByPartitionKeys` is the dedicated
-> `CosmosReadManyByPartitionKeyRequestOptions` class (not the shared
+> `CosmosReadManyByPartitionKeysRequestOptions` class (not the shared
 > `CosmosReadManyRequestOptions` used by `readMany(List<CosmosItemIdentity>)`). It exposes
 > `setContinuationToken(String)` / `getContinuationToken()` directly on the public surface
 > and a `setMaxConcurrentBatchPrefetch(int)` knob that defaults to
@@ -429,11 +429,11 @@ sequenceDiagram
 
 ### API changes
 
-**`CosmosReadManyByPartitionKeyRequestOptionsImpl`:** Holds `continuationToken`,
+**`CosmosReadManyByPartitionKeysRequestOptionsImpl`:** Holds `continuationToken`,
 `maxConcurrentBatchPrefetch`, and `maxItemCount` fields with corresponding getters and setters;
 all other knobs (consistency, session token, regions, throughput control, dedicated gateway,
 diagnostics, custom item serializer, keyword identifiers, e2e latency policy) are inherited
-from `CosmosQueryRequestOptionsBase`. The public `CosmosReadManyByPartitionKeyRequestOptions`
+from `CosmosQueryRequestOptionsBase`. The public `CosmosReadManyByPartitionKeysRequestOptions`
 facade exposes only the surface that is meaningful for this operation -
 `MaxBackendContinuationTokenSizeInKb` (renamed from the inherited
 `ResponseContinuationTokenLimitInKb` to make clear it limits the *backend* token wrapped inside

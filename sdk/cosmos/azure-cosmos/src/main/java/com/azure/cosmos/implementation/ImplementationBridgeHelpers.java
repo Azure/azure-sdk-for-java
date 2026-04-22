@@ -69,7 +69,7 @@ import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -355,40 +355,40 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class CosmosReadManyByPartitionKeyRequestOptionsHelper {
+    public static final class CosmosReadManyByPartitionKeysRequestOptionsHelper {
         private final static AtomicBoolean cosmosReadManyByPkRequestOptionsClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<CosmosReadManyByPartitionKeyRequestOptionsAccessor> accessor = new AtomicReference<>();
+        private final static AtomicReference<CosmosReadManyByPartitionKeysRequestOptionsAccessor> accessor = new AtomicReference<>();
 
-        private CosmosReadManyByPartitionKeyRequestOptionsHelper() {}
+        private CosmosReadManyByPartitionKeysRequestOptionsHelper() {}
 
-        public static void setCosmosReadManyByPartitionKeyRequestOptionsAccessor(
-            final CosmosReadManyByPartitionKeyRequestOptionsAccessor newAccessor) {
+        public static void setCosmosReadManyByPartitionKeysRequestOptionsAccessor(
+            final CosmosReadManyByPartitionKeysRequestOptionsAccessor newAccessor) {
             if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosReadManyByPartitionKeyRequestOptionsAccessor already initialized!");
+                logger.debug("CosmosReadManyByPartitionKeysRequestOptionsAccessor already initialized!");
             } else {
-                logger.debug("Setting CosmosReadManyByPartitionKeyRequestOptionsAccessor...");
+                logger.debug("Setting CosmosReadManyByPartitionKeysRequestOptionsAccessor...");
                 cosmosReadManyByPkRequestOptionsClassLoaded.set(true);
             }
         }
 
-        public static CosmosReadManyByPartitionKeyRequestOptionsAccessor getCosmosReadManyByPartitionKeyRequestOptionsAccessor() {
+        public static CosmosReadManyByPartitionKeysRequestOptionsAccessor getCosmosReadManyByPartitionKeysRequestOptionsAccessor() {
             if (!cosmosReadManyByPkRequestOptionsClassLoaded.get()) {
-                logger.debug("Initializing CosmosReadManyByPartitionKeyRequestOptionsAccessor...");
+                logger.debug("Initializing CosmosReadManyByPartitionKeysRequestOptionsAccessor...");
                 initializeAllAccessors();
             }
 
-            CosmosReadManyByPartitionKeyRequestOptionsAccessor snapshot = accessor.get();
+            CosmosReadManyByPartitionKeysRequestOptionsAccessor snapshot = accessor.get();
             if (snapshot == null) {
-                logger.error("CosmosReadManyByPartitionKeyRequestOptionsAccessor is not initialized yet!");
+                logger.error("CosmosReadManyByPartitionKeysRequestOptionsAccessor is not initialized yet!");
             }
 
             return snapshot;
         }
 
-        public interface CosmosReadManyByPartitionKeyRequestOptionsAccessor {
-            CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyByPartitionKeyRequestOptions options);
-            String getContinuationToken(CosmosReadManyByPartitionKeyRequestOptions options);
-            Integer getMaxConcurrentBatchPrefetch(CosmosReadManyByPartitionKeyRequestOptions options);
+        public interface CosmosReadManyByPartitionKeysRequestOptionsAccessor {
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyByPartitionKeysRequestOptions options);
+            String getContinuationToken(CosmosReadManyByPartitionKeysRequestOptions options);
+            Integer getMaxConcurrentBatchPrefetch(CosmosReadManyByPartitionKeysRequestOptions options);
         }
     }
 

@@ -3,21 +3,21 @@
 package com.azure.cosmos.implementation;
 
 /**
- * Internal implementation backing the public {@code CosmosReadManyByPartitionKeyRequestOptions}
+ * Internal implementation backing the public {@code CosmosReadManyByPartitionKeysRequestOptions}
  * facade. Holds state specific to the {@code readManyByPartitionKeys} operation.
  */
-public class CosmosReadManyByPartitionKeyRequestOptionsImpl
-    extends CosmosQueryRequestOptionsBase<CosmosReadManyByPartitionKeyRequestOptionsImpl> {
+public class CosmosReadManyByPartitionKeysRequestOptionsImpl
+    extends CosmosQueryRequestOptionsBase<CosmosReadManyByPartitionKeysRequestOptionsImpl> {
 
     private String continuationToken;
     private Integer maxConcurrentBatchPrefetch;
     private Integer maxItemCount;
 
-    public CosmosReadManyByPartitionKeyRequestOptionsImpl() {
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl() {
         super();
     }
 
-    public CosmosReadManyByPartitionKeyRequestOptionsImpl(CosmosReadManyByPartitionKeyRequestOptionsImpl options) {
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl(CosmosReadManyByPartitionKeysRequestOptionsImpl options) {
         super(options);
         this.continuationToken = options.continuationToken;
         this.maxConcurrentBatchPrefetch = options.maxConcurrentBatchPrefetch;
@@ -39,7 +39,7 @@ public class CosmosReadManyByPartitionKeyRequestOptionsImpl
      * @param continuationToken the continuation token from a previous invocation.
      * @return this instance.
      */
-    public CosmosReadManyByPartitionKeyRequestOptionsImpl setContinuationToken(String continuationToken) {
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
     }
@@ -61,7 +61,7 @@ public class CosmosReadManyByPartitionKeyRequestOptionsImpl
      * @param maxConcurrentBatchPrefetch the max concurrent batch prefetch (must be &gt;= 1).
      * @return this instance.
      */
-    public CosmosReadManyByPartitionKeyRequestOptionsImpl setMaxConcurrentBatchPrefetch(int maxConcurrentBatchPrefetch) {
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl setMaxConcurrentBatchPrefetch(int maxConcurrentBatchPrefetch) {
         this.maxConcurrentBatchPrefetch = maxConcurrentBatchPrefetch;
         return this;
     }
@@ -71,7 +71,7 @@ public class CosmosReadManyByPartitionKeyRequestOptionsImpl
         return this.maxItemCount;
     }
 
-    public CosmosReadManyByPartitionKeyRequestOptionsImpl setMaxItemCount(Integer maxItemCount) {
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }

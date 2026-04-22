@@ -456,7 +456,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         List<ObjectNode> items = createSinglePkItems("pkOpts", 3);
 
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkOpts"));
-        com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options = new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+        com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions options = new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
         AtomicInteger deserializeCount = new AtomicInteger();
         options.setCustomItemSerializer(new CosmosItemSerializerNoExceptionWrapping() {
             @Override
@@ -484,14 +484,14 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void singlePk_readManyByPartitionKey_withRequestOptionsAndMaxConcurrentBatchPrefetch() {
-        // Regression test: passing non-null CosmosReadManyByPartitionKeyRequestOptions
+        // Regression test: passing non-null CosmosReadManyByPartitionKeysRequestOptions
         // with maxConcurrentBatchPrefetch set should not throw NullPointerException
         // from auto-unboxing a null MaxDegreeOfParallelism during options cloning.
         List<ObjectNode> items = createSinglePkItems("pkMdop", 3);
 
         List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pkMdop"));
-        com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options =
-            new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+        com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions options =
+            new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
         options.setMaxConcurrentBatchPrefetch(2);
 
         CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(
@@ -606,8 +606,8 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             List<ObjectNode> itemsFromFirstPage = allPages.get(0).getResults();
 
             // Second pass: resume from the continuation token
-            com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options2 =
-                new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+            com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions options2 =
+                new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
             options2.setContinuationToken(continuationAfterFirstPage);
 
             List<FeedResponse<ObjectNode>> remainingPages = asyncContainer
@@ -685,8 +685,8 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
             assertThat(continuationAfterFirstPage).isNotNull();
             List<ObjectNode> itemsFromFirstPage = allPages.get(0).getResults();
 
-            com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions options2 =
-                new com.azure.cosmos.models.CosmosReadManyByPartitionKeyRequestOptions();
+            com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions options2 =
+                new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
             options2.setContinuationToken(continuationAfterFirstPage);
 
             List<FeedResponse<ObjectNode>> remainingPages = asyncContainer
