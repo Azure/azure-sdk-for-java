@@ -15,7 +15,7 @@ set -euo pipefail
 #   run_sample.sh --list
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Package root is 4 levels up from scripts: .github/skills/cu-sdk-java-sample-run/scripts -> package root
+# Package root is 4 levels up from scripts: .github/skills/cu-sdk-sample-run/scripts -> package root
 PACKAGE_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 SAMPLES_DIR="$PACKAGE_ROOT/src/samples/java/com/azure/ai/contentunderstanding/samples"
 PACKAGE="com.azure.ai.contentunderstanding.samples"

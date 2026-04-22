@@ -51,5 +51,5 @@ Always read the relevant page (via `fetch_webpage`) before answering if the refe
 
 ## Related Skills
 
-- `cu-sdk-java-setup-env` — Set up environment variables for Java SDK samples
-- `cu-sdk-java-sample-run` — Run specific Java SDK samples interactively
+- `cu-sdk-setup` — Set up environment variables for Java SDK samples
+- `cu-sdk-sample-run` — Run specific Java SDK samples interactively

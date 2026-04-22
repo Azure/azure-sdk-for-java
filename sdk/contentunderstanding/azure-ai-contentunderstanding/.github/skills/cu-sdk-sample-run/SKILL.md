@@ -1,5 +1,5 @@
 ---
-name: cu-sdk-java-sample-run
+name: cu-sdk-sample-run
 description: Run a specific sample for the Azure AI Content Understanding Java SDK. Use when users want to run a particular sample like Sample02_AnalyzeUrl or Sample03_AnalyzeInvoice.
 ---
 
@@ -144,13 +144,13 @@ mvn install -DskipTests -pl sdk/contentunderstanding/azure-ai-contentunderstandi
 The `setup_samples.sh` script automates this — it checks Maven Central first and falls back to a local build:
 
 ```bash
-.github/skills/cu-sdk-java-sample-run/scripts/setup_samples.sh
+.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh
 ```
 
 Use `--local` to force local build:
 
 ```bash
-.github/skills/cu-sdk-java-sample-run/scripts/setup_samples.sh --local
+.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh --local
 ```
 
 </details>
@@ -160,13 +160,13 @@ Use `--local` to force local build:
 > **[ASK USER] Configuration check:**
 > Ask the user: "Do you already have your environment variables configured (`.env` file or exported in shell)?"
 > - If yes: Skip to Step 4.
-> - If no: Direct them to the `cu-sdk-java-setup-env` skill for interactive setup, or guide them through the steps below.
+> - If no: Direct them to the `cu-sdk-setup` skill for interactive setup, or guide them through the steps below.
 
 Java samples read credentials from **OS environment variables** via `System.getenv()`. Unlike Python (`dotenv`) or JavaScript (`dotenv/config`), Java does not have a built-in `.env` loader — the variables must be present in the shell environment when the JVM starts.
 
 The recommended approach is to create a **`.env` file** and source it before running samples.
 
-> **Tip:** Use the `cu-sdk-java-setup-env` skill for an interactive walkthrough that creates your `.env` file step by step.
+> **Tip:** Use the `cu-sdk-setup` skill for an interactive walkthrough that creates your `.env` file step by step.
 
 **Create a `.env` file** in the package root (`sdk/contentunderstanding/azure-ai-contentunderstanding/.env`):
 
@@ -323,21 +323,40 @@ The `run_sample.sh` script is a convenience wrapper around `mvn exec:java`. It r
 
 ```bash
 # Run a sample
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl
 
 # Run with .env file (auto-loads environment variables into the shell)
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl --env .env
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl --env .env
 
 # List all available samples
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh --list
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh --list
 ```
 
 </details>
 
+### After the Sample Runs — Review Results and Explain the Sample
+
+After the sample completes, the skill **must** do the following for the user (do not skip):
+
+1. **Show the terminal command to re-run this sample directly**, so the user can iterate without the skill. For example:
+   ```bash
+   set -a && source .env && set +a
+   mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" -Dexec.classpathScope=test
+   ```
+   Substitute `Sample02_AnalyzeUrl` with the sample the user just ran.
+
+2. **Briefly explain the key code concepts** demonstrated in the sample. Tailor the explanation to the specific sample; common concepts include:
+   - **Client creation** — how `ContentUnderstandingClient` is constructed via the builder (endpoint + `DefaultAzureCredentialBuilder` or `AzureKeyCredential`)
+   - **Analyzer selection** — which prebuilt (`prebuilt-documentSearch`, `prebuilt-invoice`, etc.) or custom analyzer is used and why
+   - **Input type** — URL vs. `BinaryData` vs. local file
+   - **Result processing** — how the returned `AnalyzeResult` is traversed (pages, fields, contents)
+   - **Content type casting** — e.g., casting `AnalyzedContent` to `AnalyzedDocumentContent` / `AnalyzedImageContent` / `AnalyzedAudioContent` / `AnalyzedVideoContent` when needed
+   - **Long-running operation polling** — if the sample uses `SyncPoller` / `beginAnalyze`
+
 > **[ASK USER] Sample result:**
-> After running the sample, ask: "Did the sample run successfully?"
-> - If yes: "Would you like to run another sample, or are you all set?"
-> - If no: Help troubleshoot using the Troubleshooting section below. Common issues include missing environment variables, SDK not built, or model defaults not configured.
+> Ask: "Did the sample run successfully?"
+> - If yes: present the re-run command and the key-code explanation (above), then ask: "Would you like to run another sample, or are you all set?"
+> - If no: help troubleshoot using the Troubleshooting section below. Common issues include missing environment variables, SDK not built, or model defaults not configured.
 
 > **[ASK USER] Run another?:**
 > If the user wants to run another sample, loop back to the "Which sample?" prompt above.
@@ -376,13 +395,13 @@ Checks Maven Central for the published package, falls back to local build, and c
 
 ```bash
 # Default: try Maven Central, fall back to local build
-.github/skills/cu-sdk-java-sample-run/scripts/setup_samples.sh
+.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh
 
 # Force local build (e.g., testing local changes)
-.github/skills/cu-sdk-java-sample-run/scripts/setup_samples.sh --local
+.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh --local
 
 # Local mode: skip build if already built
-.github/skills/cu-sdk-java-sample-run/scripts/setup_samples.sh --local --skip-build
+.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh --local --skip-build
 ```
 
 ### `run_sample.sh` -- Run a Sample with Conveniences
@@ -391,16 +410,16 @@ Wraps `mvn exec:java` with sample name resolution, validation, and optional `.en
 
 ```bash
 # Run a sample (resolves class name automatically)
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl
 
 # Load env vars from .env file before running
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl --env .env
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl --env .env
 
 # List available samples
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh --list
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh --list
 
 # Dry run (show what would be executed)
-.github/skills/cu-sdk-java-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl --dry-run
+.github/skills/cu-sdk-sample-run/scripts/run_sample.sh Sample02_AnalyzeUrl --dry-run
 ```
 
 ## Troubleshooting
@@ -414,11 +433,11 @@ Wraps `mvn exec:java` with sample name resolution, validation, and optional `.en
 | `Model deployment not found` | Run `Sample00_UpdateDefaults` first to configure model mappings |
 | `FileNotFoundException` for binary samples | Run samples from the package root directory (`sdk/contentunderstanding/azure-ai-contentunderstanding`) |
 | `Parent POM not resolved` | Run `mvn install -DskipTests -f ../../parents/azure-client-sdk-parent/pom.xml` first |
-| `Permission denied` when running scripts | Make scripts executable: `chmod +x .github/skills/cu-sdk-java-sample-run/scripts/*.sh` |
+| `Permission denied` when running scripts | Make scripts executable: `chmod +x .github/skills/cu-sdk-sample-run/scripts/*.sh` |
 
 ## Related Skills
 
-- `cu-sdk-java-setup-env` — Interactive .env file setup (configure endpoint, auth, and model deployments before running samples)
+- `cu-sdk-setup` — Interactive .env file setup (configure endpoint, auth, and model deployments before running samples)
 - `cu-sdk-common-knowledge` — Domain knowledge for Content Understanding concepts
 
 ## Additional Resources
