@@ -4,8 +4,6 @@ AI-powered coding tools can help you write, understand, and debug applications
 that use the Azure SDK. This page lists common options and integrations available
 today.
 
-This page can be linked by [aka.ms/azsdk/java/ai](https://aka.ms/azsdk/java/ai)
-
 ## AI coding tools
 
 Several tools support AI-assisted development with the Azure SDK:
