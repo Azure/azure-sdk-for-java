@@ -171,9 +171,4 @@ public final class ApplicationTypeResourceImpl
         this.innerModel().withTags(tags);
         return this;
     }
-
-    public ApplicationTypeResourceImpl withSystemData(SystemData systemData) {
-        this.innerModel().withSystemData(systemData);
-        return this;
-    }
 }

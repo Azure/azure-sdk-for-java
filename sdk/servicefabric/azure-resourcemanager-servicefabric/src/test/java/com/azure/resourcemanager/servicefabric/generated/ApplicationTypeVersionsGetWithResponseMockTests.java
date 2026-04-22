@@ -21,7 +21,7 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"nfqn\",\"appPackageUrl\":\"cypsxjv\",\"defaultParameterList\":{\"ircizjxvy\":\"mwks\",\"ftumrtwnawjslbiw\":\"fceacvlhvygd\",\"fmznba\":\"ojgcyzt\"}},\"location\":\"ph\",\"tags\":{\"ehuwrykqgaifmvik\":\"nrnrp\",\"xcv\":\"bydvkhbejdz\",\"v\":\"srhnjivo\",\"jdftuljltd\":\"novqfzge\"},\"etag\":\"eamtmcz\",\"id\":\"m\",\"name\":\"jw\",\"type\":\"w\"}";
+            = "{\"properties\":{\"provisioningState\":\"ufhyaomtbgh\",\"appPackageUrl\":\"avgrvkffovjz\",\"defaultParameterList\":{\"cluyovwxnbkf\":\"bibgjmfxumv\",\"zbomvzzbtdcqvpni\":\"zzxscyhwzdgiruj\"}},\"location\":\"jviylwdshfs\",\"tags\":{\"rymsgaojfmw\":\"bgye\",\"hirctymoxoftpipi\":\"cotmr\"},\"etag\":\"czuhxacpqjlihh\",\"id\":\"spskasdvlmfwdgz\",\"name\":\"ulucv\",\"type\":\"amrsreuzv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationTypeVersionResource response = manager.applicationTypeVersions()
-            .getWithResponse("lw", "cesutrgjupauut", "woqhihe", "qg", com.azure.core.util.Context.NONE)
+            .getWithResponse("x", "ejnt", "sewgioilqukr", "dxtqmieoxo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ph", response.location());
-        Assertions.assertEquals("nrnrp", response.tags().get("ehuwrykqgaifmvik"));
-        Assertions.assertEquals("cypsxjv", response.appPackageUrl());
+        Assertions.assertEquals("jviylwdshfs", response.location());
+        Assertions.assertEquals("bgye", response.tags().get("rymsgaojfmw"));
+        Assertions.assertEquals("avgrvkffovjz", response.appPackageUrl());
     }
 }

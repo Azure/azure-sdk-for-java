@@ -57,7 +57,7 @@ public interface ApplicationTypeVersionResource {
     String etag();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -151,8 +151,8 @@ public interface ApplicationTypeVersionResource {
          * The stage of the ApplicationTypeVersionResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
-            DefinitionStages.WithSystemData, DefinitionStages.WithAppPackageUrl {
+        interface WithCreate
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithAppPackageUrl {
             /**
              * Executes the create request.
              * 
@@ -204,20 +204,6 @@ public interface ApplicationTypeVersionResource {
         }
 
         /**
-         * The stage of the ApplicationTypeVersionResource definition allowing to specify systemData.
-         */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             * 
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSystemData(SystemData systemData);
-        }
-
-        /**
          * The stage of the ApplicationTypeVersionResource definition allowing to specify appPackageUrl.
          */
         interface WithAppPackageUrl {
@@ -241,7 +227,7 @@ public interface ApplicationTypeVersionResource {
     /**
      * The template for ApplicationTypeVersionResource update.
      */
-    interface Update extends UpdateStages.WithSystemData, UpdateStages.WithAppPackageUrl {
+    interface Update extends UpdateStages.WithAppPackageUrl {
         /**
          * Executes the update request.
          * 
@@ -262,20 +248,6 @@ public interface ApplicationTypeVersionResource {
      * The ApplicationTypeVersionResource update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the ApplicationTypeVersionResource update allowing to specify systemData.
-         */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             * 
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            Update withSystemData(SystemData systemData);
-        }
-
         /**
          * The stage of the ApplicationTypeVersionResource update allowing to specify appPackageUrl.
          */

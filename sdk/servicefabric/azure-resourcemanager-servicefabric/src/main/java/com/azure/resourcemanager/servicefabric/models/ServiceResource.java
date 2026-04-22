@@ -64,7 +64,7 @@ public interface ServiceResource {
     String etag();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -134,8 +134,8 @@ public interface ServiceResource {
          * The stage of the ServiceResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
-            DefinitionStages.WithProperties, DefinitionStages.WithSystemData {
+        interface WithCreate
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -198,20 +198,6 @@ public interface ServiceResource {
              */
             WithCreate withProperties(ServiceResourceProperties properties);
         }
-
-        /**
-         * The stage of the ServiceResource definition allowing to specify systemData.
-         */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             * 
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSystemData(SystemData systemData);
-        }
     }
 
     /**
@@ -224,7 +210,7 @@ public interface ServiceResource {
     /**
      * The template for ServiceResource update.
      */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithSystemData {
+    interface Update extends UpdateStages.WithSystemData, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -246,19 +232,6 @@ public interface ServiceResource {
      */
     interface UpdateStages {
         /**
-         * The stage of the ServiceResource update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The RP-specific properties for this resource..
-             * 
-             * @param properties The RP-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            Update withProperties(ServiceResourceUpdateProperties properties);
-        }
-
-        /**
          * The stage of the ServiceResource update allowing to specify systemData.
          */
         interface WithSystemData {
@@ -270,6 +243,19 @@ public interface ServiceResource {
              * @return the next definition stage.
              */
             Update withSystemData(SystemData systemData);
+        }
+
+        /**
+         * The stage of the ServiceResource update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The RP-specific properties for this resource..
+             * 
+             * @param properties The RP-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(ServiceResourceUpdateProperties properties);
         }
     }
 

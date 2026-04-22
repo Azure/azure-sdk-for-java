@@ -23,185 +23,182 @@ public final class ApplicationResourceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationResourceUpdateProperties model = BinaryData.fromString(
-            "{\"typeVersion\":\"vpgylgqgitxmed\",\"parameters\":{\"zzhxgktrm\":\"slynqwwnc\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"napkteoellw\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"fqbuaceopzf\",\"healthCheckStableDuration\":\"hhuao\",\"healthCheckRetryTimeout\":\"pcqeqx\",\"upgradeTimeout\":\"z\",\"upgradeDomainTimeout\":\"hzxct\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":false,\"maxPercentUnhealthyDeployedApplications\":541806665,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":1356840761,\"maxPercentUnhealthyPartitionsPerService\":1358257343,\"maxPercentUnhealthyReplicasPerPartition\":2046724372},\"serviceTypeHealthPolicyMap\":{\"nrmfqjhhk\":{\"maxPercentUnhealthyServices\":1928399629,\"maxPercentUnhealthyPartitionsPerService\":1065588244,\"maxPercentUnhealthyReplicasPerPartition\":1002036598},\"jhxxjyn\":{\"maxPercentUnhealthyServices\":1199001730,\"maxPercentUnhealthyPartitionsPerService\":478088407,\"maxPercentUnhealthyReplicasPerPartition\":685095993}}},\"upgradeMode\":\"UnmonitoredAuto\",\"recreateApplication\":false},\"minimumNodes\":1111219125512367618,\"maximumNodes\":3673335295650455284,\"removeApplicationCapacity\":false,\"metrics\":[{\"name\":\"zjf\",\"maximumCapacity\":5609959872592066147,\"reservationCapacity\":5651552711145690194,\"totalApplicationCapacity\":8265803148006565496},{\"name\":\"tvtc\",\"maximumCapacity\":3989982721308647052,\"reservationCapacity\":6414157962649478285,\"totalApplicationCapacity\":4668269847268047385},{\"name\":\"vwvxyslqbhsfx\",\"maximumCapacity\":2977681561409094554,\"reservationCapacity\":417427937976699125,\"totalApplicationCapacity\":3681757867502856948},{\"name\":\"wwwfbkr\",\"maximumCapacity\":3908578506994645119,\"reservationCapacity\":4006336074042634608,\"totalApplicationCapacity\":9156021725393296882}],\"managedIdentities\":[{\"name\":\"crsbfovasr\",\"principalId\":\"uvwbhsqfs\"}]}")
+            "{\"typeVersion\":\"sgzvahapjyzhpv\",\"parameters\":{\"gfhzovawjvzunlut\":\"cjrvxdjzlmwlxkv\",\"i\":\"nnprn\",\"tskzbbtdzumveek\":\"eilpjzuaejxdu\",\"uh\":\"pwo\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"bsjyofdx\",\"forceRestart\":false,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"ouwaboekqvkeln\",\"healthCheckStableDuration\":\"vbxwyjsflhh\",\"healthCheckRetryTimeout\":\"aln\",\"upgradeTimeout\":\"xisxyawjoyaqcsl\",\"upgradeDomainTimeout\":\"pkii\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":1841035114,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":643892740,\"maxPercentUnhealthyPartitionsPerService\":712721872,\"maxPercentUnhealthyReplicasPerPartition\":462425094},\"serviceTypeHealthPolicyMap\":{\"nxknalaulp\":{\"maxPercentUnhealthyServices\":644635434,\"maxPercentUnhealthyPartitionsPerService\":1975568377,\"maxPercentUnhealthyReplicasPerPartition\":1201064167},\"apnyiropuhpig\":{\"maxPercentUnhealthyServices\":809589965,\"maxPercentUnhealthyPartitionsPerService\":1987785731,\"maxPercentUnhealthyReplicasPerPartition\":1767174247},\"git\":{\"maxPercentUnhealthyServices\":2140009722,\"maxPercentUnhealthyPartitionsPerService\":882329549,\"maxPercentUnhealthyReplicasPerPartition\":2050375248}}},\"upgradeMode\":\"UnmonitoredManual\",\"recreateApplication\":false},\"minimumNodes\":513856937711822481,\"maximumNodes\":6530746203139727560,\"removeApplicationCapacity\":true,\"metrics\":[{\"name\":\"wzz\",\"maximumCapacity\":6175292015510549076,\"reservationCapacity\":8312530618702549187,\"totalApplicationCapacity\":6598774338835583357}],\"managedIdentities\":[{\"name\":\"pkteo\",\"principalId\":\"llwptfdy\"},{\"name\":\"pfqbuaceopzf\",\"principalId\":\"rhhuaopppcqeqx\"},{\"name\":\"lzdahzxctobgbkdm\",\"principalId\":\"izpost\"},{\"name\":\"grcfb\",\"principalId\":\"nrmfqjhhk\"}]}")
             .toObject(ApplicationResourceUpdateProperties.class);
-        Assertions.assertEquals("vpgylgqgitxmed", model.typeVersion());
-        Assertions.assertEquals("slynqwwnc", model.parameters().get("zzhxgktrm"));
-        Assertions.assertEquals("napkteoellw", model.upgradePolicy().upgradeReplicaSetCheckTimeout());
-        Assertions.assertTrue(model.upgradePolicy().forceRestart());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.typeVersion());
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", model.parameters().get("gfhzovawjvzunlut"));
+        Assertions.assertEquals("bsjyofdx", model.upgradePolicy().upgradeReplicaSetCheckTimeout());
+        Assertions.assertFalse(model.upgradePolicy().forceRestart());
         Assertions.assertEquals(ArmUpgradeFailureAction.MANUAL,
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().failureAction());
-        Assertions.assertEquals("fqbuaceopzf",
+        Assertions.assertEquals("ouwaboekqvkeln",
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckWaitDuration());
-        Assertions.assertEquals("hhuao",
+        Assertions.assertEquals("vbxwyjsflhh",
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckStableDuration());
-        Assertions.assertEquals("pcqeqx",
+        Assertions.assertEquals("aln",
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckRetryTimeout());
-        Assertions.assertEquals("z", model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeTimeout());
-        Assertions.assertEquals("hzxct", model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
-        Assertions.assertFalse(model.upgradePolicy().applicationHealthPolicy().considerWarningAsError());
-        Assertions.assertEquals(541806665,
+        Assertions.assertEquals("xisxyawjoyaqcsl",
+            model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeTimeout());
+        Assertions.assertEquals("pkii", model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
+        Assertions.assertTrue(model.upgradePolicy().applicationHealthPolicy().considerWarningAsError());
+        Assertions.assertEquals(1841035114,
             model.upgradePolicy().applicationHealthPolicy().maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(1356840761,
+        Assertions.assertEquals(643892740,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyServices());
-        Assertions.assertEquals(1358257343,
+        Assertions.assertEquals(712721872,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(2046724372,
+        Assertions.assertEquals(462425094,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(1928399629,
+        Assertions.assertEquals(644635434,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("nrmfqjhhk")
+                .get("nxknalaulp")
                 .maxPercentUnhealthyServices());
-        Assertions.assertEquals(1065588244,
+        Assertions.assertEquals(1975568377,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("nrmfqjhhk")
+                .get("nxknalaulp")
                 .maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(1002036598,
+        Assertions.assertEquals(1201064167,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("nrmfqjhhk")
+                .get("nxknalaulp")
                 .maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_AUTO, model.upgradePolicy().upgradeMode());
+        Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_MANUAL, model.upgradePolicy().upgradeMode());
         Assertions.assertFalse(model.upgradePolicy().recreateApplication());
-        Assertions.assertEquals(1111219125512367618L, model.minimumNodes());
-        Assertions.assertEquals(3673335295650455284L, model.maximumNodes());
-        Assertions.assertFalse(model.removeApplicationCapacity());
-        Assertions.assertEquals("zjf", model.metrics().get(0).name());
-        Assertions.assertEquals(5609959872592066147L, model.metrics().get(0).maximumCapacity());
-        Assertions.assertEquals(5651552711145690194L, model.metrics().get(0).reservationCapacity());
-        Assertions.assertEquals(8265803148006565496L, model.metrics().get(0).totalApplicationCapacity());
-        Assertions.assertEquals("crsbfovasr", model.managedIdentities().get(0).name());
-        Assertions.assertEquals("uvwbhsqfs", model.managedIdentities().get(0).principalId());
+        Assertions.assertEquals(513856937711822481L, model.minimumNodes());
+        Assertions.assertEquals(6530746203139727560L, model.maximumNodes());
+        Assertions.assertTrue(model.removeApplicationCapacity());
+        Assertions.assertEquals("wzz", model.metrics().get(0).name());
+        Assertions.assertEquals(6175292015510549076L, model.metrics().get(0).maximumCapacity());
+        Assertions.assertEquals(8312530618702549187L, model.metrics().get(0).reservationCapacity());
+        Assertions.assertEquals(6598774338835583357L, model.metrics().get(0).totalApplicationCapacity());
+        Assertions.assertEquals("pkteo", model.managedIdentities().get(0).name());
+        Assertions.assertEquals("llwptfdy", model.managedIdentities().get(0).principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationResourceUpdateProperties model
-            = new ApplicationResourceUpdateProperties().withTypeVersion("vpgylgqgitxmed")
-                .withParameters(mapOf("zzhxgktrm", "slynqwwnc"))
-                .withUpgradePolicy(new ApplicationUpgradePolicy().withUpgradeReplicaSetCheckTimeout("napkteoellw")
-                    .withForceRestart(true)
-                    .withRollingUpgradeMonitoringPolicy(
-                        new ArmRollingUpgradeMonitoringPolicy().withFailureAction(ArmUpgradeFailureAction.MANUAL)
-                            .withHealthCheckWaitDuration("fqbuaceopzf")
-                            .withHealthCheckStableDuration("hhuao")
-                            .withHealthCheckRetryTimeout("pcqeqx")
-                            .withUpgradeTimeout("z")
-                            .withUpgradeDomainTimeout("hzxct"))
-                    .withApplicationHealthPolicy(new ArmApplicationHealthPolicy().withConsiderWarningAsError(false)
-                        .withMaxPercentUnhealthyDeployedApplications(541806665)
-                        .withDefaultServiceTypeHealthPolicy(
-                            new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1356840761)
-                                .withMaxPercentUnhealthyPartitionsPerService(1358257343)
-                                .withMaxPercentUnhealthyReplicasPerPartition(2046724372))
-                        .withServiceTypeHealthPolicyMap(mapOf("nrmfqjhhk",
-                            new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1928399629)
-                                .withMaxPercentUnhealthyPartitionsPerService(1065588244)
-                                .withMaxPercentUnhealthyReplicasPerPartition(1002036598),
-                            "jhxxjyn",
-                            new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1199001730)
-                                .withMaxPercentUnhealthyPartitionsPerService(478088407)
-                                .withMaxPercentUnhealthyReplicasPerPartition(685095993))))
-                    .withUpgradeMode(RollingUpgradeMode.UNMONITORED_AUTO)
-                    .withRecreateApplication(false))
-                .withMinimumNodes(1111219125512367618L)
-                .withMaximumNodes(3673335295650455284L)
-                .withRemoveApplicationCapacity(false)
-                .withMetrics(Arrays.asList(
-                    new ApplicationMetricDescription().withName("zjf")
-                        .withMaximumCapacity(5609959872592066147L)
-                        .withReservationCapacity(5651552711145690194L)
-                        .withTotalApplicationCapacity(8265803148006565496L),
-                    new ApplicationMetricDescription().withName("tvtc")
-                        .withMaximumCapacity(3989982721308647052L)
-                        .withReservationCapacity(6414157962649478285L)
-                        .withTotalApplicationCapacity(4668269847268047385L),
-                    new ApplicationMetricDescription().withName("vwvxyslqbhsfx")
-                        .withMaximumCapacity(2977681561409094554L)
-                        .withReservationCapacity(417427937976699125L)
-                        .withTotalApplicationCapacity(3681757867502856948L),
-                    new ApplicationMetricDescription().withName("wwwfbkr")
-                        .withMaximumCapacity(3908578506994645119L)
-                        .withReservationCapacity(4006336074042634608L)
-                        .withTotalApplicationCapacity(9156021725393296882L)))
-                .withManagedIdentities(Arrays
-                    .asList(new ApplicationUserAssignedIdentity().withName("crsbfovasr").withPrincipalId("uvwbhsqfs")));
+        ApplicationResourceUpdateProperties model = new ApplicationResourceUpdateProperties()
+            .withTypeVersion("sgzvahapjyzhpv")
+            .withParameters(mapOf("gfhzovawjvzunlut", "cjrvxdjzlmwlxkv", "i", "nnprn", "tskzbbtdzumveek",
+                "eilpjzuaejxdu", "uh", "pwo"))
+            .withUpgradePolicy(new ApplicationUpgradePolicy().withUpgradeReplicaSetCheckTimeout("bsjyofdx")
+                .withForceRestart(false)
+                .withRollingUpgradeMonitoringPolicy(
+                    new ArmRollingUpgradeMonitoringPolicy().withFailureAction(ArmUpgradeFailureAction.MANUAL)
+                        .withHealthCheckWaitDuration("ouwaboekqvkeln")
+                        .withHealthCheckStableDuration("vbxwyjsflhh")
+                        .withHealthCheckRetryTimeout("aln")
+                        .withUpgradeTimeout("xisxyawjoyaqcsl")
+                        .withUpgradeDomainTimeout("pkii"))
+                .withApplicationHealthPolicy(new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
+                    .withMaxPercentUnhealthyDeployedApplications(1841035114)
+                    .withDefaultServiceTypeHealthPolicy(
+                        new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(643892740)
+                            .withMaxPercentUnhealthyPartitionsPerService(712721872)
+                            .withMaxPercentUnhealthyReplicasPerPartition(462425094))
+                    .withServiceTypeHealthPolicyMap(mapOf("nxknalaulp",
+                        new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(644635434)
+                            .withMaxPercentUnhealthyPartitionsPerService(1975568377)
+                            .withMaxPercentUnhealthyReplicasPerPartition(1201064167),
+                        "apnyiropuhpig",
+                        new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(809589965)
+                            .withMaxPercentUnhealthyPartitionsPerService(1987785731)
+                            .withMaxPercentUnhealthyReplicasPerPartition(1767174247),
+                        "git",
+                        new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(2140009722)
+                            .withMaxPercentUnhealthyPartitionsPerService(882329549)
+                            .withMaxPercentUnhealthyReplicasPerPartition(2050375248))))
+                .withUpgradeMode(RollingUpgradeMode.UNMONITORED_MANUAL)
+                .withRecreateApplication(false))
+            .withMinimumNodes(513856937711822481L)
+            .withMaximumNodes(6530746203139727560L)
+            .withRemoveApplicationCapacity(true)
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("wzz")
+                .withMaximumCapacity(6175292015510549076L)
+                .withReservationCapacity(8312530618702549187L)
+                .withTotalApplicationCapacity(6598774338835583357L)))
+            .withManagedIdentities(
+                Arrays.asList(new ApplicationUserAssignedIdentity().withName("pkteo").withPrincipalId("llwptfdy"),
+                    new ApplicationUserAssignedIdentity().withName("pfqbuaceopzf").withPrincipalId("rhhuaopppcqeqx"),
+                    new ApplicationUserAssignedIdentity().withName("lzdahzxctobgbkdm").withPrincipalId("izpost"),
+                    new ApplicationUserAssignedIdentity().withName("grcfb").withPrincipalId("nrmfqjhhk")));
         model = BinaryData.fromObject(model).toObject(ApplicationResourceUpdateProperties.class);
-        Assertions.assertEquals("vpgylgqgitxmed", model.typeVersion());
-        Assertions.assertEquals("slynqwwnc", model.parameters().get("zzhxgktrm"));
-        Assertions.assertEquals("napkteoellw", model.upgradePolicy().upgradeReplicaSetCheckTimeout());
-        Assertions.assertTrue(model.upgradePolicy().forceRestart());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.typeVersion());
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", model.parameters().get("gfhzovawjvzunlut"));
+        Assertions.assertEquals("bsjyofdx", model.upgradePolicy().upgradeReplicaSetCheckTimeout());
+        Assertions.assertFalse(model.upgradePolicy().forceRestart());
         Assertions.assertEquals(ArmUpgradeFailureAction.MANUAL,
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().failureAction());
-        Assertions.assertEquals("fqbuaceopzf",
+        Assertions.assertEquals("ouwaboekqvkeln",
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckWaitDuration());
-        Assertions.assertEquals("hhuao",
+        Assertions.assertEquals("vbxwyjsflhh",
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckStableDuration());
-        Assertions.assertEquals("pcqeqx",
+        Assertions.assertEquals("aln",
             model.upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckRetryTimeout());
-        Assertions.assertEquals("z", model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeTimeout());
-        Assertions.assertEquals("hzxct", model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
-        Assertions.assertFalse(model.upgradePolicy().applicationHealthPolicy().considerWarningAsError());
-        Assertions.assertEquals(541806665,
+        Assertions.assertEquals("xisxyawjoyaqcsl",
+            model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeTimeout());
+        Assertions.assertEquals("pkii", model.upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
+        Assertions.assertTrue(model.upgradePolicy().applicationHealthPolicy().considerWarningAsError());
+        Assertions.assertEquals(1841035114,
             model.upgradePolicy().applicationHealthPolicy().maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(1356840761,
+        Assertions.assertEquals(643892740,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyServices());
-        Assertions.assertEquals(1358257343,
+        Assertions.assertEquals(712721872,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(2046724372,
+        Assertions.assertEquals(462425094,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(1928399629,
+        Assertions.assertEquals(644635434,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("nrmfqjhhk")
+                .get("nxknalaulp")
                 .maxPercentUnhealthyServices());
-        Assertions.assertEquals(1065588244,
+        Assertions.assertEquals(1975568377,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("nrmfqjhhk")
+                .get("nxknalaulp")
                 .maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(1002036598,
+        Assertions.assertEquals(1201064167,
             model.upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("nrmfqjhhk")
+                .get("nxknalaulp")
                 .maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_AUTO, model.upgradePolicy().upgradeMode());
+        Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_MANUAL, model.upgradePolicy().upgradeMode());
         Assertions.assertFalse(model.upgradePolicy().recreateApplication());
-        Assertions.assertEquals(1111219125512367618L, model.minimumNodes());
-        Assertions.assertEquals(3673335295650455284L, model.maximumNodes());
-        Assertions.assertFalse(model.removeApplicationCapacity());
-        Assertions.assertEquals("zjf", model.metrics().get(0).name());
-        Assertions.assertEquals(5609959872592066147L, model.metrics().get(0).maximumCapacity());
-        Assertions.assertEquals(5651552711145690194L, model.metrics().get(0).reservationCapacity());
-        Assertions.assertEquals(8265803148006565496L, model.metrics().get(0).totalApplicationCapacity());
-        Assertions.assertEquals("crsbfovasr", model.managedIdentities().get(0).name());
-        Assertions.assertEquals("uvwbhsqfs", model.managedIdentities().get(0).principalId());
+        Assertions.assertEquals(513856937711822481L, model.minimumNodes());
+        Assertions.assertEquals(6530746203139727560L, model.maximumNodes());
+        Assertions.assertTrue(model.removeApplicationCapacity());
+        Assertions.assertEquals("wzz", model.metrics().get(0).name());
+        Assertions.assertEquals(6175292015510549076L, model.metrics().get(0).maximumCapacity());
+        Assertions.assertEquals(8312530618702549187L, model.metrics().get(0).reservationCapacity());
+        Assertions.assertEquals(6598774338835583357L, model.metrics().get(0).totalApplicationCapacity());
+        Assertions.assertEquals("pkteo", model.managedIdentities().get(0).name());
+        Assertions.assertEquals("llwptfdy", model.managedIdentities().get(0).principalId());
     }
 
     // Use "Map.of" if available

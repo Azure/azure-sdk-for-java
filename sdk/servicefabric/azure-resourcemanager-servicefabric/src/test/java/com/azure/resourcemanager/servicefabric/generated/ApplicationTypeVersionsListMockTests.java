@@ -22,7 +22,7 @@ public final class ApplicationTypeVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"jyxgtczh\",\"appPackageUrl\":\"ydbsd\",\"defaultParameterList\":{\"aehvbbxuri\":\"kx\"}},\"location\":\"tfnhtbaxkgxywr\",\"tags\":{\"gzibthostgktstv\":\"yklyhpluodpvruud\",\"odqkdlwwqfb\":\"xeclzedqbcvhzlhp\",\"lmbtxhwgfwsrt\":\"mlkxtrqjfs\",\"kh\":\"wcoezbrhub\"},\"etag\":\"ygo\",\"id\":\"kkqfqjbvle\",\"name\":\"rfmluiqtq\",\"type\":\"fa\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"ih\",\"appPackageUrl\":\"jqgwzp\",\"defaultParameterList\":{\"cypsxjv\":\"n\",\"zjxvydfcea\":\"oimwkslirc\",\"gdyftumrtwna\":\"vlhv\",\"wkojgcyztsfmzn\":\"jslb\"}},\"location\":\"eqphchqnrnr\",\"tags\":{\"iklbydvkhb\":\"huwrykqgaifm\",\"xcv\":\"jdz\",\"v\":\"srhnjivo\",\"jdftuljltd\":\"novqfzge\"},\"etag\":\"eamtmcz\",\"id\":\"m\",\"name\":\"jw\",\"type\":\"w\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ApplicationTypeVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApplicationTypeVersionResource> response = manager.applicationTypeVersions()
-            .list("qioknssxmojm", "vpkjpr", "kwcf", com.azure.core.util.Context.NONE);
+            .list("urisjnhnytxifqj", "gxmrhublwp", "esutrgjupauutpw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tfnhtbaxkgxywr", response.iterator().next().location());
-        Assertions.assertEquals("yklyhpluodpvruud", response.iterator().next().tags().get("gzibthostgktstv"));
-        Assertions.assertEquals("ydbsd", response.iterator().next().appPackageUrl());
+        Assertions.assertEquals("eqphchqnrnr", response.iterator().next().location());
+        Assertions.assertEquals("huwrykqgaifm", response.iterator().next().tags().get("iklbydvkhb"));
+        Assertions.assertEquals("jqgwzp", response.iterator().next().appPackageUrl());
     }
 }

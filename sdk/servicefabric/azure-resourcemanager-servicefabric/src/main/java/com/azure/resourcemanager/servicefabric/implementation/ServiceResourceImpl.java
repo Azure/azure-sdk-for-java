@@ -182,21 +182,12 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResourceImpl withSystemData(SystemData systemData) {
-        if (isInCreateMode()) {
-            this.innerModel().withSystemData(systemData);
-            return this;
-        } else {
-            this.updateParameters.withSystemData(systemData);
-            return this;
-        }
+        this.updateParameters.withSystemData(systemData);
+        return this;
     }
 
     public ServiceResourceImpl withProperties(ServiceResourceUpdateProperties properties) {
         this.updateParameters.withProperties(properties);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

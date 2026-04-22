@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class ClustersListUpgradableVersionsWithResponseMockTests {
     @Test
     public void testListUpgradableVersionsWithResponse() throws Exception {
-        String responseStr = "{\"supportedPath\":[\"kmcwaekrrjreafx\",\"sgumhjglikkxwsl\",\"lbqpvuzlmvfelf\",\"tgp\"]}";
+        String responseStr = "{\"supportedPath\":[\"vvyhg\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,11 @@ public final class ClustersListUpgradableVersionsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UpgradableVersionPathResult response = manager.clusters()
-            .listUpgradableVersionsWithResponse("svfycxzbfv", "owvrvmtgjqppyos",
-                new UpgradableVersionsDescription().withTargetVersion("ronzmyhgfip"), com.azure.core.util.Context.NONE)
+            .listUpgradableVersionsWithResponse("jioolvrwxk", "tkkgllqwjy",
+                new UpgradableVersionsDescription().withTargetVersion("vjayvblmhvkzu"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kmcwaekrrjreafx", response.supportedPath().get(0));
+        Assertions.assertEquals("vvyhg", response.supportedPath().get(0));
     }
 }

@@ -186,11 +186,6 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
         return this;
     }
 
-    public ApplicationTypeVersionResourceImpl withSystemData(SystemData systemData) {
-        this.innerModel().withSystemData(systemData);
-        return this;
-    }
-
     public ApplicationTypeVersionResourceImpl withAppPackageUrl(String appPackageUrl) {
         this.innerModel().withAppPackageUrl(appPackageUrl);
         return this;

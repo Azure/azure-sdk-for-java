@@ -26,11 +26,11 @@ public final class ApplicationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"tsdbpgn\",\"typeName\":\"txhp\",\"typeVersion\":\"bzpfzab\",\"parameters\":{\"lwzbhvgyugu\":\"uhxwtctyqiklbbov\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"mkfssxqukkfplgm\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"kde\",\"healthCheckStableDuration\":\"pvlopwiyighxpkd\",\"healthCheckRetryTimeout\":\"baiuebbaumny\",\"upgradeTimeout\":\"ped\",\"upgradeDomainTimeout\":\"jn\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":52556598,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":1104061727,\"maxPercentUnhealthyPartitionsPerService\":2144077110,\"maxPercentUnhealthyReplicasPerPartition\":726916833},\"serviceTypeHealthPolicyMap\":{\"apskrdqm\":{\"maxPercentUnhealthyServices\":1146165631,\"maxPercentUnhealthyPartitionsPerService\":1543115619,\"maxPercentUnhealthyReplicasPerPartition\":1435266777},\"dwkyzxuu\":{\"maxPercentUnhealthyServices\":1058725142,\"maxPercentUnhealthyPartitionsPerService\":1444957859,\"maxPercentUnhealthyReplicasPerPartition\":1056627326},\"wsvlxotogtwrupqs\":{\"maxPercentUnhealthyServices\":1210562441,\"maxPercentUnhealthyPartitionsPerService\":276161293,\"maxPercentUnhealthyReplicasPerPartition\":355088461},\"kvceoveilovnotyf\":{\"maxPercentUnhealthyServices\":823053391,\"maxPercentUnhealthyPartitionsPerService\":208644200,\"maxPercentUnhealthyReplicasPerPartition\":335871101}}},\"upgradeMode\":\"UnmonitoredManual\",\"recreateApplication\":true},\"minimumNodes\":850251594969235277,\"maximumNodes\":319665118186558655,\"removeApplicationCapacity\":false,\"metrics\":[{\"name\":\"phywpnvj\",\"maximumCapacity\":7014692184557191333,\"reservationCapacity\":4139812271767683575,\"totalApplicationCapacity\":4975149413219088486},{\"name\":\"lphox\",\"maximumCapacity\":4973738946403996356,\"reservationCapacity\":4392160629829565824,\"totalApplicationCapacity\":1781523879629973808},{\"name\":\"sbj\",\"maximumCapacity\":1292231161047660234,\"reservationCapacity\":8913573077828001292,\"totalApplicationCapacity\":8623440575477757964},{\"name\":\"ueefjzwfqkqu\",\"maximumCapacity\":3292485781669976103,\"reservationCapacity\":7570837536586623824,\"totalApplicationCapacity\":4310608753987324485}],\"managedIdentities\":[{\"name\":\"aocqxtccmgy\",\"principalId\":\"dxyt\"},{\"name\":\"moyrxvwfudwpz\",\"principalId\":\"txhdzh\"},{\"name\":\"rqjbhckfrl\",\"principalId\":\"rxsbkyvp\"}]},\"identity\":{\"principalId\":\"n\",\"tenantId\":\"bpzkafkuwbc\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ofmxagkvtmelmqkr\":{\"principalId\":\"hhseyv\",\"clientId\":\"srtslhspkdeem\"},\"aex\":{\"principalId\":\"hvljuahaquh\",\"clientId\":\"hmdua\"},\"vxpvgomz\":{\"principalId\":\"vfadmws\",\"clientId\":\"r\"},\"auhashsfwx\":{\"principalId\":\"misgwbnb\",\"clientId\":\"ldawkzbaliourqha\"}}},\"location\":\"owzxcu\",\"tags\":{\"ucww\":\"jooxdjebw\",\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\",\"it\":\"x\"},\"etag\":\"rjaw\",\"id\":\"wgxhn\",\"name\":\"skxfbk\",\"type\":\"y\"}")
+            "{\"properties\":{\"provisioningState\":\"tsdbpgn\",\"typeName\":\"txhp\",\"typeVersion\":\"bzpfzab\",\"parameters\":{\"lwzbhvgyugu\":\"uhxwtctyqiklbbov\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"mkfssxqukkfplgm\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"kde\",\"healthCheckStableDuration\":\"pvlopwiyighxpkd\",\"healthCheckRetryTimeout\":\"baiuebbaumny\",\"upgradeTimeout\":\"ped\",\"upgradeDomainTimeout\":\"jn\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":52556598,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":1104061727,\"maxPercentUnhealthyPartitionsPerService\":2144077110,\"maxPercentUnhealthyReplicasPerPartition\":726916833},\"serviceTypeHealthPolicyMap\":{\"apskrdqm\":{\"maxPercentUnhealthyServices\":1146165631,\"maxPercentUnhealthyPartitionsPerService\":1543115619,\"maxPercentUnhealthyReplicasPerPartition\":1435266777},\"dwkyzxuu\":{\"maxPercentUnhealthyServices\":1058725142,\"maxPercentUnhealthyPartitionsPerService\":1444957859,\"maxPercentUnhealthyReplicasPerPartition\":1056627326},\"wsvlxotogtwrupqs\":{\"maxPercentUnhealthyServices\":1210562441,\"maxPercentUnhealthyPartitionsPerService\":276161293,\"maxPercentUnhealthyReplicasPerPartition\":355088461},\"kvceoveilovnotyf\":{\"maxPercentUnhealthyServices\":823053391,\"maxPercentUnhealthyPartitionsPerService\":208644200,\"maxPercentUnhealthyReplicasPerPartition\":335871101}}},\"upgradeMode\":\"UnmonitoredManual\",\"recreateApplication\":true},\"minimumNodes\":850251594969235277,\"maximumNodes\":319665118186558655,\"removeApplicationCapacity\":false,\"metrics\":[{\"name\":\"phywpnvj\",\"maximumCapacity\":7014692184557191333,\"reservationCapacity\":4139812271767683575,\"totalApplicationCapacity\":4975149413219088486},{\"name\":\"lphox\",\"maximumCapacity\":4973738946403996356,\"reservationCapacity\":4392160629829565824,\"totalApplicationCapacity\":1781523879629973808},{\"name\":\"sbj\",\"maximumCapacity\":1292231161047660234,\"reservationCapacity\":8913573077828001292,\"totalApplicationCapacity\":8623440575477757964},{\"name\":\"ueefjzwfqkqu\",\"maximumCapacity\":3292485781669976103,\"reservationCapacity\":7570837536586623824,\"totalApplicationCapacity\":4310608753987324485}],\"managedIdentities\":[{\"name\":\"aocqxtccmgy\",\"principalId\":\"dxyt\"},{\"name\":\"moyrxvwfudwpz\",\"principalId\":\"txhdzh\"},{\"name\":\"rqjbhckfrl\",\"principalId\":\"rxsbkyvp\"}]},\"location\":\"anuzbpzkafkuw\",\"tags\":{\"seyvj\":\"nwbmeh\"},\"etag\":\"rts\",\"identity\":{\"principalId\":\"pkdeemaofmxagkvt\",\"tenantId\":\"lmqkrhahvlj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rcrgvx\":{\"principalId\":\"hcdhmdual\",\"clientId\":\"xqpvfadmw\"},\"e\":{\"principalId\":\"gomz\",\"clientId\":\"misgwbnb\"},\"uhashsfwx\":{\"principalId\":\"awkz\",\"clientId\":\"liourqhak\"}}},\"id\":\"owzxcu\",\"name\":\"i\",\"type\":\"jooxdjebw\"}")
             .toObject(ApplicationResourceInner.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("owzxcu", model.location());
-        Assertions.assertEquals("jooxdjebw", model.tags().get("ucww"));
+        Assertions.assertEquals("anuzbpzkafkuw", model.location());
+        Assertions.assertEquals("nwbmeh", model.tags().get("seyvj"));
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("txhp", model.typeName());
         Assertions.assertEquals("bzpfzab", model.typeVersion());
         Assertions.assertEquals("uhxwtctyqiklbbov", model.parameters().get("lwzbhvgyugu"));
@@ -98,13 +98,11 @@ public final class ApplicationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationResourceInner model
-            = new ApplicationResourceInner()
-                .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("ofmxagkvtmelmqkr", new UserAssignedIdentity(), "aex", new UserAssignedIdentity(),
-                            "vxpvgomz", new UserAssignedIdentity(), "auhashsfwx", new UserAssignedIdentity())))
-                .withLocation("owzxcu")
-                .withTags(mapOf("ucww", "jooxdjebw", "bvmeuecivy", "vo", "ueiotwmcdyt", "zceuojgjrw", "it", "x"))
+            = new ApplicationResourceInner().withLocation("anuzbpzkafkuw")
+                .withTags(mapOf("seyvj", "nwbmeh"))
+                .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("rcrgvx", new UserAssignedIdentity(), "e",
+                        new UserAssignedIdentity(), "uhashsfwx", new UserAssignedIdentity())))
                 .withTypeName("txhp")
                 .withTypeVersion("bzpfzab")
                 .withParameters(mapOf("lwzbhvgyugu", "uhxwtctyqiklbbov"))
@@ -169,9 +167,9 @@ public final class ApplicationResourceInnerTests {
                         new ApplicationUserAssignedIdentity().withName("moyrxvwfudwpz").withPrincipalId("txhdzh"),
                         new ApplicationUserAssignedIdentity().withName("rqjbhckfrl").withPrincipalId("rxsbkyvp")));
         model = BinaryData.fromObject(model).toObject(ApplicationResourceInner.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("owzxcu", model.location());
-        Assertions.assertEquals("jooxdjebw", model.tags().get("ucww"));
+        Assertions.assertEquals("anuzbpzkafkuw", model.location());
+        Assertions.assertEquals("nwbmeh", model.tags().get("seyvj"));
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("txhp", model.typeName());
         Assertions.assertEquals("bzpfzab", model.typeVersion());
         Assertions.assertEquals("uhxwtctyqiklbbov", model.parameters().get("lwzbhvgyugu"));

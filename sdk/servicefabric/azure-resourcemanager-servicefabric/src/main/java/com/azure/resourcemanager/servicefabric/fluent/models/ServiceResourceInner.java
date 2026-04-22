@@ -40,7 +40,7 @@ public final class ServiceResourceInner extends ProxyResource {
     private String etag;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -135,23 +135,12 @@ public final class ServiceResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
     }
 
     /**
@@ -193,7 +182,6 @@ public final class ServiceResourceInner extends ProxyResource {
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("systemData", this.systemData);
         return jsonWriter.writeEndObject();
     }
 

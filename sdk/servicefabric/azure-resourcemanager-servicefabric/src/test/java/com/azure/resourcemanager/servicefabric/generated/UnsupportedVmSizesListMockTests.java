@@ -21,7 +21,7 @@ public final class UnsupportedVmSizesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"size\":\"qqmtedltmmji\"},\"id\":\"eozphv\",\"name\":\"auyqncygupkv\",\"type\":\"p\"}]}";
+            = "{\"value\":[{\"properties\":{\"size\":\"nzm\"},\"id\":\"gfipnsxk\",\"name\":\"cwaekrrjre\",\"type\":\"fxtsgum\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class UnsupportedVmSizesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VMSizeResource> response
-            = manager.unsupportedVmSizes().list("fffiak", com.azure.core.util.Context.NONE);
+            = manager.unsupportedVmSizes().list("s", com.azure.core.util.Context.NONE);
 
     }
 }

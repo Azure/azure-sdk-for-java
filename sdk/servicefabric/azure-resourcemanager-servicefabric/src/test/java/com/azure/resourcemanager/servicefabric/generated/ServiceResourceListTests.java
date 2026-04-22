@@ -16,28 +16,28 @@ public final class ServiceResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"gzrf\",\"serviceTypeName\":\"eyebizikayuhql\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"bbqwrvtldg\",\"placementConstraints\":\"pgvmpipaslthaqfx\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"u\"},{\"scheme\":\"Affinity\",\"serviceName\":\"bdsrez\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"rhneuyowq\"}],\"serviceLoadMetrics\":[{\"name\":\"ytisibir\",\"weight\":\"Low\",\"primaryDefaultLoad\":1063300853,\"secondaryDefaultLoad\":1004253647,\"defaultLoad\":1051878092}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"High\"},\"location\":\"lfzxiavrmbzonoki\",\"tags\":{\"irgzp\":\"q\"},\"etag\":\"lazszrn\",\"id\":\"iin\",\"name\":\"fpwpjylwbt\",\"type\":\"h\"},{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"jcdh\",\"serviceTypeName\":\"fjvfbgofeljagr\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"dvriiiojnal\",\"placementConstraints\":\"fk\",\"correlationScheme\":[{\"scheme\":\"Affinity\",\"serviceName\":\"ex\"},{\"scheme\":\"Affinity\",\"serviceName\":\"wueluqhhahhxv\"},{\"scheme\":\"Invalid\",\"serviceName\":\"mzkwpjg\"}],\"serviceLoadMetrics\":[{\"name\":\"pughftqsxh\",\"weight\":\"Medium\",\"primaryDefaultLoad\":318834407,\"secondaryDefaultLoad\":649615996,\"defaultLoad\":1485711526},{\"name\":\"xdigrjg\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1159016951,\"secondaryDefaultLoad\":1563611736,\"defaultLoad\":1621102365},{\"name\":\"tfih\",\"weight\":\"High\",\"primaryDefaultLoad\":720488968,\"secondaryDefaultLoad\":1701702807,\"defaultLoad\":867678631}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"Zero\"},\"location\":\"ho\",\"tags\":{\"nwcvtbvkayhmtnv\":\"zudphqamvdkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\"},\"etag\":\"g\",\"id\":\"fhwygzlvdnkfxus\",\"name\":\"mdwzrmuhapfcqdps\",\"type\":\"xqv\"}],\"nextLink\":\"vuoy\"}")
+            "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"djrkvfgbvfvpd\",\"serviceTypeName\":\"daciz\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"krribdeibqi\",\"placementConstraints\":\"kghv\",\"correlationScheme\":[{\"scheme\":\"Invalid\",\"serviceName\":\"wm\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"efajpj\"},{\"scheme\":\"Invalid\",\"serviceName\":\"wkqnyhg\"}],\"serviceLoadMetrics\":[{\"name\":\"tjivfxzsjabib\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1939074971,\"secondaryDefaultLoad\":153673800,\"defaultLoad\":1095825236}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"Medium\"},\"location\":\"p\",\"tags\":{\"ncj\":\"bkzbzkd\",\"zhjjklffhmouwq\":\"budurgkakmo\",\"eeyebi\":\"gzrf\"},\"etag\":\"kayuhqlbjbs\",\"id\":\"bqwrvtldgm\",\"name\":\"pgvmpipaslthaqfx\",\"type\":\"smwutwbdsrezpd\"},{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"euyowqkd\",\"serviceTypeName\":\"t\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"rcgp\",\"placementConstraints\":\"pzimejzanlfzxi\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"bzonok\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"rjqc\"}],\"serviceLoadMetrics\":[{\"name\":\"zpfrla\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1822187571,\"secondaryDefaultLoad\":585104541,\"defaultLoad\":409653705},{\"name\":\"ndfpwpj\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1108840022,\"secondaryDefaultLoad\":85653434,\"defaultLoad\":775770123}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"Low\"},\"location\":\"szfjvfbgofelja\",\"tags\":{\"ojnal\":\"mqhldvrii\",\"qhhahhxvrhmzkwpj\":\"hfkvtvsexsowuel\",\"ughftqsx\":\"wws\"},\"etag\":\"xujxuknd\",\"id\":\"igrjguufzdm\",\"name\":\"yqtfihwh\",\"type\":\"otzi\"}],\"nextLink\":\"amvpphoszqzudph\"}")
             .toObject(ServiceResourceList.class);
-        Assertions.assertEquals("pgvmpipaslthaqfx", model.value().get(0).properties().placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY,
+        Assertions.assertEquals("kghv", model.value().get(0).properties().placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID,
             model.value().get(0).properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("u", model.value().get(0).properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("ytisibir", model.value().get(0).properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.LOW,
+        Assertions.assertEquals("wm", model.value().get(0).properties().correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("tjivfxzsjabib", model.value().get(0).properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM,
             model.value().get(0).properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1063300853,
+        Assertions.assertEquals(1939074971,
             model.value().get(0).properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1004253647,
+        Assertions.assertEquals(153673800,
             model.value().get(0).properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1051878092,
+        Assertions.assertEquals(1095825236,
             model.value().get(0).properties().serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.HIGH, model.value().get(0).properties().defaultMoveCost());
-        Assertions.assertEquals("eyebizikayuhql", model.value().get(0).properties().serviceTypeName());
-        Assertions.assertEquals(ArmServicePackageActivationMode.SHARED_PROCESS,
+        Assertions.assertEquals(MoveCost.MEDIUM, model.value().get(0).properties().defaultMoveCost());
+        Assertions.assertEquals("daciz", model.value().get(0).properties().serviceTypeName());
+        Assertions.assertEquals(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS,
             model.value().get(0).properties().servicePackageActivationMode());
-        Assertions.assertEquals("bbqwrvtldg", model.value().get(0).properties().serviceDnsName());
-        Assertions.assertEquals("lfzxiavrmbzonoki", model.value().get(0).location());
-        Assertions.assertEquals("q", model.value().get(0).tags().get("irgzp"));
-        Assertions.assertEquals("vuoy", model.nextLink());
+        Assertions.assertEquals("krribdeibqi", model.value().get(0).properties().serviceDnsName());
+        Assertions.assertEquals("p", model.value().get(0).location());
+        Assertions.assertEquals("bkzbzkd", model.value().get(0).tags().get("ncj"));
+        Assertions.assertEquals("amvpphoszqzudph", model.nextLink());
     }
 }

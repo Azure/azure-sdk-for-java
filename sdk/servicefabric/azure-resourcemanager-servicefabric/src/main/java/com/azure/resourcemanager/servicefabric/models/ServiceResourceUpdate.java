@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -17,21 +16,11 @@ import java.util.Map;
  * The service resource for patch operations.
  */
 @Fluent
-public final class ServiceResourceUpdate extends ProxyResource {
+public final class ServiceResourceUpdate extends PatchProxyResource {
     /*
      * The RP-specific properties for this resource.
      */
     private ServiceResourceUpdateProperties properties;
-
-    /*
-     * It will be deprecated in New API, resource location depends on the parent resource.
-     */
-    private String location;
-
-    /*
-     * Azure resource tags.
-     */
-    private Map<String, String> tags;
 
     /*
      * Azure resource etag.
@@ -39,22 +28,17 @@ public final class ServiceResourceUpdate extends ProxyResource {
     private String etag;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
-     * The type of the resource.
+     * Azure resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Azure resource name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Azure resource identifier.
      */
     private String id;
 
@@ -85,76 +69,17 @@ public final class ServiceResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     * 
-     * @param location the location value to set.
-     * @return the ServiceResourceUpdate object itself.
-     */
-    public ServiceResourceUpdate withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Azure resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Azure resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ServiceResourceUpdate object itself.
-     */
-    public ServiceResourceUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the etag property: Azure resource etag.
      * 
      * @return the etag value.
      */
+    @Override
     public String etag() {
         return this.etag;
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the ServiceResourceUpdate object itself.
-     */
-    public ServiceResourceUpdate withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Azure resource type.
      * 
      * @return the type value.
      */
@@ -164,7 +89,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Azure resource name.
      * 
      * @return the name value.
      */
@@ -174,7 +99,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Azure resource identifier.
      * 
      * @return the id value.
      */
@@ -187,12 +112,39 @@ public final class ServiceResourceUpdate extends ProxyResource {
      * {@inheritDoc}
      */
     @Override
+    public ServiceResourceUpdate withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServiceResourceUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServiceResourceUpdate withSystemData(SystemData systemData) {
+        super.withSystemData(systemData);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("systemData", systemData());
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("systemData", this.systemData);
         return jsonWriter.writeEndObject();
     }
 
@@ -202,7 +154,6 @@ public final class ServiceResourceUpdate extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServiceResourceUpdate if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServiceResourceUpdate.
      */
     public static ServiceResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
@@ -218,17 +169,17 @@ public final class ServiceResourceUpdate extends ProxyResource {
                     deserializedServiceResourceUpdate.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedServiceResourceUpdate.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedServiceResourceUpdate.properties = ServiceResourceUpdateProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
-                    deserializedServiceResourceUpdate.location = reader.getString();
+                    deserializedServiceResourceUpdate.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedServiceResourceUpdate.tags = tags;
+                    deserializedServiceResourceUpdate.withTags(tags);
                 } else if ("etag".equals(fieldName)) {
                     deserializedServiceResourceUpdate.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedServiceResourceUpdate.systemData = SystemData.fromJson(reader);
+                    deserializedServiceResourceUpdate.withSystemData(SystemData.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceResourceUpdate.properties = ServiceResourceUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

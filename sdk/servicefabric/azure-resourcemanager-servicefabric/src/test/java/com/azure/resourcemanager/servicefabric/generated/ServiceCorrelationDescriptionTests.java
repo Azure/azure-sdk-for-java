@@ -13,19 +13,19 @@ public final class ServiceCorrelationDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceCorrelationDescription model
-            = BinaryData.fromString("{\"scheme\":\"Affinity\",\"serviceName\":\"fdwoyuhh\"}")
+            = BinaryData.fromString("{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"or\"}")
                 .toObject(ServiceCorrelationDescription.class);
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY, model.scheme());
-        Assertions.assertEquals("fdwoyuhh", model.serviceName());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY, model.scheme());
+        Assertions.assertEquals("or", model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceCorrelationDescription model
-            = new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
-                .withServiceName("fdwoyuhh");
+            = new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
+                .withServiceName("or");
         model = BinaryData.fromObject(model).toObject(ServiceCorrelationDescription.class);
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY, model.scheme());
-        Assertions.assertEquals("fdwoyuhh", model.serviceName());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY, model.scheme());
+        Assertions.assertEquals("or", model.serviceName());
     }
 }

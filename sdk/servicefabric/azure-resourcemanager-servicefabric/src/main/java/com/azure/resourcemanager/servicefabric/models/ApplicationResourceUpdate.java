@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,21 +18,11 @@ import java.util.Map;
  * The application resource for patch operations.
  */
 @Fluent
-public final class ApplicationResourceUpdate extends ProxyResource {
+public final class ApplicationResourceUpdate extends PatchProxyResource {
     /*
      * The application resource properties for patch operations.
      */
     private ApplicationResourceUpdateProperties innerProperties;
-
-    /*
-     * It will be deprecated in New API, resource location depends on the parent resource.
-     */
-    private String location;
-
-    /*
-     * Azure resource tags.
-     */
-    private Map<String, String> tags;
 
     /*
      * Azure resource etag.
@@ -41,22 +30,17 @@ public final class ApplicationResourceUpdate extends ProxyResource {
     private String etag;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
-     * The type of the resource.
+     * Azure resource type.
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Azure resource name.
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Azure resource identifier.
      */
     private String id;
 
@@ -76,76 +60,17 @@ public final class ApplicationResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     * 
-     * @param location the location value to set.
-     * @return the ApplicationResourceUpdate object itself.
-     */
-    public ApplicationResourceUpdate withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Azure resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Azure resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ApplicationResourceUpdate object itself.
-     */
-    public ApplicationResourceUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the etag property: Azure resource etag.
      * 
      * @return the etag value.
      */
+    @Override
     public String etag() {
         return this.etag;
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the ApplicationResourceUpdate object itself.
-     */
-    public ApplicationResourceUpdate withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Azure resource type.
      * 
      * @return the type value.
      */
@@ -155,7 +80,7 @@ public final class ApplicationResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Azure resource name.
      * 
      * @return the name value.
      */
@@ -165,13 +90,40 @@ public final class ApplicationResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Azure resource identifier.
      * 
      * @return the id value.
      */
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationResourceUpdate withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationResourceUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationResourceUpdate withSystemData(SystemData systemData) {
+        super.withSystemData(systemData);
+        return this;
     }
 
     /**
@@ -378,10 +330,10 @@ public final class ApplicationResourceUpdate extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("systemData", systemData());
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("systemData", this.systemData);
         return jsonWriter.writeEndObject();
     }
 
@@ -391,7 +343,6 @@ public final class ApplicationResourceUpdate extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApplicationResourceUpdate if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApplicationResourceUpdate.
      */
     public static ApplicationResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
@@ -407,18 +358,18 @@ public final class ApplicationResourceUpdate extends ProxyResource {
                     deserializedApplicationResourceUpdate.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedApplicationResourceUpdate.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedApplicationResourceUpdate.innerProperties
-                        = ApplicationResourceUpdateProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
-                    deserializedApplicationResourceUpdate.location = reader.getString();
+                    deserializedApplicationResourceUpdate.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedApplicationResourceUpdate.tags = tags;
+                    deserializedApplicationResourceUpdate.withTags(tags);
                 } else if ("etag".equals(fieldName)) {
                     deserializedApplicationResourceUpdate.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedApplicationResourceUpdate.systemData = SystemData.fromJson(reader);
+                    deserializedApplicationResourceUpdate.withSystemData(SystemData.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.innerProperties
+                        = ApplicationResourceUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

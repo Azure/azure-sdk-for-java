@@ -37,13 +37,6 @@ public interface ApplicationResource {
     String type();
 
     /**
-     * Gets the identity property: The managed service identities assigned to this resource.
-     * 
-     * @return the identity value.
-     */
-    ManagedIdentity identity();
-
-    /**
      * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
      * 
      * @return the location value.
@@ -65,7 +58,14 @@ public interface ApplicationResource {
     String etag();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    ManagedIdentity identity();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -212,9 +212,8 @@ public interface ApplicationResource {
          * The stage of the ApplicationResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithSystemData, DefinitionStages.WithTypeName, DefinitionStages.WithTypeVersion,
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithIdentity, DefinitionStages.WithTypeName, DefinitionStages.WithTypeVersion,
             DefinitionStages.WithParameters, DefinitionStages.WithUpgradePolicy, DefinitionStages.WithMinimumNodes,
             DefinitionStages.WithMaximumNodes, DefinitionStages.WithRemoveApplicationCapacity,
             DefinitionStages.WithMetrics, DefinitionStages.WithManagedIdentities {
@@ -279,20 +278,6 @@ public interface ApplicationResource {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedIdentity identity);
-        }
-
-        /**
-         * The stage of the ApplicationResource definition allowing to specify systemData.
-         */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             * 
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSystemData(SystemData systemData);
         }
 
         /**

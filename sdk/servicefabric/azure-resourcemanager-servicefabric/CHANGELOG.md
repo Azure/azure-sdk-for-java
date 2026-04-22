@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-04-02)
+## 1.1.0-beta.1 (2026-04-22)
 
 - Azure Resource Manager Service Fabric client library for Java. This package contains Microsoft Azure SDK for Service Fabric Management SDK. Azure Service Fabric Resource Provider API Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -60,7 +60,10 @@
 
 #### `models.ApplicationResourceUpdate` was modified
 
+* `location()` was removed
+* `tags()` was removed
 * `validate()` was removed
+* `systemData()` was removed
 
 #### `models.ApplicationDeltaHealthPolicy` was modified
 
@@ -89,15 +92,18 @@
 #### `models.ServiceResourceUpdate` was modified
 
 * `validate()` was removed
+* `location()` was removed
+* `systemData()` was removed
+* `tags()` was removed
 
 #### `models.AvailableOperationDisplay` was modified
 
 * `AvailableOperationDisplay()` was changed to private access
+* `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
 * `validate()` was removed
 * `withProvider(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
-* `withResource(java.lang.String)` was removed
 
 #### `models.NodeTypeDescription` was modified
 
@@ -110,13 +116,13 @@
 #### `models.ClusterCodeVersionsResult` was modified
 
 * `ClusterCodeVersionsResult()` was changed to private access
-* `withSupportExpiryUtc(java.lang.String)` was removed
-* `withId(java.lang.String)` was removed
 * `withCodeVersion(java.lang.String)` was removed
+* `withSupportExpiryUtc(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
 * `validate()` was removed
-* `withType(java.lang.String)` was removed
 * `withEnvironment(models.ClusterEnvironment)` was removed
+* `withId(java.lang.String)` was removed
 
 #### `models.ApplicationUpgradePolicy` was modified
 
@@ -228,6 +234,8 @@
 
 ### Features Added
 
+* `models.PatchProxyResource` was added
+
 * `models.VMSizeResource` was added
 
 * `models.UnsupportedVmSizes` was added
@@ -240,30 +248,20 @@
 
 #### `models.StatelessServiceProperties` was modified
 
-* `withMinInstanceCount(java.lang.Integer)` was added
-* `minInstancePercentage()` was added
 * `withMinInstancePercentage(byte[])` was added
 * `minInstanceCount()` was added
+* `withMinInstanceCount(java.lang.Integer)` was added
+* `minInstancePercentage()` was added
 
 #### `models.ApplicationResourceUpdate` was modified
 
 * `withSystemData(com.azure.core.management.SystemData)` was added
-
-#### `models.ApplicationResource$Definition` was modified
-
-* `withSystemData(com.azure.core.management.SystemData)` was added
-
-#### `models.ApplicationTypeResource$Definition` was modified
-
-* `withSystemData(com.azure.core.management.SystemData)` was added
+* `withTags(java.util.Map)` was added
+* `withLocation(java.lang.String)` was added
 
 #### `models.Cluster$Update` was modified
 
 * `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
-
-#### `models.ServiceResource$Definition` was modified
-
-* `withSystemData(com.azure.core.management.SystemData)` was added
 
 #### `models.ClusterUpdateParameters` was modified
 
@@ -272,26 +270,20 @@
 
 #### `models.ServiceResourceUpdate` was modified
 
+* `withTags(java.util.Map)` was added
 * `withSystemData(com.azure.core.management.SystemData)` was added
-
-#### `models.ApplicationTypeResource$Update` was modified
-
-* `withSystemData(com.azure.core.management.SystemData)` was added
+* `withLocation(java.lang.String)` was added
 
 #### `models.NodeTypeDescription` was modified
 
-* `httpGatewayTokenAuthEndpointPort()` was added
 * `withHttpGatewayTokenAuthEndpointPort(java.lang.Integer)` was added
+* `httpGatewayTokenAuthEndpointPort()` was added
 
 #### `models.Cluster` was modified
 
 * `enableHttpGatewayExclusiveAuthMode()` was added
 
 #### `models.ApplicationResource$Update` was modified
-
-* `withSystemData(com.azure.core.management.SystemData)` was added
-
-#### `models.ApplicationTypeVersionResource$Definition` was modified
 
 * `withSystemData(com.azure.core.management.SystemData)` was added
 
@@ -302,10 +294,6 @@
 #### `ServiceFabricManager` was modified
 
 * `unsupportedVmSizes()` was added
-
-#### `models.ApplicationTypeVersionResource$Update` was modified
-
-* `withSystemData(com.azure.core.management.SystemData)` was added
 
 ## 1.0.0 (2024-12-24)
 

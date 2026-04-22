@@ -57,7 +57,7 @@ public interface ApplicationTypeResource {
     String etag();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -134,8 +134,7 @@ public interface ApplicationTypeResource {
          * The stage of the ApplicationTypeResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithSystemData {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags {
             /**
              * Executes the create request.
              * 
@@ -185,20 +184,6 @@ public interface ApplicationTypeResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-
-        /**
-         * The stage of the ApplicationTypeResource definition allowing to specify systemData.
-         */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             * 
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSystemData(SystemData systemData);
-        }
     }
 
     /**
@@ -211,7 +196,7 @@ public interface ApplicationTypeResource {
     /**
      * The template for ApplicationTypeResource update.
      */
-    interface Update extends UpdateStages.WithSystemData {
+    interface Update {
         /**
          * Executes the update request.
          * 
@@ -232,19 +217,6 @@ public interface ApplicationTypeResource {
      * The ApplicationTypeResource update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the ApplicationTypeResource update allowing to specify systemData.
-         */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             * 
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            Update withSystemData(SystemData systemData);
-        }
     }
 
     /**

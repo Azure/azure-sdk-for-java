@@ -36,10 +36,6 @@ public final class ApplicationResourceImpl
         return this.innerModel().type();
     }
 
-    public ManagedIdentity identity() {
-        return this.innerModel().identity();
-    }
-
     public String location() {
         return this.innerModel().location();
     }
@@ -55,6 +51,10 @@ public final class ApplicationResourceImpl
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public ManagedIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -234,16 +234,6 @@ public final class ApplicationResourceImpl
         return this;
     }
 
-    public ApplicationResourceImpl withSystemData(SystemData systemData) {
-        if (isInCreateMode()) {
-            this.innerModel().withSystemData(systemData);
-            return this;
-        } else {
-            this.updateParameters.withSystemData(systemData);
-            return this;
-        }
-    }
-
     public ApplicationResourceImpl withTypeName(String typeName) {
         this.innerModel().withTypeName(typeName);
         return this;
@@ -327,6 +317,11 @@ public final class ApplicationResourceImpl
             this.updateParameters.withManagedIdentities(managedIdentities);
             return this;
         }
+    }
+
+    public ApplicationResourceImpl withSystemData(SystemData systemData) {
+        this.updateParameters.withSystemData(systemData);
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -29,11 +29,6 @@ public final class ApplicationResourceInner extends ProxyResource {
     private ApplicationResourceProperties innerProperties;
 
     /*
-     * The managed service identities assigned to this resource.
-     */
-    private ManagedIdentity identity;
-
-    /*
      * It will be deprecated in New API, resource location depends on the parent resource.
      */
     private String location;
@@ -49,7 +44,12 @@ public final class ApplicationResourceInner extends ProxyResource {
     private String etag;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -81,26 +81,6 @@ public final class ApplicationResourceInner extends ProxyResource {
      */
     private ApplicationResourceProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the identity property: The managed service identities assigned to this resource.
-     * 
-     * @return the identity value.
-     */
-    public ManagedIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The managed service identities assigned to this resource.
-     * 
-     * @param identity the identity value to set.
-     * @return the ApplicationResourceInner object itself.
-     */
-    public ApplicationResourceInner withIdentity(ManagedIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**
@@ -153,23 +133,32 @@ public final class ApplicationResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the ApplicationResourceInner object itself.
+     */
+    public ApplicationResourceInner withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the ApplicationResourceInner object itself.
-     */
-    public ApplicationResourceInner withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
     }
 
     /**
@@ -440,10 +429,9 @@ public final class ApplicationResourceInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("systemData", this.systemData);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -472,8 +460,6 @@ public final class ApplicationResourceInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationResourceInner.innerProperties
                         = ApplicationResourceProperties.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedApplicationResourceInner.identity = ManagedIdentity.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedApplicationResourceInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
@@ -481,6 +467,8 @@ public final class ApplicationResourceInner extends ProxyResource {
                     deserializedApplicationResourceInner.tags = tags;
                 } else if ("etag".equals(fieldName)) {
                     deserializedApplicationResourceInner.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedApplicationResourceInner.identity = ManagedIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedApplicationResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
