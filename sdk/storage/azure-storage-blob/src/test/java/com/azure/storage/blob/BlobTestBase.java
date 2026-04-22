@@ -426,8 +426,12 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder
-            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceAsyncClient(new SessionOptions());
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
