@@ -1696,6 +1696,12 @@ public class CosmosAsyncContainer {
      * Partial hierarchical partition keys are supported and will fan out to multiple
      * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
      * before batching.
+     * <p>
+     * {@link PartitionKey#NONE} is allowed for single-path partition key containers — it
+     * queries documents where the partition key path is absent (generates
+     * {@code NOT IS_DEFINED(...)}). For hierarchical (multi-path) partition key containers,
+     * {@link PartitionKey#NONE} is rejected because {@code addNoneValue()} is not supported
+     * with multiple paths.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
