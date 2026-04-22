@@ -13,12 +13,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A pipeline policy that selects between session token and bearer token authentication.
@@ -42,8 +43,7 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final StorageSessionCredentialCache sessionCredentialCache;
-    private final SessionMode mode;
-    private final AtomicBoolean autoActivated = new AtomicBoolean(false);
+    private final SessionOptions sessionOptions;
 
     /**
      * Authentication strategy determined by {@link #analyzeRequest(HttpPipelineCallContext)}.
@@ -56,11 +56,11 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        StorageSessionCredentialCache sessionCredentialCache, SessionMode mode) {
+        StorageSessionCredentialCache sessionCredentialCache, SessionOptions sessionOptions) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionCredentialCache
             = Objects.requireNonNull(sessionCredentialCache, "'sessionCredentialCache' cannot be null.");
-        this.mode = Objects.requireNonNull(mode, "'mode' cannot be null.");
+        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
     }
 
     /**
@@ -100,18 +100,19 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Analyzes the request to determine whether a session token or bearer token should be used.
-     * <p>
-     * Session tokens are only used for blob GET download operations that satisfy:
-     * <ul>
-     *   <li>HTTP method is GET</li>
-     *   <li>URL has both container name and blob name (not service or container-level)</li>
-     *   <li>No {@code comp} or {@code restype} query parameters (those indicate sub-operations)</li>
-     *   <li>Session mode permits it ({@link SessionMode#ALWAYS}, or {@link SessionMode#AUTO} after first request)</li>
-     * </ul>
-     * GET requests with {@code snapshot} or {@code versionid} parameters are still eligible.
+     * Session tokens are only used for blob GET operations in
+     * {@link SessionMode#SINGLE_SPECIFIED_CONTAINER} mode targeting the configured container.
+     *
+     * @param context the pipeline call context for the request being analyzed.
+     * @return {@link AuthStrategy#USE_SESSION_TOKEN} if the request is eligible for session-token
+     * authentication (a GET against a blob in the configured container, with no {@code comp} query
+     * parameter, while in {@link SessionMode#SINGLE_SPECIFIED_CONTAINER} mode);
+     * {@link AuthStrategy#USE_BEARER_TOKEN} otherwise.
      */
     AuthStrategy analyzeRequest(HttpPipelineCallContext context) {
-        if (mode == SessionMode.NONE) {
+        SessionMode effectiveMode = sessionOptions.getSessionMode().resolve();
+
+        if (effectiveMode == SessionMode.NONE) {
             return AuthStrategy.USE_BEARER_TOKEN;
         }
 
@@ -121,19 +122,24 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
         BlobUrlParts parts = BlobUrlParts.parse(context.getHttpRequest().getUrl());
 
-        // Must target a specific blob (container + blob name present).
-        if (CoreUtils.isNullOrEmpty(parts.getBlobContainerName()) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
+        // If Service-level request (no container in path)
+        if (CoreUtils.isNullOrEmpty(parts.getBlobContainerName())
+            && CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
             return AuthStrategy.USE_BEARER_TOKEN;
         }
 
-        // comp= indicates sub-operations (metadata, tags, etc.) that should use bearer auth.
+        // If Container level request (container in path but no blob)
+        if (CoreUtils.isNullOrEmpty(parts.getBlobName())) {
+            return AuthStrategy.USE_BEARER_TOKEN;
+        }
+
+        // comp indicates sub-operations (metadata, tags, etc.) that should use bearer auth.
         Map<String, String[]> queryParams = parts.getUnparsedParameters();
         if (queryParams.containsKey("comp")) {
             return AuthStrategy.USE_BEARER_TOKEN;
         }
 
-        // AUTO mode: first eligible GetBlob uses bearer, subsequent requests use session.
-        if (mode == SessionMode.AUTO && !autoActivated.getAndSet(true)) {
+        if (parts.getBlobContainerName().compareToIgnoreCase(sessionOptions.getContainerName()) != 0) {
             return AuthStrategy.USE_BEARER_TOKEN;
         }
 

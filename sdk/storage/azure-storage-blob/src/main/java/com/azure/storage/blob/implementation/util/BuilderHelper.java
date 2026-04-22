@@ -71,8 +71,9 @@ public final class BuilderHelper {
      * authentication support.
      * <p>
      * When {@code sessionOptions} is non-null and the resolved session mode is not {@link SessionMode#NONE},
-     * and a {@code tokenCredential} is present, a {@link SessionTokenCredentialPolicy} is added before the
-     * bearer token policy. The session policy uses a separate bearer-only pipeline for CreateSession calls.
+     * and a {@code tokenCredential} is present, a single {@link SessionTokenCredentialPolicy} is added as the
+     * auth policy. The session policy wraps the bearer token policy internally and delegates to it for
+     * non-session-eligible requests. When sessions are not active, the bearer token policy is added directly.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
@@ -130,15 +131,24 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
-        addSessionPolicyIfEnabled(policies, sessionOptions, tokenCredential, endpoint, clientOptions, httpClient,
-            audience, logger, serviceVersion);
-
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
+            StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
+                = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
+
+            SessionOptions effectiveSessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
+            BlobServiceVersion effectiveServiceVersion
+                = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
+
+            HttpPipeline bearerPipeline = buildBearerPipeline(policies, bearerPolicy, httpClient, clientOptions);
+            BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
+                effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
+
+            policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
+                new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
         }
 
         if (azureSasCredential != null) {
@@ -164,132 +174,20 @@ public final class BuilderHelper {
             .build();
     }
 
-    private static void addSessionPolicyIfEnabled(List<HttpPipelinePolicy> policies, SessionOptions sessionOptions,
-        TokenCredential tokenCredential, String endpoint, ClientOptions clientOptions, HttpClient httpClient,
-        BlobAudience audience, ClientLogger logger, BlobServiceVersion serviceVersion) {
-
-        if (sessionOptions == null || tokenCredential == null) {
-            return;
-        }
-
-        SessionMode effectiveMode = resolveSessionMode(sessionOptions.getSessionMode(), tokenCredential);
-        if (effectiveMode == SessionMode.NONE) {
-            return;
-        }
-
-        String containerName = sessionOptions.getContainerName();
-        String accountName = sessionOptions.getAccountName();
-        validateSessionOptions(containerName, serviceVersion, effectiveMode, logger);
-
-        httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-        String scope = audience != null
-            ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
-            : Constants.STORAGE_SCOPE;
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
-            = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
-
-        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(policies);
-        bearerPolicies.add(bearerPolicy);
-
-        HttpPipeline bearerPipeline
-            = new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .clientOptions(clientOptions)
-                .tracer(createTracer(clientOptions))
-                .build();
-
-        SessionTokenCredentialPolicy sessionPolicy = createSessionPolicy(bearerPolicy, bearerPipeline, endpoint,
-            accountName, containerName, serviceVersion, effectiveMode);
-
-        policies.add(sessionPolicy);
-    }
-
-    private static void validateSessionOptions(String containerName, BlobServiceVersion serviceVersion,
-        SessionMode effectiveMode, ClientLogger logger) {
-        if (CoreUtils.isNullOrEmpty(containerName)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("containerName must be set when using SessionMode." + effectiveMode));
-        }
-        if (serviceVersion == null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("serviceVersion must be set when using SessionMode." + effectiveMode));
-        }
-    }
-
-    private static SessionTokenCredentialPolicy createSessionPolicy(
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpPipeline bearerPipeline, String endpoint,
-        String accountName, String containerName, BlobServiceVersion serviceVersion, SessionMode effectiveMode) {
-        BlobSessionClient sessionClient
-            = new BlobSessionClient(bearerPipeline, endpoint, serviceVersion, accountName, containerName);
-        return new SessionTokenCredentialPolicy(bearerPolicy, new StorageSessionCredentialCache(sessionClient),
-            effectiveMode);
-    }
-
-    private static SessionMode resolveSessionMode(SessionMode sessionMode, TokenCredential tokenCredential) {
-        return resolveSessionMode(sessionMode, tokenCredential != null);
-    }
-
     /**
-     * Wraps an existing pipeline with a per-container {@link SessionTokenCredentialPolicy}.
-     * Used by {@link com.azure.storage.blob.BlobServiceClient#getBlobContainerClient(String)} to give each
-     * container its own session credential cache while sharing all other policies.
-     *
-     * @param basePipeline The service-level pipeline (used as-is for CreateSession calls).
-     * @param sessionOptions The session options containing mode, container name, and account name.
-     * @param endpoint The storage account endpoint.
-     * @param serviceVersion The blob service version.
-     * @return A new pipeline with session support, or {@code basePipeline} unchanged if sessions are not applicable.
+     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This pipeline contains
+     * all pre-auth policies plus the bearer token policy, but no session policy.
      */
-    public static HttpPipeline wrapWithSessionPolicy(HttpPipeline basePipeline, SessionOptions sessionOptions,
-        String endpoint, BlobServiceVersion serviceVersion) {
-
-        SessionMode sessionMode = sessionOptions != null ? sessionOptions.getSessionMode() : null;
-        String containerName = sessionOptions != null ? sessionOptions.getContainerName() : null;
-        String accountName = sessionOptions != null ? sessionOptions.getAccountName() : null;
-
-        // Detect whether the pipeline has bearer auth by scanning for the policy.
-        boolean hasBearerAuth = false;
-        int bearerIndex = -1;
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy = null;
-        for (int i = 0; i < basePipeline.getPolicyCount(); i++) {
-            if (basePipeline.getPolicy(i) instanceof StorageBearerTokenChallengeAuthorizationPolicy) {
-                hasBearerAuth = true;
-                bearerIndex = i;
-                bearerPolicy = (StorageBearerTokenChallengeAuthorizationPolicy) basePipeline.getPolicy(i);
-                break;
-            }
-        }
-
-        SessionMode effectiveMode = resolveSessionMode(sessionMode, hasBearerAuth);
-        if (effectiveMode == SessionMode.NONE || !hasBearerAuth) {
-            return basePipeline;
-        }
-
-        // The base pipeline (with bearer) serves as the bearer-only pipeline for CreateSession calls.
-        BlobSessionClient sessionClient
-            = new BlobSessionClient(basePipeline, endpoint, serviceVersion, accountName, containerName);
-        SessionTokenCredentialPolicy sessionPolicy = new SessionTokenCredentialPolicy(bearerPolicy,
-            new StorageSessionCredentialCache(sessionClient), effectiveMode);
-
-        // Build a new pipeline with session policy inserted before the bearer policy.
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        for (int i = 0; i < basePipeline.getPolicyCount(); i++) {
-            if (i == bearerIndex) {
-                policies.add(sessionPolicy);
-            }
-            policies.add(basePipeline.getPolicy(i));
-        }
-
-        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(basePipeline.getHttpClient())
+    private static HttpPipeline buildBearerPipeline(List<HttpPipelinePolicy> preAuthPolicies,
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient,
+        ClientOptions clientOptions) {
+        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
+        bearerPolicies.add(bearerPolicy);
+        return new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .tracer(createTracer(clientOptions))
             .build();
-    }
-
-    private static SessionMode resolveSessionMode(SessionMode sessionMode, boolean hasBearerAuth) {
-        if (sessionMode != null) {
-            return sessionMode;
-        }
-        return hasBearerAuth ? SessionMode.AUTO : SessionMode.NONE;
     }
 
     /**
