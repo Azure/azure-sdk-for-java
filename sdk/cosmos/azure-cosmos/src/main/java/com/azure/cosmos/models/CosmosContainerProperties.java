@@ -407,9 +407,8 @@ public final class CosmosContainerProperties {
      * <p>
      * Example:
      * <pre>{@code
-     * CosmosGlobalSecondaryIndexDefinition gsiDef = new CosmosGlobalSecondaryIndexDefinition()
-     *     .setSourceContainerId("gsi-src")
-     *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+     * CosmosGlobalSecondaryIndexDefinition gsiDef =
+     *     new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
      * containerProperties.setCosmosGlobalSecondaryIndexDefinition(gsiDef);
      * }</pre>
      *

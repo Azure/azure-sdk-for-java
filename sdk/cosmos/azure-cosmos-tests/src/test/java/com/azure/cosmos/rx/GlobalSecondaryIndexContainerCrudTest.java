@@ -67,9 +67,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             String gsiContainerId = "gsi-view-" + UUID.randomUUID();
             CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
             gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
-                new CosmosGlobalSecondaryIndexDefinition()
-                    .setSourceContainerId(sourceContainerId)
-                    .setDefinition(GSI_QUERY_DEFINITION));
+                new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
 
             CosmosContainerResponse createResponse = database.createContainer(gsiContainerDef).block();
 
@@ -102,9 +100,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
         gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition()
-                .setSourceContainerId(sourceContainerId)
-                .setDefinition(GSI_QUERY_DEFINITION));
+            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
         try {
@@ -140,9 +136,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
         gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition()
-                .setSourceContainerId(sourceContainerId)
-                .setDefinition(GSI_QUERY_DEFINITION));
+            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
         try {
@@ -178,17 +172,13 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         String gsiContainerId1 = "gsi-view1-" + UUID.randomUUID();
         CosmosContainerProperties gsiDef1 = new CosmosContainerProperties(gsiContainerId1, "/customerId");
         gsiDef1.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition()
-                .setSourceContainerId(sourceContainerId)
-                .setDefinition("SELECT c.customerId FROM c"));
+            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, "SELECT c.customerId FROM c"));
         database.createContainer(gsiDef1).block();
 
         String gsiContainerId2 = "gsi-view2-" + UUID.randomUUID();
         CosmosContainerProperties gsiDef2 = new CosmosContainerProperties(gsiContainerId2, "/customerId");
         gsiDef2.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition()
-                .setSourceContainerId(sourceContainerId)
-                .setDefinition("SELECT c.customerId, c.emailAddress FROM c"));
+            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, "SELECT c.customerId, c.emailAddress FROM c"));
         database.createContainer(gsiDef2).block();
 
         try {
@@ -239,9 +229,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
 
             // Set GSI definition
             gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
-                new CosmosGlobalSecondaryIndexDefinition()
-                    .setSourceContainerId(sourceContainerId)
-                    .setDefinition(GSI_QUERY_DEFINITION));
+                new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
 
             CosmosContainerResponse createResponse = database.createContainer(
                 gsiContainerDef, new CosmosContainerRequestOptions()).block();
@@ -275,9 +263,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
         gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition()
-                .setSourceContainerId(sourceContainerId)
-                .setDefinition(GSI_QUERY_DEFINITION));
+            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
         try {
@@ -323,9 +309,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
         gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition()
-                .setSourceContainerId(sourceContainerId)
-                .setDefinition(GSI_QUERY_DEFINITION));
+            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
         try {

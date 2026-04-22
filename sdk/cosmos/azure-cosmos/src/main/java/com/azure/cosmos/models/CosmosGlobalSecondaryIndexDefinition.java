@@ -13,12 +13,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Represents the global secondary index definition for a container in the Azure Cosmos DB service.
  * A global secondary index is derived from a source container and is defined by a SQL-like query.
+ * Once created, the source container id and the query definition are immutable for the lifetime
+ * of the global secondary index.
  * <p>
  * Example:
  * <pre>{@code
- * CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
- *     .setSourceContainerId("gsi-src")
- *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+ * CosmosGlobalSecondaryIndexDefinition definition =
+ *     new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
  * }</pre>
  */
 public final class CosmosGlobalSecondaryIndexDefinition {
@@ -26,10 +27,25 @@ public final class CosmosGlobalSecondaryIndexDefinition {
     private final JsonSerializable jsonSerializable;
 
     /**
-     * Constructor
+     * Creates a new global secondary index definition.
+     * The source container id and the query definition are immutable once the definition is created.
+     *
+     * @param sourceContainerId the id of the source container from which this global secondary index is derived.
+     *                          The SDK will automatically resolve this container id to its resource id (RID)
+     *                          during container creation.
+     * @param definition the SQL-like query definition (e.g. {@code "SELECT c.customerId, c.emailAddress FROM c"}).
+     * @throws IllegalArgumentException if {@code sourceContainerId} or {@code definition} is {@code null} or empty.
      */
-    public CosmosGlobalSecondaryIndexDefinition() {
+    public CosmosGlobalSecondaryIndexDefinition(String sourceContainerId, String definition) {
+        if (sourceContainerId == null || sourceContainerId.isEmpty()) {
+            throw new IllegalArgumentException("sourceContainerId cannot be null or empty");
+        }
+        if (definition == null || definition.isEmpty()) {
+            throw new IllegalArgumentException("definition cannot be null or empty");
+        }
         this.jsonSerializable = new JsonSerializable();
+        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID, sourceContainerId);
+        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_QUERY_DEFINITION, definition);
     }
 
     /**
@@ -48,19 +64,6 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      */
     public String getSourceContainerId() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID);
-    }
-
-    /**
-     * Sets the source container id for the GlobalSecondaryIndex.
-     * The SDK will automatically resolve this container id to its resource id (RID)
-     * during container creation.
-     *
-     * @param sourceContainerId the source container id.
-     * @return CosmosGlobalSecondaryIndexDefinition
-     */
-    public CosmosGlobalSecondaryIndexDefinition setSourceContainerId(String sourceContainerId) {
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID, sourceContainerId);
-        return this;
     }
 
     void setSourceContainerRidInternal(String sourceCollectionRid) {
@@ -94,17 +97,6 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      */
     public String getDefinition() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_QUERY_DEFINITION);
-    }
-
-    /**
-     * Sets the query definition for the GlobalSecondaryIndex.
-     *
-     * @param definition the query definition (e.g. {@code "SELECT c.customerId, c.emailAddress FROM c"}).
-     * @return CosmosGlobalSecondaryIndexDefinition
-     */
-    public CosmosGlobalSecondaryIndexDefinition setDefinition(String definition) {
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_QUERY_DEFINITION, definition);
-        return this;
     }
 
     void populatePropertyBag() {

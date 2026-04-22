@@ -46,9 +46,8 @@ public class GlobalSecondaryIndexTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
-            .setSourceContainerId("gsi-src")
-            .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+        CosmosGlobalSecondaryIndexDefinition definition =
+            new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
 
         containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition);
 
@@ -69,12 +68,40 @@ public class GlobalSecondaryIndexTest {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_nullSourceContainerIdThrows() {
+        assertThatThrownBy(() -> new CosmosGlobalSecondaryIndexDefinition(null, "SELECT c.id FROM c"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("sourceContainerId");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_emptySourceContainerIdThrows() {
+        assertThatThrownBy(() -> new CosmosGlobalSecondaryIndexDefinition("", "SELECT c.id FROM c"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("sourceContainerId");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_nullDefinitionThrows() {
+        assertThatThrownBy(() -> new CosmosGlobalSecondaryIndexDefinition("gsi-src", null))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("definition");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_emptyDefinitionThrows() {
+        assertThatThrownBy(() -> new CosmosGlobalSecondaryIndexDefinition("gsi-src", ""))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("definition");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void containerProperties_setGlobalSecondaryIndexDefinition_returnsThis() {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
-            .setSourceContainerId("gsi-src");
+        CosmosGlobalSecondaryIndexDefinition definition =
+            new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId FROM c");
 
         assertThat(containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition))
             .isSameAs(containerProperties);
@@ -89,9 +116,8 @@ public class GlobalSecondaryIndexTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
-            .setSourceContainerId("gsi-src")
-            .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+        CosmosGlobalSecondaryIndexDefinition definition =
+            new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
         ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
@@ -158,9 +184,8 @@ public class GlobalSecondaryIndexTest {
     public void GlobalSecondaryIndexDefinition_fullRoundTrip() throws Exception {
         // Set on container properties using the new public API
         CosmosContainerProperties original = new CosmosContainerProperties("testContainer", "/pk");
-        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
-            .setSourceContainerId("gsi-src")
-            .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+        CosmosGlobalSecondaryIndexDefinition definition =
+            new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
         ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
