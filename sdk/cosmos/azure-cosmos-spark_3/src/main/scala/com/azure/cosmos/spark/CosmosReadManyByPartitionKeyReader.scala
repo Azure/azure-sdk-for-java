@@ -130,7 +130,7 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
     readerState: (List[String], StructType, Broadcast[CosmosClientMetadataCachesSnapshots], Boolean)): DataFrame = {
 
     val correlationActivityId = UUIDs.nonBlockingRandomUUID()
-    val (_, schema, clientStates) = readerState
+    val (_, schema, clientStates, _) = readerState
 
     sparkSession.sqlContext.createDataFrame(
       inputRdd.mapPartitionsWithIndex(

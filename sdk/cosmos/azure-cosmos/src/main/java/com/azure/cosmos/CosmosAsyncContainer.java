@@ -1777,6 +1777,17 @@ public class CosmosAsyncContainer {
             if (mdop == null || mdop == DEFAULT_MAX_DEGREE_OF_PARALLELISM) {
                 queryRequestOptions.setMaxDegreeOfParallelism(UNBOUNDED_MAX_DEGREE_OF_PARALLELISM);
             }
+
+            // maxItemCount lives in CosmosQueryRequestOptionsImpl but is not copied by the
+            // clone path through CosmosQueryRequestOptionsBase, so propagate it explicitly.
+            Integer maxItems = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxItemCount();
+            if (maxItems == null && requestOptions != null) {
+                Integer userMaxItems = readManyByPkOptionsAccessor().getImpl(requestOptions).getMaxItemCount();
+                if (userMaxItems != null) {
+                    ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(queryRequestOptions, userMaxItems);
+                }
+            }
+
             queryRequestOptions.setQueryName("readManyByPartitionKeys");
 
             // Set the composite continuation token on the cloned query options so that

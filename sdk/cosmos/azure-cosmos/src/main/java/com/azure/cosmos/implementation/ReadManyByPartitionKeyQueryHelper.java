@@ -145,8 +145,9 @@ public class ReadManyByPartitionKeyQueryHelper {
             String afterWhere = baseQueryText.substring(whereIndex + 5); // skip "WHERE"
             finalQuery = beforeWhere + "WHERE (" + afterWhere.trim() + ") AND (" + pkFilter.toString().trim() + ")";
         } else {
-            // No WHERE - add one
-            finalQuery = baseQueryText + " WHERE" + pkFilter.toString();
+            // No WHERE - add one. Use \n before WHERE so that a trailing single-line comment
+            // (-- ...) in the base query does not swallow the WHERE clause.
+            finalQuery = baseQueryText + "\n WHERE" + pkFilter.toString();
         }
 
         return new SqlQuerySpec(finalQuery, parameters);
