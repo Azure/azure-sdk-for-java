@@ -441,6 +441,16 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
         } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
+            // The query API returns unmodifiable header collections for empty
+            // responses (no documents returned - when only header set is request charge)
+            // the protection here to check for existence of the header before attempting
+            // to remove it would not be robust enough against unknown headers
+            // but since we only ever call our own query pipeline
+            // avoiding cloning in all cases and gating on continuation header
+            // existence is a reaosnable trade-off - test coverage exists that uncovered
+            // the problem - so, this acts as regression test as well
+            // --> the etst coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
+            // it should "return empty results for non-existent partition keys"
             this.header.remove(headerName);
         }
     }
