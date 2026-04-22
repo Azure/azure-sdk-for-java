@@ -126,9 +126,9 @@ final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             return AuthStrategy.USE_BEARER_TOKEN;
         }
 
-        // comp= or restype= indicate sub-operations (properties, metadata, list, tags, etc.)
+        // comp= indicates sub-operations (metadata, tags, etc.) that should use bearer auth.
         Map<String, String[]> queryParams = parts.getUnparsedParameters();
-        if (queryParams.containsKey("comp") || queryParams.containsKey("restype")) {
+        if (queryParams.containsKey("comp")) {
             return AuthStrategy.USE_BEARER_TOKEN;
         }
 
