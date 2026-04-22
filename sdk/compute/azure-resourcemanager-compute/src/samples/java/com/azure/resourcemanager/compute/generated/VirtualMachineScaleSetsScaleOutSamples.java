@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.VMScaleSetScaleOutInputPropertie
  */
 public final class VirtualMachineScaleSetsScaleOutSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ScaleOut.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ScaleOut.json
      */
     /**
      * Sample code: VirtualMachineScaleSet Scale Out.

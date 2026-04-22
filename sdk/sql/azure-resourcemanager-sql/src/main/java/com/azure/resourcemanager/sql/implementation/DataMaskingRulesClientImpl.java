@@ -76,7 +76,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             @PathParam("dataMaskingPolicyName") DataMaskingPolicyName dataMaskingPolicyName,
             @QueryParam("$skip") Long skip, @HeaderParam("Accept") String accept, Context context);
 
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingRuleInner>> createOrUpdate(@HostParam("endpoint") String endpoint,

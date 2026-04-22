@@ -79,6 +79,11 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
     private Integer diskSizeGB;
 
     /*
+     * Specifies the storage fault domain alignment type for the disk.
+     */
+    private StorageFaultDomainAlignmentType storageFaultDomainAlignment;
+
+    /*
      * The managed disk parameters.
      */
     private ManagedDiskParameters managedDisk;
@@ -324,6 +329,26 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
     }
 
     /**
+     * Get the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @return the storageFaultDomainAlignment value.
+     */
+    public StorageFaultDomainAlignmentType storageFaultDomainAlignment() {
+        return this.storageFaultDomainAlignment;
+    }
+
+    /**
+     * Set the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @param storageFaultDomainAlignment the storageFaultDomainAlignment value to set.
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withStorageFaultDomainAlignment(StorageFaultDomainAlignmentType storageFaultDomainAlignment) {
+        this.storageFaultDomainAlignment = storageFaultDomainAlignment;
+        return this;
+    }
+
+    /**
      * Get the managedDisk property: The managed disk parameters.
      * 
      * @return the managedDisk value.
@@ -416,6 +441,8 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
         jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
         jsonWriter.writeJsonField("diffDiskSettings", this.diffDiskSettings);
         jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("storageFaultDomainAlignment",
+            this.storageFaultDomainAlignment == null ? null : this.storageFaultDomainAlignment.toString());
         jsonWriter.writeJsonField("managedDisk", this.managedDisk);
         jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
         return jsonWriter.writeEndObject();
@@ -457,6 +484,9 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
                     deserializedOSDisk.diffDiskSettings = DiffDiskSettings.fromJson(reader);
                 } else if ("diskSizeGB".equals(fieldName)) {
                     deserializedOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("storageFaultDomainAlignment".equals(fieldName)) {
+                    deserializedOSDisk.storageFaultDomainAlignment
+                        = StorageFaultDomainAlignmentType.fromString(reader.getString());
                 } else if ("managedDisk".equals(fieldName)) {
                     deserializedOSDisk.managedDisk = ManagedDiskParameters.fromJson(reader);
                 } else if ("deleteOption".equals(fieldName)) {

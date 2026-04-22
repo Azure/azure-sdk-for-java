@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,6 +23,11 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
      * Resource properties.
      */
     private LongTermRetentionOperationResultProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -51,6 +57,15 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
      */
     private LongTermRetentionOperationResultProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -193,6 +208,8 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
                 } else if ("properties".equals(fieldName)) {
                     deserializedLongTermRetentionBackupOperationResultInner.innerProperties
                         = LongTermRetentionOperationResultProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupOperationResultInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

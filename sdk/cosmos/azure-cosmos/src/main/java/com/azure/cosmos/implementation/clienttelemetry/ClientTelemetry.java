@@ -37,6 +37,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * first metadata fetch and disposed immediately after; no long-lived HTTP client is kept.</p>
  */
 public class ClientTelemetry {
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
     public final static String VM_ID_PREFIX = "vmId_";
     public final static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -47,17 +51,29 @@ public class ClientTelemetry {
     // - The fetch executes at most once
     // - All concurrent subscribers share the single result
     // - The HTTP client is created and disposed within the fetch
-    private static final Mono<AzureVMMetadata> CACHED_METADATA = fetchAzureVmMetadata().cache();
+    private static final Mono<AzureVMMetadata> CACHED_METADATA;
 
     // Sentinel for "not on Azure VM" or "IMDS unreachable"
-    private static final AzureVMMetadata METADATA_NOT_AVAILABLE = new AzureVMMetadata();
+    private static final AzureVMMetadata METADATA_NOT_AVAILABLE;
 
     // IMDS Constants
-    private static final String IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
-    private static final Duration IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
-    private static final Duration IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
-    private static final int IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
+    private static final String IMDS_AZURE_VM_METADATA;
+    private static final Duration IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT;
+    private static final Duration IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT;
+    private static final Duration IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT;
+    private static final int IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE;
+
+    static {
+        // Initialize the sentinel and IMDS defaults before creating the cached Mono,
+        // because fetchAzureVmMetadata() reads them during class initialization.
+        METADATA_NOT_AVAILABLE = new AzureVMMetadata();
+        IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
+        IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+        IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+        IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
+        IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
+        CACHED_METADATA = fetchAzureVmMetadata().cache();
+    }
 
     // Per-instance fields
     private final ClientTelemetryInfo clientTelemetryInfo;
@@ -91,12 +107,8 @@ public class ClientTelemetry {
         checkNotNull(clientTelemetryConfig, "Argument 'clientTelemetryConfig' cannot be null");
 
         this.clientTelemetryConfig = clientTelemetryConfig;
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
-            clientTelemetryAccessor = ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor();
-        assert(clientTelemetryAccessor != null);
-        this.clientMetricsEnabled = clientTelemetryAccessor
+        assert(clientTelemetryConfigAccessor() != null);
+        this.clientMetricsEnabled = clientTelemetryConfigAccessor()
             .isClientMetricsEnabled(clientTelemetryConfig);
     }
 

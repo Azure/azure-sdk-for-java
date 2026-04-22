@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,11 @@ public final class TdeCertificate extends ProxyResource {
      * Resource properties.
      */
     private TdeCertificateProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -50,6 +56,15 @@ public final class TdeCertificate extends ProxyResource {
      */
     private TdeCertificateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -173,6 +188,8 @@ public final class TdeCertificate extends ProxyResource {
                     deserializedTdeCertificate.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedTdeCertificate.innerProperties = TdeCertificateProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTdeCertificate.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

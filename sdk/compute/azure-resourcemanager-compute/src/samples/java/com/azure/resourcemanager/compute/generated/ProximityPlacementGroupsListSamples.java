@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class ProximityPlacementGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
+     * x-ms-original-file: 2025-11-01/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
      */
     /**
      * Sample code: List proximity placement groups.

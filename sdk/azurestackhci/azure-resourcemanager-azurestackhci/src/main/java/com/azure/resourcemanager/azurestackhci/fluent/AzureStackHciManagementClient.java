@@ -47,6 +47,34 @@ public interface AzureStackHciManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the KubernetesVersionsClient object to access its operations.
+     * 
+     * @return the KubernetesVersionsClient object.
+     */
+    KubernetesVersionsClient getKubernetesVersions();
+
+    /**
+     * Gets the PlatformUpdatesClient object to access its operations.
+     * 
+     * @return the PlatformUpdatesClient object.
+     */
+    PlatformUpdatesClient getPlatformUpdates();
+
+    /**
+     * Gets the OsImagesClient object to access its operations.
+     * 
+     * @return the OsImagesClient object.
+     */
+    OsImagesClient getOsImages();
+
+    /**
+     * Gets the UpdateContentsClient object to access its operations.
+     * 
+     * @return the UpdateContentsClient object.
+     */
+    UpdateContentsClient getUpdateContents();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
@@ -103,6 +131,13 @@ public interface AzureStackHciManagementClient {
     ExtensionsClient getExtensions();
 
     /**
+     * Gets the PublishersClient object to access its operations.
+     * 
+     * @return the PublishersClient object.
+     */
+    PublishersClient getPublishers();
+
+    /**
      * Gets the SecuritySettingsClient object to access its operations.
      * 
      * @return the SecuritySettingsClient object.
@@ -131,11 +166,53 @@ public interface AzureStackHciManagementClient {
     UpdatesClient getUpdates();
 
     /**
+     * Gets the UpdateSummariesOperationGroupsClient object to access its operations.
+     * 
+     * @return the UpdateSummariesOperationGroupsClient object.
+     */
+    UpdateSummariesOperationGroupsClient getUpdateSummariesOperationGroups();
+
+    /**
      * Gets the ValidatedSolutionRecipesClient object to access its operations.
      * 
      * @return the ValidatedSolutionRecipesClient object.
      */
     ValidatedSolutionRecipesClient getValidatedSolutionRecipes();
+
+    /**
+     * Gets the EdgeMachinesClient object to access its operations.
+     * 
+     * @return the EdgeMachinesClient object.
+     */
+    EdgeMachinesClient getEdgeMachines();
+
+    /**
+     * Gets the EdgeMachineJobsClient object to access its operations.
+     * 
+     * @return the EdgeMachineJobsClient object.
+     */
+    EdgeMachineJobsClient getEdgeMachineJobs();
+
+    /**
+     * Gets the OwnershipVouchersClient object to access its operations.
+     * 
+     * @return the OwnershipVouchersClient object.
+     */
+    OwnershipVouchersClient getOwnershipVouchers();
+
+    /**
+     * Gets the ClusterJobsClient object to access its operations.
+     * 
+     * @return the ClusterJobsClient object.
+     */
+    ClusterJobsClient getClusterJobs();
+
+    /**
+     * Gets the DevicePoolsClient object to access its operations.
+     * 
+     * @return the DevicePoolsClient object.
+     */
+    DevicePoolsClient getDevicePools();
 
     /**
      * Gets the UpdateSummariesOperationsClient object to access its operations.

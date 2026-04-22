@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class SharedLimitsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-15/SharedLimits_Delete.json
+     * x-ms-original-file: 2026-04-30/SharedLimits_Delete.json
      */
     /**
      * Sample code: Delete a shared limit.

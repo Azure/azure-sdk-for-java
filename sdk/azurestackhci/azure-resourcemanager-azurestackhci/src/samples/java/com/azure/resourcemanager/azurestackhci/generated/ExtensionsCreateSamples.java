@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutExtension.json
+     * x-ms-original-file: 2026-04-01-preview/PutExtension.json
      */
     /**
      * Sample code: Create Arc Extension.

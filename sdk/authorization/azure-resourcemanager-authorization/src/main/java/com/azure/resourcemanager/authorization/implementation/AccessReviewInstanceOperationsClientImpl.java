@@ -128,7 +128,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 scheduleDefinitionId, id, context))
@@ -163,7 +163,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             scheduleDefinitionId, id, context);
@@ -241,7 +241,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil
             .withContext(context -> service.resetDecisions(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), scheduleDefinitionId, id, context))
@@ -277,7 +277,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.resetDecisions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             scheduleDefinitionId, id, context);
@@ -355,7 +355,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil
             .withContext(context -> service.applyDecisions(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), scheduleDefinitionId, id, context))
@@ -391,7 +391,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.applyDecisions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             scheduleDefinitionId, id, context);
@@ -469,7 +469,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil
             .withContext(context -> service.sendReminders(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), scheduleDefinitionId, id, context))
@@ -505,7 +505,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.sendReminders(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             scheduleDefinitionId, id, context);
@@ -579,7 +579,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         return FluxUtil
             .withContext(context -> service.acceptRecommendations(this.client.getEndpoint(), apiVersion,
                 scheduleDefinitionId, id, context))
@@ -611,7 +611,7 @@ public final class AccessReviewInstanceOperationsClientImpl implements AccessRev
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "undefined";
         context = this.client.mergeContext(context);
         return service.acceptRecommendations(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id, context);
     }

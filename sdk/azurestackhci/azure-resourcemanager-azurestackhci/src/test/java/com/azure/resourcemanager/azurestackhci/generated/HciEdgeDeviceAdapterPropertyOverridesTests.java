@@ -10,9 +10,8 @@ import com.azure.resourcemanager.azurestackhci.models.HciEdgeDeviceAdapterProper
 public final class HciEdgeDeviceAdapterPropertyOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HciEdgeDeviceAdapterPropertyOverrides model = BinaryData
-            .fromString(
-                "{\"jumboPacket\":\"wehtaemxh\",\"networkDirect\":\"ysev\",\"networkDirectTechnology\":\"xivzrrry\"}")
+        HciEdgeDeviceAdapterPropertyOverrides model = BinaryData.fromString(
+            "{\"jumboPacket\":\"ssruqnmdvhazcvj\",\"networkDirect\":\"iqswbqer\",\"networkDirectTechnology\":\"xiytxtdgukvl\"}")
             .toObject(HciEdgeDeviceAdapterPropertyOverrides.class);
     }
 }
