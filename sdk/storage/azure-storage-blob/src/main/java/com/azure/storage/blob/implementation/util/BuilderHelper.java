@@ -142,15 +142,21 @@ public final class BuilderHelper {
 
             SessionOptions effectiveSessionOptions
                 = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
-            BlobServiceVersion effectiveServiceVersion
-                = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
 
-            HttpPipeline bearerPipeline = buildBearerPipeline(policies, bearerPolicy, httpClient, clientOptions);
-            BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
-                effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
+            if (effectiveSessionOptions.getSessionMode().resolve() == SessionMode.NONE) {
+                policies.add(bearerPolicy);
+            } else {
+                BlobServiceVersion effectiveServiceVersion
+                    = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
 
-            policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
-                new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
+                HttpPipeline bearerPipeline = buildBearerPipeline(policies, bearerPolicy, httpClient, clientOptions);
+                BlobSessionClient sessionClient
+                    = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
+                        effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
+
+                policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
+                    new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
+            }
         }
 
         if (azureSasCredential != null) {
