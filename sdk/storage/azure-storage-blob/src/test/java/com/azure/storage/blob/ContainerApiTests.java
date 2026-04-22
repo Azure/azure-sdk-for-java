@@ -2183,7 +2183,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         BlobContainerClient sessionCc
             = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl(), capturePolicy)
-                .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ALWAYS))
+                .sessionOptions(new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER))
                 .buildClient();
 
         // Download the blob — should use session auth

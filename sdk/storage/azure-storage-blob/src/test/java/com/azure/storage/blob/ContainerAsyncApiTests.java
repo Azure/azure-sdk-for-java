@@ -2194,7 +2194,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         BlobContainerAsyncClient sessionCcAsync
             = getContainerClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl(), capturePolicy)
-                .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ALWAYS))
+                .sessionOptions(new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER))
                 .buildAsyncClient();
 
         // Download the blob — should use session auth

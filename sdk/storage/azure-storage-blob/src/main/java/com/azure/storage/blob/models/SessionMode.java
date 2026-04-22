@@ -10,7 +10,7 @@ package com.azure.storage.blob.models;
  * and authorization cost across many requests by signing them with a lightweight HMAC key instead
  * of a full bearer token.
  * {@link #NONE}
- * {@link #ALWAYS}
+ * {@link #SINGLE_SPECIFIED_CONTAINER}
  * {@link #AUTO}
  */
 public enum SessionMode {
@@ -24,7 +24,6 @@ public enum SessionMode {
      * Default behavior. This is currently equivalent to {@link #NONE}
      */
     AUTO,
-
 
     /**
      * The SDK creates a session on the first request and keeps an active session until it

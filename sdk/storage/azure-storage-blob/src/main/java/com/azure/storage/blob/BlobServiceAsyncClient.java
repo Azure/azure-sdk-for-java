@@ -161,13 +161,7 @@ public final class BlobServiceAsyncClient {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        SessionOptions containerSessionOptions = sessionOptions.setSessionMode(sessionOptions.getSessionMode())
-            .setContainerName(containerName)
-            .setAccountName(getAccountName());
-
-        HttpPipeline containerPipeline = BuilderHelper.wrapWithSessionPolicy(getHttpPipeline(), containerSessionOptions,
-            getAccountUrl(), getServiceVersion());
-        return new BlobContainerAsyncClient(containerPipeline, getAccountUrl(), getServiceVersion(), getAccountName(),
+        return new BlobContainerAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 

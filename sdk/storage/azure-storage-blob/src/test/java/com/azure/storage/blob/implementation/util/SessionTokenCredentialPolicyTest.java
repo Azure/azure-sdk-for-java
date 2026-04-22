@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +68,7 @@ public class SessionTokenCredentialPolicyTest {
             return nextPolicy.processSync();
         });
 
-        policy = createPolicy(SessionMode.ALWAYS);
+        policy = createPolicy(SessionMode.SINGLE_SPECIFIED_CONTAINER);
     }
 
     @Test
@@ -425,75 +426,68 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     @Test
-    public void autoModePassesThroughFirstRequestThenSignsSecond() {
+    public void autoModeResolvesToNoneAndAlwaysDelegatesToBearer() {
         SessionTokenCredentialPolicy autoPolicy = createPolicy(SessionMode.AUTO);
-        HttpResponse firstResponse = mock(HttpResponse.class);
-        HttpResponse secondResponse = mock(HttpResponse.class);
+        HttpResponse response = mock(HttpResponse.class);
 
-        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
-        when(firstResponse.getStatusCode()).thenReturn(200);
-        when(secondResponse.getStatusCode()).thenReturn(200);
+        when(response.getStatusCode()).thenReturn(200);
 
-        // First request — should delegate to bearer (AUTO first GetBlob)
+        // AUTO resolves to NONE, so all requests should delegate to bearer
         HttpPipelineCallContext context1 = createContext();
         HttpPipelineNextPolicy next1 = mock(HttpPipelineNextPolicy.class);
-        when(next1.process()).thenReturn(Mono.just(firstResponse));
+        when(next1.process()).thenReturn(Mono.just(response));
 
         try (HttpResponse actual1 = autoPolicy.process(context1, next1).block()) {
-            assertEquals(firstResponse, actual1);
-            verify(sessionClient, times(0)).createSessionAsync();
+            assertEquals(response, actual1);
             verify(bearerPolicy, times(1)).process(any(), any());
+            verify(sessionClient, times(0)).createSessionAsync();
         }
 
-        // Second request — should use session
+        // Second GetBlob also delegates to bearer (AUTO == NONE, no session ever)
         HttpPipelineCallContext context2 = createContext();
         HttpPipelineNextPolicy next2 = mock(HttpPipelineNextPolicy.class);
-        when(next2.clone()).thenReturn(next2);
-        when(next2.process()).thenReturn(Mono.just(secondResponse));
+        when(next2.process()).thenReturn(Mono.just(response));
 
         try (HttpResponse actual2 = autoPolicy.process(context2, next2).block()) {
-            assertEquals(secondResponse, actual2);
-            verify(sessionClient, times(1)).createSessionAsync();
-            assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+            assertEquals(response, actual2);
+            verify(bearerPolicy, times(2)).process(any(), any());
+            verify(sessionClient, times(0)).createSessionAsync();
         }
     }
 
     @Test
-    public void autoModeSyncPassesThroughFirstRequestThenSignsSecond() {
+    public void autoModeSyncResolvesToNoneAndAlwaysDelegatesToBearer() {
         SessionTokenCredentialPolicy autoPolicy = createPolicy(SessionMode.AUTO);
-        HttpResponse firstResponse = mock(HttpResponse.class);
-        HttpResponse secondResponse = mock(HttpResponse.class);
+        HttpResponse response = mock(HttpResponse.class);
 
-        when(sessionClient.createSessionSync()).thenReturn(credentialWithToken(FIRST_TOKEN));
-        when(firstResponse.getStatusCode()).thenReturn(200);
-        when(secondResponse.getStatusCode()).thenReturn(200);
+        when(response.getStatusCode()).thenReturn(200);
 
-        // First request — delegate to bearer
+        // AUTO resolves to NONE, so all requests should delegate to bearer
         HttpPipelineCallContext context1 = createContext();
         HttpPipelineNextSyncPolicy next1 = mock(HttpPipelineNextSyncPolicy.class);
-        when(next1.processSync()).thenReturn(firstResponse);
+        when(next1.processSync()).thenReturn(response);
 
         try (HttpResponse actual1 = autoPolicy.processSync(context1, next1)) {
-            assertEquals(firstResponse, actual1);
-            verify(sessionClient, times(0)).createSessionSync();
+            assertEquals(response, actual1);
             verify(bearerPolicy, times(1)).processSync(any(), any());
+            verify(sessionClient, times(0)).createSessionSync();
         }
 
-        // Second request — session signed
         HttpPipelineCallContext context2 = createContext();
         HttpPipelineNextSyncPolicy next2 = mock(HttpPipelineNextSyncPolicy.class);
-        when(next2.clone()).thenReturn(next2);
-        when(next2.processSync()).thenReturn(secondResponse);
+        when(next2.processSync()).thenReturn(response);
 
         try (HttpResponse actual2 = autoPolicy.processSync(context2, next2)) {
-            assertEquals(secondResponse, actual2);
-            verify(sessionClient, times(1)).createSessionSync();
-            assertTrue(context2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
+            assertEquals(response, actual2);
+            verify(bearerPolicy, times(2)).processSync(any(), any());
+            verify(sessionClient, times(0)).createSessionSync();
         }
     }
 
     private SessionTokenCredentialPolicy createPolicy(SessionMode mode) {
-        return new SessionTokenCredentialPolicy(bearerPolicy, new StorageSessionCredentialCache(sessionClient), mode);
+        SessionOptions options = new SessionOptions().setSessionMode(mode).setContainerName("mycontainer");
+        return new SessionTokenCredentialPolicy(bearerPolicy, new StorageSessionCredentialCache(sessionClient),
+            options);
     }
 
     private static StorageSessionCredential credentialWithToken(String token) {
@@ -631,43 +625,31 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     @Test
-    public void autoModeCounterOnlyAdvancesOnGetBlobRequests() {
+    public void autoModeAlwaysDelegatesToBearerEvenForGetBlobRequests() {
         SessionTokenCredentialPolicy autoPolicy = createPolicy(SessionMode.AUTO);
         HttpResponse response = mock(HttpResponse.class);
         when(response.getStatusCode()).thenReturn(200);
 
-        // First request: PUT (non-GetBlob) — should not advance AUTO counter, delegates to bearer
+        // PUT request — delegates to bearer (AUTO == NONE)
         HttpPipelineCallContext putContext = createContextForRequest(
             new HttpRequest(HttpMethod.PUT, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
         HttpPipelineNextPolicy putNext = mock(HttpPipelineNextPolicy.class);
         when(putNext.process()).thenReturn(Mono.just(response));
         autoPolicy.process(putContext, putNext).block().close();
 
-        // Second request: GET blob — should be first GetBlob, so AUTO delegates to bearer
-        HttpPipelineCallContext getContext1
+        // GET blob — also delegates to bearer (AUTO == NONE)
+        HttpPipelineCallContext getContext
             = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
-        HttpPipelineNextPolicy getNext1 = mock(HttpPipelineNextPolicy.class);
-        when(getNext1.process()).thenReturn(Mono.just(response));
-        Objects.requireNonNull(autoPolicy.process(getContext1, getNext1).block()).close();
+        HttpPipelineNextPolicy getNext = mock(HttpPipelineNextPolicy.class);
+        when(getNext.process()).thenReturn(Mono.just(response));
+        Objects.requireNonNull(autoPolicy.process(getContext, getNext).block()).close();
 
-        // Verify bearer policy was called for both passthrough requests
         verify(bearerPolicy, times(2)).process(any(), any());
-
-        // Third request: GET blob — should now use session (counter was advanced by previous GetBlob)
-        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
-        HttpPipelineCallContext getContext2
-            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
-        HttpPipelineNextPolicy getNext2 = mock(HttpPipelineNextPolicy.class);
-        when(getNext2.clone()).thenReturn(getNext2);
-        when(getNext2.process()).thenReturn(Mono.just(response));
-        Objects.requireNonNull(autoPolicy.process(getContext2, getNext2).block()).close();
-
-        assertTrue(getContext2.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
-            "Second GetBlob in AUTO mode should use session auth");
+        verify(sessionClient, times(0)).createSessionAsync();
     }
 
     @Test
-    public void alwaysModeNonGetBlobSkipsSession() {
+    public void singleSpecifiedContainerModeNonGetBlobSkipsSession() {
         HttpPipelineCallContext context = createContextForRequest(
             new HttpRequest(HttpMethod.DELETE, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
@@ -677,7 +659,7 @@ public class SessionTokenCredentialPolicyTest {
 
         Objects.requireNonNull(policy.process(context, next).block()).close();
 
-        // ALWAYS mode non-GetBlob requests delegate to bearer instead of session auth
+        // SINGLE_SPECIFIED_CONTAINER mode non-GetBlob requests delegate to bearer instead of session auth
         verify(bearerPolicy, times(1)).process(any(), any());
         verify(sessionClient, times(0)).createSessionAsync();
     }
