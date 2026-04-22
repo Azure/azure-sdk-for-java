@@ -210,3 +210,4 @@ After the `.env` is configured, direct the user to:
 ## Related Skills
 
 - `cu-sdk-java-sample-run` — Run SDK samples (uses the env vars configured here)
+- `cu-sdk-common-knowledge` — Domain knowledge for Content Understanding concepts

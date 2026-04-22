@@ -418,7 +418,8 @@ Wraps `mvn exec:java` with sample name resolution, validation, and optional `.en
 
 ## Related Skills
 
-- `cu-sdk-java-setup-env` — Interactive .env file setup
+- `cu-sdk-java-setup-env` — Interactive .env file setup (configure endpoint, auth, and model deployments before running samples)
+- `cu-sdk-common-knowledge` — Domain knowledge for Content Understanding concepts
 
 ## Additional Resources
 
