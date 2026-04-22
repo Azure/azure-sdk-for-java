@@ -522,8 +522,6 @@ public class SessionTokenCredentialPolicyTest {
         return context;
     }
 
-    // region GetBlob-only filtering tests
-
     @Test
     public void getBlobRequestUsesSessionAuth() {
         HttpPipelineCallContext context
@@ -540,6 +538,36 @@ public class SessionTokenCredentialPolicyTest {
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
             "GetBlob request should be signed with session auth");
+    }
+
+    @Test
+    public void getBlobRequestSignedHeaderEqualsCredentialOutput() {
+        StorageSessionCredential cred = credentialWithToken(FIRST_TOKEN);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        request.getHeaders()
+            .set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
+            .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
+            .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
+            .set(HttpHeaderName.RANGE, "bytes=0-1023");
+
+        HttpPipelineCallContext context = createContextForRequest(request);
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(cred));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+
+        policy.process(context, next).block().close();
+
+        String actual = request.getHeaders().getValue(authHeaderName);
+
+        String expected = cred.generateAuthorizationHeader(request.getUrl(), request.getHttpMethod().toString(),
+            request.getHeaders());
+        assertEquals(expected, actual,
+            "Policy must stamp the exact Authorization value StorageSessionCredential generates");
     }
 
     @Test

@@ -119,6 +119,38 @@ public class StorageSessionCredentialTest {
     }
 
     @Test
+    public void signatureMatchesSharedKeyForRealisticBlobDownloadRequest() throws MalformedURLException {
+        // The session signing protocol is a port of Shared Key. For a representative download
+        // request, the resulting HMAC must be byte-identical to what StorageSharedKeyCredential
+        // would produce for the same URL/method/headers. Divergence here is the most likely root
+        // cause of a 401 InvalidAuthenticationInfo on the session signing path.
+        String accountName = SessionTestHelper.TEST_ACCOUNT_NAME;
+        String accountKey = SessionTestHelper.TEST_SESSION_KEY;
+
+        StorageSessionCredential sessionCred
+            = new StorageSessionCredential("ignored-token", accountKey, OffsetDateTime.now().plusHours(1), accountName);
+        StorageSharedKeyCredential sharedKeyCred = new StorageSharedKeyCredential(accountName, accountKey);
+
+        URL url = new URL(
+            "https://myaccount.blob.core.windows.net/mycontainer/myblob?snapshot=2025-03-31T00%3A00%3A00.0000000Z");
+        HttpHeaders headers
+            = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-date"), "Mon, 31 Mar 2025 00:00:00 GMT")
+                .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
+                .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
+                .set(HttpHeaderName.RANGE, "bytes=0-1023");
+
+        String sessionAuth = sessionCred.generateAuthorizationHeader(url, "GET", headers);
+        String sessionSignature = sessionAuth.substring(sessionAuth.indexOf(':') + 1);
+
+        Map<String, String> headerMap = headers.stream().collect(Collectors.toMap(h -> h.getName(), h -> h.getValue()));
+        String sharedKeyAuth = sharedKeyCred.generateAuthorizationHeader(url, "GET", headerMap);
+        String sharedKeySignature = sharedKeyAuth.substring(sharedKeyAuth.indexOf(':') + 1);
+
+        assertEquals(sharedKeySignature, sessionSignature,
+            "Session HMAC must match Shared Key HMAC for an identical Download Blob request");
+    }
+
+    @Test
     public void sessionAndSharedKeyProduceSameSignatureForIpStyleUrl() throws MalformedURLException {
         String accountName = SessionTestHelper.TEST_ACCOUNT_NAME;
         String accountKey = SessionTestHelper.TEST_SESSION_KEY;
