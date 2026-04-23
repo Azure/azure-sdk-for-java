@@ -29,6 +29,7 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
@@ -234,6 +235,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -261,6 +263,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -371,6 +374,7 @@ public final class SearchIndexClient {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *             &#64;odata.etag: String (Optional)
      *         }
@@ -432,6 +436,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -523,6 +532,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -544,6 +554,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -580,6 +591,13 @@ public final class SearchIndexClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -604,6 +622,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -695,6 +718,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -716,6 +740,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -752,6 +777,13 @@ public final class SearchIndexClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -972,6 +1004,8 @@ public final class SearchIndexClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
+     *             enableImageServing: Boolean (Optional)
+     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -979,6 +1013,10 @@ public final class SearchIndexClient {
      *             kind: String(azureOpenAI) (Required)
      *         }
      *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -991,8 +1029,17 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -1006,6 +1053,8 @@ public final class SearchIndexClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
+     *             enableImageServing: Boolean (Optional)
+     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -1013,6 +1062,10 @@ public final class SearchIndexClient {
      *             kind: String(azureOpenAI) (Required)
      *         }
      *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -1025,8 +1078,17 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -1118,7 +1180,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -1133,6 +1195,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1143,7 +1206,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -1158,6 +1221,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2639,6 +2703,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2682,6 +2747,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2709,6 +2775,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2750,6 +2817,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -2841,6 +2913,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -2862,6 +2935,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -2898,6 +2972,13 @@ public final class SearchIndexClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -2921,6 +3002,17 @@ public final class SearchIndexClient {
 
     /**
      * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
+     * 1000.</td></tr>
+     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
+     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
+     * items. Default is false.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2939,6 +3031,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -3030,6 +3127,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -3051,6 +3149,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -3087,6 +3186,13 @@ public final class SearchIndexClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3126,6 +3232,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -3217,6 +3328,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -3238,6 +3350,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -3274,6 +3387,13 @@ public final class SearchIndexClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3298,6 +3418,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -3389,6 +3514,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -3410,6 +3536,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -3446,6 +3573,13 @@ public final class SearchIndexClient {
      *                 truncationDimension: Integer (Optional)
      *             }
      *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     sharePointConnectorAppRegistration (Optional): {
+     *         applicationId: String (Required)
+     *         federatedCredentialId: String (Required)
+     *         tenantId: String (Optional)
      *     }
      *     &#64;odata.etag: String (Optional)
      * }
@@ -3665,6 +3799,8 @@ public final class SearchIndexClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
+     *             enableImageServing: Boolean (Optional)
+     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3672,6 +3808,10 @@ public final class SearchIndexClient {
      *             kind: String(azureOpenAI) (Required)
      *         }
      *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -3684,8 +3824,17 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -3715,6 +3864,8 @@ public final class SearchIndexClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
+     *             enableImageServing: Boolean (Optional)
+     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3722,6 +3873,10 @@ public final class SearchIndexClient {
      *             kind: String(azureOpenAI) (Required)
      *         }
      *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -3734,8 +3889,17 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -3764,6 +3928,8 @@ public final class SearchIndexClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
+     *             enableImageServing: Boolean (Optional)
+     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3771,6 +3937,10 @@ public final class SearchIndexClient {
      *             kind: String(azureOpenAI) (Required)
      *         }
      *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -3783,8 +3953,17 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -3798,6 +3977,8 @@ public final class SearchIndexClient {
      *     knowledgeSources (Required): [
      *          (Required){
      *             name: String (Required)
+     *             enableImageServing: Boolean (Optional)
+     *             enableFreshness: Boolean (Optional)
      *         }
      *     ]
      *     models (Optional): [
@@ -3805,6 +3986,10 @@ public final class SearchIndexClient {
      *             kind: String(azureOpenAI) (Required)
      *         }
      *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     &#64;odata.etag: String (Optional)
      *     encryptionKey (Optional): {
      *         keyVaultKeyName: String (Required)
@@ -3817,8 +4002,17 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -3845,7 +4039,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3860,6 +4054,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3886,7 +4081,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3901,6 +4096,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3926,7 +4122,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3941,6 +4137,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3951,7 +4148,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *     name: String (Required)
      *     description: String (Optional)
      *     &#64;odata.etag: String (Optional)
@@ -3966,6 +4163,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3993,7 +4191,7 @@ public final class SearchIndexClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(searchIndex/azureBlob/indexedOneLake/web) (Optional)
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Optional)
      *     synchronizationStatus: String(creating/active/deleting) (Required)
      *     synchronizationInterval: Duration (Optional)
      *     currentSynchronizationState (Optional): {
@@ -4063,6 +4261,8 @@ public final class SearchIndexClient {
      *         synonymMaps (Required): (recursive schema, see synonymMaps above)
      *         skillsetCount (Required): (recursive schema, see skillsetCount above)
      *         vectorIndexSize (Required): (recursive schema, see vectorIndexSize above)
+     *         knowledgeBasesCount (Required): (recursive schema, see knowledgeBasesCount above)
+     *         knowledgeSourcesCount (Required): (recursive schema, see knowledgeSourcesCount above)
      *     }
      *     limits (Required): {
      *         maxFieldsPerIndex: Integer (Optional)
@@ -4071,6 +4271,12 @@ public final class SearchIndexClient {
      *         maxComplexObjectsInCollectionsPerDocument: Integer (Optional)
      *         maxStoragePerIndex: Long (Optional)
      *         maxCumulativeIndexerRuntimeSeconds: Long (Optional)
+     *     }
+     *     indexersRuntime (Required): {
+     *         usedSeconds: long (Required)
+     *         remainingSeconds: Long (Optional)
+     *         beginningTime: OffsetDateTime (Required)
+     *         endingTime: OffsetDateTime (Required)
      *     }
      * }
      * }
@@ -4098,6 +4304,11 @@ public final class SearchIndexClient {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
+     * 1000.</td></tr>
+     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
+     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
+     * items. Default is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4118,6 +4329,11 @@ public final class SearchIndexClient {
      *             filterable: Boolean (Optional)
      *             sortable: Boolean (Optional)
      *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabelId: Boolean (Optional)
+     *             sensitivityLabelName: Boolean (Optional)
+     *             sourceDocumentId: Boolean (Optional)
+     *             sharepointSiteUrl: Boolean (Optional)
      *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
      *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
@@ -4209,6 +4425,7 @@ public final class SearchIndexClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     similarity (Optional): {
      *         &#64;odata.type: String (Required)
@@ -4230,6 +4447,7 @@ public final class SearchIndexClient {
      *                     ]
      *                 }
      *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
      *             }
      *         ]
      *     }
@@ -4267,6 +4485,8 @@ public final class SearchIndexClient {
      *             }
      *         ]
      *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
      *     &#64;odata.etag: String (Optional)
      * }
      * }
@@ -4333,10 +4553,53 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$top</td><td>Integer</td><td>No</td><td>The number of items to retrieve. Default is 50, maximum is
+     * 1000.</td></tr>
+     * <tr><td>$skip</td><td>Integer</td><td>No</td><td>The number of items to skip.</td></tr>
+     * <tr><td>$count</td><td>Boolean</td><td>No</td><td>A value that specifies whether to fetch the total count of
+     * items. Default is false.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     documentCount: long (Required)
+     *     storageSize: long (Required)
+     *     vectorIndexSize: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> hiddenGeneratedListIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummary(requestOptions);
+    }
+
+    /**
      * Lists all indexes available for a search service.
      *
      * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
      * property names, or '*' for all properties. The default is all properties.
+     * @param top The number of items to retrieve. Default is 50, maximum is 1000.
+     * @param skip The number of items to skip.
+     * @param count A value that specifies whether to fetch the total count of items. Default is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4347,7 +4610,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select) {
+    public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select, Integer top,
+        Integer skip, Boolean count) {
         // Generated convenience method for listIndexesWithSelectedProperties
         RequestOptions requestOptions = new RequestOptions();
         if (select != null) {
@@ -4357,7 +4621,69 @@ public final class SearchIndexClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
+        if (top != null) {
+            requestOptions.addQueryParam("$top", String.valueOf(top), false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
+        }
+        if (count != null) {
+            requestOptions.addQueryParam("$count", String.valueOf(count), false);
+        }
         return serviceClient.listIndexesWithSelectedProperties(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexResponse.class));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @param top The number of items to retrieve. Default is 50, maximum is 1000.
+     * @param skip The number of items to skip.
+     * @param count A value that specifies whether to fetch the total count of items. Default is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> listIndexStatsSummary(Integer top, Integer skip, Boolean count) {
+        // Generated convenience method for listIndexStatsSummary
+        RequestOptions requestOptions = new RequestOptions();
+        if (top != null) {
+            requestOptions.addQueryParam("$top", String.valueOf(top), false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("$skip", String.valueOf(skip), false);
+        }
+        if (count != null) {
+            requestOptions.addQueryParam("$count", String.valueOf(count), false);
+        }
+        return serviceClient.listIndexStatsSummary(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> listIndexStatsSummary() {
+        // Generated convenience method for listIndexStatsSummary
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listIndexStatsSummary(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
     }
 }
