@@ -44,9 +44,12 @@ class JdbcPropertiesBeanPostProcessorTest {
     private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
         + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
     protected static final String MANAGED_IDENTITY_ENABLED_DEFAULT = "azure.managedIdentityEnabled=false";
-    protected static final String SCOPES_DEFAULT = "azure.scopes=https://ossrdbms-aad.database.windows.net/.default";
-    private static final String SCOPES_CHINA = "azure.scopes=https://ossrdbms-aad.database.chinacloudapi.cn/.default";
-    private static final String SCOPES_US_GOVERNMENT = "azure.scopes=https://ossrdbms-aad.database.usgovcloudapi.net/.default";
+    protected static final String SCOPES_DEFAULT = AuthProperty.SCOPES.getPropertyKey() + "="
+        + "https://ossrdbms-aad.database.windows.net/.default";
+    private static final String SCOPES_CHINA = AuthProperty.SCOPES.getPropertyKey() + "="
+        + "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+    private static final String SCOPES_US_GOVERNMENT = AuthProperty.SCOPES.getPropertyKey() + "="
+        + "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
     private static final String DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX = ".spring.datasource.azure";
     private MockEnvironment mockEnvironment;
 

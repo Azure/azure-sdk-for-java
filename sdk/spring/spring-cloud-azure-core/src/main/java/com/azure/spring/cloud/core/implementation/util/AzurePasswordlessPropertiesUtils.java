@@ -51,7 +51,7 @@ public final class AzurePasswordlessPropertiesUtils {
         copyPropertiesIgnoreNull(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
-        String[] scopes = source.getScopes();
+        String scopes = source.getScopes();
         if (scopes != null) {
             target.setScopes(scopes);
         }
