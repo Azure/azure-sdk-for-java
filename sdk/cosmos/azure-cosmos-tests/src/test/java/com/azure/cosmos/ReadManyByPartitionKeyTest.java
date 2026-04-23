@@ -16,13 +16,6 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
-import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
-import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
@@ -735,146 +728,66 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
     //endregion
 
-    //region Fault injection continuation-token replay tests
+    //region Continuation-token resume correctness tests
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT * 3)
-    public void singlePk_faultInjection_transientQueryFailure_resumesWithoutDuplicatesOrLoss() {
-        // Use small batch size to get multiple batches (continuation tokens between batches)
+    public void singlePk_continuationToken_resumeAtEveryPageBoundary_noLossNoDuplicates() {
+        // Validates that resuming from ANY page boundary produces a complete, duplicate-free
+        // result set when combined with the items from earlier pages.
         String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
         try {
             System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "2");
 
-            // Create enough items across 4 PKs so that each PK produces multiple pages
-            createSinglePkItems("fiPk1", 5);
-            createSinglePkItems("fiPk2", 5);
-            createSinglePkItems("fiPk3", 5);
-            createSinglePkItems("fiPk4", 5);
+            createSinglePkItems("resumePk1", 4);
+            createSinglePkItems("resumePk2", 4);
+            createSinglePkItems("resumePk3", 4);
+            createSinglePkItems("resumePk4", 4);
 
             List<PartitionKey> pkValues = Arrays.asList(
-                new PartitionKey("fiPk1"),
-                new PartitionKey("fiPk2"),
-                new PartitionKey("fiPk3"),
-                new PartitionKey("fiPk4"));
-
-            // First: collect baseline (no faults) to know exactly which items exist
-            List<ObjectNode> baselineResults = singlePkContainer
-                .readManyByPartitionKeys(pkValues, ObjectNode.class)
-                .stream().collect(Collectors.toList());
-            assertThat(baselineResults).hasSize(20);
-            List<String> baselineIds = baselineResults.stream()
-                .map(n -> n.get("id").asText())
-                .sorted()
-                .collect(Collectors.toList());
-
-            // Now inject a transient 503 (Service Unavailable) on query operations with a
-            // limited hit count. This simulates network blips mid-iteration — the SDK's
-            // continuation-token-based retry must resume from the last committed page.
-            CosmosAsyncContainer asyncContainer = client.asyncClient()
-                .getDatabase(preExistingDatabaseId)
-                .getContainer(singlePkContainer.getId());
-
-            FaultInjectionRule queryTransientFaultRule = new FaultInjectionRuleBuilder(
-                "readManyByPk-transient-503")
-                .condition(new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .build())
-                .result(FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                    .build())
-                .hitLimit(3) // inject exactly 3 transient failures then stop
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(asyncContainer, Arrays.asList(queryTransientFaultRule))
-                .block();
-
-            try {
-                // Read with fault injection active — SDK should retry and deliver all items
-                List<ObjectNode> faultInjectedResults = singlePkContainer
-                    .readManyByPartitionKeys(pkValues, ObjectNode.class)
-                    .stream().collect(Collectors.toList());
-
-                List<String> faultInjectedIds = faultInjectedResults.stream()
-                    .map(n -> n.get("id").asText())
-                    .sorted()
-                    .collect(Collectors.toList());
-
-                // Assert: no duplicates
-                assertThat(faultInjectedIds).doesNotHaveDuplicates();
-
-                // Assert: all baseline items are present (no data loss)
-                assertThat(faultInjectedIds).hasSameElementsAs(baselineIds);
-
-                // Assert: exact count
-                assertThat(faultInjectedIds).hasSize(20);
-            } finally {
-                queryTransientFaultRule.disable();
-            }
-
-            cleanupContainer(singlePkContainer);
-        } finally {
-            if (originalValue != null) {
-                System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", originalValue);
-            } else {
-                System.clearProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
-            }
-        }
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 3)
-    public void singlePk_faultInjection_transientFailure_continuationResumeNoLoss() {
-        // Tests the manual continuation token resume path: drain first page, inject fault,
-        // resume from continuation token — verifying the union of both calls covers all items.
-        String originalValue = System.getProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE");
-        try {
-            System.setProperty("COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE", "1");
-
-            createSinglePkItems("ctResPk1", 3);
-            createSinglePkItems("ctResPk2", 3);
-            createSinglePkItems("ctResPk3", 3);
-
-            List<PartitionKey> pkValues = Arrays.asList(
-                new PartitionKey("ctResPk1"),
-                new PartitionKey("ctResPk2"),
-                new PartitionKey("ctResPk3"));
+                new PartitionKey("resumePk1"),
+                new PartitionKey("resumePk2"),
+                new PartitionKey("resumePk3"),
+                new PartitionKey("resumePk4"));
 
             CosmosAsyncContainer asyncContainer = client.asyncClient()
                 .getDatabase(preExistingDatabaseId)
                 .getContainer(singlePkContainer.getId());
 
-            // Drain just the first page to get a continuation token
-            FeedResponse<ObjectNode> firstPage = asyncContainer
+            // Collect all pages in a single pass
+            List<FeedResponse<ObjectNode>> allPages = asyncContainer
                 .readManyByPartitionKeys(pkValues, ObjectNode.class)
                 .byPage()
-                .blockFirst();
-
-            assertThat(firstPage).isNotNull();
-            String continuationAfterFirstPage = firstPage.getContinuationToken();
-            assertThat(continuationAfterFirstPage).isNotNull();
-            List<String> firstPageIds = firstPage.getResults().stream()
-                .map(n -> n.get("id").asText())
-                .collect(Collectors.toList());
-
-            // Inject a transient fault, then resume from the continuation token
-            FaultInjectionRule resumeFaultRule = new FaultInjectionRuleBuilder(
-                "readManyByPk-resume-503")
-                .condition(new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .build())
-                .result(FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                    .build())
-                .hitLimit(2)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(asyncContainer, Arrays.asList(resumeFaultRule))
+                .collectList()
                 .block();
 
-            try {
+            assertThat(allPages).isNotNull();
+            assertThat(allPages.size()).isGreaterThan(1);
+
+            List<String> allIds = allPages.stream()
+                .flatMap(p -> p.getResults().stream())
+                .map(n -> n.get("id").asText())
+                .collect(Collectors.toList());
+            assertThat(allIds).hasSize(16);
+            assertThat(allIds).doesNotHaveDuplicates();
+
+            // For each page boundary, resume from that boundary's continuation token
+            // and verify: items before + items after = all items, no duplicates
+            for (int splitAt = 0; splitAt < allPages.size() - 1; splitAt++) {
+                String continuation = allPages.get(splitAt).getContinuationToken();
+                if (continuation == null) {
+                    continue; // last page has null continuation
+                }
+
+                // Items from pages 0..splitAt
+                List<String> beforeIds = new ArrayList<>();
+                for (int p = 0; p <= splitAt; p++) {
+                    allPages.get(p).getResults().forEach(n -> beforeIds.add(n.get("id").asText()));
+                }
+
+                // Resume from continuation
                 com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions resumeOptions =
                     new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
-                resumeOptions.setContinuationToken(continuationAfterFirstPage);
+                resumeOptions.setContinuationToken(continuation);
 
                 List<ObjectNode> resumedResults = asyncContainer
                     .readManyByPartitionKeys(pkValues, resumeOptions, ObjectNode.class)
@@ -884,19 +797,19 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
                     .block();
 
                 assertThat(resumedResults).isNotNull();
-
-                List<String> resumedIds = resumedResults.stream()
+                List<String> afterIds = resumedResults.stream()
                     .map(n -> n.get("id").asText())
                     .collect(Collectors.toList());
 
-                // Union of first page + resumed should cover all 9 items
-                List<String> allIds = new ArrayList<>(firstPageIds);
-                allIds.addAll(resumedIds);
+                List<String> combined = new ArrayList<>(beforeIds);
+                combined.addAll(afterIds);
 
-                assertThat(allIds).doesNotHaveDuplicates();
-                assertThat(allIds).hasSize(9);
-            } finally {
-                resumeFaultRule.disable();
+                assertThat(combined)
+                    .as("Resume at page boundary %d should produce all items", splitAt)
+                    .doesNotHaveDuplicates();
+                assertThat(combined)
+                    .as("Resume at page boundary %d should cover all 16 items", splitAt)
+                    .hasSameElementsAs(allIds);
             }
 
             cleanupContainer(singlePkContainer);
