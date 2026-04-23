@@ -88,7 +88,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             "SELECT * FROM c WHERE c.age > @minAge", baseParams, pkValues, selectors, pkDef);
 
         // Should AND the PK filter to the existing WHERE clause
-        assertThat(result.getQueryText()).contains("WHERE (c.age > @minAge) AND (");
+        assertThat(result.getQueryText()).contains("WHERE (c.age > @minAge\n) AND (");
         assertThat(result.getQueryText()).contains("IN (");
         assertThat(result.getParameters()).hasSize(2); // @minAge + @__rmPk_0
         assertThat(result.getParameters().get(0).getName()).isEqualTo("@minAge");
@@ -191,7 +191,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
             "SELECT c.name FROM c WHERE c.status = @status", baseParams, pkValues, selectors, pkDef);
 
-        assertThat(result.getQueryText()).contains("WHERE (c.status = @status) AND (");
+        assertThat(result.getQueryText()).contains("WHERE (c.status = @status\n) AND (");
         assertThat(result.getQueryText()).contains("c[\"city\"] = @__rmPk_0");
         assertThat(result.getParameters()).hasSize(3); // @status + 2 pk params
     }
@@ -395,7 +395,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
             "SELECT x.id, x.mypk FROM x WHERE x.category = @cat", baseParams, pkValues, selectors, pkDef);
 
-        assertThat(result.getQueryText()).contains("WHERE (x.category = @cat) AND (x[\"mypk\"] IN (");
+        assertThat(result.getQueryText()).contains("WHERE (x.category = @cat\n) AND (x[\"mypk\"] IN (");
     }
 
     @Test(groups = { "unit" })
@@ -500,7 +500,7 @@ public class ReadManyByPartitionKeyQueryHelperTest {
             "SELECT * FROM c WHERE c.msg = 'test(value)WHERE'", baseParams, pkValues, selectors, pkDef);
 
         // Should correctly AND the PK filter to the real WHERE clause
-        assertThat(result.getQueryText()).contains("WHERE (c.msg = 'test(value)WHERE') AND (");
+        assertThat(result.getQueryText()).contains("WHERE (c.msg = 'test(value)WHERE'\n) AND (");
     }
 
     @Test(groups = { "unit" })
@@ -755,8 +755,96 @@ public class ReadManyByPartitionKeyQueryHelperTest {
         SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
             "SELECT * FROM c WHERE c.age > @minAge -- filter", baseParams, pkValues, selectors, pkDef);
 
-        assertThat(result.getQueryText()).contains("WHERE (c.age > @minAge -- filter) AND (");
+        assertThat(result.getQueryText()).contains("WHERE (c.age > @minAge -- filter\n) AND (");
         assertThat(result.getQueryText()).contains("IN (");
+    }
+
+    @Test(groups = { "unit" })
+    public void singlePk_existingWhere_trailingLineComment_andClauseNotSwallowed() {
+        // Without the \n before ), the -- comment would swallow ") AND (" and the entire
+        // PK filter, producing a query that returns unfiltered results.
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Arrays.asList(new PartitionKey("pk1"), new PartitionKey("pk2"));
+
+        List<SqlParameter> baseParams = new ArrayList<>();
+        baseParams.add(new SqlParameter("@status", "active"));
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c WHERE c.status = @status -- only active", baseParams, pkValues, selectors, pkDef);
+
+        // The \n must break the -- comment so that ) AND ( is on a new line
+        String queryText = result.getQueryText();
+        assertThat(queryText).contains("-- only active\n) AND (");
+        assertThat(queryText).contains("IN (");
+        assertThat(queryText).contains("@__rmPk_0");
+        assertThat(queryText).contains("@__rmPk_1");
+        assertThat(result.getParameters()).hasSize(3); // @status + 2 pk params
+    }
+
+    @Test(groups = { "unit" })
+    public void hpk_existingWhere_trailingLineComment_andClauseNotSwallowed() {
+        // HPK variant: trailing -- in existing WHERE must not swallow the AND clause
+        PartitionKeyDefinition pkDef = createMultiHashPkDefinition("/city", "/zipcode");
+        List<String> selectors = createSelectors(pkDef);
+
+        List<SqlParameter> baseParams = new ArrayList<>();
+        baseParams.add(new SqlParameter("@active", true));
+
+        PartitionKey pk = new PartitionKeyBuilder().add("Redmond").add("98052").build();
+        List<PartitionKey> pkValues = Collections.singletonList(pk);
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c WHERE c.active = @active -- check", baseParams, pkValues, selectors, pkDef);
+
+        String queryText = result.getQueryText();
+        assertThat(queryText).contains("-- check\n) AND (");
+        assertThat(queryText).contains("c[\"city\"] = @__rmPk_0");
+        assertThat(queryText).contains("c[\"zipcode\"] = @__rmPk_1");
+        assertThat(result.getParameters()).hasSize(3);
+    }
+
+    @Test(groups = { "unit" })
+    public void singlePk_existingWhere_multipleLineComments_andClauseNotSwallowed() {
+        // WHERE clause with a -- comment mid-condition (on its own line) and at the end
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
+
+        List<SqlParameter> baseParams = new ArrayList<>();
+        baseParams.add(new SqlParameter("@minAge", 18));
+        baseParams.add(new SqlParameter("@maxAge", 65));
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c WHERE c.age > @minAge -- lower bound\n  AND c.age < @maxAge -- upper bound",
+            baseParams, pkValues, selectors, pkDef);
+
+        String queryText = result.getQueryText();
+        // The final -- upper bound must be broken by \n before )
+        assertThat(queryText).contains("-- upper bound\n) AND (");
+        assertThat(queryText).contains("IN (");
+        assertThat(queryText).contains("@__rmPk_0");
+        assertThat(result.getParameters()).hasSize(3);
+    }
+
+    @Test(groups = { "unit" })
+    public void singlePk_existingWhere_blockComment_noNewlineNeeded() {
+        // Block comments (/* */) are terminated by */ and don't need \n protection,
+        // but the \n is harmless. Verify the query is still correct.
+        PartitionKeyDefinition pkDef = createSinglePkDefinition("/mypk");
+        List<String> selectors = createSelectors(pkDef);
+        List<PartitionKey> pkValues = Collections.singletonList(new PartitionKey("pk1"));
+
+        List<SqlParameter> baseParams = new ArrayList<>();
+        baseParams.add(new SqlParameter("@val", 42));
+
+        SqlQuerySpec result = ReadManyByPartitionKeyQueryHelper.createReadManyByPkQuerySpec(
+            "SELECT * FROM c WHERE c.x = @val /* note */", baseParams, pkValues, selectors, pkDef);
+
+        String queryText = result.getQueryText();
+        assertThat(queryText).contains("WHERE (c.x = @val /* note */\n) AND (");
+        assertThat(queryText).contains("IN (");
+        assertThat(result.getParameters()).hasSize(2);
     }
 
     //endregion

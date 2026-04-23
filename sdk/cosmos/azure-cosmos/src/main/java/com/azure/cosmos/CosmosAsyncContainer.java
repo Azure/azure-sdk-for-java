@@ -1717,12 +1717,13 @@ public class CosmosAsyncContainer {
         CosmosReadManyByPartitionKeysRequestOptions requestOptions,
         Class<T> classType) {
 
-        if (partitionKeys == null) {
-            throw new IllegalArgumentException("Argument 'partitionKeys' must not be null.");
-        }
+        checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
         if (partitionKeys.isEmpty()) {
             throw new IllegalArgumentException("Argument 'partitionKeys' must not be empty.");
         }
+
         for (PartitionKey pk : partitionKeys) {
             if (pk == null) {
                 throw new IllegalArgumentException(
@@ -1751,14 +1752,16 @@ public class CosmosAsyncContainer {
             ? readManyByPkOptionsAccessor().getContinuationToken(requestOptions)
             : null;
 
-        // Resolve the max-concurrent-batch-prefetch knob; default to availableProcessors() so
-        // the SDK fully utilises CPU when the caller does not override.
+        // Resolve the max-concurrent-batch-prefetch knob. Unlike queryItems (which fans out
+        // many small reads across partitions), readManyByPartitionKeys typically returns large
+        // result sets per partition, so a conservative default avoids overwhelming individual
+        // partitions with parallel requests and spiking RU consumption.
         Integer prefetchOverride = requestOptions != null
             ? readManyByPkOptionsAccessor().getMaxConcurrentBatchPrefetch(requestOptions)
             : null;
         int maxConcurrentBatchPrefetch = prefetchOverride != null
             ? prefetchOverride
-            : Configs.getCPUCnt();
+            : Math.max(1, Math.min(Configs.getCPUCnt(), 8));
 
         return (pagedFluxOptions -> {
             CosmosQueryRequestOptions queryRequestOptions = requestOptions == null

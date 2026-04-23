@@ -12,6 +12,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Helper for constructing SqlQuerySpec instances for readManyByPartitionKeys operations.
@@ -143,7 +144,7 @@ public class ReadManyByPartitionKeyQueryHelper {
             // Base query has WHERE - AND our PK filter
             String beforeWhere = baseQueryText.substring(0, whereIndex);
             String afterWhere = baseQueryText.substring(whereIndex + 5); // skip "WHERE"
-            finalQuery = beforeWhere + "WHERE (" + afterWhere.trim() + ") AND (" + pkFilter.toString().trim() + ")";
+            finalQuery = beforeWhere + "WHERE (" + afterWhere.trim() + "\n) AND (" + pkFilter.toString().trim() + ")";
         } else {
             // No WHERE - add one. Use \n before WHERE so that a trailing single-line comment
             // (-- ...) in the base query does not swallow the WHERE clause.
@@ -159,7 +160,7 @@ public class ReadManyByPartitionKeyQueryHelper {
      * Returns the alias used after FROM (last token before WHERE or end of FROM clause).
      */
     static String extractTableAlias(String queryText) {
-        String upper = queryText.toUpperCase();
+        String upper = queryText.toUpperCase(Locale.ROOT);
         int fromIndex = findTopLevelKeywordIndex(upper, "FROM");
         if (fromIndex < 0) {
             return DEFAULT_TABLE_ALIAS;
@@ -237,8 +238,8 @@ public class ReadManyByPartitionKeyQueryHelper {
      * ignoring occurrences inside parentheses or string literals.
      */
     static int findTopLevelKeywordIndex(String queryText, String keyword) {
-        String queryTextUpper = queryText.toUpperCase();
-        String keywordUpper = keyword.toUpperCase();
+        String queryTextUpper = queryText.toUpperCase(Locale.ROOT);
+        String keywordUpper = keyword.toUpperCase(Locale.ROOT);
         int depth = 0;
         int keyLen = keywordUpper.length();
         int len = queryTextUpper.length();

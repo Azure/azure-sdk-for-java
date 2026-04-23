@@ -108,6 +108,6 @@ public class CosmosReadManyByPartitionKeysRequestOptionsImpl
 
     @Override
     public String getQueryNameOrDefault(String defaultQueryName) {
-        return null;
+        return defaultQueryName;
     }
 }
