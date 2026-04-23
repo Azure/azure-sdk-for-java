@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 
 import java.net.URL;
 import java.text.Collator;
@@ -127,12 +128,18 @@ final class StorageSessionCredential {
         }
 
         // Sort query parameters with locale-insensitive collation, lower-cased keys.
+        // Values must be URL-decoded (and split on commas) to match the canonicalization that the
+        // service performs; otherwise percent-encoded characters (e.g., %3A in a snapshot timestamp)
+        // would produce a different HMAC than Shared Key.
         TreeMap<String, List<String>> params = new TreeMap<>(collator);
         for (String pair : query.split("&")) {
             int eq = pair.indexOf('=');
-            String key = (eq < 0 ? pair : pair.substring(0, eq)).toLowerCase(Locale.ROOT);
-            String value = eq < 0 ? "" : pair.substring(eq + 1);
-            params.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
+            String key = Utility.urlDecode(eq < 0 ? pair : pair.substring(0, eq)).toLowerCase(Locale.ROOT);
+            String rawValue = eq < 0 ? "" : pair.substring(eq + 1);
+            List<String> decoded = params.computeIfAbsent(key, k -> new ArrayList<>());
+            for (String v : rawValue.split(",")) {
+                decoded.add(Utility.urlDecode(v));
+            }
         }
 
         StringBuilder sb = new StringBuilder("/").append(accountName).append(path);
