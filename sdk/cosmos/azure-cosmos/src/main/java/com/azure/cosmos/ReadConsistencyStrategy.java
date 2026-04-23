@@ -63,8 +63,8 @@ public enum ReadConsistencyStrategy {
     private static Map<String, ReadConsistencyStrategy> readConsistencyStrategyHashMap = new HashMap<>();
 
     static {
-        for (ReadConsistencyStrategy rcs : ReadConsistencyStrategy.values()) {
-            readConsistencyStrategyHashMap.put(rcs.toString(), rcs);
+        for (ReadConsistencyStrategy readConsistencyStrategy : ReadConsistencyStrategy.values()) {
+            readConsistencyStrategyHashMap.put(readConsistencyStrategy.toString(), readConsistencyStrategy);
         }
     }
 

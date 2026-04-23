@@ -62,7 +62,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
     public void beforeClass() {
         client = createGatewayBuilder().buildAsyncClient();
 
-        databaseId = "rcs-gw-" + UUID.randomUUID().toString().substring(0, 8);
+        databaseId = "readConsistencyStrategy-gw-" + UUID.randomUUID().toString().substring(0, 8);
         containerId = "testcontainer";
 
         client.createDatabaseIfNotExists(databaseId).block();
@@ -103,7 +103,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
@@ -119,7 +119,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.EVENTUAL);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.EVENTUAL);
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
@@ -135,7 +135,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.SESSION);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.SESSION);
     }
 
     // endregion
@@ -161,7 +161,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getResults()).isNotNull();
-        assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
     }
 
     // endregion
@@ -188,7 +188,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
         assertThat(pages.isEmpty()).isFalse();
 
         FeedResponse<ObjectNode> firstPage = pages.get(0);
-        assertEffectiveRcs(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
     }
 
     // endregion
@@ -216,60 +216,60 @@ public class GatewayReadConsistencyStrategyE2ETest {
         assertThat(response).isNotNull();
         assertThat(response.getResults()).isNotNull();
         assertThat(response.getResults().size()).isEqualTo(2);
-        assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
     }
 
     // endregion
 
-    // region Client-level RCS
+    // region Client-level readConsistencyStrategy
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void gateway_clientLevel_latestCommitted_readItem() {
-        CosmosAsyncClient clientWithRcs = null;
+        CosmosAsyncClient clientWithReadConsistencyStrategy = null;
         try {
-            clientWithRcs = createGatewayBuilder()
+            clientWithReadConsistencyStrategy = createGatewayBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
-            createAndInsertDocument(containerWithRcs, id);
+            createAndInsertDocument(containerWithReadConsistencyStrategy, id);
 
             CosmosItemResponse<ObjectNode> response =
-                containerWithRcs.readItem(id, new PartitionKey(id), ObjectNode.class).block();
+                containerWithReadConsistencyStrategy.readItem(id, new PartitionKey(id), ObjectNode.class).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         } finally {
-            safeClose(clientWithRcs);
+            safeClose(clientWithReadConsistencyStrategy);
         }
     }
 
     // endregion
 
-    // region Write operations — RCS forced to DEFAULT
+    // region Write operations — readConsistencyStrategy forced to DEFAULT
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void gateway_writeItem_rcsIgnored() {
-        CosmosAsyncClient clientWithRcs = null;
+    public void gateway_writeItem_readConsistencyStrategyIgnored() {
+        CosmosAsyncClient clientWithReadConsistencyStrategy = null;
         try {
-            clientWithRcs = createGatewayBuilder()
+            clientWithReadConsistencyStrategy = createGatewayBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
             ObjectNode doc = createDocument(id);
 
             CosmosItemResponse<ObjectNode> response =
-                containerWithRcs.createItem(doc, new PartitionKey(id), null).block();
+                containerWithReadConsistencyStrategy.createItem(doc, new PartitionKey(id), null).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(201);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.DEFAULT);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.DEFAULT);
         } finally {
-            safeClose(clientWithRcs);
+            safeClose(clientWithReadConsistencyStrategy);
         }
     }
 
@@ -302,10 +302,10 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
     // endregion
 
-    // region Both ConsistencyLevel and RCS — RCS wins
+    // region Both ConsistencyLevel and readConsistencyStrategy — readConsistencyStrategy wins
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void gateway_bothConsistencyLevelAndRcs_rcsWins() {
+    public void gateway_bothConsistencyLevelAndReadConsistencyStrategy_readConsistencyStrategyWins() {
         CosmosAsyncClient clientWithBoth = null;
         try {
             clientWithBoth = createGatewayBuilder()
@@ -322,16 +322,16 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         } finally {
             safeClose(clientWithBoth);
         }
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void gateway_requestLevel_bothClAndRcs_rcsWins() {
-        // Request-level contention: options set both ConsistencyLevel and RCS.
-        // RCS should win — gateway must not reject with dual-header error.
+    public void gateway_requestLevel_bothClAndReadConsistencyStrategy_readConsistencyStrategyWins() {
+        // Request-level contention: options set both ConsistencyLevel and readConsistencyStrategy.
+        // readConsistencyStrategy should win — gateway must not reject with dual-header error.
         String id = UUID.randomUUID().toString();
         createAndInsertDocument(id);
 
@@ -344,33 +344,33 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void gateway_requestLevelRcs_overridesClientLevelRcs() {
-        // Request-level RCS should override client-level RCS.
-        CosmosAsyncClient clientWithClientRcs = null;
+    public void gateway_requestLevelReadConsistencyStrategy_overridesClientLevelReadConsistencyStrategy() {
+        // Request-level readConsistencyStrategy should override client-level readConsistencyStrategy.
+        CosmosAsyncClient clientWithClientReadConsistencyStrategy = null;
         try {
-            clientWithClientRcs = createGatewayBuilder()
+            clientWithClientReadConsistencyStrategy = createGatewayBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithClientRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithClientReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
-            createAndInsertDocument(containerWithRcs, id);
+            createAndInsertDocument(containerWithReadConsistencyStrategy, id);
 
             CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
                 .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
             CosmosItemResponse<ObjectNode> response =
-                containerWithRcs.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+                containerWithReadConsistencyStrategy.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         } finally {
-            safeClose(clientWithClientRcs);
+            safeClose(clientWithClientReadConsistencyStrategy);
         }
     }
 
@@ -411,7 +411,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
         targetContainer.createItem(doc, new PartitionKey(id), null).block();
     }
 
-    private static void assertEffectiveRcs(CosmosDiagnostics diagnostics, ReadConsistencyStrategy expected) {
+    private static void assertEffectiveReadConsistencyStrategy(CosmosDiagnostics diagnostics, ReadConsistencyStrategy expected) {
         assertThat(diagnostics).isNotNull();
         assertThat(diagnostics.getDiagnosticsContext()).isNotNull();
         assertThat(diagnostics.getDiagnosticsContext().getEffectiveReadConsistencyStrategy())

@@ -27,8 +27,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class RntbdReadConsistencyStrategyHeaderTests {
 
-    @DataProvider(name = "rcsToRntbdByteValues")
-    public Object[][] rcsToRntbdByteValues() {
+    @DataProvider(name = "readConsistencyStrategyToRntbdByteValues")
+    public Object[][] readConsistencyStrategyToRntbdByteValues() {
         return new Object[][] {
             { ReadConsistencyStrategy.EVENTUAL, RntbdConstants.RntbdReadConsistencyStrategy.Eventual.id() },
             { ReadConsistencyStrategy.SESSION, RntbdConstants.RntbdReadConsistencyStrategy.Session.id() },
@@ -37,7 +37,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         };
     }
 
-    @Test(groups = { "unit" }, dataProvider = "rcsToRntbdByteValues")
+    @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenEncodesCorrectly(
         ReadConsistencyStrategy strategy,
         byte expectedByteValue) {
@@ -77,7 +77,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         assertThat(token.isPresent()).isFalse();
     }
 
-    @Test(groups = { "unit" }, dataProvider = "rcsToRntbdByteValues")
+    @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenRoundTrips(
         ReadConsistencyStrategy strategy,
         byte expectedByteValue) {
@@ -130,8 +130,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     // region ThinClientStoreModel RNTBD encoding via wrapInHttpRequest()
 
-    @DataProvider(name = "rcsStringToRntbdByteValues")
-    public Object[][] rcsStringToRntbdByteValues() {
+    @DataProvider(name = "readConsistencyStrategyStringToRntbdByteValues")
+    public Object[][] readConsistencyStrategyStringToRntbdByteValues() {
         return new Object[][] {
             { "LatestCommitted", (byte) 0x03 },
             { "Eventual", (byte) 0x01 },
@@ -140,15 +140,15 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         };
     }
 
-    @Test(groups = { "unit" }, dataProvider = "rcsStringToRntbdByteValues")
-    public void thinClient_wrapInHttpRequest_rcsEncodedInRntbdFrame(String rcsValue, byte expectedByte) throws Exception {
+    @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyStringToRntbdByteValues")
+    public void thinClient_wrapInHttpRequest_readConsistencyStrategyEncodedInRntbdFrame(String readConsistencyStrategyValue, byte expectedByte) throws Exception {
         // Calls ThinClientStoreModel.wrapInHttpRequest() — the actual production code —
-        // and verifies the RNTBD frame in the HTTP body contains the correct RCS byte.
+        // and verifies the RNTBD frame in the HTTP body contains the correct readConsistencyStrategy byte.
 
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
-        request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, rcsValue);
+        request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyValue);
         request.getHeaders().remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         com.azure.cosmos.implementation.http.HttpRequest httpRequest =
@@ -158,8 +158,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
         try {
             assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, expectedByte))
-                .as("RNTBD frame from wrapInHttpRequest should contain RCS header 0x00F0=0x%02X for %s",
-                    expectedByte, rcsValue)
+                .as("RNTBD frame from wrapInHttpRequest should contain readConsistencyStrategy header 0x00F0=0x%02X for %s",
+                    expectedByte, readConsistencyStrategyValue)
                 .isTrue();
         } finally {
             buffer.release();
@@ -167,11 +167,11 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_wrapInHttpRequest_noRcsHeader_noRntbdToken() throws Exception {
+    public void thinClient_wrapInHttpRequest_noReadConsistencyStrategyHeader_noRntbdToken() throws Exception {
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
-        // No RCS header set
+        // No readConsistencyStrategy header set
 
         com.azure.cosmos.implementation.http.HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
@@ -180,7 +180,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
         try {
             assertThat(containsRntbdHeaderId(buffer, (short) 0x00F0))
-                .as("RNTBD frame should NOT contain RCS header when not set")
+                .as("RNTBD frame should NOT contain readConsistencyStrategy header when not set")
                 .isFalse();
         } finally {
             buffer.release();
@@ -188,7 +188,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_wrapInHttpRequest_rcsPresent_clAbsent() throws Exception {
+    public void thinClient_wrapInHttpRequest_readConsistencyStrategyPresent_clAbsent() throws Exception {
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
@@ -202,10 +202,10 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
         try {
             assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, (byte) 0x03))
-                .as("RNTBD frame should contain RCS=LatestCommitted (0x03)")
+                .as("RNTBD frame should contain readConsistencyStrategy=LatestCommitted (0x03)")
                 .isTrue();
             assertThat(containsRntbdHeaderWithAnyValue(buffer, (short) 0x0010))
-                .as("RNTBD frame should NOT contain ConsistencyLevel when RCS is set")
+                .as("RNTBD frame should NOT contain ConsistencyLevel when readConsistencyStrategy is set")
                 .isFalse();
         } finally {
             buffer.release();
@@ -213,11 +213,11 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_resolveAndWrap_bothClAndRcs_onlyRcsSurvivesInFrame() throws Exception {
-        // End-to-end chain: dirty headers (both CL and RCS set)
+    public void thinClient_resolveAndWrap_bothClAndReadConsistencyStrategy_onlyReadConsistencyStrategySurvivesInFrame() throws Exception {
+        // End-to-end chain: dirty headers (both CL and readConsistencyStrategy set)
         //   → resolveEffectiveConsistencyHeaders (strips CL)
         //   → wrapInHttpRequest (encodes RNTBD frame)
-        //   → verify only RCS in the frame, CL absent
+        //   → verify only readConsistencyStrategy in the frame, CL absent
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
@@ -237,10 +237,10 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
         try {
             assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, (byte) 0x03))
-                .as("RCS=LatestCommitted (0x03) should survive in the RNTBD frame")
+                .as("readConsistencyStrategy=LatestCommitted (0x03) should survive in the RNTBD frame")
                 .isTrue();
             assertThat(containsRntbdHeaderWithAnyValue(buffer, (short) 0x0010))
-                .as("ConsistencyLevel should be stripped — only RCS survives on the wire")
+                .as("ConsistencyLevel should be stripped — only readConsistencyStrategy survives on the wire")
                 .isFalse();
         } finally {
             buffer.release();
@@ -248,8 +248,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_resolveAndWrap_requestContextRcs_overridesHeaderRcs() throws Exception {
-        // Request-level RCS (requestContext) takes priority over header-level (client-level) RCS
+    public void thinClient_resolveAndWrap_requestContextReadConsistencyStrategy_overridesHeaderReadConsistencyStrategy() throws Exception {
+        // Request-level readConsistencyStrategy (requestContext) takes priority over header-level (client-level) readConsistencyStrategy
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
@@ -267,7 +267,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         try {
             // Request-level LATEST_COMMITTED (0x03) should win over header-level Eventual
             assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, (byte) 0x03))
-                .as("Request-level RCS=LatestCommitted should override header-level RCS=Eventual")
+                .as("Request-level readConsistencyStrategy=LatestCommitted should override header-level readConsistencyStrategy=Eventual")
                 .isTrue();
             assertThat(containsRntbdHeaderWithAnyValue(buffer, (short) 0x0010))
                 .as("ConsistencyLevel should be stripped")
@@ -278,8 +278,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_resolveAndWrap_defaultRcs_clSurvives() throws Exception {
-        // DEFAULT RCS is transparent — CL should remain in the RNTBD frame
+    public void thinClient_resolveAndWrap_defaultReadConsistencyStrategy_clSurvives() throws Exception {
+        // DEFAULT readConsistencyStrategy is transparent — CL should remain in the RNTBD frame
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
@@ -295,12 +295,12 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
         try {
             assertThat(containsRntbdHeaderId(buffer, (short) 0x00F0))
-                .as("DEFAULT RCS should not emit RCS header")
+                .as("DEFAULT readConsistencyStrategy should not emit readConsistencyStrategy header")
                 .isFalse();
             // Session = byte 0x03 in RntbdConsistencyLevel enum
             assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x0010,
                     RntbdConstants.RntbdConsistencyLevel.Session.id()))
-                .as("ConsistencyLevel=Session should survive when RCS is DEFAULT")
+                .as("ConsistencyLevel=Session should survive when readConsistencyStrategy is DEFAULT")
                 .isTrue();
         } finally {
             buffer.release();
@@ -354,30 +354,30 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     private static void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
 
-        ReadConsistencyStrategy effectiveRcs = null;
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = null;
         if (request.requestContext != null
             && request.requestContext.readConsistencyStrategy != null
             && request.requestContext.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            effectiveRcs = request.requestContext.readConsistencyStrategy;
+            effectiveReadConsistencyStrategy = request.requestContext.readConsistencyStrategy;
         }
 
-        if (effectiveRcs == null) {
-            String rcsHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            if (rcsHeaderValue != null && !rcsHeaderValue.isEmpty()) {
-                effectiveRcs = ReadConsistencyStrategy.DEFAULT;
+        if (effectiveReadConsistencyStrategy == null) {
+            String readConsistencyStrategyHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            if (readConsistencyStrategyHeaderValue != null && !readConsistencyStrategyHeaderValue.isEmpty()) {
+                effectiveReadConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
                 for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
                     if (candidate != ReadConsistencyStrategy.DEFAULT
-                        && candidate.toString().equals(rcsHeaderValue)) {
-                        effectiveRcs = candidate;
+                        && candidate.toString().equals(readConsistencyStrategyHeaderValue)) {
+                        effectiveReadConsistencyStrategy = candidate;
                         break;
                     }
                 }
             }
         }
 
-        if (effectiveRcs != null && effectiveRcs != ReadConsistencyStrategy.DEFAULT) {
+        if (effectiveReadConsistencyStrategy != null && effectiveReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRcs.toString());
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveReadConsistencyStrategy.toString());
         }
     }
 

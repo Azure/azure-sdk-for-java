@@ -325,48 +325,48 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * Gateways (V1 HTTP and V2 RNTBD) reject requests carrying both headers.
      *
      * Rules:
-     * 1. Request-level RCS (requestContext) > client-level RCS (header)
-     * 2. RCS > ConsistencyLevel — strip CL when non-DEFAULT RCS is effective
-     * 3. DEFAULT RCS is transparent — CL stays
+     * 1. Request-level readConsistencyStrategy (requestContext) > client-level readConsistencyStrategy (header)
+     * 2. readConsistencyStrategy > ConsistencyLevel — strip CL when non-DEFAULT readConsistencyStrategy is effective
+     * 3. DEFAULT readConsistencyStrategy is transparent — CL stays
      *
      * After this method, the request headers contain at most ONE of the two consistency headers.
      * GW V1 serializes the surviving header as HTTP; GW V2 (ThinClientStoreModel) encodes it as RNTBD.
      *
      * Thread safety: availability-strategy clones share the same header map (shallow copy).
-     * The mutation here (remove CL when RCS present) is idempotent — concurrent clones
+     * The mutation here (remove CL when readConsistencyStrategy present) is idempotent — concurrent clones
      * performing the same removal is safe.
      */
     private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
 
-        // Determine effective RCS: requestContext (request-level) takes priority over header (client-level)
-        ReadConsistencyStrategy effectiveRcs = null;
+        // Determine effective readConsistencyStrategy: requestContext (request-level) takes priority over header (client-level)
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = null;
         if (request.requestContext != null
             && request.requestContext.readConsistencyStrategy != null
             && request.requestContext.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            effectiveRcs = request.requestContext.readConsistencyStrategy;
+            effectiveReadConsistencyStrategy = request.requestContext.readConsistencyStrategy;
         }
 
-        if (effectiveRcs == null) {
-            String rcsHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            if (!Strings.isNullOrEmpty(rcsHeaderValue)) {
-                effectiveRcs = ReadConsistencyStrategy.DEFAULT; // non-null marker; actual value is in header
+        if (effectiveReadConsistencyStrategy == null) {
+            String readConsistencyStrategyHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            if (!Strings.isNullOrEmpty(readConsistencyStrategyHeaderValue)) {
+                effectiveReadConsistencyStrategy = ReadConsistencyStrategy.DEFAULT; // non-null marker; actual value is in header
                 // Re-parse only to check non-DEFAULT — the header string is authoritative for serialization
                 for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
                     if (candidate != ReadConsistencyStrategy.DEFAULT
-                        && candidate.toString().equals(rcsHeaderValue)) {
-                        effectiveRcs = candidate;
+                        && candidate.toString().equals(readConsistencyStrategyHeaderValue)) {
+                        effectiveReadConsistencyStrategy = candidate;
                         break;
                     }
                 }
             }
         }
 
-        if (effectiveRcs != null && effectiveRcs != ReadConsistencyStrategy.DEFAULT) {
-            // RCS wins — strip ConsistencyLevel to prevent dual-header rejection
+        if (effectiveReadConsistencyStrategy != null && effectiveReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
+            // readConsistencyStrategy wins — strip ConsistencyLevel to prevent dual-header rejection
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-            // Ensure the RCS header is set (requestContext-level may not have been written to headers yet)
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRcs.toString());
+            // Ensure the readConsistencyStrategy header is set (requestContext-level may not have been written to headers yet)
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveReadConsistencyStrategy.toString());
         }
     }
 
@@ -1039,7 +1039,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         // Use a copy of the headers to prevent the side-effect of
         // RequestHelper.getReadConsistencyStrategyToUse() rewriting x-ms-consistency-level.
         // In gateway mode, x-ms-consistency-level must stay as the original account/client level —
-        // only x-ms-cosmos-read-consistency-strategy carries the RCS intent to the gateway/proxy.
+        // only x-ms-cosmos-read-consistency-strategy carries the readConsistencyStrategy intent to the gateway/proxy.
         boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(
             new HashMap<>(request.getHeaders()),
             request.requestContext != null ? request.requestContext.readConsistencyStrategy : null,

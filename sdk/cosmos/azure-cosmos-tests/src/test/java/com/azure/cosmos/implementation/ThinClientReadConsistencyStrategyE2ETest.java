@@ -69,7 +69,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
     public void beforeClass() {
         client = createThinClientBuilder().buildAsyncClient();
 
-        databaseId = "rcs-tc-" + UUID.randomUUID().toString().substring(0, 8);
+        databaseId = "readConsistencyStrategy-tc-" + UUID.randomUUID().toString().substring(0, 8);
         containerId = "testcontainer";
 
         client.createDatabaseIfNotExists(databaseId).block();
@@ -110,7 +110,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(response.getDiagnostics());
     }
 
@@ -127,7 +127,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.EVENTUAL);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.EVENTUAL);
         assertThinClientEndpointUsed(response.getDiagnostics());
     }
 
@@ -144,7 +144,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.SESSION);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.SESSION);
         assertThinClientEndpointUsed(response.getDiagnostics());
     }
 
@@ -171,7 +171,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getResults()).isNotNull();
-        assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(response.getCosmosDiagnostics());
     }
 
@@ -199,7 +199,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         assertThat(pages.isEmpty()).isFalse();
 
         FeedResponse<ObjectNode> firstPage = pages.get(0);
-        assertEffectiveRcs(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(firstPage.getCosmosDiagnostics());
     }
 
@@ -228,49 +228,49 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         assertThat(response).isNotNull();
         assertThat(response.getResults()).isNotNull();
         assertThat(response.getResults().size()).isEqualTo(2);
-        assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(response.getCosmosDiagnostics());
     }
 
     // endregion
 
-    // region Client-level RCS
+    // region Client-level readConsistencyStrategy
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void thinClient_clientLevel_latestCommitted_readItem() {
-        CosmosAsyncClient clientWithRcs = null;
+        CosmosAsyncClient clientWithReadConsistencyStrategy = null;
         try {
-            clientWithRcs = createThinClientBuilder()
+            clientWithReadConsistencyStrategy = createThinClientBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
-            createAndInsertDocument(containerWithRcs, id);
+            createAndInsertDocument(containerWithReadConsistencyStrategy, id);
 
             CosmosItemResponse<ObjectNode> response =
-                containerWithRcs.readItem(id, new PartitionKey(id), ObjectNode.class).block();
+                containerWithReadConsistencyStrategy.readItem(id, new PartitionKey(id), ObjectNode.class).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
             assertThinClientEndpointUsed(response.getDiagnostics());
         } finally {
-            safeClose(clientWithRcs);
+            safeClose(clientWithReadConsistencyStrategy);
         }
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void thinClient_clientLevel_latestCommitted_query() {
-        CosmosAsyncClient clientWithRcs = null;
+        CosmosAsyncClient clientWithReadConsistencyStrategy = null;
         try {
-            clientWithRcs = createThinClientBuilder()
+            clientWithReadConsistencyStrategy = createThinClientBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
-            createAndInsertDocument(containerWithRcs, id);
+            createAndInsertDocument(containerWithReadConsistencyStrategy, id);
 
             CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
                 .setPartitionKey(new PartitionKey(id));
@@ -278,53 +278,53 @@ public class ThinClientReadConsistencyStrategyE2ETest {
             SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c WHERE c.id=@id");
             querySpec.setParameters(Arrays.asList(new SqlParameter("@id", id)));
 
-            FeedResponse<ObjectNode> response = containerWithRcs
+            FeedResponse<ObjectNode> response = containerWithReadConsistencyStrategy
                 .queryItems(querySpec, queryOptions, ObjectNode.class)
                 .byPage()
                 .blockFirst();
 
             assertThat(response).isNotNull();
             assertThat(response.getResults()).isNotNull();
-            assertEffectiveRcs(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
             assertThinClientEndpointUsed(response.getCosmosDiagnostics());
         } finally {
-            safeClose(clientWithRcs);
+            safeClose(clientWithReadConsistencyStrategy);
         }
     }
 
     // endregion
 
-    // region Write operations — RCS forced to DEFAULT
+    // region Write operations — readConsistencyStrategy forced to DEFAULT
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_writeItem_rcsIgnored() {
-        CosmosAsyncClient clientWithRcs = null;
+    public void thinClient_writeItem_readConsistencyStrategyIgnored() {
+        CosmosAsyncClient clientWithReadConsistencyStrategy = null;
         try {
-            clientWithRcs = createThinClientBuilder()
+            clientWithReadConsistencyStrategy = createThinClientBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
             ObjectNode doc = createDocument(id);
 
             CosmosItemResponse<ObjectNode> response =
-                containerWithRcs.createItem(doc, new PartitionKey(id), null).block();
+                containerWithReadConsistencyStrategy.createItem(doc, new PartitionKey(id), null).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(201);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.DEFAULT);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.DEFAULT);
         } finally {
-            safeClose(clientWithRcs);
+            safeClose(clientWithReadConsistencyStrategy);
         }
     }
 
     // endregion
 
-    // region Both ConsistencyLevel and RCS — RCS wins
+    // region Both ConsistencyLevel and readConsistencyStrategy — readConsistencyStrategy wins
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_bothConsistencyLevelAndRcs_rcsWins() {
+    public void thinClient_bothConsistencyLevelAndReadConsistencyStrategy_readConsistencyStrategyWins() {
         CosmosAsyncClient clientWithBoth = null;
         try {
             clientWithBoth = createThinClientBuilder()
@@ -341,7 +341,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
             assertThinClientEndpointUsed(response.getDiagnostics());
         } finally {
             safeClose(clientWithBoth);
@@ -349,9 +349,9 @@ public class ThinClientReadConsistencyStrategyE2ETest {
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_requestLevel_bothClAndRcs_rcsWins() {
-        // Request-level contention: options set both ConsistencyLevel and RCS.
-        // RCS should win — proxy must not reject with dual-header error.
+    public void thinClient_requestLevel_bothClAndReadConsistencyStrategy_readConsistencyStrategyWins() {
+        // Request-level contention: options set both ConsistencyLevel and readConsistencyStrategy.
+        // readConsistencyStrategy should win — proxy must not reject with dual-header error.
         String id = UUID.randomUUID().toString();
         createAndInsertDocument(id);
 
@@ -364,35 +364,35 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThinClientEndpointUsed(response.getDiagnostics());
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void thinClient_requestLevelRcs_overridesClientLevelRcs() {
-        // Request-level RCS should override client-level RCS.
-        CosmosAsyncClient clientWithClientRcs = null;
+    public void thinClient_requestLevelReadConsistencyStrategy_overridesClientLevelReadConsistencyStrategy() {
+        // Request-level readConsistencyStrategy should override client-level readConsistencyStrategy.
+        CosmosAsyncClient clientWithClientReadConsistencyStrategy = null;
         try {
-            clientWithClientRcs = createThinClientBuilder()
+            clientWithClientReadConsistencyStrategy = createThinClientBuilder()
                 .readConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL)
                 .buildAsyncClient();
-            CosmosAsyncContainer containerWithRcs = clientWithClientRcs.getDatabase(databaseId).getContainer(containerId);
+            CosmosAsyncContainer containerWithReadConsistencyStrategy = clientWithClientReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
 
             String id = UUID.randomUUID().toString();
-            createAndInsertDocument(containerWithRcs, id);
+            createAndInsertDocument(containerWithReadConsistencyStrategy, id);
 
             CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
                 .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
             CosmosItemResponse<ObjectNode> response =
-                containerWithRcs.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+                containerWithReadConsistencyStrategy.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
 
             assertThat(response).isNotNull();
             assertThat(response.getStatusCode()).isEqualTo(200);
-            assertEffectiveRcs(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
             assertThinClientEndpointUsed(response.getDiagnostics());
         } finally {
-            safeClose(clientWithClientRcs);
+            safeClose(clientWithClientReadConsistencyStrategy);
         }
     }
 
@@ -433,7 +433,7 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         targetContainer.createItem(doc, new PartitionKey(id), null).block();
     }
 
-    private static void assertEffectiveRcs(CosmosDiagnostics diagnostics, ReadConsistencyStrategy expected) {
+    private static void assertEffectiveReadConsistencyStrategy(CosmosDiagnostics diagnostics, ReadConsistencyStrategy expected) {
         assertThat(diagnostics).isNotNull();
         assertThat(diagnostics.getDiagnosticsContext()).isNotNull();
         assertThat(diagnostics.getDiagnosticsContext().getEffectiveReadConsistencyStrategy())

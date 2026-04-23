@@ -62,7 +62,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
             .gatewayMode()
             .buildAsyncClient();
 
-        databaseId = "rcs-spy-" + UUID.randomUUID().toString().substring(0, 8);
+        databaseId = "readConsistencyStrategy-spy-" + UUID.randomUUID().toString().substring(0, 8);
         containerId = "testcontainer";
 
         cosmosClient.createDatabaseIfNotExists(databaseId).block();
@@ -129,7 +129,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
     // region ReadConsistencyStrategy — verify HTTP headers on the wire
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void readItem_withRequestLevelRcs_headerOnWire() {
+    public void readItem_withRequestLevelReadConsistencyStrategy_headerOnWire() {
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
         cosmosItemRequestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
         cosmosItemRequestOptions.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
@@ -149,20 +149,20 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
             .isEqualTo("LatestCommitted");
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
-            .as("ConsistencyLevel header should be stripped when RCS is set")
+            .as("ConsistencyLevel header should be stripped when readConsistencyStrategy is set")
             .isFalse();
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void readItem_withClientLevelRcs_headerOnWire() {
+    public void readItem_withClientLevelReadConsistencyStrategy_headerOnWire() {
         String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
         String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
 
         ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
 
-        SpyClientUnderTestFactory.ClientUnderTest rcsClient;
+        SpyClientUnderTestFactory.ClientUnderTest readConsistencyStrategyClient;
         try {
-            rcsClient = SpyClientUnderTestFactory.createClientUnderTest(
+            readConsistencyStrategyClient = SpyClientUnderTestFactory.createClientUnderTest(
                 new URI(endpoint),
                 key,
                 gwPolicy,
@@ -175,12 +175,12 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         }
 
         try {
-            rcsClient.clearCapturedRequests();
+            readConsistencyStrategyClient.clearCapturedRequests();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-            rcsClient.readDocument(getDocumentLink(), requestOptions).block();
+            readConsistencyStrategyClient.readDocument(getDocumentLink(), requestOptions).block();
 
-            List<HttpRequest> requests = rcsClient.getCapturedRequests();
+            List<HttpRequest> requests = readConsistencyStrategyClient.getCapturedRequests();
             assertThat(requests).isNotEmpty();
 
             HttpRequest docRequest = findDocumentRequest(requests, getDocumentLink());
@@ -190,15 +190,15 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
             assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
                 .isEqualTo("LatestCommitted");
             assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
-                .as("ConsistencyLevel header should be stripped when client-level RCS is set")
+                .as("ConsistencyLevel header should be stripped when client-level readConsistencyStrategy is set")
                 .isFalse();
         } finally {
-            rcsClient.close();
+            readConsistencyStrategyClient.close();
         }
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void readItem_withBothRcsAndCl_onlyRcsOnWire(){
+    public void readItem_withBothReadConsistencyStrategyAndCl_onlyReadConsistencyStrategyOnWire(){
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
         cosmosItemRequestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
         cosmosItemRequestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
@@ -219,12 +219,12 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
             .isEqualTo("LatestCommitted");
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
-            .as("ConsistencyLevel header should be stripped when both CL and RCS are set — RCS wins")
+            .as("ConsistencyLevel header should be stripped when both CL and readConsistencyStrategy are set — readConsistencyStrategy wins")
             .isFalse();
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void readItem_withDefaultRcs_noRcsHeaderOnWire() {
+    public void readItem_withDefaultReadConsistencyStrategy_noReadConsistencyStrategyHeaderOnWire() {
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
         cosmosItemRequestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.DEFAULT);
         cosmosItemRequestOptions.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
@@ -242,20 +242,20 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
 
         Map<String, String> headers = docRequest.headers().toMap();
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
-            .as("DEFAULT RCS should not emit a header — it is transparent")
+            .as("DEFAULT readConsistencyStrategy should not emit a header — it is transparent")
             .isFalse();
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void writeItem_withClientLevelRcs_noRcsHeaderOnWire() {
+    public void writeItem_withClientLevelReadConsistencyStrategy_noReadConsistencyStrategyHeaderOnWire() {
         String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
         String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
 
         ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
 
-        SpyClientUnderTestFactory.ClientUnderTest rcsClient;
+        SpyClientUnderTestFactory.ClientUnderTest readConsistencyStrategyClient;
         try {
-            rcsClient = SpyClientUnderTestFactory.createClientUnderTest(
+            readConsistencyStrategyClient = SpyClientUnderTestFactory.createClientUnderTest(
                 new URI(endpoint),
                 key,
                 gwPolicy,
@@ -272,10 +272,10 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
             Document writeDoc = new Document(String.format(
                 "{ \"id\": \"%s\", \"mypk\": \"%s\" }", writeDocId, writeDocId));
 
-            rcsClient.clearCapturedRequests();
-            rcsClient.createDocument(getCollectionLink(), writeDoc, null, false).block();
+            readConsistencyStrategyClient.clearCapturedRequests();
+            readConsistencyStrategyClient.createDocument(getCollectionLink(), writeDoc, null, false).block();
 
-            List<HttpRequest> requests = rcsClient.getCapturedRequests();
+            List<HttpRequest> requests = readConsistencyStrategyClient.getCapturedRequests();
             assertThat(requests).isNotEmpty();
 
             HttpRequest createRequest = requests.stream()
@@ -286,10 +286,10 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
 
             Map<String, String> headers = createRequest.headers().toMap();
             assertThat(headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
-                .as("Write operations should not have RCS header")
+                .as("Write operations should not have readConsistencyStrategy header")
                 .isFalse();
         } finally {
-            rcsClient.close();
+            readConsistencyStrategyClient.close();
         }
     }
 

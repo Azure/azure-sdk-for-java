@@ -15,22 +15,22 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Unit tests for consistency flag contention resolution in RxGatewayStoreModel.
  *
  * Contention rules:
- * 1. Request-level RCS (requestContext) > client-level RCS (header)
- * 2. RCS > ConsistencyLevel — strip CL when non-DEFAULT RCS is effective
- * 3. DEFAULT RCS is transparent — CL stays
+ * 1. Request-level readConsistencyStrategy (requestContext) > client-level readConsistencyStrategy (header)
+ * 2. readConsistencyStrategy > ConsistencyLevel — strip CL when non-DEFAULT readConsistencyStrategy is effective
+ * 3. DEFAULT readConsistencyStrategy is transparent — CL stays
  */
 public class ConsistencyFlagContentionTest {
 
     // region getRequestHeaders — Option A guard
 
     @Test(groups = "unit")
-    public void getRequestHeaders_bothRcsAndCl_onlyRcsSurvives() {
-        // Simulates the contention: request options set both RCS and CL.
-        // After getRequestHeaders, RCS should be present and CL should be absent.
+    public void getRequestHeaders_bothReadConsistencyStrategyAndCl_onlyReadConsistencyStrategySurvives() {
+        // Simulates the contention: request options set both readConsistencyStrategy and CL.
+        // After getRequestHeaders, readConsistencyStrategy should be present and CL should be absent.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
             ReadConsistencyStrategy.LATEST_COMMITTED.toString());
-        // Simulate the Option A guard: CL should NOT be added when RCS is present
+        // Simulate the Option A guard: CL should NOT be added when readConsistencyStrategy is present
         if (!headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.EVENTUAL.toString());
         }
@@ -41,7 +41,7 @@ public class ConsistencyFlagContentionTest {
 
     @Test(groups = "unit")
     public void getRequestHeaders_onlyCl_clSurvives() {
-        // When no RCS is set, CL should be set normally.
+        // When no readConsistencyStrategy is set, CL should be set normally.
         Map<String, String> headers = new HashMap<>();
         if (!headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
@@ -53,8 +53,8 @@ public class ConsistencyFlagContentionTest {
     }
 
     @Test(groups = "unit")
-    public void getRequestHeaders_onlyRcs_rcsSurvives() {
-        // When only RCS is set (no CL), RCS should survive.
+    public void getRequestHeaders_onlyReadConsistencyStrategy_readConsistencyStrategySurvives() {
+        // When only readConsistencyStrategy is set (no CL), readConsistencyStrategy should survive.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
             ReadConsistencyStrategy.EVENTUAL.toString());
@@ -69,8 +69,8 @@ public class ConsistencyFlagContentionTest {
     // region resolveEffectiveConsistencyHeaders — centralized resolution
 
     @Test(groups = "unit")
-    public void resolve_requestContextRcs_stripsCl() {
-        // When requestContext has non-DEFAULT RCS and headers have CL, CL should be stripped.
+    public void resolve_requestContextReadConsistencyStrategy_stripsCl() {
+        // When requestContext has non-DEFAULT readConsistencyStrategy and headers have CL, CL should be stripped.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
 
@@ -85,8 +85,8 @@ public class ConsistencyFlagContentionTest {
     }
 
     @Test(groups = "unit")
-    public void resolve_headerRcs_stripsCl() {
-        // When header has non-DEFAULT RCS and also CL, CL should be stripped.
+    public void resolve_headerReadConsistencyStrategy_stripsCl() {
+        // When header has non-DEFAULT readConsistencyStrategy and also CL, CL should be stripped.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.SESSION.toString());
         headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
@@ -100,8 +100,8 @@ public class ConsistencyFlagContentionTest {
     }
 
     @Test(groups = "unit")
-    public void resolve_requestContextRcs_overridesHeaderRcs() {
-        // Request-level RCS (requestContext) takes priority over header-level (client-level) RCS.
+    public void resolve_requestContextReadConsistencyStrategy_overridesHeaderReadConsistencyStrategy() {
+        // Request-level readConsistencyStrategy (requestContext) takes priority over header-level (client-level) readConsistencyStrategy.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
             ReadConsistencyStrategy.EVENTUAL.toString());
@@ -118,8 +118,8 @@ public class ConsistencyFlagContentionTest {
     }
 
     @Test(groups = "unit")
-    public void resolve_defaultRcs_clSurvives() {
-        // DEFAULT RCS is transparent — CL should remain.
+    public void resolve_defaultReadConsistencyStrategy_clSurvives() {
+        // DEFAULT readConsistencyStrategy is transparent — CL should remain.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.BOUNDED_STALENESS.toString());
 
@@ -134,8 +134,8 @@ public class ConsistencyFlagContentionTest {
     }
 
     @Test(groups = "unit")
-    public void resolve_nullRcs_clSurvives() {
-        // When no RCS is set at all, CL should remain.
+    public void resolve_nullReadConsistencyStrategy_clSurvives() {
+        // When no readConsistencyStrategy is set at all, CL should remain.
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
 
@@ -151,7 +151,7 @@ public class ConsistencyFlagContentionTest {
 
     @Test(groups = "unit")
     public void resolve_noHeaders_noOp() {
-        // When neither CL nor RCS is set, resolution is a no-op.
+        // When neither CL nor readConsistencyStrategy is set, resolution is a no-op.
         Map<String, String> headers = new HashMap<>();
 
         simulateResolve(headers, new DocumentServiceRequestContext());
@@ -187,31 +187,31 @@ public class ConsistencyFlagContentionTest {
      * the full gateway store model infrastructure.
      */
     private static void simulateResolve(Map<String, String> headers, DocumentServiceRequestContext ctx) {
-        ReadConsistencyStrategy effectiveRcs = null;
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = null;
 
         if (ctx != null
             && ctx.readConsistencyStrategy != null
             && ctx.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            effectiveRcs = ctx.readConsistencyStrategy;
+            effectiveReadConsistencyStrategy = ctx.readConsistencyStrategy;
         }
 
-        if (effectiveRcs == null) {
-            String rcsHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            if (rcsHeaderValue != null && !rcsHeaderValue.isEmpty()) {
-                effectiveRcs = ReadConsistencyStrategy.DEFAULT;
+        if (effectiveReadConsistencyStrategy == null) {
+            String readConsistencyStrategyHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            if (readConsistencyStrategyHeaderValue != null && !readConsistencyStrategyHeaderValue.isEmpty()) {
+                effectiveReadConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
                 for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
                     if (candidate != ReadConsistencyStrategy.DEFAULT
-                        && candidate.toString().equals(rcsHeaderValue)) {
-                        effectiveRcs = candidate;
+                        && candidate.toString().equals(readConsistencyStrategyHeaderValue)) {
+                        effectiveReadConsistencyStrategy = candidate;
                         break;
                     }
                 }
             }
         }
 
-        if (effectiveRcs != null && effectiveRcs != ReadConsistencyStrategy.DEFAULT) {
+        if (effectiveReadConsistencyStrategy != null && effectiveReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRcs.toString());
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveReadConsistencyStrategy.toString());
         }
     }
 }

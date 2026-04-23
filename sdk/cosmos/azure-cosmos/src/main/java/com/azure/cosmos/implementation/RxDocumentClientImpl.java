@@ -1966,8 +1966,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.validateReadConsistencyStrategy(readConsistencyStrategy);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
             // Compute gateway rejects requests with both x-ms-consistency-level and
-            // x-ms-cosmos-read-consistency-strategy headers. When RCS is set, remove
-            // consistency-level — RCS takes precedence.
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
@@ -2017,15 +2017,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
             // Compute gateway rejects requests with both x-ms-consistency-level and
-            // x-ms-cosmos-read-consistency-strategy headers. When RCS is set, remove
-            // consistency-level — RCS takes precedence.
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options.getConsistencyLevel() != null
             && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
             // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
-            // RCS takes precedence — setting both causes gateway rejection.
+            // readConsistencyStrategy takes precedence — setting both causes gateway rejection.
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
