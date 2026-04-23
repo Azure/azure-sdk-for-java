@@ -75,6 +75,7 @@ For **consumers** of the Azure SDK for Java libraries:
 | [Frequently Asked Questions](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/faq.md) | Async gotchas, dependency conflicts, Security Manager |
 | [Azure Identity Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md) | All credential types with code samples |
 | [Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/configuration.md) | Environment variables, HTTP client tuning, retries |
+| [Logging](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md) | SLF4J setup, log levels, HTTP logging, filtering by package |
 | [Performance Tuning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md) | SSL, connection pooling, async vs. sync |
 | [Test Proxy Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/test-proxy-migration.md) | Migrate test recordings to the external assets repo |
 | [Azure JSON Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-json-migration.md) | Replace Jackson with `azure-json` stream serialization |
