@@ -186,5 +186,5 @@ Common options from `PerfStressOptions`:
 
 ## See Also
 
-- [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/performance-tuning.md) — user-facing guidance
-- [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+- [Performance Tuning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md) — user-facing guidance
+- [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
