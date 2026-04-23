@@ -111,7 +111,7 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter alertDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.get(this.client.getEndpoint(), apiVersion, scope, alertDefinitionId, accept, context))
@@ -143,7 +143,7 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter alertDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, alertDefinitionId, accept, context);
@@ -214,7 +214,7 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -243,7 +243,7 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context)
