@@ -78,7 +78,7 @@ $sparseCheckoutDirectories = @()
 $serviceDirectories = @()
 $sparseCheckoutDirectories += "/sdk/parents"
 # in place until we can come up with a better path to honoring ExcludePaths
-# in archetype-sdk-client. Given that the validation for these is triggered for outside paths, but `analyze` still needs to 
+# in archetype-sdk-client. Given that the validation for these is triggered for outside paths, but `analyze` still needs to
 # process those folders, we'll just include them in the sparse checkout and service directory lists for now.
 # This is only two additional folders and it allows us to avoid a lot of complexity around trying to special case the ExcludePaths in archetype-sdk-client.
 $sparseCheckoutDirectories += "/sdk/cosmos"
