@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.mockito.Mockito;
@@ -151,7 +152,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyValue);
         request.getHeaders().remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
-        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+        HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
@@ -173,7 +174,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         RxDocumentServiceRequest request = createDocumentReadRequest();
         // No readConsistencyStrategy header set
 
-        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+        HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
@@ -195,7 +196,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, "LatestCommitted");
         request.getHeaders().remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
-        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+        HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
@@ -230,7 +231,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         resolveEffectiveConsistencyHeaders(request);
 
         // Now call wrapInHttpRequest with the resolved headers
-        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+        HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
@@ -259,7 +260,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
         resolveEffectiveConsistencyHeaders(request);
 
-        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+        HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
@@ -288,7 +289,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
         resolveEffectiveConsistencyHeaders(request);
 
-        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+        HttpRequest httpRequest =
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
@@ -337,7 +338,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         return request;
     }
 
-    private static byte[] collectHttpBody(com.azure.cosmos.implementation.http.HttpRequest httpRequest) {
+    private static byte[] collectHttpBody(HttpRequest httpRequest) {
         return httpRequest.body().reduce((a, b) -> {
             byte[] merged = new byte[a.length + b.length];
             System.arraycopy(a, 0, merged, 0, a.length);
