@@ -396,6 +396,29 @@ public class ThinClientReadConsistencyStrategyE2ETest {
         }
     }
 
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_globalStrong_onSessionAccount_throwsBadRequest() {
+        String id = UUID.randomUUID().toString();
+        createAndInsertDocument(id);
+
+        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.GLOBAL_STRONG);
+
+        Throwable caughtError = null;
+        try {
+            container.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+        } catch (Throwable t) {
+            caughtError = t;
+        }
+
+        assertThat(caughtError)
+            .as("Expected BadRequestException for GLOBAL_STRONG on Session account")
+            .isNotNull()
+            .isInstanceOf(BadRequestException.class);
+        assertThat(caughtError.getMessage()).contains("read-consistency-strategy");
+        logger.info("Expected BadRequestException for GLOBAL_STRONG: {}", caughtError.getMessage());
+    }
+
     // endregion
 
     // region Helpers

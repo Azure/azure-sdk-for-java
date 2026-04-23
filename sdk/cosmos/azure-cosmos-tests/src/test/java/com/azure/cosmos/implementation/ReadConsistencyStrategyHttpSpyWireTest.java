@@ -293,6 +293,100 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         }
     }
 
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void readItem_requestLevelOverridesClientLevel_onlyRequestLevelOnWire() {
+        String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
+        String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
+
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+
+        // Client-level readConsistencyStrategy = EVENTUAL
+        SpyClientUnderTestFactory.ClientUnderTest clientLevelReadConsistencyStrategyClient;
+        try {
+            clientLevelReadConsistencyStrategyClient = SpyClientUnderTestFactory.createClientUnderTest(
+                new URI(endpoint),
+                key,
+                gwPolicy,
+                ConsistencyLevel.SESSION,
+                ReadConsistencyStrategy.EVENTUAL,
+                new Configs(),
+                null, true, new CosmosClientTelemetryConfig());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            // Request-level readConsistencyStrategy = LATEST_COMMITTED (overrides client-level EVENTUAL)
+            CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+            cosmosItemRequestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+            cosmosItemRequestOptions.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+
+            clientLevelReadConsistencyStrategyClient.clearCapturedRequests();
+            RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
+            requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+            clientLevelReadConsistencyStrategyClient.readDocument(getDocumentLink(), requestOptions).block();
+
+            List<HttpRequest> requests = clientLevelReadConsistencyStrategyClient.getCapturedRequests();
+            assertThat(requests).isNotEmpty();
+
+            HttpRequest docRequest = findDocumentRequest(requests, getDocumentLink());
+            assertThat(docRequest).as("Expected a document read request").isNotNull();
+
+            Map<String, String> headers = docRequest.headers().toMap();
+            assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
+                .as("Request-level readConsistencyStrategy should override client-level")
+                .isEqualTo("LatestCommitted");
+            assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
+                .as("ConsistencyLevel header should be stripped when readConsistencyStrategy is set")
+                .isFalse();
+        } finally {
+            clientLevelReadConsistencyStrategyClient.close();
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void readItem_withClientLevelDefaultReadConsistencyStrategy_noReadConsistencyStrategyHeaderOnWire() {
+        String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
+        String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
+
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+
+        // Client-level readConsistencyStrategy = DEFAULT (transparent — should not appear on wire)
+        SpyClientUnderTestFactory.ClientUnderTest defaultReadConsistencyStrategyClient;
+        try {
+            defaultReadConsistencyStrategyClient = SpyClientUnderTestFactory.createClientUnderTest(
+                new URI(endpoint),
+                key,
+                gwPolicy,
+                ConsistencyLevel.SESSION,
+                ReadConsistencyStrategy.DEFAULT,
+                new Configs(),
+                null, true, new CosmosClientTelemetryConfig());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            defaultReadConsistencyStrategyClient.clearCapturedRequests();
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+            defaultReadConsistencyStrategyClient.readDocument(getDocumentLink(), requestOptions).block();
+
+            List<HttpRequest> requests = defaultReadConsistencyStrategyClient.getCapturedRequests();
+            assertThat(requests).isNotEmpty();
+
+            HttpRequest docRequest = findDocumentRequest(requests, getDocumentLink());
+            assertThat(docRequest).as("Expected a document read request").isNotNull();
+
+            Map<String, String> headers = docRequest.headers().toMap();
+            assertThat(headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
+                .as("DEFAULT readConsistencyStrategy at client level should not emit a header — it is transparent")
+                .isFalse();
+        } finally {
+            defaultReadConsistencyStrategyClient.close();
+        }
+    }
+
     // endregion
 
     private static HttpRequest findDocumentRequest(List<HttpRequest> requests, String documentLink) {

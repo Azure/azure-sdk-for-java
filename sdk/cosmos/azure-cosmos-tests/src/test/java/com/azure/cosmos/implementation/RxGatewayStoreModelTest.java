@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -296,6 +297,80 @@ public class RxGatewayStoreModelTest {
         HttpRequest httpRequest = httpClientRequestCaptor.getValue();
         HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
         assertThat(headers.toMap().get(HttpConstants.HttpHeaders.API_TYPE)).isEqualTo(apiType.toString());
+    }
+
+    /**
+     * Verifies that when readConsistencyStrategy is set on a request alongside consistency-level,
+     * the outbound HTTP request has the readConsistencyStrategy header and consistency-level is
+     * stripped. This guards the header-copy fix in applySessionToken() — if the
+     * {@code new HashMap<>(request.getHeaders())} copy is removed, getReadConsistencyStrategyToUse()
+     * would mutate the original headers before resolveEffectiveConsistencyHeaders() runs.
+     */
+    @Test(groups = "unit")
+    public void readConsistencyStrategyHeader_preservedOnWire_consistencyLevelStripped() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Mockito.doReturn("1#100#1=20#2=5#3=30").when(sessionContainer).resolveGlobalSessionToken(any());
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader =
+            Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            ApiType.SQL);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/fakeResourceFullName",
+            ResourceType.Document);
+
+        dsr.requestContext.regionalRoutingContextToRoute =
+            new RegionalRoutingContext(new URI("https://localhost"));
+
+        // Set both headers — readConsistencyStrategy should win, consistency-level should be stripped
+        dsr.getHeaders().put(
+            HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+            ReadConsistencyStrategy.LATEST_COMMITTED.toString());
+        dsr.getHeaders().put(
+            HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
+            ConsistencyLevel.SESSION.toString());
+
+        try {
+            storeModel.processMessage(dsr).block();
+            fail("Request should fail with ConnectTimeoutException");
+        } catch (Exception e) {
+            // expected — mock returns error
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest capturedRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders capturedHeaders = ReflectionUtils.getHttpHeaders(capturedRequest);
+
+        assertThat(capturedHeaders.toMap().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
+            .as("readConsistencyStrategy header must survive the applySessionToken + resolveEffectiveConsistencyHeaders pipeline")
+            .isEqualTo("LatestCommitted");
+        assertThat(capturedHeaders.toMap().containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
+            .as("consistency-level header must be stripped when readConsistencyStrategy is set — "
+                + "dual headers cause compute gateway rejection")
+            .isFalse();
     }
 
     public void validateFailure(Mono<RxDocumentServiceResponse> observable,
