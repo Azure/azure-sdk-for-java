@@ -3905,21 +3905,15 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         options.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
         List<FeedResponse<ObjectNode>> returnedPages;
-        try {
-            returnedPages = params.container
-                .readManyByPartitionKeys(pkValues, options, ObjectNode.class)
-                .byPage()
-                .collectList()
-                .block();
-        } catch (CosmosException cosmosException) {
-            return new CosmosResponseWrapper(
-                cosmosException.getDiagnostics() != null
-                    ? new CosmosDiagnosticsContext[] { cosmosException.getDiagnostics().getDiagnosticsContext() }
-                    : null,
-                cosmosException.getStatusCode(),
-                cosmosException.getSubStatusCode(),
-                null);
-        }
+        // Let CosmosException propagate to execute()'s catch block — it handles
+        // status code + sub-status code validation and diagnostics context extraction
+        // correctly for error cases (the response-level validation path passes null
+        // for sub-status which breaks validators like validateStatusCodeIsServiceUnavailable).
+        returnedPages = params.container
+            .readManyByPartitionKeys(pkValues, options, ObjectNode.class)
+            .byPage()
+            .collectList()
+            .block();
 
         ArrayList<CosmosDiagnosticsContext> foundCtxs = new ArrayList<>();
 
