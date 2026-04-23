@@ -121,17 +121,9 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
   readManyOptionsImpl
     .setCustomItemSerializer(
       new CosmosItemSerializerNoExceptionWrapping {
-        // The reader-side path of readManyByPartitionKeys never produces items that the
-        // SDK needs to serialize back out (no item bodies are sent on the wire other than
-        // SqlParameter values, which do not flow through this serializer). However, some
-        // generic SDK code paths (e.g. SqlParameter#getValueAsBytes via the configured
-        // serializer) will defensively call serialize() during diagnostics or during query
-        // plan handling. Delegating to the default Jackson-based serializer keeps those
-        // code paths working and avoids spurious UnsupportedOperationExceptions while we
-        // still own deserialization (the hot path) below.
-        override def serialize[T](item: T): util.Map[String, AnyRef] = {
-          CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item)
-        }
+        // The base class (CosmosItemSerializerNoExceptionWrapping) sets canSerialize = false,
+        // which prevents the SDK from calling serialize() — so no override is needed here.
+        // Only deserialization (the hot path) is customized below.
 
         override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
           if (jsonNodeMap == null) {

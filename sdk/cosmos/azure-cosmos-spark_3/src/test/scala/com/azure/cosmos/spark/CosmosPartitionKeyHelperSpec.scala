@@ -120,6 +120,20 @@ class CosmosPartitionKeyHelperSpec extends UnitSpec {
     error.getMessage should include("PartitionKey.None can't be used with multiple paths")
   }
 
+  it should "throw IllegalArgumentException for null input" in {
+    val error = the[IllegalArgumentException] thrownBy {
+      CosmosPartitionKeyHelper.tryParsePartitionKey(null)
+    }
+    error.getMessage should include("must not be null")
+  }
+
+  it should "throw IllegalArgumentException for null input with treatNullAsNone" in {
+    val error = the[IllegalArgumentException] thrownBy {
+      CosmosPartitionKeyHelper.tryParsePartitionKey(null, treatNullAsNone = true)
+    }
+    error.getMessage should include("must not be null")
+  }
+
   //scalastyle:on multiple.string.literals
   //scalastyle:on magic.number
 }

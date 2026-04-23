@@ -55,6 +55,7 @@ private[spark] object CosmosPartitionKeyHelper extends BasicLoggingTrait {
   def tryParsePartitionKey(
                             cosmosPartitionKeyString: String,
                             treatNullAsNone: Boolean): Option[PartitionKey] = {
+    require(cosmosPartitionKeyString != null, "Argument 'cosmosPartitionKeyString' must not be null.")
     cosmosPartitionKeyString match {
       case cosmosPartitionKeyStringRegx(pkValue) =>
         scala.util.Try(Utils.parse(pkValue, classOf[Object])).toOption.flatMap {
