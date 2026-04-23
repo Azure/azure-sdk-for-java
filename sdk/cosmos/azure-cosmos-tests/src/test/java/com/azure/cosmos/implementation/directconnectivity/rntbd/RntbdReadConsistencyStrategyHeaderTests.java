@@ -39,7 +39,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenEncodesCorrectly(
-        ReadConsistencyStrategy strategy,
+        ReadConsistencyStrategy ignoredStrategy,
         byte expectedByteValue) {
 
         RntbdToken token = RntbdToken.create(
@@ -79,7 +79,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenRoundTrips(
-        ReadConsistencyStrategy strategy,
+        ReadConsistencyStrategy ignoredStrategy,
         byte expectedByteValue) {
 
         // Encode
