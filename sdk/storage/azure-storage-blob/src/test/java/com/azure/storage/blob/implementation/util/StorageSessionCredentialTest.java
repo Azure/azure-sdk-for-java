@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
@@ -52,8 +53,23 @@ public class StorageSessionCredentialTest {
             "signRequest must set x-ms-date so the signed value matches what is sent on the wire");
     }
 
+    // Regression guard for the URL-decode fix in StorageSessionCredential.canonicalizedResource:
+    // verifies Session and SharedKey produce the same HMAC for a well-formed GET with an
+    // encoded query string (e.g. snapshot=...%3A...).
+    //
+    // Scope is intentionally narrow. Session and SharedKey legitimately diverge on:
+    //   - missing Content-Length (SharedKey emits literal "null" via String.join; Session emits "")
+    //   - Content-Length "0" on GETs (SharedKey normalizes to ""; Session preserves "0" to match
+    //     what azure-core's RestProxyBase puts on the wire — see the comment on
+    //     StorageSessionCredential.buildStringToSign).
+    // Content-Length is pinned to a realistic non-zero value to bypass both quirks.
+    //
+    // DELETE this test once azure-core stops setting Content-Length: 0 on GETs and
+    // StorageSessionCredential.buildStringToSign is removed in favor of delegating to
+    // sharedKey.generateAuthorizationHeader(...). At that point this assertion becomes
+    // tautological (SharedKey vs. SharedKey).
     @Test
-    public void signatureMatchesSharedKeyForSameRequest() throws MalformedURLException {
+    public void canonicalizationMatchesSharedKeyForEncodedQuery() throws MalformedURLException {
         StorageSessionCredential sessionCred = SessionTestHelper.createValidCredential();
         StorageSharedKeyCredential sharedKeyCred
             = new StorageSharedKeyCredential(SessionTestHelper.TEST_ACCOUNT_NAME, SessionTestHelper.TEST_SESSION_KEY);
@@ -62,9 +78,10 @@ public class StorageSessionCredentialTest {
             new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob?snapshot="
                 + "2025-03-31T00%3A00%3A00.0000000Z"));
         request.getHeaders()
-            .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
+            .set(HttpHeaderName.fromString("x-ms-version"), BlobServiceVersion.getLatest().getVersion())
             .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
-            .set(HttpHeaderName.RANGE, "bytes=0-1023");
+            .set(HttpHeaderName.RANGE, "bytes=0-1023")
+            .set(HttpHeaderName.CONTENT_LENGTH, "1024");
 
         sessionCred.signRequest(request);
 
