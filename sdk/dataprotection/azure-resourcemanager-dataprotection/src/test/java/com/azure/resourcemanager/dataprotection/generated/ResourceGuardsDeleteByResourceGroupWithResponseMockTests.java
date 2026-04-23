@@ -28,7 +28,7 @@ public final class ResourceGuardsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceGuards()
-            .deleteByResourceGroupWithResponse("nwm", "tmvpdvjdhtt", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("ivfcdisyirnx", "hcz", com.azure.core.util.Context.NONE);
 
     }
 }
