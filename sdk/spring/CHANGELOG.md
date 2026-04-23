@@ -16,9 +16,10 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 
 ### Bugs Fixed
 
+- Fixes a bug where ';' was ignored in JSON content type checking. [#48448](https://github.com/Azure/azure-sdk-for-java/pull/48448)
 - Fixed an issue where feature flag–based refresh did not work when load balancing was enabled with a single configuration store. Feature flag refresh now uses the same load-balanced client selection as configuration refresh, including the single-store scenario. [#48121](https://github.com/Azure/azure-sdk-for-java/pull/48121)
 - Fixed YAML configuration binding for `label-filter` by adding standard no-arg getter methods to `AppConfigurationKeyValueSelector` and `FeatureFlagKeyValueSelector`, enabling proper type resolution by Spring Boot's `@ConfigurationProperties` binder. [#47985](https://github.com/Azure/azure-sdk-for-java/pull/47985)
-- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
+- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. [#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587)
 
 ### Spring Messaging Azure Service Bus
 
