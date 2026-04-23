@@ -171,8 +171,6 @@ You may also control the verbosity of logs that go to Application Insights - see
 
 Since logs are hard to query and are extremely verbose (in case of high-scale stress tests), we're relying on metrics and workbooks for test result analysis.
 
-See also [Logging in Azure SDK][logging-azure-sdk].
-
 ### Metrics
 
 While some Azure SDKs provide custom metrics, we're going to collect generic test metrics and build queries/workbooks on top of them,
@@ -254,4 +252,3 @@ thread pool issues, or other performance issues in the code. So make sure to con
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
 [opentelemetry-logback]: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/logback/logback-appender-1.0/library
-[logging-azure-sdk]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
