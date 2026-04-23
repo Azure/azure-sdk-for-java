@@ -2169,7 +2169,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertNotNull(sessionResponse);
             assertNotNull(sessionResponse.getId());
             assertNotNull(sessionResponse.getExpiration());
-            assertTrue(sessionResponse.getExpiration().isAfter(OffsetDateTime.now()));
+            assertTrue(sessionResponse.getExpiration().isAfter(testResourceNamer.now()));
             assertNotNull(sessionResponse.getCredentials());
             assertNotNull(sessionResponse.getCredentials().getSessionToken());
             assertNotNull(sessionResponse.getCredentials().getSessionKey());
