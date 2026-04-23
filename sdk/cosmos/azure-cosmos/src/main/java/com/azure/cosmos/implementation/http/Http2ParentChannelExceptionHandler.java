@@ -69,9 +69,9 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
             // (e.g., TCP RST from LB idle timeout, post-close cleanup).
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "Exception on HTTP/2 parent connection "
-                        + ctx.channel()
-                        + " [activeStreams=" + activeStreams
+                    "Exception on HTTP/2 parent connection"
+                        + " [channel=" + ctx.channel()
+                        + ", activeStreams=" + activeStreams
                         + ", channelActive=" + channelActive + "]",
                     cause);
             }
@@ -79,9 +79,9 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
             // Active streams on a live channel, or stream count unknown (null) —
             // exception may affect in-flight requests.
             logger.warn(
-                "Exception on HTTP/2 parent connection "
-                    + ctx.channel()
-                    + " [activeStreams=" + activeStreams
+                "Exception on HTTP/2 parent connection"
+                    + " [channel=" + ctx.channel()
+                    + ", activeStreams=" + activeStreams
                     + ", channelActive=" + channelActive + "]",
                 cause);
         }
