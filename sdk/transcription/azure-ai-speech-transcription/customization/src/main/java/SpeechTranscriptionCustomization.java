@@ -81,6 +81,34 @@ public class SpeechTranscriptionCustomization extends Customization {
 
         logger.info("Customizing TranscriptionAsyncClient to make transcribe(TranscriptionContent) package-private");
         customizeTranscriptionAsyncClient(customization.getPackage("com.azure.ai.speech.transcription"));
+
+        logger.info("Customizing TranscriptionClientBuilder class-level JavaDoc with instantiation sample");
+        customizeTranscriptionClientBuilder(customization.getPackage("com.azure.ai.speech.transcription"));
+    }
+
+    /**
+     * Adds a class-level JavaDoc instantiation sample to TranscriptionClientBuilder so that the
+     * APIView documentation guideline ("JavaDoc for clients and builders should include code samples
+     * to instantiate clients") is satisfied.
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeTranscriptionClientBuilder(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("TranscriptionClientBuilder").customizeAst(ast -> {
+            ast.getClassByName("TranscriptionClientBuilder").ifPresent(clazz -> {
+                String description = "A builder for creating a new instance of the {@link TranscriptionClient}\n"
+                    + "and {@link TranscriptionAsyncClient}.\n"
+                    + "\n"
+                    + "<p><strong>Sample: construct a TranscriptionClient with KeyCredential</strong></p>\n"
+                    + "<pre>\n"
+                    + "TranscriptionClient client = new TranscriptionClientBuilder()\n"
+                    + "    .endpoint(&quot;https://&#123;resource&#125;.cognitiveservices.azure.com/&quot;)\n"
+                    + "    .credential(new KeyCredential(&quot;&#123;api-key&#125;&quot;))\n"
+                    + "    .buildClient();\n"
+                    + "</pre>";
+                clazz.setJavadocComment(new Javadoc(parseText(description)));
+            });
+        });
     }
 
     /**
@@ -295,6 +323,19 @@ public class SpeechTranscriptionCustomization extends Customization {
         ClassCustomization classCustomization = packageCustomization.getClass("TranscriptionClient");
         classCustomization.customizeAst(ast -> {
             ast.getClassByName("TranscriptionClient").ifPresent(clazz -> {
+                // Class-level JavaDoc with instantiation sample.
+                String classDescription
+                    = "Initializes a new instance of the synchronous TranscriptionClient type.\n"
+                        + "\n"
+                        + "<p>Construct an instance using the {@link TranscriptionClientBuilder}:</p>\n"
+                        + "<pre>\n"
+                        + "TranscriptionClient client = new TranscriptionClientBuilder()\n"
+                        + "    .endpoint(&quot;https://&#123;resource&#125;.cognitiveservices.azure.com/&quot;)\n"
+                        + "    .credential(new KeyCredential(&quot;&#123;api-key&#125;&quot;))\n"
+                        + "    .buildClient();\n"
+                        + "</pre>";
+                clazz.setJavadocComment(new Javadoc(parseText(classDescription)));
+
                 // Make the generated transcribe(TranscriptionContent) package-private (internal)
                 // Only modify methods that have @Generated annotation to avoid affecting manual customizations
                 clazz.getMethodsByName("transcribe").forEach(method -> {
@@ -313,16 +354,28 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribe", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("TranscriptionResult");
-                transcribeMethod.setJavadocComment("\n"
-                    + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
-                    + " * @param options the transcription options including audio file details or audio URL\n"
-                    + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
-                    + " * @throws HttpResponseException thrown if the request is rejected by server.\n"
-                    + " * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n"
-                    + " * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
-                    + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
-                    + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
-                    + " * @return the result of the transcribe operation.\n" + " ");
+                String transcribeDescription
+                    = "Transcribes the provided audio stream with the specified options.\n"
+                        + "\n"
+                        + "<p><strong>Sample</strong></p>\n"
+                        + "<pre>\n"
+                        + "TranscriptionResult result = client.transcribe(\n"
+                        + "    new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));\n"
+                        + "</pre>";
+                transcribeMethod.setJavadocComment(new Javadoc(parseText(transcribeDescription))
+                    .addBlockTag("param", "options",
+                        "the transcription options including audio file details or audio URL")
+                    .addBlockTag("throws", "IllegalArgumentException", "thrown if parameters fail the validation.")
+                    .addBlockTag("throws", "HttpResponseException", "thrown if the request is rejected by server.")
+                    .addBlockTag("throws", "ClientAuthenticationException",
+                        "thrown if the request is rejected by server on status code 401.")
+                    .addBlockTag("throws", "ResourceNotFoundException",
+                        "thrown if the request is rejected by server on status code 404.")
+                    .addBlockTag("throws", "ResourceModifiedException",
+                        "thrown if the request is rejected by server on status code 409.")
+                    .addBlockTag("throws", "RuntimeException",
+                        "all other wrapped checked exceptions if the request fails to be sent.")
+                    .addBlockTag("return", "the result of the transcribe operation."));
                 com.github.javaparser.ast.expr.NormalAnnotationExpr transcribeServiceMethodAnnotation
                     = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 transcribeServiceMethodAnnotation.setName("ServiceMethod");
@@ -338,16 +391,33 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("Response<TranscriptionResult>");
-                transcribeWithResponseMethod.setJavadocComment("\n"
-                    + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
-                    + " * @param options the transcription options including audio file details or audio URL\n"
-                    + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
-                    + " * @throws HttpResponseException thrown if the request is rejected by server.\n"
-                    + " * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n"
-                    + " * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
-                    + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
-                    + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
-                    + " * @return the response containing the result of the transcribe operation.\n" + " ");
+                String transcribeWithResponseDescription
+                    = "Transcribes the provided audio stream with the specified options and returns the full HTTP\n"
+                        + "response, useful for inspecting status code and headers (for example the\n"
+                        + "{@code x-ms-request-id} header used in support escalations).\n"
+                        + "\n"
+                        + "<p><strong>Sample</strong></p>\n"
+                        + "<pre>\n"
+                        + "Response&lt;TranscriptionResult&gt; response = client.transcribeWithResponse(\n"
+                        + "    new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));\n"
+                        + "System.out.println(&quot;Status: &quot; + response.getStatusCode());\n"
+                        + "TranscriptionResult result = response.getValue();\n"
+                        + "</pre>";
+                transcribeWithResponseMethod
+                    .setJavadocComment(new Javadoc(parseText(transcribeWithResponseDescription))
+                        .addBlockTag("param", "options",
+                            "the transcription options including audio file details or audio URL")
+                        .addBlockTag("throws", "IllegalArgumentException", "thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException", "thrown if the request is rejected by server.")
+                        .addBlockTag("throws", "ClientAuthenticationException",
+                            "thrown if the request is rejected by server on status code 401.")
+                        .addBlockTag("throws", "ResourceNotFoundException",
+                            "thrown if the request is rejected by server on status code 404.")
+                        .addBlockTag("throws", "ResourceModifiedException",
+                            "thrown if the request is rejected by server on status code 409.")
+                        .addBlockTag("throws", "RuntimeException",
+                            "all other wrapped checked exceptions if the request fails to be sent.")
+                        .addBlockTag("return", "the response containing the result of the transcribe operation."));
                 // Note: intentionally NOT adding @ServiceMethod here. The Checkstyle ServiceClientCheck
                 // requires sync methods annotated with @ServiceMethod to take Context/RequestOptions/RequestContext,
                 // but we want to keep the simple public signature transcribeWithResponse(TranscriptionOptions).
@@ -376,6 +446,19 @@ public class SpeechTranscriptionCustomization extends Customization {
         ClassCustomization classCustomization = packageCustomization.getClass("TranscriptionAsyncClient");
         classCustomization.customizeAst(ast -> {
             ast.getClassByName("TranscriptionAsyncClient").ifPresent(clazz -> {
+                // Class-level JavaDoc with instantiation sample.
+                String classDescription
+                    = "Initializes a new instance of the asynchronous TranscriptionAsyncClient type.\n"
+                        + "\n"
+                        + "<p>Construct an instance using the {@link TranscriptionClientBuilder}:</p>\n"
+                        + "<pre>\n"
+                        + "TranscriptionAsyncClient client = new TranscriptionClientBuilder()\n"
+                        + "    .endpoint(&quot;https://&#123;resource&#125;.cognitiveservices.azure.com/&quot;)\n"
+                        + "    .credential(new KeyCredential(&quot;&#123;api-key&#125;&quot;))\n"
+                        + "    .buildAsyncClient();\n"
+                        + "</pre>";
+                clazz.setJavadocComment(new Javadoc(parseText(classDescription)));
+
                 // Make the generated transcribe(TranscriptionContent) package-private (internal)
                 // Only modify methods that have @Generated annotation to avoid affecting manual customizations
                 clazz.getMethodsByName("transcribe").forEach(method -> {
@@ -394,17 +477,29 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribe", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("Mono<TranscriptionResult>");
-                transcribeMethod.setJavadocComment("\n"
-                    + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
-                    + " * @param options the transcription options including audio file details or audio URL\n"
-                    + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
-                    + " * @throws HttpResponseException thrown if the request is rejected by server.\n"
-                    + " * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n"
-                    + " * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
-                    + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
-                    + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
-                    + " * @return the result of the transcribe operation on successful completion of {@link Mono}.\n"
-                    + " ");
+                String transcribeDescription
+                    = "Transcribes the provided audio stream with the specified options.\n"
+                        + "\n"
+                        + "<p><strong>Sample</strong></p>\n"
+                        + "<pre>\n"
+                        + "client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;))\n"
+                        + "    .subscribe(result -&gt; System.out.println(result.getCombinedPhrases().get(0).getText()));\n"
+                        + "</pre>";
+                transcribeMethod.setJavadocComment(new Javadoc(parseText(transcribeDescription))
+                    .addBlockTag("param", "options",
+                        "the transcription options including audio file details or audio URL")
+                    .addBlockTag("throws", "IllegalArgumentException", "thrown if parameters fail the validation.")
+                    .addBlockTag("throws", "HttpResponseException", "thrown if the request is rejected by server.")
+                    .addBlockTag("throws", "ClientAuthenticationException",
+                        "thrown if the request is rejected by server on status code 401.")
+                    .addBlockTag("throws", "ResourceNotFoundException",
+                        "thrown if the request is rejected by server on status code 404.")
+                    .addBlockTag("throws", "ResourceModifiedException",
+                        "thrown if the request is rejected by server on status code 409.")
+                    .addBlockTag("throws", "RuntimeException",
+                        "all other wrapped checked exceptions if the request fails to be sent.")
+                    .addBlockTag("return",
+                        "the result of the transcribe operation on successful completion of {@link Mono}."));
                 com.github.javaparser.ast.expr.NormalAnnotationExpr transcribeServiceMethodAnnotation
                     = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 transcribeServiceMethodAnnotation.setName("ServiceMethod");
@@ -420,17 +515,32 @@ public class SpeechTranscriptionCustomization extends Customization {
                     = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
                         .addParameter("TranscriptionOptions", "options")
                         .setType("Mono<Response<TranscriptionResult>>");
-                transcribeWithResponseMethod.setJavadocComment("\n"
-                    + " * Transcribes the provided audio stream with the specified options.\n" + " *\n"
-                    + " * @param options the transcription options including audio file details or audio URL\n"
-                    + " * @throws IllegalArgumentException thrown if parameters fail the validation.\n"
-                    + " * @throws HttpResponseException thrown if the request is rejected by server.\n"
-                    + " * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n"
-                    + " * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n"
-                    + " * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n"
-                    + " * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n"
-                    + " * @return the response containing the result of the transcribe operation on successful completion of {@link Mono}.\n"
-                    + " ");
+                String transcribeWithResponseDescription
+                    = "Transcribes the provided audio stream with the specified options and returns the full HTTP\n"
+                        + "response, useful for inspecting status code and headers (for example the\n"
+                        + "{@code x-ms-request-id} header used in support escalations).\n"
+                        + "\n"
+                        + "<p><strong>Sample</strong></p>\n"
+                        + "<pre>\n"
+                        + "client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;))\n"
+                        + "    .subscribe(response -&gt; System.out.println(&quot;Status: &quot; + response.getStatusCode()));\n"
+                        + "</pre>";
+                transcribeWithResponseMethod
+                    .setJavadocComment(new Javadoc(parseText(transcribeWithResponseDescription))
+                        .addBlockTag("param", "options",
+                            "the transcription options including audio file details or audio URL")
+                        .addBlockTag("throws", "IllegalArgumentException", "thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException", "thrown if the request is rejected by server.")
+                        .addBlockTag("throws", "ClientAuthenticationException",
+                            "thrown if the request is rejected by server on status code 401.")
+                        .addBlockTag("throws", "ResourceNotFoundException",
+                            "thrown if the request is rejected by server on status code 404.")
+                        .addBlockTag("throws", "ResourceModifiedException",
+                            "thrown if the request is rejected by server on status code 409.")
+                        .addBlockTag("throws", "RuntimeException",
+                            "all other wrapped checked exceptions if the request fails to be sent.")
+                        .addBlockTag("return",
+                            "the response containing the result of the transcribe operation on successful completion of {@link Mono}."));
                 com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation
                     = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 serviceMethodAnnotation.setName("ServiceMethod");

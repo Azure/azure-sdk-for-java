@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.iotoperations.fluent.AkriConnectorTemplatesClient;
 import com.azure.resourcemanager.iotoperations.fluent.AkriConnectorsClient;
+import com.azure.resourcemanager.iotoperations.fluent.AkriServicesClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerAuthenticationsClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerAuthorizationsClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerListenersClient;
@@ -321,6 +322,20 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
     }
 
     /**
+     * The AkriServicesClient object to access its operations.
+     */
+    private final AkriServicesClient akriServices;
+
+    /**
+     * Gets the AkriServicesClient object to access its operations.
+     * 
+     * @return the AkriServicesClient object.
+     */
+    public AkriServicesClient getAkriServices() {
+        return this.akriServices;
+    }
+
+    /**
      * Initializes an instance of IoTOperationsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -337,7 +352,7 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-01";
+        this.apiVersion = "2026-03-01";
         this.operations = new OperationsClientImpl(this);
         this.instances = new InstancesClientImpl(this);
         this.brokers = new BrokersClientImpl(this);
@@ -351,6 +366,7 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
         this.registryEndpoints = new RegistryEndpointsClientImpl(this);
         this.akriConnectorTemplates = new AkriConnectorTemplatesClientImpl(this);
         this.akriConnectors = new AkriConnectorsClientImpl(this);
+        this.akriServices = new AkriServicesClientImpl(this);
     }
 
     /**
