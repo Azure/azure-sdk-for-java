@@ -26,7 +26,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
-import org.springframework.boot.bootstrap.ConfigurableBootstrapContext;
+import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.Profiles;
@@ -190,18 +190,18 @@ public class AzureAppConfigDataLoaderTest {
         // Use very short timeout so test runs quickly (minimal real sleeping)
         Profiles profiles = Mockito.mock(Profiles.class);
         when(profiles.getActive()).thenReturn(List.of(LABEL_FILTER));
-        
+
         ConfigStore fastTimeoutStore = new ConfigStore();
         fastTimeoutStore.setEndpoint(ENDPOINT);
         fastTimeoutStore.setEnabled(true);
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(false);
         fastTimeoutStore.setFeatureFlags(featureFlagStore);
-        
+
         // Short timeout - test will retry once then succeed, sleeping ~5 seconds total
         AzureAppConfigDataResource fastResource = new AzureAppConfigDataResource(
             true, fastTimeoutStore, profiles, true, Duration.ofMinutes(1), Duration.ofSeconds(10));
-        
+
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
         selector.setKeyFilter(KEY_FILTER);
