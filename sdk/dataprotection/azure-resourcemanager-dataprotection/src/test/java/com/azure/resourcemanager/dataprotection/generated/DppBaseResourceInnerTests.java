@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInn
 public final class DppBaseResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppBaseResourceInner model = BinaryData
-            .fromString("{\"id\":\"ztfolhbnxk\",\"name\":\"alaulppggdtpnapn\",\"type\":\"iropuhpigvpgylg\"}")
-            .toObject(DppBaseResourceInner.class);
+        DppBaseResourceInner model
+            = BinaryData.fromString("{\"id\":\"ohxcrsbfova\",\"name\":\"rruvwbhsq\",\"type\":\"sub\"}")
+                .toObject(DppBaseResourceInner.class);
     }
 }

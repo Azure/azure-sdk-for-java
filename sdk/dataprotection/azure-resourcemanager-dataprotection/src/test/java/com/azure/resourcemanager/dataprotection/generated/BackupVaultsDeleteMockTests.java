@@ -27,7 +27,7 @@ public final class BackupVaultsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.backupVaults().delete("qvcww", "yurmochpprprs", com.azure.core.util.Context.NONE);
+        manager.backupVaults().delete("lvgsgzwywakoih", "nsmjbl", com.azure.core.util.Context.NONE);
 
     }
 }
