@@ -177,7 +177,7 @@ public class ReactorNettyClient implements HttpClient {
                         try {
                             channelPipeline.addLast(
                                 Http2ParentChannelExceptionHandler.HANDLER_NAME,
-                                Http2ParentChannelExceptionHandler.INSTANCE);
+                                Http2ParentChannelExceptionHandler.getOrCreateInstance());
                         } catch (IllegalArgumentException ignored) {
                             // TOCTOU race: between the get()==null check above and addLast(),
                             // a concurrent doOnConnected may have installed the handler.

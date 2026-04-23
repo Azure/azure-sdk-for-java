@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http2.Http2FrameCodec;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +44,30 @@ import org.slf4j.LoggerFactory;
 @ChannelHandler.Sharable
 final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdapter {
 
-    static final Http2ParentChannelExceptionHandler INSTANCE = new Http2ParentChannelExceptionHandler();
-
     static final String HANDLER_NAME = "cosmosH2ParentExceptionHandler";
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ParentChannelExceptionHandler.class);
 
-    private Http2ParentChannelExceptionHandler() {
+    private static volatile Http2ParentChannelExceptionHandler instance;
+
+    private final String clientVmId;
+
+    private Http2ParentChannelExceptionHandler(String clientVmId) {
+        this.clientVmId = clientVmId;
+    }
+
+    // Must be called from a non-event-loop thread (e.g., during client setup)
+    // because ClientTelemetry.getMachineId() may block on first IMDS fetch.
+    static Http2ParentChannelExceptionHandler getOrCreateInstance() {
+        if (instance != null) {
+            return instance;
+        }
+        synchronized (Http2ParentChannelExceptionHandler.class) {
+            if (instance == null) {
+                instance = new Http2ParentChannelExceptionHandler(ClientTelemetry.getMachineId(null));
+            }
+        }
+        return instance;
     }
 
     @Override
@@ -72,7 +90,8 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
                     "Exception on HTTP/2 parent connection"
                         + " [channel=" + ctx.channel()
                         + ", activeStreams=" + activeStreams
-                        + ", channelActive=" + channelActive + "]",
+                        + ", channelActive=" + channelActive
+                        + ", clientVmId=" + this.clientVmId + "]",
                     cause);
             }
         } else {
@@ -82,7 +101,8 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
                 "Exception on HTTP/2 parent connection"
                     + " [channel=" + ctx.channel()
                     + ", activeStreams=" + activeStreams
-                    + ", channelActive=" + channelActive + "]",
+                    + ", channelActive=" + channelActive
+                    + ", clientVmId=" + this.clientVmId + "]",
                 cause);
         }
     }
