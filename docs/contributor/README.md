@@ -44,5 +44,4 @@ If you are a **consumer** of the SDK looking for usage guidance, start at the [U
 ## External References
 
 - [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
-- [Azure SDK for Java Wiki](https://github.com/Azure/azure-sdk-for-java/wiki) — complete wiki index
 - [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) — PR rules, merge conventions, versioning policy
