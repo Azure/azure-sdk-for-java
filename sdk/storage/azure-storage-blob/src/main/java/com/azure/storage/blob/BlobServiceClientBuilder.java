@@ -30,6 +30,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.implementation.util.SessionTokenCredentialPolicy;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -141,6 +142,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
+            if (pipeline.getPolicy(i) instanceof SessionTokenCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
         }
         anonymousAccess = !foundCredential;
 
@@ -190,6 +195,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 break;
             }
             if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof SessionTokenCredentialPolicy) {
                 foundCredential = true;
                 break;
             }
