@@ -158,11 +158,13 @@ public final class Constants {
 
         // Global Secondary Index Definition
         public static final String MATERIALIZED_VIEW_DEFINITION = "materializedViewDefinition";
-        public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_ID = "sourceCollectionId";
-        public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_RID = "sourceCollectionRid";
-        public static final String MATERIALIZED_VIEW_QUERY_DEFINITION = "definition";
-        public static final String MATERIALIZED_VIEW_STATUS = "status";
+        public static final String GLOBAL_SECONDARY_INDEX_DEFINITION = "globalSecondaryIndexDefinition";
+        public static final String GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_ID = "sourceCollectionId";
+        public static final String GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_RID = "sourceCollectionRid";
+        public static final String GLOBAL_SECONDARY_INDEX_QUERY_DEFINITION = "definition";
+        public static final String GLOBAL_SECONDARY_INDEX_STATUS = "status";
         public static final String MATERIALIZED_VIEWS = "materializedViews";
+        public static final String GLOBAL_SECONDARY_INDEXES = "globalSecondaryIndexes";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";

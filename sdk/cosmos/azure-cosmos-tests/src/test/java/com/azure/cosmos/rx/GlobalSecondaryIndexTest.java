@@ -130,11 +130,19 @@ public class GlobalSecondaryIndexTest {
         String json = ModelBridgeInternal.getResource(containerProperties).toJson();
 
         ObjectNode jsonNode = (ObjectNode) simpleObjectMapper.readTree(json);
-        ObjectNode gsiDefNode = (ObjectNode) jsonNode.get("materializedViewDefinition");
 
-        assertThat(gsiDefNode).isNotNull();
-        assertThat(gsiDefNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
-        assertThat(gsiDefNode.get("definition").asText())
+        // Verify the new wire format property is written
+        ObjectNode newFormatNode = (ObjectNode) jsonNode.get("globalSecondaryIndexDefinition");
+        assertThat(newFormatNode).isNotNull();
+        assertThat(newFormatNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
+        assertThat(newFormatNode.get("definition").asText())
+            .isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
+
+        // Verify the legacy wire format property is also written for backward compatibility
+        ObjectNode legacyNode = (ObjectNode) jsonNode.get("materializedViewDefinition");
+        assertThat(legacyNode).isNotNull();
+        assertThat(legacyNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
+        assertThat(legacyNode.get("definition").asText())
             .isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
     }
 
@@ -178,6 +186,62 @@ public class GlobalSecondaryIndexTest {
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
         assertThat(definition.getStatus()).isEqualTo("Initialized");
+    }
+
+    // -------------------------------------------------------------------------
+    // Deserialization from new wire format (globalSecondaryIndexDefinition)
+    // -------------------------------------------------------------------------
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_deserializesFromNewWireFormat() {
+        String json = "{"
+            + "\"id\":\"testContainer\","
+            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
+            + "\"globalSecondaryIndexDefinition\":{"
+            + "\"sourceCollectionId\":\"gsi-src\","
+            + "\"sourceCollectionRid\":\"TughAMEOdUI=\","
+            + "\"definition\":\"SELECT c.customerId, c.emailAddress FROM c\","
+            + "\"status\":\"Active\""
+            + "}"
+            + "}";
+
+        CosmosContainerProperties containerProperties = fromJson(json);
+
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        assertThat(definition).isNotNull();
+        assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
+        assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
+        assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
+        assertThat(definition.getStatus()).isEqualTo("Active");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void globalSecondaryIndexDefinition_newWireFormatTakesPrecedenceOverLegacy() {
+        // When both property names are present, the new wire format should take precedence
+        String json = "{"
+            + "\"id\":\"testContainer\","
+            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
+            + "\"globalSecondaryIndexDefinition\":{"
+            + "\"sourceCollectionId\":\"gsi-new\","
+            + "\"sourceCollectionRid\":\"NewRid=\","
+            + "\"definition\":\"SELECT c.id FROM c\""
+            + "},"
+            + "\"materializedViewDefinition\":{"
+            + "\"sourceCollectionId\":\"gsi-legacy\","
+            + "\"sourceCollectionRid\":\"LegacyRid=\","
+            + "\"definition\":\"SELECT c.name FROM c\""
+            + "}"
+            + "}";
+
+        CosmosContainerProperties containerProperties = fromJson(json);
+
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        assertThat(definition).isNotNull();
+        assertThat(definition.getSourceContainerId())
+            .as("New wire format should take precedence when both are present")
+            .isEqualTo("gsi-new");
+        assertThat(definition.getSourceContainerRid()).isEqualTo("NewRid=");
+        assertThat(definition.getDefinition()).isEqualTo("SELECT c.id FROM c");
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -248,6 +312,55 @@ public class GlobalSecondaryIndexTest {
 
         assertThat(gsiList.get(1).getId()).isEqualTo("gsi_testcontainer2");
         assertThat(gsiList.get(1).getResourceId()).isEqualTo("AbcdEFGhIJk=");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void getGlobalSecondaryIndexes_deserializesFromNewWireFormat() {
+        String json = "{"
+            + "\"id\":\"src-container\","
+            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
+            + "\"globalSecondaryIndexes\":["
+            + "{\"id\":\"gsi_container1\",\"_rid\":\"XyzAbCdEfG=\"},"
+            + "{\"id\":\"gsi_container2\",\"_rid\":\"HiJkLmNoPq=\"}"
+            + "]"
+            + "}";
+
+        CosmosContainerProperties containerProperties = fromJson(json);
+
+        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
+        assertThat(gsiList).isNotNull();
+        assertThat(gsiList).hasSize(2);
+
+        assertThat(gsiList.get(0).getId()).isEqualTo("gsi_container1");
+        assertThat(gsiList.get(0).getResourceId()).isEqualTo("XyzAbCdEfG=");
+
+        assertThat(gsiList.get(1).getId()).isEqualTo("gsi_container2");
+        assertThat(gsiList.get(1).getResourceId()).isEqualTo("HiJkLmNoPq=");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void getGlobalSecondaryIndexes_newWireFormatTakesPrecedenceOverLegacy() {
+        // When both property names are present, the new wire format should take precedence
+        String json = "{"
+            + "\"id\":\"src-container\","
+            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
+            + "\"globalSecondaryIndexes\":["
+            + "{\"id\":\"new_gsi\",\"_rid\":\"NewRid=\"}"
+            + "],"
+            + "\"materializedViews\":["
+            + "{\"id\":\"legacy_gsi\",\"_rid\":\"LegacyRid=\"}"
+            + "]"
+            + "}";
+
+        CosmosContainerProperties containerProperties = fromJson(json);
+
+        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
+        assertThat(gsiList).isNotNull();
+        assertThat(gsiList).hasSize(1);
+        assertThat(gsiList.get(0).getId())
+            .as("New wire format should take precedence when both are present")
+            .isEqualTo("new_gsi");
+        assertThat(gsiList.get(0).getResourceId()).isEqualTo("NewRid=");
     }
 
     // -------------------------------------------------------------------------

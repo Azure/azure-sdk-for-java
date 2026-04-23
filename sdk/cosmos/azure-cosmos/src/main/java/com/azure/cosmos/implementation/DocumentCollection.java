@@ -476,7 +476,12 @@ public final class DocumentCollection extends Resource {
      */
     public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
         if (this.cosmosGlobalSecondaryIndexDefinition == null) {
-            if (super.has(Constants.Properties.MATERIALIZED_VIEW_DEFINITION)) {
+            // Accept both the new wire format property name and the legacy one
+            if (super.has(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION)) {
+                this.cosmosGlobalSecondaryIndexDefinition = super.getObject(
+                    Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION,
+                    CosmosGlobalSecondaryIndexDefinition.class);
+            } else if (super.has(Constants.Properties.MATERIALIZED_VIEW_DEFINITION)) {
                 this.cosmosGlobalSecondaryIndexDefinition = super.getObject(
                     Constants.Properties.MATERIALIZED_VIEW_DEFINITION,
                     CosmosGlobalSecondaryIndexDefinition.class);
@@ -493,6 +498,8 @@ public final class DocumentCollection extends Resource {
     public void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         checkNotNull(value, "cosmosGlobalSecondaryIndexDefinition cannot be null");
         this.cosmosGlobalSecondaryIndexDefinition = value;
+        // Write under both property names so the service can accept either
+        this.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION, value);
         this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
     }
 
@@ -503,8 +510,12 @@ public final class DocumentCollection extends Resource {
      * @return the list of {@link CosmosGlobalSecondaryIndex}, or an empty list if none are present.
      */
     public List<CosmosGlobalSecondaryIndex> getGlobalSecondaryIndexes() {
+        // Accept both the new wire format property name and the legacy one
         List<CosmosGlobalSecondaryIndex> results =
-            super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosGlobalSecondaryIndex.class);
+            super.getList(Constants.Properties.GLOBAL_SECONDARY_INDEXES, CosmosGlobalSecondaryIndex.class);
+        if (results == null) {
+            results = super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosGlobalSecondaryIndex.class);
+        }
         if (results == null) {
             return Collections.emptyList();
         }

@@ -44,8 +44,8 @@ public final class CosmosGlobalSecondaryIndexDefinition {
             throw new IllegalArgumentException("definition cannot be null or empty");
         }
         this.jsonSerializable = new JsonSerializable();
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID, sourceContainerId);
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_QUERY_DEFINITION, definition);
+        this.jsonSerializable.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_ID, sourceContainerId);
+        this.jsonSerializable.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_QUERY_DEFINITION, definition);
     }
 
     /**
@@ -63,11 +63,11 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @return the source container id.
      */
     public String getSourceContainerId() {
-        return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID);
+        return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_ID);
     }
 
     void setSourceContainerRidInternal(String sourceCollectionRid) {
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID, sourceCollectionRid);
+        this.jsonSerializable.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_RID, sourceCollectionRid);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @return the source container resource id.
      */
     public String getSourceContainerRid() {
-        return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID);
+        return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_RID);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @return the GlobalSecondaryIndex build status.
      */
     public String getStatus() {
-        return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_STATUS);
+        return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_STATUS);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @return the query definition.
      */
     public String getDefinition() {
-        return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_QUERY_DEFINITION);
+        return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_QUERY_DEFINITION);
     }
 
     void populatePropertyBag() {
