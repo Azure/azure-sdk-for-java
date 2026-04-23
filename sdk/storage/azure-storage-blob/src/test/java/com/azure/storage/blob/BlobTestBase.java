@@ -417,10 +417,22 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions) {
+        return getOAuthServiceClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    }
+
+    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
@@ -430,10 +442,23 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
+        return getOAuthServiceAsyncClient(sessionOptions, (HttpPipelinePolicy[]) null);
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
+        HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
