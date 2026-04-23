@@ -40,9 +40,6 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to ServiceGroupsManager.
- * The Groups RP provides Service Groups as a construct to group multiple resources, resource groups, subscriptions and
- * other service groups into an organizational hierarchy and centrally manage access control, policies, alerting and
- * reporting for those resources.
  */
 public final class ServiceGroupsManager {
     private ResourceProviders resourceProviders;

@@ -1,7 +1,8 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-03-27)
+## 1.0.0-beta.2 (2026-04-23)
 
+- Azure Resource Manager Service Groups client library for Java. This package contains Microsoft Azure SDK for Service Groups Management SDK.  Package api-version 2024-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Service Groups client library for Java. This package contains Microsoft Azure SDK for Service Groups Management SDK. The Groups RP provides Service Groups as a construct to group multiple resources, resource groups, subscriptions and other service groups into an organizational hierarchy and centrally manage access control, policies, alerting and reporting for those resources. Package api-version 2024-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
