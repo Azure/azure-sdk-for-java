@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `getBodyAsInputStreamSync()` method to `HttpResponse` that returns the response content as an `InputStream` synchronously. ([#48858](https://github.com/Azure/azure-sdk-for-java/pull/48858))
+
 ### Breaking Changes
 
 ### Bugs Fixed

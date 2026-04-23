@@ -20,15 +20,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous TranscriptionClient type.
+ *
+ * <p>Construct an instance using the {@link TranscriptionClientBuilder}:</p>
+ * 
+ * <pre>
+ * TranscriptionClient client
+ *     = new TranscriptionClientBuilder().endpoint(&quot;https://&#123;resource&#125;.cognitiveservices.azure.com/&quot;)
+ *         .credential(new KeyCredential(&quot;&#123;api-key&#125;&quot;))
+ *         .buildClient();
+ * </pre>
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class)
 public final class TranscriptionClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClient.class);
 
     @Generated
     private final TranscriptionClientImpl serviceClient;
@@ -124,6 +130,12 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream with the specified options.
      *
+     * <p><strong>Sample</strong></p>
+     * 
+     * <pre>
+     * TranscriptionResult result = client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));
+     * </pre>
+     *
      * @param options the transcription options including audio file details or audio URL
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -143,7 +155,18 @@ public final class TranscriptionClient {
     }
 
     /**
-     * Transcribes the provided audio stream with the specified options.
+     * Transcribes the provided audio stream with the specified options and returns the full HTTP
+     * response, useful for inspecting status code and headers (for example the
+     * {@code x-ms-request-id} header used in support escalations).
+     *
+     * <p><strong>Sample</strong></p>
+     * 
+     * <pre>
+     * Response&lt;TranscriptionResult&gt; response
+     *     = client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));
+     * System.out.println(&quot;Status: &quot; + response.getStatusCode());
+     * TranscriptionResult result = response.getValue();
+     * </pre>
      *
      * @param options the transcription options including audio file details or audio URL
      * @throws IllegalArgumentException thrown if parameters fail the validation.

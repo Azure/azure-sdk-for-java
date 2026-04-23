@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  */
 public final class LogAnalyticsExportRequestRateByIntervalSamples {
     /*
-     * x-ms-original-file: 2025-04-01/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
+     * x-ms-original-file: 2025-11-01/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
      */
     /**
      * Sample code: Export logs which contain all Api requests made to Compute Resource Provider within the given time

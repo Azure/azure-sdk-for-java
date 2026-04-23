@@ -21,16 +21,22 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous TranscriptionClient type.
+ * Initializes a new instance of the asynchronous TranscriptionAsyncClient type.
+ *
+ * <p>Construct an instance using the {@link TranscriptionClientBuilder}:</p>
+ * 
+ * <pre>
+ * TranscriptionAsyncClient client
+ *     = new TranscriptionClientBuilder().endpoint(&quot;https://&#123;resource&#125;.cognitiveservices.azure.com/&quot;)
+ *         .credential(new KeyCredential(&quot;&#123;api-key&#125;&quot;))
+ *         .buildAsyncClient();
+ * </pre>
  */
 @ServiceClient(builder = TranscriptionClientBuilder.class, isAsync = true)
 public final class TranscriptionAsyncClient {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionAsyncClient.class);
 
     @Generated
     private final TranscriptionClientImpl serviceClient;
@@ -128,6 +134,13 @@ public final class TranscriptionAsyncClient {
     /**
      * Transcribes the provided audio stream with the specified options.
      *
+     * <p><strong>Sample</strong></p>
+     * 
+     * <pre>
+     * client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;))
+     *     .subscribe(result -&gt; System.out.println(result.getCombinedPhrases().get(0).getText()));
+     * </pre>
+     *
      * @param options the transcription options including audio file details or audio URL
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -147,7 +160,16 @@ public final class TranscriptionAsyncClient {
     }
 
     /**
-     * Transcribes the provided audio stream with the specified options.
+     * Transcribes the provided audio stream with the specified options and returns the full HTTP
+     * response, useful for inspecting status code and headers (for example the
+     * {@code x-ms-request-id} header used in support escalations).
+     *
+     * <p><strong>Sample</strong></p>
+     * 
+     * <pre>
+     * client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;))
+     *     .subscribe(response -&gt; System.out.println(&quot;Status: &quot; + response.getStatusCode()));
+     * </pre>
      *
      * @param options the transcription options including audio file details or audio URL
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,6 +180,7 @@ public final class TranscriptionAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TranscriptionResult>> transcribeWithResponse(TranscriptionOptions options) {
         TranscriptionContent requestContent = new TranscriptionContent(options);
         if (options.getFileDetails() != null) {

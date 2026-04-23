@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class ImagesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Image_Get.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Image_Get.json
      */
     /**
      * Sample code: Get information about a virtual machine image.

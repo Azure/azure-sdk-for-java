@@ -27,7 +27,7 @@ public final class UpdatesPostMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.updates().post("osj", "fdizhrjq", "yayt", com.azure.core.util.Context.NONE);
+        manager.updates().post("yydsyweoh", "mtsnvo", "vb", com.azure.core.util.Context.NONE);
 
     }
 }
