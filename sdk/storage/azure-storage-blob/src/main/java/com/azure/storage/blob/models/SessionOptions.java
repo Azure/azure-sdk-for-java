@@ -19,6 +19,7 @@ public final class SessionOptions {
 
     /**
      * Creates a new {@link SessionOptions} instance with default values.
+     * Note: This currently only applies when using TokenCredential for GET Blob operations.
      */
     public SessionOptions() {
     }

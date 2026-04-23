@@ -139,23 +139,17 @@ public final class BuilderHelper {
             StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
                 = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
 
-            SessionOptions effectiveSessionOptions = sessionOptions;
+            SessionOptions effectiveSessionOptions = SessionOptions.orDefault(sessionOptions);
 
-            if (effectiveSessionOptions == null
-                || effectiveSessionOptions.getSessionMode().resolve() == SessionMode.NONE) {
-                policies.add(bearerPolicy);
-            } else {
-                BlobServiceVersion effectiveServiceVersion
-                    = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
+            BlobServiceVersion effectiveServiceVersion
+                = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
 
-                HttpPipeline bearerPipeline = buildBearerPipeline(policies, bearerPolicy, httpClient, clientOptions);
-                BlobSessionClient sessionClient
-                    = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
-                        effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
+            HttpPipeline bearerPipeline = buildBearerPipeline(policies, bearerPolicy, httpClient, clientOptions);
+            BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
+                effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
 
-                policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
-                    new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
-            }
+            policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
+                new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
         }
 
         if (azureSasCredential != null) {
