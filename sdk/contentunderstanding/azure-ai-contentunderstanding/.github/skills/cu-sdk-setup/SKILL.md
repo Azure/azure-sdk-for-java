@@ -90,10 +90,12 @@ mvn dependency:resolve
 
 **Option B: Local install from source:**
 ```bash
-mvn install -DskipTests
+mvn install -DskipTests -Djacoco.skip=true
 ```
 
 This compiles the SDK and all sample sources under `src/samples/java`.
+
+> **Note:** `-Djacoco.skip=true` is required because the default build enforces a minimum test coverage ratio. When `-DskipTests` is set, no coverage data is produced and the jacoco `check` goal would fail the build. Skipping jacoco is safe for environment setup / running samples.
 
 > **[ASK USER] Installation check:**
 > After running the command, ask: "Did the build complete with `BUILD SUCCESS`?" If the user reports errors (e.g., dependency resolution failures, JDK version mismatches), help troubleshoot before continuing.
@@ -290,8 +292,13 @@ set -a && source .env && set +a
 > - If no, let them know they'll need to run it before using prebuilt analyzers.
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults"
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults" \
+  -Dexec.classpathScope=test \
+  -Djacoco.skip=true -q
 ```
+
+> **Note:** `-Dexec.classpathScope=test` is required because sample sources live under `src/samples/java` and are compiled into the test classpath. Without it you will get `ClassNotFoundException: com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults`.
 
 This is a **one-time setup per Microsoft Foundry resource**.
 
@@ -310,12 +317,18 @@ This is a **one-time setup per Microsoft Foundry resource**.
 **Sync sample:**
 ```bash
 set -a && source .env && set +a
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl"
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test \
+  -Djacoco.skip=true -q
 ```
 
 **Async sample (same package, `*Async` suffix):**
 ```bash
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrlAsync"
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrlAsync" \
+  -Dexec.classpathScope=test \
+  -Djacoco.skip=true -q
 ```
 
 For a more fluent experience, use the sample-run helper skill:
@@ -349,6 +362,8 @@ For a more fluent experience, use the sample-run helper skill:
 | `java: command not found` | Install a JDK 8+ (Microsoft Build of OpenJDK or Temurin) and ensure `JAVA_HOME` is set. |
 | `mvn: command not found` | Install Maven 3.6+ and add it to `PATH`. |
 | `CONTENTUNDERSTANDING_ENDPOINT` is null at runtime | Make sure you ran `set -a && source .env && set +a` in the same terminal before `mvn exec:java`. |
+| `ClassNotFoundException: ...samples.SampleXX_...` | Add `-Dexec.classpathScope=test` to the `mvn exec:java` command. Samples live under `src/samples/java` (test classpath). |
+| `jacoco-maven-plugin:...:check` fails after `mvn install -DskipTests` | Add `-Djacoco.skip=true`. Skipping tests produces no coverage data, which fails the coverage check. |
 | `Access denied` / 401 errors | Check API key is correct, or run `az login` if using DefaultAzureCredential. Verify the `Cognitive Services User` role is assigned. |
 | `Model deployment not found` | Deploy required models in Microsoft Foundry and run `Sample00_UpdateDefaults`. |
 | Changes to `.env` not taking effect | Re-run `set -a && source .env && set +a` — changes are not auto-reloaded. |
