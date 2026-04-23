@@ -10,8 +10,9 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for retry functionality in ServiceBusMessageChannelBinder.
  */
+@ExtendWith(MockitoExtension.class)
 class ServiceBusRetryTest {
 
     @Mock
@@ -54,7 +56,6 @@ class ServiceBusRetryTest {
 
     @BeforeEach
     void init() {
-        MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
         context.refresh();
         binder.setApplicationContext(context);
