@@ -1,8 +1,6 @@
 # Release History
 ## 7.3.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Spring Cloud Azure Stream Binder Service Bus
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
 
