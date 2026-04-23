@@ -4682,8 +4682,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return Flux.empty();
         }
 
-        // Sort batches by batchFilter minInclusive EPK for deterministic sequential processing
-        allBatches.sort(Comparator.comparing(bd -> bd.batchFilter.getMin()));
+        // Sort batches by batchFilter EPK range for deterministic sequential processing.
+        // Tie-break on maxExclusive so that prefix HPK batches sharing the same minInclusive
+        // (the prefix EPK) always have a stable order regardless of routing-map traversal order.
+        allBatches.sort(Comparator.comparing((BatchDescriptor bd) -> bd.batchFilter.getMin())
+            .thenComparing(bd -> bd.batchFilter.getMax()));
 
         return buildSequentialBatchFlux(
             allBatches, null,

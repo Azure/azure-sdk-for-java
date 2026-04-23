@@ -1620,6 +1620,8 @@ public class CosmosAsyncContainer {
      * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
      * as the base query. Duplicate partition key inputs are normalized with set-based semantics
      * before batching, so repeated keys do not duplicate the results.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
@@ -1639,6 +1641,8 @@ public class CosmosAsyncContainer {
      * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
      * as the base query. Duplicate partition key inputs are normalized with set-based semantics
      * before batching, so repeated keys do not duplicate the results.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for
@@ -1667,6 +1671,8 @@ public class CosmosAsyncContainer {
      * Partial hierarchical partition keys are supported and will fan out to multiple
      * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
      * before batching.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
      *
      * @param <T> the type parameter
      * @param partitionKeys list of partition key values to read documents for

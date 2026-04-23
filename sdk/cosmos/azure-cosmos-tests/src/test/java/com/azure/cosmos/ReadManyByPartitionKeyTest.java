@@ -350,7 +350,7 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void rejectsNullPartitionKeyList() {
         singlePkContainer.readManyByPartitionKeys((List<PartitionKey>) null, ObjectNode.class);
     }

@@ -82,7 +82,7 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
 
     /**
      * Sets the maximum number of per-physical-partition batches whose first page is prefetched
-     * concurrently. The default is {@code Math.min(1, Math.max(64, Runtime.getRuntime().availableProcessors()))}.
+     * concurrently. The default is {@code Math.max(1, Math.min(Runtime.getRuntime().availableProcessors(), 8))}.
      * <p>
      * Increase this to trade memory for lower end-to-end latency on wide containers; decrease it
      * (e.g. to {@code 1}) when running in environments where a single task already saturates the
