@@ -35,7 +35,6 @@ This section includes changes in `spring-messaging-azure-servicebus` module.
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Autoconfigure
-
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### New Features
@@ -68,7 +67,6 @@ The ConnectionFactory type is determined by the following configuration properti
   **Note:** `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
 
 ### Spring Cloud Azure Docker Compose
-
 This section includes changes in `spring-cloud-azure-docker-compose` module.
 
 #### New Features
