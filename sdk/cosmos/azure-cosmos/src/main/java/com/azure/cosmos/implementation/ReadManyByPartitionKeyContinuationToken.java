@@ -128,7 +128,7 @@ public final class ReadManyByPartitionKeyContinuationToken {
         // Tokens written before the version field existed will deserialize with version == null.
         // Treat null as version 1 (the format that existed when this field was introduced) to
         // remain forward-compatible with any tokens emitted by an in-flight pre-versioned beta.
-        int effectiveVersion = (version == null) ? CURRENT_VERSION : version;
+        int effectiveVersion = (version == null) ? 1 : version;
         if (effectiveVersion != CURRENT_VERSION) {
             throw new IllegalArgumentException(
                 "Unsupported readManyByPartitionKeys continuation token version: " + effectiveVersion
@@ -307,21 +307,21 @@ public final class ReadManyByPartitionKeyContinuationToken {
     }
 
     /**
-     * Serializes this token to a Base64-encoded JSON string.
+     * Serializes this token to a URL-safe Base64-encoded JSON string.
      */
     public String serialize() {
         try {
             String json = Utils.getSimpleObjectMapper().writeValueAsString(this);
-            return Base64.getEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
+            return Base64.getUrlEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new IllegalStateException("Failed to serialize ReadManyByPartitionKeyContinuationToken.", e);
         }
     }
 
     /**
-     * Deserializes a Base64-encoded JSON string into a continuation token.
+     * Deserializes a URL-safe Base64-encoded JSON string into a continuation token.
      *
-     * @param serialized the serialized token (Base64 of JSON)
+     * @param serialized the serialized token (URL-safe Base64 of JSON)
      * @return the deserialized token
      * @throws IllegalArgumentException if the token is malformed
      */
@@ -330,7 +330,7 @@ public final class ReadManyByPartitionKeyContinuationToken {
         checkArgument(!serialized.isEmpty(), "Argument 'serialized' must not be empty.");
 
         try {
-            byte[] decoded = Base64.getDecoder().decode(serialized);
+            byte[] decoded = Base64.getUrlDecoder().decode(serialized);
             String json = new String(decoded, StandardCharsets.UTF_8);
             return Utils.getSimpleObjectMapper().readValue(json, ReadManyByPartitionKeyContinuationToken.class);
         } catch (IllegalArgumentException e) {
