@@ -10,8 +10,14 @@
 ### Spring Cloud Azure Appconfiguration Config
 This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
 
-#### Bugs Fixed
+### Features Added
 
+- Added support for filtering configuration settings and feature flags by tags. Tags can be configured via `spring.cloud.azure.appconfiguration.stores[0].selects[0].tags-filter` for key-value settings and `spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].tags-filter` for feature flags. The value is a list of `tag=value` pairs (e.g., `["env=prod", "team=backend"]`) combined with AND logic. [#47985](https://github.com/Azure/azure-sdk-for-java/pull/47985)
+
+### Bugs Fixed
+
+- Fixed an issue where feature flag–based refresh did not work when load balancing was enabled with a single configuration store. Feature flag refresh now uses the same load-balanced client selection as configuration refresh, including the single-store scenario. [#48121](https://github.com/Azure/azure-sdk-for-java/pull/48121)
+- Fixed YAML configuration binding for `label-filter` by adding standard no-arg getter methods to `AppConfigurationKeyValueSelector` and `FeatureFlagKeyValueSelector`, enabling proper type resolution by Spring Boot's `@ConfigurationProperties` binder. [#47985](https://github.com/Azure/azure-sdk-for-java/pull/47985)
 - Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
 
 ### Spring Messaging Azure Service Bus
@@ -80,6 +86,16 @@ This section includes changes in `spring-cloud-azure-testcontainers` module.
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
 Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#620-2026-03-25) for more details.
+
+## 7.1.0 (2026-03-11)
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+
+- Fixed `KeyVaultJcaProvider` being registered as the highest-priority JCA security provider, which overrides standard JCA services (`KeyManagerFactory.SunX509`, `Signature` algorithms) and breaks mTLS with standard keystores (JKS, PKCS12). The provider is now added at the end of the provider list, allowing JCA's delayed provider selection to route `KeyVaultPrivateKey` signing operations to the KeyVault implementations without interfering with standard SSL/TLS operations. [#48183](https://github.com/Azure/azure-sdk-for-java/issues/48183)
 
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
