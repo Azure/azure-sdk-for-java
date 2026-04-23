@@ -1,5 +1,5 @@
 # Release History
-## 6.3.0
+## 6.3.0-beta.1 (Unreleased)
 
 ### Spring Cloud Azure Autoconfigure
 
@@ -87,16 +87,6 @@ This section includes changes in `spring-cloud-azure-testcontainers` module.
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
 Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#620-2026-03-25) for more details.
-
-## 7.1.0 (2026-03-11)
-
-### Spring Cloud Azure Autoconfigure
-
-This section includes changes in `spring-cloud-azure-autoconfigure` module.
-
-#### Bugs Fixed
-
-- Fixed `KeyVaultJcaProvider` being registered as the highest-priority JCA security provider, which overrides standard JCA services (`KeyManagerFactory.SunX509`, `Signature` algorithms) and breaks mTLS with standard keystores (JKS, PKCS12). The provider is now added at the end of the provider list, allowing JCA's delayed provider selection to route `KeyVaultPrivateKey` signing operations to the KeyVault implementations without interfering with standard SSL/TLS operations. [#48183](https://github.com/Azure/azure-sdk-for-java/issues/48183)
 
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
