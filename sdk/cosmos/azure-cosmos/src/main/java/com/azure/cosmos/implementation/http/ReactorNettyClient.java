@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
@@ -142,6 +143,12 @@ public class ReactorNettyClient implements HttpClient {
 
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (httpCfgAccessor().isEffectivelyEnabled(http2Cfg)) {
+
+            // Resolve vmId eagerly on the caller's thread (non-event-loop).
+            // ClientTelemetry.getMachineId() may block on first IMDS fetch.
+            Http2ParentChannelExceptionHandler h2ExceptionHandler =
+                new Http2ParentChannelExceptionHandler(ClientTelemetry.getMachineId(null));
+
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -177,7 +184,7 @@ public class ReactorNettyClient implements HttpClient {
                         try {
                             channelPipeline.addLast(
                                 Http2ParentChannelExceptionHandler.HANDLER_NAME,
-                                Http2ParentChannelExceptionHandler.getOrCreateInstance());
+                                h2ExceptionHandler);
                         } catch (IllegalArgumentException ignored) {
                             // TOCTOU race: between the get()==null check above and addLast(),
                             // a concurrent doOnConnected may have installed the handler.

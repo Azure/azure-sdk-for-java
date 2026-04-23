@@ -48,26 +48,10 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ParentChannelExceptionHandler.class);
 
-    private static volatile Http2ParentChannelExceptionHandler instance;
-
     private final String clientVmId;
 
-    private Http2ParentChannelExceptionHandler(String clientVmId) {
+    Http2ParentChannelExceptionHandler(String clientVmId) {
         this.clientVmId = clientVmId;
-    }
-
-    // Must be called from a non-event-loop thread (e.g., during client setup)
-    // because ClientTelemetry.getMachineId() may block on first IMDS fetch.
-    static Http2ParentChannelExceptionHandler getOrCreateInstance() {
-        if (instance != null) {
-            return instance;
-        }
-        synchronized (Http2ParentChannelExceptionHandler.class) {
-            if (instance == null) {
-                instance = new Http2ParentChannelExceptionHandler(ClientTelemetry.getMachineId(null));
-            }
-        }
-        return instance;
     }
 
     @Override
