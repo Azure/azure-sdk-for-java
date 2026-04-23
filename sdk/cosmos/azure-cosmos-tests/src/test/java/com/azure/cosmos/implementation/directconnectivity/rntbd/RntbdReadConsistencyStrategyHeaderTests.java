@@ -11,9 +11,11 @@ import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxGatewayStoreModel;
 import com.azure.cosmos.implementation.ThinClientStoreModel;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -325,7 +327,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             ConsistencyLevel.SESSION,
             new UserAgentContainer(),
             mockGem,
-            Mockito.mock(com.azure.cosmos.implementation.http.HttpClient.class));
+            Mockito.mock(HttpClient.class));
     }
 
     private static RxDocumentServiceRequest createDocumentReadRequest() {
@@ -347,39 +349,10 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         }).block();
     }
 
-    /**
-     * Mirrors RxGatewayStoreModel.resolveEffectiveConsistencyHeaders() exactly.
-     * This is the centralized contention resolution that runs in performRequestInternalCore()
-     * before wrapInHttpRequest() is called.
-     */
     private static void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
-        Map<String, String> headers = request.getHeaders();
-
-        ReadConsistencyStrategy effectiveReadConsistencyStrategy = null;
-        if (request.requestContext != null
-            && request.requestContext.readConsistencyStrategy != null
-            && request.requestContext.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            effectiveReadConsistencyStrategy = request.requestContext.readConsistencyStrategy;
-        }
-
-        if (effectiveReadConsistencyStrategy == null) {
-            String readConsistencyStrategyHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            if (readConsistencyStrategyHeaderValue != null && !readConsistencyStrategyHeaderValue.isEmpty()) {
-                effectiveReadConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
-                for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
-                    if (candidate != ReadConsistencyStrategy.DEFAULT
-                        && candidate.toString().equals(readConsistencyStrategyHeaderValue)) {
-                        effectiveReadConsistencyStrategy = candidate;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (effectiveReadConsistencyStrategy != null && effectiveReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveReadConsistencyStrategy.toString());
-        }
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(
+            request.getHeaders(),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null);
     }
 
     // region RNTBD frame helpers

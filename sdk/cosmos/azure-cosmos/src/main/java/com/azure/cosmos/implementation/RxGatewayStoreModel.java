@@ -337,14 +337,24 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * performing the same removal is safe.
      */
     private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
-        Map<String, String> headers = request.getHeaders();
+        resolveEffectiveConsistencyHeaders(
+            request.getHeaders(),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null);
+    }
+
+    /**
+     * Core resolution logic — public for direct unit testing from cross-package test classes.
+     * Avoids test drift from duplicated simulation logic.
+     */
+    public static void resolveEffectiveConsistencyHeaders(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
 
         // Determine effective readConsistencyStrategy: requestContext (request-level) takes priority over header (client-level)
         ReadConsistencyStrategy effectiveReadConsistencyStrategy = null;
-        if (request.requestContext != null
-            && request.requestContext.readConsistencyStrategy != null
-            && request.requestContext.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            effectiveReadConsistencyStrategy = request.requestContext.readConsistencyStrategy;
+        if (requestContextReadConsistencyStrategy != null
+            && requestContextReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
+            effectiveReadConsistencyStrategy = requestContextReadConsistencyStrategy;
         }
 
         if (effectiveReadConsistencyStrategy == null) {

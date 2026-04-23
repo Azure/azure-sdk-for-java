@@ -77,7 +77,7 @@ public class ConsistencyFlagContentionTest {
         DocumentServiceRequestContext ctx = new DocumentServiceRequestContext();
         ctx.readConsistencyStrategy = ReadConsistencyStrategy.LATEST_COMMITTED;
 
-        simulateResolve(headers, ctx);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, ctx.readConsistencyStrategy);
 
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)).isFalse();
         assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
@@ -92,7 +92,7 @@ public class ConsistencyFlagContentionTest {
         headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
             ReadConsistencyStrategy.EVENTUAL.toString());
 
-        simulateResolve(headers, new DocumentServiceRequestContext());
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
 
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)).isFalse();
         assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
@@ -107,10 +107,7 @@ public class ConsistencyFlagContentionTest {
             ReadConsistencyStrategy.EVENTUAL.toString());
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.EVENTUAL.toString());
 
-        DocumentServiceRequestContext ctx = new DocumentServiceRequestContext();
-        ctx.readConsistencyStrategy = ReadConsistencyStrategy.SESSION;
-
-        simulateResolve(headers, ctx);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, ReadConsistencyStrategy.SESSION);
 
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)).isFalse();
         assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
@@ -123,10 +120,7 @@ public class ConsistencyFlagContentionTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.BOUNDED_STALENESS.toString());
 
-        DocumentServiceRequestContext ctx = new DocumentServiceRequestContext();
-        ctx.readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
-
-        simulateResolve(headers, ctx);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, ReadConsistencyStrategy.DEFAULT);
 
         assertThat(headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
             .isEqualTo("BoundedStaleness");
@@ -139,10 +133,7 @@ public class ConsistencyFlagContentionTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
 
-        DocumentServiceRequestContext ctx = new DocumentServiceRequestContext();
-        // readConsistencyStrategy is null by default
-
-        simulateResolve(headers, ctx);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
 
         assertThat(headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
             .isEqualTo("Strong");
@@ -154,7 +145,7 @@ public class ConsistencyFlagContentionTest {
         // When neither CL nor readConsistencyStrategy is set, resolution is a no-op.
         Map<String, String> headers = new HashMap<>();
 
-        simulateResolve(headers, new DocumentServiceRequestContext());
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
 
         assertThat(headers).isEmpty();
     }
@@ -168,11 +159,9 @@ public class ConsistencyFlagContentionTest {
         headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
             ReadConsistencyStrategy.LATEST_COMMITTED.toString());
 
-        DocumentServiceRequestContext ctx = new DocumentServiceRequestContext();
-
-        simulateResolve(headers, ctx);
-        simulateResolve(headers, ctx);
-        simulateResolve(headers, ctx);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
 
         assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)).isFalse();
         assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
@@ -180,38 +169,4 @@ public class ConsistencyFlagContentionTest {
     }
 
     // endregion
-
-    /**
-     * Simulates the resolveEffectiveConsistencyHeaders logic from RxGatewayStoreModel.
-     * This mirrors the private method exactly to enable unit testing without constructing
-     * the full gateway store model infrastructure.
-     */
-    private static void simulateResolve(Map<String, String> headers, DocumentServiceRequestContext ctx) {
-        ReadConsistencyStrategy effectiveReadConsistencyStrategy = null;
-
-        if (ctx != null
-            && ctx.readConsistencyStrategy != null
-            && ctx.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            effectiveReadConsistencyStrategy = ctx.readConsistencyStrategy;
-        }
-
-        if (effectiveReadConsistencyStrategy == null) {
-            String readConsistencyStrategyHeaderValue = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            if (readConsistencyStrategyHeaderValue != null && !readConsistencyStrategyHeaderValue.isEmpty()) {
-                effectiveReadConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
-                for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
-                    if (candidate != ReadConsistencyStrategy.DEFAULT
-                        && candidate.toString().equals(readConsistencyStrategyHeaderValue)) {
-                        effectiveReadConsistencyStrategy = candidate;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (effectiveReadConsistencyStrategy != null && effectiveReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
-            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveReadConsistencyStrategy.toString());
-        }
-    }
 }
