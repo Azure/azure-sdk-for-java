@@ -167,29 +167,21 @@ public class ReactorNettyClient implements HttpClient {
                             new Http2ResponseHeaderCleanerHandler());
                     }
 
-                    // Install exception handler on the HTTP/2 parent (TCP) channel.
-                    // In reactor-netty's H2 path, doOnConnected fires once per TCP
-                    // connection — connection.channel() IS the parent (TCP) channel,
-                    // so channel.parent() is null. We handle both cases:
-                    //   - parent != null → child/stream channel, install on parent
-                    //   - parent == null → this IS the parent, install on it directly
-                    // The parent pipeline has no ChannelOperationsHandler (unlike H1.1),
-                    // so TCP-level exceptions (RST, broken pipe) propagate to Netty's
-                    // TailContext. This handler consumes them with connection-state-based
-                    // log levels: DEBUG when idle, WARN when active streams exist.
-                    Channel channel = connection.channel();
-                    Channel h2Parent = channel.parent() != null ? channel.parent() : channel;
-
-                    if (h2Parent.pipeline().get(Http2ParentChannelExceptionHandler.HANDLER_NAME) == null) {
+                    // Install exception handler at the tail of the HTTP/2 parent (TCP)
+                    // channel pipeline. This pipeline has no ChannelOperationsHandler
+                    // (unlike H1.1), so TCP-level exceptions (RST, broken pipe) propagate
+                    // to Netty's TailContext. This handler consumes them with
+                    // connection-state-based log levels: DEBUG when idle, WARN when
+                    // active streams exist.
+                    if (channelPipeline.get(Http2ParentChannelExceptionHandler.HANDLER_NAME) == null) {
                         try {
-                            h2Parent.pipeline().addLast(
+                            channelPipeline.addLast(
                                 Http2ParentChannelExceptionHandler.HANDLER_NAME,
                                 new Http2ParentChannelExceptionHandler());
                         } catch (IllegalArgumentException ignored) {
                             // TOCTOU race: between the get()==null check above and addLast(),
                             // a concurrent doOnConnected may have installed the handler.
-                            // Since we always pass a fresh instance (never null, never shared
-                            // across pipelines), duplicate handler name is the only possible cause.
+                            // Duplicate handler name is the only possible cause.
                         }
                     }
                 }));
