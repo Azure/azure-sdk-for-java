@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.http;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http2.Http2FrameCodec;
@@ -39,11 +40,17 @@ import org.slf4j.LoggerFactory;
  *
  * @see ReactorNettyClient#configureChannelPipelineHandlers()
  */
+@ChannelHandler.Sharable
 final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdapter {
+
+    static final Http2ParentChannelExceptionHandler INSTANCE = new Http2ParentChannelExceptionHandler();
 
     static final String HANDLER_NAME = "cosmosH2ParentExceptionHandler";
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ParentChannelExceptionHandler.class);
+
+    private Http2ParentChannelExceptionHandler() {
+    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -62,15 +69,17 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
             // (e.g., TCP RST from LB idle timeout, post-close cleanup).
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "Exception on HTTP/2 parent connection [id:{}, activeStreams={}, channelActive={}]",
-                    ctx.channel().id().asShortText(), activeStreams, channelActive, cause);
+                    "Exception on HTTP/2 parent connection [id:{}, local:{}, remote:{}, activeStreams={}, channelActive={}]",
+                    ctx.channel().id().asShortText(), ctx.channel().localAddress(), ctx.channel().remoteAddress(),
+                    activeStreams, channelActive, cause);
             }
         } else {
             // Active streams on a live channel, or stream count unknown (null) —
             // exception may affect in-flight requests.
             logger.warn(
-                "Exception on HTTP/2 parent connection [id:{}, activeStreams={}, channelActive={}]",
-                ctx.channel().id().asShortText(), activeStreams, channelActive, cause);
+                "Exception on HTTP/2 parent connection [id:{}, local:{}, remote:{}, activeStreams={}, channelActive={}]",
+                ctx.channel().id().asShortText(), ctx.channel().localAddress(), ctx.channel().remoteAddress(),
+                activeStreams, channelActive, cause);
         }
     }
 

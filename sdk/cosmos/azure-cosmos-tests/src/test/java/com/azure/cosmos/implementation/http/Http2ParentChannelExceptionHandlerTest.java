@@ -189,7 +189,7 @@ public class Http2ParentChannelExceptionHandlerTest {
     @Test(groups = "unit")
     public void withHandler_codecAbsent_fallsBackToWarnPath() {
         EmbeddedChannel channel = new EmbeddedChannel(
-            new Http2ParentChannelExceptionHandler());
+            Http2ParentChannelExceptionHandler.INSTANCE);
 
         assertThat(channel.pipeline().get(Http2FrameCodec.class)).isNull();
         assertThat(channel.isActive()).isTrue();
@@ -238,7 +238,7 @@ public class Http2ParentChannelExceptionHandlerTest {
 
         if (withExceptionHandler) {
             return new EmbeddedChannel(codec, multiplexHandler,
-                new Http2ParentChannelExceptionHandler());
+                Http2ParentChannelExceptionHandler.INSTANCE);
         } else {
             return new EmbeddedChannel(codec, multiplexHandler);
         }
