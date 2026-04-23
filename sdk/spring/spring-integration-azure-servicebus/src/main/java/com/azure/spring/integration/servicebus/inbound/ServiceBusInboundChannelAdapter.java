@@ -210,8 +210,9 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
                 payloadType);
 
-            if (retryTemplate != null) {
-                retryTemplate.execute(context -> {
+            RetryTemplate localRetryTemplate = retryTemplate;
+            if (localRetryTemplate != null) {
+                localRetryTemplate.execute(context -> {
                     sendMessage(message);
                     return null;
                 });
