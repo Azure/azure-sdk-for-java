@@ -13,6 +13,7 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 ### Features Added
 
 - Added support for filtering configuration settings and feature flags by tags. Tags can be configured via `spring.cloud.azure.appconfiguration.stores[0].selects[0].tags-filter` for key-value settings and `spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].tags-filter` for feature flags. The value is a list of `tag=value` pairs (e.g., `["env=prod", "team=backend"]`) combined with AND logic. [#47985](https://github.com/Azure/azure-sdk-for-java/pull/47985)
+- Added `startup-timeout` configuration option that enables automatic retry with backoff when transient failures occur during application startup. The provider will continue retrying until the timeout expires (default: 100 seconds). [#47857](https://github.com/Azure/azure-sdk-for-java/pull/47857).- 
 
 ### Bugs Fixed
 
