@@ -200,7 +200,7 @@ This would allow you to distinguish telemetry coming from different containers.
 You would need to adjust the workbook to accommodate those changes.
 
 In addition to `test.run_duration`, we're also collecting:
-- [JVM metrics](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/runtime-telemetry/runtime-telemetry-java8/library/README.md) measured by OpenTelemetry:
+- [JVM metrics](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/runtime-telemetry/README.md) measured by OpenTelemetry:
     - CPU and memory usage
     - GC stats
     - Thread count
