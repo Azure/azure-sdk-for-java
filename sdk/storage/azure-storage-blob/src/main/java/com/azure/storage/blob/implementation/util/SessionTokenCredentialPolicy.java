@@ -32,7 +32,7 @@ import java.util.Objects;
  * Request analysis is performed by {@link #analyzeRequest(HttpPipelineCallContext)} which returns
  * an {@link AuthStrategy} indicating the authentication approach to use.
  */
-final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
+public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final String SESSION_SCHEME = "Session";
