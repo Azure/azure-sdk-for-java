@@ -44,14 +44,13 @@ import org.slf4j.LoggerFactory;
 @ChannelHandler.Sharable
 final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdapter {
 
+    static final Http2ParentChannelExceptionHandler INSTANCE = new Http2ParentChannelExceptionHandler();
+
     static final String HANDLER_NAME = "cosmosH2ParentExceptionHandler";
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ParentChannelExceptionHandler.class);
 
-    private final String clientVmId;
-
-    Http2ParentChannelExceptionHandler(String clientVmId) {
-        this.clientVmId = clientVmId;
+    private Http2ParentChannelExceptionHandler() {
     }
 
     @Override
@@ -75,7 +74,7 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
                         + " [channel=" + ctx.channel()
                         + ", activeStreams=" + activeStreams
                         + ", channelActive=" + channelActive
-                        + ", clientVmId=" + this.clientVmId + "]",
+                        + ", clientVmId=" + ClientTelemetry.getCachedMachineId() + "]",
                     cause);
             }
         } else {
@@ -86,7 +85,7 @@ final class Http2ParentChannelExceptionHandler extends ChannelInboundHandlerAdap
                     + " [channel=" + ctx.channel()
                     + ", activeStreams=" + activeStreams
                     + ", channelActive=" + channelActive
-                    + ", clientVmId=" + this.clientVmId + "]",
+                    + ", clientVmId=" + ClientTelemetry.getCachedMachineId() + "]",
                 cause);
         }
     }
