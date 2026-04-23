@@ -175,6 +175,10 @@ public class StructuredMessageDecoder {
 
         flags = StructuredMessageFlags.fromValue(Short.toUnsignedInt(combined.getShort()));
         numSegments = Short.toUnsignedInt(combined.getShort());
+        if (numSegments < 1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                enrichExceptionMessage("Structured message must have at least one segment, got: " + numSegments)));
+        }
 
         // Consume the bytes from pending/buffer
         consumeBytes(V1_HEADER_LENGTH, buffer);
@@ -207,10 +211,14 @@ public class StructuredMessageDecoder {
                 "Unexpected segment number. Expected: " + (currentSegmentNumber + 1) + ", got: " + segmentNum)));
         }
 
-        long remainingMessageBytes = messageLength - messageOffset - V1_SEGMENT_HEADER_LENGTH;
-        if (segmentSize < 0 || segmentSize > remainingMessageBytes) {
+        long footerSize = flags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
+        long remainingSegmentsAfterThis = (long) numSegments - segmentNum;
+        long reservedBytes
+            = footerSize + remainingSegmentsAfterThis * (V1_SEGMENT_HEADER_LENGTH + footerSize) + footerSize;
+        long maxSegmentSize = messageLength - messageOffset - V1_SEGMENT_HEADER_LENGTH - reservedBytes;
+        if (segmentSize < 0 || segmentSize > maxSegmentSize) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
-                "Invalid segment size detected: " + segmentSize + " (remaining=" + remainingMessageBytes + ")")));
+                "Invalid segment size detected: " + segmentSize + " (max=" + maxSegmentSize + ")")));
         }
 
         consumeBytes(V1_SEGMENT_HEADER_LENGTH, buffer);
@@ -372,7 +380,11 @@ public class StructuredMessageDecoder {
      * @return true if all expected bytes have been decoded, false otherwise.
      */
     public boolean isComplete() {
-        return messageLength != -1 && messageOffset >= messageLength;
+        return messageLength != -1
+            && messageOffset >= messageLength
+            && pendingBytes.size() == 0
+            && !segmentHeaderRead
+            && currentSegmentContentOffset == currentSegmentContentLength;
     }
 
     /**

@@ -3,9 +3,11 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,7 +39,15 @@ class DecodedResponse extends HttpResponse {
 
     @Override
     public HttpHeaders getHeaders() {
-        return originalResponse.getHeaders();
+        HttpHeaders headers = new HttpHeaders(originalResponse.getHeaders());
+        String structuredContentLength
+            = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+        if (structuredContentLength != null) {
+            headers.set(HttpHeaderName.CONTENT_LENGTH, structuredContentLength);
+        } else {
+            headers.remove(HttpHeaderName.CONTENT_LENGTH);
+        }
+        return headers;
     }
 
     @Override

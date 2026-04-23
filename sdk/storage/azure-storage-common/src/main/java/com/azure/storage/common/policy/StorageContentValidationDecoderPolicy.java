@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageDecoder;
 import reactor.core.publisher.Flux;
@@ -37,9 +38,6 @@ import java.nio.ByteBuffer;
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
-    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
-    private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
-        = HttpHeaderName.fromString("x-ms-structured-content-length");
 
     /**
      * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
@@ -60,7 +58,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
         context.getHttpRequest()
             .getHeaders()
-            .set(X_MS_STRUCTURED_BODY, StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE);
+            .set(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME,
+                StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE);
 
         return next.process().map(httpResponse -> {
             Long contentLength = getContentLength(httpResponse.getHeaders());
@@ -86,8 +85,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     private void validateStructuredMessageHeaders(HttpResponse httpResponse) {
-        String structuredBody = httpResponse.getHeaders().getValue(X_MS_STRUCTURED_BODY);
-        String structuredContentLength = httpResponse.getHeaders().getValue(X_MS_STRUCTURED_CONTENT_LENGTH);
+        String structuredBody
+            = httpResponse.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+        String structuredContentLength
+            = httpResponse.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
         if (structuredBody == null || structuredContentLength == null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Structured message was requested but the response did not acknowledge it."));
@@ -119,7 +120,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, StructuredMessageDecoder decoder) {
         return encodedFlux.concatMap(buffer -> decodeBuffer(buffer, decoder))
-            .onErrorResume(throwable -> handleStreamError(throwable, decoder))
             .concatWith(Mono.defer(() -> handleStreamCompletion(decoder)));
     }
 
@@ -141,14 +141,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
             return Flux.error(new IOException("Failed to decode structured message chunk: " + e.getMessage(), e));
         }
-    }
-
-    private Flux<ByteBuffer> handleStreamError(Throwable throwable, StructuredMessageDecoder decoder) {
-        if (decoder.isComplete()) {
-            return Flux.empty();
-        }
-
-        return Flux.error(throwable);
     }
 
     private Mono<ByteBuffer> handleStreamCompletion(StructuredMessageDecoder decoder) {

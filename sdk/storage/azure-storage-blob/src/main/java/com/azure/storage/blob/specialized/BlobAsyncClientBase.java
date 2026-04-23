@@ -1265,10 +1265,7 @@ public class BlobAsyncClientBase {
         ContentValidationModeResolver.validateTransactionalChecksumOptions(getRangeContentMd5,
             contentValidationAlgorithm);
 
-        final Boolean getMD5
-            = (!ContentValidationModeResolver.isCrc64OrAuto(contentValidationAlgorithm) && getRangeContentMd5)
-                ? true
-                : null;
+        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
 
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
