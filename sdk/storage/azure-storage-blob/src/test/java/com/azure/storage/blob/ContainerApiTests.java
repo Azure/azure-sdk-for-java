@@ -2164,94 +2164,77 @@ public class ContainerApiTests extends BlobTestBase {
         assertNotNull(sessionResponse.getCredentials().getSessionToken());
         assertNotNull(sessionResponse.getCredentials().getSessionKey());
     }
-//
-//    @Test
-//    @LiveOnly
-//    public void downloadBlobOverSessionAuth() {
-//        int blobCount = 5;
-//        List<String> blobNames = new ArrayList<>();
-//        for (int i = 0; i < blobCount; i++) {
-//            String blobName = generateBlobName();
-//            cc.getBlobClient(blobName)
-//                .getBlockBlobClient()
-//                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-//            blobNames.add(blobName);
-//        }
-//
-//        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
-//        java.nio.file.Path diagFile = java.nio.file.Paths.get("C:\\repos\\azure-sdk-for-java\\session-diag.txt");
-//        try {
-//            java.nio.file.Files.deleteIfExists(diagFile);
-//        } catch (java.io.IOException ignored) {
-//        }
-//        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
-//            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-//            String path = req.getUrl().getPath();
-//            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
-//            try {
-//                java.nio.file.Files.write(diagFile,
-//                    java.util.Arrays.asList("WIRE " + req.getHttpMethod() + " " + req.getUrl(),
-//                        "  x-ms-date=" + req.getHeaders().getValue("x-ms-date") + " Date="
-//                            + req.getHeaders().getValue("Date") + " Content-Length="
-//                            + req.getHeaders().getValue("Content-Length"),
-//                        "  Authorization="
-//                            + (auth == null ? "null" : auth.length() > 60 ? auth.substring(0, 60) + "..." : auth)),
-//                    java.nio.charset.StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE,
-//                    java.nio.file.StandardOpenOption.APPEND);
-//            } catch (java.io.IOException ignored) {
-//            }
-//            if (auth != null && trimmed != null && trimmed.contains("/")) {
-//                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
-//            }
-//        });
-//
-//        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
-//            .setContainerName(cc.getBlobContainerName())
-//            .setAccountName(cc.getAccountName());
-//        BlobContainerClient sessionCc
-//            = getOAuthServiceClient(sessionOptions, inspect).getBlobContainerClient(cc.getBlobContainerName());
-//
-//        for (String blobName : blobNames) {
-//            BinaryData downloaded = sessionCc.getBlobClient(blobName).downloadContent();
-//            assertEquals(DATA.getDefaultText(), downloaded.toString());
-//        }
-//
-//        assertEquals(blobCount, downloadAuthSchemes.stream().filter("Session"::equals).count(),
-//            "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
-//    }
-//
-//    @Test
-//    @LiveOnly
-//    public void listBlobsOverSessionEnabledClient() {
-//        String blobName = generateBlobName();
-//        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-//
-//        List<String> listAuthSchemes = Collections.synchronizedList(new ArrayList<>());
-//        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
-//            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-//            String query = req.getUrl().getQuery();
-//            if (auth != null && query != null && query.contains("comp=list")) {
-//                listAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
-//            }
-//        });
-//
-//        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
-//            .setContainerName(cc.getBlobContainerName())
-//            .setAccountName(cc.getAccountName());
-//        BlobContainerClient sessionCc
-//            = getOAuthServiceClient(sessionOptions, inspect).getBlobContainerClient(cc.getBlobContainerName());
-//
-//        assertTrue(sessionCc.listBlobs().stream().anyMatch(b -> b.getName().equals(blobName)));
-//
-//        assertFalse(listAuthSchemes.isEmpty(), "Expected to observe at least one list request");
-//        assertTrue(listAuthSchemes.stream().allMatch("Bearer"::equals),
-//            "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
-//    }
-//
-//    private BlobContainerClient sessionEnabledContainerClient() {
-//        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
-//            .setContainerName(cc.getBlobContainerName())
-//            .setAccountName(cc.getAccountName());
-//        return getOAuthServiceClient(sessionOptions).getBlobContainerClient(cc.getBlobContainerName());
-//    }
+
+    @Test
+    @LiveOnly
+    public void downloadBlobOverSessionAuth() {
+        int blobCount = 5;
+        List<String> blobNames = new ArrayList<>();
+        for (int i = 0; i < blobCount; i++) {
+            String blobName = generateBlobName();
+            cc.getBlobClient(blobName)
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+            blobNames.add(blobName);
+        }
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && trimmed != null && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+            .setContainerName(cc.getBlobContainerName())
+            .setAccountName(cc.getAccountName());
+        BlobContainerClient sessionCc
+            = getOAuthServiceClient(sessionOptions, inspect).getBlobContainerClient(cc.getBlobContainerName());
+
+        for (String blobName : blobNames) {
+            BinaryData downloaded = sessionCc.getBlobClient(blobName).downloadContent();
+            assertEquals(DATA.getDefaultText(), downloaded.toString());
+        }
+
+        assertEquals(blobCount, downloadAuthSchemes.stream().filter("Session"::equals).count(),
+            "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    public void listBlobsOverSessionEnabledClient() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        List<String> listAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String query = req.getUrl().getQuery();
+            if (auth != null && query != null && query.contains("comp=list")) {
+                listAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+            .setContainerName(cc.getBlobContainerName())
+            .setAccountName(cc.getAccountName());
+        BlobContainerClient sessionCc
+            = getOAuthServiceClient(sessionOptions, inspect).getBlobContainerClient(cc.getBlobContainerName());
+
+        assertTrue(sessionCc.listBlobs().stream().anyMatch(b -> b.getName().equals(blobName)));
+
+        assertFalse(listAuthSchemes.isEmpty(), "Expected to observe at least one list request");
+        assertTrue(listAuthSchemes.stream().allMatch("Bearer"::equals),
+            "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
+    }
+
+    private BlobContainerClient sessionEnabledContainerClient() {
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+            .setContainerName(cc.getBlobContainerName())
+            .setAccountName(cc.getAccountName());
+        return getOAuthServiceClient(sessionOptions).getBlobContainerClient(cc.getBlobContainerName());
+    }
 }
