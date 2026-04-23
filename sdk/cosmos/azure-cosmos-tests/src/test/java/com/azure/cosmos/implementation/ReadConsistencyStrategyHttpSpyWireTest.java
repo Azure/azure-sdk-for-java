@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -79,7 +80,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         container.createItem(doc).block();
 
         // Build the spy client (low-level AsyncDocumentClient with HTTP interceptor)
-        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
 
         try {
             spyClient = SpyClientUnderTestFactory.createClientUnderTest(
@@ -158,7 +159,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
         String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
 
-        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
 
         SpyClientUnderTestFactory.ClientUnderTest readConsistencyStrategyClient;
         try {
@@ -251,7 +252,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
         String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
 
-        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
 
         SpyClientUnderTestFactory.ClientUnderTest readConsistencyStrategyClient;
         try {
@@ -298,7 +299,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
         String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
 
-        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
 
         // Client-level readConsistencyStrategy = EVENTUAL
         SpyClientUnderTestFactory.ClientUnderTest clientLevelReadConsistencyStrategyClient;
@@ -349,7 +350,7 @@ public class ReadConsistencyStrategyHttpSpyWireTest {
         String endpoint = System.getProperty("ACCOUNT_HOST", System.getenv("ACCOUNT_HOST"));
         String key = System.getProperty("ACCOUNT_KEY", System.getenv("ACCOUNT_KEY"));
 
-        ConnectionPolicy gwPolicy = new ConnectionPolicy(com.azure.cosmos.GatewayConnectionConfig.getDefaultConfig());
+        ConnectionPolicy gwPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
 
         // Client-level readConsistencyStrategy = DEFAULT (transparent — should not appear on wire)
         SpyClientUnderTestFactory.ClientUnderTest defaultReadConsistencyStrategyClient;
