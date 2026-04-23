@@ -133,7 +133,7 @@ public class ClientTelemetry {
      */
     public static String getCachedMachineId() {
         String id = cachedMachineId;
-        return id != null ? id : "";
+        return id != null ? id : "n/a";
     }
 
     /**
