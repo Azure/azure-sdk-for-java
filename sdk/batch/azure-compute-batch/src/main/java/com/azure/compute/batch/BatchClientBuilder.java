@@ -7,7 +7,7 @@ import com.azure.compute.batch.implementation.BatchClientImpl;
 import com.azure.compute.batch.implementation.BatchSharedKeyCredentialsPolicy;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureNamedKeyCredentialTrait; // Custom import for AzureNamedKeyCredentialTrait
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;

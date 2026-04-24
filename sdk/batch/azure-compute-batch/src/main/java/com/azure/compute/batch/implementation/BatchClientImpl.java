@@ -7751,11 +7751,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -8246,11 +8241,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -9478,11 +9468,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -9975,11 +9960,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -10824,11 +10804,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -11262,11 +11237,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -11708,11 +11678,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -12190,11 +12155,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -12690,11 +12650,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -13170,11 +13125,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -13670,11 +13620,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -14154,11 +14099,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -14655,11 +14595,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -15137,11 +15072,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -16402,11 +16332,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -16902,11 +16827,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -17392,11 +17312,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -17860,11 +17775,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -18338,11 +18248,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -18840,11 +18745,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -19587,11 +19487,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -20028,11 +19923,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -20486,11 +20376,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -20971,11 +20856,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -21474,11 +21354,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -21957,11 +21832,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -22461,11 +22331,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -22625,11 +22490,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -22853,11 +22713,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -23084,11 +22939,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -23333,11 +23183,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -23562,11 +23407,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -23759,11 +23599,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *         }
      *     ]
      * }
@@ -23972,11 +23807,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *         }
      *     ]
      * }
@@ -24356,11 +24186,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -24604,11 +24429,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -24843,11 +24663,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -25081,11 +24896,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -30426,11 +30236,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -30892,11 +30697,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -31356,11 +31156,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -31822,11 +31617,6 @@ public final class BatchClientImpl {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -32444,11 +32234,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -32914,11 +32699,6 @@ public final class BatchClientImpl {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -33443,11 +33223,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -33654,11 +33429,6 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>

@@ -211,17 +211,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
-    /*
-     * The settings for an authentication token that the Task can use to perform Batch service operations. If this
-     * property is set, the Batch service provides the Task with an authentication token which can be used to
-     * authenticate Batch service operations without requiring an Account access key. The token is provided via the
-     * AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token
-     * depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job,
-     * or check the status of the Job or of other Tasks under the Job.
-     */
-    @Generated
-    private AuthenticationTokenSettings authenticationTokenSettings;
-
     /**
      * Creates an instance of BatchTask class.
      */
@@ -530,21 +519,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     }
 
     /**
-     * Get the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
-     * perform Batch service operations. If this property is set, the Batch service provides the Task with an
-     * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-     *
-     * @return the authenticationTokenSettings value.
-     */
-    @Generated
-    public AuthenticationTokenSettings getAuthenticationTokenSettings() {
-        return this.authenticationTokenSettings;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -633,8 +607,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                     List<BatchApplicationPackageReference> applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
                     deserializedBatchTask.applicationPackageReferences = applicationPackageReferences;
-                } else if ("authenticationTokenSettings".equals(fieldName)) {
-                    deserializedBatchTask.authenticationTokenSettings = AuthenticationTokenSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
