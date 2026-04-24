@@ -59,7 +59,13 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionCredentialCache
             = Objects.requireNonNull(sessionCredentialCache, "'sessionCredentialCache' cannot be null.");
-        this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
+        this.sessionOptions = SessionOptions.orDefault(sessionOptions);
+
+        if (this.sessionOptions.getSessionMode().resolve() == SessionMode.SINGLE_SPECIFIED_CONTAINER
+            && CoreUtils.isNullOrEmpty(this.sessionOptions.getContainerName())) {
+            throw new IllegalArgumentException(
+                "Container name must be specified when using SINGLE_SPECIFIED_CONTAINER session mode.");
+        }
     }
 
     /**
