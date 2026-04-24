@@ -2,7 +2,13 @@
 
 ## 1.0.0-beta.1 (2026-04-22)
 
-- Azure Resource Manager Slis client library for Java. This package contains Microsoft Azure SDK for Slis Management SDK.  Package api-version 2025-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 ### Features Added
 
-- Initial release for the azure-resourcemanager-monitor-slis Java SDK.
+- Initial preview release of `azure-resourcemanager-monitor-slis` for managing
+  Service Level Indicator (SLI) resources under the `Microsoft.Monitor` namespace.
+- Support for SLI resource CRUD operations: create or update, get, delete, and list.
+- SLI evaluation with Availability and Latency categories, supporting both
+  window-based and request-based evaluation types with configurable signal sources,
+  aggregation, and SLO baselines.
+- Integration with Azure Monitor Workspace (AMW) accounts for metric emission,
+  with managed identity and alert support.
