@@ -259,4 +259,57 @@ class ServiceBusInboundChannelAdapterTests {
         assertEquals(3, attemptCount[0], "Message should have been attempted exactly 3 times");
     }
 
+    @Test
+    void retryTemplateWorksWithErrorChannelConfigured() throws InterruptedException {
+        ServiceBusMessageListenerContainer listenerContainer =
+            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
+
+        // Configure retry: maxAttempts=3, no backoff (for test speed)
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setBackOffPolicy(new NoBackOffPolicy());
+        channelAdapter.setRetryTemplate(retryTemplate);
+
+        DirectChannel channel = new DirectChannel();
+        channel.setBeanName("output");
+
+        // Handler fails first 2 attempts, succeeds on 3rd
+        final int[] attemptCount = {0};
+        final CountDownLatch successLatch = new CountDownLatch(1);
+        channel.subscribe(message -> {
+            attemptCount[0]++;
+            if (attemptCount[0] < 3) {
+                throw new RuntimeException("Simulated failure on attempt " + attemptCount[0]);
+            }
+            successLatch.countDown();
+        });
+
+        // Set an error channel — in the binder flow the adapter always has one configured
+        DirectChannel errorCh = new DirectChannel();
+        List<Message<?>> errorMessages = new CopyOnWriteArrayList<>();
+        errorCh.subscribe(msg -> errorMessages.add(msg));
+
+        channelAdapter.setOutputChannel(channel);
+        channelAdapter.setErrorChannel(errorCh);
+        channelAdapter.onInit();
+        channelAdapter.doStart();
+
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
+
+        ServiceBusReceivedMessageContext mockContext = mock(ServiceBusReceivedMessageContext.class);
+        ServiceBusReceivedMessage mockMessage = mock(ServiceBusReceivedMessage.class);
+        when(mockMessage.getBody()).thenReturn(BinaryData.fromString("test-payload"));
+        when(mockContext.getMessage()).thenReturn(mockMessage);
+
+        ((ServiceBusRecordMessageListener) messageListener).onMessage(mockContext);
+
+        assertTrue(successLatch.await(5L, TimeUnit.SECONDS), "Message should have been delivered after retries");
+        assertEquals(3, attemptCount[0], "Message should have been attempted exactly 3 times");
+        assertTrue(errorMessages.isEmpty(), "No error message should be sent to error channel when retries succeed");
+    }
+
 }

@@ -81,16 +81,6 @@ public class ServiceBusMessageChannelBinder extends
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
     private static final String EXCEPTION_MESSAGE = "exception-message";
-    private static final ExtendedConsumerProperties<ServiceBusConsumerProperties> DEFAULT_EXTENDED_CONSUMER_PROPERTIES =
-        new ExtendedConsumerProperties<>(new ServiceBusConsumerProperties());
-    private static final int DEFAULT_MAX_ATTEMPTS = DEFAULT_EXTENDED_CONSUMER_PROPERTIES.getMaxAttempts();
-    private static final int DEFAULT_BACK_OFF_INITIAL_INTERVAL =
-        DEFAULT_EXTENDED_CONSUMER_PROPERTIES.getBackOffInitialInterval();
-    private static final int DEFAULT_BACK_OFF_MAX_INTERVAL =
-        DEFAULT_EXTENDED_CONSUMER_PROPERTIES.getBackOffMaxInterval();
-    private static final double DEFAULT_BACK_OFF_MULTIPLIER =
-        DEFAULT_EXTENDED_CONSUMER_PROPERTIES.getBackOffMultiplier();
-
     private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
@@ -162,7 +152,7 @@ public class ServiceBusMessageChannelBinder extends
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
 
-        // Configure retry when user has customized retry settings and maxAttempts > 1.
+        // Configure retry when maxAttempts > 1 or when a custom RetryTemplate is injected.
         if (shouldConfigureRetry(properties)) {
             // Use injected RetryTemplate if available, otherwise create one from properties
             RetryTemplate retryTemplateToUse = this.retryTemplate != null
@@ -411,18 +401,10 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     private boolean shouldConfigureRetry(ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        if (properties.getMaxAttempts() <= 1) {
-            return false;
-        }
-
         if (this.retryTemplate != null) {
             return true;
         }
-
-        return properties.getMaxAttempts() != DEFAULT_MAX_ATTEMPTS
-            || properties.getBackOffInitialInterval() != DEFAULT_BACK_OFF_INITIAL_INTERVAL
-            || properties.getBackOffMaxInterval() != DEFAULT_BACK_OFF_MAX_INTERVAL
-            || Double.compare(properties.getBackOffMultiplier(), DEFAULT_BACK_OFF_MULTIPLIER) != 0;
+        return properties.getMaxAttempts() > 1;
     }
 
     /**

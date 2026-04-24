@@ -109,10 +109,10 @@ class ServiceBusRetryTest {
     }
 
     @Test
-    void testRetryTemplateNotConfiguredWithDefaultRetrySettings() {
+    void testRetryTemplateConfiguredWithDefaultSettings() {
         // Arrange
         prepareConsumerProperties();
-        // Use default maxAttempts/backoff values from ExtendedConsumerProperties.
+        // Spring Cloud Stream default maxAttempts is 3 (> 1), so a RetryTemplate should be created.
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
 
         // Act
@@ -122,7 +122,12 @@ class ServiceBusRetryTest {
         assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
         ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
         RetryTemplate retryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
-        assertThat(retryTemplate).isNull();
+        assertThat(retryTemplate).isNotNull();
+        SimpleRetryPolicy retryPolicy = (SimpleRetryPolicy) ReflectionTestUtils.getField(retryTemplate, "retryPolicy");
+        assertThat(retryPolicy).isNotNull();
+        // Verify default maxAttempts from Spring Cloud Stream ConsumerProperties
+        assertThat(retryPolicy.getMaxAttempts())
+            .isEqualTo(new ExtendedConsumerProperties<>(new ServiceBusConsumerProperties()).getMaxAttempts());
     }
 
     @Test

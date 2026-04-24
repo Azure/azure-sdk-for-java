@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
@@ -166,6 +167,19 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         this.retryTemplate = retryTemplate;
     }
 
+    /**
+     * Sends the message directly to the output channel without routing exceptions to the error channel.
+     * This is used inside the retry template so that exceptions propagate back to the retry logic.
+     * The caller is responsible for routing to the error channel after retries are exhausted.
+     *
+     * @param message the message to send
+     */
+    private void sendMessageDirectly(Message<?> message) {
+        MessageChannel outputCh = getOutputChannel();
+        Assert.notNull(outputCh, "Output channel must not be null");
+        outputCh.send(message);
+    }
+
     private class IntegrationErrorHandler implements ServiceBusErrorHandler {
 
         @Override
@@ -212,10 +226,19 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
             RetryTemplate localRetryTemplate = retryTemplate;
             if (localRetryTemplate != null) {
-                localRetryTemplate.execute(context -> {
-                    sendMessage(message);
-                    return null;
-                });
+                try {
+                    localRetryTemplate.execute(context -> {
+                        // Bypass sendMessage()'s error-channel routing so exceptions propagate
+                        // back to the retry template for retry. After all retries are exhausted
+                        // the catch block routes to the error channel.
+                        sendMessageDirectly(message);
+                        return null;
+                    });
+                } catch (RuntimeException e) {
+                    if (!sendErrorMessageIfNecessary(message, e)) {
+                        throw e;
+                    }
+                }
             } else {
                 sendMessage(message);
             }
