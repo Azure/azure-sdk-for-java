@@ -169,6 +169,15 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
 
     /**
+     * Get the retry template configured on this adapter, or {@code null} if retry is not enabled.
+     *
+     * @return the retry template, or {@code null}
+     */
+    public RetryTemplate getRetryTemplate() {
+        return this.retryTemplate;
+    }
+
+    /**
      * Sends the message directly to the output channel without routing exceptions to the error channel.
      * This is used inside the retry template so that exceptions propagate back to the retry logic.
      * The caller is responsible for routing to the error channel after retries are exhausted.

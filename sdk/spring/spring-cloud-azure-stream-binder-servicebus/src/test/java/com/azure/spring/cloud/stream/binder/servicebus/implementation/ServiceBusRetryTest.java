@@ -20,15 +20,16 @@ import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 /**
@@ -77,18 +78,24 @@ class ServiceBusRetryTest {
         // Assert
         assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
         ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
-        RetryTemplate retryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
+        RetryTemplate retryTemplate = adapter.getRetryTemplate();
         assertThat(retryTemplate).isNotNull();
-        SimpleRetryPolicy retryPolicy = (SimpleRetryPolicy) ReflectionTestUtils.getField(retryTemplate, "retryPolicy");
-        assertThat(retryPolicy).isNotNull();
-        assertThat(retryPolicy.getMaxAttempts()).isEqualTo(3);
 
+        // Verify maxAttempts=3 by executing the template and counting actual attempts
+        AtomicInteger callCount = new AtomicInteger(0);
+        assertThatThrownBy(() -> retryTemplate.execute(ctx -> {
+            callCount.incrementAndGet();
+            throw new RuntimeException("test");
+        })).isInstanceOf(RuntimeException.class);
+        assertThat(callCount.get()).isEqualTo(3);
+
+        // Verify backoff policy configuration using public accessors
         ExponentialBackOffPolicy backOffPolicy = (ExponentialBackOffPolicy)
             ReflectionTestUtils.getField(retryTemplate, "backOffPolicy");
         assertThat(backOffPolicy).isNotNull();
-        assertThat(ReflectionTestUtils.getField(backOffPolicy, "initialInterval")).isEqualTo(1000L);
-        assertThat(ReflectionTestUtils.getField(backOffPolicy, "multiplier")).isEqualTo(2.0);
-        assertThat(ReflectionTestUtils.getField(backOffPolicy, "maxInterval")).isEqualTo(5000L);
+        assertThat(backOffPolicy.getInitialInterval()).isEqualTo(1000L);
+        assertThat(backOffPolicy.getMultiplier()).isEqualTo(2.0);
+        assertThat(backOffPolicy.getMaxInterval()).isEqualTo(5000L);
     }
 
     @Test
@@ -103,9 +110,7 @@ class ServiceBusRetryTest {
 
         // Assert
         assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
-        ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
-        RetryTemplate retryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
-        assertThat(retryTemplate).isNull();
+        assertThat(((ServiceBusInboundChannelAdapter) producer).getRetryTemplate()).isNull();
     }
 
     @Test
@@ -121,13 +126,17 @@ class ServiceBusRetryTest {
         // Assert
         assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
         ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
-        RetryTemplate retryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
+        RetryTemplate retryTemplate = adapter.getRetryTemplate();
         assertThat(retryTemplate).isNotNull();
-        SimpleRetryPolicy retryPolicy = (SimpleRetryPolicy) ReflectionTestUtils.getField(retryTemplate, "retryPolicy");
-        assertThat(retryPolicy).isNotNull();
-        // Verify default maxAttempts from Spring Cloud Stream ConsumerProperties
-        assertThat(retryPolicy.getMaxAttempts())
-            .isEqualTo(new ExtendedConsumerProperties<>(new ServiceBusConsumerProperties()).getMaxAttempts());
+
+        // Verify maxAttempts matches Spring Cloud Stream's default via observable behavior
+        int expectedMaxAttempts = new ExtendedConsumerProperties<>(new ServiceBusConsumerProperties()).getMaxAttempts();
+        AtomicInteger callCount = new AtomicInteger(0);
+        assertThatThrownBy(() -> retryTemplate.execute(ctx -> {
+            callCount.incrementAndGet();
+            throw new RuntimeException("test");
+        })).isInstanceOf(RuntimeException.class);
+        assertThat(callCount.get()).isEqualTo(expectedMaxAttempts);
     }
 
     @Test
@@ -147,9 +156,8 @@ class ServiceBusRetryTest {
         // Assert
         assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
         ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
-        RetryTemplate actualRetryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
-        assertThat(actualRetryTemplate).isNotNull();
-        assertThat(actualRetryTemplate).isSameAs(customRetryTemplate);
+        assertThat(adapter.getRetryTemplate()).isNotNull();
+        assertThat(adapter.getRetryTemplate()).isSameAs(customRetryTemplate);
     }
 
     @Test
@@ -167,9 +175,7 @@ class ServiceBusRetryTest {
 
         // Assert
         assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
-        ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
-        RetryTemplate actualRetryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
-        assertThat(actualRetryTemplate).isNull();
+        assertThat(((ServiceBusInboundChannelAdapter) producer).getRetryTemplate()).isNull();
     }
 
     private void prepareConsumerProperties() {
