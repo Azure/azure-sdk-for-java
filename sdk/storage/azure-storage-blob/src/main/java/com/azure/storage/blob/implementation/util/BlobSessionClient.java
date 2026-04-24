@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.AuthenticationType;
@@ -27,12 +26,6 @@ final class BlobSessionClient {
     private final AzureBlobStorageImpl azureBlobStorage;
     private final String accountName;
     private final String containerName;
-
-    BlobSessionClient(HttpPipeline bearerPipeline, String serviceEndpoint, BlobServiceVersion serviceVersion,
-        String containerName) {
-        this(bearerPipeline, serviceEndpoint, serviceVersion, BlobUrlParts.parse(serviceEndpoint).getAccountName(),
-            containerName);
-    }
 
     BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName) {
