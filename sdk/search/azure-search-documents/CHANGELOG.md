@@ -1,30 +1,20 @@
 # Release History
 
-## 12.0.0 (2026-04-10)
+## 12.1.0-beta.1 (2026-04-24)
 
 ### Features Added
-- Added support for the `2026-04-01` service version
-- Added `KnowledgeBaseRetrievalClient` for retrieval operations on knowledge bases
-- Added management types for knowledge bases, including `KnowledgeBase`, `KnowledgeBaseModel`,`KnowledgeBaseAzureOpenAIModel`, and `KnowledgeSourceReference`
-- Added support for new knowledge source types such as Azure Blob, Search Index, Web, and OneLake knowledge sources
-- Added knowledge base retrieval request and response models, including message content and reference metadata
-- Added knowledge base activity tracking models `KnowledgeBaseActivityRecord` and `KnowledgeBaseActivityRecordType`
-- Added knowledge source ingestion and status models `KnowledgeSourceIngestionParameters`, `KnowledgeSourceStatistics`, `KnowledgeSourceStatus` and `SynchronizationState`
-- Added AI skill types `ChatCompletionSkill`, `ContentUnderstandingSkill`, and `DocumentIntelligenceLayoutSkill` 
-- Added `AzureMachineLearningParameters` and `AzureMachineLearningVectorizer` for Azure Machine Learning integration
-- Added `SearchIndexResponse` for handling search responses with knowledge base results
-- Added `NativeBlobSoftDeleteDeletionDetectionPolicy` for Azure Blob Storage data source soft delete detection
-- Added `VectorizableImageBinaryQuery` and `VectorizableImageUrlQuery` for image-based vector queries
-- Added `DebugInfo` support for image-based queries
-- Added `aliasCounter` to `SearchServiceCounters` for alias resource tracking
-- Added `maxCumulativeIndexerRuntimeSeconds` to `ServiceLimits` for monitoring indexer runtime limits
-- Added `LookupDocument` model for document lookup responses
-- Added `AIServicesAccountIdentity` and `AIServicesAccountKey` for Azure AI Services authentication
-
-
-### Breaking Changes
-- Removed `EntityRecognitionSkill`, `EntityRecognitionSkillVersion`, `SentimentSkill`, and `SentimentSkillVersion`
-  which were previously deprecated. Use `EntityRecognitionSkillV3` and `SentimentSkillV3` instead.
+- Added support for the `2026-05-01-preview` service version.
+- Added `querySourceAuthorization` parameter to `getDocument` for permission-scoped lookups.
+- Added `filterOverride` property to `VectorQuery`, `VectorizableTextQuery`, `VectorizableImageBinaryQuery`, `VectorizableImageUrlQuery`, and `VectorizedQuery` for per-query filter expressions.
+- Added statistical aggregation properties to `FacetResult`: `avg`, `min`, `max`, `sum`, and `cardinality`.
+- Added `listIndexesWithSelectedProperties` to `SearchIndexClient` and `SearchIndexAsyncClient`.
+- Added `resync` operations to `SearchIndexerClient` and `SearchIndexerAsyncClient`.
+- Added `retrievalInstructions` and `answerInstructions` to `KnowledgeBase`.
+- Added `baseFilter` to `SearchIndexKnowledgeSourceParameters`.
+- Added `federatedIdentityClientId` to `SearchIndexerDataUserAssignedIdentity`.
+- Added `language`, `market`, and `freshness` properties to `WebKnowledgeSourceParameters`.
+- Added `subType` to knowledge source types.
+- Added `semanticFields` to `SearchPostRequest` and `SearchRequest`.
 
 
 ## 11.8.1 (2026-01-29)

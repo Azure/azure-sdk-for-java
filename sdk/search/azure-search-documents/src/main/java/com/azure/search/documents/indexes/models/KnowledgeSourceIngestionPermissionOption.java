@@ -61,4 +61,10 @@ public final class KnowledgeSourceIngestionPermissionOption
     public static Collection<KnowledgeSourceIngestionPermissionOption> values() {
         return values(KnowledgeSourceIngestionPermissionOption.class);
     }
+
+    /**
+     * Ingest Microsoft Purview sensitivity labels alongside document content.
+     */
+    @Generated
+    public static final KnowledgeSourceIngestionPermissionOption SENSITIVITY_LABELS = fromString("sensitivityLabels");
 }

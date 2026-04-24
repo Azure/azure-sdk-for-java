@@ -100,26 +100,54 @@ public final class KnowledgeBaseRetrievalAsyncClient {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
+     *     messages (Optional): [
+     *          (Optional){
+     *             role: String (Optional)
+     *             content (Required): [
+     *                  (Required){
+     *                     type: String(text/image) (Required)
+     *                 }
+     *             ]
+     *         }
+     *     ]
      *     intents (Optional): [
      *          (Optional){
      *             type: String(semantic) (Required)
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
+     *     maxOutputSize: Integer (Optional)
+     *     maxOutputDocuments: Integer (Optional)
      *     maxOutputSizeInTokens: Integer (Optional)
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
      *     includeActivity: Boolean (Optional)
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
+     *             alwaysQuerySource: Boolean (Optional)
+     *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
+     *             maxOutputDocuments: Integer (Optional)
+     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -143,7 +171,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -162,11 +190,12 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *                     }
      *                 ]
      *             }
+     *             warning: String (Optional)
      *         }
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -175,6 +204,14 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *             rerankerScore: Float (Optional)
      *         }
      *     ]
+     *     responseSensitivityLabelInfo (Optional): {
+     *         displayName: String (Optional)
+     *         sensitivityLabelId: String (Optional)
+     *         toolTip: String (Optional)
+     *         priority: Integer (Optional)
+     *         color: String (Optional)
+     *         isEncrypted: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
