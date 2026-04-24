@@ -105,7 +105,7 @@ public final class AttributeNamespacesClientImpl implements AttributeNamespacesC
             return Mono
                 .error(new IllegalArgumentException("Parameter attributeNamespace is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2025-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -133,7 +133,7 @@ public final class AttributeNamespacesClientImpl implements AttributeNamespacesC
             return Mono
                 .error(new IllegalArgumentException("Parameter attributeNamespace is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2025-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, attributeNamespace, accept, context);
@@ -201,7 +201,7 @@ public final class AttributeNamespacesClientImpl implements AttributeNamespacesC
             return Mono
                 .error(new IllegalArgumentException("Parameter attributeNamespace is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2025-12-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, attributeNamespace, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -227,7 +227,7 @@ public final class AttributeNamespacesClientImpl implements AttributeNamespacesC
             return Mono
                 .error(new IllegalArgumentException("Parameter attributeNamespace is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2025-12-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, attributeNamespace, context);
     }
@@ -300,7 +300,7 @@ public final class AttributeNamespacesClientImpl implements AttributeNamespacesC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2025-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -336,7 +336,7 @@ public final class AttributeNamespacesClientImpl implements AttributeNamespacesC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2025-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);

@@ -110,7 +110,7 @@ public final class AccessReviewHistoryDefinitionOperationsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -150,7 +150,7 @@ public final class AccessReviewHistoryDefinitionOperationsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -231,7 +231,7 @@ public final class AccessReviewHistoryDefinitionOperationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter historyDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         return FluxUtil
             .withContext(context -> service.deleteById(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), historyDefinitionId, context))
@@ -262,7 +262,7 @@ public final class AccessReviewHistoryDefinitionOperationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter historyDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             historyDefinitionId, context);
