@@ -11,97 +11,148 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 
-final class StateHolder {
+/**
+ * Thread-safe holder for managing refresh state of Azure App Configuration stores.
+ * 
+ * <p>
+ * Maintains state for configuration settings, feature flags, and refresh intervals across multiple configuration
+ * stores. Implements exponential backoff for failed refresh attempts and coordinates the timing of refresh operations.
+ * </p>
+ * 
+ * <p>
+ * This class is registered in the BootstrapContext during initial configuration loading and promoted to the main
+ * ApplicationContext for use during refresh operations.
+ * </p>
+ */
+public class StateHolder {
 
+    /** Maximum jitter in seconds to add when expiring state to prevent thundering herd. */
     private static final int MAX_JITTER = 15;
 
-    private static StateHolder currentState;
-
+    /** Map of configuration store endpoints to their refresh state. */
     private final Map<String, State> state = new ConcurrentHashMap<>();
 
+    /** Map of configuration store endpoints to their feature flag refresh state. */
     private final Map<String, FeatureFlagState> featureFlagState = new ConcurrentHashMap<>();
 
+    /** Map tracking whether each configuration store has been successfully loaded. */
     private final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
+    /** Number of client-level refresh attempts for backoff calculation. */
     private Integer clientRefreshAttempts = 1;
 
+    /** The next time a forced refresh should occur across all stores. */
     private Instant nextForcedRefresh;
 
-    StateHolder() {
-    }
-
-    static StateHolder getCurrentState() {
-        return currentState;
-    }
-
-    static StateHolder updateState(StateHolder newState) {
-        currentState = newState;
-        return currentState;
-    }
-
     /**
-     * @param originEndpoint the endpoint for the origin config store
-     * @return the state
+     * Creates a new StateHolder instance.
      */
-    static State getState(String originEndpoint) {
-        return currentState.getFullState().get(originEndpoint);
-    }
-
-    private Map<String, State> getFullState() {
-        return state;
-    }
-
-    private Map<String, FeatureFlagState> getFullFeatureFlagState() {
-        return featureFlagState;
-    }
-
-    private Map<String, Boolean> getFullLoadState() {
-        return loadState;
+    public StateHolder() {
     }
 
     /**
+     * Retrieves the refresh state for a specific configuration store.
      * @param originEndpoint the endpoint for the origin config store
-     * @return the state
+     * @return the State for the specified store, or null if not found
      */
-    static FeatureFlagState getStateFeatureFlag(String originEndpoint) {
-        return currentState.getFullFeatureFlagState().get(originEndpoint);
+    public State getState(String originEndpoint) {
+        return state.get(originEndpoint);
     }
 
     /**
-     * @param originEndpoint the stores origin endpoint
+     * Retrieves the feature flag refresh state for a specific configuration store.
+     * @param originEndpoint the endpoint for the origin config store
+     * @return the FeatureFlagState for the specified store, or null if not found
+     */
+    public FeatureFlagState getStateFeatureFlag(String originEndpoint) {
+        return featureFlagState.get(originEndpoint);
+    }
+
+    /**
+     * Checks if a configuration store has been successfully loaded.
+     * @param originEndpoint the endpoint of the store to check
+     * @return true if the store has been loaded, false otherwise
+     */
+    public boolean getLoadState(String originEndpoint) {
+        return loadState.getOrDefault(originEndpoint, false);
+    }
+
+    /**
+     * Gets the next time a forced refresh should occur across all stores.
+     * @return the Instant of the next forced refresh, or null if not set
+     */
+    public Instant getNextForcedRefresh() {
+        return nextForcedRefresh;
+    }
+
+    /**
+     * Sets the refresh state for a configuration store.
+     * @param originEndpoint the store's origin endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
-     * @param duration refresh duration.
+     * @param duration refresh duration
      */
-    void setState(String originEndpoint, List<ConfigurationSetting> watchKeys, Duration duration) {
+    public void setState(String originEndpoint, List<ConfigurationSetting> watchKeys, Duration duration) {
         state.put(originEndpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
-     * @param originEndpoint the stores origin endpoint
+     * Sets the refresh state for a configuration store with collection monitoring.
+     * @param originEndpoint the store's origin endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
-     * @param duration refresh duration.
+     * @param collectionWatchKeys list of collection monitoring configurations that can trigger a refresh event
+     * @param duration refresh duration
      */
-    void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys,
+    public void setState(String originEndpoint, List<ConfigurationSetting> watchKeys,
+        List<WatchedConfigurationSettings> collectionWatchKeys, Duration duration) {
+        state.put(originEndpoint,
+            new State(watchKeys, collectionWatchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
+    }
+
+    /**
+     * Sets the feature flag refresh state for a configuration store.
+     * @param originEndpoint the store's origin endpoint
+     * @param watchKeys list of feature flag watch keys that can trigger a refresh event
+     * @param duration refresh duration
+     */
+    public void setStateFeatureFlag(String originEndpoint, List<WatchedConfigurationSettings> watchKeys,
         Duration duration) {
         featureFlagState.put(originEndpoint,
             new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
+    /**
+     * Updates the configuration state with a new refresh time based on the duration.
+     * @param state the current State to update
+     * @param duration the duration to add to the current time for the next refresh
+     */
     void updateStateRefresh(State state, Duration duration) {
         this.state.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
-    void updateFeatureFlagStateRefresh(FeatureFlagState state, Duration duration) {
+    /**
+     * Updates the feature flag state with a new refresh time based on the duration.
+     * @param state the current FeatureFlagState to update
+     * @param duration the duration to add to the current time for the next refresh
+     */
+    public void updateFeatureFlagStateRefresh(FeatureFlagState state, Duration duration) {
         this.featureFlagState.put(state.getOriginEndpoint(),
             new FeatureFlagState(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
-    void expireState(String originEndpoint) {
+    /**
+     * Expires the state for a configuration store by setting a new refresh time with random jitter. The jitter helps
+     * prevent thundering herd when multiple stores refresh simultaneously.
+     * @param originEndpoint the endpoint of the store to expire
+     */
+    public void expireState(String originEndpoint) {
         State oldState = state.get(originEndpoint);
+        if (oldState == null) {
+            return;
+        }
         long wait = (long) (new SecureRandom().nextDouble() * MAX_JITTER);
 
         long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
@@ -111,30 +162,16 @@ final class StateHolder {
     }
 
     /**
-     * @return the loadState
-     */
-    static boolean getLoadState(String originEndpoint) {
-        return currentState.getFullLoadState().getOrDefault(originEndpoint, false);
-    }
-
-    /**
      * @param originEndpoint the configuration store connected to.
      * @param loaded true if the configuration store was loaded.
      */
-    void setLoadState(String originEndpoint, Boolean loaded) {
+    public void setLoadState(String originEndpoint, Boolean loaded) {
         loadState.put(originEndpoint, loaded);
     }
 
     /**
-     * @return the nextForcedRefresh
-     */
-    public static Instant getNextForcedRefresh() {
-        return currentState.nextForcedRefresh;
-    }
-
-    /**
-     * Set after load or refresh is successful.
-     * @param refreshPeriod the refreshPeriod to set
+     * Sets the next forced refresh time. Called after a successful load or refresh.
+     * @param refreshPeriod the duration from now until the next forced refresh; if null, no refresh is scheduled
      */
     public void setNextForcedRefresh(Duration refreshPeriod) {
         if (refreshPeriod != null) {
@@ -143,12 +180,13 @@ final class StateHolder {
     }
 
     /**
-     * Sets a minimum value until the next refresh. If a refresh interval has passed or is smaller than the calculated
-     * backoff time, the refresh interval is set to the backoff time.
-     * @param refreshInterval period between refresh checks.
-     * @param defaultMinBackoff min backoff between checks
+     * Updates the next refresh time for all stores using exponential backoff on failures. Sets a minimum value until
+     * the next refresh. If a refresh interval has passed or is smaller than the calculated backoff time, the refresh
+     * interval is set to the backoff time. This prevents excessive refresh attempts during transient failures.
+     * @param refreshInterval period between refresh checks
+     * @param defaultMinBackoff minimum backoff duration between checks in seconds
      */
-    void updateNextRefreshTime(Duration refreshInterval, Long defaultMinBackoff) {
+    public void updateNextRefreshTime(Duration refreshInterval, Long defaultMinBackoff) {
         if (refreshInterval != null) {
             Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
                 clientRefreshAttempts, refreshInterval.getSeconds(), defaultMinBackoff);
@@ -160,14 +198,16 @@ final class StateHolder {
         }
 
         for (Entry<String, State> entry : state.entrySet()) {
-            State state = entry.getValue();
-            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
-                state.getRefreshAttempt(), (long) state.getRefreshInterval(), defaultMinBackoff);
+            State storeState = entry.getValue();
+            Instant newRefresh = getNextRefreshCheck(storeState.getNextRefreshCheck(),
+                storeState.getRefreshAttempt(), (long) storeState.getRefreshInterval(), defaultMinBackoff);
 
-            if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
-                state.incrementRefreshAttempt();
+            State updatedState;
+            if (newRefresh.compareTo(storeState.getNextRefreshCheck()) != 0) {
+                updatedState = new State(storeState.incrementRefreshAttempt(), newRefresh);
+            } else {
+                updatedState = new State(storeState, newRefresh);
             }
-            State updatedState = new State(state, newRefresh);
             this.state.put(entry.getKey(), updatedState);
         }
     }
@@ -181,7 +221,7 @@ final class StateHolder {
      * @param defaultMinBackoff min backoff between checks
      * @return new Refresh Date
      */
-    private Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
+    private Instant getNextRefreshCheck(Instant nextRefreshCheck, int attempt, Long interval,
         Long defaultMinBackoff) {
         // The refresh interval is only updated if it is expired.
         if (!Instant.now().isAfter(nextRefreshCheck)) {

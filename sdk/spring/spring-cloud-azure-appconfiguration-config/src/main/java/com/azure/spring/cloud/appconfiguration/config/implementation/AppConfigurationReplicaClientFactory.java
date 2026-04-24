@@ -108,13 +108,13 @@ public class AppConfigurationReplicaClientFactory {
     }
 
     /**
-     * Sets the current active replica for a configuration store.
+     * Gets the duration in milliseconds until the next client becomes available for the specified store.
      * 
      * @param originEndpoint the origin configuration store endpoint
-     * @param replicaEndpoint the replica endpoint that was successfully connected to
+     * @return duration in milliseconds until next client is available, or 0 if one is available now
      */
-    void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
-        CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
+    long getMillisUntilNextClientAvailable(String originEndpoint) {
+        return CONNECTIONS.get(originEndpoint).getMillisUntilNextClientAvailable();
     }
 
     /**

@@ -57,8 +57,16 @@ public class AzureAppConfigDataLocationResolver
             return false;
         }
 
+        Binder binder = context.getBinder();
+        
+        // Check if Azure App Configuration is enabled
+        Boolean enabled = binder.bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class).orElse(true);
+        if (!enabled) {
+            return false;
+        }
+
         // Check if the configuration properties for Azure App Configuration are present
-        return hasValidStoreConfiguration(context.getBinder());
+        return hasValidStoreConfiguration(binder);
     }
 
     /**
@@ -120,7 +128,7 @@ public class AzureAppConfigDataLocationResolver
 
         for (ConfigStore store : properties.getStores()) {
             locations.add(
-                new AzureAppConfigDataResource(properties.isEnabled(), store, profiles, START_UP.get(), properties.getRefreshInterval()));
+                new AzureAppConfigDataResource(properties.isEnabled(), store, profiles, START_UP.get(), properties.getRefreshInterval(), properties.getStartupTimeout()));
         }
         START_UP.set(false);
         return locations;
