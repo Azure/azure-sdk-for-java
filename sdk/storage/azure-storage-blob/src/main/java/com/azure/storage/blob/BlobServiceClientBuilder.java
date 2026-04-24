@@ -150,7 +150,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         anonymousAccess = !foundCredential;
 
         return new BlobServiceClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            encryptionScope, blobContainerEncryptionScope, anonymousAccess, sessionOptions);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
     private HttpPipeline constructPipeline() {
@@ -162,7 +162,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     /**
-     * Creates a {@link BlobServiceAsyncClient}based on options set in the builder. Every time
+     * Creates a {@link BlobServiceAsyncClient} based on options set in the builder. Every time
      * {@code buildAsyncClient()} is called, a new instance of {@link BlobServiceAsyncClient} is created.
      *
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
@@ -206,7 +206,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         anonymousAccess = !foundCredential;
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            encryptionScope, blobContainerEncryptionScope, anonymousAccess, sessionOptions);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
     /**

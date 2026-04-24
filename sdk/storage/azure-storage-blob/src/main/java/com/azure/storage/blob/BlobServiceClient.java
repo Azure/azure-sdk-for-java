@@ -27,10 +27,7 @@ import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeader
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ServicesGetStatisticsHeaders;
 import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKeyHeaders;
-import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.SessionMode;
-import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -63,7 +60,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -95,7 +91,6 @@ public final class BlobServiceClient {
     private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
     // clients
     private final boolean anonymousAccess;
-    private final SessionOptions sessionOptions;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -112,8 +107,7 @@ public final class BlobServiceClient {
      */
     BlobServiceClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess,
-        SessionOptions sessionOptions) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -132,7 +126,6 @@ public final class BlobServiceClient {
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
-        this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
     }
 
     /**
