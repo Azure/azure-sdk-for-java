@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
 import com.azure.cosmos.benchmark.linkedin.data.KeyGenerator;
@@ -21,9 +21,7 @@ import com.azure.cosmos.benchmark.linkedin.impl.datalocator.StaticDataLocator;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.AccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractorImpl;
-import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
@@ -47,7 +45,7 @@ public abstract class TestRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestRunner.class);
     private static final Duration TERMINATION_WAIT_DURATION = Duration.ofSeconds(60);
 
-    protected final Configuration _configuration;
+    protected final TenantWorkloadConfig _workloadConfig;
     protected final EntityConfiguration _entityConfiguration;
     protected final Accessor<Key, JsonNode> _accessor;
     protected final ExecutorService _executorService;
@@ -55,26 +53,23 @@ public abstract class TestRunner {
     protected final AtomicLong _errorCount;
     private final Semaphore _semaphore;
 
-    TestRunner(final Configuration configuration,
+    TestRunner(final TenantWorkloadConfig workloadConfig,
         final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry,
         final EntityConfiguration entityConfiguration) {
-        Preconditions.checkNotNull(configuration,
+        Preconditions.checkNotNull(workloadConfig,
             "The Workload configuration defining the parameters can not be null");
         Preconditions.checkNotNull(client,
             "Need a non-null client for setting up the Database and containers for the test");
-        Preconditions.checkNotNull(metricsRegistry,
-            "The MetricsRegistry can not be null");
         Preconditions.checkNotNull(entityConfiguration,
             "The Test entity configuration can not be null");
 
-        _configuration = configuration;
+        _workloadConfig = workloadConfig;
         _entityConfiguration = entityConfiguration;
-        _accessor = createAccessor(configuration, client, metricsRegistry);
-        _executorService = Executors.newFixedThreadPool(configuration.getConcurrency());
+        _accessor = createAccessor(workloadConfig, client);
+        _executorService = Executors.newFixedThreadPool(workloadConfig.getConcurrency());
         _successCount = new AtomicLong(0);
         _errorCount = new AtomicLong(0);
-        _semaphore = new Semaphore(configuration.getConcurrency());
+        _semaphore = new Semaphore(workloadConfig.getConcurrency());
     }
 
     public void init() {
@@ -87,8 +82,8 @@ public abstract class TestRunner {
         KeyGenerator keyGenerator = getNewKeyGenerator();
         final long runStartTime = System.currentTimeMillis();
         long i = 0;
-        for (; BenchmarkHelper.shouldContinue(runStartTime, i, _configuration); i++) {
-            if (i > _configuration.getNumberOfPreCreatedDocuments()) {
+        for (; BenchmarkHelper.shouldContinue(runStartTime, i, _workloadConfig); i++) {
+            if (i > _workloadConfig.getNumberOfPreCreatedDocuments()) {
                 keyGenerator = getNewKeyGenerator();
             }
             final Key documentKey = keyGenerator.key();
@@ -140,28 +135,26 @@ public abstract class TestRunner {
         }
     }
 
-    private Accessor<Key, JsonNode> createAccessor(final Configuration configuration,
-        final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry) {
+    private Accessor<Key, JsonNode> createAccessor(final TenantWorkloadConfig workloadConfig,
+        final CosmosAsyncClient client) {
 
-        final StaticDataLocator dataLocator = createDataLocator(configuration, client);
+        final StaticDataLocator dataLocator = createDataLocator(workloadConfig, client);
         final KeyExtractor<Key> keyExtractor = new KeyExtractorImpl();
         final DocumentTransformer<JsonNode, JsonNode> documentTransformer = new IdentityDocumentTransformer<>();
         final Clock clock = Clock.systemUTC();
         return new CosmosDBDataAccessor<>(dataLocator,
             keyExtractor,
             new ResponseHandler<>(documentTransformer, keyExtractor),
-            new MetricsFactory(metricsRegistry, clock, configuration.getEnvironment()),
             clock,
             new OperationsLogger(Duration.ofSeconds(10)));
     }
 
-    private StaticDataLocator createDataLocator(Configuration configuration, CosmosAsyncClient client) {
-        final CollectionKey collectionKey = new CollectionKey(configuration.getServiceEndpoint(),
-            configuration.getDatabaseId(),
-            configuration.getCollectionId());
-        final CosmosAsyncDatabase database = client.getDatabase(configuration.getDatabaseId());
-        final CosmosAsyncContainer container = database.getContainer(configuration.getCollectionId());
+    private StaticDataLocator createDataLocator(TenantWorkloadConfig workloadConfig, CosmosAsyncClient client) {
+        final CollectionKey collectionKey = new CollectionKey(workloadConfig.getServiceEndpoint(),
+            workloadConfig.getDatabaseId(),
+            workloadConfig.getContainerId());
+        final CosmosAsyncDatabase database = client.getDatabase(workloadConfig.getDatabaseId());
+        final CosmosAsyncContainer container = database.getContainer(workloadConfig.getContainerId());
         return new StaticDataLocator(collectionKey, container);
     }
 

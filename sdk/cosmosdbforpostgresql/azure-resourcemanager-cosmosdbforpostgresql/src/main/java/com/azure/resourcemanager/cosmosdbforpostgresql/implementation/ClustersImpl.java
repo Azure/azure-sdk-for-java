@@ -35,12 +35,8 @@ public final class ClustersImpl implements Clusters {
         Context context) {
         Response<ClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ClusterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ClusterImpl(inner.getValue(), this.manager()));
     }
 
     public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
@@ -117,12 +113,8 @@ public final class ClustersImpl implements Clusters {
         Context context) {
         Response<NameAvailabilityInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(nameAvailabilityRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NameAvailabilityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NameAvailabilityImpl(inner.getValue(), this.manager()));
     }
 
     public NameAvailability checkNameAvailability(NameAvailabilityRequest nameAvailabilityRequest) {

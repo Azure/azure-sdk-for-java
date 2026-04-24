@@ -44,12 +44,8 @@ public final class PlacementPoliciesImpl implements PlacementPolicies {
         String clusterName, String placementPolicyName, Context context) {
         Response<PlacementPolicyInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PlacementPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlacementPolicyImpl(inner.getValue(), this.manager()));
     }
 
     public PlacementPolicy get(String resourceGroupName, String privateCloudName, String clusterName,

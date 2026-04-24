@@ -31,12 +31,8 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
         Context context) {
         Response<PrefixListGlobalRulestackResourceInner> inner
             = this.serviceClient().getWithResponse(globalRulestackName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrefixListGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrefixListGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
     }
 
     public PrefixListGlobalRulestackResource get(String globalRulestackName, String name) {

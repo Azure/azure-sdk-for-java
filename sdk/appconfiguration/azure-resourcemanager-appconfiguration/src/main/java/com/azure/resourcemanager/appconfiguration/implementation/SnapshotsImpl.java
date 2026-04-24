@@ -30,12 +30,8 @@ public final class SnapshotsImpl implements Snapshots {
         Context context) {
         Response<SnapshotInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, snapshotName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SnapshotImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SnapshotImpl(inner.getValue(), this.manager()));
     }
 
     public Snapshot get(String resourceGroupName, String configStoreName, String snapshotName) {

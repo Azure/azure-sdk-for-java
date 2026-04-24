@@ -134,6 +134,21 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             @PathParam("recoveryPointId") String recoveryPointId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") UpdateRecoveryPointRequest parameters,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RecoveryPointResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RecoveryPointResourceList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -259,7 +274,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
                 this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName,
                 protectedItemName, filter, accept, context))
             .<PagedResponse<RecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -281,7 +296,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     private PagedFlux<RecoveryPointResourceInner> listAsync(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, filter));
+            protectedItemName, filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -302,7 +317,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         String fabricName, String containerName, String protectedItemName) {
         final String filter = null;
         return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, filter));
+            protectedItemName, filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -327,7 +342,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName,
             containerName, protectedItemName, filter, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -353,7 +368,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, vaultName, fabricName, containerName, protectedItemName, filter, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -374,7 +389,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         String containerName, String protectedItemName) {
         final String filter = null;
         return new PagedIterable<>(
-            () -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter));
+            () -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -396,7 +412,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, filter, context));
+            protectedItemName, filter, context), nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -496,5 +512,61 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         String containerName, String protectedItemName, String recoveryPointId, UpdateRecoveryPointRequest parameters) {
         return updateWithResponse(resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
             recoveryPointId, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecoveryPointResourceInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<RecoveryPointResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecoveryPointResourceInner> listNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<RecoveryPointResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

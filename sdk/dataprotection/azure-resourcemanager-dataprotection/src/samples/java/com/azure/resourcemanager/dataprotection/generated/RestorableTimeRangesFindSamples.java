@@ -12,7 +12,7 @@ import com.azure.resourcemanager.dataprotection.models.RestoreSourceDataStoreTyp
  */
 public final class RestorableTimeRangesFindSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/FindRestorableTimeRanges.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/FindRestorableTimeRanges.json
      */
     /**
      * Sample code: Find Restorable Time Ranges.

@@ -153,12 +153,14 @@ public final class FunctionCallingSample {
         System.out.println("Connecting to VoiceLive service...");
 
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
         AtomicReference<String> activeFunctionCallId = new AtomicReference<>();
 
         // Start session
         client.startSession(DEFAULT_MODEL)
             .flatMap(session -> {
+                sessionRef.set(session);
                 System.out.println("✓ Session started successfully");
 
                 // Create audio processor
@@ -202,6 +204,11 @@ public final class FunctionCallingSample {
                     System.out.println("\n👋 Shutting down voice assistant...");
                     running.set(false);
                     audioProcessor.cleanup();
+                    try {
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown
+                    }
                 }));
 
                 // Keep the reactive chain alive
@@ -212,6 +219,14 @@ public final class FunctionCallingSample {
                 AudioProcessor audioProcessor = audioProcessorRef.get();
                 if (audioProcessor != null) {
                     audioProcessor.cleanup();
+                }
+                VoiceLiveSessionAsyncClient s = sessionRef.get();
+                if (s != null) {
+                    try {
+                        s.close();
+                    } catch (Exception e) {
+                        // Suppress errors during cleanup
+                    }
                 }
             })
             .block();

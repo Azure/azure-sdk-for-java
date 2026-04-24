@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedops.models.AzureMonitorConfiguration;
 import com.azure.resourcemanager.managedops.models.ChangeTrackingConfiguration;
 import com.azure.resourcemanager.managedops.models.DesiredConfiguration;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import com.azure.resourcemanager.managedops.models.ManagedOpsProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -23,10 +23,8 @@ public final class ManagedOpsPropertiesTests {
         Assertions.assertEquals("ahuxinpm",
             model.desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("njaqwixjspro", model.desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
-            model.desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
-            model.desiredConfiguration().defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,17 +34,15 @@ public final class ManagedOpsPropertiesTests {
                 new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("dmailzydehojw"))
             .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("ahuxinpm"))
             .withUserAssignedManagedIdentityId("njaqwixjspro")
-            .withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-            .withDefenderCspm(DesiredConfigurationDefenderForServers.DISABLE));
+            .withDefenderForServers(DesiredEnablementState.DISABLE)
+            .withDefenderCspm(DesiredEnablementState.DISABLE));
         model = BinaryData.fromObject(model).toObject(ManagedOpsProperties.class);
         Assertions.assertEquals("dmailzydehojw",
             model.desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
         Assertions.assertEquals("ahuxinpm",
             model.desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("njaqwixjspro", model.desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
-            model.desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
-            model.desiredConfiguration().defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderCspm());
     }
 }

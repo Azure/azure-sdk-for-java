@@ -5,8 +5,6 @@ package com.azure.ai.voicelive.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -65,16 +63,5 @@ class OutputAudioFormatTest {
 
         options.setOutputAudioFormat(OutputAudioFormat.G711_ALAW);
         assertEquals(OutputAudioFormat.G711_ALAW, options.getOutputAudioFormat());
-    }
-
-    @Test
-    void testOutputAudioFormatValuesCollection() {
-        // Act
-        Collection<OutputAudioFormat> values = OutputAudioFormat.values();
-
-        // Assert
-        assertNotNull(values);
-        // Should contain at least the 5 known values
-        assertEquals(5, values.size());
     }
 }

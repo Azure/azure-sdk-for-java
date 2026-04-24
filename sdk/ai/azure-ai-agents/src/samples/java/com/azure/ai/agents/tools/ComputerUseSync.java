@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ComputerEnvironment;
 import com.azure.ai.agents.models.ComputerUsePreviewTool;
@@ -86,11 +87,13 @@ public class ComputerUseSync {
         AgentVersionDetails agent = null;
 
         try {
+            // BEGIN: com.azure.ai.agents.define_computer_use
             ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
                 ComputerEnvironment.WINDOWS,
                 1026,
                 769
             );
+            // END: com.azure.ai.agents.define_computer_use
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You are a computer automation assistant."
@@ -133,9 +136,11 @@ public class ComputerUseSync {
                         .build())
             );
 
-            Response response = responsesClient.createWithAgent(agentReference, ResponseCreateParams.builder()
-                    .inputOfResponse(initialInput)
-                    .truncation(ResponseCreateParams.Truncation.AUTO));
+            Response response = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    ResponseCreateParams.builder()
+                        .inputOfResponse(initialInput)
+                        .truncation(ResponseCreateParams.Truncation.AUTO));
 
             System.out.printf("Initial response received (ID: %s)%n", response.id());
 
@@ -188,10 +193,12 @@ public class ComputerUseSync {
                             .build())
                 );
 
-                response = responsesClient.createWithAgent(agentReference, ResponseCreateParams.builder()
-                    .previousResponseId(response.id())
-                    .inputOfResponse(followUpInput)
-                    .truncation(ResponseCreateParams.Truncation.AUTO));
+                response = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    ResponseCreateParams.builder()
+                        .previousResponseId(response.id())
+                        .inputOfResponse(followUpInput)
+                        .truncation(ResponseCreateParams.Truncation.AUTO));
 
                 System.out.printf("Follow-up response received (ID: %s)%n", response.id());
             }

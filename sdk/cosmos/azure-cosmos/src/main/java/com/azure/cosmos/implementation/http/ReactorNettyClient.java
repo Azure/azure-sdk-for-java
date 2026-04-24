@@ -43,6 +43,10 @@ import java.util.function.BiFunction;
  * HttpClient that is implemented using reactor-netty.
  */
 public class ReactorNettyClient implements HttpClient {
+    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
+        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+    }
+
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
@@ -136,10 +140,8 @@ public class ReactorNettyClient implements HttpClient {
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                                            .validateHeaders(true));
 
-        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
-            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
-        if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
+        if (httpCfgAccessor().isEffectivelyEnabled(http2Cfg)) {
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -151,7 +153,7 @@ public class ReactorNettyClient implements HttpClient {
                 .http2Settings(settings -> settings
                     .initialWindowSize(1024 * 1024) // 1MB initial window size
                     .maxFrameSize(64 * 1024)        // 64KB max frame size
-                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
+                    .maxConcurrentStreams(httpCfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
@@ -163,6 +165,24 @@ public class ReactorNettyClient implements HttpClient {
                             "reactor.left.httpCodec",
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
+                    }
+
+                    // Install exception handler at the tail of the HTTP/2 parent (TCP)
+                    // channel pipeline. This pipeline has no ChannelOperationsHandler
+                    // (unlike H1.1), so TCP-level exceptions (RST, broken pipe) propagate
+                    // to Netty's TailContext. This handler consumes them with
+                    // connection-state-based log levels: DEBUG when idle, WARN when
+                    // active streams exist.
+                    if (channelPipeline.get(Http2ParentChannelExceptionHandler.HANDLER_NAME) == null) {
+                        try {
+                            channelPipeline.addLast(
+                                Http2ParentChannelExceptionHandler.HANDLER_NAME,
+                                Http2ParentChannelExceptionHandler.INSTANCE);
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addLast(),
+                            // a concurrent doOnConnected may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
                     }
                 }));
         }
@@ -186,9 +206,20 @@ public class ReactorNettyClient implements HttpClient {
 
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
 
+        // Per-request CONNECT_TIMEOUT_MILLIS via reactor-netty's immutable HttpClient.
+        // .option() returns a new config snapshot — does NOT mutate the shared httpClient.
+        // Thin client requests (isThinClientRequest=true): connect timeout is configured via
+        // HttpClientConfig.getThinClientConnectTimeoutMs() (default 5s) to fail fast.
+        // Standard gateway requests: 45s (default).
+        // Note: CONNECT_TIMEOUT_MILLIS controls TCP SYN→SYN-ACK timeout for NEW connections.
+        // For H2, once a TCP connection exists, stream acquisition is near-instant (~sub-ms)
+        // so pendingAcquireTimeout (pool-level 45s) is effectively never hit.
+        int connectTimeoutMs = this.resolveConnectTimeoutMs(request);
+
         return this.httpClient
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
             .port(request.port())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMs)
             .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
             .uri(request.uri().toASCIIString())
@@ -240,6 +271,27 @@ public class ReactorNettyClient implements HttpClient {
         if (this.connectionProvider != null) {
             this.connectionProvider.dispose();
         }
+    }
+
+    /**
+     * Resolves the TCP connect timeout (CONNECT_TIMEOUT_MILLIS) based on the request type.
+     *
+     * Thin client requests (identified by {@link HttpRequest#isThinClientRequest()}) use the thin
+     * client connection timeout configured via {@link Configs#getThinClientConnectionTimeoutInMs()}
+     * (default 5s) to fail fast when the thin client proxy is unreachable.
+     * Standard gateway requests use the configured connection acquire timeout (default 45s).
+     *
+     * The thin client timeout is eagerly cached in {@link HttpClientConfig} at construction time
+     * to avoid per-request System.getProperty/getenv overhead.
+     *
+     * @param request the HTTP request
+     * @return the connect timeout in milliseconds
+     */
+    private int resolveConnectTimeoutMs(HttpRequest request) {
+        if (request.isThinClientRequest()) {
+            return this.httpClientConfig.getThinClientConnectTimeoutMs();
+        }
+        return (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis();
     }
 
     private static ConnectionObserver getConnectionObserver() {

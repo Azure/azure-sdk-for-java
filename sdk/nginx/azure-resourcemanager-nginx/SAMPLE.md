@@ -36,6 +36,10 @@
 - [ListByResourceGroup](#deployments_listbyresourcegroup)
 - [Update](#deployments_update)
 
+## NginxDeploymentWafPolicies
+
+- [Analysis](#nginxdeploymentwafpolicies_analysis)
+
 ## Operations
 
 - [List](#operations_list)
@@ -54,7 +58,7 @@
  */
 public final class ApiKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApiKeys_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_CreateOrUpdate.json
      */
     /**
      * Sample code: ApiKeys_CreateOrUpdate.
@@ -75,7 +79,7 @@ public final class ApiKeysCreateOrUpdateSamples {
  */
 public final class ApiKeysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApiKeys_Delete.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_Delete.json
      */
     /**
      * Sample code: ApiKeys_Delete.
@@ -97,7 +101,7 @@ public final class ApiKeysDeleteSamples {
  */
 public final class ApiKeysGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApiKeys_Get.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_Get.json
      */
     /**
      * Sample code: ApiKeys_Get.
@@ -119,7 +123,7 @@ public final class ApiKeysGetSamples {
  */
 public final class ApiKeysListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ApiKeys_List.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_List.json
      */
     /**
      * Sample code: ApiKeys_List.
@@ -140,7 +144,7 @@ public final class ApiKeysListSamples {
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Certificates_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/Certificates_CreateOrUpdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -164,7 +168,7 @@ public final class CertificatesCreateOrUpdateSamples {
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Certificates_Delete.json
+     * x-ms-original-file: 2025-11-01/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.
@@ -185,7 +189,7 @@ public final class CertificatesDeleteSamples {
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Certificates_Get.json
+     * x-ms-original-file: 2025-11-01/Certificates_Get.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -207,7 +211,7 @@ public final class CertificatesGetSamples {
  */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Certificates_List.json
+     * x-ms-original-file: 2025-11-01/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
@@ -229,7 +233,7 @@ public final class CertificatesListSamples {
  */
 public final class ConfigurationsAnalysisSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Configurations_Analysis.json
+     * x-ms-original-file: 2025-11-01/Configurations_Analysis.json
      */
     /**
      * Sample code: Configurations_Analysis.
@@ -251,7 +255,7 @@ public final class ConfigurationsAnalysisSamples {
  */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Configurations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/Configurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Configurations_CreateOrUpdate.
@@ -275,7 +279,7 @@ public final class ConfigurationsCreateOrUpdateSamples {
  */
 public final class ConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Configurations_Delete.json
+     * x-ms-original-file: 2025-11-01/Configurations_Delete.json
      */
     /**
      * Sample code: Configurations_Delete.
@@ -296,7 +300,7 @@ public final class ConfigurationsDeleteSamples {
  */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Configurations_Get.json
+     * x-ms-original-file: 2025-11-01/Configurations_Get.json
      */
     /**
      * Sample code: Configurations_Get.
@@ -318,7 +322,7 @@ public final class ConfigurationsGetSamples {
  */
 public final class ConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Configurations_List.json
+     * x-ms-original-file: 2025-11-01/Configurations_List.json
      */
     /**
      * Sample code: Configurations_List.
@@ -339,7 +343,7 @@ public final class ConfigurationsListSamples {
  */
 public final class DefaultWafPolicyListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/DefaultWafPolicy_List.json
+     * x-ms-original-file: 2025-11-01/DefaultWafPolicy_List.json
      */
     /**
      * Sample code: DefaultWafPolicy_List.
@@ -361,7 +365,7 @@ public final class DefaultWafPolicyListSamples {
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Create.json
+     * x-ms-original-file: 2025-11-01/Deployments_Create.json
      */
     /**
      * Sample code: Deployments_Create.
@@ -386,7 +390,7 @@ public final class DeploymentsCreateOrUpdateSamples {
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Delete.json
+     * x-ms-original-file: 2025-11-01/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.
@@ -407,7 +411,7 @@ public final class DeploymentsDeleteSamples {
  */
 public final class DeploymentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Get.json
+     * x-ms-original-file: 2025-11-01/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -420,7 +424,7 @@ public final class DeploymentsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Get_AutoScale.json
+     * x-ms-original-file: 2025-11-01/Deployments_Get_AutoScale.json
      */
     /**
      * Sample code: Deployments_Get_AutoScale.
@@ -442,7 +446,7 @@ public final class DeploymentsGetByResourceGroupSamples {
  */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_List.json
+     * x-ms-original-file: 2025-11-01/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.
@@ -463,7 +467,7 @@ public final class DeploymentsListSamples {
  */
 public final class DeploymentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_ListByResourceGroup.json
+     * x-ms-original-file: 2025-11-01/Deployments_ListByResourceGroup.json
      */
     /**
      * Sample code: Deployments_ListByResourceGroup.
@@ -486,7 +490,7 @@ import com.azure.resourcemanager.nginx.models.NginxDeployment;
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Update.json
+     * x-ms-original-file: 2025-11-01/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -501,7 +505,7 @@ public final class DeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_UpdateSubnet.json
+     * x-ms-original-file: 2025-11-01/Deployments_UpdateSubnet.json
      */
     /**
      * Sample code: Deployments_UpdateSubnet.
@@ -517,6 +521,30 @@ public final class DeploymentsUpdateSamples {
 }
 ```
 
+### NginxDeploymentWafPolicies_Analysis
+
+```java
+
+/**
+ * Samples for NginxDeploymentWafPolicies Analysis.
+ */
+public final class NginxDeploymentWafPoliciesAnalysisSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/NginxDeploymentWafPolicies_Analysis.json
+     */
+    /**
+     * Sample code: NginxDeploymentWafPolicies_Analysis.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void nginxDeploymentWafPoliciesAnalysis(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.nginxDeploymentWafPolicies()
+            .analysisWithResponse("myResourceGroup", "myDeployment", "myWafPolicy", null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -525,7 +553,7 @@ public final class DeploymentsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-11-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -546,7 +574,7 @@ public final class OperationsListSamples {
  */
 public final class WafPolicyCreateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafPolicy_Create.json
+     * x-ms-original-file: 2025-11-01/WafPolicy_Create.json
      */
     /**
      * Sample code: WafPolicy_Create.
@@ -570,7 +598,7 @@ public final class WafPolicyCreateSamples {
  */
 public final class WafPolicyDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafPolicy_Delete.json
+     * x-ms-original-file: 2025-11-01/WafPolicy_Delete.json
      */
     /**
      * Sample code: WafPolicy_Delete.
@@ -592,7 +620,7 @@ public final class WafPolicyDeleteSamples {
  */
 public final class WafPolicyGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafPolicy_Get.json
+     * x-ms-original-file: 2025-11-01/WafPolicy_Get.json
      */
     /**
      * Sample code: WafPolicy_Get.
@@ -614,7 +642,7 @@ public final class WafPolicyGetSamples {
  */
 public final class WafPolicyListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafPolicy_List.json
+     * x-ms-original-file: 2025-11-01/WafPolicy_List.json
      */
     /**
      * Sample code: WafPolicy_List.

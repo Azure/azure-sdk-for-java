@@ -31,16 +31,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
     private final String codeText;
 
     /**
-     * Creates an instance of CodeBasedEvaluatorDefinition class.
-     *
-     * @param codeText the codeText value to set.
-     */
-    @Generated
-    public CodeBasedEvaluatorDefinition(String codeText) {
-        this.codeText = codeText;
-    }
-
-    /**
      * Get the type property: The type of evaluator definition.
      *
      * @return the type value.
@@ -162,5 +152,15 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
     public CodeBasedEvaluatorDefinition setDataSchema(Map<String, BinaryData> dataSchema) {
         super.setDataSchema(dataSchema);
         return this;
+    }
+
+    /**
+     * Creates an instance of CodeBasedEvaluatorDefinition class.
+     *
+     * @param codeText the codeText value to set.
+     */
+    @Generated
+    public CodeBasedEvaluatorDefinition(String codeText) {
+        this.codeText = codeText;
     }
 }

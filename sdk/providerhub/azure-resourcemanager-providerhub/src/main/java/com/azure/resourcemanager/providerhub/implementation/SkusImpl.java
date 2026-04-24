@@ -31,12 +31,8 @@ public final class SkusImpl implements Skus {
         Response<SkuResourceInner> inner = this.serviceClient()
             .getNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst, sku,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource getNestedResourceTypeFirst(String providerNamespace, String resourceType,
@@ -55,12 +51,8 @@ public final class SkusImpl implements Skus {
         Response<SkuResourceInner> inner = this.serviceClient()
             .createOrUpdateNestedResourceTypeFirstWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
                 sku, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource createOrUpdateNestedResourceTypeFirst(String providerNamespace, String resourceType,
@@ -108,12 +100,8 @@ public final class SkusImpl implements Skus {
         Context context) {
         Response<SkuResourceInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, resourceType, sku, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource get(String providerNamespace, String resourceType, String sku) {
@@ -152,12 +140,8 @@ public final class SkusImpl implements Skus {
         Response<SkuResourceInner> inner = this.serviceClient()
             .getNestedResourceTypeSecondWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
                 nestedResourceTypeSecond, sku, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource getNestedResourceTypeSecond(String providerNamespace, String resourceType,
@@ -178,12 +162,8 @@ public final class SkusImpl implements Skus {
         Response<SkuResourceInner> inner = this.serviceClient()
             .createOrUpdateNestedResourceTypeSecondWithResponse(providerNamespace, resourceType,
                 nestedResourceTypeFirst, nestedResourceTypeSecond, sku, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource createOrUpdateNestedResourceTypeSecond(String providerNamespace, String resourceType,
@@ -234,12 +214,8 @@ public final class SkusImpl implements Skus {
         Response<SkuResourceInner> inner = this.serviceClient()
             .getNestedResourceTypeThirdWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
                 nestedResourceTypeSecond, nestedResourceTypeThird, sku, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource getNestedResourceTypeThird(String providerNamespace, String resourceType,
@@ -260,12 +236,8 @@ public final class SkusImpl implements Skus {
         Response<SkuResourceInner> inner = this.serviceClient()
             .createOrUpdateNestedResourceTypeThirdWithResponse(providerNamespace, resourceType, nestedResourceTypeFirst,
                 nestedResourceTypeSecond, nestedResourceTypeThird, sku, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SkuResource createOrUpdateNestedResourceTypeThird(String providerNamespace, String resourceType,

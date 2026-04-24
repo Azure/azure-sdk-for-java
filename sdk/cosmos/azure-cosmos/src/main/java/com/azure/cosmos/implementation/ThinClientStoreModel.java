@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
@@ -12,13 +13,13 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +116,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
 
         if (content.readableBytes() == 0) {
-            safeSilentRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
@@ -183,6 +186,36 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             && request.requestContext.resolvedPartitionKeyRange == null
             && request.getPartitionKeyRangeIdentity() != null;
     }
+
+    @Override
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        // Ensure partitionKeyDefinition is resolved from the collection cache before
+        // reaching wrapInHttpRequest, which needs it for client-side EPK computation.
+        // This handles cases where clone() or other code paths didn't propagate partitionKeyDefinition.
+        if (request.getPartitionKeyInternal() != null && request.getPartitionKeyDefinition() == null) {
+            RxClientCollectionCache cache = this.getCollectionCache();
+            if (cache != null) {
+                return cache
+                    .resolveCollectionAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        request)
+                    .flatMap(collectionHolder -> {
+                        if (collectionHolder.v != null) {
+                            request.setPartitionKeyDefinition(collectionHolder.v.getPartitionKey());
+                        } else {
+                            throw new NullPointerException(
+                                "Collection cache returned null for request to "
+                                    + request.getResourceAddress()
+                                    + ". Cannot resolve partitionKeyDefinition for client-side EPK computation.");
+                        }
+                        return super.performRequestInternal(request, requestUri);
+                    });
+            }
+        }
+
+        return super.performRequestInternal(request, requestUri);
+    }
+
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {
@@ -234,24 +267,18 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray));
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
         } finally {
-            safeSilentRelease(byteBuf);
+            if (byteBuf.refCnt() > 0) {
+                safeSilentRelease(byteBuf);
+            }
         }
     }
 
     @Override
     public Map<String, String> getDefaultHeaders() {
         return this.defaultHeaders;
-    }
-
-    private static void safeSilentRelease(Object msg) {
-        try {
-            ReferenceCountUtil.release(msg);
-        } catch (Throwable t) {
-            // ReferenceCountUtil.safeRelease would always log a WARN on double-release.
-            // In this class we only need this for a rare race condition — swallow silently.
-        }
     }
 
     private HttpHeaders getHttpHeaders() {

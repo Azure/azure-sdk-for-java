@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
 import org.junit.jupiter.api.Assertions;
@@ -12,20 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class StandbyContainerGroupPoolElasticityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StandbyContainerGroupPoolElasticityProfile model
-            = BinaryData.fromString("{\"maxReadyCapacity\":6796715427973993525,\"refillPolicy\":\"always\"}")
-                .toObject(StandbyContainerGroupPoolElasticityProfile.class);
-        Assertions.assertEquals(6796715427973993525L, model.maxReadyCapacity());
+        StandbyContainerGroupPoolElasticityProfile model = BinaryData.fromString(
+            "{\"maxReadyCapacity\":6646325726173395137,\"refillPolicy\":\"always\",\"dynamicSizing\":{\"enabled\":true}}")
+            .toObject(StandbyContainerGroupPoolElasticityProfile.class);
+        Assertions.assertEquals(6646325726173395137L, model.maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.refillPolicy());
+        Assertions.assertTrue(model.dynamicSizing().enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyContainerGroupPoolElasticityProfile model
-            = new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(6796715427973993525L)
-                .withRefillPolicy(RefillPolicy.ALWAYS);
+            = new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(6646325726173395137L)
+                .withRefillPolicy(RefillPolicy.ALWAYS)
+                .withDynamicSizing(new DynamicSizing().withEnabled(true));
         model = BinaryData.fromObject(model).toObject(StandbyContainerGroupPoolElasticityProfile.class);
-        Assertions.assertEquals(6796715427973993525L, model.maxReadyCapacity());
+        Assertions.assertEquals(6646325726173395137L, model.maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.refillPolicy());
+        Assertions.assertTrue(model.dynamicSizing().enabled());
     }
 }

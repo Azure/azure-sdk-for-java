@@ -30,12 +30,8 @@ public final class AzureTrafficCollectorsImpl implements AzureTrafficCollectors 
         String azureTrafficCollectorName, Context context) {
         Response<AzureTrafficCollectorInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, azureTrafficCollectorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AzureTrafficCollectorImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AzureTrafficCollectorImpl(inner.getValue(), this.manager()));
     }
 
     public AzureTrafficCollector getByResourceGroup(String resourceGroupName, String azureTrafficCollectorName) {
