@@ -389,6 +389,7 @@ public class ImplementationBridgeHelpers {
             CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyByPartitionKeysRequestOptions options);
             String getContinuationToken(CosmosReadManyByPartitionKeysRequestOptions options);
             Integer getMaxConcurrentBatchPrefetch(CosmosReadManyByPartitionKeysRequestOptions options);
+            Integer getMaxBatchSize(CosmosReadManyByPartitionKeysRequestOptions options);
         }
     }
 
