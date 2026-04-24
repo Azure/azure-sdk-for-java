@@ -103,7 +103,9 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
 
     /**
      * Gets the maximum number of partition key values per batch query sent to a single
-     * physical partition. Returns {@code null} if not set (the SDK default of 100 applies).
+     * physical partition. Returns {@code null} if not set, in which case the SDK default
+     * is used (currently {@code 100}, configurable globally via the system property or
+     * environment variable {@code COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE}).
      *
      * @return the max batch size, or null if the SDK default is in effect.
      */
