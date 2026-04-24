@@ -28,7 +28,51 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ * Unit tests for the ReadConsistencyStrategy RNTBD header (token ID 0x00F0, Byte type).
+ *
+ * <h3>Why these tests exist</h3>
+ * The thin client proxy (Gateway V2) deserializes ReadConsistencyStrategy from the RNTBD binary
+ * frame — not from HTTP headers. A mismatch between the Java SDK's enum byte values and the
+ * proxy's C++ enum causes the proxy to either reject the request or apply the wrong strategy
+ * silently. These tests guard the contract:
+ * <ul>
+ *   <li>Token metadata (ID = 0x00F0, type = Byte, optional)</li>
+ *   <li>Byte encoding per strategy (Eventual=0x01, Session=0x02, LatestCommitted=0x03, GlobalStrong=0x04)</li>
+ *   <li>HTTP header string → RNTBD byte mapping via {@code RntbdRequestHeaders.addReadConsistencyStrategy()}</li>
+ *   <li>Full resolve → encode pipeline: {@code resolveEffectiveConsistencyHeaders} + {@code wrapInHttpRequest}</li>
+ * </ul>
+ *
+ * <h3>Consistency headers decision matrix</h3>
+ * Users can set ConsistencyLevel (CL) and ReadConsistencyStrategy (RCS) at both client and
+ * request level. The SDK resolves contention before wire serialization:
+ * <pre>
+ * | Client CL | Client RCS | Request CL | Request RCS | Effective on wire           |
+ * |-----------|------------|------------|-------------|-----------------------------|
+ * | Session   | —          | —          | —           | CL=Session (default)        |
+ * | Session   | —          | —          | LC          | RCS=LC, CL stripped         |
+ * | Session   | Eventual   | —          | LC          | RCS=LC (req RCS > client)   |
+ * | Session   | Eventual   | Eventual   | —           | RCS=Eventual, CL stripped   |
+ * | Session   | —          | Eventual   | LC          | RCS=LC (req RCS > req CL)   |
+ * | Session   | LC         | —          | —           | RCS=LC, CL stripped         |
+ * | Session   | —          | —          | GLOBAL_STRONG| BadRequestException (non-Strong acct) |
+ * </pre>
+ * Resolution rule: request-level RCS &gt; client-level RCS &gt; CL. When a non-DEFAULT RCS is
+ * effective, CL is stripped to prevent dual-header rejection by the compute gateway or proxy.
+ *
+ * <h3>Test regions</h3>
+ * <ol>
+ *   <li><b>Token-level</b> — RNTBD token encoding, decoding, metadata, and enum constants.</li>
+ *   <li><b>ThinClientStoreModel encoding</b> — {@code wrapInHttpRequest()} produces correct RNTBD
+ *       frame bytes for each strategy value.</li>
+ *   <li><b>Resolve + encode pipeline</b> — {@code resolveEffectiveConsistencyHeaders()} followed by
+ *       {@code wrapInHttpRequest()} produces the correct frame for contention scenarios (both CL
+ *       and RCS set, request-level overrides client-level, DEFAULT is transparent).</li>
+ * </ol>
+ */
 public class RntbdReadConsistencyStrategyHeaderTests {
+
+    // region Data providers
 
     @DataProvider(name = "readConsistencyStrategyToRntbdByteValues")
     public Object[][] readConsistencyStrategyToRntbdByteValues() {
@@ -39,6 +83,20 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             { ReadConsistencyStrategy.GLOBAL_STRONG, RntbdConstants.RntbdReadConsistencyStrategy.GlobalStrong.id() },
         };
     }
+
+    @DataProvider(name = "readConsistencyStrategyStringToRntbdByteValues")
+    public Object[][] readConsistencyStrategyStringToRntbdByteValues() {
+        return new Object[][] {
+            { "LatestCommitted", (byte) 0x03 },
+            { "Eventual", (byte) 0x01 },
+            { "Session", (byte) 0x02 },
+            { "GlobalStrong", (byte) 0x04 },
+        };
+    }
+
+    // endregion
+
+    // region Token-level tests — RNTBD token metadata, encoding, and constants
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenEncodesCorrectly(
@@ -79,6 +137,11 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
         assertThat(token.isPresent()).isFalse();
     }
+
+    // endregion
+
+    // region Token round-trip — verifies encode/decode symmetry for the ReadConsistencyStrategy
+    // Byte token. Guards against RNTBD frame corruption if the token serialization format changes.
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenRoundTrips(
@@ -131,17 +194,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             .isEqualTo("x-ms-cosmos-read-consistency-strategy");
     }
 
-    // region ThinClientStoreModel RNTBD encoding via wrapInHttpRequest()
-
-    @DataProvider(name = "readConsistencyStrategyStringToRntbdByteValues")
-    public Object[][] readConsistencyStrategyStringToRntbdByteValues() {
-        return new Object[][] {
-            { "LatestCommitted", (byte) 0x03 },
-            { "Eventual", (byte) 0x01 },
-            { "Session", (byte) 0x02 },
-            { "GlobalStrong", (byte) 0x04 },
-        };
-    }
+    // region ThinClientStoreModel RNTBD encoding — verifies that wrapInHttpRequest() correctly
+    // maps the HTTP header string to the RNTBD byte token in the binary frame body.
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyStringToRntbdByteValues")
     public void thinClient_wrapInHttpRequest_readConsistencyStrategyEncodedInRntbdFrame(String readConsistencyStrategyValue, byte expectedByte) throws Exception {
@@ -214,6 +268,12 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             buffer.release();
         }
     }
+
+    // endregion
+
+    // region Resolve + encode pipeline — verifies resolveEffectiveConsistencyHeaders() followed by
+    // wrapInHttpRequest() produces the correct RNTBD frame for contention scenarios where both
+    // ConsistencyLevel and ReadConsistencyStrategy headers are present.
 
     @Test(groups = { "unit" })
     public void thinClient_resolveAndWrap_bothClAndReadConsistencyStrategy_onlyReadConsistencyStrategySurvivesInFrame() throws Exception {

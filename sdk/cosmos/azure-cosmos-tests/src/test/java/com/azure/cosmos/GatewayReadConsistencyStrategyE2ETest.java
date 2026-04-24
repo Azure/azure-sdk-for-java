@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -371,6 +372,74 @@ public class GatewayReadConsistencyStrategyE2ETest {
             assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
         } finally {
             safeClose(clientWithClientReadConsistencyStrategy);
+        }
+    }
+
+    // endregion
+
+    // region Operation policy (dynamic request options) — readConsistencyStrategy set via CosmosOperationPolicy
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void gateway_operationPolicy_setsReadConsistencyStrategy() {
+        // Verifies that readConsistencyStrategy set dynamically via CosmosOperationPolicy
+        // (CosmosRequestOptions.setReadConsistencyStrategy) propagates end-to-end through
+        // the gateway pipeline and is reflected in CosmosDiagnostics.
+        CosmosAsyncClient policyClient = null;
+        try {
+            policyClient = createGatewayBuilder()
+                .addOperationPolicy(cosmosOperationDetails -> {
+                    CosmosRequestOptions overrides = new CosmosRequestOptions()
+                        .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+                    cosmosOperationDetails.setRequestOptions(overrides);
+                })
+                .buildAsyncClient();
+            CosmosAsyncContainer policyContainer = policyClient.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(policyContainer, id);
+
+            CosmosItemResponse<ObjectNode> response =
+                policyContainer.readItem(id, new PartitionKey(id), ObjectNode.class).block();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        } finally {
+            safeClose(policyClient);
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void gateway_operationPolicy_readConsistencyStrategyOverridesRequestLevel() {
+        // Verifies that readConsistencyStrategy set via operation policy takes effect
+        // even when request-level options set a different readConsistencyStrategy.
+        // Operation policy runs AFTER request options are set, so it should win.
+        CosmosAsyncClient policyClient = null;
+        try {
+            policyClient = createGatewayBuilder()
+                .addOperationPolicy(cosmosOperationDetails -> {
+                    CosmosRequestOptions overrides = new CosmosRequestOptions()
+                        .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+                    cosmosOperationDetails.setRequestOptions(overrides);
+                })
+                .buildAsyncClient();
+            CosmosAsyncContainer policyContainer = policyClient.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(policyContainer, id);
+
+            // Request-level sets LATEST_COMMITTED, but the operation policy overrides to EVENTUAL
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+            CosmosItemResponse<ObjectNode> response =
+                policyContainer.readItem(id, new PartitionKey(id), readOptions, ObjectNode.class).block();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.EVENTUAL);
+        } finally {
+            safeClose(policyClient);
         }
     }
 
