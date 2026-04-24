@@ -161,7 +161,7 @@ class ServiceBusBinderConfigurationTests {
                 assertThat(context).hasSingleBean(RetryTemplate.class);
                 RetryTemplate retryTemplate = context.getBean(RetryTemplate.class);
                 ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
-                assertThat(ReflectionTestUtils.getField(binder, "retryTemplate")).isSameAs(retryTemplate);
+                assertThat(binder.getRetryTemplate()).isSameAs(retryTemplate);
             });
     }
 

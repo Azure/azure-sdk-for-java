@@ -400,6 +400,15 @@ public class ServiceBusMessageChannelBinder extends
         this.retryTemplate = retryTemplate;
     }
 
+    /**
+     * Get the retry template configured for this binder.
+     *
+     * @return the retry template, or {@code null} if none has been set
+     */
+    public RetryTemplate getRetryTemplate() {
+        return this.retryTemplate;
+    }
+
     private boolean shouldConfigureRetry(ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         return properties.getMaxAttempts() > 1;
     }
