@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
@@ -1034,6 +1033,38 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
        });
     }
 
+    /**
+     * Determines if the effective consistency for this request is Session — needed by
+     * {@link #applySessionToken} to decide whether to attach/remove session tokens.
+     *
+     * Pure read — no side-effects, no header mutation, no HashMap copy.
+     * Resolution order: request-level readConsistencyStrategy > client-level readConsistencyStrategy
+     * (header) > consistency-level header > account default.
+     */
+    private boolean isEffectiveSessionConsistency(RxDocumentServiceRequest request) {
+        // Request-level readConsistencyStrategy takes priority
+        if (request.requestContext != null
+            && request.requestContext.readConsistencyStrategy != null
+            && request.requestContext.readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
+            return request.requestContext.readConsistencyStrategy == ReadConsistencyStrategy.SESSION;
+        }
+
+        // Client-level readConsistencyStrategy from header
+        String rcsHeader = request.getHeaders().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+        if (!Strings.isNullOrEmpty(rcsHeader)) {
+            return ReadConsistencyStrategy.SESSION.toString().equals(rcsHeader);
+        }
+
+        // Explicit consistency level header
+        String clHeader = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        if (!Strings.isNullOrEmpty(clHeader)) {
+            return ConsistencyLevel.SESSION.toString().equalsIgnoreCase(clHeader);
+        }
+
+        // Fall back to account default
+        return this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION;
+    }
+
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
@@ -1046,15 +1077,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
-        // Use a copy of the headers to prevent the side-effect of
-        // RequestHelper.getReadConsistencyStrategyToUse() rewriting x-ms-consistency-level.
-        // In gateway mode, x-ms-consistency-level must stay as the original account/client level —
-        // only x-ms-cosmos-read-consistency-strategy carries the readConsistencyStrategy intent to the gateway/proxy.
-        boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(
-            new HashMap<>(request.getHeaders()),
-            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null,
-            this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel())
-                == ReadConsistencyStrategy.SESSION);
+        // Determine if the effective consistency is Session — needed to decide whether to
+        // attach/remove session tokens. This is a pure read with no side-effects; it does NOT
+        // call RequestHelper.getReadConsistencyStrategyToUse() which mutates x-ms-consistency-level
+        // (a Direct-mode telemetry concern that is harmful in Gateway mode).
+        boolean sessionConsistency = isEffectiveSessionConsistency(request);
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (!sessionConsistency ||
