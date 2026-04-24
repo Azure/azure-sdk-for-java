@@ -152,9 +152,9 @@ public class ServiceBusMessageChannelBinder extends
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
 
-        // Configure retry when maxAttempts > 1 or when a custom RetryTemplate is injected.
+        // Configure retry only when retry is enabled by the consumer properties.
         if (shouldConfigureRetry(properties)) {
-            // Use injected RetryTemplate if available, otherwise create one from properties
+            // Once retry is enabled, use the injected RetryTemplate if available; otherwise create one from properties.
             RetryTemplate retryTemplateToUse = this.retryTemplate != null
                 ? this.retryTemplate
                 : createRetryTemplate(properties);
