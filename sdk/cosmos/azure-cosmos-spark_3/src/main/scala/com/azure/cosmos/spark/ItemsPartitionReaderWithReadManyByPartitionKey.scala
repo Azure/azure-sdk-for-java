@@ -51,7 +51,8 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   ThroughputControlHelper.populateThroughputControlGroupName(readManyOptionsImpl, readConfig.throughputControlConfig)
-  readManyOptions.setMaxConcurrentBatchPrefetch(readConfig.readManyByPkMaxConcurrentBatchPrefetch)
+  readConfig.readManyByPkMaxConcurrentBatchPrefetch.foreach(readManyOptions.setMaxConcurrentBatchPrefetch)
+  readConfig.readManyByPkMaxBatchSize.foreach(readManyOptions.setMaxBatchSize)
 
   private val operationContext = {
     assert(taskContext != null)
@@ -226,7 +227,8 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
             // fragile if the SDK ever stopped cloning options internally.
             private val fluxFactory: String => CosmosPagedFlux[SparkRowItem] = { (continuationToken: String) =>
               val perCallOptions = new CosmosReadManyByPartitionKeysRequestOptions()
-              perCallOptions.setMaxConcurrentBatchPrefetch(readConfig.readManyByPkMaxConcurrentBatchPrefetch)
+              readConfig.readManyByPkMaxConcurrentBatchPrefetch.foreach(perCallOptions.setMaxConcurrentBatchPrefetch)
+              readConfig.readManyByPkMaxBatchSize.foreach(perCallOptions.setMaxBatchSize)
               perCallOptions.setContinuationToken(continuationToken)
               val perCallOptionsImpl = ImplementationBridgeHelpers
                 .CosmosReadManyByPartitionKeysRequestOptionsHelper
