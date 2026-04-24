@@ -17,7 +17,6 @@ import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
