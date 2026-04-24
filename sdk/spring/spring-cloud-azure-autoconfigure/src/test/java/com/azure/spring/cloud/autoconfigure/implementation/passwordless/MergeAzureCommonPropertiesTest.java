@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.passwordless;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureRedisPasswordlessProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
@@ -156,6 +157,66 @@ class MergeAzureCommonPropertiesTest {
         assertEquals("https://custom-scope/.default", result.getScopes());
         assertEquals("https://custom-scope/.default", result.getEffectiveScopes());
         assertEquals("https://custom-scope/.default",
+            result.toPasswordlessProperties().getProperty(AuthProperty.SCOPES.getPropertyKey()));
+    }
+
+    @Test
+    void testRedisPropertiesGetCorrectScopeFromChinaCloudTypeInGlobalProperties() {
+        AzureGlobalProperties globalProperties = new AzureGlobalProperties();
+        globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+
+        AzureRedisPasswordlessProperties redisProperties = new AzureRedisPasswordlessProperties();
+        // User has not explicitly set scopes
+
+        AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, redisProperties, result);
+
+        // scopes field should be null (not explicitly set)
+        assertNull(result.getScopes());
+        // effective scopes should use the merged cloud type (AZURE_CHINA)
+        assertEquals("https://*.cacheinfra.windows.net.china:10225/appid/.default", result.getEffectiveScopes());
+        // toPasswordlessProperties should include the correct cloud-type-aware scope
+        assertEquals("https://*.cacheinfra.windows.net.china:10225/appid/.default",
+            result.toPasswordlessProperties().getProperty(AuthProperty.SCOPES.getPropertyKey()));
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, result.getProfile().getCloudType());
+    }
+
+    @Test
+    void testRedisPropertiesGetCorrectScopeFromUsGovCloudTypeInGlobalProperties() {
+        AzureGlobalProperties globalProperties = new AzureGlobalProperties();
+        globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+
+        AzureRedisPasswordlessProperties redisProperties = new AzureRedisPasswordlessProperties();
+        // User has not explicitly set scopes
+
+        AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, redisProperties, result);
+
+        // scopes field should be null (not explicitly set)
+        assertNull(result.getScopes());
+        // effective scopes should use the merged cloud type (AZURE_US_GOVERNMENT)
+        assertEquals("https://*.cacheinfra.windows.us.government.net:10225/appid/.default", result.getEffectiveScopes());
+        // toPasswordlessProperties should include the correct cloud-type-aware scope
+        assertEquals("https://*.cacheinfra.windows.us.government.net:10225/appid/.default",
+            result.toPasswordlessProperties().getProperty(AuthProperty.SCOPES.getPropertyKey()));
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, result.getProfile().getCloudType());
+    }
+
+    @Test
+    void testRedisPropertiesExplicitScopesOverridesDefault() {
+        AzureGlobalProperties globalProperties = new AzureGlobalProperties();
+        globalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+
+        AzureRedisPasswordlessProperties redisProperties = new AzureRedisPasswordlessProperties();
+        redisProperties.setScopes("https://custom-redis-scope/.default");
+
+        AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, redisProperties, result);
+
+        // Explicit scopes should be preserved
+        assertEquals("https://custom-redis-scope/.default", result.getScopes());
+        assertEquals("https://custom-redis-scope/.default", result.getEffectiveScopes());
+        assertEquals("https://custom-redis-scope/.default",
             result.toPasswordlessProperties().getProperty(AuthProperty.SCOPES.getPropertyKey()));
     }
 }
