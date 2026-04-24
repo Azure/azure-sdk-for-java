@@ -38,6 +38,11 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     private ProvisioningState provisioningState;
 
     /*
+     * The status for the dataflow.
+     */
+    private DataflowStatus status;
+
+    /*
      * The health state of the resource.
      */
     private ResourceHealthState healthState;
@@ -120,6 +125,15 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     }
 
     /**
+     * Get the status property: The status for the dataflow.
+     * 
+     * @return the status value.
+     */
+    public DataflowStatus status() {
+        return this.status;
+    }
+
+    /**
      * Get the healthState property: The health state of the resource.
      * 
      * @return the healthState value.
@@ -168,6 +182,8 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
                         = OperationalMode.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedDataflowProperties.status = DataflowStatus.fromJson(reader);
                 } else if ("healthState".equals(fieldName)) {
                     deserializedDataflowProperties.healthState = ResourceHealthState.fromString(reader.getString());
                 } else {

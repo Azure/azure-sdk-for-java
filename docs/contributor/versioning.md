@@ -1,6 +1,6 @@
 # Versioning
 
-> **Source**: Consolidated from [CONTRIBUTING.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/CONTRIBUTING.md) (last reviewed April 2026).  
+> **Source**: Consolidated from [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) (last reviewed April 2026).  
 > **See also**: [Package Versioning Policy](https://azure.github.io/azure-sdk/policies_releases.html#package-versioning)
 
 ---

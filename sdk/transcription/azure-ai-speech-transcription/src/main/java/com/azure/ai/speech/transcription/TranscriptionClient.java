@@ -131,7 +131,7 @@ public final class TranscriptionClient {
      * Transcribes the provided audio stream with the specified options.
      *
      * <p><strong>Sample</strong></p>
-     * 
+     *
      * <pre>
      * TranscriptionResult result = client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));
      * </pre>
@@ -160,7 +160,7 @@ public final class TranscriptionClient {
      * {@code x-ms-request-id} header used in support escalations).
      *
      * <p><strong>Sample</strong></p>
-     * 
+     *
      * <pre>
      * Response&lt;TranscriptionResult&gt; response
      *     = client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;));

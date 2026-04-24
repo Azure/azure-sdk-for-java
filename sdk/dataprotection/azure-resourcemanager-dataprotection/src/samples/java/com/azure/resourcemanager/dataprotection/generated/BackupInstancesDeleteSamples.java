@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupInstancesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/DeleteBackupInstance.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/DeleteBackupInstance.json
      */
     /**
      * Sample code: Delete BackupInstance.

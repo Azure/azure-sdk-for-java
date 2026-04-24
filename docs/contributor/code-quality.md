@@ -1,6 +1,6 @@
 # Code Quality Tools
 
-> **See also**: [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+> **See also**: [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 
 ---
 
@@ -113,4 +113,4 @@ If a package has a legitimately long name (approved by architects), add a suppre
 
 ## Javadoc Guidelines
 
-- See [JavaDoc & Code Snippets](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md)
+- See [JavaDoc & Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md)

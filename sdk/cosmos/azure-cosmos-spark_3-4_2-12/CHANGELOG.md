@@ -3,6 +3,8 @@
 ### 4.48.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added new `CosmosItemsDataSource.readManyByPartitionKeys` Spark function to execute bulk queries by a list of pk-values with better efficiency. Configure null handling via `spark.cosmos.read.readManyByPk.nullHandling` - default `Null` treats a null PK column as JSON null (`addNullValue`), `None` treats it as `PartitionKey.NONE` (`addNoneValue` / `NOT IS_DEFINED`). These route to different physical partitions - picking the wrong mode silently returns zero rows. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added Spark config `spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch` (default `1`) to bound the per-task prefetch parallelism the SDK uses inside `readManyByPartitionKeys`. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 
 #### Breaking Changes
 

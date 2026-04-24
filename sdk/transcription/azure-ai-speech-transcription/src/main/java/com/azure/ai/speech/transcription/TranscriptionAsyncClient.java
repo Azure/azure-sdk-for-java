@@ -135,7 +135,7 @@ public final class TranscriptionAsyncClient {
      * Transcribes the provided audio stream with the specified options.
      *
      * <p><strong>Sample</strong></p>
-     * 
+     *
      * <pre>
      * client.transcribe(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;))
      *     .subscribe(result -&gt; System.out.println(result.getCombinedPhrases().get(0).getText()));
@@ -165,7 +165,7 @@ public final class TranscriptionAsyncClient {
      * {@code x-ms-request-id} header used in support escalations).
      *
      * <p><strong>Sample</strong></p>
-     * 
+     *
      * <pre>
      * client.transcribeWithResponse(new TranscriptionOptions(&quot;https://example.com/audio.wav&quot;))
      *     .subscribe(response -&gt; System.out.println(&quot;Status: &quot; + response.getStatusCode()));

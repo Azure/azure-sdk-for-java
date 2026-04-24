@@ -4,6 +4,8 @@ AI-powered coding tools can help you write, understand, and debug applications
 that use the Azure SDK. This page lists common options and integrations available
 today.
 
+This page can be linked by [aka.ms/azsdk/java/ai](https://aka.ms/azsdk/java/ai)
+
 ## AI coding tools
 
 Several tools support AI-assisted development with the Azure SDK:
@@ -59,7 +61,7 @@ For VS Code, add the following to your MCP configuration:
 }
 ```
 
-See [`.github/copilot-instructions.md`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/.github/copilot-instructions.md) for the full IDE setup guide.
+See [`.github/copilot-instructions.md`](https://github.com/Azure/azure-sdk-for-java/blob/main/.github/copilot-instructions.md) for the full IDE setup guide.
 
 ## Azure SDK skills
 
@@ -103,7 +105,7 @@ For operational Azure tasks (managing resources, querying services), see the
 - [Azure SDK for Java documentation](https://learn.microsoft.com/java/api/overview/azure/)
 - [Azure SDK design guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
 - [Azure MCP Server](https://learn.microsoft.com/azure/developer/azure-mcp-server/get-started)
-- [GitHub Copilot instructions for this repo](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/.github/copilot-instructions.md)
+- [GitHub Copilot instructions for this repo](https://github.com/Azure/azure-sdk-for-java/blob/main/.github/copilot-instructions.md)
 
 ## Feedback
 

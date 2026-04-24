@@ -118,10 +118,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -4365,13 +4367,717 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             );
     }
 
+    @Override
+    public <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        String collectionLink,
+        QueryFeedOperationState state,
+        int maxConcurrentBatchPrefetch,
+        Class<T> klass) {
+
+        checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
+        checkArgument(!partitionKeys.isEmpty(), "Argument 'partitionKeys' must not be empty.");
+        checkArgument(maxConcurrentBatchPrefetch >= 1,
+            "Argument 'maxConcurrentBatchPrefetch' must be greater than or equal to 1.");
+
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
+        state.registerDiagnosticsFactory(
+            () -> {}, // we never want to reset in readManyByPartitionKeys
+            (ctx) -> diagnosticsFactory.merge(ctx)
+        );
+
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            queryOptionsAccessor().getProperties(state.getQueryOptions()),
+            queryOptionsAccessor().getHeaders(state.getQueryOptions()),
+            this.sessionContainer,
+            diagnosticsFactory,
+            ResourceType.Document
+        );
+
+        return ObservableHelper
+            .fluxInlineIfPossibleAsObs(
+                () -> readManyByPartitionKeys(
+                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, maxConcurrentBatchPrefetch, klass),
+                staleResourceRetryPolicy
+            )
+            .onErrorMap(throwable -> {
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) throwable;
+                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+                    if (diagnostics != null) {
+                        state.mergeDiagnosticsContext();
+                        CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                        if (ctx != null) {
+                            ctxAccessor().recordOperation(
+                                ctx,
+                                cosmosException.getStatusCode(),
+                                cosmosException.getSubStatusCode(),
+                                0,
+                                cosmosException.getRequestCharge(),
+                                diagnostics,
+                                throwable
+                            );
+                            diagAccessor()
+                                .setDiagnosticsContext(
+                                    diagnostics,
+                                    state.getDiagnosticsContextSnapshot());
+                        }
+                    }
+
+                    return cosmosException;
+                }
+
+                return throwable;
+            });
+    }
+
+    private <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        String collectionLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        int maxConcurrentBatchPrefetch,
+        Class<T> klass) {
+
+        String requestContinuation = state.getRequestContinuation();
+
+        String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
+            OperationType.Query,
+            ResourceType.Document,
+            collectionLink, null
+        );
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            collectionCache.resolveCollectionAsync(null, request);
+
+        return collectionObs
+            .flatMapMany(documentCollectionResourceResponse -> {
+                final DocumentCollection collection = documentCollectionResourceResponse.v;
+                if (collection == null) {
+                    return Flux.error(new IllegalStateException("Collection cannot be null"));
+                }
+
+                final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
+
+                final String collectionRid = collection.getResourceId();
+                final String queryHash = ReadManyByPartitionKeyContinuationToken.computeQueryHash(customQuery);
+                final List<NormalizedPartitionKey> normalizedPartitionKeys =
+                    normalizePartitionKeys(partitionKeys, pkDefinition);
+                final String partitionKeySetHash = ReadManyByPartitionKeyContinuationToken.computePartitionKeySetHash(
+                    normalizedPartitionKeys.stream()
+                        .map(normalizedPk -> normalizedPk.effectivePartitionKeyString)
+                        .collect(Collectors.toList()));
+
+                // When a continuation token is present, skip the routing map lookup and batch
+                // construction - the token already contains the batch definitions. Only resolve
+                // the routing map and build batches on the very first call (no continuation).
+                if (requestContinuation != null) {
+                    // Continuation path: validate collection/query, then resume from token.
+                    // The routing map is still required because the persisted token only carries
+                    // batch FILTER ranges; the FeedRange used at execution time (for low-RU
+                    // routing to a single physical partition) is rederived from the current
+                    // routing map per batch via resolvePartitionScopeFromBatchFilter().
+                    ReadManyByPartitionKeyContinuationToken parsedContinuation =
+                        ReadManyByPartitionKeyContinuationToken.deserialize(requestContinuation);
+                    if (!collectionRid.equals(parsedContinuation.getCollectionRid())) {
+                        return Flux.error(new IllegalArgumentException(
+                            "Continuation token was created for a different collection (rid mismatch). " +
+                                "Expected: " + collectionRid + ", token has: " + parsedContinuation.getCollectionRid()));
+                    }
+                    if (!queryHash.equals(parsedContinuation.getQueryHash())) {
+                        return Flux.error(new IllegalArgumentException(
+                            "Continuation token was created with a different query (hash mismatch). " +
+                                "The same query must be used when resuming from a continuation token."));
+                    }
+                    if (!partitionKeySetHash.equals(parsedContinuation.getPartitionKeySetHash())) {
+                        return Flux.error(new IllegalArgumentException(
+                            "Continuation token was created with a different partition-key set (hash mismatch). " +
+                                "The same normalized set of partition key values must be used when resuming."));
+                    }
+
+                    Mono<Utils.ValueHolder<CollectionRoutingMap>> resumeRoutingMapMono = partitionKeyRangeCache
+                        .tryLookupAsync(
+                            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                            collection.getResourceId(),
+                            null,
+                            null);
+
+                    return resumeRoutingMapMono.flatMapMany(resumeRoutingMapHolder -> {
+                        CollectionRoutingMap resumeRoutingMap = resumeRoutingMapHolder.v;
+                        if (resumeRoutingMap == null) {
+                            return Flux.error(new IllegalStateException(
+                                "Failed to get routing map for readManyByPartitionKeys continuation."));
+                        }
+                        return buildSequentialFluxFromContinuation(
+                            parsedContinuation, normalizedPartitionKeys, customQuery, pkDefinition,
+                            resumeRoutingMap, resourceLink, state, diagnosticsFactory, klass,
+                            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
+                    });
+                }
+
+                // First-call path: validate custom query, resolve routing map, build batches
+                Mono<Void> queryValidationMono;
+                if (customQuery != null) {
+                    queryValidationMono = validateCustomQueryForReadManyByPartitionKeys(
+                        customQuery, resourceLink, state.getQueryOptions());
+                } else {
+                    queryValidationMono = Mono.empty();
+                }
+
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
+                    .tryLookupAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collection.getResourceId(),
+                        null,
+                        null);
+
+                return valueHolderMono
+                    .delayUntil(ignored -> queryValidationMono)
+                    .flatMapMany(routingMapHolder -> {
+                        CollectionRoutingMap routingMap = routingMapHolder.v;
+                        if (routingMap == null) {
+                            return Flux.error(new IllegalStateException("Failed to get routing map."));
+                        }
+
+                        return buildSequentialFluxFromScratch(
+                            normalizedPartitionKeys, customQuery, pkDefinition, routingMap,
+                            resourceLink, state, diagnosticsFactory, klass,
+                            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
+                    });
+            });
+    }
+
+    /**
+     * Normalizes the input partition key list into a deterministic, set-based representation.
+     * Duplicates are removed by effective partition key string and the remaining keys are sorted
+     * lexicographically by EPK so batching and continuation-token hashes stay stable.
+     */
+    static List<NormalizedPartitionKey> normalizePartitionKeys(
+        List<PartitionKey> partitionKeys,
+        PartitionKeyDefinition pkDefinition) {
+
+        Map<String, NormalizedPartitionKey> normalizedByEpk = new HashMap<>();
+
+        for (PartitionKey pk : partitionKeys) {
+            PartitionKeyInternal pkInternal = BridgeInternal.getPartitionKeyInternal(pk);
+            if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && pkInternal.getComponents() == null) {
+                throw new IllegalArgumentException(
+                    "PartitionKey.NONE is not supported for multi-path partition keys in readManyByPartitionKeys.");
+            }
+
+            PartitionKeyInternal effectivePkInternal = pkInternal.getComponents() == null
+                ? PartitionKeyInternal.UndefinedPartitionKey
+                : pkInternal;
+            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                .getEffectivePartitionKeyString(effectivePkInternal, pkDefinition);
+
+            normalizedByEpk.putIfAbsent(
+                effectivePartitionKeyString,
+                new NormalizedPartitionKey(pk, effectivePkInternal, effectivePartitionKeyString));
+        }
+
+        List<NormalizedPartitionKey> normalizedPartitionKeys = new ArrayList<>(normalizedByEpk.values());
+        normalizedPartitionKeys.sort(Comparator.comparing(normalizedPk -> normalizedPk.effectivePartitionKeyString));
+
+        if (pkDefinition.getKind() != PartitionKind.MULTI_HASH || normalizedPartitionKeys.size() < 2) {
+            return normalizedPartitionKeys;
+        }
+
+        List<NormalizedPartitionKey> collapsedPartitionKeys = new ArrayList<>(normalizedPartitionKeys.size());
+        for (NormalizedPartitionKey candidate : normalizedPartitionKeys) {
+            if (!collapsedPartitionKeys.isEmpty()) {
+                NormalizedPartitionKey previous = collapsedPartitionKeys.get(collapsedPartitionKeys.size() - 1);
+                if (previous.effectivePkInternal.contains(candidate.effectivePkInternal)) {
+                    // The previous PK is a prefix of the current PK, so the current PK is fully
+                    // subsumed by the previous read scope and would only cause duplicate results
+                    // if it ended up in a separate batch.
+                    continue;
+                }
+            }
+
+            collapsedPartitionKeys.add(candidate);
+        }
+
+        return collapsedPartitionKeys;
+    }
+
+    /**
+     * Builds the sequential Flux of FeedResponse pages for readManyByPartitionKeys when starting
+     * from scratch (no continuation token). Groups PKs by physical partition, creates batches,
+     * sorts by EPK, and executes sequentially.
+     */
+    private <T> Flux<FeedResponse<T>> buildSequentialFluxFromScratch(
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
+        SqlQuerySpec customQuery,
+        PartitionKeyDefinition pkDefinition,
+        CollectionRoutingMap routingMap,
+        String resourceLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        Class<T> klass,
+        String collectionRid,
+        String queryHash,
+        String partitionKeySetHash,
+        int maxConcurrentBatchPrefetch) {
+
+        Map<PartitionKeyRange, List<NormalizedPartitionKey>> partitionRangePkMap =
+            groupPartitionKeysByPhysicalPartition(normalizedPartitionKeys, pkDefinition, routingMap);
+
+        List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
+
+        String baseQueryText;
+        List<SqlParameter> baseParameters;
+        if (customQuery != null) {
+            baseQueryText = customQuery.getQueryText();
+            baseParameters = customQuery.getParameters() != null
+                ? new ArrayList<>(customQuery.getParameters())
+                : new ArrayList<>();
+        } else {
+            baseQueryText = "SELECT * FROM c";
+            baseParameters = new ArrayList<>();
+        }
+
+        int maxPksPerPartitionQuery = Configs.getReadManyByPkMaxBatchSize();
+
+        List<BatchDescriptor> allBatches = new ArrayList<>();
+
+        for (Map.Entry<PartitionKeyRange, List<NormalizedPartitionKey>> entry : partitionRangePkMap.entrySet()) {
+            PartitionKeyRange pkRange = entry.getKey();
+            Range<String> partitionScope = pkRange.toRange();
+            List<NormalizedPartitionKey> allPks = entry.getValue();
+
+            // The per-range list already preserves the globally normalized EPK order,
+            // so no additional in-partition sort is required here.
+            for (int i = 0; i < allPks.size(); i += maxPksPerPartitionQuery) {
+                int batchEnd = Math.min(i + maxPksPerPartitionQuery, allPks.size());
+                List<PartitionKey> batch = allPks.subList(i, batchEnd)
+                    .stream()
+                    .map(normalizedPk -> normalizedPk.partitionKey)
+                    .collect(Collectors.toList());
+
+                // batchFilter is [epk(first), maxExclusive) where maxExclusive is:
+                // - epk of the next PK after this batch (first PK of the next batch), or
+                // - partitionScope.getMax() if this is the last batch in the partition
+                String batchMinInclusive = allPks.get(i).effectivePartitionKeyString;
+                String batchMaxExclusive = batchEnd < allPks.size()
+                    ? allPks.get(batchEnd).effectivePartitionKeyString
+                    : partitionScope.getMax();
+                Range<String> batchFilter = new Range<>(batchMinInclusive, batchMaxExclusive, true, false);
+
+                SqlQuerySpec querySpec = ReadManyByPartitionKeyQueryHelper
+                    .createReadManyByPkQuerySpec(
+                        baseQueryText, baseParameters, batch,
+                        partitionKeySelectors, pkDefinition);
+                allBatches.add(new BatchDescriptor(partitionScope, batchFilter, querySpec));
+            }
+        }
+
+        if (allBatches.isEmpty()) {
+            return Flux.empty();
+        }
+
+        // Sort batches by batchFilter EPK range for deterministic sequential processing.
+        // Tie-break on maxExclusive so that prefix HPK batches sharing the same minInclusive
+        // (the prefix EPK) always have a stable order regardless of routing-map traversal order.
+        allBatches.sort(Comparator.comparing((BatchDescriptor bd) -> bd.batchFilter.getMin())
+            .thenComparing(bd -> bd.batchFilter.getMax()));
+
+        return buildSequentialBatchFlux(
+            allBatches, null,
+            resourceLink, state, diagnosticsFactory, klass,
+            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
+    }
+
+    /**
+     * Builds the sequential Flux of FeedResponse pages for readManyByPartitionKeys when resuming
+     * from a continuation token. Reconstructs batches from the token's batch definitions
+     * without needing the routing map.
+     */
+    private <T> Flux<FeedResponse<T>> buildSequentialFluxFromContinuation(
+        ReadManyByPartitionKeyContinuationToken parsedContinuation,
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
+        SqlQuerySpec customQuery,
+        PartitionKeyDefinition pkDefinition,
+        CollectionRoutingMap routingMap,
+        String resourceLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        Class<T> klass,
+        String collectionRid,
+        String queryHash,
+        String partitionKeySetHash,
+        int maxConcurrentBatchPrefetch) {
+
+        List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
+
+        String baseQueryText;
+        List<SqlParameter> baseParameters;
+        if (customQuery != null) {
+            baseQueryText = customQuery.getQueryText();
+            baseParameters = customQuery.getParameters() != null
+                ? new ArrayList<>(customQuery.getParameters())
+                : new ArrayList<>();
+        } else {
+            baseQueryText = "SELECT * FROM c";
+            baseParameters = new ArrayList<>();
+        }
+
+        ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatchDef =
+            parsedContinuation.getCurrentBatch();
+        List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingBatchDefs =
+            parsedContinuation.getRemainingBatches();
+        String initialBackendContinuation = parsedContinuation.getBackendContinuation();
+
+        List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> allBatchDefs = new ArrayList<>();
+        allBatchDefs.add(currentBatchDef);
+        allBatchDefs.addAll(remainingBatchDefs);
+
+        List<BatchDescriptor> allBatches = new ArrayList<>();
+
+        for (ReadManyByPartitionKeyContinuationToken.BatchDefinition batchDef : allBatchDefs) {
+            Range<String> batchFilter = batchDef.getBatchFilter();
+
+            List<PartitionKey> batchPks = filterPartitionKeysByEpkRange(
+                normalizedPartitionKeys, batchFilter);
+
+            if (batchPks.isEmpty()) {
+                continue;
+            }
+
+            // Rederive the routing scope from the CURRENT routing map. After a partition
+            // split this naturally yields the new (potentially smaller) physical-partition
+            // boundaries that exactly cover this batch filter, keeping query RUs minimal.
+            // If the cache is briefly stale right after a split, the SDK's stale-resource
+            // retry will refresh it and rerun, so any RU-cost elevation is bounded.
+            Range<String> partitionScope = resolvePartitionScopeFromBatchFilter(batchFilter, routingMap);
+
+            SqlQuerySpec querySpec = ReadManyByPartitionKeyQueryHelper
+                .createReadManyByPkQuerySpec(
+                    baseQueryText, baseParameters, batchPks,
+                    partitionKeySelectors, pkDefinition);
+
+            allBatches.add(new BatchDescriptor(partitionScope, batchFilter, querySpec));
+        }
+
+        if (allBatches.isEmpty()) {
+            return Flux.empty();
+        }
+
+        return buildSequentialBatchFlux(
+            allBatches, initialBackendContinuation,
+            resourceLink, state, diagnosticsFactory, klass,
+            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
+    }
+
+    /**
+     * Filters partition keys to those whose EPK falls within the given range.
+     */
+    private List<PartitionKey> filterPartitionKeysByEpkRange(
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
+        Range<String> epkRange) {
+
+        List<PartitionKey> result = new ArrayList<>();
+        for (NormalizedPartitionKey normalizedPk : normalizedPartitionKeys) {
+            if (epkRange.contains(normalizedPk.effectivePartitionKeyString)) {
+                result.add(normalizedPk.partitionKey);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Builds the sequential Flux that executes batches one at a time, stamping each
+     * FeedResponse with the composite continuation token.
+     */
+    private <T> Flux<FeedResponse<T>> buildSequentialBatchFlux(
+        List<BatchDescriptor> allBatches,
+        String initialBackendContinuation,
+        String resourceLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        Class<T> klass,
+        String collectionRid,
+        String queryHash,
+        String partitionKeySetHash,
+        int maxConcurrentBatchPrefetch) {
+
+        List<Flux<FeedResponse<T>>> sequentialFluxes = new ArrayList<>();
+        for (int i = 0; i < allBatches.size(); i++) {
+            final int batchIndex = i;
+            final BatchDescriptor bd = allBatches.get(i);
+            final String backendContinuation = (i == 0) ? initialBackendContinuation : null;
+
+            final List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remainingAfterThis = new ArrayList<>();
+            for (int j = batchIndex + 1; j < allBatches.size(); j++) {
+                BatchDescriptor remaining = allBatches.get(j);
+                // Only the batch FILTER is persisted; the routing scope is rederived per batch
+                // at resume time from the live routing-map cache.
+                remainingAfterThis.add(
+                    new ReadManyByPartitionKeyContinuationToken.BatchDefinition(remaining.batchFilter));
+            }
+
+            CosmosQueryRequestOptions batchQueryOptions = queryOptionsAccessor()
+                .clone(state.getQueryOptions());
+            queryOptionsAccessor().disallowQueryPlanRetrieval(batchQueryOptions);
+
+            batchQueryOptions.setFeedRange(new FeedRangeEpkImpl(bd.partitionScope));
+
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
+                batchQueryOptions, backendContinuation);
+
+            Flux<FeedResponse<T>> batchFlux = createQueryInternal(
+                diagnosticsFactory,
+                resourceLink,
+                bd.querySpec,
+                batchQueryOptions,
+                klass,
+                ResourceType.Document,
+                documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(batchQueryOptions)),
+                UUIDs.nonBlockingRandomUUID(),
+                new AtomicBoolean(false));
+
+            final ReadManyByPartitionKeyContinuationToken.BatchDefinition currentBatchDef =
+                new ReadManyByPartitionKeyContinuationToken.BatchDefinition(bd.batchFilter);
+
+            Flux<FeedResponse<T>> stampedFlux = batchFlux.map(feedResponse -> {
+                String backendCont = feedResponse.getContinuationToken();
+                boolean isLastBatch = remainingAfterThis.isEmpty();
+                boolean batchExhausted = (backendCont == null);
+
+                if (isLastBatch && batchExhausted) {
+                    ModelBridgeInternal.setFeedResponseContinuationToken(null, feedResponse);
+                } else if (batchExhausted) {
+                    ReadManyByPartitionKeyContinuationToken.BatchDefinition nextBatchDef =
+                        remainingAfterThis.get(0);
+                    List<ReadManyByPartitionKeyContinuationToken.BatchDefinition> remaining =
+                        remainingAfterThis.size() > 1
+                            ? remainingAfterThis.subList(1, remainingAfterThis.size())
+                            : Collections.emptyList();
+                    ReadManyByPartitionKeyContinuationToken compositeContinuation =
+                        new ReadManyByPartitionKeyContinuationToken(
+                            remaining, nextBatchDef, null, collectionRid, queryHash, partitionKeySetHash);
+                    ModelBridgeInternal.setFeedResponseContinuationToken(
+                        compositeContinuation.serialize(), feedResponse);
+                } else {
+                    ReadManyByPartitionKeyContinuationToken compositeContinuation =
+                        new ReadManyByPartitionKeyContinuationToken(
+                            remainingAfterThis, currentBatchDef, backendCont,
+                            collectionRid, queryHash, partitionKeySetHash);
+                    ModelBridgeInternal.setFeedResponseContinuationToken(
+                        compositeContinuation.serialize(), feedResponse);
+                }
+                return feedResponse;
+            });
+
+            sequentialFluxes.add(stampedFlux);
+        }
+
+        int fluxConcurrency = Math.max(1, Math.min(maxConcurrentBatchPrefetch, sequentialFluxes.size()));
+        return Flux.mergeSequential(sequentialFluxes, fluxConcurrency, 1);
+    }
+
+    /**
+     * Computes the EPK routing scope for a batch from its filter range and the current
+     * collection routing map. Looks up all partition-key ranges that overlap the batch
+     * filter and returns {@code [min(minInclusive), max(maxExclusive))} across them so
+     * the FeedRange set on the per-batch query options exactly aligns with one or more
+     * physical-partition boundaries (yielding minimal query RU cost).
+     * <p>
+     * If a partition split happened between the time the continuation token was emitted
+     * and resume time, the rederived scope reflects the post-split boundaries; the SDK's
+     * stale-resource retry refreshes the cache promptly if the local cache snapshot was
+     * still pre-split. Either way no stale boundary is encoded in the token itself.
+     *
+     * @throws IllegalStateException if the routing map has no overlap for the batch filter.
+     */
+    private static Range<String> resolvePartitionScopeFromBatchFilter(
+        Range<String> batchFilter,
+        CollectionRoutingMap routingMap) {
+
+        List<PartitionKeyRange> overlapping = routingMap.getOverlappingRanges(batchFilter);
+        if (overlapping == null || overlapping.isEmpty()) {
+            throw new IllegalStateException(
+                "Routing map returned no overlapping partition key ranges for batch filter "
+                    + batchFilter + ".");
+        }
+
+        String minInclusive = overlapping.get(0).getMinInclusive();
+        String maxExclusive = overlapping.get(0).getMaxExclusive();
+        for (int i = 1; i < overlapping.size(); i++) {
+            PartitionKeyRange r = overlapping.get(i);
+            if (r.getMinInclusive().compareTo(minInclusive) < 0) {
+                minInclusive = r.getMinInclusive();
+            }
+            if (r.getMaxExclusive().compareTo(maxExclusive) > 0) {
+                maxExclusive = r.getMaxExclusive();
+            }
+        }
+
+        return new Range<>(minInclusive, maxExclusive, true, false);
+    }
+
+    static final class NormalizedPartitionKey {
+        final PartitionKey partitionKey;
+        final PartitionKeyInternal effectivePkInternal;
+        final String effectivePartitionKeyString;
+
+        private NormalizedPartitionKey(
+            PartitionKey partitionKey,
+            PartitionKeyInternal effectivePkInternal,
+            String effectivePartitionKeyString) {
+
+            this.partitionKey = partitionKey;
+            this.effectivePkInternal = effectivePkInternal;
+            this.effectivePartitionKeyString = effectivePartitionKeyString;
+        }
+    }
+
+    /**
+     * Descriptor for a single batch during execution of readManyByPartitionKeys.
+     * <p>
+     * Each batch carries two EPK ranges:
+     * <ul>
+     *   <li>{@code partitionScope} — the physical partition's EPK range, used as the
+     *       FeedRange on CosmosQueryRequestOptions so the backend query request is sent
+     *       to the matching physical partition with minimal RU overhead. This value is
+     *       <strong>not</strong> persisted in the continuation token; it is derived per
+     *       batch from the current routing map (via
+     *       {@link #resolvePartitionScopeFromBatchFilter}) so post-split refreshes are
+     *       reflected automatically.</li>
+     *   <li>{@code batchFilter} — the EPK sub-range covering only the PKs in this batch.
+     *       This IS persisted in the continuation token. When a physical partition has
+     *       more PKs than maxBatchSize, multiple batches share the same partitionScope
+     *       at execution time but have distinct batchFilter ranges. Used to reconstruct
+     *       the correct PK set per batch when resuming.</li>
+     * </ul>
+     */
+    private static final class BatchDescriptor {
+        final Range<String> partitionScope;
+        final Range<String> batchFilter;
+        final SqlQuerySpec querySpec;
+
+        BatchDescriptor(Range<String> partitionScope, Range<String> batchFilter, SqlQuerySpec querySpec) {
+            this.partitionScope = partitionScope;
+            this.batchFilter = batchFilter;
+            this.querySpec = querySpec;
+        }
+    }
+
+    private Mono<Void> validateCustomQueryForReadManyByPartitionKeys(
+        SqlQuerySpec customQuery,
+        String resourceLink,
+        CosmosQueryRequestOptions queryRequestOptions) {
+
+        IDocumentQueryClient queryClient = documentQueryClientImpl(
+            RxDocumentClientImpl.this, getOperationContextAndListenerTuple(queryRequestOptions));
+
+        return DocumentQueryExecutionContextFactory
+            .fetchQueryPlanForValidation(
+                this,
+                queryClient,
+                customQuery,
+                resourceLink,
+                queryRequestOptions,
+                Configs.isQueryPlanCachingEnabled(),
+                this.getQueryPlanCache())
+            .doOnNext(RxDocumentClientImpl::validateQueryPlanForReadManyByPartitionKeys)
+            .then();
+    }
+
+    static void validateQueryPlanForReadManyByPartitionKeys(PartitionedQueryExecutionInfo queryPlan) {
+        if (queryPlan.hasHybridSearchQueryInfo()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain hybrid/vector/full-text search.");
+        }
+
+        QueryInfo queryInfo = queryPlan.getQueryInfo();
+        if (queryInfo == null) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key is not supported because query plan details are unavailable.");
+        }
+
+        if (queryInfo.hasGroupBy()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain GROUP BY.");
+        }
+        if (queryInfo.hasAggregates()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain aggregates.");
+        }
+        if (queryInfo.hasOrderBy()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain ORDER BY.");
+        }
+        if (queryInfo.hasDistinct()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain DISTINCT.");
+        }
+        if (queryInfo.hasDCount()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain DCOUNT.");
+        }
+        if (queryInfo.hasOffset()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain OFFSET.");
+        }
+        if (queryInfo.hasLimit()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain LIMIT.");
+        }
+        if (queryInfo.hasTop()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain TOP.");
+        }
+        if (queryInfo.hasNonStreamingOrderBy()) {
+            throw new IllegalArgumentException(
+                "Custom query for readMany by partition key must not contain non-streaming ORDER BY.");
+        }
+    }
+
+    private Map<PartitionKeyRange, List<NormalizedPartitionKey>> groupPartitionKeysByPhysicalPartition(
+        List<NormalizedPartitionKey> normalizedPartitionKeys,
+        PartitionKeyDefinition pkDefinition,
+        CollectionRoutingMap routingMap) {
+
+        Map<PartitionKeyRange, List<NormalizedPartitionKey>> partitionRangePkMap = new LinkedHashMap<>();
+
+        for (NormalizedPartitionKey normalizedPk : normalizedPartitionKeys) {
+            int componentCount = normalizedPk.effectivePkInternal.getComponents().size();
+            int definedPathCount = pkDefinition.getPaths().size();
+
+            List<PartitionKeyRange> targetRanges;
+
+            if (pkDefinition.getKind() == PartitionKind.MULTI_HASH && componentCount < definedPathCount) {
+                Range<String> epkRange = PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(
+                    normalizedPk.effectivePkInternal, pkDefinition);
+                targetRanges = routingMap.getOverlappingRanges(epkRange);
+            } else {
+                PartitionKeyRange range = routingMap.getRangeByEffectivePartitionKey(
+                    normalizedPk.effectivePartitionKeyString);
+                targetRanges = Collections.singletonList(range);
+            }
+
+            for (PartitionKeyRange range : targetRanges) {
+                partitionRangePkMap.computeIfAbsent(range, k -> new ArrayList<>()).add(normalizedPk);
+            }
+        }
+
+        return partitionRangePkMap;
+    }
+
     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
         Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap,
         PartitionKeyDefinition partitionKeyDefinition) {
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
 
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
-        List<String> partitionKeySelectors = createPkSelectors(partitionKeyDefinition);
+        List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(partitionKeyDefinition);
 
         for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
             SqlQuerySpec sqlQuerySpec;
@@ -4463,15 +5169,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         queryStringBuilder.append(" )");
 
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
-    }
-
-    private List<String> createPkSelectors(PartitionKeyDefinition partitionKeyDefinition) {
-        return partitionKeyDefinition.getPaths()
-            .stream()
-            .map(pathPart -> StringUtils.substring(pathPart, 1)) // skip starting /
-            .map(pathPart -> StringUtils.replace(pathPart, "\"", "\\")) // escape quote
-            .map(part -> "[\"" + part + "\"]")
-            .collect(Collectors.toList());
     }
 
     private <T> Flux<FeedResponse<T>> queryForReadMany(
@@ -4995,7 +5692,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
-            List<String> partitionKeySelectors = createPkSelectors(pkDefinition);
+            List<String> partitionKeySelectors = PartitionKeyQueryHelper.createPkSelectors(pkDefinition);
             SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, partitionKeySelectors);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);

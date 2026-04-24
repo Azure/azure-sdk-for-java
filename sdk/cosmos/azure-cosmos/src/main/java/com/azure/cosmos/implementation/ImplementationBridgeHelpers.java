@@ -69,6 +69,7 @@ import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -351,6 +352,43 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosReadManyRequestOptionsAccessor {
             CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
+        }
+    }
+
+    public static final class CosmosReadManyByPartitionKeysRequestOptionsHelper {
+        private final static AtomicBoolean cosmosReadManyByPkRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosReadManyByPartitionKeysRequestOptionsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosReadManyByPartitionKeysRequestOptionsHelper() {}
+
+        public static void setCosmosReadManyByPartitionKeysRequestOptionsAccessor(
+            final CosmosReadManyByPartitionKeysRequestOptionsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosReadManyByPartitionKeysRequestOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosReadManyByPartitionKeysRequestOptionsAccessor...");
+                cosmosReadManyByPkRequestOptionsClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosReadManyByPartitionKeysRequestOptionsAccessor getCosmosReadManyByPartitionKeysRequestOptionsAccessor() {
+            if (!cosmosReadManyByPkRequestOptionsClassLoaded.get()) {
+                logger.debug("Initializing CosmosReadManyByPartitionKeysRequestOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosReadManyByPartitionKeysRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosReadManyByPartitionKeysRequestOptionsAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosReadManyByPartitionKeysRequestOptionsAccessor {
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyByPartitionKeysRequestOptions options);
+            String getContinuationToken(CosmosReadManyByPartitionKeysRequestOptions options);
+            Integer getMaxConcurrentBatchPrefetch(CosmosReadManyByPartitionKeysRequestOptions options);
         }
     }
 

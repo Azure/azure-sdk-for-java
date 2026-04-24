@@ -457,6 +457,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.runtimeFilteringEnabled shouldBe true
     config.readManyFilteringConfig.readManyFilteringEnabled shouldBe false
     config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
+    config.readManyByPkTreatNullAsNone shouldBe false
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
@@ -628,6 +629,47 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery.isDefined shouldBe true
     config.customQuery.get.queryText shouldBe queryText
+  }
+
+  it should "parse readManyByPk nullHandling configuration" in {
+    // Default (not specified) should treat null as JSON null (addNullValue)
+    var userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe false
+
+    // Explicit "Null" should treat null as JSON null (addNullValue)
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "Null"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe false
+
+    // Case-insensitive "null"
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "null"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe false
+
+    // "None" should treat null as PartitionKey.NONE (addNoneValue)
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "None"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe true
+
+    // Case-insensitive "none"
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "none"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe true
   }
 
   it should "throw on invalid read configuration" in {

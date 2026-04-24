@@ -46,7 +46,7 @@ New recordings land in a git-excluded `.assets/` folder at the repo root (not co
 
 ### 1d. Sanitize Secrets (if needed)
 
-Add sanitizers in your test base class — they must be registered only after the playback client or record policy is initialized. See [TableClientTestBase](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/sdk/tables/azure-data-tables/src/test/java/com/azure/data/tables/TableClientTestBase.java#L61) for an example.
+Add sanitizers in your test base class — they must be registered only after the playback client or record policy is initialized. See [TableClientTestBase](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/test/java/com/azure/data/tables/TableClientTestBase.java#L61) for an example.
 
 ---
 
@@ -139,6 +139,6 @@ test-proxy config locate -a sdk/<service>/<module>/assets.json
 
 ## See Also
 
-- [Unit Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/unit-testing.md)
-- [Live Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md)
-- [TypeSpec Quickstart — Tests](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md#6-tests)
+- [Unit Testing](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/unit-testing.md)
+- [Live Testing](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/live-testing.md)
+- [TypeSpec Quickstart — Tests](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md#6-tests)

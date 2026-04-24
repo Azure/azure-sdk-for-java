@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupInstancesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
      */
     /**
      * Sample code: Get BackupInstance for ADLS Blob.
@@ -23,7 +23,35 @@ public final class BackupInstancesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/GetBackupInstance.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
+     */
+    /**
+     * Sample code: Get BackupInstance with ADLSBlobBackupAutoProtection.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void getBackupInstanceWithADLSBlobBackupAutoProtection(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .getWithResponse("adlsrg", "adlsvault", "adlsbackupinstance", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
+     */
+    /**
+     * Sample code: Get BackupInstance with BlobBackupAutoProtection.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void getBackupInstanceWithBlobBackupAutoProtection(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .getWithResponse("blobrg", "blobvault", "blobbackupinstance", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/GetBackupInstance.json
      */
     /**
      * Sample code: Get BackupInstance.
