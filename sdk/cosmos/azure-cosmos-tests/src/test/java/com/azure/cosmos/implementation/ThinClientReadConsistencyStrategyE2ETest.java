@@ -178,6 +178,29 @@ public class ThinClientReadConsistencyStrategyE2ETest {
 
     // endregion
 
+    // region ReadAllItems (uses CosmosQueryRequestOptions)
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void thinClient_readAllItems_withLatestCommitted() {
+        String pk = UUID.randomUUID().toString();
+        createAndInsertDocument(UUID.randomUUID().toString(), pk);
+
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        FeedResponse<ObjectNode> response = container
+            .readAllItems(new PartitionKey(pk), queryOptions, ObjectNode.class)
+            .byPage()
+            .blockFirst();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getResults()).isNotNull();
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+    }
+
+    // endregion
+
     // region ChangeFeedRequestOptions
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)

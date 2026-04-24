@@ -167,6 +167,28 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
     // endregion
 
+    // region ReadAllItems (uses CosmosQueryRequestOptions)
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void gateway_readAllItems_withLatestCommitted() {
+        String pk = UUID.randomUUID().toString();
+        createAndInsertDocument(UUID.randomUUID().toString(), pk);
+
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        FeedResponse<ObjectNode> response = container
+            .readAllItems(new PartitionKey(pk), queryOptions, ObjectNode.class)
+            .byPage()
+            .blockFirst();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getResults()).isNotNull();
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+    }
+
+    // endregion
+
     // region ChangeFeedRequestOptions
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
