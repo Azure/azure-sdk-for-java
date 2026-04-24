@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
@@ -177,7 +178,9 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private void sendMessageDirectly(Message<?> message) {
         MessageChannel outputCh = getOutputChannel();
         Assert.notNull(outputCh, "Output channel must not be null");
-        outputCh.send(message);
+        if (!outputCh.send(message)) {
+            throw new MessageDeliveryException(message, "Failed to send message to output channel");
+        }
     }
 
     private class IntegrationErrorHandler implements ServiceBusErrorHandler {

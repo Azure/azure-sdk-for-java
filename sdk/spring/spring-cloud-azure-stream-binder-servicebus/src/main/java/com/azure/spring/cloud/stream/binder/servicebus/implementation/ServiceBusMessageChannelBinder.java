@@ -401,9 +401,6 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     private boolean shouldConfigureRetry(ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        if (this.retryTemplate != null) {
-            return true;
-        }
         return properties.getMaxAttempts() > 1;
     }
 

@@ -152,6 +152,26 @@ class ServiceBusRetryTest {
         assertThat(actualRetryTemplate).isSameAs(customRetryTemplate);
     }
 
+    @Test
+    void testCustomRetryTemplateNotAppliedWhenMaxAttemptsIsOne() {
+        // Arrange: maxAttempts=1 disables retry even when a custom RetryTemplate bean is injected
+        prepareConsumerProperties();
+        consumerProperties.setMaxAttempts(1);
+        when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
+
+        RetryTemplate customRetryTemplate = new RetryTemplate();
+        binder.setRetryTemplate(customRetryTemplate);
+
+        // Act
+        MessageProducer producer = binder.createConsumerEndpoint(consumerDestination, GROUP, consumerProperties);
+
+        // Assert
+        assertThat(producer).isInstanceOf(ServiceBusInboundChannelAdapter.class);
+        ServiceBusInboundChannelAdapter adapter = (ServiceBusInboundChannelAdapter) producer;
+        RetryTemplate actualRetryTemplate = (RetryTemplate) ReflectionTestUtils.getField(adapter, "retryTemplate");
+        assertThat(actualRetryTemplate).isNull();
+    }
+
     private void prepareConsumerProperties() {
         serviceBusConsumerProperties.setEntityName(ENTITY_NAME);
         serviceBusConsumerProperties.setSubscriptionName(GROUP);
