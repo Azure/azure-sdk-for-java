@@ -28,6 +28,7 @@ import reactor.test.StepVerifier;
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -360,8 +361,10 @@ public class RxGatewayStoreModelTest {
             // expected — mock returns error
         }
 
-        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
-        HttpRequest capturedRequest = httpClientRequestCaptor.getValue();
+        Mockito.verify(httpClient, Mockito.atLeastOnce()).send(httpClientRequestCaptor.capture(), any());
+        // Retries may fire multiple requests — take the last captured one
+        List<HttpRequest> allRequests = httpClientRequestCaptor.getAllValues();
+        HttpRequest capturedRequest = allRequests.get(allRequests.size() - 1);
         HttpHeaders capturedHeaders = ReflectionUtils.getHttpHeaders(capturedRequest);
 
         assertThat(capturedHeaders.toMap().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
