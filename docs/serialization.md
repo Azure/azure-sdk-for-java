@@ -155,11 +155,11 @@ Custom serializers can be passed to these models via their constructors or build
 
 ## Migration to `azure-json`
 
-For new code and libraries migrating away from Jackson, see [Azure JSON Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/azure-json-migration.md).
+For new code and libraries migrating away from Jackson, see [Azure JSON Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-json-migration.md).
 
 ---
 
 ## See Also
 
-- [Azure JSON Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/azure-json-migration.md)
-- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/configuration.md)
+- [Azure JSON Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-json-migration.md)
+- [Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/configuration.md)

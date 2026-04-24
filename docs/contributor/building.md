@@ -1,6 +1,6 @@
 # Building the Azure SDK for Java
 
-> **See also**: [Getting Started](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/getting-started.md) · [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md)
+> **See also**: [Getting Started](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/getting-started.md) · [Code Quality](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md)
 
 ---
 
@@ -61,7 +61,7 @@ During iterative development you can skip all code-quality tools to speed up the
 ```
 
 > **Reminder:** Always run analysis before opening a pull request.  
-> See [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md) for the specific commands.
+> See [Code Quality](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) for the specific commands.
 
 ---
 

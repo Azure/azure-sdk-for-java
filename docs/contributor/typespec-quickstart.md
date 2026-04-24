@@ -1,7 +1,7 @@
 # TypeSpec Java Quickstart
 
 
-This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification. For OpenAPI 2.0 specs, see [Working with AutoRest](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/autorest.md).
+This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification. For OpenAPI 2.0 specs, see [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md).
 
 ---
 
@@ -84,7 +84,7 @@ Required files for a new module:
 | `sdk/<service>/pom.xml` | Service-level aggregator POM |
 | `sdk/<service>/ci.yml` | CI pipeline |
 
-See [Adding a Module](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/adding-a-module.md) for full details.
+See [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md) for full details.
 
 ---
 
@@ -115,7 +115,7 @@ Set `partial-update: true` in `tspconfig.yaml` emitter options. TypeSpec-Java wi
 - Edit `ReadmeSamples.java` between `// BEGIN: ...` / `// END: ...` markers.
 - Build the project → the codesnippet plugin auto-injects them into `README.md`.
 
-See [JavaDoc and Code Snippets](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md).
+See [JavaDoc and Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md).
 
 ---
 
@@ -150,7 +150,7 @@ mvn test -f sdk/<service>/<module>/pom.xml
 
 ⚠️ Use `TestBase.setPlaybackSyncPollerPollInterval` on `SyncPoller` in LRO tests.
 
-See [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md) for recording infrastructure.
+See [Test Proxy Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/test-proxy-migration.md) for recording infrastructure.
 
 ---
 
@@ -175,7 +175,7 @@ See [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/co
 
 ## 9. Release
 
-See [Release Checklist](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/release-checklist.md) and [aka.ms/azsdk/releases/partnerinfo](https://aka.ms/azsdk/releases/partnerinfo).
+See [Release Checklist](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/release-checklist.md) and [aka.ms/azsdk/releases/partnerinfo](https://aka.ms/azsdk/releases/partnerinfo).
 
 Key steps:
 1. Update `CHANGELOG.md` (include dependency updates for non-first releases)
@@ -190,7 +190,7 @@ Key steps:
 |----------|-----|
 | Version mismatch | `python eng/versioning/update_versions.py --sr` |
 | Spelling errors | Fix or add to `.vscode/cspell.json` |
-| SpotBugs / Checkstyle | Fix code; see [code-quality.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md) |
+| SpotBugs / Checkstyle | Fix code; see [code-quality.md](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) |
 | RevApi breaking change | Add suppression to `eng/code-quality-reports/src/main/resources/revapi/revapi.json` |
 | TypeSpec code outdated | Re-run `tsp-client update` |
 | Insufficient test coverage | Lower thresholds for beta: add `<jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>` to POM |
@@ -211,8 +211,8 @@ Key steps:
 
 ## See Also
 
-- [Working with AutoRest](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/autorest.md) — for OpenAPI 2.0 specs
-- [Adding a Module](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/adding-a-module.md)
-- [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
-- [JavaDoc and Code Snippets](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md)
-- [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md)
+- [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md) — for OpenAPI 2.0 specs
+- [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md)
+- [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
+- [JavaDoc and Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md)
+- [Test Proxy Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/test-proxy-migration.md)

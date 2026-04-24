@@ -1,7 +1,7 @@
 # Live Testing
 
-> **Source**: Consolidated from [CONTRIBUTING.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/CONTRIBUTING.md) and `eng/common/TestResources/` (last reviewed April 2026).  
-> **See also**: [Unit Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/unit-testing.md) · [Test Resources scripts](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/README.md)
+> **Source**: Consolidated from [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) and `eng/common/TestResources/` (last reviewed April 2026).  
+> **See also**: [Unit Testing](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/unit-testing.md) · [Test Resources scripts](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/TestResources/README.md)
 
 ---
 
@@ -31,7 +31,7 @@ Deploy using PowerShell:
 eng/common/TestResources/New-TestResources.ps1 -ServiceDirectory keyvault
 ```
 
-> **Full reference**: [`New-TestResources.ps1` documentation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/New-TestResources.ps1.md)  
+> **Full reference**: [`New-TestResources.ps1` documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/TestResources/New-TestResources.ps1.md)  
 > See **Example 1** in that doc for the recommended invocation that creates a service principal and sets environment variables.
 
 The script prints the environment variable exports to set before running tests.
@@ -86,7 +86,7 @@ When done, remove the deployed resources to avoid incurring costs:
 eng/common/TestResources/Remove-TestResources.ps1 -ServiceDirectory keyvault
 ```
 
-> **Full reference**: [`Remove-TestResources.ps1` documentation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/Remove-TestResources.ps1.md)
+> **Full reference**: [`Remove-TestResources.ps1` documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/TestResources/Remove-TestResources.ps1.md)
 
 ---
 
@@ -101,8 +101,8 @@ them offline without deployed Azure resources.
 | `PLAYBACK` | Replays recorded responses; no network calls |
 | `LIVE` | Always hits the real service; no recording |
 
-See the [Test Proxy onboarding guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/testproxy/onboarding/README.md) and
-the [Test Proxy Migration guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md) for setup instructions.
+See the [Test Proxy onboarding guide](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md) and
+the [Test Proxy Migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/test-proxy-migration.md) for setup instructions.
 
 ---
 

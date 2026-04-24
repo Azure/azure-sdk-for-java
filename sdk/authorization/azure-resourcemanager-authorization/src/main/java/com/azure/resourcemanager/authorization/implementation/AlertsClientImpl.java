@@ -144,7 +144,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context))
@@ -174,7 +174,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context);
@@ -254,7 +254,7 @@ public final class AlertsClientImpl implements AlertsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), apiVersion, scope, alertId, contentType,
@@ -292,7 +292,7 @@ public final class AlertsClientImpl implements AlertsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, scope, alertId, contentType, parameters, context);
@@ -364,7 +364,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -392,7 +392,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context)
@@ -482,7 +482,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -513,7 +513,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertId == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.refresh(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context);
@@ -671,7 +671,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.refreshAll(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -697,7 +697,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.refreshAll(this.client.getEndpoint(), apiVersion, scope, accept, context);

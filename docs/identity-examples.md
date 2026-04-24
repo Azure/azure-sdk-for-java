@@ -210,5 +210,5 @@ TokenCredential credential = tokenRequestContext -> Mono.defer(() -> {
 
 ## See Also
 
-- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/configuration.md)
-- [FAQ](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/faq.md)
+- [Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/configuration.md)
+- [FAQ](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/faq.md)

@@ -11,6 +11,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Refactored to use shared `azure-cosmos-spark_4` base module for code common across Spark 4.x versions. - See [PR 48861](https://github.com/Azure/azure-sdk-for-java/pull/48861)
 
 ### 4.47.0 (2026-04-17)
 
