@@ -102,9 +102,13 @@ public class SessionTokenCredentialPolicyTest {
         StorageSessionCredential refreshed = credentialWithToken(SECOND_TOKEN);
 
         when(sessionClient.createSessionSync()).thenReturn(nearExpiry);
+        // This is a Reactor quirk where Mono.just() emits synchronously on subscribe, so the refresh happens
+        // immediately when the cache determines the credential is near expiry
         when(sessionClient.createSessionAsync()).thenReturn(Mono.just(refreshed));
 
+        // Cold call to getValidSessionSync triggers session creation via createSessionSync
         StorageSessionCredential initial = policy.getValidSessionSync();
+        // Trigger refresh,  which uses sessionClient.createSessionAsync() to get the refreshed session
         StorageSessionCredential duringRefresh = policy.getValidSessionSync();
         StorageSessionCredential afterRefresh = policy.getValidSessionSync();
 
