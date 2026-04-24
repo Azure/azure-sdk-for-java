@@ -82,7 +82,7 @@ public class CosmosReadManyByPartitionKeysRequestOptionsImpl
         return this.maxBatchSize;
     }
 
-    public CosmosReadManyByPartitionKeysRequestOptionsImpl setMaxBatchSize(Integer maxBatchSize) {
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl setMaxBatchSize(int maxBatchSize) {
         this.maxBatchSize = maxBatchSize;
         return this;
     }

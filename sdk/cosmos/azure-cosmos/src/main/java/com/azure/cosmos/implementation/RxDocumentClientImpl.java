@@ -4381,6 +4381,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkArgument(!partitionKeys.isEmpty(), "Argument 'partitionKeys' must not be empty.");
         checkArgument(maxConcurrentBatchPrefetch >= 1,
             "Argument 'maxConcurrentBatchPrefetch' must be greater than or equal to 1.");
+        checkArgument(maxBatchSize >= 1,
+            "Argument 'maxBatchSize' must be greater than or equal to 1.");
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
         state.registerDiagnosticsFactory(
