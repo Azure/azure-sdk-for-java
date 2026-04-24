@@ -7,8 +7,6 @@ description: Guide SDK users through setting up their Java environment for Azure
 
 Set up your Java environment to use the Azure AI Content Understanding SDK and run samples.
 
-> **Note:** This skill is for SDK users who want to run samples and use the SDK. For SDK development (regenerating code, running tests, pushing recordings), see the sibling `sdkinternal-java-*` skills.
-
 > **[COPILOT INTERACTION MODEL]:** This skill is designed to be interactive. At each step marked with **[ASK USER]**, pause execution and prompt the user for input or confirmation before proceeding. Do NOT silently skip these prompts. Use the `ask_questions` tool when available.
 
 ## Prerequisites
@@ -80,8 +78,8 @@ mvn -version     # Should print 3.6.x or higher
 
 > **[ASK USER] Installation mode:**
 > Ask the user: "How would you like to install the SDK?"
-> - **Option A: Use the published artifact (recommended)** — Maven will download `com.azure:azure-ai-contentunderstanding` from Maven Central. Best for running samples as-is.
-> - **Option B: Local build (for development)** — Installs the current source tree into your local Maven repo so changes are picked up immediately.
+> - **Option A: Use the published artifact (recommended)** — Maven will download `com.azure:azure-ai-contentunderstanding` from Maven Central. Best for running samples and developing Content Understanding-based solutions using the SDK.
+> - **Option B: Local build (for Content Understanding SDK contribution)** — Use this only when you are contributing to the Content Understanding SDK. Installs the current source tree into your local Maven repo so changes are reflected immediately without reinstalling.
 
 **Option A: Download dependencies only:**
 ```bash
@@ -139,11 +137,11 @@ if (Test-Path ".env") {
 
 > **[ASK USER] Authentication method:**
 > Ask: "How would you like to **authenticate** with Azure?"
-> - **Option A: DefaultAzureCredential (recommended)** — Uses `az login`, managed identity, or other Azure credential chain. No API key needed.
-> - **Option B: API Key** — You'll need your `CONTENTUNDERSTANDING_KEY` from the Azure Portal.
+> - **Option A: API Key** — You'll need your `CONTENTUNDERSTANDING_KEY` from the Azure Portal.
+> - **Option B: DefaultAzureCredential (recommended)** — Uses `az login`, managed identity, or other Azure credential chain. No API key needed.
 >
-> If Option A: Remind the user to run `az login` before invoking samples. Leave `CONTENTUNDERSTANDING_KEY` empty.
-> If Option B: Ask for the key value (retrievable at Azure Portal → Foundry resource → Keys and Endpoint → Key1 or Key2).
+> If Option A: Ask for the key value (retrievable at Azure Portal → Foundry resource → Keys and Endpoint → Key1 or Key2).
+> If Option B: Remind the user to run `az login` before invoking samples. Leave `CONTENTUNDERSTANDING_KEY` empty.
 
 > **[ASK USER] Model deployment names:**
 > Ask: "What are your **model deployment names**? Press Enter to accept each default."
@@ -157,11 +155,11 @@ if (Test-Path ".env") {
 > Ask: "Do you plan to use **cross-resource analyzer copying** (`Sample15_GrantCopyAuth`)?"
 > - If no: Skip this section.
 > - If yes: Gather the following additional values:
->   1. Source resource ID (ARM resource ID)
+>   1. Source Azure Resource Manager (ARM) resource ID — the full `/subscriptions/.../resourceGroups/.../providers/Microsoft.CognitiveServices/accounts/<name>` path (find it at Azure Portal → your Foundry resource → **Overview** → **JSON View** → `id`)
 >   2. Source region (e.g., `eastus`)
 >   3. Target endpoint URL
 >   4. Target API key (or empty for DefaultAzureCredential)
->   5. Target resource ID (ARM resource ID)
+>   5. Target ARM resource ID (same format as above, for the target Foundry resource)
 >   6. Target region (e.g., `swedencentral`)
 
 #### 4.3 Validate Configuration
@@ -339,21 +337,78 @@ For a more fluent experience, use the sample-run helper skill:
 > **[ASK USER] Sample result:**
 > After running a sample, ask: "Did the sample run successfully? Would you like to run another sample or are you all set?"
 
+## Automated Setup Script (Linux/macOS)
+
+Run the interactive setup script that handles Steps 2–4 automatically:
+
+```bash
+# From the package directory
+cd sdk/contentunderstanding/azure-ai-contentunderstanding
+.github/skills/cu-sdk-setup/scripts/setup_user_env.sh
+```
+
+The script will:
+1. Verify `java` and `mvn` are available
+2. Install SDK dependencies (prompt for `mvn dependency:resolve` vs. `mvn install -DskipTests -Djacoco.skip=true`)
+3. Create `.env` (without overwriting existing) and interactively prompt for:
+   - `CONTENTUNDERSTANDING_ENDPOINT`
+   - Authentication method (DefaultAzureCredential or API key)
+   - Model deployment names (with sensible defaults)
+   - Optional cross-resource copy vars (Sample15)
+4. Print next-step commands for loading `.env`, running `Sample00_UpdateDefaults`, and running samples.
+
+> **Note:** The script does **not** load `.env` into your shell for you — you must still run `set -a && source .env && set +a` before invoking `mvn exec:java`, because Java samples read values via `System.getenv()`.
+
+### Manual Quick Setup
+
+If you prefer to run steps manually:
+
+```bash
+cd sdk/contentunderstanding/azure-ai-contentunderstanding
+
+# Verify toolchain
+java -version
+mvn -version
+
+# Resolve dependencies (Option A) — or run the Option B `mvn install` command from Step 3.
+mvn dependency:resolve
+
+# Create .env if absent (no env.sample exists — use the template from Step 4.4)
+if [ ! -f ".env" ]; then
+    cat > .env <<'EOF'
+CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/
+CONTENTUNDERSTANDING_KEY=
+GPT_4_1_DEPLOYMENT=gpt-4.1
+GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
+TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+EOF
+    echo "Created .env — please edit and configure required variables"
+else
+    echo "WARNING: .env already exists — skipping creation"
+fi
+
+# Load .env into the current shell before running samples
+set -a && source .env && set +a
+```
+
 ## Environment Variable Reference
 
-| Variable | Required By | Description |
-|----------|------------|-------------|
-| `CONTENTUNDERSTANDING_ENDPOINT` | **All samples** | Microsoft Foundry resource endpoint URL |
-| `CONTENTUNDERSTANDING_KEY` | All (optional) | API key. If empty, `DefaultAzureCredential` is used (run `az login` first) |
-| `GPT_4_1_DEPLOYMENT` | Sample00_UpdateDefaults | GPT-4.1 deployment name (default: `gpt-4.1`) |
-| `GPT_4_1_MINI_DEPLOYMENT` | Sample00_UpdateDefaults | GPT-4.1-mini deployment name (default: `gpt-4.1-mini`) |
-| `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT` | Sample00_UpdateDefaults | text-embedding-3-large deployment name (default: `text-embedding-3-large`) |
-| `CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID` | Sample15_GrantCopyAuth | Source ARM resource ID |
-| `CONTENTUNDERSTANDING_SOURCE_REGION` | Sample15_GrantCopyAuth | Source region (e.g., `eastus`) |
-| `CONTENTUNDERSTANDING_TARGET_ENDPOINT` | Sample15_GrantCopyAuth | Target Foundry endpoint for cross-resource copy |
-| `CONTENTUNDERSTANDING_TARGET_KEY` | Sample15_GrantCopyAuth (optional) | Target API key (empty = DefaultAzureCredential) |
-| `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID` | Sample15_GrantCopyAuth | Target ARM resource ID |
-| `CONTENTUNDERSTANDING_TARGET_REGION` | Sample15_GrantCopyAuth | Target region (e.g., `swedencentral`) |
+Required for all samples:
+
+- `CONTENTUNDERSTANDING_ENDPOINT` — Microsoft Foundry resource endpoint URL.
+- `CONTENTUNDERSTANDING_KEY` — API key. Leave empty to use `DefaultAzureCredential` (run `az login` first).
+
+Required for `Sample00_UpdateDefaults` (one-time model mapping):
+
+- `GPT_4_1_DEPLOYMENT` (default: `gpt-4.1`)
+- `GPT_4_1_MINI_DEPLOYMENT` (default: `gpt-4.1-mini`)
+- `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT` (default: `text-embedding-3-large`)
+
+Required for `Sample15_GrantCopyAuth` (cross-resource analyzer copy) only:
+
+- `CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID`, `CONTENTUNDERSTANDING_SOURCE_REGION`
+- `CONTENTUNDERSTANDING_TARGET_ENDPOINT`, `CONTENTUNDERSTANDING_TARGET_KEY` (optional)
+- `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`, `CONTENTUNDERSTANDING_TARGET_REGION`
 
 ## Troubleshooting
 
@@ -369,16 +424,9 @@ For a more fluent experience, use the sample-run helper skill:
 | Changes to `.env` not taking effect | Re-run `set -a && source .env && set +a` — changes are not auto-reloaded. |
 | `.env` committed to git | Add `.env` to `.gitignore` — never commit credentials. |
 
-## Security Notes
-
-- **Never commit `.env` files** to version control. Ensure `.gitignore` includes `.env`.
-- Prefer **DefaultAzureCredential** over API keys when possible.
-- If using API keys, rotate them regularly via the Azure Portal.
-- When displaying `.env` contents back to the user for confirmation, **mask API keys** (e.g., show only the first 4 characters + `***`).
-
 ## Related Skills
 
-- `cu-sdk-sample-run` — Run SDK samples (uses the env vars configured here)
+- `cu-sdk-sample-run` — Run individual samples (including `Sample00_UpdateDefaults` for model deployment setup)
 - `cu-sdk-common-knowledge` — Domain knowledge for Content Understanding concepts
 
 ## Additional Resources
