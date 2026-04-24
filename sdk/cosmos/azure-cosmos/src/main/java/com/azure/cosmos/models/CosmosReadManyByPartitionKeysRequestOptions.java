@@ -102,6 +102,41 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
     }
 
     /**
+     * Gets the maximum number of partition key values per batch query sent to a single
+     * physical partition. Returns {@code null} if not set, in which case the SDK default
+     * is used (currently {@code 100}, configurable globally via the system property or
+     * environment variable {@code COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE}).
+     *
+     * @return the max batch size, or null if the SDK default is in effect.
+     */
+    public Integer getMaxBatchSize() {
+        return this.actualRequestOptions.getMaxBatchSize();
+    }
+
+    /**
+     * Sets the maximum number of partition key values per batch query sent to a single
+     * physical partition. The default is 100 (overridable globally via the system property
+     * {@code COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE}). This per-request setting takes
+     * precedence over the global default.
+     * <p>
+     * Increasing this value reduces the number of batches (and round-trips) but produces
+     * larger IN-clause queries that consume more RUs per request. Decreasing it increases
+     * the number of batches but keeps individual requests lighter.
+     *
+     * @param maxBatchSize the maximum number of PKs per batch (must be &gt;= 1).
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
+     * @throws IllegalArgumentException if {@code maxBatchSize} is &lt; 1.
+     */
+    public CosmosReadManyByPartitionKeysRequestOptions setMaxBatchSize(int maxBatchSize) {
+        if (maxBatchSize < 1) {
+            throw new IllegalArgumentException(
+                "Argument 'maxBatchSize' must be greater than or equal to 1.");
+        }
+        this.actualRequestOptions.setMaxBatchSize(maxBatchSize);
+        return this;
+    }
+
+    /**
      * Gets the read consistency strategy for the request.
      *
      * @return the read consistency strategy.
@@ -394,6 +429,12 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
                     public Integer getMaxConcurrentBatchPrefetch(
                         CosmosReadManyByPartitionKeysRequestOptions options) {
                         return options.actualRequestOptions.getMaxConcurrentBatchPrefetch();
+                    }
+
+                    @Override
+                    public Integer getMaxBatchSize(
+                        CosmosReadManyByPartitionKeysRequestOptions options) {
+                        return options.actualRequestOptions.getMaxBatchSize();
                     }
                 });
     }

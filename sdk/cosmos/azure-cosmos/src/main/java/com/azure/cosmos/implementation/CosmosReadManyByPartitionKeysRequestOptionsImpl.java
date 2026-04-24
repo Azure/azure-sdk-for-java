@@ -12,6 +12,7 @@ public class CosmosReadManyByPartitionKeysRequestOptionsImpl
     private String continuationToken;
     private Integer maxConcurrentBatchPrefetch;
     private Integer maxItemCount;
+    private Integer maxBatchSize;
 
     public CosmosReadManyByPartitionKeysRequestOptionsImpl() {
         super();
@@ -22,6 +23,7 @@ public class CosmosReadManyByPartitionKeysRequestOptionsImpl
         this.continuationToken = options.continuationToken;
         this.maxConcurrentBatchPrefetch = options.maxConcurrentBatchPrefetch;
         this.maxItemCount = options.maxItemCount;
+        this.maxBatchSize = options.maxBatchSize;
     }
 
     /**
@@ -73,6 +75,15 @@ public class CosmosReadManyByPartitionKeysRequestOptionsImpl
 
     public CosmosReadManyByPartitionKeysRequestOptionsImpl setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
+        return this;
+    }
+
+    public Integer getMaxBatchSize() {
+        return this.maxBatchSize;
+    }
+
+    public CosmosReadManyByPartitionKeysRequestOptionsImpl setMaxBatchSize(int maxBatchSize) {
+        this.maxBatchSize = maxBatchSize;
         return this;
     }
 

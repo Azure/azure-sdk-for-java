@@ -94,6 +94,7 @@ private[spark] object CosmosConfigNames {
   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
   val ReadManyByPkNullHandling = "spark.cosmos.read.readManyByPk.nullHandling"
   val ReadManyByPkMaxConcurrentBatchPrefetch = "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch"
+  val ReadManyByPkMaxBatchSize = "spark.cosmos.read.readManyByPk.maxBatchSize"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val DiagnosticsSamplingMaxCount = "spark.cosmos.diagnostics.sampling.maxCount"
@@ -230,6 +231,7 @@ private[spark] object CosmosConfigNames {
     ReadManyFilteringEnabled,
     ReadManyByPkNullHandling,
     ReadManyByPkMaxConcurrentBatchPrefetch,
+    ReadManyByPkMaxBatchSize,
     ViewsRepositoryPath,
     DiagnosticsMode,
     DiagnosticsSamplingIntervalInSeconds,
@@ -1048,7 +1050,8 @@ private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStra
                                     readManyFilteringConfig: CosmosReadManyFilteringConfig,
                                     responseContinuationTokenLimitInKb: Option[Int] = None,
                                     readManyByPkTreatNullAsNone: Boolean = false,
-                                    readManyByPkMaxConcurrentBatchPrefetch: Int = 1)
+                                    readManyByPkMaxConcurrentBatchPrefetch: Option[Int] = None,
+                                    readManyByPkMaxBatchSize: Option[Int] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -1159,12 +1162,25 @@ private object CosmosReadConfig {
   private val ReadManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry[Int](
     key = CosmosConfigNames.ReadManyByPkMaxConcurrentBatchPrefetch,
     mandatory = false,
-    defaultValue = Some(1),
+    defaultValue = None,
     parseFromStringFunction = value => Math.min(64, Math.max(1, value.toInt)),
     helpMessage = "The maximum number of per-physical-partition batches whose first page is prefetched " +
-      "concurrently inside a single Spark task by the SDK's readManyByPartitionKeys execution. The " +
-      "default is `1` - max is `64`, because Spark already parallelises across tasks - increase this when individual " +
-      "tasks span many physical partitions and additional intra-task prefetch is desired."
+      "concurrently inside a single Spark task by the SDK's readManyByPartitionKeys execution. When " +
+      "not set, the SDK default (`min(cpuCnt, 8)`) is used. Max is `64`, because Spark already " +
+      "parallelises across tasks - increase this when individual tasks span many physical partitions " +
+      "and additional intra-task prefetch is desired."
+  )
+
+  private val ReadManyByPkMaxBatchSize = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadManyByPkMaxBatchSize,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => Math.max(1, value.toInt),
+    helpMessage = "The maximum number of partition key values per batch query sent to a single " +
+      "physical partition. When not set, the SDK default (currently `100`, overridable via the " +
+      "`COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE` system property / environment variable) is used. " +
+      "Increasing this value reduces the number of batches (and round-trips) but produces larger " +
+      "IN-clause queries that consume more RUs per request."
   )
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
@@ -1191,7 +1207,8 @@ private object CosmosReadConfig {
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
     val readManyByPkNullHandling = CosmosConfigEntry.parse(cfg, ReadManyByPkNullHandling)
     val readManyByPkTreatNullAsNone = readManyByPkNullHandling.getOrElse("Null").equalsIgnoreCase("None")
-    val readManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxConcurrentBatchPrefetch).getOrElse(1)
+    val readManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxConcurrentBatchPrefetch)
+    val readManyByPkMaxBatchSize = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxBatchSize)
 
     val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
       readConsistencyStrategyOverride.get
@@ -1225,7 +1242,8 @@ private object CosmosReadConfig {
       readManyFilteringConfig,
       responseContinuationTokenLimitInKb,
       readManyByPkTreatNullAsNone,
-      readManyByPkMaxConcurrentBatchPrefetch)
+      readManyByPkMaxConcurrentBatchPrefetch,
+      readManyByPkMaxBatchSize)
   }
 }
 

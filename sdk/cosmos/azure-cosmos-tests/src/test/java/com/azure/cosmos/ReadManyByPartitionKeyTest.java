@@ -505,6 +505,43 @@ public class ReadManyByPartitionKeyTest extends TestSuiteBase {
 
         cleanupContainer(singlePkContainer);
     }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void singlePk_readManyByPartitionKey_withRequestOptionsAndMaxBatchSize() {
+        // Exercises the per-request maxBatchSize override (precedence over global default).
+        // Use batch size of 1 so every PK ends up in its own batch — verifies results
+        // are still correctly assembled from many small batches.
+        List<ObjectNode> items = createSinglePkItems("batchSzPk1", 2);
+        items.addAll(createSinglePkItems("batchSzPk2", 2));
+        items.addAll(createSinglePkItems("batchSzPk3", 2));
+
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKey("batchSzPk1"),
+            new PartitionKey("batchSzPk2"),
+            new PartitionKey("batchSzPk3"));
+
+        com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions options =
+            new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
+        options.setMaxBatchSize(1);
+
+        CosmosPagedIterable<ObjectNode> results = singlePkContainer.readManyByPartitionKeys(
+            pkValues, options, ObjectNode.class);
+        List<ObjectNode> resultList = results.stream().collect(Collectors.toList());
+
+        assertThat(resultList).hasSize(6);
+        resultList.forEach(item -> {
+            assertThat(item.get("mypk").asText()).isIn("batchSzPk1", "batchSzPk2", "batchSzPk3");
+        });
+
+        cleanupContainer(singlePkContainer);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    public void singlePk_readManyByPartitionKey_setMaxBatchSizeZeroThrows() {
+        com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions options =
+            new com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions();
+        options.setMaxBatchSize(0); // must throw IllegalArgumentException
+    }
     //endregion
 
     //region Continuation token tests

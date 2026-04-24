@@ -1606,6 +1606,7 @@ public interface AsyncDocumentClient {
         String collectionLink,
         QueryFeedOperationState state,
         int maxConcurrentBatchPrefetch,
+        int maxBatchSize,
         Class<T> klass);
 
     /**
