@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -1075,6 +1076,103 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             this.validateHitCount(hitLimitServerErrorRule, 2, OperationType.Read, ResourceType.Document);
         } finally {
             hitLimitServerErrorRule.disable();
+        }
+    }
+
+    @Test(groups = {"multi-region"}, timeOut = TIMEOUT * 3)
+    public void readManyByPartitionKeys_goneError_retriedInternally_noLossNoDuplicates() {
+        // Injects GONE (410/0) errors on query operations targeting readManyByPartitionKeys.
+        // 410/0 triggers a partition-key-range refresh + retry inside the SDK's
+        // DocumentProducer retry loop (direct mode):
+        //
+        //   DocumentProducer.executeFeedOperationCore  [DocumentProducer.java:144]
+        //     → ObservableHelper.inlineIfPossibleAsObs(func, finalRetryPolicy)  [DocumentProducer.java:147]
+        //       → BackoffRetryUtility.executeRetry()  [ObservableHelper.java:43]
+        //         → client.executeQueryAsync(request)  [IDocumentQueryClient impl in RxDocumentClientImpl.java:5371]
+        //           → RxDocumentClientImpl.query(request)  [RxDocumentClientImpl.java:1822]
+        //             → getStoreProxy(request).processMessage(request)
+        //               → [Direct: RntbdTransportClient] ← GONE 410/0 injected by fault injection
+        //
+        // The finalRetryPolicy is a ClientRetryPolicy created via:
+        //   resetSessionTokenRetryPolicy.getRequestPolicy()  [ParallelDocumentQueryExecutionContextBase.java:115]
+        // ClientRetryPolicy handles 410 (GONE) by refreshing the partition key range cache
+        // and retrying in the same region — this works regardless of region count.
+
+        CosmosAsyncContainer container = getSharedMultiPartitionCosmosContainer(clientWithoutPreferredRegions);
+
+        // Create test items across 3 partition keys
+        String pk1 = "readManyGone_" + UUID.randomUUID();
+        String pk2 = "readManyGone_" + UUID.randomUUID();
+        String pk3 = "readManyGone_" + UUID.randomUUID();
+
+        List<TestObject> createdItems = new ArrayList<>();
+        for (String pk : Arrays.asList(pk1, pk2, pk3)) {
+            for (int i = 0; i < 3; i++) {
+                TestObject item = TestObject.create(pk);
+                container.createItem(item).block();
+                createdItems.add(item);
+            }
+        }
+
+        List<PartitionKey> pkValues = Arrays.asList(
+            new PartitionKey(pk1),
+            new PartitionKey(pk2),
+            new PartitionKey(pk3));
+
+        // Baseline — no faults
+        List<TestObject> baselineResults = container
+            .readManyByPartitionKeys(pkValues, TestObject.class)
+            .byPage()
+            .flatMapIterable(FeedResponse::getResults)
+            .collectList()
+            .block();
+
+        assertThat(baselineResults).isNotNull();
+        assertThat(baselineResults.size()).isEqualTo(9);
+        List<String> baselineIds = baselineResults.stream()
+            .map(TestObject::getId)
+            .sorted()
+            .collect(Collectors.toList());
+
+        // Inject GONE (410/0) on QUERY_ITEM — direct mode, no connectionType needed
+        FaultInjectionRule goneRule = new FaultInjectionRuleBuilder("readManyByPk-gone-direct")
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.QUERY_ITEM)
+                .build())
+            .result(FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                .build())
+            .hitLimit(3)
+            .build();
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(container, Arrays.asList(goneRule))
+            .block();
+
+        try {
+            List<TestObject> faultInjectedResults = container
+                .readManyByPartitionKeys(pkValues, TestObject.class)
+                .byPage()
+                .flatMapIterable(FeedResponse::getResults)
+                .collectList()
+                .block();
+
+            assertThat(faultInjectedResults).isNotNull();
+            List<String> faultInjectedIds = faultInjectedResults.stream()
+                .map(TestObject::getId)
+                .sorted()
+                .collect(Collectors.toList());
+
+            org.assertj.core.api.Assertions.assertThat(faultInjectedIds).doesNotHaveDuplicates();
+            org.assertj.core.api.Assertions.assertThat(faultInjectedIds).hasSameElementsAs(baselineIds);
+            org.assertj.core.api.Assertions.assertThat(faultInjectedIds).hasSize(9);
+        } finally {
+            goneRule.disable();
+        }
+
+        // Cleanup
+        for (TestObject item : createdItems) {
+            container.deleteItem(item.getId(), new PartitionKey(item.getMypk())).block();
         }
     }
 

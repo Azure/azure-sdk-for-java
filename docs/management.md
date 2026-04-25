@@ -168,7 +168,7 @@ azure.virtualMachines()
 
 ## Generate Code from TypeSpec
 
-Management SDK code is generated from TypeSpec specs in [azure-rest-api-specs](https://github.com/Azure/azure-rest-api-specs). For contributor workflow details, see the [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md).
+Management SDK code is generated from TypeSpec specs in [azure-rest-api-specs](https://github.com/Azure/azure-rest-api-specs). For contributor workflow details, see the [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md).
 
 
 ---
@@ -176,12 +176,12 @@ Management SDK code is generated from TypeSpec specs in [azure-rest-api-specs](h
 ## More Documentation
 
 - [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt) — comprehensive user guide on docs.microsoft.com
-- [azure-resourcemanager README](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/sdk/resourcemanager/azure-resourcemanager/README.md)
+- [azure-resourcemanager README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/README.md)
 
 ---
 
 ## See Also
 
-- [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/identity-examples.md)
-- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/configuration.md)
-- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md)
+- [Azure Identity Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md)
+- [Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/configuration.md)
+- [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md)

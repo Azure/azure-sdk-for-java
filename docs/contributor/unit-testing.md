@@ -1,6 +1,6 @@
 # Unit Testing
 
-> **See also**: [Live Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md) · [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+> **See also**: [Live Testing](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/live-testing.md) · [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 
 ---
 
@@ -193,6 +193,6 @@ Then connect a remote debugger in [IntelliJ](https://www.jetbrains.com/help/idea
 
 ## Additional Resources
 
-- [Live Testing](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/live-testing.md)
-- [Test Proxy Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/test-proxy-migration.md)
-- [Test Proxy onboarding guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/testproxy/onboarding/README.md)
+- [Live Testing](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/live-testing.md)
+- [Test Proxy Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/test-proxy-migration.md)
+- [Test Proxy onboarding guide](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md)

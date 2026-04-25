@@ -1,7 +1,7 @@
 # Working with AutoRest
 
 
-> **Note:** For new services, prefer TypeSpec over AutoRest (OpenAPI 2.0). See [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md). Use this guide only when you must work with existing Swagger/OpenAPI 2.0 specifications.
+> **Note:** For new services, prefer TypeSpec over AutoRest (OpenAPI 2.0). See [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md). Use this guide only when you must work with existing Swagger/OpenAPI 2.0 specifications.
 
 AutoRest is the tool used to auto-generate the HTTP communication layer beneath the public API. The goal is to hide as much generated code from users as possible.
 
@@ -111,6 +111,6 @@ After changing a Swagger spec:
 
 ## See Also
 
-- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md) — preferred for new services
-- [Azure Json Migration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/azure-json-migration.md) — move from Jackson to `azure-json`
-- [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+- [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md) — preferred for new services
+- [Azure Json Migration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-json-migration.md) — move from Jackson to `azure-json`
+- [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)

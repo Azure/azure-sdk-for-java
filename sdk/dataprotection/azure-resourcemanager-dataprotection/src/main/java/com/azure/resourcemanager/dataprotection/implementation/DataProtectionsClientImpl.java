@@ -80,7 +80,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
     /**
      * Validates if a feature is supported.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -102,7 +102,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
     /**
      * Validates if a feature is supported.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -119,7 +119,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
     /**
      * Validates if a feature is supported.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +139,7 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
     /**
      * Validates if a feature is supported.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

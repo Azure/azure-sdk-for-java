@@ -920,6 +920,29 @@ public class CosmosTracerTest extends TestSuiteBase {
             "readMany",
             samplingRate);
         mockTracer.reset();
+        List<PartitionKey> partitionKeys = createdDocs
+            .stream()
+            .map(CosmosItemIdentity::getPartitionKey)
+            .collect(Collectors.toList());
+        feedItemResponse = cosmosAsyncContainer
+            .readManyByPartitionKeys(partitionKeys, ObjectNode.class)
+            .byPage(1)
+            .blockFirst();
+        assertThat(feedItemResponse).isNotNull();
+        assertThat(feedItemResponse.getResults()).isNotEmpty();
+        verifyTracerAttributes(
+            mockTracer,
+            "readManyByPartitionKeys." + cosmosAsyncContainer.getId(),
+            cosmosAsyncDatabase.getId(),
+            cosmosAsyncContainer.getId(),
+            feedItemResponse.getCosmosDiagnostics(),
+            null,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations,
+            "readManyByPartitionKeys",
+            samplingRate);
+        mockTracer.reset();
     }
 
     @Test(groups = { "fast", "simple" }, timeOut = 10 * TIMEOUT)

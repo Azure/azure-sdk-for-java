@@ -1,6 +1,6 @@
 # Release Checklist
 
-> **See also**: [Deprecation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/deprecation.md) · [Versioning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md) · [aka.ms/azsdk/release-checklist](https://aka.ms/azsdk/release-checklist)
+> **See also**: [Deprecation](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/deprecation.md) · [Versioning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md) · [aka.ms/azsdk/release-checklist](https://aka.ms/azsdk/release-checklist)
 
 ---
 
@@ -40,7 +40,7 @@
 
 ## Before Beta 3
 
-- [ ] A complete set of [performance benchmarks](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/performance-tests.md) is committed to the repo and integrated into the CI pipeline.
+- [ ] A complete set of [performance benchmarks](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-tests.md) is committed to the repo and integrated into the CI pipeline.
 
 ---
 
@@ -51,7 +51,7 @@
 - [ ] Re-validate `pom.xml` (same criteria as Before Beta 1).
 - [ ] Test coverage is sufficiently high; any overrides that suppress coverage failure must be communicated in the PR.
 - [ ] No beta-scoped production dependencies (test-scoped beta dependencies are acceptable).
-- [ ] Run the BOM dependency checker if the library will be included in the BOM (see [BOM Guidelines](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/bom-guidelines.md)).
+- [ ] Run the BOM dependency checker if the library will be included in the BOM (see [BOM Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/bom-guidelines.md)).
 
 ---
 
@@ -62,4 +62,4 @@ Trigger the release pipeline as documented at:
 <https://aka.ms/azsdk/release-checklist>
 
 For troubleshooting SDK generation pipeline failures see:
-[SDK Generation Pipeline Troubleshooting](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/sdk-generation-pipeline-troubleshooting.md)
+[SDK Generation Pipeline Troubleshooting](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/sdk-generation-pipeline-troubleshooting.md)

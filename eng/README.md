@@ -13,5 +13,5 @@ All the tools/utilities used in Microsoft Azure Java SDK's build config are defi
 ---
 
 For developer guides (building, testing, code quality, versioning), see the consolidated documentation hub:
-**[`docs/`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/README.md)**
+**[`docs/`](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/README.md)**
 
