@@ -19,12 +19,42 @@ Before starting, ensure you have:
 - A **Microsoft Foundry resource** in a [supported region](https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support)
 - **Azure CLI** installed (recommended for `DefaultAzureCredential` auth via `az login`)
 
+> **[COPILOT] Probe JDK/Maven runtime first (before asking):**
+> Do not take the user's word for it — run these checks, then report. This prevents silent failures later during `mvn` operations.
+>
+> ```bash
+> java -version 2>&1 | head -1
+> mvn -version 2>&1 | head -1
+> ```
+>
+> **Decision table:**
+>
+> | Finding | Action |
+> |---|---|
+> | JDK 8+ and Maven 3.6+ both present | ✓ Good to go. Proceed to the `[ASK USER]` block below. |
+> | `java` missing | Report the finding, then go to the **[ASK USER] JDK/Maven install choice** block below. |
+> | JDK version < 8 | Report the finding, then go to the **[ASK USER] JDK/Maven install choice** block below. |
+> | `mvn` missing | Report the finding, then go to the **[ASK USER] JDK/Maven install choice** block below. |
+> | Maven version < 3.6 | Report the finding, then go to the **[ASK USER] JDK/Maven install choice** block below. |
+>
+> **[ASK USER] JDK/Maven install choice (only when probe fails):**
+> Ask the user: "JDK or Maven is missing / too old. How would you like to proceed?"
+> - **Option A: Install it for me** — Agent runs the platform-appropriate install command (see below), verifies, and continues.
+> - **Option B: I'll install it myself** — Agent prints the install command for the user's platform and stops. User runs it, re-opens the terminal, and tells the agent to resume.
+>
+> **Default install commands (Option A):**
+> - **macOS** → `brew install openjdk@21 maven` (requires Homebrew; if not installed, fall back to Option B)
+> - **Debian / Ubuntu / WSL** → `sudo apt update && sudo apt install -y openjdk-21-jdk maven`
+> - **Windows** → `winget install Microsoft.OpenJDK.21` and `winget install Apache.Maven`
+>
+> **Before running Option A, confirm with the user one more time** by restating the exact command that will execute, then proceed. After install, re-run the probe to verify JDK 8+ and Maven 3.6+ before continuing.
+>
+> Report the detected versions back to the user in one sentence before the `[ASK USER]` block below.
+
 > **[ASK USER] Prerequisites Check:**
-> Before proceeding, ask the user to confirm their prerequisites:
-> 1. "Do you have **JDK 8+** installed? (`java -version`)" — If no, guide them to install a JDK first (e.g., Microsoft Build of OpenJDK, Temurin).
-> 2. "Do you have **Maven 3.6+** installed? (`mvn -version`)" — If no, install Maven.
-> 3. "Do you already have a **Microsoft Foundry resource** set up in Azure?" — If no, jump to **Step 5** (Azure Resource Setup) first, then return here.
-> 4. "Have you already deployed the required **AI models** (GPT-4.1, GPT-4.1-mini, text-embedding-3-large) in Microsoft Foundry?" — If no, include Step 5.3 and Step 6 in the workflow.
+> After the probe above, confirm the remaining items:
+> 1. "Do you already have a **Microsoft Foundry resource** set up in Azure?" — If no, jump to **Step 5** (Azure Resource Setup) first, then return here.
+> 2. "Have you already deployed the required **AI models** (GPT-4.1, GPT-4.1-mini, text-embedding-3-large) in Microsoft Foundry?" — If no, include Step 5.3 and Step 6 in the workflow.
 
 ## Package Directory
 
@@ -34,13 +64,23 @@ sdk/contentunderstanding/azure-ai-contentunderstanding
 
 ## How Java Samples Use Environment Variables
 
-Java samples read configuration via `System.getenv()`. The variables must be exported in the shell before running `mvn exec:java`. The `.env` file created by this skill can be sourced into your shell with:
+Java samples read configuration via `System.getenv()`. The variables must be exported in the shell before running `mvn exec:java`.
+
+**Linux / macOS (bash / zsh):**
 
 ```bash
 set -a && source .env && set +a
 ```
 
-Or used with the optional helper script:
+**Windows PowerShell (or PowerShell on macOS / Linux):**
+
+```powershell
+. ./load-env.ps1
+```
+
+The `load-env.ps1` helper is generated next to `.env` by the setup scripts. It strips matching surrounding single/double quotes (which the setup scripts add to make values bash-safe) before exporting, so values reach the JVM unquoted.
+
+Alternatively, use the optional sample-run helper:
 
 ```bash
 .github/skills/cu-sdk-sample-run/scripts/run_sample.sh <SampleName> --env .env
@@ -54,7 +94,7 @@ Or used with the optional helper script:
 cd sdk/contentunderstanding/azure-ai-contentunderstanding
 ```
 
-### Step 2: Verify Toolchain
+### Step 2: Pick Platform
 
 > **[ASK USER] Platform:**
 > Ask the user: "Which **platform** are you on?" with options:
@@ -64,15 +104,13 @@ cd sdk/contentunderstanding/azure-ai-contentunderstanding
 >
 > Use their answer to show the correct commands throughout the rest of the setup.
 
-Verify your toolchain:
-
-```bash
-java -version    # Should print 1.8.x or higher (11+, 17, 21 also fine)
-mvn -version     # Should print 3.6.x or higher
-```
-
-> **[ASK USER] Confirm toolchain:**
-> Ask: "Did both commands print valid versions? If either is missing, install it before continuing."
+> **[COPILOT] Toolchain already verified.**
+> The JDK / Maven probe in the **Prerequisites** section above is the source of truth — do not re-ask the user to confirm `java -version` / `mvn -version` here. Reference command (only print if the user explicitly wants to recheck):
+>
+> ```bash
+> java -version    # JDK 8+ (11/17/21 LTS recommended)
+> mvn -version     # Maven 3.6+
+> ```
 
 ### Step 3: Install SDK Dependencies
 
@@ -97,6 +135,9 @@ This compiles the SDK and all sample sources under `src/samples/java`.
 
 > **[ASK USER] Installation check:**
 > After running the command, ask: "Did the build complete with `BUILD SUCCESS`?" If the user reports errors (e.g., dependency resolution failures, JDK version mismatches), help troubleshoot before continuing.
+
+> **[COPILOT] Repeated-run behavior:**
+> On repeated runs, if Maven reports that all dependencies are already downloaded (i.e., `mvn dependency:resolve` completes instantly with no downloads), the setup scripts may skip the dependency resolution step. Only rerun when dependencies are missing, the POM has changed, or the user is experiencing classpath issues.
 
 ### Step 4: Configure Environment Variables
 
@@ -143,13 +184,56 @@ if (Test-Path ".env") {
 > If Option A: Ask for the key value (retrievable at Azure Portal → Foundry resource → Keys and Endpoint → Key1 or Key2).
 > If Option B: Remind the user to run `az login` before invoking samples. Leave `CONTENTUNDERSTANDING_KEY` empty.
 
-> **[ASK USER] Model deployment names:**
-> Ask: "What are your **model deployment names**? Press Enter to accept each default."
-> - GPT-4.1 deployment name (default: `gpt-4.1`) → `GPT_4_1_DEPLOYMENT`
-> - GPT-4.1-mini deployment name (default: `gpt-4.1-mini`) → `GPT_4_1_MINI_DEPLOYMENT`
-> - text-embedding-3-large deployment name (default: `text-embedding-3-large`) → `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT`
+> **[COPILOT] Probe existing model defaults on the Foundry resource:**
+> Before asking the user for deployment names, probe what the resource already has configured. Use `curl` with the endpoint and credentials gathered above.
 >
-> These are required by `Sample00_UpdateDefaults` (one-time mapping setup).
+> ```bash
+> probe_endpoint="${CONTENTUNDERSTANDING_ENDPOINT%/}"
+> http_code=""
+> body=""
+> if [ -n "$CONTENTUNDERSTANDING_KEY" ]; then
+>     probe_response=$(curl -s -w "\n%{http_code}" \
+>       -H "Ocp-Apim-Subscription-Key: $CONTENTUNDERSTANDING_KEY" \
+>       "$probe_endpoint/contentunderstanding/defaults?api-version=2025-11-01")
+> else
+>     token=$(az account get-access-token --resource https://cognitiveservices.azure.com --query accessToken -o tsv 2>/dev/null)
+>     if [ -z "$token" ]; then
+>         # Short-circuit: skip the curl call and go straight to the AUTH_ERROR branch below.
+>         http_code="401"
+>         body=""
+>     else
+>         probe_response=$(curl -s -w "\n%{http_code}" \
+>           -H "Authorization: Bearer $token" \
+>           "$probe_endpoint/contentunderstanding/defaults?api-version=2025-11-01")
+>     fi
+> fi
+> if [ -z "$http_code" ]; then
+>     http_code=$(echo "$probe_response" | tail -1)
+>     body=$(echo "$probe_response" | sed '$d')
+> fi
+> ```
+>
+> Branch on the HTTP status and response body:
+>
+> | HTTP code | Meaning | Action |
+> |-----------|---------|--------|
+> | `200` + all 3 models present in `modelDeployments` | **ALL_SET** | Show the detected values and ask *"Detected existing defaults: gpt-4.1=`<A>`, gpt-4.1-mini=`<B>`, text-embedding-3-large=`<C>`. Use these? (Y/n)"*. On Y, prefill the 3 env vars and **skip Step 6** (defaults already configured). On n, fall through to the per-model prompts below. |
+> | `200` + some models present | **PARTIAL** | Prefill the ones that are set. For missing models, ask per-item with the default shown below. After Step 4 completes, run Step 6 to fill the gaps. |
+> | `200` + no models | **NONE** | Fall through to the per-model prompts below. Step 6 will configure them. |
+> | `401` / `403` | **AUTH_ERROR** | Print a one-line warning: *"Probe unavailable (auth failed). If you're using DefaultAzureCredential, run `az login` and ensure the Cognitive Services User role is assigned. Continuing with manual entry."* Fall through to per-model prompts. |
+> | other | Unexpected error | Print *"Probe failed. Continuing with manual entry."* Fall through. |
+>
+> Only proceed to the per-model prompts below when the probe outcome requires it.
+>
+> The `setup_user_env.sh` / `setup_user_env.ps1` scripts implement this probe with hardened error handling (connect/read timeouts, transport-failure fallbacks). The pseudocode above is a conceptual sketch — treat the scripts as the source of truth.
+
+> **[ASK USER] Model deployment names (only when probe did not yield all values):**
+> For each model not already prefilled from the probe, ask with a sensible default:
+> - "What is your **GPT-4.1** deployment name?" (default: `gpt-4.1`) → `GPT_4_1_DEPLOYMENT`
+> - "What is your **GPT-4.1-mini** deployment name?" (default: `gpt-4.1-mini`) → `GPT_4_1_MINI_DEPLOYMENT`
+> - "What is your **text-embedding-3-large** deployment name?" (default: `text-embedding-3-large`) → `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT`
+>
+> If the user prefers to configure these later, let them know they can run `Sample00_UpdateDefaults` (Step 6) anytime before using prebuilt analyzers.
 
 > **[ASK USER] Cross-resource copy (optional):**
 > Ask: "Do you plan to use **cross-resource analyzer copying** (`Sample15_GrantCopyAuth`)?"
@@ -284,6 +368,9 @@ set -a && source .env && set +a
 
 #### 6.2 Run Sample00_UpdateDefaults
 
+> **[COPILOT] Skip condition:**
+> If the Step 4.2 probe returned **ALL_SET** and the user accepted the detected values, defaults are already configured on the Foundry resource — skip this step and tell the user *"Your Foundry resource already has model defaults configured; skipping Step 6.2."* Otherwise continue below.
+
 > **[ASK USER] Run model defaults?:**
 > Ask: "Would you like to run `Sample00_UpdateDefaults` now to configure model defaults? This is a **one-time setup** per Microsoft Foundry resource. (Yes / Skip for now)"
 > - If yes, ensure deployment name env vars are set, then run the sample.
@@ -304,13 +391,15 @@ This is a **one-time setup per Microsoft Foundry resource**.
 
 > **[ASK USER] Which samples?:**
 > Ask: "Which sample would you like to run first?" with options:
-> - `Sample02_AnalyzeUrl` — Analyze content from a URL (recommended start)
-> - `Sample01_AnalyzeBinary` — Analyze a local file
+> - `Sample01_AnalyzeBinary` — Analyze a local PDF (quickest; completes in under a minute)
+> - `Sample02_AnalyzeUrl` — Full demo: document + video + audio + image from URLs (runs several analyses; takes a few minutes, please be patient)
 > - `Sample03_AnalyzeInvoice` — Extract invoice fields
 > - Other — Let me see the full list
 > - Skip — I'll run samples on my own later
 >
 > If the user picks "Other", list available samples from `src/samples/java/com/azure/ai/contentunderstanding/samples/`.
+>
+> **[COPILOT] Timing note (do not parrot verbatim to user):** `Sample02_AnalyzeUrl` runs multiple sequential LROs (document + video + audio + image, with multiple content-range variants). Video/audio chapter generation is slow on the service side, so total runtime can be on the order of 15+ minutes today. Do not interpret quiet periods (no stdout for several minutes during a video/audio LRO) as a hang. Only consider killing if there is **no new stdout for 5+ minutes** AND no active HTTP traffic. When talking to the user, prefer phrasing like "takes a few minutes" or "please be patient" rather than citing exact large minute counts.
 
 **Sync sample:**
 ```bash
@@ -348,16 +437,23 @@ cd sdk/contentunderstanding/azure-ai-contentunderstanding
 ```
 
 The script will:
-1. Verify `java` and `mvn` are available
-2. Install SDK dependencies (prompt for `mvn dependency:resolve` vs. `mvn install -DskipTests -Djacoco.skip=true`)
+1. Check `java` and `mvn` prerequisites (with offer to install if missing)
+2. Install SDK dependencies (skip if already resolved; prompt for `mvn dependency:resolve` vs. `mvn install -DskipTests -Djacoco.skip=true`)
 3. Create `.env` (without overwriting existing) and interactively prompt for:
    - `CONTENTUNDERSTANDING_ENDPOINT`
    - Authentication method (DefaultAzureCredential or API key)
-   - Model deployment names (with sensible defaults)
+   - Probe existing model defaults on the Foundry resource (skip manual entry if all set)
+   - Model deployment names (with sensible defaults, pre-filled from probe when available)
    - Optional cross-resource copy vars (Sample15)
 4. Print next-step commands for loading `.env`, running `Sample00_UpdateDefaults`, and running samples.
 
-> **Note:** The script does **not** load `.env` into your shell for you — you must still run `set -a && source .env && set +a` before invoking `mvn exec:java`, because Java samples read values via `System.getenv()`.
+**Windows PowerShell:**
+```powershell
+cd sdk\contentunderstanding\azure-ai-contentunderstanding
+.github\skills\cu-sdk-setup\scripts\setup_user_env.ps1
+```
+
+> **Note:** The script does **not** load `.env` into your shell for you — you must still load it before invoking `mvn exec:java`, because Java samples read values via `System.getenv()`. Use `set -a && source .env && set +a` in bash, or `. ./load-env.ps1` in PowerShell.
 
 ### Manual Quick Setup
 
@@ -416,13 +512,17 @@ Required for `Sample15_GrantCopyAuth` (cross-resource analyzer copy) only:
 |---------|----------|
 | `java: command not found` | Install a JDK 8+ (Microsoft Build of OpenJDK or Temurin) and ensure `JAVA_HOME` is set. |
 | `mvn: command not found` | Install Maven 3.6+ and add it to `PATH`. |
-| `CONTENTUNDERSTANDING_ENDPOINT` is null at runtime | Make sure you ran `set -a && source .env && set +a` in the same terminal before `mvn exec:java`. |
+| `CONTENTUNDERSTANDING_ENDPOINT` is null at runtime | Load `.env` in the same terminal before `mvn exec:java`: `set -a && source .env && set +a` (bash) or `. ./load-env.ps1` (PowerShell). |
 | `ClassNotFoundException: ...samples.SampleXX_...` | Add `-Dexec.classpathScope=test` to the `mvn exec:java` command. Samples live under `src/samples/java` (test classpath). |
 | `jacoco-maven-plugin:...:check` fails after `mvn install -DskipTests` | Add `-Djacoco.skip=true`. Skipping tests produces no coverage data, which fails the coverage check. |
 | `Access denied` / 401 errors | Check API key is correct, or run `az login` if using DefaultAzureCredential. Verify the `Cognitive Services User` role is assigned. |
 | `Model deployment not found` | Deploy required models in Microsoft Foundry and run `Sample00_UpdateDefaults`. |
-| Changes to `.env` not taking effect | Re-run `set -a && source .env && set +a` — changes are not auto-reloaded. |
+| Changes to `.env` not taking effect | Re-run the loader (`set -a && source .env && set +a` in bash, or `. ./load-env.ps1` in PowerShell) — changes are not auto-reloaded. |
 | `.env` committed to git | Add `.env` to `.gitignore` — never commit credentials. |
+| Probe returns 401/403 even after `az login` | Assign the `Cognitive Services User` role on the Foundry resource to your account in Azure Portal → Access Control (IAM). |
+| `load-env.ps1` reports `'.env' not found` | Run the loader from the package root (`sdk/contentunderstanding/azure-ai-contentunderstanding`), not a subdirectory. |
+| Re-running the setup script doesn’t change my `.env` | The script never overwrites an existing `.env`. Delete it first (`rm .env`) and re-run, or edit it manually. |
+| `ClassNotFoundException` after a clean tree change despite the script reporting “deps already resolved” | Stale marker. Delete `target/.cu-setup-deps-ok` (or run `mvn clean`) and re-run the setup script. |
 
 ## Related Skills
 
