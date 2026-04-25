@@ -138,23 +138,6 @@ mvn install -DskipTests -pl sdk/contentunderstanding/azure-ai-contentunderstandi
 > - Missing Maven: ensure `mvn -version` works
 > - Parent POM not found: run `mvn install -DskipTests -f ../../parents/azure-client-sdk-parent/pom.xml` first
 
-<details>
-<summary>Alternative: use the setup script (optional)</summary>
-
-The `setup_samples.sh` script automates this — it checks Maven Central first and falls back to a local build:
-
-```bash
-.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh
-```
-
-Use `--local` to force local build:
-
-```bash
-.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh --local
-```
-
-</details>
-
 ### Step 3: Configure Environment Variables
 
 > **[ASK USER] Configuration check:**
@@ -389,20 +372,7 @@ After the sample completes, the skill **must** do the following for the user (do
 
 Helper scripts are provided in `scripts/` as a convenience. They are **not required** — you can always use `mvn exec:java` directly.
 
-### `setup_samples.sh` -- Automated Environment Setup
-
-Checks Maven Central for the published package, falls back to local build, and creates a `.env` template.
-
-```bash
-# Default: try Maven Central, fall back to local build
-.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh
-
-# Force local build (e.g., testing local changes)
-.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh --local
-
-# Local mode: skip build if already built
-.github/skills/cu-sdk-sample-run/scripts/setup_samples.sh --local --skip-build
-```
+> **Note:** For first-time environment setup (installing JDK/Maven, building the SDK, creating `.env`), use the `cu-sdk-setup` skill.
 
 ### `run_sample.sh` -- Run a Sample with Conveniences
 
