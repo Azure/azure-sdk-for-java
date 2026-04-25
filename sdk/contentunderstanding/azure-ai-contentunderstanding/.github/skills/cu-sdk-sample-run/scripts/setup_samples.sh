@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# cspell:ignore esac ENVEOF
 
 # setup_samples.sh
 # Sets up the environment for running Azure AI Content Understanding Java SDK samples.

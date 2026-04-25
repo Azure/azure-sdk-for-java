@@ -162,7 +162,7 @@ Use `--local` to force local build:
 > - If yes: Skip to Step 4.
 > - If no: Direct them to the `cu-sdk-setup` skill for interactive setup, or guide them through the steps below.
 
-Java samples read credentials from **OS environment variables** via `System.getenv()`. Unlike Python (`dotenv`) or JavaScript (`dotenv/config`), Java does not have a built-in `.env` loader — the variables must be present in the shell environment when the JVM starts.
+Java samples read credentials from **OS environment variables** via `System.getenv()`. Java does not load `.env` files automatically, so the variables must be present in the shell environment when the JVM starts.
 
 The recommended approach is to create a **`.env` file** and source it before running samples.
 

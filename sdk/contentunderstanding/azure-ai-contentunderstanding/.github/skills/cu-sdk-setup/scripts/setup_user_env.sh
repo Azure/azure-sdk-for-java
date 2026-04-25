@@ -1,7 +1,7 @@
 #!/bin/bash
 # Setup script for Azure AI Content Understanding Java SDK users
 # This script sets up the environment for running samples (JDK + Maven based).
-# cspell:ignore esac
+# cspell:ignore esac PSEOF
 
 set -e
 

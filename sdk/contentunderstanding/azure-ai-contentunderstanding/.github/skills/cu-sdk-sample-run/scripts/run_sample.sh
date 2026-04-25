@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# cspell:ignore envfile esac
 
 # run_sample.sh
 # Run a specific Java sample for the Azure AI Content Understanding SDK.
