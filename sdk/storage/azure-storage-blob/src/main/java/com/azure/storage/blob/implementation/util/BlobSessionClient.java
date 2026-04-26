@@ -6,6 +6,8 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
@@ -23,6 +25,7 @@ import reactor.core.publisher.Mono;
  */
 final class BlobSessionClient {
 
+    private static final ClientLogger LOGGER = new ClientLogger(BlobSessionClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
     private final String accountName;
     private final String containerName;
@@ -58,12 +61,12 @@ final class BlobSessionClient {
     private StorageSessionCredential toCredential(Response<CreateSessionResponse> response) {
         CreateSessionResponse session = response.getValue();
         if (session == null) {
-            throw new IllegalStateException("CreateSession response did not contain a session payload.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("CreateSession response did not contain a session payload."));
         }
 
         SessionCredentials creds = session.getCredentials();
         if (creds == null) {
-            throw new IllegalStateException("CreateSession response did not contain HMAC session credentials.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("CreateSession response did not contain HMAC session credentials."));
         }
         return new StorageSessionCredential(creds.getSessionToken(), creds.getSessionKey(), session.getExpiration(),
             accountName);
