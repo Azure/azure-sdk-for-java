@@ -34,10 +34,7 @@ import java.util.Objects;
 public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
-    private static final String SESSION_SCHEME = "Session";
     private static final String SESSION_EXPIRING = "session_expiring";
-    private static final String SESSION_EXPIRED = "session_expired";
-    private static final String SESSION_TOKEN_INVALID = "session_token_invalid";
     private static final String SESSION_OPS_UNAVAILABLE = "SessionOperationsTemporarilyUnavailable";
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
@@ -160,7 +157,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
         handleSessionExpiringHeader(response);
 
-        if (isSessionCredentialRejected(response)) {
+        if (isUnauthorizedResponse(response)) {
             invalidateSession(session);
         }
 
@@ -192,7 +189,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
         handleSessionExpiringHeader(response);
 
-        if (isSessionCredentialRejected(response)) {
+        if (isUnauthorizedResponse(response)) {
             invalidateSession(session);
         }
 
@@ -239,30 +236,18 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Returns true for any 401 where the session service rejected the credential (expired or invalid token).
+     * Returns true when the session-authenticated request was rejected as unauthorized.
      * Used to decide whether to invalidate the cached session.
      */
-    private static boolean isSessionCredentialRejected(HttpResponse response) {
-        if (response.getStatusCode() != 401) {
-            return false;
-        }
-        String wwwAuth = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        return wwwAuth != null
-            && wwwAuth.startsWith(SESSION_SCHEME)
-            && (wwwAuth.contains(SESSION_EXPIRED) || wwwAuth.contains(SESSION_TOKEN_INVALID));
+    private static boolean isUnauthorizedResponse(HttpResponse response) {
+        return response.getStatusCode() == 401;
     }
 
     /**
-     * Returns true only for 401 session_expired — the only error that warrants an automatic retry
-     * with a refreshed session. session_token_invalid is not retryable because the token itself is
-     * bad (not just expired), so a new session is needed but the current request should fail.
+     * Returns true for 401 responses where the request should be retried once with a refreshed session.
      */
     private static boolean isRetryableSessionFailure(HttpResponse response) {
-        if (response.getStatusCode() != 401) {
-            return false;
-        }
-        String wwwAuth = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        return wwwAuth != null && wwwAuth.startsWith(SESSION_SCHEME) && wwwAuth.contains(SESSION_EXPIRED);
+        return response.getStatusCode() == 401;
     }
 
     private static boolean shouldRetryRequest(HttpPipelineCallContext context, HttpResponse response) {

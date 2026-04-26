@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -2188,23 +2189,25 @@ public class ContainerApiTests extends BlobTestBase {
             }
         });
 
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
-            .setContainerName(cc.getBlobContainerName())
-            .setAccountName(cc.getAccountName());
-        BlobContainerClient sessionCc
-            = getOAuthServiceClient(sessionOptions, inspect).getBlobContainerClient(cc.getBlobContainerName());
+        BlobContainerClient sessionCc = sessionEnabledContainerClient(inspect);
 
         for (String blobName : blobNames) {
             BinaryData downloaded = sessionCc.getBlobClient(blobName).downloadContent();
             assertEquals(DATA.getDefaultText(), downloaded.toString());
         }
 
-        assertEquals(blobCount, downloadAuthSchemes.stream().filter("Session"::equals).count(),
+        // Greater than or equal to because there might be a retry that has a Session token as well if test is run with
+        // listBlobsOverSessionEnabledClient()
+        assertTrue(downloadAuthSchemes.size() >= blobCount,
+            "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
+        assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
             "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
     }
 
     @Test
     @LiveOnly
+    // This test validates that listing blobs with a session-enabled client uses Bearer authorization because
+    // List Blobs is a container-level GET request, not a blob-level GET request so it users Bearer tokens instead of session tokens.
     public void listBlobsOverSessionEnabledClient() {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
@@ -2218,11 +2221,7 @@ public class ContainerApiTests extends BlobTestBase {
             }
         });
 
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
-            .setContainerName(cc.getBlobContainerName())
-            .setAccountName(cc.getAccountName());
-        BlobContainerClient sessionCc
-            = getOAuthServiceClient(sessionOptions, inspect).getBlobContainerClient(cc.getBlobContainerName());
+        BlobContainerClient sessionCc = sessionEnabledContainerClient(inspect);
 
         assertTrue(sessionCc.listBlobs().stream().anyMatch(b -> b.getName().equals(blobName)));
 
@@ -2231,10 +2230,10 @@ public class ContainerApiTests extends BlobTestBase {
             "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
     }
 
-    private BlobContainerClient sessionEnabledContainerClient() {
+    private BlobContainerClient sessionEnabledContainerClient(HttpPipelinePolicy... policies) {
         SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
             .setContainerName(cc.getBlobContainerName())
             .setAccountName(cc.getAccountName());
-        return getOAuthServiceClient(sessionOptions).getBlobContainerClient(cc.getBlobContainerName());
+        return getOAuthServiceClient(sessionOptions, policies).getBlobContainerClient(cc.getBlobContainerName());
     }
 }

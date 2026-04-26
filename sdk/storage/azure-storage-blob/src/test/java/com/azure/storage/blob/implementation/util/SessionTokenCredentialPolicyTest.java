@@ -270,30 +270,29 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     @Test
-    public void policyReturnsSessionTokenInvalidWithoutRetryButInvalidatesSession() {
+    public void policyRetriesAny401WithNewSession() {
         HttpPipelineCallContext context = createContext();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
-        HttpResponse invalidResponse = mock(HttpResponse.class);
+        HttpResponse unauthorizedResponse = mock(HttpResponse.class);
+        HttpResponse retriedResponse = mock(HttpResponse.class);
 
         when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)))
             .thenReturn(Mono.just(credentialWithToken(SECOND_TOKEN)));
         when(next.clone()).thenReturn(retryNext);
-        when(next.process()).thenReturn(Mono.just(invalidResponse));
-        when(invalidResponse.getStatusCode()).thenReturn(401);
-        when(invalidResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE))
-            .thenReturn("Session error=session_token_invalid");
+        when(next.process()).thenReturn(Mono.just(unauthorizedResponse));
+        when(retryNext.process()).thenReturn(Mono.just(retriedResponse));
+        when(unauthorizedResponse.getStatusCode()).thenReturn(401);
+        when(retriedResponse.getStatusCode()).thenReturn(200);
 
         try (HttpResponse actualResponse = policy.process(context, next).block()) {
-            // Returns the 401 as-is — no retry
-            assertEquals(invalidResponse, actualResponse);
+            assertEquals(retriedResponse, actualResponse);
+            assertTrue(
+                context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + SECOND_TOKEN));
+            verify(unauthorizedResponse, times(1)).close();
             verify(next, times(1)).process();
-            verify(retryNext, times(0)).process();
-            verify(invalidResponse, times(0)).close();
-
-            // But the session was invalidated so the next request gets a fresh session
-            StorageSessionCredential nextSession = policy.getValidSessionAsync().block();
-            assertEquals(SECOND_TOKEN, nextSession.getSessionToken());
+            verify(retryNext, times(1)).process();
+            verify(sessionClient, times(2)).createSessionAsync();
         }
     }
 
