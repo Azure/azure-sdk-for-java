@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Constants.UrlEncodingInfo;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.http.HttpHeader;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +15,8 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class HttpUtils {
@@ -28,6 +24,18 @@ public class HttpUtils {
     private static Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
     private static final Pattern PLUS_SYMBOL_ESCAPE_PATTERN = Pattern.compile(UrlEncodingInfo.PLUS_SYMBOL_ESCAPED);
+
+    /**
+     * Returns the initial capacity for a HashMap that will hold {@code expectedSize} entries
+     * without resizing, accounting for the default load factor of 0.75.
+     */
+    public static int mapCapacityForSize(int expectedSize) {
+        if (expectedSize <= 0) {
+            return 1;
+        }
+        long capacity = (long) expectedSize * 4 / 3 + 1;
+        return capacity >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) capacity;
+    }
 
     public static String urlEncode(String url) {
         try {
@@ -51,14 +59,14 @@ public class HttpUtils {
 
     public static Map<String, String> asMap(HttpHeaders headers) {
         if (headers == null) {
-            return new HashMap<>();
+            return new HashMap<>(4);
         }
-        HashMap<String, String> map = new HashMap<>(headers.size());
-        for (Entry<String, String> entry : headers.toMap().entrySet()) {
-            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
-                map.put(entry.getKey(), HttpUtils.urlDecode(entry.getValue()));
+        HashMap<String, String> map = new HashMap<>(mapCapacityForSize(headers.size()));
+        for (HttpHeader header : headers) {
+            if (header.name().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
+                map.put(header.name(), HttpUtils.urlDecode(header.value()));
             } else {
-                map.put(entry.getKey(), entry.getValue());
+                map.put(header.name(), header.value());
             }
         }
         return map;
@@ -77,25 +85,5 @@ public class HttpUtils {
         }
 
         return date != null ? date : StringUtils.EMPTY;
-    }
-
-    public static List<Entry<String, String>> unescape(Set<Entry<String, String>> headers) {
-        List<Entry<String, String>> result = new ArrayList<>(headers.size());
-        for (Entry<String, String> entry : headers) {
-            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
-                String unescapedUrl = HttpUtils.urlDecode(entry.getValue());
-                entry = new AbstractMap.SimpleEntry<>(entry.getKey(), unescapedUrl);
-            }
-            result.add(entry);
-        }
-        return result;
-    }
-
-    public static Map<String, String> unescape(Map<String, String> headers) {
-        if (headers != null) {
-            headers.computeIfPresent(HttpConstants.HttpHeaders.OWNER_FULL_NAME,
-                (ownerKey, ownerValue) -> HttpUtils.urlDecode(ownerValue));
-        }
-        return headers;
     }
 }

@@ -124,7 +124,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -160,7 +160,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -273,7 +273,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForResource(this.client.getEndpoint(), apiVersion,
@@ -329,7 +329,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

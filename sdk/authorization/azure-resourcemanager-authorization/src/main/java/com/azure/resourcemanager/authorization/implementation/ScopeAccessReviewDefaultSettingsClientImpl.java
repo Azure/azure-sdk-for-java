@@ -96,7 +96,7 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -123,7 +123,7 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, accept, context);
@@ -198,7 +198,7 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -234,7 +234,7 @@ public final class ScopeAccessReviewDefaultSettingsClientImpl implements ScopeAc
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);

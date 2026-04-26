@@ -22,7 +22,7 @@ public final class BackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"ebwtswb\"]},\"id\":\"wfmdurage\",\"name\":\"izvcjfe\",\"type\":\"isdju\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"hvhcz\",\"n\",\"fbycjs\"]},\"id\":\"wwixzvumw\",\"name\":\"xqhndvnoamlds\",\"type\":\"haohdjhhflzokxc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class BackupPoliciesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BaseBackupPolicyResource> response
-            = manager.backupPolicies().list("bcblemb", "kbwvqvxkdiv", com.azure.core.util.Context.NONE);
+            = manager.backupPolicies().list("amikzebrqbsm", "wziqgfuhokzr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ebwtswb", response.iterator().next().properties().datasourceTypes().get(0));
+        Assertions.assertEquals("hvhcz", response.iterator().next().properties().datasourceTypes().get(0));
     }
 }
