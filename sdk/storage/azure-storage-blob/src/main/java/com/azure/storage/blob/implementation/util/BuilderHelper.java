@@ -69,11 +69,6 @@ public final class BuilderHelper {
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder, with optional session-based
      * authentication support.
-     * <p>
-     * When {@code sessionOptions} is non-null and the resolved session mode is not {@link SessionMode#NONE},
-     * and a {@code tokenCredential} is present, a single {@link SessionTokenCredentialPolicy} is added as the
-     * auth policy. The session policy wraps the bearer token policy internally and delegates to it for
-     * non-session-eligible requests. When sessions are not active, the bearer token policy is added directly.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
@@ -90,8 +85,7 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions {@link SessionOptions} containing the session mode, container name, and account name.
-     *                       Pass {@code null} to disable session support.
+     * @param sessionOptions {@link SessionOptions} containing the session mode, container name, and account name for session-based authentication.
      * @param serviceVersion The service version for session creation. Required when session is active.
      * @return A new {@link HttpPipeline} from the passed values.
      */
@@ -131,6 +125,10 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
+        // When sessionOptions is non-null and the resolved session mode is not SessionMode.NONE, and a tokenCredential is
+        // present, a single essionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
+        // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
+        // the bearer token policy is added directly.
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
