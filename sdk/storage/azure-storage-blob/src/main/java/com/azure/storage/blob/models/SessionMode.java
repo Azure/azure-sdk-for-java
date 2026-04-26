@@ -35,6 +35,7 @@ public enum SessionMode {
      * Resolves {@link #AUTO} to its current effective mode. Today {@code AUTO} maps to
      * {@link #NONE}; this may change in a future release without breaking callers that
      * use {@code resolve()} consistently.
+     * @return returns the effective session mode, never {@code AUTO}
      */
     public SessionMode resolve() {
         return this == AUTO ? NONE : this;
