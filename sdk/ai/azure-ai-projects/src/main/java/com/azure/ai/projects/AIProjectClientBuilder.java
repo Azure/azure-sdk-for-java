@@ -540,42 +540,89 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of OpenAIClient class with a default setup for OpenAI
+     * Builds an instance of OpenAIClient class with a default setup for OpenAI.
+     * The base URL is set to {@code {endpoint}/openai/v1}.
      *
      * @return an instance of OpenAIClient
      */
     public OpenAIClient buildOpenAIClient() {
-        return getOpenAIClientBuilder().build()
+        return getOpenAIClientBuilder(null).build()
             .withOptions(optionBuilder -> optionBuilder
                 .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
     }
 
     /**
-     * Builds an instance of OpenAIAsyncClient class with a default setup for OpenAI
+     * Builds an instance of OpenAIClient class configured to use the specified agent's endpoint.
+     * The base URL is set to {@code {endpoint}/agents/{agentName}/endpoint/protocols/openai}.
      *
-     * @return an instance of OpenAIAsyncClient
+     * @param agentName the name of the agent whose endpoint to target. Must not be null or empty.
+     * @return an instance of OpenAIClient
+     * @throws IllegalArgumentException if agentName is null or empty.
      */
-    public OpenAIClientAsync buildOpenAIAsyncClient() {
-        return getOpenAIAsyncClientBuilder().build()
+    public OpenAIClient buildOpenAIClient(String agentName) {
+        Objects.requireNonNull(agentName, "'agentName' cannot be null.");
+        if (agentName.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
+        }
+        return getOpenAIClientBuilder(agentName).build()
             .withOptions(optionBuilder -> optionBuilder
                 .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
     }
 
-    private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
+    /**
+     * Builds an instance of OpenAIAsyncClient class with a default setup for OpenAI.
+     * The base URL is set to {@code {endpoint}/openai/v1}.
+     *
+     * @return an instance of OpenAIAsyncClient
+     */
+    public OpenAIClientAsync buildOpenAIAsyncClient() {
+        return getOpenAIAsyncClientBuilder(null).build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
+    /**
+     * Builds an instance of OpenAIAsyncClient class configured to use the specified agent's endpoint.
+     * The base URL is set to {@code {endpoint}/agents/{agentName}/endpoint/protocols/openai}.
+     *
+     * @param agentName the name of the agent whose endpoint to target. Must not be null or empty.
+     * @return an instance of OpenAIAsyncClient
+     * @throws IllegalArgumentException if agentName is null or empty.
+     */
+    public OpenAIClientAsync buildOpenAIAsyncClient(String agentName) {
+        Objects.requireNonNull(agentName, "'agentName' cannot be null.");
+        if (agentName.isEmpty()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
+        }
+        return getOpenAIAsyncClientBuilder(agentName).build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
+    private String getOpenAIBaseUrl(String agentName) {
+        String base
+            = this.endpoint.endsWith("/") ? this.endpoint.substring(0, this.endpoint.length() - 1) : this.endpoint;
+        if (agentName != null) {
+            return base + "/agents/" + agentName + "/endpoint/protocols/openai";
+        }
+        return base + "/openai/v1";
+    }
+
+    private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
+        builder.baseUrl(getOpenAIBaseUrl(agentName));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
     }
 
-    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder() {
+    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
+        builder.baseUrl(getOpenAIBaseUrl(agentName));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
