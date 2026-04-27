@@ -66,12 +66,15 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
     private static final String GATEWAY_V1 = "GatewayV1";
     private static final String GATEWAY_V2 = "GatewayV2";
+    private static final String DIRECT = "Direct";
 
     private CosmosAsyncClient gatewayV1Client;
     private CosmosAsyncClient gatewayV2Client;
+    private CosmosAsyncClient directClient;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer gatewayV1Container;
     private CosmosAsyncContainer gatewayV2Container;
+    private CosmosAsyncContainer directContainer;
     private String databaseId;
     private String containerId;
 
@@ -96,6 +99,10 @@ public class GatewayReadConsistencyStrategyE2ETest {
         gatewayV2Client = createGatewayV2Builder().buildAsyncClient();
         gatewayV2Container = gatewayV2Client.getDatabase(databaseId).getContainer(containerId);
 
+        // Direct mode client
+        directClient = createDirectBuilder().buildAsyncClient();
+        directContainer = directClient.getDatabase(databaseId).getContainer(containerId);
+
         logger.info("Created E2E test resources: db={}, container={}", databaseId, containerId);
     }
 
@@ -110,11 +117,12 @@ public class GatewayReadConsistencyStrategyE2ETest {
         }
         safeClose(gatewayV1Client);
         safeClose(gatewayV2Client);
+        safeClose(directClient);
     }
 
     @DataProvider(name = "transportModes")
     public Object[][] transportModes() {
-        return new Object[][] { { GATEWAY_V1 }, { GATEWAY_V2 } };
+        return new Object[][] { { GATEWAY_V1 }, { GATEWAY_V2 }, { DIRECT } };
     }
 
     // region ItemRequestOptions — point reads
@@ -503,12 +511,28 @@ public class GatewayReadConsistencyStrategyE2ETest {
             .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
+    private static CosmosClientBuilder createDirectBuilder() {
+        return new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode()
+            .consistencyLevel(ConsistencyLevel.SESSION);
+    }
+
     private CosmosClientBuilder builderFor(String mode) {
-        return isGatewayV2(mode) ? createGatewayV2Builder() : createGatewayV1Builder();
+        switch (mode) {
+            case GATEWAY_V2: return createGatewayV2Builder();
+            case DIRECT: return createDirectBuilder();
+            default: return createGatewayV1Builder();
+        }
     }
 
     private CosmosAsyncContainer containerFor(String mode) {
-        return isGatewayV2(mode) ? gatewayV2Container : gatewayV1Container;
+        switch (mode) {
+            case GATEWAY_V2: return gatewayV2Container;
+            case DIRECT: return directContainer;
+            default: return gatewayV1Container;
+        }
     }
 
     private static boolean isGatewayV2(String mode) {
