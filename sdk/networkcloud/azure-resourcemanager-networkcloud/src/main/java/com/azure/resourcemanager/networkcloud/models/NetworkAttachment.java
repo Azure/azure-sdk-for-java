@@ -32,7 +32,7 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
      * The IP allocation mechanism for the virtual machine. Dynamic and Static are only valid for l3Network which may
      * also specify Disabled. Otherwise, Disabled is the only permitted value.
      */
-    private VirtualMachineIPAllocationMethod ipAllocationMethod;
+    private VirtualMachineIpAllocationMethod ipAllocationMethod;
 
     /*
      * The IPv4 address of the virtual machine. This field is used only if the attached network has IPAllocationType of
@@ -119,7 +119,7 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
      * 
      * @return the ipAllocationMethod value.
      */
-    public VirtualMachineIPAllocationMethod ipAllocationMethod() {
+    public VirtualMachineIpAllocationMethod ipAllocationMethod() {
         return this.ipAllocationMethod;
     }
 
@@ -130,7 +130,7 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
      * @param ipAllocationMethod the ipAllocationMethod value to set.
      * @return the NetworkAttachment object itself.
      */
-    public NetworkAttachment withIpAllocationMethod(VirtualMachineIPAllocationMethod ipAllocationMethod) {
+    public NetworkAttachment withIpAllocationMethod(VirtualMachineIpAllocationMethod ipAllocationMethod) {
         this.ipAllocationMethod = ipAllocationMethod;
         return this;
     }
@@ -264,7 +264,7 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
                     deserializedNetworkAttachment.attachedNetworkId = reader.getString();
                 } else if ("ipAllocationMethod".equals(fieldName)) {
                     deserializedNetworkAttachment.ipAllocationMethod
-                        = VirtualMachineIPAllocationMethod.fromString(reader.getString());
+                        = VirtualMachineIpAllocationMethod.fromString(reader.getString());
                 } else if ("defaultGateway".equals(fieldName)) {
                     deserializedNetworkAttachment.defaultGateway = DefaultGateway.fromString(reader.getString());
                 } else if ("ipv4Address".equals(fieldName)) {

@@ -19,7 +19,7 @@ import com.azure.resourcemanager.networkcloud.models.StorageProfile;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineBootMethod;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineDeviceModelType;
-import com.azure.resourcemanager.networkcloud.models.VirtualMachineIPAllocationMethod;
+import com.azure.resourcemanager.networkcloud.models.VirtualMachineIpAllocationMethod;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePlacementHint;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePlacementHintPodAffinityScope;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePlacementHintType;
@@ -52,7 +52,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
             .withAdminUsername("username")
             .withCloudServicesNetworkAttachment(new NetworkAttachment().withAttachedNetworkId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName")
-                .withIpAllocationMethod(VirtualMachineIPAllocationMethod.DYNAMIC))
+                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC))
             .withCpuCores(2L)
             .withMemorySizeGB(8L)
             .withStorageProfile(new StorageProfile()
@@ -71,7 +71,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
             .withNetworkAttachments(Arrays.asList(new NetworkAttachment().withAttachedNetworkId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName")
                 .withDefaultGateway(DefaultGateway.TRUE)
-                .withIpAllocationMethod(VirtualMachineIPAllocationMethod.DYNAMIC)
+                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DYNAMIC)
                 .withIpv4Address("198.51.100.1")
                 .withIpv6Address("2001:0db8:0000:0000:0000:0000:0000:0000")
                 .withNetworkAttachmentName("netAttachName01")))

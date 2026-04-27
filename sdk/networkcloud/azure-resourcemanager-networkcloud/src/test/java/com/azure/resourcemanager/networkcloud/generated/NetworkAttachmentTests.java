@@ -7,7 +7,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkcloud.models.DefaultGateway;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
-import com.azure.resourcemanager.networkcloud.models.VirtualMachineIPAllocationMethod;
+import com.azure.resourcemanager.networkcloud.models.VirtualMachineIpAllocationMethod;
 import org.junit.jupiter.api.Assertions;
 
 public final class NetworkAttachmentTests {
@@ -18,7 +18,7 @@ public final class NetworkAttachmentTests {
             .toObject(NetworkAttachment.class);
         Assertions.assertEquals("wnopqgikyzirtx", model.attachedNetworkId());
         Assertions.assertEquals(DefaultGateway.FALSE, model.defaultGateway());
-        Assertions.assertEquals(VirtualMachineIPAllocationMethod.STATIC, model.ipAllocationMethod());
+        Assertions.assertEquals(VirtualMachineIpAllocationMethod.STATIC, model.ipAllocationMethod());
         Assertions.assertEquals("ejnt", model.ipv4Address());
         Assertions.assertEquals("ewgioilqukrydxt", model.ipv6Address());
         Assertions.assertEquals("hhavgrvkffovjz", model.networkAttachmentName());
@@ -28,14 +28,14 @@ public final class NetworkAttachmentTests {
     public void testSerialize() throws Exception {
         NetworkAttachment model = new NetworkAttachment().withAttachedNetworkId("wnopqgikyzirtx")
             .withDefaultGateway(DefaultGateway.FALSE)
-            .withIpAllocationMethod(VirtualMachineIPAllocationMethod.STATIC)
+            .withIpAllocationMethod(VirtualMachineIpAllocationMethod.STATIC)
             .withIpv4Address("ejnt")
             .withIpv6Address("ewgioilqukrydxt")
             .withNetworkAttachmentName("hhavgrvkffovjz");
         model = BinaryData.fromObject(model).toObject(NetworkAttachment.class);
         Assertions.assertEquals("wnopqgikyzirtx", model.attachedNetworkId());
         Assertions.assertEquals(DefaultGateway.FALSE, model.defaultGateway());
-        Assertions.assertEquals(VirtualMachineIPAllocationMethod.STATIC, model.ipAllocationMethod());
+        Assertions.assertEquals(VirtualMachineIpAllocationMethod.STATIC, model.ipAllocationMethod());
         Assertions.assertEquals("ejnt", model.ipv4Address());
         Assertions.assertEquals("ewgioilqukrydxt", model.ipv6Address());
         Assertions.assertEquals("hhavgrvkffovjz", model.networkAttachmentName());
