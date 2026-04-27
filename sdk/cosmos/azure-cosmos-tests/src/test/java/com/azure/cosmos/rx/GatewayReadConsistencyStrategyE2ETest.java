@@ -59,8 +59,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  *
  * <p>Run with test group "thinclient".
  */
-public class ReadConsistencyStrategyE2ETest {
-    private static final Logger logger = LoggerFactory.getLogger(ReadConsistencyStrategyE2ETest.class);
+public class GatewayReadConsistencyStrategyE2ETest {
+    private static final Logger logger = LoggerFactory.getLogger(GatewayReadConsistencyStrategyE2ETest.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final long TIMEOUT = 60_000L;
 

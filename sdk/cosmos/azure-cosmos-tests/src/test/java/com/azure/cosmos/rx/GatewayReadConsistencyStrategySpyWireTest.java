@@ -59,8 +59,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <p>V2 tests are skipped when the test account does not have thin client read locations
  * (the spy client falls back to V1 silently — we detect this and skip rather than false-pass).
  */
-public class ReadConsistencyStrategySpyWireTest {
-    private static final Logger logger = LoggerFactory.getLogger(ReadConsistencyStrategySpyWireTest.class);
+public class GatewayReadConsistencyStrategySpyWireTest {
+    private static final Logger logger = LoggerFactory.getLogger(GatewayReadConsistencyStrategySpyWireTest.class);
 
     private static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor getItemOptionsAccessor() {
         return ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
