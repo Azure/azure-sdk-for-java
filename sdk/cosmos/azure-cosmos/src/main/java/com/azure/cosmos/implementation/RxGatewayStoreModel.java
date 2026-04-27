@@ -1036,8 +1036,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     /**
      * Determines if the effective consistency for this request is Session — needed by
      * {@link #applySessionToken} to decide whether to attach/remove session tokens.
-     *
-     * Pure read — no side-effects, no header mutation, no HashMap copy.
+     * <p>
+     * Pure read — no side effects, no header mutation, no HashMap copy.
      * Resolution order: request-level readConsistencyStrategy > client-level readConsistencyStrategy
      * (header) > consistency-level header > account default.
      */
