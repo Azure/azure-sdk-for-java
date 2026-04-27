@@ -98,6 +98,16 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     // region Token-level tests — RNTBD token metadata, encoding, and constants
 
+    @Test(groups = { "unit" })
+    public void readConsistencyStrategyTokenMetadata() {
+        assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.id())
+            .isEqualTo((short) 0x00F0);
+        assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.type())
+            .isEqualTo(RntbdTokenType.Byte);
+        assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.isRequired())
+            .isFalse();
+    }
+
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyToRntbdByteValues")
     public void readConsistencyStrategyTokenEncodesCorrectly(
         ReadConsistencyStrategy ignoredStrategy,
@@ -111,24 +121,6 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         token.setValue(expectedByteValue);
         assertThat(token.isPresent()).isTrue();
         assertThat(((Number) token.getValue()).byteValue()).isEqualTo(expectedByteValue);
-    }
-
-    @Test(groups = { "unit" })
-    public void readConsistencyStrategyHeaderId() {
-        assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.id())
-            .isEqualTo((short) 0x00F0);
-    }
-
-    @Test(groups = { "unit" })
-    public void readConsistencyStrategyHeaderType() {
-        assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.type())
-            .isEqualTo(RntbdTokenType.Byte);
-    }
-
-    @Test(groups = { "unit" })
-    public void readConsistencyStrategyHeaderNotRequired() {
-        assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.isRequired())
-            .isFalse();
     }
 
     @Test(groups = { "unit" })
@@ -194,8 +186,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             .isEqualTo("x-ms-cosmos-read-consistency-strategy");
     }
 
-    // region ThinClientStoreModel RNTBD encoding — verifies that wrapInHttpRequest() correctly
-    // maps the HTTP header string to the RNTBD byte token in the binary frame body.
+    // region No contention — single header encoding. Only one of CL or RCS is set (or neither).
+    // No resolution needed; tests pure RNTBD encoder correctness.
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyStringToRntbdByteValues")
     public void thinClient_wrapInHttpRequest_readConsistencyStrategyEncodedInRntbdFrame(String readConsistencyStrategyValue, byte expectedByte) throws Exception {
@@ -271,9 +263,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     // endregion
 
-    // region Resolve + encode pipeline — verifies resolveEffectiveConsistencyHeaders() followed by
-    // wrapInHttpRequest() produces the correct RNTBD frame for contention scenarios where both
-    // ConsistencyLevel and ReadConsistencyStrategy headers are present.
+    // region Contention — both CL and RCS headers present. Tests resolveEffectiveConsistencyHeaders()
+    // followed by wrapInHttpRequest() to verify the correct header wins on the wire.
 
     @Test(groups = { "unit" })
     public void thinClient_resolveAndWrap_bothClAndReadConsistencyStrategy_onlyReadConsistencyStrategySurvivesInFrame() throws Exception {
@@ -312,13 +303,17 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     @Test(groups = { "unit" })
     public void thinClient_resolveAndWrap_requestContextReadConsistencyStrategy_overridesHeaderReadConsistencyStrategy() throws Exception {
-        // Request-level readConsistencyStrategy (requestContext) takes priority over header-level (client-level) readConsistencyStrategy
+        // Header-level RCS ("Eventual") = set by CosmosClientBuilder.readConsistencyStrategy(),
+        // applied to every request via getRequestHeaders().
+        // Request-level RCS (LATEST_COMMITTED) = set by CosmosItemRequestOptions.setReadConsistencyStrategy(),
+        // a per-operation override stored in requestContext.
+        // Resolution rule: requestContext (per-request) > headers (client-level).
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
-        request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, "Eventual");
+        request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, "Eventual");       // client-level
         request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, "Session");
-        request.requestContext.readConsistencyStrategy = ReadConsistencyStrategy.LATEST_COMMITTED;
+        request.requestContext.readConsistencyStrategy = ReadConsistencyStrategy.LATEST_COMMITTED;        // per-request override
 
         resolveEffectiveConsistencyHeaders(request);
 
@@ -368,6 +363,30 @@ public class RntbdReadConsistencyStrategyHeaderTests {
         } finally {
             buffer.release();
         }
+    }
+
+    @Test(groups = { "unit" })
+    public void resolve_noHeaders_noOp() {
+        Map<String, String> headers = new java.util.HashMap<>();
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
+        assertThat(headers.size()).isEqualTo(0);
+    }
+
+    @Test(groups = { "unit" })
+    public void resolve_idempotent_multipleInvocations() {
+        // Resolution should be idempotent — multiple calls produce the same result.
+        // Validates safety for shared header maps across availability strategy clones.
+        Map<String, String> headers = new java.util.HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, "Session");
+        headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, "LatestCommitted");
+
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, null);
+
+        assertThat(headers.containsKey(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)).isFalse();
+        assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
+            .isEqualTo("LatestCommitted");
     }
 
     // endregion
