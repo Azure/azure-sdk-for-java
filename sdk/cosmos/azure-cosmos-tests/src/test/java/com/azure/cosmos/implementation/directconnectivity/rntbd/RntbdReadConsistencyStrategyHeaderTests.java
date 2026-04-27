@@ -44,21 +44,21 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * </ul>
  *
  * <h3>Consistency headers decision matrix</h3>
- * Users can set ConsistencyLevel (CL) and ReadConsistencyStrategy (RCS) at both client and
+ * Users can set ConsistencyLevel (ConsistencyLevel) and ReadConsistencyStrategy (ReadConsistencyStrategy) at both client and
  * request level. The SDK resolves contention before wire serialization:
  * <pre>
- * | Client CL | Client RCS | Request CL | Request RCS | Effective on wire           |
+ * | Client ConsistencyLevel | Client ReadConsistencyStrategy | Request ConsistencyLevel | Request ReadConsistencyStrategy | Effective on wire           |
  * |-----------|------------|------------|-------------|-----------------------------|
- * | Session   | —          | —          | —           | CL=Session (default)        |
- * | Session   | —          | —          | LC          | RCS=LC, CL stripped         |
- * | Session   | Eventual   | —          | LC          | RCS=LC (req RCS > client)   |
- * | Session   | Eventual   | Eventual   | —           | RCS=Eventual, CL stripped   |
- * | Session   | —          | Eventual   | LC          | RCS=LC (req RCS > req CL)   |
- * | Session   | LC         | —          | —           | RCS=LC, CL stripped         |
+ * | Session   | —          | —          | —           | ConsistencyLevel=Session (default)        |
+ * | Session   | —          | —          | LC          | ReadConsistencyStrategy=LC, ConsistencyLevel stripped         |
+ * | Session   | Eventual   | —          | LC          | ReadConsistencyStrategy=LC (req ReadConsistencyStrategy > client)   |
+ * | Session   | Eventual   | Eventual   | —           | ReadConsistencyStrategy=Eventual, ConsistencyLevel stripped   |
+ * | Session   | —          | Eventual   | LC          | ReadConsistencyStrategy=LC (req ReadConsistencyStrategy > req ConsistencyLevel)   |
+ * | Session   | LC         | —          | —           | ReadConsistencyStrategy=LC, ConsistencyLevel stripped         |
  * | Session   | —          | —          | GLOBAL_STRONG| BadRequestException (non-Strong acct) |
  * </pre>
- * Resolution rule: request-level RCS &gt; client-level RCS &gt; CL. When a non-DEFAULT RCS is
- * effective, CL is stripped to prevent dual-header rejection by the compute gateway or proxy.
+ * Resolution rule: request-level ReadConsistencyStrategy &gt; client-level ReadConsistencyStrategy &gt; ConsistencyLevel. When a non-DEFAULT ReadConsistencyStrategy is
+ * effective, ConsistencyLevel is stripped to prevent dual-header rejection by the compute gateway or proxy.
  *
  * <h3>Test regions</h3>
  * <ol>
@@ -66,8 +66,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  *   <li><b>ThinClientStoreModel encoding</b> — {@code wrapInHttpRequest()} produces correct RNTBD
  *       frame bytes for each strategy value.</li>
  *   <li><b>Resolve + encode pipeline</b> — {@code resolveEffectiveConsistencyHeaders()} followed by
- *       {@code wrapInHttpRequest()} produces the correct frame for contention scenarios (both CL
- *       and RCS set, request-level overrides client-level, DEFAULT is transparent).</li>
+ *       {@code wrapInHttpRequest()} produces the correct frame for contention scenarios (both ConsistencyLevel
+ *       and ReadConsistencyStrategy set, request-level overrides client-level, DEFAULT is transparent).</li>
  * </ol>
  */
 public class RntbdReadConsistencyStrategyHeaderTests {
@@ -186,7 +186,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             .isEqualTo("x-ms-cosmos-read-consistency-strategy");
     }
 
-    // region No contention — single header encoding. Only one of CL or RCS is set (or neither).
+    // region No contention — single header encoding. Only one of ConsistencyLevel or ReadConsistencyStrategy is set (or neither).
     // No resolution needed; tests pure RNTBD encoder correctness.
 
     @Test(groups = { "unit" }, dataProvider = "readConsistencyStrategyStringToRntbdByteValues")
@@ -237,7 +237,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_wrapInHttpRequest_readConsistencyStrategyPresent_clAbsent() throws Exception {
+    public void thinClient_wrapInHttpRequest_readConsistencyStrategyPresent_consistencyLevelAbsent() throws Exception {
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
@@ -263,15 +263,15 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     // endregion
 
-    // region Contention — both CL and RCS headers present. Tests resolveEffectiveConsistencyHeaders()
+    // region Contention — both ConsistencyLevel and ReadConsistencyStrategy headers present. Tests resolveEffectiveConsistencyHeaders()
     // followed by wrapInHttpRequest() to verify the correct header wins on the wire.
 
     @Test(groups = { "unit" })
     public void thinClient_resolveAndWrap_bothClAndReadConsistencyStrategy_onlyReadConsistencyStrategySurvivesInFrame() throws Exception {
-        // End-to-end chain: dirty headers (both CL and readConsistencyStrategy set)
-        //   → resolveEffectiveConsistencyHeaders (strips CL)
+        // End-to-end chain: dirty headers (both ConsistencyLevel and readConsistencyStrategy set)
+        //   → resolveEffectiveConsistencyHeaders (strips ConsistencyLevel)
         //   → wrapInHttpRequest (encodes RNTBD frame)
-        //   → verify only readConsistencyStrategy in the frame, CL absent
+        //   → verify only readConsistencyStrategy in the frame, ConsistencyLevel absent
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
@@ -303,9 +303,9 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     @Test(groups = { "unit" })
     public void thinClient_resolveAndWrap_requestContextReadConsistencyStrategy_overridesHeaderReadConsistencyStrategy() throws Exception {
-        // Header-level RCS ("Eventual") = set by CosmosClientBuilder.readConsistencyStrategy(),
+        // Header-level ReadConsistencyStrategy ("Eventual") = set by CosmosClientBuilder.readConsistencyStrategy(),
         // applied to every request via getRequestHeaders().
-        // Request-level RCS (LATEST_COMMITTED) = set by CosmosItemRequestOptions.setReadConsistencyStrategy(),
+        // Request-level ReadConsistencyStrategy (LATEST_COMMITTED) = set by CosmosItemRequestOptions.setReadConsistencyStrategy(),
         // a per-operation override stored in requestContext.
         // Resolution rule: requestContext (per-request) > headers (client-level).
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
@@ -336,8 +336,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClient_resolveAndWrap_defaultReadConsistencyStrategy_clSurvives() throws Exception {
-        // DEFAULT readConsistencyStrategy is transparent — CL should remain in the RNTBD frame
+    public void thinClient_resolveAndWrap_defaultReadConsistencyStrategy_consistencyLevelSurvives() throws Exception {
+        // DEFAULT readConsistencyStrategy is transparent — ConsistencyLevel should remain in the RNTBD frame
         ThinClientStoreModel storeModel = createMockThinClientStoreModel();
 
         RxDocumentServiceRequest request = createDocumentReadRequest();
