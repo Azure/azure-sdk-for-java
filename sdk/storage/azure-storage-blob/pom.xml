@@ -145,34 +145,25 @@
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-vector</artifactId>
+      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-core</artifactId>
+      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-unsafe</artifactId>
+      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <version>3.42.0</version>
+      <version>3.42.0</version> <!-- {x-version-update;org.checkerframework:checker-qual;external_dependency} -->
     </dependency>
 
   </dependencies>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.apache.arrow</groupId>
-        <artifactId>arrow-bom</artifactId>
-        <version>18.1.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <profiles>
     <profile>
