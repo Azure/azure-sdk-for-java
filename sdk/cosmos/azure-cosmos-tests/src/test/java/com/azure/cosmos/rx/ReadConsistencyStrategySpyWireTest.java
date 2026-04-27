@@ -82,7 +82,6 @@ public class ReadConsistencyStrategySpyWireTest {
 
     private SpyClientUnderTestFactory.ClientUnderTest v1SpyClient;
     private SpyClientUnderTestFactory.ClientUnderTest v2SpyClient;
-    private boolean v2Available;
 
     @BeforeClass(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void beforeClass() {
@@ -112,16 +111,10 @@ public class ReadConsistencyStrategySpyWireTest {
         // V1 spy — HTTP/1, no Http2ConnectionConfig → useThinClient = false
         v1SpyClient = createSpyClient(null, false);
 
-        // V2 spy — HTTP/2 enabled → useThinClient = true (if thin client locations exist)
+        // V2 spy — HTTP/2 enabled, thin client JVM flag set
         v2SpyClient = createSpyClient(null, true);
-        v2Available = v2SpyClient.useThinClient();
 
-        if (!v2Available) {
-            logger.warn("Thin client read locations not available — V2 spy wire tests will be skipped");
-        }
-
-        logger.info("Created spy-wire test resources: db={}, container={}, v2Available={}",
-            databaseId, containerId, v2Available);
+        logger.info("Created spy-wire test resources: db={}, container={}", databaseId, containerId);
     }
 
     @AfterClass(groups = {"thinclient"}, alwaysRun = true)
@@ -146,10 +139,7 @@ public class ReadConsistencyStrategySpyWireTest {
 
     @DataProvider(name = "transportModes")
     public Object[][] transportModes() {
-        if (v2Available) {
-            return new Object[][] { { V1 }, { V2 } };
-        }
-        return new Object[][] { { V1 } };
+        return new Object[][] { { V1 }, { V2 } };
     }
 
     // region No contention — single header set

@@ -8,8 +8,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
@@ -39,7 +37,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,7 +61,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  */
 public class ReadConsistencyStrategyE2ETest {
     private static final Logger logger = LoggerFactory.getLogger(ReadConsistencyStrategyE2ETest.class);
-    private static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final long TIMEOUT = 60_000L;
 
@@ -78,7 +74,6 @@ public class ReadConsistencyStrategyE2ETest {
     private CosmosAsyncContainer gatewayV2Container;
     private String databaseId;
     private String containerId;
-    private boolean gatewayV2Available;
 
     @BeforeClass(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void beforeClass() {
@@ -101,22 +96,7 @@ public class ReadConsistencyStrategyE2ETest {
         gatewayV2Client = createGatewayV2Builder().buildAsyncClient();
         gatewayV2Container = gatewayV2Client.getDatabase(databaseId).getContainer(containerId);
 
-        // Check if thin client routing is actually available on this account
-        try {
-            String probeId = UUID.randomUUID().toString();
-            ObjectNode probeDoc = createDocument(probeId);
-            gatewayV2Container.createItem(probeDoc, new PartitionKey(probeId), null).block();
-            CosmosItemResponse<ObjectNode> probeResponse =
-                gatewayV2Container.readItem(probeId, new PartitionKey(probeId), ObjectNode.class).block();
-            gatewayV2Available = probeResponse != null
-                && hasThinClientEndpoint(probeResponse.getDiagnostics());
-        } catch (Exception e) {
-            gatewayV2Available = false;
-            logger.warn("Gateway V2 probe failed — V2 tests will run but without endpoint assertion", e);
-        }
-
-        logger.info("Created E2E test resources: db={}, container={}, gatewayV2Available={}",
-            databaseId, containerId, gatewayV2Available);
+        logger.info("Created E2E test resources: db={}, container={}", databaseId, containerId);
     }
 
     @AfterClass(groups = {"thinclient"}, alwaysRun = true)
@@ -583,25 +563,9 @@ public class ReadConsistencyStrategyE2ETest {
     }
 
     private void assertEndpointForMode(String mode, CosmosDiagnostics diagnostics) {
-        if (isGatewayV2(mode) && gatewayV2Available) {
+        if (isGatewayV2(mode)) {
             TestSuiteBase.assertThinClientEndpointUsed(diagnostics);
         }
-    }
-
-    private static boolean hasThinClientEndpoint(CosmosDiagnostics diagnostics) {
-        if (diagnostics == null || diagnostics.getDiagnosticsContext() == null) {
-            return false;
-        }
-        Collection<CosmosDiagnosticsRequestInfo> requests = diagnostics.getDiagnosticsContext().getRequestInfo();
-        if (requests == null) {
-            return false;
-        }
-        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            if (requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static void safeClose(CosmosAsyncClient clientToClose) {
