@@ -23,7 +23,7 @@ public final class VolumesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sizeMiB\":6716646790887682828,\"storageApplianceId\":\"dabalfdxaglzfytl\",\"allocatedSizeMiB\":3895152665051881707,\"attachedTo\":[\"pxouvmr\",\"iflikyypzkgxfx\",\"myrqsdbpokszan\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"pter\",\"serialNumber\":\"uwkirk\",\"provisioningState\":\"Provisioning\"},\"etag\":\"tsdetjygowifcq\",\"extendedLocation\":{\"name\":\"olzkgys\",\"type\":\"EdgeZone\"},\"location\":\"yybzoxlvoc\",\"tags\":{\"hjhjvm\":\"dxxheigmlilwz\"},\"id\":\"bzzbwayb\",\"name\":\"mdafbgymqt\",\"type\":\"apr\"}]}";
+            = "{\"value\":[{\"properties\":{\"sizeMiB\":9068474490181674407,\"storageApplianceId\":\"eubanlxunpqcc\",\"allocatedSizeMiB\":6731554851674355128,\"attachedTo\":[\"lzklaslgacizux\",\"r\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"ew\",\"serialNumber\":\"udoejtighsxjp\",\"provisioningState\":\"Canceled\"},\"etag\":\"qbalahovuuwxhme\",\"extendedLocation\":{\"name\":\"jnhj\",\"type\":\"EdgeZone\"},\"location\":\"iffbbcn\",\"tags\":{\"bfetwily\":\"gxcypx\",\"dxqlfrolq\":\"zox\"},\"id\":\"wnk\",\"name\":\"u\",\"type\":\"jew\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumesListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Volume> response
-            = manager.volumes().listByResourceGroup("vydjufbnk", 1942938943, "laxp", com.azure.core.util.Context.NONE);
+        PagedIterable<Volume> response = manager.volumes()
+            .listByResourceGroup("kjnbkbdhlltqstq", 413577057, "sygxiynecova", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yybzoxlvoc", response.iterator().next().location());
-        Assertions.assertEquals("dxxheigmlilwz", response.iterator().next().tags().get("hjhjvm"));
-        Assertions.assertEquals("olzkgys", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("iffbbcn", response.iterator().next().location());
+        Assertions.assertEquals("gxcypx", response.iterator().next().tags().get("bfetwily"));
+        Assertions.assertEquals("jnhj", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(6716646790887682828L, response.iterator().next().sizeMiB());
-        Assertions.assertEquals("dabalfdxaglzfytl", response.iterator().next().storageApplianceId());
+        Assertions.assertEquals(9068474490181674407L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("eubanlxunpqcc", response.iterator().next().storageApplianceId());
     }
 }

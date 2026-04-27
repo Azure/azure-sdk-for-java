@@ -23,7 +23,7 @@ public final class ClusterManagersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"analyticsWorkspaceId\":\"ytiq\",\"availabilityZones\":[\"qer\",\"w\"],\"clusterVersions\":[{\"supportExpiryDate\":\"x\",\"targetClusterVersion\":\"gukvlbpkt\"},{\"supportExpiryDate\":\"styoua\",\"targetClusterVersion\":\"ewres\"}],\"detailedStatus\":\"Updating\",\"detailedStatusMessage\":\"egmmuteyxe\",\"fabricControllerId\":\"guqigijiitns\",\"managedResourceGroupConfiguration\":{\"location\":\"zdesygr\",\"name\":\"waiufanra\"},\"managerExtendedLocation\":{\"name\":\"fueqfrojs\",\"type\":\"CustomLocation\"},\"provisioningState\":\"Canceled\",\"relayConfiguration\":{\"relayNamespaceId\":\"dkygywezski\"},\"vmSize\":\"afygzmxieqvds\"},\"etag\":\"klixqcahyhxaly\",\"identity\":{\"principalId\":\"woijpodtbl\",\"tenantId\":\"kkwjdjodq\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dkadppyibn\":{\"principalId\":\"cnre\",\"clientId\":\"hllizhceumoq\"},\"emlowuowhl\":{\"principalId\":\"ladywrxwhyd\",\"clientId\":\"uvvadswzsnu\"}}},\"kind\":\"Nexus\",\"location\":\"y\",\"tags\":{\"okzkltr\":\"uvblg\",\"rqcrjidhftukvh\":\"owtdvrfmvlihcvj\"},\"id\":\"xlwyoj\",\"name\":\"fqz\",\"type\":\"kfnjyixhafrat\"}";
+            = "{\"properties\":{\"analyticsWorkspaceId\":\"llgryfqiuasigr\",\"availabilityZones\":[\"ocnequygdjboqgrm\",\"qjkqevadrmmwi\",\"awvcmjzkxiid\",\"scz\"],\"clusterVersions\":[{\"supportExpiryDate\":\"woqiqazugamxzkrr\",\"targetClusterVersion\":\"iisb\"},{\"supportExpiryDate\":\"nppcce\",\"targetClusterVersion\":\"ztdsbeza\"},{\"supportExpiryDate\":\"f\",\"targetClusterVersion\":\"zxuizhyhnepkpe\"},{\"supportExpiryDate\":\"arxqiubx\",\"targetClusterVersion\":\"kecpxdazvdh\"}],\"detailedStatus\":\"ProvisioningFailed\",\"detailedStatusMessage\":\"koszu\",\"fabricControllerId\":\"blnsntrpcaqk\",\"managedResourceGroupConfiguration\":{\"location\":\"kb\",\"name\":\"mhklbnl\"},\"managerExtendedLocation\":{\"name\":\"vcb\",\"type\":\"EdgeZone\"},\"provisioningState\":\"Succeeded\",\"relayConfiguration\":{\"relayNamespaceId\":\"u\"},\"vmSize\":\"sqxutr\"},\"etag\":\"rruyuu\",\"identity\":{\"principalId\":\"lmbjwcolbmxlbnw\",\"tenantId\":\"cpahprzrvxhm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rxtd\":{\"principalId\":\"nxzcm\",\"clientId\":\"ngxno\"},\"f\":{\"principalId\":\"njevhdlmydidw\",\"clientId\":\"pfwwt\"}}},\"kind\":\"AzureLocal\",\"location\":\"xxhmwcdbc\",\"tags\":{\"njzrbhtmeplvu\":\"ikxkxhneg\",\"snbagnchjhg\":\"aobrlbp\",\"xcgqtagdrclsso\":\"muowakywalhjy\"},\"id\":\"jomevtfycnlb\",\"name\":\"gjco\",\"type\":\"kk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class ClusterManagersGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterManager response = manager.clusterManagers()
-            .getByResourceGroupWithResponse("wbeqrkuor", "tssruqnmdvhazc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("tiotzb", "d", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("y", response.location());
-        Assertions.assertEquals("uvblg", response.tags().get("okzkltr"));
+        Assertions.assertEquals("xxhmwcdbc", response.location());
+        Assertions.assertEquals("ikxkxhneg", response.tags().get("njzrbhtmeplvu"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals(DeploymentType.NEXUS, response.kind());
-        Assertions.assertEquals("ytiq", response.analyticsWorkspaceId());
-        Assertions.assertEquals("qer", response.availabilityZones().get(0));
-        Assertions.assertEquals("guqigijiitns", response.fabricControllerId());
-        Assertions.assertEquals("zdesygr", response.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("waiufanra", response.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("afygzmxieqvds", response.vmSize());
+        Assertions.assertEquals(DeploymentType.AZURE_LOCAL, response.kind());
+        Assertions.assertEquals("llgryfqiuasigr", response.analyticsWorkspaceId());
+        Assertions.assertEquals("ocnequygdjboqgrm", response.availabilityZones().get(0));
+        Assertions.assertEquals("blnsntrpcaqk", response.fabricControllerId());
+        Assertions.assertEquals("kb", response.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("mhklbnl", response.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("sqxutr", response.vmSize());
     }
 }

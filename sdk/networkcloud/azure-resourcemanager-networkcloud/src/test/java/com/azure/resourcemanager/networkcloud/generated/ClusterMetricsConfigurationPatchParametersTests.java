@@ -15,23 +15,23 @@ public final class ClusterMetricsConfigurationPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMetricsConfigurationPatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"collectionInterval\":17715046479959857,\"enabledMetrics\":[\"rlzk\",\"mzlanru\",\"dwv\"]},\"tags\":{\"v\":\"cnzqtpjhmqr\",\"xsmlz\":\"hlaiwd\"}}")
+            "{\"properties\":{\"collectionInterval\":3724865627417912318,\"enabledMetrics\":[\"cdoewbidyv\",\"eowxvgpi\"]},\"tags\":{\"fykhvuhxepmru\":\"ugfsxzecpaxwk\"}}")
             .toObject(ClusterMetricsConfigurationPatchParameters.class);
-        Assertions.assertEquals("cnzqtpjhmqr", model.tags().get("v"));
-        Assertions.assertEquals(17715046479959857L, model.collectionInterval());
-        Assertions.assertEquals("rlzk", model.enabledMetrics().get(0));
+        Assertions.assertEquals("ugfsxzecpaxwk", model.tags().get("fykhvuhxepmru"));
+        Assertions.assertEquals(3724865627417912318L, model.collectionInterval());
+        Assertions.assertEquals("cdoewbidyv", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationPatchParameters model
-            = new ClusterMetricsConfigurationPatchParameters().withTags(mapOf("v", "cnzqtpjhmqr", "xsmlz", "hlaiwd"))
-                .withCollectionInterval(17715046479959857L)
-                .withEnabledMetrics(Arrays.asList("rlzk", "mzlanru", "dwv"));
+            = new ClusterMetricsConfigurationPatchParameters().withTags(mapOf("fykhvuhxepmru", "ugfsxzecpaxwk"))
+                .withCollectionInterval(3724865627417912318L)
+                .withEnabledMetrics(Arrays.asList("cdoewbidyv", "eowxvgpi"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationPatchParameters.class);
-        Assertions.assertEquals("cnzqtpjhmqr", model.tags().get("v"));
-        Assertions.assertEquals(17715046479959857L, model.collectionInterval());
-        Assertions.assertEquals("rlzk", model.enabledMetrics().get(0));
+        Assertions.assertEquals("ugfsxzecpaxwk", model.tags().get("fykhvuhxepmru"));
+        Assertions.assertEquals(3724865627417912318L, model.collectionInterval());
+        Assertions.assertEquals("cdoewbidyv", model.enabledMetrics().get(0));
     }
 
     // Use "Map.of" if available

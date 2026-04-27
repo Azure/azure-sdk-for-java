@@ -39,11 +39,11 @@ public final class BmcKeySetsCreateOrUpdateSamples {
             .withExpiration(OffsetDateTime.parse("2022-12-31T23:59:59.008Z"))
             .withPrivilegeLevel(BmcKeySetPrivilegeLevel.ADMINISTRATOR)
             .withUserList(Arrays.asList(
-                new KeySetUser().withAzureUserName("userABC")
+                new KeySetUser().withAzureUsername("userABC")
                     .withDescription("Needs access for troubleshooting as a part of the support team")
                     .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
                     .withUserPrincipalName("userABC@contoso.com"),
-                new KeySetUser().withAzureUserName("userXYZ")
+                new KeySetUser().withAzureUsername("userXYZ")
                     .withDescription("Needs access for troubleshooting as a part of the support team")
                     .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
                     .withUserPrincipalName("userABC@contoso.com")))

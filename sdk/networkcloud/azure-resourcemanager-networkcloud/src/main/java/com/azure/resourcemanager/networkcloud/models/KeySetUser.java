@@ -19,7 +19,7 @@ public final class KeySetUser implements JsonSerializable<KeySetUser> {
     /*
      * The user name that will be used for access.
      */
-    private String azureUserName;
+    private String azureUsername;
 
     /*
      * The free-form description for this user.
@@ -44,22 +44,22 @@ public final class KeySetUser implements JsonSerializable<KeySetUser> {
     }
 
     /**
-     * Get the azureUserName property: The user name that will be used for access.
+     * Get the azureUsername property: The user name that will be used for access.
      * 
-     * @return the azureUserName value.
+     * @return the azureUsername value.
      */
-    public String azureUserName() {
-        return this.azureUserName;
+    public String azureUsername() {
+        return this.azureUsername;
     }
 
     /**
-     * Set the azureUserName property: The user name that will be used for access.
+     * Set the azureUsername property: The user name that will be used for access.
      * 
-     * @param azureUserName the azureUserName value to set.
+     * @param azureUsername the azureUsername value to set.
      * @return the KeySetUser object itself.
      */
-    public KeySetUser withAzureUserName(String azureUserName) {
-        this.azureUserName = azureUserName;
+    public KeySetUser withAzureUsername(String azureUsername) {
+        this.azureUsername = azureUsername;
         return this;
     }
 
@@ -133,7 +133,7 @@ public final class KeySetUser implements JsonSerializable<KeySetUser> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("azureUserName", this.azureUserName);
+        jsonWriter.writeStringField("azureUserName", this.azureUsername);
         jsonWriter.writeJsonField("sshPublicKey", this.sshPublicKey);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("userPrincipalName", this.userPrincipalName);
@@ -157,7 +157,7 @@ public final class KeySetUser implements JsonSerializable<KeySetUser> {
                 reader.nextToken();
 
                 if ("azureUserName".equals(fieldName)) {
-                    deserializedKeySetUser.azureUserName = reader.getString();
+                    deserializedKeySetUser.azureUsername = reader.getString();
                 } else if ("sshPublicKey".equals(fieldName)) {
                     deserializedKeySetUser.sshPublicKey = SshPublicKey.fromJson(reader);
                 } else if ("description".equals(fieldName)) {

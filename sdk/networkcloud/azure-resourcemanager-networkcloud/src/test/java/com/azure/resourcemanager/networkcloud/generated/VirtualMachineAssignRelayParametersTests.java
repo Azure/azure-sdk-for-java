@@ -13,18 +13,18 @@ public final class VirtualMachineAssignRelayParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineAssignRelayParameters model
-            = BinaryData.fromString("{\"machineId\":\"fza\",\"relayType\":\"Public\"}")
+            = BinaryData.fromString("{\"machineId\":\"acgxmfcsse\",\"relayType\":\"Platform\"}")
                 .toObject(VirtualMachineAssignRelayParameters.class);
-        Assertions.assertEquals("fza", model.machineId());
-        Assertions.assertEquals(RelayType.PUBLIC, model.relayType());
+        Assertions.assertEquals("acgxmfcsse", model.machineId());
+        Assertions.assertEquals(RelayType.PLATFORM, model.relayType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineAssignRelayParameters model
-            = new VirtualMachineAssignRelayParameters().withMachineId("fza").withRelayType(RelayType.PUBLIC);
+            = new VirtualMachineAssignRelayParameters().withMachineId("acgxmfcsse").withRelayType(RelayType.PLATFORM);
         model = BinaryData.fromObject(model).toObject(VirtualMachineAssignRelayParameters.class);
-        Assertions.assertEquals("fza", model.machineId());
-        Assertions.assertEquals(RelayType.PUBLIC, model.relayType());
+        Assertions.assertEquals("acgxmfcsse", model.machineId());
+        Assertions.assertEquals(RelayType.PLATFORM, model.relayType());
     }
 }

@@ -22,7 +22,7 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"enabledMetrics\":[\"lyvxchp\"],\"collectionInterval\":1904174115249193434,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"aeuhwwsknstvz\",\"disabledMetrics\":[\"asupmlppdpg\",\"vzqazvbkarkptg\",\"ngru\",\"tsyiys\"],\"provisioningState\":\"Canceled\"},\"etag\":\"n\",\"extendedLocation\":{\"name\":\"gbeq\",\"type\":\"CustomLocation\"},\"location\":\"ba\",\"tags\":{\"exmnv\":\"deayscseydzje\",\"xlniwmcpm\":\"vmuw\",\"eqjzm\":\"rdlhvdvmiphbe\"},\"id\":\"kdclacroczf\",\"name\":\"unerke\",\"type\":\"uxzshxz\"}";
+            = "{\"properties\":{\"enabledMetrics\":[\"qxsaluzyig\"],\"collectionInterval\":6777054454652858237,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bwq\",\"disabledMetrics\":[\"sjsat\"],\"provisioningState\":\"Failed\"},\"etag\":\"mazdfsqxh\",\"extendedLocation\":{\"name\":\"qmr\",\"type\":\"CustomLocation\"},\"location\":\"arnpvgrsz\",\"tags\":{\"xzlh\":\"tdrcwgzwl\",\"acfculzjrmhpf\":\"fi\"},\"id\":\"wvyldqpzf\",\"name\":\"xsoxi\",\"type\":\"unjlzkdrocq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .getWithResponse("jodmkrrwep", "qvqokql", "jqgir", com.azure.core.util.Context.NONE)
+            .getWithResponse("fktltdds", "bjop", "ouhbq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ba", response.location());
-        Assertions.assertEquals("deayscseydzje", response.tags().get("exmnv"));
-        Assertions.assertEquals("gbeq", response.extendedLocation().name());
+        Assertions.assertEquals("arnpvgrsz", response.location());
+        Assertions.assertEquals("tdrcwgzwl", response.tags().get("xzlh"));
+        Assertions.assertEquals("qmr", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals("lyvxchp", response.enabledMetrics().get(0));
-        Assertions.assertEquals(1904174115249193434L, response.collectionInterval());
+        Assertions.assertEquals("qxsaluzyig", response.enabledMetrics().get(0));
+        Assertions.assertEquals(6777054454652858237L, response.collectionInterval());
     }
 }

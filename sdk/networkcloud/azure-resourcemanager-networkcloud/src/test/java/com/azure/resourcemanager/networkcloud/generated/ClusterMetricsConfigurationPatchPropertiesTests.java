@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterMetricsConfigurationPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterMetricsConfigurationPatchProperties model = BinaryData.fromString(
-            "{\"collectionInterval\":1552910463207266475,\"enabledMetrics\":[\"etlgydlhqvlnnpx\",\"b\",\"fiqgeaar\"]}")
-            .toObject(ClusterMetricsConfigurationPatchProperties.class);
-        Assertions.assertEquals(1552910463207266475L, model.collectionInterval());
-        Assertions.assertEquals("etlgydlhqvlnnpx", model.enabledMetrics().get(0));
+        ClusterMetricsConfigurationPatchProperties model
+            = BinaryData.fromString("{\"collectionInterval\":3468147977877013994,\"enabledMetrics\":[\"obns\"]}")
+                .toObject(ClusterMetricsConfigurationPatchProperties.class);
+        Assertions.assertEquals(3468147977877013994L, model.collectionInterval());
+        Assertions.assertEquals("obns", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationPatchProperties model
-            = new ClusterMetricsConfigurationPatchProperties().withCollectionInterval(1552910463207266475L)
-                .withEnabledMetrics(Arrays.asList("etlgydlhqvlnnpx", "b", "fiqgeaar"));
+            = new ClusterMetricsConfigurationPatchProperties().withCollectionInterval(3468147977877013994L)
+                .withEnabledMetrics(Arrays.asList("obns"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationPatchProperties.class);
-        Assertions.assertEquals(1552910463207266475L, model.collectionInterval());
-        Assertions.assertEquals("etlgydlhqvlnnpx", model.enabledMetrics().get(0));
+        Assertions.assertEquals(3468147977877013994L, model.collectionInterval());
+        Assertions.assertEquals("obns", model.enabledMetrics().get(0));
     }
 }

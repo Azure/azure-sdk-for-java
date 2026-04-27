@@ -22,7 +22,7 @@ public final class KubernetesVersionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"values\":[{\"description\":\"ukmyjmkxet\",\"version\":\"slojfkqidnqt\"},{\"description\":\"xjhqxcsqhtkb\",\"version\":\"qlrn\"},{\"description\":\"dmbi\",\"version\":\"snawwlqkznxhhl\"},{\"description\":\"ricctkwmuqqoa\",\"version\":\"eiyglesrwvaexhdc\"}],\"provisioningState\":\"Succeeded\"},\"etag\":\"qnkbrupobehdm\",\"extendedLocation\":{\"name\":\"jzacvumepjpbibn\",\"type\":\"CustomLocation\"},\"location\":\"hep\",\"tags\":{\"cly\":\"xleqircc\",\"vczuodacpune\":\"cgxvrpj\",\"oy\":\"tepdjxqes\"},\"id\":\"uiylpc\",\"name\":\"aewse\",\"type\":\"vesk\"}";
+            = "{\"properties\":{\"values\":[{\"description\":\"nzdpvoco\",\"version\":\"pcnab\"},{\"description\":\"fsnggytexvzilm\",\"version\":\"vzkwwwncknr\"},{\"description\":\"ajlskzptj\",\"version\":\"lwe\"},{\"description\":\"yrth\",\"version\":\"lehmcgcjeinueho\"}],\"provisioningState\":\"Succeeded\"},\"etag\":\"fejvqn\",\"extendedLocation\":{\"name\":\"tmbqdabzfivfok\",\"type\":\"EdgeZone\"},\"location\":\"thhzagjfw\",\"tags\":{\"baqszllrzlsmmd\":\"lhgenuzejgvkv\",\"nxtminklog\":\"gmihzpimcqr\",\"nsqktc\":\"svtzarhzv\"},\"id\":\"bjwzzos\",\"name\":\"pkybtgl\",\"type\":\"kzpgaj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class KubernetesVersionsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         KubernetesVersion response = manager.kubernetesVersions()
-            .getByResourceGroupWithResponse("xcxscvslxlh", "a", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("kkqvjcteoedl", "slskkz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hep", response.location());
-        Assertions.assertEquals("xleqircc", response.tags().get("cly"));
-        Assertions.assertEquals("jzacvumepjpbibn", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("thhzagjfw", response.location());
+        Assertions.assertEquals("lhgenuzejgvkv", response.tags().get("baqszllrzlsmmd"));
+        Assertions.assertEquals("tmbqdabzfivfok", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

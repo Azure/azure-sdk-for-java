@@ -22,7 +22,7 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sizeMiB\":7752372677329373823,\"storageApplianceId\":\"s\",\"allocatedSizeMiB\":4985155562380321327,\"attachedTo\":[\"jbqggweeiwdhdm\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"fzuscstun\",\"serialNumber\":\"hxdfbkl\",\"provisioningState\":\"Canceled\"},\"etag\":\"hgjsysmvxo\",\"extendedLocation\":{\"name\":\"gwxfkzsi\",\"type\":\"CustomLocation\"},\"location\":\"vbdujgcwxvecbb\",\"tags\":{\"kpgdqxwabzrwiq\":\"rdxrizagbbgiarks\",\"kifmmainw\":\"xhaclcdosqkptjq\"},\"id\":\"edxkpbqwuntob\",\"name\":\"izazz\",\"type\":\"lw\"}";
+            = "{\"properties\":{\"sizeMiB\":7962655555398941339,\"storageApplianceId\":\"zaptuosk\",\"allocatedSizeMiB\":1829149398247781953,\"attachedTo\":[\"xwfgcdiykkcx\",\"nujvqynvavi\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"uqohhi\",\"serialNumber\":\"a\",\"provisioningState\":\"Canceled\"},\"etag\":\"drwjcljbrhlh\",\"extendedLocation\":{\"name\":\"vzadbwenn\",\"type\":\"CustomLocation\"},\"location\":\"fhxrzfr\",\"tags\":{\"qllukhkrcqxg\":\"tiucwv\",\"bpoksts\":\"bvzarmq\",\"jyhdrxb\":\"nvago\"},\"id\":\"dvcehqw\",\"name\":\"itxnmxgnmgu\",\"type\":\"buwvorba\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .getByResourceGroupWithResponse("kgd", "hjkrukizyhgs", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("gikyjtkak", "lbis", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vbdujgcwxvecbb", response.location());
-        Assertions.assertEquals("rdxrizagbbgiarks", response.tags().get("kpgdqxwabzrwiq"));
-        Assertions.assertEquals("gwxfkzsi", response.extendedLocation().name());
+        Assertions.assertEquals("fhxrzfr", response.location());
+        Assertions.assertEquals("tiucwv", response.tags().get("qllukhkrcqxg"));
+        Assertions.assertEquals("vzadbwenn", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals(7752372677329373823L, response.sizeMiB());
-        Assertions.assertEquals("s", response.storageApplianceId());
+        Assertions.assertEquals(7962655555398941339L, response.sizeMiB());
+        Assertions.assertEquals("zaptuosk", response.storageApplianceId());
     }
 }

@@ -13,14 +13,14 @@ public final class VolumeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"sizeMiB\":546643253455613751,\"storageApplianceId\":\"uuybnchrsz\",\"allocatedSizeMiB\":651317351695168525,\"attachedTo\":[\"lyetndnbfqygg\",\"g\",\"lnlg\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ahzjmucftb\",\"serialNumber\":\"plrohkpigq\",\"provisioningState\":\"Canceled\"},\"etag\":\"ckzmkwklsnox\",\"extendedLocation\":{\"name\":\"xmqeqalh\",\"type\":\"CustomLocation\"},\"location\":\"hgwydyynfsv\",\"tags\":{\"narfdlpukhpyrn\":\"bvqt\"},\"id\":\"izjcpeog\",\"name\":\"hnmgbroux\",\"type\":\"dbhfhp\"}],\"nextLink\":\"azjzo\"}")
+            "{\"value\":[{\"properties\":{\"sizeMiB\":8770644881184441492,\"storageApplianceId\":\"cymczngn\",\"allocatedSizeMiB\":5116758191072921295,\"attachedTo\":[\"unin\",\"udbchaqdtv\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"qct\",\"serialNumber\":\"xdtddmflhuytxzv\",\"provisioningState\":\"Failed\"},\"etag\":\"pxbannovvoxc\",\"extendedLocation\":{\"name\":\"ytprwnwvroev\",\"type\":\"EdgeZone\"},\"location\":\"yo\",\"tags\":{\"o\":\"rouuxvnsasbcry\",\"xnazpmkml\":\"izrxklob\",\"pj\":\"vevfxz\",\"awpcbbnzqcykn\":\"bzxliohrdddtfgxq\"},\"id\":\"p\",\"name\":\"ofyuicd\",\"type\":\"zb\"},{\"properties\":{\"sizeMiB\":3878236769143525692,\"storageApplianceId\":\"wgbdvibidmhmwffp\",\"allocatedSizeMiB\":6168253905487393441,\"attachedTo\":[\"pckc\",\"rrvwey\",\"xoy\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"haim\",\"serialNumber\":\"iroqbosh\",\"provisioningState\":\"Canceled\"},\"etag\":\"apyyrmfsvbpavbo\",\"extendedLocation\":{\"name\":\"fppdbwnu\",\"type\":\"CustomLocation\"},\"location\":\"hxkumasjcaacfdmm\",\"tags\":{\"ehqepvufhbzehe\":\"g\",\"qnbldxe\":\"hoqhnl\",\"orim\":\"clgsc\",\"viyfcaabeolhbhlv\":\"rsrrmoucsofldp\"},\"id\":\"mxuq\",\"name\":\"bsxtkcudfbsfarfs\",\"type\":\"owlkjxnqpv\"}],\"nextLink\":\"fstmhqykizmdksao\"}")
             .toObject(VolumeList.class);
-        Assertions.assertEquals("hgwydyynfsv", model.value().get(0).location());
-        Assertions.assertEquals("bvqt", model.value().get(0).tags().get("narfdlpukhpyrn"));
-        Assertions.assertEquals("xmqeqalh", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(546643253455613751L, model.value().get(0).sizeMiB());
-        Assertions.assertEquals("uuybnchrsz", model.value().get(0).storageApplianceId());
-        Assertions.assertEquals("azjzo", model.nextLink());
+        Assertions.assertEquals("yo", model.value().get(0).location());
+        Assertions.assertEquals("rouuxvnsasbcry", model.value().get(0).tags().get("o"));
+        Assertions.assertEquals("ytprwnwvroev", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(8770644881184441492L, model.value().get(0).sizeMiB());
+        Assertions.assertEquals("cymczngn", model.value().get(0).storageApplianceId());
+        Assertions.assertEquals("fstmhqykizmdksao", model.nextLink());
     }
 }

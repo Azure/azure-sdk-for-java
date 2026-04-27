@@ -27,7 +27,7 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"xpcq\",\"isolationDomainIds\":[\"ihotjecohmxv\",\"lrrskap\",\"xwieexuyade\"],\"vlans\":[2644520981764292231,4455007044112487556,6944286089790759384],\"associatedResourceIds\":[\"imyc\",\"grvkcxzznnuif\",\"rsejegprkj\"],\"clusterId\":\"wrjmwv\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"qkxximwgxql\",\"hybridAksClustersAssociatedIds\":[\"otjgxieqfkyfhi\"],\"virtualMachinesAssociatedIds\":[\"aqupbyynvskp\",\"jbmgeumexmjbxcb\",\"cwkqmtxape\",\"iscr\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"ftr\",\"extendedLocation\":{\"name\":\"rejdaahuqim\",\"type\":\"CustomLocation\"},\"location\":\"hlf\",\"tags\":{\"cskiioshjgc\":\"uifmuadjnfs\",\"cg\":\"etybnxgzt\",\"j\":\"tjchfjvmy\",\"cljkxpyl\":\"ebecuvlbefv\"},\"id\":\"woxzgwpsyxji\",\"name\":\"eypdvrbk\",\"type\":\"rdkdkgaw\"}";
+            = "{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"ikff\",\"isolationDomainIds\":[\"g\",\"uhznwhvuldbk\"],\"vlans\":[4143861943852452994],\"associatedResourceIds\":[\"igaw\",\"azmxjqi\"],\"clusterId\":\"ujjs\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"zaahzbhuroolkoli\",\"hybridAksClustersAssociatedIds\":[\"mojusuz\",\"fjzc\",\"aaxoialahfxwcc\"],\"virtualMachinesAssociatedIds\":[\"xkukm\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"nuhhoqeqshav\",\"extendedLocation\":{\"name\":\"jqkx\",\"type\":\"CustomLocation\"},\"location\":\"olnthb\",\"tags\":{\"r\":\"gzukw\",\"jmlfuyfjbp\":\"zkjthfceyjn\",\"yjmqrf\":\"iddhlrufzc\",\"azrhxudd\":\"iocuselqkr\"},\"id\":\"mdtff\",\"name\":\"sjmrkkhm\",\"type\":\"dmdlgyqixokw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,28 +37,29 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TrunkedNetwork response = manager.trunkedNetworks()
-            .define("bwwzvdajf")
-            .withRegion("wavvqxuajgcqwuly")
-            .withExistingResourceGroup("jsb")
+            .define("ljkxpylrwoxz")
+            .withRegion("qlvge")
+            .withExistingResourceGroup("ywjzebecuvlbefvw")
             .withExtendedLocation(
-                new ExtendedLocation().withName("mbwiinjdllwktl").withType(ExtendedLocationType.EDGE_ZONE))
-            .withIsolationDomainIds(Arrays.asList("ixvt", "ougu", "tnd", "pg"))
-            .withVlans(Arrays.asList(5146226249885595202L, 6746138039691256481L))
-            .withTags(mapOf("clhuulriqbyokv", "fcfdruwsikxx", "fyhcdjw", "gbzsxebrslt", "agttpufpb", "uoard"))
-            .withHybridAksPluginType(HybridAksPluginType.DPDK)
-            .withInterfaceName("fmaciqgjjrlhiq")
-            .withIfMatch("xslwhd")
-            .withIfNoneMatch("cvhtbbzjhfvh")
+                new ExtendedLocation().withName("dcvxodkrvfsxxby").withType(ExtendedLocationType.EDGE_ZONE))
+            .withIsolationDomainIds(Arrays.asList("dkgaw", "wjxildfkcefeyg", "q", "jo"))
+            .withVlans(
+                Arrays.asList(2941194926858998083L, 921626485763099978L, 3730360780056136704L, 620249668581597127L))
+            .withTags(mapOf("obygoo", "goljtzxnmxs", "djnosdkvibf", "xqapjxvazyjfucsa"))
+            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+            .withInterfaceName("yxjijeypdvrbker")
+            .withIfMatch("oimyfpqd")
+            .withIfNoneMatch("wkppnwyytfvp")
             .create();
 
-        Assertions.assertEquals("hlf", response.location());
-        Assertions.assertEquals("uifmuadjnfs", response.tags().get("cskiioshjgc"));
-        Assertions.assertEquals("rejdaahuqim", response.extendedLocation().name());
+        Assertions.assertEquals("olnthb", response.location());
+        Assertions.assertEquals("gzukw", response.tags().get("r"));
+        Assertions.assertEquals("jqkx", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
-        Assertions.assertEquals("xpcq", response.interfaceName());
-        Assertions.assertEquals("ihotjecohmxv", response.isolationDomainIds().get(0));
-        Assertions.assertEquals(2644520981764292231L, response.vlans().get(0));
+        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
+        Assertions.assertEquals("ikff", response.interfaceName());
+        Assertions.assertEquals("g", response.isolationDomainIds().get(0));
+        Assertions.assertEquals(4143861943852452994L, response.vlans().get(0));
     }
 
     // Use "Map.of" if available

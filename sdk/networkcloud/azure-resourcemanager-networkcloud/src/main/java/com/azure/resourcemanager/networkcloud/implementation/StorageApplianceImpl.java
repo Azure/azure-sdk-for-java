@@ -69,12 +69,12 @@ public final class StorageApplianceImpl
         return this.innerModel().systemData();
     }
 
-    public String rackId() {
-        return this.innerModel().rackId();
+    public AdministrativeCredentials administratorCredentials() {
+        return this.innerModel().administratorCredentials();
     }
 
-    public String storageApplianceSkuId() {
-        return this.innerModel().storageApplianceSkuId();
+    public String rackId() {
+        return this.innerModel().rackId();
     }
 
     public long rackSlot() {
@@ -85,8 +85,8 @@ public final class StorageApplianceImpl
         return this.innerModel().serialNumber();
     }
 
-    public AdministrativeCredentials administratorCredentials() {
-        return this.innerModel().administratorCredentials();
+    public String storageApplianceSkuId() {
+        return this.innerModel().storageApplianceSkuId();
     }
 
     public CertificateInfo caCertificate() {
@@ -319,13 +319,13 @@ public final class StorageApplianceImpl
         return this;
     }
 
-    public StorageApplianceImpl withRackId(String rackId) {
-        this.innerModel().withRackId(rackId);
+    public StorageApplianceImpl withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
+        this.innerModel().withAdministratorCredentials(administratorCredentials);
         return this;
     }
 
-    public StorageApplianceImpl withStorageApplianceSkuId(String storageApplianceSkuId) {
-        this.innerModel().withStorageApplianceSkuId(storageApplianceSkuId);
+    public StorageApplianceImpl withRackId(String rackId) {
+        this.innerModel().withRackId(rackId);
         return this;
     }
 
@@ -344,8 +344,8 @@ public final class StorageApplianceImpl
         }
     }
 
-    public StorageApplianceImpl withAdministratorCredentials(AdministrativeCredentials administratorCredentials) {
-        this.innerModel().withAdministratorCredentials(administratorCredentials);
+    public StorageApplianceImpl withStorageApplianceSkuId(String storageApplianceSkuId) {
+        this.innerModel().withStorageApplianceSkuId(storageApplianceSkuId);
         return this;
     }
 

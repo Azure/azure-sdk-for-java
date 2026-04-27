@@ -24,7 +24,7 @@ public final class ClusterManagersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"hjym\",\"availabilityZones\":[\"qt\",\"gdrclssolj\"],\"clusterVersions\":[{\"supportExpiryDate\":\"tfy\",\"targetClusterVersion\":\"lbvgjc\"}],\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"gjiiytssiki\",\"fabricControllerId\":\"bcufqbvntn\",\"managedResourceGroupConfiguration\":{\"location\":\"qsorh\",\"name\":\"kxgnlykmxcpwzvmd\"},\"managerExtendedLocation\":{\"name\":\"sqdtiwlwxlbon\",\"type\":\"EdgeZone\"},\"provisioningState\":\"Failed\",\"relayConfiguration\":{\"relayNamespaceId\":\"icqchygtv\"},\"vmSize\":\"yjanepubdp\"},\"etag\":\"yqvgxia\",\"identity\":{\"principalId\":\"tvo\",\"tenantId\":\"xdxuwsaifmc\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"xoqeintxwalj\":{\"principalId\":\"zlehgcvkbcknjolg\",\"clientId\":\"yxpvelszerqze\"}}},\"kind\":\"Nexus\",\"location\":\"blqwaafrqulhmzy\",\"tags\":{\"rqpjiy\":\"dvaf\",\"bnrzorpdltbqctq\":\"qjcrgaxwmzwdf\",\"xsaetg\":\"fg\",\"aqqilzdcduwjoed\":\"dgvpyig\"},\"id\":\"ngucaifpaurww\",\"name\":\"ilfjqqacdmk\",\"type\":\"wxdcvjwcyz\"}]}";
+            = "{\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"nohikkgq\",\"availabilityZones\":[\"wpin\",\"edvabbxbhmedeilb\",\"ywfcfxzi\",\"zzihvwy\"],\"clusterVersions\":[{\"supportExpiryDate\":\"vjslczwcii\",\"targetClusterVersion\":\"sllfryvdmvxad\"},{\"supportExpiryDate\":\"cfrgnawbabgfbkt\",\"targetClusterVersion\":\"mfczl\"}],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"kfrbzgowoxqmjea\",\"fabricControllerId\":\"cxn\",\"managedResourceGroupConfiguration\":{\"location\":\"xhlusrvxis\",\"name\":\"jceagb\"},\"managerExtendedLocation\":{\"name\":\"vl\",\"type\":\"EdgeZone\"},\"provisioningState\":\"Canceled\",\"relayConfiguration\":{\"relayNamespaceId\":\"ashxgonoyjfqi\"},\"vmSize\":\"b\"},\"etag\":\"nclkfkeeb\",\"identity\":{\"principalId\":\"pemtuoqu\",\"tenantId\":\"yegq\",\"type\":\"None\",\"userAssignedIdentities\":{\"msxbaevwjcnkott\":{\"principalId\":\"flqqbtnyjpylxd\",\"clientId\":\"vabm\"},\"mvrscmqerndbrny\":{\"principalId\":\"uhvajmailfemjjza\",\"clientId\":\"wjiqullqxb\"},\"ynnfmuiii\":{\"principalId\":\"fltfnnxr\",\"clientId\":\"dj\"}}},\"kind\":\"Nexus\",\"location\":\"ohykfkxbbcbrw\",\"tags\":{\"bjuyrsrziuctixg\":\"tgnjizbeewoiymrv\"},\"id\":\"d\",\"name\":\"uifr\",\"type\":\"vka\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,18 @@ public final class ClusterManagersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ClusterManager> response
-            = manager.clusterManagers().list(1159863417, "uowakyw", com.azure.core.util.Context.NONE);
+            = manager.clusterManagers().list(1355902689, "knxkvccxetyvkunm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("blqwaafrqulhmzy", response.iterator().next().location());
-        Assertions.assertEquals("dvaf", response.iterator().next().tags().get("rqpjiy"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals("ohykfkxbbcbrw", response.iterator().next().location());
+        Assertions.assertEquals("tgnjizbeewoiymrv", response.iterator().next().tags().get("bjuyrsrziuctixg"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
         Assertions.assertEquals(DeploymentType.NEXUS, response.iterator().next().kind());
-        Assertions.assertEquals("hjym", response.iterator().next().analyticsWorkspaceId());
-        Assertions.assertEquals("qt", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals("bcufqbvntn", response.iterator().next().fabricControllerId());
-        Assertions.assertEquals("qsorh", response.iterator().next().managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("kxgnlykmxcpwzvmd",
-            response.iterator().next().managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("yjanepubdp", response.iterator().next().vmSize());
+        Assertions.assertEquals("nohikkgq", response.iterator().next().analyticsWorkspaceId());
+        Assertions.assertEquals("wpin", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals("cxn", response.iterator().next().fabricControllerId());
+        Assertions.assertEquals("xhlusrvxis",
+            response.iterator().next().managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("jceagb", response.iterator().next().managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("b", response.iterator().next().vmSize());
     }
 }

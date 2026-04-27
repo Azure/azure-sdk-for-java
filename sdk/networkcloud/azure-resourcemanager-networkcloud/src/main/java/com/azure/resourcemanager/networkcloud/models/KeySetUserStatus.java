@@ -19,7 +19,7 @@ public final class KeySetUserStatus implements JsonSerializable<KeySetUserStatus
     /*
      * The user name that will be used for access.
      */
-    private String azureUserName;
+    private String azureUsername;
 
     /*
      * The indicator of whether the user is currently deployed for access.
@@ -38,12 +38,12 @@ public final class KeySetUserStatus implements JsonSerializable<KeySetUserStatus
     }
 
     /**
-     * Get the azureUserName property: The user name that will be used for access.
+     * Get the azureUsername property: The user name that will be used for access.
      * 
-     * @return the azureUserName value.
+     * @return the azureUsername value.
      */
-    public String azureUserName() {
-        return this.azureUserName;
+    public String azureUsername() {
+        return this.azureUsername;
     }
 
     /**
@@ -90,7 +90,7 @@ public final class KeySetUserStatus implements JsonSerializable<KeySetUserStatus
                 reader.nextToken();
 
                 if ("azureUserName".equals(fieldName)) {
-                    deserializedKeySetUserStatus.azureUserName = reader.getString();
+                    deserializedKeySetUserStatus.azureUsername = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedKeySetUserStatus.status
                         = BareMetalMachineKeySetUserSetupStatus.fromString(reader.getString());

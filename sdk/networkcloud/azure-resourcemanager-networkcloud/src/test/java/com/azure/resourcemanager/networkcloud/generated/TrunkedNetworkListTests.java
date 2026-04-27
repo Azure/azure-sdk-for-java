@@ -14,16 +14,16 @@ public final class TrunkedNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrunkedNetworkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"j\",\"isolationDomainIds\":[\"tu\",\"lbfjkwr\",\"snkq\"],\"vlans\":[4458310460045516601,6067963783387154787],\"associatedResourceIds\":[\"jqhden\",\"aulk\",\"akdkifmjnnawtqab\"],\"clusterId\":\"uckpggqoweyir\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"sn\",\"hybridAksClustersAssociatedIds\":[\"lqqmpiz\"],\"virtualMachinesAssociatedIds\":[\"n\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"xiw\",\"extendedLocation\":{\"name\":\"cng\",\"type\":\"CustomLocation\"},\"location\":\"asi\",\"tags\":{\"gfgrwsdp\":\"mkzjvkviir\",\"zvzbglbyv\":\"ra\",\"rgxffmshkw\":\"ctctbrxkjz\",\"qaclnapxbiy\":\"bkgozxwopdbydpi\"},\"id\":\"nugj\",\"name\":\"nfsm\",\"type\":\"cttuxuu\"}],\"nextLink\":\"lflqoiqu\"}")
+            "{\"value\":[{\"properties\":{\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"pkyjcxcjxgrytfm\",\"isolationDomainIds\":[\"ycilrmcaykggnox\"],\"vlans\":[721298274742352110,7388675425128652397,645933725582619027],\"associatedResourceIds\":[\"d\",\"cpfnznthjtwkja\"],\"clusterId\":\"rxuzvoam\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"iosmgbzahgxqdly\",\"hybridAksClustersAssociatedIds\":[\"tlaprltzkatb\",\"jm\",\"nnbsoqeqa\",\"arvlagunbt\"],\"virtualMachinesAssociatedIds\":[\"bwln\",\"mhyreeudz\",\"av\",\"pdqmjxlyyzglgouw\"],\"provisioningState\":\"Accepted\"},\"etag\":\"jyuojqtobaxkjeyt\",\"extendedLocation\":{\"name\":\"nlb\",\"type\":\"CustomLocation\"},\"location\":\"wrus\",\"tags\":{\"qunjqh\":\"bhsy\",\"ulkpakd\":\"enx\"},\"id\":\"ifmjnn\",\"name\":\"wtqabpxuckp\",\"type\":\"gqoweyirdhlisn\"},{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"qqmpizruwnpqx\",\"isolationDomainIds\":[\"iwfcngjsa\"],\"vlans\":[9178387738992301365],\"associatedResourceIds\":[\"mkzjvkviir\",\"gfgrwsdp\",\"ra\",\"zvzbglbyv\"],\"clusterId\":\"tctbrxkjzwrgxffm\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"fbkgozxwopdby\",\"hybridAksClustersAssociatedIds\":[\"zqaclna\",\"xbiygnugjknfsmf\",\"ttuxuuyilflqoiqu\",\"rehmr\"],\"virtualMachinesAssociatedIds\":[\"vsujztczytqjtwh\",\"uunfprnjletlxsm\"],\"provisioningState\":\"Canceled\"},\"etag\":\"ou\",\"extendedLocation\":{\"name\":\"fa\",\"type\":\"EdgeZone\"},\"location\":\"aziynknlqwzdv\",\"tags\":{\"xylrjvmtygjbmz\":\"hxqszdtmaajquh\"},\"id\":\"ospspshckf\",\"name\":\"yjpmspbpssdfppyo\",\"type\":\"tieyujtvczkcny\"},{\"properties\":{\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"unjdx\",\"isolationDomainIds\":[\"lnkvxlx\",\"aglqivbgkcvkh\",\"zvuqdflvon\"],\"vlans\":[2527304784665439367],\"associatedResourceIds\":[\"bcpzgpxtivh\",\"knidib\",\"qjxgpnrhgovfgp\"],\"clusterId\":\"qmhhaowj\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"uporqzdfu\",\"hybridAksClustersAssociatedIds\":[\"vkfvxcnqmxqpswok\",\"vkhlggdhbemz\"],\"virtualMachinesAssociatedIds\":[\"sz\",\"wiwtglxxhl\",\"fpgpicrmnzhrgm\"],\"provisioningState\":\"Accepted\"},\"etag\":\"x\",\"extendedLocation\":{\"name\":\"pqcbfrmbodthsq\",\"type\":\"CustomLocation\"},\"location\":\"riibakclacj\",\"tags\":{\"vsg\":\"xousxauzl\"},\"id\":\"wohqfzizvu\",\"name\":\"mmkjsvthnwpztek\",\"type\":\"vmribiat\"}],\"nextLink\":\"plucfotangcfhnyk\"}")
             .toObject(TrunkedNetworkList.class);
-        Assertions.assertEquals("asi", model.value().get(0).location());
-        Assertions.assertEquals("mkzjvkviir", model.value().get(0).tags().get("gfgrwsdp"));
-        Assertions.assertEquals("cng", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("wrus", model.value().get(0).location());
+        Assertions.assertEquals("bhsy", model.value().get(0).tags().get("qunjqh"));
+        Assertions.assertEquals("nlb", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, model.value().get(0).hybridAksPluginType());
-        Assertions.assertEquals("j", model.value().get(0).interfaceName());
-        Assertions.assertEquals("tu", model.value().get(0).isolationDomainIds().get(0));
-        Assertions.assertEquals(4458310460045516601L, model.value().get(0).vlans().get(0));
-        Assertions.assertEquals("lflqoiqu", model.nextLink());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, model.value().get(0).hybridAksPluginType());
+        Assertions.assertEquals("pkyjcxcjxgrytfm", model.value().get(0).interfaceName());
+        Assertions.assertEquals("ycilrmcaykggnox", model.value().get(0).isolationDomainIds().get(0));
+        Assertions.assertEquals(721298274742352110L, model.value().get(0).vlans().get(0));
+        Assertions.assertEquals("plucfotangcfhnyk", model.nextLink());
     }
 }

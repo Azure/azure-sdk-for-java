@@ -14,17 +14,17 @@ public final class TrunkedNetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrunkedNetworkPatchParameters model = BinaryData.fromString(
-            "{\"tags\":{\"agunbtgfebw\":\"nbsoqeqalarv\",\"dzqavbpdqmjxlyyz\":\"nbmhyree\",\"uojqt\":\"lgouwtlmjj\"}}")
+            "{\"tags\":{\"aohdjh\":\"mxqhndvnoamldse\",\"pelnjetag\":\"flzokxco\",\"npbs\":\"tsxoatftgz\",\"g\":\"vefloccsrmozihmi\"}}")
             .toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("nbsoqeqalarv", model.tags().get("agunbtgfebw"));
+        Assertions.assertEquals("mxqhndvnoamldse", model.tags().get("aohdjh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrunkedNetworkPatchParameters model = new TrunkedNetworkPatchParameters()
-            .withTags(mapOf("agunbtgfebw", "nbsoqeqalarv", "dzqavbpdqmjxlyyz", "nbmhyree", "uojqt", "lgouwtlmjj"));
+        TrunkedNetworkPatchParameters model = new TrunkedNetworkPatchParameters().withTags(
+            mapOf("aohdjh", "mxqhndvnoamldse", "pelnjetag", "flzokxco", "npbs", "tsxoatftgz", "g", "vefloccsrmozihmi"));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("nbsoqeqalarv", model.tags().get("agunbtgfebw"));
+        Assertions.assertEquals("mxqhndvnoamldse", model.tags().get("aohdjh"));
     }
 
     // Use "Map.of" if available
