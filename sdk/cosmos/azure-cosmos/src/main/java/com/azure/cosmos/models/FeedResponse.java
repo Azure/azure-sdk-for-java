@@ -55,6 +55,21 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
+    // All header maps are produced by the SDK's own query pipeline. Non-null maps
+    // are always mutable (HashMap or ConcurrentHashMap) - the SDK intentionally
+    // allows callers to add/modify headers on FeedResponse. The only known
+    // exception is empty-page responses where the query pipeline may pass null.
+    // We do NOT clone non-null maps here to avoid unnecessary allocations on every
+    // FeedResponse construction - the wider blast radius of cloning (every query,
+    // change feed, readMany response) is not justified by the narrow null case.
+    // If a future code path introduces an immutable non-null header map, the
+    // setContinuationTokenInternal method will fail fast with
+    // UnsupportedOperationException, and the fix should be to make the upstream
+    // pipeline emit a mutable map rather than adding defensive cloning here.
+    private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
+        return headers == null ? new HashMap<>() : headers;
+    }
+
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
@@ -112,7 +127,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         boolean nochanges,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -129,7 +144,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         CosmosDiagnostics diagnostics) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -145,7 +160,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         // NOTE - it is important to use HashMap over ConcurrentHashMap here because some keys/values might be null
         // and this is not allowed in ConcurrentHashMap - while it is ok in HashMap
-        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : null;
+        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : new HashMap<>();
 
         this.usageHeaders = toBeCloned.usageHeaders != null ? new HashMap<>(toBeCloned.usageHeaders) : null;
         this.quotaHeaders = toBeCloned.quotaHeaders != null ? new HashMap<>(toBeCloned.quotaHeaders) : null;
@@ -430,9 +445,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             ? HttpConstants.HttpHeaders.E_TAG
             : HttpConstants.HttpHeaders.CONTINUATION;
 
+        setContinuationTokenInternal(headerName, continuationToken);
+    }
+
+    private void setContinuationTokenInternal(String headerName, String continuationToken) {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
-        } else {
+        } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
+            // The query API returns unmodifiable header collections for empty
+            // responses (no documents returned - when only header set is request charge)
+            // the protection here to check for existence of the header before attempting
+            // to remove it would not be robust enough against unknown headers
+            // but since we only ever call our own query pipeline
+            // avoiding cloning in all cases and gating on continuation header
+            // existence is a reasonable trade-off - test coverage exists that uncovered
+            // the problem - so, this acts as regression test as well
+            // --> the test coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
+            // it should "return empty results for non-existent partition keys"
             this.header.remove(headerName);
         }
     }

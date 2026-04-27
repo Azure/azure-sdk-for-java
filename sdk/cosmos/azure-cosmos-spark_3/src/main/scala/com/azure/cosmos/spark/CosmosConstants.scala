@@ -45,6 +45,7 @@ private[cosmos] object CosmosConstants {
     val Id = "id"
     val ETag = "_etag"
     val ItemIdentity = "_itemIdentity"
+    val PartitionKeyIdentity = "_partitionKeyIdentity"
   }
 
   object StatusCodes {
