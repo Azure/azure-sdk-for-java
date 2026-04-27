@@ -20,11 +20,14 @@
 - Added `maxCumulativeIndexerRuntimeSeconds` to `ServiceLimits` for monitoring indexer runtime limits
 - Added `LookupDocument` model for document lookup responses
 - Added `AIServicesAccountIdentity` and `AIServicesAccountKey` for Azure AI Services authentication
+- Added `MODEL_WEB_SUMMARIZATION` to `KnowledgeBaseActivityRecordType`
 
 
 ### Breaking Changes
 - Removed `EntityRecognitionSkill`, `EntityRecognitionSkillVersion`, `SentimentSkill`, and `SentimentSkillVersion`
   which were previously deprecated. Use `EntityRecognitionSkillV3` and `SentimentSkillV3` instead.
+- Removed `ingestionPermissionOptions` from `KnowledgeSourceIngestionParameters` and removed `KnowledgeSourceIngestionPermissionOption`;
+  ingestion permission options are not part of the `2026-04-01` GA service contract.
 
 
 ## 11.8.1 (2026-01-29)

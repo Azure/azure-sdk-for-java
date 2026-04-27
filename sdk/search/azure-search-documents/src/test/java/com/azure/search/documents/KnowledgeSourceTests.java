@@ -14,7 +14,6 @@ import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
-import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -27,6 +26,7 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.WebKnowledgeSource;
 import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecordType;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -455,29 +455,21 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void permissionOptionsEnumValuesExist() {
-        assertNotNull(KnowledgeSourceIngestionPermissionOption.USER_IDS);
-        assertNotNull(KnowledgeSourceIngestionPermissionOption.GROUP_IDS);
-        assertNotNull(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE);
+    public void activityRecordTypeEnumValuesExist() {
+        assertNotNull(KnowledgeBaseActivityRecordType.SEARCH_INDEX);
+        assertNotNull(KnowledgeBaseActivityRecordType.AZURE_BLOB);
+        assertNotNull(KnowledgeBaseActivityRecordType.INDEXED_ONE_LAKE);
+        assertNotNull(KnowledgeBaseActivityRecordType.WEB);
+        assertNotNull(KnowledgeBaseActivityRecordType.AGENTIC_REASONING);
+        assertNotNull(KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION);
 
-        assertEquals("userIds", KnowledgeSourceIngestionPermissionOption.USER_IDS.toString());
-        assertEquals("groupIds", KnowledgeSourceIngestionPermissionOption.GROUP_IDS.toString());
-        assertEquals("rbacScope", KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE.toString());
+        assertEquals("modelWebSummarization", KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION.toString());
 
-        KnowledgeSourceIngestionPermissionOption userIds
-            = KnowledgeSourceIngestionPermissionOption.fromString("userIds");
-        assertEquals(KnowledgeSourceIngestionPermissionOption.USER_IDS, userIds);
+        KnowledgeBaseActivityRecordType modelWebSummarization
+            = KnowledgeBaseActivityRecordType.fromString("modelWebSummarization");
+        assertEquals(KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION, modelWebSummarization);
 
-        KnowledgeSourceIngestionPermissionOption groupIds
-            = KnowledgeSourceIngestionPermissionOption.fromString("groupIds");
-        assertEquals(KnowledgeSourceIngestionPermissionOption.GROUP_IDS, groupIds);
-
-        KnowledgeSourceIngestionPermissionOption rbacScope
-            = KnowledgeSourceIngestionPermissionOption.fromString("rbacScope");
-        assertEquals(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE, rbacScope);
-
-        KnowledgeSourceIngestionPermissionOption unknown
-            = KnowledgeSourceIngestionPermissionOption.fromString("unknownValue");
+        KnowledgeBaseActivityRecordType unknown = KnowledgeBaseActivityRecordType.fromString("unknownValue");
         assertNotNull(unknown);
         assertEquals("unknownValue", unknown.toString());
     }

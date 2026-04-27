@@ -43,6 +43,12 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
     public static final KnowledgeBaseActivityRecordType AGENTIC_REASONING = fromString("agenticReasoning");
 
     /**
+     * Model web summarization activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType MODEL_WEB_SUMMARIZATION = fromString("modelWebSummarization");
+
+    /**
      * Creates a new instance of KnowledgeBaseActivityRecordType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

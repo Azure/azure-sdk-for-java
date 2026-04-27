@@ -368,7 +368,6 @@
     "com.azure.search.documents.indexes.models.KnowledgeBaseModelKind": "Search.KnowledgeBaseModelKind",
     "com.azure.search.documents.indexes.models.KnowledgeSource": "Search.KnowledgeSource",
     "com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode": "Search.KnowledgeSourceContentExtractionMode",
-    "com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption": "Search.KnowledgeSourceIngestionPermissionOption",
     "com.azure.search.documents.indexes.models.KnowledgeSourceKind": "Search.KnowledgeSourceKind",
     "com.azure.search.documents.indexes.models.KnowledgeSourceReference": "Search.KnowledgeSourceReference",
     "com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus": "Search.KnowledgeSourceSynchronizationStatus",
