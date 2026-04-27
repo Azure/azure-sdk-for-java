@@ -35,7 +35,7 @@ public final class AzureAuthorityHosts {
      */
     public static final String AZURE_GOVERNMENT = "https://login.microsoftonline.us/";
 
-    static String getDefaultScope(String authorityHost) {
+    public static String getDefaultScope(String authorityHost) {
         switch (authorityHost) {
             case AZURE_PUBLIC_CLOUD:
                 return "https://management.core.windows.net//.default";
