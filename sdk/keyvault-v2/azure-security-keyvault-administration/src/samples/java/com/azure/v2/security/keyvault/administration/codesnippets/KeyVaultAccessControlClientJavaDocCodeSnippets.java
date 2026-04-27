@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.administration.codesnippets;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient;
 import com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClientBuilder;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultDataAction;

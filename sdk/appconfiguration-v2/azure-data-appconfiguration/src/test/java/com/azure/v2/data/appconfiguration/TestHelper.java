@@ -4,8 +4,8 @@ package com.azure.v2.data.appconfiguration;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.test.InterceptorManager;
-import com.azure.v2.identity.AzurePowerShellCredentialBuilder;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.AzurePowerShellCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;

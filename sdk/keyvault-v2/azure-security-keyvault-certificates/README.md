@@ -265,7 +265,7 @@ For details on contributing to this repository, see the [contributing guide][con
 [azure_keyvault_docs]: https://learn.microsoft.com/azure/key-vault/
 [azure_keyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [azure_ca]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/general/overview
 [azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
 [azure_keyvault_portal]: https://learn.microsoft.com/azure/key-vault/general/quick-create-portal

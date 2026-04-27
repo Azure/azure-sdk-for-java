@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.v2.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.v2.security.keyvault.keys.cryptography.models.VerifyResult;

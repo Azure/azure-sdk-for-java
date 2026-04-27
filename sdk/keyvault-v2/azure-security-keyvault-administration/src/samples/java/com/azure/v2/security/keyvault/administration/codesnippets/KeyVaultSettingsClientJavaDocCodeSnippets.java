@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.administration.codesnippets;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient;
 import com.azure.v2.security.keyvault.administration.KeyVaultSettingsClientBuilder;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultGetSettingsResult;

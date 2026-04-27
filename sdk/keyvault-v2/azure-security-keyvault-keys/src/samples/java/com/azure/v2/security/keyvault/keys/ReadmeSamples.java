@@ -5,7 +5,7 @@ package com.azure.v2.security.keyvault.keys;
 
 import com.azure.v2.core.http.polling.PollResponse;
 import com.azure.v2.core.http.polling.Poller;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.v2.security.keyvault.keys.cryptography.models.DecryptResult;

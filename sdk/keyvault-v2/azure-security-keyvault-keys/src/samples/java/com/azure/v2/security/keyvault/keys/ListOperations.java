@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.keys;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.v2.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.v2.security.keyvault.keys.models.KeyProperties;
