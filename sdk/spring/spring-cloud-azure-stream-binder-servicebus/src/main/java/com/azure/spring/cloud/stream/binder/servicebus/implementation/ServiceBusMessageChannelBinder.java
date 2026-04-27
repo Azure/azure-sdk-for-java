@@ -428,13 +428,25 @@ public class ServiceBusMessageChannelBinder extends
         retryTemplate.setRetryPolicy(retryPolicy);
 
         // Configure backoff policy
+        retryTemplate.setBackOffPolicy(createExponentialBackOffPolicy(properties));
+
+        return retryTemplate;
+    }
+
+    /**
+     * Create an {@link ExponentialBackOffPolicy} from the consumer properties.
+     * Package-private to allow direct verification in tests without reflective access to RetryTemplate internals.
+     *
+     * @param properties the extended consumer properties
+     * @return the configured ExponentialBackOffPolicy
+     */
+    ExponentialBackOffPolicy createExponentialBackOffPolicy(
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(properties.getBackOffInitialInterval());
         backOffPolicy.setMultiplier(properties.getBackOffMultiplier());
         backOffPolicy.setMaxInterval(properties.getBackOffMaxInterval());
-        retryTemplate.setBackOffPolicy(backOffPolicy);
-
-        return retryTemplate;
+        return backOffPolicy;
     }
 
 }

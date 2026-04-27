@@ -21,7 +21,6 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -89,10 +88,8 @@ class ServiceBusRetryTest {
         })).isInstanceOf(RuntimeException.class);
         assertThat(callCount.get()).isEqualTo(3);
 
-        // Verify backoff policy configuration using public accessors
-        ExponentialBackOffPolicy backOffPolicy = (ExponentialBackOffPolicy)
-            ReflectionTestUtils.getField(retryTemplate, "backOffPolicy");
-        assertThat(backOffPolicy).isNotNull();
+        // Verify backoff policy configuration via the binder's factory method (no reflection needed)
+        ExponentialBackOffPolicy backOffPolicy = binder.createExponentialBackOffPolicy(consumerProperties);
         assertThat(backOffPolicy.getInitialInterval()).isEqualTo(1000L);
         assertThat(backOffPolicy.getMultiplier()).isEqualTo(2.0);
         assertThat(backOffPolicy.getMaxInterval()).isEqualTo(5000L);

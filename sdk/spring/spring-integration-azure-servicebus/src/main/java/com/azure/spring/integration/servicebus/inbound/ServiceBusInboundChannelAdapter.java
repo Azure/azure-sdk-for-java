@@ -180,6 +180,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     /**
      * Sends the message directly to the output channel without routing exceptions to the error channel.
      * This is used inside the retry template so that exceptions propagate back to the retry logic.
+     * Uses the adapter's configured sendTimeout (via MessagingTemplate) to match the non-retry path.
      * The caller is responsible for routing to the error channel after retries are exhausted.
      *
      * @param message the message to send
@@ -187,8 +188,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private void sendMessageDirectly(Message<?> message) {
         MessageChannel outputCh = getOutputChannel();
         Assert.notNull(outputCh, "Output channel must not be null");
-        if (!outputCh.send(message)) {
-            throw new MessageDeliveryException(message, "Failed to send message to output channel");
+        try {
+            getMessagingTemplate().send(outputCh, message);
+        } catch (MessageDeliveryException ex) {
+            throw ex;
         }
     }
 
