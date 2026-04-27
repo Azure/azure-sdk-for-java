@@ -27,10 +27,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrating automatic tracing via {@code GlobalOpenTelemetry}.
  *
- * <p>Unlike {@link ExplicitTracingSample} which passes an explicit {@code OpenTelemetry} instance
- * to the builder, this sample registers a global instance with
+ * <p>This sample registers a global OpenTelemetry instance with
  * {@code OpenTelemetrySdk.builder().buildAndRegisterGlobal()}. The VoiceLive client picks it
- * up automatically — no {@code .openTelemetry()} call is needed on the builder.</p>
+ * up automatically via {@code GlobalOpenTelemetry.getOrNoop()}.</p>
+ *
+ * <p>Alternatively, attach the OpenTelemetry Java agent ({@code -javaagent:opentelemetry-javaagent.jar})
+ * which registers the global instance automatically — no code needed at all.</p>
  *
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
@@ -77,7 +79,7 @@ public final class GlobalTracingSample {
         CountDownLatch done = new CountDownLatch(1);
 
         // 3. Run a short text-mode conversation — all operations are traced automatically.
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
                     .setModalities(Arrays.asList(InteractionModality.TEXT))

@@ -350,10 +350,9 @@ class VoiceLiveTracerTest {
     }
 
     @Test
-    void testBuilderWithOpenTelemetry() {
+    void testBuilderWithGlobalOpenTelemetry() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder().endpoint("https://test.cognitiveservices.azure.com")
             .credential(new com.azure.core.credential.KeyCredential("fake"))
-            .openTelemetry(io.opentelemetry.api.OpenTelemetry.noop())
             .buildAsyncClient();
 
         assertNotNull(client);

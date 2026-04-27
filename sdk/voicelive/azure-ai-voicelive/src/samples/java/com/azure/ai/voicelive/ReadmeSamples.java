@@ -45,7 +45,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.opentelemetry.api.OpenTelemetry;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -103,7 +102,7 @@ public final class ReadmeSamples {
             .setTurnDetection(turnDetection);
 
         // Start session and handle events
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 // Subscribe to receive server events
                 session.receiveEvents()
@@ -169,7 +168,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.ai.voicelive.simple.session
         // Start session with default options
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("Session started");
 
@@ -223,7 +222,7 @@ public final class ReadmeSamples {
             .setTurnDetection(turnDetection);
 
         // Start session with options
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(options);
@@ -245,7 +244,7 @@ public final class ReadmeSamples {
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-4o-realtime-preview").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
 
         // BEGIN: com.azure.ai.voicelive.send.audioinput
         // Send audio chunk
@@ -274,7 +273,7 @@ public final class ReadmeSamples {
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-4o-realtime-preview").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
 
         // BEGIN: com.azure.ai.voicelive.handle.eventtypes
         session.receiveEvents()
@@ -371,7 +370,7 @@ public final class ReadmeSamples {
             .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
         // 3. Handle function call events
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 session.receiveEvents()
                     .subscribe(event -> {
@@ -424,42 +423,6 @@ public final class ReadmeSamples {
     }
 
     /**
-     * Tracing: explicit OpenTelemetry instance
-     */
-    public void tracingExplicit() {
-        OpenTelemetry otel = OpenTelemetry.noop(); // Replace with your configured OpenTelemetry SDK instance
-
-        // BEGIN: com.azure.ai.voicelive.tracing.explicit
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
-            .openTelemetry(otel)
-            .buildAsyncClient();
-        // END: com.azure.ai.voicelive.tracing.explicit
-    }
-
-    /**
-     * Tracing: enable content recording
-     */
-    public void tracingContentRecording() {
-        OpenTelemetry otel = OpenTelemetry.noop(); // Replace with your configured OpenTelemetry SDK instance
-
-        // BEGIN: com.azure.ai.voicelive.tracing.contentrecording
-        // Enable content recording to capture full JSON payloads in span events
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
-            .openTelemetry(otel)
-            .enableContentRecording(true)
-            .buildAsyncClient();
-
-        // Or via environment variables (no code changes needed):
-        // OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
-        // (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
-        // END: com.azure.ai.voicelive.tracing.contentrecording
-    }
-
-    /**
      * Sample for MCP tool integration
      */
     public void mcpToolIntegration() {
@@ -468,7 +431,7 @@ public final class ReadmeSamples {
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-4o-realtime-preview").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
 
         // BEGIN: com.azure.ai.voicelive.mcp
         // Configure MCP servers as tools

@@ -5,6 +5,7 @@ package com.azure.ai.voicelive;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Objects;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -16,13 +17,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.metrics.Meter;
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.trace.Tracer;
 
-import java.util.Map;
+import com.azure.core.util.logging.ClientLogger;
+
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.metrics.Meter;
+import io.opentelemetry.api.trace.Tracer;
 
 /**
  * Builder for creating instances of {@link VoiceLiveAsyncClient}.
@@ -40,8 +41,6 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
     private TokenCredential tokenCredential;
     private VoiceLiveServiceVersion serviceVersion;
     private ClientOptions clientOptions;
-    private OpenTelemetry openTelemetry;
-    private Boolean enableContentRecording;
 
     /**
      * Creates a new instance of VoiceLiveClientBuilder.
@@ -119,42 +118,6 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
     }
 
     /**
-     * Sets the {@link OpenTelemetry} instance to use for tracing.
-     *
-     * <p>If not set, defaults to {@link GlobalOpenTelemetry#getOrNoop()}, which automatically
-     * uses the OpenTelemetry instance installed by the Java agent (if present), or a no-op
-     * implementation that has zero performance impact.</p>
-     *
-     * <p>When an OpenTelemetry SDK is configured (either globally or via this method), the SDK
-     * automatically emits spans for connect, send, recv, and close operations with voice-specific
-     * attributes and session-level counters following GenAI Semantic Conventions.</p>
-     *
-     * @param openTelemetry The OpenTelemetry instance.
-     * @return The updated VoiceLiveClientBuilder instance.
-     * @throws NullPointerException if {@code openTelemetry} is null.
-     */
-    public VoiceLiveClientBuilder openTelemetry(OpenTelemetry openTelemetry) {
-        this.openTelemetry = Objects.requireNonNull(openTelemetry, "'openTelemetry' cannot be null");
-        return this;
-    }
-
-    /**
-     * Enables or disables content recording in trace spans.
-     *
-     * <p>When enabled, full JSON payloads (including audio data) will be captured in span events.
-     * This is off by default for privacy. Can also be controlled via the
-    * {@code OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT} environment variable.
-    * The legacy {@code AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED} variable is still supported.</p>
-     *
-     * @param enableContentRecording true to enable content recording in spans.
-     * @return The updated VoiceLiveClientBuilder instance.
-     */
-    public VoiceLiveClientBuilder enableContentRecording(boolean enableContentRecording) {
-        this.enableContentRecording = enableContentRecording;
-        return this;
-    }
-
-    /**
      * Builds a {@link VoiceLiveAsyncClient} instance with the configured options.
      *
      * @return A new VoiceLiveAsyncClient instance.
@@ -172,16 +135,16 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
         VoiceLiveServiceVersion version = serviceVersion != null ? serviceVersion : VoiceLiveServiceVersion.getLatest();
         HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
 
-        OpenTelemetry otel = openTelemetry != null ? openTelemetry : GlobalOpenTelemetry.getOrNoop();
+        OpenTelemetry otel = GlobalOpenTelemetry.getOrNoop();
         Tracer tracer = otel.getTracer(SDK_NAME);
         Meter meter = otel.getMeter(SDK_NAME);
 
         if (keyCredential != null) {
             return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders, tracer,
-                meter, enableContentRecording);
+                meter, null);
         } else {
             return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders, tracer,
-                meter, enableContentRecording);
+                meter, null);
         }
     }
 }

@@ -87,7 +87,7 @@ public final class BasicVoiceConversationSample {
             .setInputAudioSamplingRate(24000);
 
         // Start session and subscribe to events
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 

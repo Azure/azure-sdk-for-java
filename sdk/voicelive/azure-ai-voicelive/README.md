@@ -169,23 +169,17 @@ For easier learning, explore these focused samples in order:
    - Execute functions locally and return results
    - Continue conversation with function results
 
-7. **telemetry/ExplicitTracingSample.java** - Explicit OpenTelemetry tracing
-   - Explicit OpenTelemetry instance via builder
-   - Content recording with `--enable-recording` flag
-   - Custom console span exporter
-   - Azure Monitor integration example
-
-8. **telemetry/GlobalTracingSample.java** - Automatic tracing via GlobalOpenTelemetry
+7. **telemetry/GlobalTracingSample.java** - Automatic tracing via GlobalOpenTelemetry
    - Zero builder configuration — uses `buildAndRegisterGlobal()`
-   - Same span output as explicit tracing
+   - Also works with OTel Java agent (`-javaagent:opentelemetry-javaagent.jar`)
 
-9. **MCPSample.java** - Model Context Protocol (MCP) tool integration
+8. **MCPSample.java** - Model Context Protocol (MCP) tool integration
    - Configure MCP servers for external tool access
    - Handle MCP call events and tool execution
    - Handle MCP approval requests for tool calls
    - Process MCP call results and continue conversations
 
-10. **AgentV2Sample.java** - Azure AI Foundry agent session
+9. **AgentV2Sample.java** - Azure AI Foundry agent session
    - Connect directly to an Azure AI Foundry agent via AgentSessionConfig
    - Real-time audio capture and playback
    - Sequence number based audio for interrupt handling
@@ -204,7 +198,7 @@ Create a basic voice assistant session:
 
 ```java com.azure.ai.voicelive.simple.session
 // Start session with default options
-client.startSession("gpt-4o-realtime-preview")
+client.startSession("gpt-realtime")
     .flatMap(session -> {
         System.out.println("Session started");
 
@@ -252,7 +246,7 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setTurnDetection(turnDetection);
 
 // Start session with options
-client.startSession("gpt-4o-realtime-preview")
+client.startSession("gpt-realtime")
     .flatMap(session -> {
         // Send session configuration
         ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(options);
@@ -378,7 +372,7 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
 // 3. Handle function call events
-client.startSession("gpt-4o-realtime-preview")
+client.startSession("gpt-realtime")
     .flatMap(session -> {
         session.receiveEvents()
             .subscribe(event -> {
@@ -489,7 +483,7 @@ The SDK has built-in [OpenTelemetry](https://opentelemetry.io/) tracing that emi
 
 #### Automatic tracing (recommended)
 
-When no `.openTelemetry()` is called on the builder, the SDK defaults to `GlobalOpenTelemetry.getOrNoop()` —
+The SDK defaults to `GlobalOpenTelemetry.getOrNoop()` —
 tracing is automatically active when a global OpenTelemetry instance exists (e.g., via the
 [OpenTelemetry Java agent](https://opentelemetry.io/docs/languages/java/automatic/) or
 `OpenTelemetrySdk.builder().buildAndRegisterGlobal()`), and is a zero-cost no-op otherwise:
@@ -502,17 +496,14 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .buildAsyncClient();
 ```
 
-#### Explicit OpenTelemetry instance
+#### Content recording
 
-Pass your own `OpenTelemetry` instance directly to the builder for full control. This is useful
-when you want different clients to use different tracer configurations:
+By default, message payloads are not recorded in spans for privacy. Enable content recording via environment variable:
 
-```java com.azure.ai.voicelive.tracing.explicit
-VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .openTelemetry(otel)
-    .buildAsyncClient();
+```bash
+# Enable content recording (no code changes needed):
+OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+# (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
 ```
 
 #### Span structure
@@ -547,45 +538,20 @@ connect gpt-4o-realtime-preview        ← session lifetime span
 - `gen_ai.system_instructions` / `gen_ai.request.temperature` / `gen_ai.request.max_output_tokens` / `gen_ai.request.tools` — Session config from `session.update`
 - `gen_ai.agent.name` / `gen_ai.agent.id` / `gen_ai.agent.version` / `gen_ai.agent.project_name` / `gen_ai.agent.thread_id` — Agent metadata (when using `AgentSessionConfig`)
 
-#### Content recording
-
-By default, message payloads are not recorded in spans for privacy. Enable content recording via the builder or environment variable:
-
-```java com.azure.ai.voicelive.tracing.contentrecording
-// Enable content recording to capture full JSON payloads in span events
-VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
-    .openTelemetry(otel)
-    .enableContentRecording(true)
-    .buildAsyncClient();
-
-// Or via environment variables (no code changes needed):
-// OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
-// (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
-```
-
-> See `telemetry/ExplicitTracingSample.java` and `telemetry/GlobalTracingSample.java` for complete tracing examples.
+> See `telemetry/GlobalTracingSample.java` for a complete tracing example.
 >
-> **Run the telemetry samples** to see tracing in action:
+> **Run the telemetry sample** to see tracing in action:
 > ```bash
-> # Explicit tracing (prints span names and attributes):
-> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing"
->
-> # Explicit tracing + content recording (also prints full JSON payloads):
-> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.ExplicitTracingSample" -Dexec.classpathScope=test -Dexec.args="--enable-tracing --enable-recording"
->
-> # Automatic tracing via GlobalOpenTelemetry:
 > mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.GlobalTracingSample" -Dexec.classpathScope=test
 > ```
 >
-> Sample output with `--enable-tracing`:
+> Sample output:
 > ```
 > 'send session.update' : {gen_ai.operation.name=send, gen_ai.voice.event_type=session.update, ...}
 > 'recv session.created' : {gen_ai.operation.name=recv, gen_ai.voice.event_type=session.created, ...}
 > 'recv response.done'   : {gen_ai.usage.input_tokens=100, gen_ai.usage.output_tokens=50, ...}
 > 'close'                : {gen_ai.operation.name=close, ...}
-> 'connect gpt-4o-realtime-preview' : {gen_ai.voice.session_id=..., gen_ai.voice.turn_count=1, ...}
+> 'connect gpt-realtime' : {gen_ai.voice.session_id=..., gen_ai.voice.turn_count=1, ...}
 > ```
 
 ### Complete voice assistant with microphone

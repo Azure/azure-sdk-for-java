@@ -82,7 +82,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class MCPSample {
 
     // Service configuration
-    private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
+    private static final String DEFAULT_MODEL = "gpt-realtime";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
     private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 

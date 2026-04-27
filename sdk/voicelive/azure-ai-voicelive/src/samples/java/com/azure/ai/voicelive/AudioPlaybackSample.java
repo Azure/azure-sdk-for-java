@@ -128,7 +128,7 @@ public final class AudioPlaybackSample {
         final SourceDataLine[] speakerRef = new SourceDataLine[1];
 
         // Start session
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 

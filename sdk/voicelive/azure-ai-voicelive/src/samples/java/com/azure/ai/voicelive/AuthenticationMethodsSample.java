@@ -217,7 +217,7 @@ public final class AuthenticationMethodsSample {
             .setInputAudioSamplingRate(24000);
 
         // Start session to verify authentication
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("✅ Authentication successful!");
                 System.out.println("✓ Session started successfully with " + authMethodName);

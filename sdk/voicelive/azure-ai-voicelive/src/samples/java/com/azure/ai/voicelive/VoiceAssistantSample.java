@@ -89,7 +89,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class VoiceAssistantSample {
 
     // Service configuration constants
-    private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
+    private static final String DEFAULT_MODEL = "gpt-realtime";
 
     // Environment variable names
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
