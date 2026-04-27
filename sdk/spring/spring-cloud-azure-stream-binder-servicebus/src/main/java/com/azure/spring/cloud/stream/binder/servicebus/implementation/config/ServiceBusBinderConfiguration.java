@@ -97,7 +97,7 @@ public class ServiceBusBinderConfiguration {
      * @param messageConverter the message converter.
      * @param producerFactoryCustomizers customizers to customize producer factories.
      * @param processorFactoryCustomizers customizers to customize processor factories.
-     * @param retryTemplate optional custom retry template for message processing retries.
+     * @param retryTemplate optional custom retry template for message processing retries; must be a bean named {@code serviceBusRetryTemplate}.
      *
      * @return the {@link ServiceBusMessageChannelBinder} bean.
      */
@@ -109,7 +109,7 @@ public class ServiceBusBinderConfiguration {
                                                            ObjectProvider<ServiceBusMessageConverter> messageConverter,
                                                            ObjectProvider<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers,
                                                            ObjectProvider<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers,
-                                                           ObjectProvider<RetryTemplate> retryTemplate) {
+                                                           @Qualifier("serviceBusRetryTemplate") ObjectProvider<RetryTemplate> retryTemplate) {
 
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);

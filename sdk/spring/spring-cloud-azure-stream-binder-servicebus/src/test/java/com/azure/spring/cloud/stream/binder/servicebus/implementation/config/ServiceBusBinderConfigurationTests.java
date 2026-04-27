@@ -155,7 +155,7 @@ class ServiceBusBinderConfigurationTests {
     @Test
     void retryTemplateShouldBeWiredWhenBeanProvided() {
         this.contextRunner
-            .withBean(RetryTemplate.class, RetryTemplate::new)
+            .withBean("serviceBusRetryTemplate", RetryTemplate.class, RetryTemplate::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
                 assertThat(context).hasSingleBean(RetryTemplate.class);
