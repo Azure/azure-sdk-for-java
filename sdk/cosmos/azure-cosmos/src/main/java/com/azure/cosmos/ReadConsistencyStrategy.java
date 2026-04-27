@@ -15,22 +15,22 @@ import java.util.Map;
 /**
  * Represents the read consistency strategies supported by the Azure Cosmos DB service.
  * <p>
- * A {@code ReadConsistencyStrategy} (RCS) allows choosing the read consistency behavior independent
+ * A {@code ReadConsistencyStrategy} allows choosing the read consistency behavior independent
  * of the default consistency level configured for the database account. It can be set at the client
  * level via {@link CosmosClientBuilder#readConsistencyStrategy(ReadConsistencyStrategy)} or at
  * the request level via request options (e.g.,
  * {@link com.azure.cosmos.models.CosmosItemRequestOptions#setReadConsistencyStrategy(ReadConsistencyStrategy)}).
  * <p>
- * <b>Precedence:</b> When both {@link ConsistencyLevel} and RCS are set, RCS takes precedence
- * and {@code ConsistencyLevel} is ignored. When RCS is set to {@link #DEFAULT}, the configured
+ * <b>Precedence:</b> When both {@link ConsistencyLevel} and {@link ReadConsistencyStrategy} are set, ReadConsistencyStrategy takes precedence
+ * and {@code ConsistencyLevel} is ignored. When ReadConsistencyStrategy is set to {@link #DEFAULT}, the configured
  * {@code ConsistencyLevel} (or the account default) applies normally.
  * <p>
- * Request-level RCS overrides client-level RCS.
+ * Request-level ReadConsistencyStrategy overrides client-level ReadConsistencyStrategy.
  * <p>
  * RCS only applies to read operations on documents. Write operations always use {@link #DEFAULT}
  * regardless of the configured strategy.
  * <p>
- * Supported in all connection modes: Direct, Gateway, and thin client (Gateway V2).
+ * Supported in all connection modes: Direct, Gateway, and Gateway V2.
  */
 @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ReadConsistencyStrategy {
@@ -71,8 +71,8 @@ public enum ReadConsistencyStrategy {
     private static Map<String, ReadConsistencyStrategy> readConsistencyStrategyHashMap = new HashMap<>();
 
     static {
-        for (ReadConsistencyStrategy readConsistencyStrategy : ReadConsistencyStrategy.values()) {
-            readConsistencyStrategyHashMap.put(readConsistencyStrategy.toString(), readConsistencyStrategy);
+        for (ReadConsistencyStrategy rcs : ReadConsistencyStrategy.values()) {
+            readConsistencyStrategyHashMap.put(rcs.toString(), rcs);
         }
     }
 
