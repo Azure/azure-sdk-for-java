@@ -436,16 +436,16 @@ public class QuorumReader {
                             storeResult.getException()), null));
                     }
 
-                    // Check if all replicas returned 429 Too Many Requests.
+                    // Check if all contacted replicas returned 429 Too Many Requests.
                     // Yield early to let ResourceThrottleRetryPolicy handle the retry with appropriate backoff,
                     // instead of returning QuorumNotSelected which would trigger an unnecessary primary read attempt.
                     if (!responseResult.isEmpty() && responseResult.stream().allMatch(r -> r.isThrottledException)) {
-                        logger.info("QuorumReader: ensureQuorumSelectedStoreResponse - All replicas returned 429 Too Many Requests. "
-                            + "Yielding early to ResourceThrottleRetryPolicy.");
+                        logger.info("QuorumReader: ensureQuorumSelectedStoreResponse - All contacted replicas returned "
+                            + "429 Too Many Requests. Yielding early to ResourceThrottleRetryPolicy.");
                         return Mono.error(responseResult.get(0).getException());
                     }
 
-                    int responseCount= (int) responseResult.stream().filter(response -> response.isValid).count();
+                    int responseCount = (int) responseResult.stream().filter(response -> response.isValid).count();
 
                     if (responseCount < readQuorum) {
                         return Mono.just(Pair.of(new ReadQuorumResult(entity.requestContext.requestChargeTracker,
@@ -700,10 +700,10 @@ public class QuorumReader {
                             cosmosExceptionFromStoreResult);
                     }
 
-                    // Check if all replicas returned 429 Too Many Requests.
+                    // Check if all contacted replicas returned 429 Too Many Requests.
                     // Yield early to let ResourceThrottleRetryPolicy handle the retry with appropriate backoff.
                     if (!responses.isEmpty() && responses.stream().allMatch(r -> r.isThrottledException)) {
-                        logger.info("QuorumReader: waitForReadBarrierAsync - All replicas returned 429 Too Many Requests. "
+                        logger.info("QuorumReader: waitForReadBarrierAsync - All contacted replicas returned 429 Too Many Requests. "
                             + "Yielding early to ResourceThrottleRetryPolicy.");
                         return Flux.error(responses.get(0).getException());
                     }
@@ -795,15 +795,15 @@ public class QuorumReader {
                                                    cosmosExceptionFromStoreResult);
                                            }
 
-                                           // Check if all replicas returned 429 Too Many Requests.
+                                           // Check if all contacted replicas returned 429 Too Many Requests.
                                            // Yield early to let ResourceThrottleRetryPolicy handle the retry with appropriate backoff.
                                            if (!responses.isEmpty() && responses.stream().allMatch(r -> r.isThrottledException)) {
-                                               logger.info("QuorumReader: waitForReadBarrierAsync - All replicas returned 429 Too Many Requests "
-                                                   + "in multi-region barrier. Yielding early to ResourceThrottleRetryPolicy.");
+                                               logger.info("QuorumReader: waitForReadBarrierAsync - All contacted replicas returned 429 "
+                                                   + "Too Many Requests in multi-region barrier. Yielding early to ResourceThrottleRetryPolicy.");
                                                return Flux.error(responses.get(0).getException());
                                            }
 
-                                           long maxGlobalCommittedLsnInResponses= responses.size() > 0 ? responses.stream()
+                                           long maxGlobalCommittedLsnInResponses = responses.size() > 0 ? responses.stream()
                                                                                                                    .mapToLong(response -> response.globalCommittedLSN).max().getAsLong() : 0;
 
                                            if ((responses.stream().filter(response -> response.lsn >= readBarrierLsn).count() >= readQuorum) &&

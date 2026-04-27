@@ -518,8 +518,8 @@ public class ConsistencyWriter {
 
             if (writeBarrierRetryCount.get() == 0) {
                 if (lastAttemptWasThrottled.get()) {
-                    logger.warn("ConsistencyWriter: Write barrier failed after all retries due to consistent "
-                        + "throttling (429). Throwing RequestTimeoutException (408).");
+                    logger.warn("ConsistencyWriter: Write barrier failed after all retries; last attempt was "
+                        + "throttled (429). Throwing RequestTimeoutException (408).");
                     return Flux.error(
                         new RequestTimeoutException(
                             RMResources.RequestTimeout,
@@ -554,6 +554,7 @@ public class ConsistencyWriter {
 
                     if (isAvoidQuorumSelectionStoreResult) {
                         writeBarrierRetryCount.decrementAndGet();
+                        lastAttemptWasThrottled.set(false);
                         return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                             barrierRequest,
                             selectedGlobalCommittedLsn,
@@ -561,13 +562,13 @@ public class ConsistencyWriter {
                             cosmosExceptionFromStoreResult);
                     }
 
-                    // Track whether all replicas returned 429 Too Many Requests.
+                    // Track whether all contacted replica responses for this attempt returned 429 Too Many Requests.
                     // For writes, we do NOT yield early - continue retries to preserve idempotency.
                     // If all retries are exhausted due to consistent throttling, we throw 408 (RequestTimeout).
                     if (responses != null && !responses.isEmpty()
                         && responses.stream().allMatch(r -> r.isThrottledException)) {
-                        logger.info("ConsistencyWriter: waitForWriteBarrierAsync - All replicas returned 429 Too Many Requests. "
-                            + "Continuing retries.");
+                        logger.info("ConsistencyWriter: waitForWriteBarrierAsync - All contacted replicas returned "
+                            + "429 Too Many Requests for this attempt. Continuing retries.");
                         lastAttemptWasThrottled.set(true);
                     } else {
                         lastAttemptWasThrottled.set(false);
