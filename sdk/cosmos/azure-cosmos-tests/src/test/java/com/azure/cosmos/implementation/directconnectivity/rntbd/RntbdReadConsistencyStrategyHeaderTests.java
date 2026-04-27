@@ -204,15 +204,11 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
-        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        try {
-            assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, expectedByte))
-                .as("RNTBD frame from wrapInHttpRequest should contain readConsistencyStrategy header 0x00F0=0x%02X for %s",
-                    expectedByte, readConsistencyStrategyValue)
-                .isTrue();
-        } finally {
-            buffer.release();
-        }
+        RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+        Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+        assertThat(rcsValue)
+            .as("RNTBD frame should contain readConsistencyStrategy 0x%02X for %s", expectedByte, readConsistencyStrategyValue)
+            .isEqualTo(expectedByte);
     }
 
     @Test(groups = { "unit" })
@@ -226,14 +222,11 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
-        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        try {
-            assertThat(containsRntbdHeaderId(buffer, (short) 0x00F0))
-                .as("RNTBD frame should NOT contain readConsistencyStrategy header when not set")
-                .isFalse();
-        } finally {
-            buffer.release();
-        }
+        RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+        Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+        assertThat(rcsValue)
+            .as("ReadConsistencyStrategy token should not be set when header is absent (0 = unset)")
+            .isEqualTo((byte) 0);
     }
 
     @Test(groups = { "unit" })
@@ -248,17 +241,15 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
-        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        try {
-            assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, (byte) 0x03))
-                .as("RNTBD frame should contain readConsistencyStrategy=LatestCommitted (0x03)")
-                .isTrue();
-            assertThat(containsRntbdHeaderWithAnyValue(buffer, (short) 0x0010))
-                .as("RNTBD frame should NOT contain ConsistencyLevel when readConsistencyStrategy is set")
-                .isFalse();
-        } finally {
-            buffer.release();
-        }
+        RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+        Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+        assertThat(rcsValue)
+            .as("ReadConsistencyStrategy should be LatestCommitted (0x03)")
+            .isEqualTo((byte) 0x03);
+        Byte clValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ConsistencyLevel);
+        assertThat(clValue)
+            .as("ConsistencyLevel should not be set when ReadConsistencyStrategy is present (0 = unset)")
+            .isEqualTo((byte) 0);
     }
 
     // endregion
@@ -288,17 +279,15 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
-        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        try {
-            assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, (byte) 0x03))
-                .as("readConsistencyStrategy=LatestCommitted (0x03) should survive in the RNTBD frame")
-                .isTrue();
-            assertThat(containsRntbdHeaderWithAnyValue(buffer, (short) 0x0010))
-                .as("ConsistencyLevel should be stripped — only readConsistencyStrategy survives on the wire")
-                .isFalse();
-        } finally {
-            buffer.release();
-        }
+        RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+        Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+        assertThat(rcsValue)
+            .as("readConsistencyStrategy=LatestCommitted (0x03) should survive in the RNTBD frame")
+            .isEqualTo((byte) 0x03);
+        Byte clValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ConsistencyLevel);
+        assertThat(clValue)
+            .as("ConsistencyLevel should be stripped — only readConsistencyStrategy survives on the wire (0 = unset)")
+            .isEqualTo((byte) 0);
     }
 
     @Test(groups = { "unit" })
@@ -321,18 +310,15 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
-        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        try {
-            // Request-level LATEST_COMMITTED (0x03) should win over header-level Eventual
-            assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x00F0, (byte) 0x03))
-                .as("Request-level readConsistencyStrategy=LatestCommitted should override header-level readConsistencyStrategy=Eventual")
-                .isTrue();
-            assertThat(containsRntbdHeaderWithAnyValue(buffer, (short) 0x0010))
-                .as("ConsistencyLevel should be stripped")
-                .isFalse();
-        } finally {
-            buffer.release();
-        }
+        RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+        Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+        assertThat(rcsValue)
+            .as("Request-level readConsistencyStrategy=LatestCommitted should override header-level Eventual")
+            .isEqualTo((byte) 0x03);
+        Byte clValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ConsistencyLevel);
+        assertThat(clValue)
+            .as("ConsistencyLevel should be stripped (0 = unset)")
+            .isEqualTo((byte) 0);
     }
 
     @Test(groups = { "unit" })
@@ -350,19 +336,15 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
 
         byte[] rntbdFrame = collectHttpBody(httpRequest);
-        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        try {
-            assertThat(containsRntbdHeaderId(buffer, (short) 0x00F0))
-                .as("DEFAULT readConsistencyStrategy should not emit readConsistencyStrategy header")
-                .isFalse();
-            // Session = byte 0x03 in RntbdConsistencyLevel enum
-            assertThat(containsRntbdHeaderWithByte(buffer, (short) 0x0010,
-                    RntbdConstants.RntbdConsistencyLevel.Session.id()))
-                .as("ConsistencyLevel=Session should survive when readConsistencyStrategy is DEFAULT")
-                .isTrue();
-        } finally {
-            buffer.release();
-        }
+        RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+        Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+        assertThat(rcsValue)
+            .as("DEFAULT readConsistencyStrategy should not be set (0 = unset)")
+            .isEqualTo((byte) 0);
+        Byte clValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ConsistencyLevel);
+        assertThat(clValue)
+            .as("ConsistencyLevel=Session should survive when readConsistencyStrategy is DEFAULT")
+            .isEqualTo(RntbdConstants.RntbdConsistencyLevel.Session.id());
     }
 
     @Test(groups = { "unit" })
@@ -437,55 +419,12 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     // region RNTBD frame helpers
 
     /**
-     * Scans encoded RNTBD bytes for a header with the given ID and Byte value.
-     * RNTBD Byte tokens are encoded as: [headerID: 2 bytes LE] [tokenType: 1 byte = 0x00 for Byte] [value: 1 byte]
+     * Decodes the RNTBD binary frame using the production decoder.
+     * Token presence/absence is determined by the actual RNTBD wire format.
      */
-    private static boolean containsRntbdHeaderWithByte(ByteBuf buffer, short headerId, byte expectedValue) {
-        byte idLow = (byte) (headerId & 0xFF);
-        byte idHigh = (byte) ((headerId >> 8) & 0xFF);
-
-        for (int i = 0; i < buffer.writerIndex() - 3; i++) {
-            if (buffer.getByte(i) == idLow
-                && buffer.getByte(i + 1) == idHigh
-                && buffer.getByte(i + 2) == 0x00  // RntbdTokenType.Byte
-                && buffer.getByte(i + 3) == expectedValue) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Scans encoded RNTBD bytes for a header ID presence (any token type).
-     */
-    private static boolean containsRntbdHeaderId(ByteBuf buffer, short headerId) {
-        byte idLow = (byte) (headerId & 0xFF);
-        byte idHigh = (byte) ((headerId >> 8) & 0xFF);
-
-        for (int i = 0; i < buffer.writerIndex() - 1; i++) {
-            if (buffer.getByte(i) == idLow && buffer.getByte(i + 1) == idHigh) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if a Byte-type RNTBD header has any non-zero value set.
-     * ConsistencyLevel (0x0010) is Byte type — if not set, the token is not present.
-     */
-    private static boolean containsRntbdHeaderWithAnyValue(ByteBuf buffer, short headerId) {
-        byte idLow = (byte) (headerId & 0xFF);
-        byte idHigh = (byte) ((headerId >> 8) & 0xFF);
-
-        for (int i = 0; i < buffer.writerIndex() - 2; i++) {
-            if (buffer.getByte(i) == idLow
-                && buffer.getByte(i + 1) == idHigh
-                && buffer.getByte(i + 2) == 0x00) { // Byte token type
-                return true;
-            }
-        }
-        return false;
+    private static RntbdRequest decodeRntbdFrame(byte[] rntbdFrame) {
+        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
+        return RntbdRequest.decode(buffer);
     }
 
     // endregion
