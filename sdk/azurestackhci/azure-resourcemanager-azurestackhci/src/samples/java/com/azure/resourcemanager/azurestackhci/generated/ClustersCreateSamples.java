@@ -11,7 +11,7 @@ import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType
  */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateCluster.json
+     * x-ms-original-file: 2026-04-01-preview/CreateCluster.json
      */
     /**
      * Sample code: Create cluster.
@@ -23,6 +23,7 @@ public final class ClustersCreateSamples {
             .define("myCluster")
             .withRegion("East US")
             .withExistingResourceGroup("test-rg")
+            .withKind("AzureLocal")
             .withCloudManagementEndpoint("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com")
             .withAadClientId("24a6e53d-04e5-44d2-b7cc-1b732a847dfc")
             .withAadTenantId("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94")

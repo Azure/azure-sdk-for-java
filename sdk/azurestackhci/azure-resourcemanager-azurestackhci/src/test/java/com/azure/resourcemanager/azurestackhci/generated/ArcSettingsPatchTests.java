@@ -18,30 +18,32 @@ public final class ArcSettingsPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcSettingsPatch model = BinaryData.fromString(
-            "{\"tags\":{\"hqjbasvmsmj\":\"jaeq\",\"ybkzgcwr\":\"ulngsntn\"},\"properties\":{\"connectivityProperties\":{\"enabled\":true,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":5729741485194722983},{\"serviceName\":\"WAC\",\"port\":4069471963990822296},{\"serviceName\":\"WAC\",\"port\":6350015487998990980}]}}}")
+            "{\"tags\":{\"rdqmhjjdhtldwkyz\":\"fhvpesaps\",\"cwsvlxotog\":\"uutkncw\",\"o\":\"wrupqsxvnmicykvc\",\"vnotyfjfcnj\":\"eil\"},\"properties\":{\"connectivityProperties\":{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":9006034643564809106},{\"serviceName\":\"WAC\",\"port\":8193047899870499227},{\"serviceName\":\"WAC\",\"port\":3389150411931097384}]}}}")
             .toObject(ArcSettingsPatch.class);
-        Assertions.assertEquals("jaeq", model.tags().get("hqjbasvmsmj"));
-        Assertions.assertTrue(model.connectivityProperties().enabled());
+        Assertions.assertEquals("fhvpesaps", model.tags().get("rdqmhjjdhtldwkyz"));
+        Assertions.assertFalse(model.connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             model.connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(5729741485194722983L,
+        Assertions.assertEquals(9006034643564809106L,
             model.connectivityProperties().serviceConfigurations().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcSettingsPatch model = new ArcSettingsPatch().withTags(mapOf("hqjbasvmsmj", "jaeq", "ybkzgcwr", "ulngsntn"))
-            .withConnectivityProperties(new ArcConnectivityProperties().withEnabled(true)
+        ArcSettingsPatch model = new ArcSettingsPatch()
+            .withTags(mapOf("rdqmhjjdhtldwkyz", "fhvpesaps", "cwsvlxotog", "uutkncw", "o", "wrupqsxvnmicykvc",
+                "vnotyfjfcnj", "eil"))
+            .withConnectivityProperties(new ArcConnectivityProperties().withEnabled(false)
                 .withServiceConfigurations(Arrays.asList(
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(5729741485194722983L),
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(4069471963990822296L),
-                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(6350015487998990980L))));
+                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(9006034643564809106L),
+                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(8193047899870499227L),
+                    new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3389150411931097384L))));
         model = BinaryData.fromObject(model).toObject(ArcSettingsPatch.class);
-        Assertions.assertEquals("jaeq", model.tags().get("hqjbasvmsmj"));
-        Assertions.assertTrue(model.connectivityProperties().enabled());
+        Assertions.assertEquals("fhvpesaps", model.tags().get("rdqmhjjdhtldwkyz"));
+        Assertions.assertFalse(model.connectivityProperties().enabled());
         Assertions.assertEquals(ServiceName.WAC,
             model.connectivityProperties().serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(5729741485194722983L,
+        Assertions.assertEquals(9006034643564809106L,
             model.connectivityProperties().serviceConfigurations().get(0).port());
     }
 

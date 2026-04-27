@@ -9,4 +9,9 @@ private[cosmos] abstract class CosmosItemSerializerNoExceptionWrapping extends C
     .CosmosItemSerializerHelper
     .getCosmosItemSerializerAccessor
     .setShouldWrapSerializationExceptions(this, false)
+
+  ImplementationBridgeHelpers
+    .CosmosItemSerializerHelper
+    .getCosmosItemSerializerAccessor
+    .setCanSerialize(this, false)
 }

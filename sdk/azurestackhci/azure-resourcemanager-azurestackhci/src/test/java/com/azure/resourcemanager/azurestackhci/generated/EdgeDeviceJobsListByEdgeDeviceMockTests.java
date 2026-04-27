@@ -21,7 +21,7 @@ public final class EdgeDeviceJobsListByEdgeDeviceMockTests {
     @Test
     public void testListByEdgeDevice() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"EdgeDeviceJob\",\"id\":\"poq\",\"name\":\"xyemhkft\",\"type\":\"aew\"}]}";
+            = "{\"value\":[{\"kind\":\"EdgeDeviceJob\",\"id\":\"qx\",\"name\":\"gjxugdcrrfb\",\"type\":\"lv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class EdgeDeviceJobsListByEdgeDeviceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<EdgeDeviceJob> response = manager.edgeDeviceJobs()
-            .listByEdgeDevice("zobuzmsxgamtdtk", "ppthuzdprmimrl", com.azure.core.util.Context.NONE);
+        PagedIterable<EdgeDeviceJob> response
+            = manager.edgeDeviceJobs().listByEdgeDevice("fwxud", "noh", com.azure.core.util.Context.NONE);
 
     }
 }

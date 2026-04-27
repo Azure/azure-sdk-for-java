@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetsListSkusSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.
@@ -24,7 +24,7 @@ public final class VirtualMachineScaleSetsListSkusSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.

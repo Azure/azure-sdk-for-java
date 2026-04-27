@@ -38,6 +38,11 @@ public final class CertificateAuthorityConfiguration implements JsonSerializable
      */
     private OffsetDateTime validityNotAfter;
 
+    /*
+     * Configuration for Bring Your Own Root.
+     */
+    private BringYourOwnRoot bringYourOwnRoot;
+
     /**
      * Creates an instance of CertificateAuthorityConfiguration class.
      */
@@ -94,12 +99,33 @@ public final class CertificateAuthorityConfiguration implements JsonSerializable
     }
 
     /**
+     * Get the bringYourOwnRoot property: Configuration for Bring Your Own Root.
+     * 
+     * @return the bringYourOwnRoot value.
+     */
+    public BringYourOwnRoot bringYourOwnRoot() {
+        return this.bringYourOwnRoot;
+    }
+
+    /**
+     * Set the bringYourOwnRoot property: Configuration for Bring Your Own Root.
+     * 
+     * @param bringYourOwnRoot the bringYourOwnRoot value to set.
+     * @return the CertificateAuthorityConfiguration object itself.
+     */
+    public CertificateAuthorityConfiguration withBringYourOwnRoot(BringYourOwnRoot bringYourOwnRoot) {
+        this.bringYourOwnRoot = bringYourOwnRoot;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyType", this.keyType == null ? null : this.keyType.toString());
+        jsonWriter.writeJsonField("bringYourOwnRoot", this.bringYourOwnRoot);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,6 +157,8 @@ public final class CertificateAuthorityConfiguration implements JsonSerializable
                 } else if ("validityNotAfter".equals(fieldName)) {
                     deserializedCertificateAuthorityConfiguration.validityNotAfter = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("bringYourOwnRoot".equals(fieldName)) {
+                    deserializedCertificateAuthorityConfiguration.bringYourOwnRoot = BringYourOwnRoot.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
