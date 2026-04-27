@@ -8,6 +8,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,8 +48,9 @@ class ServiceBusRetryTest {
 
     private final ServiceBusConsumerProperties serviceBusConsumerProperties = new ServiceBusConsumerProperties();
 
-    private final ServiceBusMessageChannelTestBinder binder = new ServiceBusMessageChannelTestBinder(
-        BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
+    private ServiceBusMessageChannelTestBinder binder;
+
+    private GenericApplicationContext applicationContext;
 
     private static final String ENTITY_NAME = "test-entity";
     private static final String GROUP = "test";
@@ -56,9 +58,18 @@ class ServiceBusRetryTest {
 
     @BeforeEach
     void init() {
-        GenericApplicationContext context = new GenericApplicationContext();
-        context.refresh();
-        binder.setApplicationContext(context);
+        binder = new ServiceBusMessageChannelTestBinder(
+            BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
+        applicationContext = new GenericApplicationContext();
+        applicationContext.refresh();
+        binder.setApplicationContext(applicationContext);
+    }
+
+    @AfterEach
+    void tearDown() {
+        if (applicationContext != null) {
+            applicationContext.close();
+        }
     }
 
     @Test

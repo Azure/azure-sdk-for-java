@@ -188,11 +188,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private void sendMessageDirectly(Message<?> message) {
         MessageChannel outputCh = getOutputChannel();
         Assert.notNull(outputCh, "Output channel must not be null");
-        try {
-            getMessagingTemplate().send(outputCh, message);
-        } catch (MessageDeliveryException ex) {
-            throw ex;
-        }
+        getMessagingTemplate().send(outputCh, message);
     }
 
     private class IntegrationErrorHandler implements ServiceBusErrorHandler {
