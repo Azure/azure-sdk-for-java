@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation;
+package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -10,6 +10,14 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.SpyClientUnderTestFactory;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -17,7 +25,6 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -77,12 +84,8 @@ public class ReadConsistencyStrategySpyWireTest {
     private SpyClientUnderTestFactory.ClientUnderTest v2SpyClient;
     private boolean v2Available;
 
-    private String savedThinClientProperty;
-
     @BeforeClass(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        // Save and set thin client property
-        savedThinClientProperty = System.getProperty("COSMOS.THINCLIENT_ENABLED");
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         cosmosClient = new CosmosClientBuilder()
@@ -123,13 +126,6 @@ public class ReadConsistencyStrategySpyWireTest {
 
     @AfterClass(groups = {"thinclient"}, alwaysRun = true)
     public void afterClass() {
-        // Restore thin client property
-        if (savedThinClientProperty != null) {
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", savedThinClientProperty);
-        } else {
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        }
-
         if (database != null) {
             try {
                 database.delete().block();

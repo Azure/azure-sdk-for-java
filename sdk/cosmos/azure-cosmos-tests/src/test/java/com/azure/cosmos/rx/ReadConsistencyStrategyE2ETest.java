@@ -1,7 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.rx;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -17,7 +29,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -69,11 +80,8 @@ public class ReadConsistencyStrategyE2ETest {
     private String containerId;
     private boolean gatewayV2Available;
 
-    private String savedThinClientProperty;
-
     @BeforeClass(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        savedThinClientProperty = System.getProperty("COSMOS.THINCLIENT_ENABLED");
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         databaseId = "readConsistencyStrategy-e2e-" + UUID.randomUUID().toString().substring(0, 8);
@@ -113,11 +121,6 @@ public class ReadConsistencyStrategyE2ETest {
 
     @AfterClass(groups = {"thinclient"}, alwaysRun = true)
     public void afterClass() {
-        if (savedThinClientProperty != null) {
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", savedThinClientProperty);
-        } else {
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        }
         if (database != null) {
             try {
                 database.delete().block();
@@ -581,9 +584,7 @@ public class ReadConsistencyStrategyE2ETest {
 
     private void assertEndpointForMode(String mode, CosmosDiagnostics diagnostics) {
         if (isGatewayV2(mode) && gatewayV2Available) {
-            assertThat(hasThinClientEndpoint(diagnostics))
-                .as("Expected at least one request to use thin client endpoint (:10250/)")
-                .isTrue();
+            TestSuiteBase.assertThinClientEndpointUsed(diagnostics);
         }
     }
 
