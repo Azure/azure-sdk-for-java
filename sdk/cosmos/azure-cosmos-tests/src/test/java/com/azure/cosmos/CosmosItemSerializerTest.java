@@ -1157,35 +1157,39 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         String id = UUID.randomUUID().toString();
         TestDocument doc = TestDocument.create(id);
 
-        // Create the document first (using explicit request-level serializer to ensure it exists)
-        CosmosItemRequestOptions createOptions = new CosmosItemRequestOptions();
-        if (useEnvelopeWrapper) {
-            createOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
-        }
-        container.createItem(doc, new PartitionKey(id), createOptions);
+        try {
+            // Create the document first (using explicit request-level serializer to ensure it exists)
+            CosmosItemRequestOptions createOptions = new CosmosItemRequestOptions();
+            if (useEnvelopeWrapper) {
+                createOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+            }
+            container.createItem(doc, new PartitionKey(id), createOptions);
 
-        // Now upsert WITHOUT setting a request-level serializer.
-        // The client-level serializer from CosmosClientBuilder must be used.
-        doc.someNumber = 777;
-        CosmosItemRequestOptions upsertOptions = new CosmosItemRequestOptions();
-        // Intentionally NOT setting customItemSerializer on upsertOptions
-        CosmosItemResponse<TestDocument> upsertResponse =
-            container.upsertItem(doc, new PartitionKey(id), upsertOptions);
+            // Now upsert WITHOUT setting a request-level serializer.
+            // The client-level serializer from CosmosClientBuilder must be used.
+            doc.someNumber = 777;
+            CosmosItemRequestOptions upsertOptions = new CosmosItemRequestOptions();
+            // Intentionally NOT setting customItemSerializer on upsertOptions
+            CosmosItemResponse<TestDocument> upsertResponse =
+                container.upsertItem(doc, new PartitionKey(id), upsertOptions);
 
-        if (this.isContentOnWriteEnabled) {
-            assertThat(upsertResponse.getItem()).isNotNull();
-            assertSameDocument(doc, upsertResponse.getItem());
-        }
+            if (this.isContentOnWriteEnabled) {
+                assertThat(upsertResponse.getItem()).isNotNull();
+                assertSameDocument(doc, upsertResponse.getItem());
+            }
 
-        // Also verify via read that the document was serialized correctly
-        CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
-        if (useEnvelopeWrapper) {
-            readOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+            // Also verify via read that the document was serialized correctly
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+            if (useEnvelopeWrapper) {
+                readOptions.setCustomItemSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+            }
+            CosmosItemResponse<TestDocument> readResponse =
+                container.readItem(id, new PartitionKey(id), readOptions, TestDocument.class);
+            assertThat(readResponse.getItem()).isNotNull();
+            assertSameDocument(doc, readResponse.getItem());
+        } finally {
+            container.deleteItem(id, new PartitionKey(id), new CosmosItemRequestOptions());
         }
-        CosmosItemResponse<TestDocument> readResponse =
-            container.readItem(id, new PartitionKey(id), readOptions, TestDocument.class);
-        assertThat(readResponse.getItem()).isNotNull();
-        assertSameDocument(doc, readResponse.getItem());
     }
 
     private static class TestChildObject {
