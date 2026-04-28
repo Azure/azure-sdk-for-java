@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -222,24 +221,6 @@ public final class FleetsClientImpl implements FleetsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @QueryParam("$filter") String filter, @QueryParam("$skiptoken") String skiptoken,
             @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}/cancel")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            Context context);
-
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}/cancel")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1176,7 +1157,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1202,7 +1183,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1222,7 +1203,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1240,7 +1221,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1264,7 +1245,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1289,7 +1270,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1307,7 +1288,7 @@ public final class FleetsClientImpl implements FleetsClient {
     }
 
     /**
-     * List VirtualMachine resources of an instance Fleet.
+     * List VirtualMachine resources of a Launch mode Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
@@ -1326,151 +1307,6 @@ public final class FleetsClientImpl implements FleetsClient {
         return new PagedIterable<>(
             () -> listVirtualMachinesSinglePage(resourceGroupName, name, filter, skiptoken, context),
             nextLink -> listVirtualMachinesNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String fleetName) {
-        return FluxUtil
-            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String fleetName) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fleetName, Context.NONE);
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String fleetName, Context context) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fleetName, context);
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String fleetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, fleetName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String fleetName) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, fleetName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String fleetName, Context context) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, fleetName, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(String resourceGroupName, String fleetName) {
-        return beginCancelAsync(resourceGroupName, fleetName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String fleetName) {
-        beginCancel(resourceGroupName, fleetName).getFinalResult();
-    }
-
-    /**
-     * Cancels an instance Fleet creation that is in progress.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Compute Fleet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String fleetName, Context context) {
-        beginCancel(resourceGroupName, fleetName, context).getFinalResult();
     }
 
     /**
