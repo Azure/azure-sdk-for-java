@@ -1286,4 +1286,51 @@ class ManagementChannelTests {
             .expectComplete()
             .verify(TIMEOUT);
     }
+
+    /**
+     * Verifies that {@code getMessageSessions} rejects negative {@code skip} and non-positive
+     * {@code top} arguments with a logged {@link IllegalArgumentException}, so an invalid call
+     * fails fast instead of producing a confusing broker error.
+     */
+    @Test
+    void getMessageSessionsRejectsInvalidPagingArgs() {
+        final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, -1, 100, null))
+            .expectError(IllegalArgumentException.class)
+            .verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 0, null))
+            .expectError(IllegalArgumentException.class)
+            .verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, -10, null))
+            .expectError(IllegalArgumentException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that when the broker returns a negative {@code skip} (or omits the field entirely),
+     * {@code readResponseSkip} falls back to {@code requestSkip + pageSize} rather than letting a
+     * negative cursor reach the next request. Saturation guards against overflow as well.
+     */
+    @Test
+    void getMessageSessionsFallsBackOnInvalidServerSkip() {
+        // Arrange - response page returns 2 sessions but reports skip = -1 (invalid).
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "a", "b" });
+        responseBody.put(ManagementConstants.SKIP, -1);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert - cursor should advance by requestSkip + page.size() = 5 + 2 = 7.
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 5,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals(7, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
 }

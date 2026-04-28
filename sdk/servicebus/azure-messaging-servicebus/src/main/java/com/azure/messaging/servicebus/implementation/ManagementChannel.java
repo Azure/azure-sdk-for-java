@@ -514,6 +514,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
         if (lastUpdatedTime == null) {
             return monoError(logger, new NullPointerException("'lastUpdatedTime' cannot be null."));
         }
+        if (skip < 0) {
+            return monoError(logger, new IllegalArgumentException("'skip' must be non-negative; got " + skip + "."));
+        }
+        if (top <= 0) {
+            return monoError(logger, new IllegalArgumentException("'top' must be positive; got " + top + "."));
+        }
 
         // Track 1's SessionBrowser uses new Date(253402300800000L) as the active-messages sentinel
         // (1ms past 9999-12-31T23:59:59.999Z, i.e. 10000-01-01T00:00:00Z UTC). This is the wire
@@ -590,16 +596,35 @@ public class ManagementChannel implements ServiceBusManagementNode {
     /**
      * Reads the {@code skip} value the service returns alongside the session-ID page. Track 1 uses
      * this server-returned value as the cursor for the next page rather than {@code currentSkip +
-     * page.size()}, so callers must propagate it verbatim. If the field is missing or non-numeric,
-     * advance by the size of the page actually returned so a malformed response cannot stall the
-     * cursor on the same skip value.
+     * page.size()}, so callers must propagate it verbatim. If the field is missing, non-numeric,
+     * negative, or outside the {@code int} range, fall back to advancing by the size of the page
+     * actually returned (saturating to {@link Integer#MAX_VALUE} on overflow) so a malformed
+     * response cannot stall the cursor on the same skip value or wrap into a negative cursor.
      */
     private static int readResponseSkip(Map<String, Object> responseBody, int requestSkip, int pageSize) {
         final Object value = responseBody.get(ManagementConstants.SKIP);
         if (value instanceof Number) {
-            return ((Number) value).intValue();
+            final long responseSkip = ((Number) value).longValue();
+            if (responseSkip >= 0 && responseSkip <= Integer.MAX_VALUE) {
+                return (int) responseSkip;
+            }
         }
-        return requestSkip + pageSize;
+        return computeFallbackSkip(requestSkip, pageSize);
+    }
+
+    /**
+     * Computes the fallback cursor when the server-returned {@code skip} is missing or out of
+     * range. Saturates at {@code 0} (if the addition wraps negative) and {@link Integer#MAX_VALUE}
+     * (if it overflows) so the next request stays a valid {@code int}.
+     */
+    private static int computeFallbackSkip(int requestSkip, int pageSize) {
+        final long nextSkip = (long) requestSkip + pageSize;
+        if (nextSkip <= 0) {
+            return 0;
+        } else if (nextSkip >= Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) nextSkip;
     }
 
     /**
