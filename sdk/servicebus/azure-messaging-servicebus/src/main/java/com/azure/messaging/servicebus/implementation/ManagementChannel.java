@@ -569,11 +569,21 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 final Map<String, Object> map = (Map<String, Object>) value;
                 final Object sessionsObj = map.get(ManagementConstants.SESSION_IDS);
 
+                // Accept both Object[] (the shape qpid-proton currently surfaces) and any
+                // Iterable<?> (List, Set, ...) so a future broker/library change in payload type
+                // doesn't silently produce an empty page and prematurely terminate pagination.
                 final List<String> sessionIds;
-                if (sessionsObj instanceof Object[]) {
+                if (sessionsObj == null) {
+                    sessionIds = Collections.emptyList();
+                } else if (sessionsObj instanceof Object[]) {
                     final Object[] sessionArray = (Object[]) sessionsObj;
                     sessionIds = new ArrayList<>(sessionArray.length);
                     for (Object id : sessionArray) {
+                        sessionIds.add(String.valueOf(id));
+                    }
+                } else if (sessionsObj instanceof Iterable<?>) {
+                    sessionIds = new ArrayList<>();
+                    for (Object id : (Iterable<?>) sessionsObj) {
                         sessionIds.add(String.valueOf(id));
                     }
                 } else {
@@ -616,15 +626,15 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     /**
-     * Computes the fallback cursor when the server-returned {@code skip} is missing or out of
-     * range. Saturates at {@code 0} (if the addition wraps negative) and {@link Integer#MAX_VALUE}
-     * (if it overflows) so the next request stays a valid {@code int}.
+     * Computes the fallback cursor when the server-returned {@code skip} is missing, non-numeric,
+     * negative, or outside the {@code int} range. The addition is performed in {@code long} (and
+     * {@code requestSkip} is validated as non-negative at the call site) so wraparound cannot
+     * occur; the only thing to guard against is overflow past {@link Integer#MAX_VALUE}, which is
+     * clamped so the next request stays a valid {@code int}.
      */
     private static int computeFallbackSkip(int requestSkip, int pageSize) {
         final long nextSkip = (long) requestSkip + pageSize;
-        if (nextSkip <= 0) {
-            return 0;
-        } else if (nextSkip >= Integer.MAX_VALUE) {
+        if (nextSkip >= Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
         }
         return (int) nextSkip;

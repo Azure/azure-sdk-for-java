@@ -1362,4 +1362,32 @@ class ManagementChannelTests {
         assertTrue(body.containsKey(ManagementConstants.LAST_SESSION_ID));
         assertEquals("", body.get(ManagementConstants.LAST_SESSION_ID));
     }
+
+    /**
+     * Verifies that {@code getMessageSessions} parses the {@code sessions-ids} payload when the
+     * AMQP layer surfaces it as an {@link Iterable} (e.g., {@link java.util.List}) instead of an
+     * {@code Object[]}. Treating only arrays would silently produce an empty page and prematurely
+     * terminate pagination if a future broker or codec change altered the payload shape.
+     */
+    @Test
+    void getMessageSessionsParsesIterableSessionIds() {
+        // Arrange - response body uses a List for sessions-ids instead of an Object[].
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, java.util.Arrays.asList("listed-1", "listed-2"));
+        responseBody.put(ManagementConstants.SKIP, 2);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals("listed-1", result.getSessionIds().get(0));
+                assertEquals("listed-2", result.getSessionIds().get(1));
+                assertEquals(2, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
 }
