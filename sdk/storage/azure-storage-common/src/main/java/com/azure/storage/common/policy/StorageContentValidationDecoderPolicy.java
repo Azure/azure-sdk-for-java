@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
@@ -28,13 +27,11 @@ import java.nio.ByteBuffer;
  *
  * <p>The policy is activated by the presence of a boolean context key
  * ({@link StructuredMessageConstants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY}). It validates per-segment
- * CRC64 checksums during decoding. The policy is registered early in the pipeline; each retry re-enters the policy
- * with a fresh response body, so no cross-retry state management is needed in the policy.</p>
+ * CRC64 checksums during decoding.</p>
  *
  * <p>Emission guarantee: the policy only forwards payload bytes that the
- * {@link StructuredMessageDecoder} has already CRC-validated at the segment boundary. Retries never expose
- * partially validated bytes because each attempt creates a fresh decoder and the decoder itself withholds
- * bytes until their enclosing segment passes validation.</p>
+ * {@link StructuredMessageDecoder} has already CRC-validated at the segment boundary. Each invocation creates
+ * a fresh decoder and the decoder itself withholds bytes until their enclosing segment passes validation.</p>
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
@@ -43,11 +40,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
      */
     public StorageContentValidationDecoderPolicy() {
-    }
-
-    @Override
-    public HttpPipelinePosition getPipelinePosition() {
-        return HttpPipelinePosition.PER_RETRY;
     }
 
     @Override

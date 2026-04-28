@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
@@ -13,14 +15,12 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,9 +28,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Sync tests for structured message decoding during blob downloads using StorageContentValidationDecoderPolicy.
@@ -39,31 +42,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Execution(ExecutionMode.SAME_THREAD)
 public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
-    private BlobAsyncClient bc;
-
-    @BeforeEach
-    public void setup() {
-        String blobName = generateBlobName();
-        bc = ccAsync.getBlobAsyncClient(blobName);
-        bc.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null).block();
-    }
-
     /**
      * downloadStreamWithResponse with CRC64 content validation.
      */
     @Test
     public void downloadStreamWithResponseContentValidation() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobClient syncClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
+        client.upload(BinaryData.fromBytes(data));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        syncClient.downloadStreamWithResponse(outputStream,
+        client.downloadStreamWithResponse(outputStream,
             new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null,
             Context.NONE);
 
         TestUtils.assertArraysEqual(data, outputStream.toByteArray());
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -72,12 +68,13 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     @Test
     public void downloadContentWithResponseContentValidation() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobClient syncClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
+        client.upload(BinaryData.fromBytes(data));
 
         byte[] result
-            = syncClient
+            = client
                 .downloadContentWithResponse(
                     new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                     null, Context.NONE)
@@ -85,6 +82,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
                 .toBytes();
 
         TestUtils.assertArraysEqual(data, result);
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -96,9 +94,10 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     public void downloadToFileWithResponseContentValidation(int blockSize) throws IOException {
         int payloadSize = (4 * blockSize) + 1;
         byte[] randomData = getRandomByteArray(payloadSize);
-        bc.upload(Flux.just(ByteBuffer.wrap(randomData)), null, true).block();
 
-        BlobClient downloadClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
+        client.upload(BinaryData.fromBytes(randomData));
 
         Path tempFile = Files.createTempFile("structured-download-sync", ".bin");
         Files.deleteIfExists(tempFile);
@@ -109,8 +108,9 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
                 .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try {
-            assertNotNull(downloadClient.downloadToFileWithResponse(options, null, Context.NONE).getValue());
+            assertNotNull(client.downloadToFileWithResponse(options, null, Context.NONE).getValue());
             TestUtils.assertArraysEqual(randomData, Files.readAllBytes(tempFile));
+            assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
         } finally {
             Files.deleteIfExists(tempFile);
         }
@@ -122,11 +122,12 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     @Test
     public void openInputStreamContentValidation() throws IOException {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobClient syncClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
+        client.upload(BinaryData.fromBytes(data));
 
-        try (BlobInputStream blobInputStream = syncClient.openInputStream(
+        try (BlobInputStream blobInputStream = client.openInputStream(
             new BlobInputStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
             Context.NONE)) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -137,6 +138,7 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
             }
             TestUtils.assertArraysEqual(data, baos.toByteArray());
         }
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -145,11 +147,12 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
     @Test
     public void openSeekableByteChannelReadContentValidation() throws IOException {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobClient syncClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
+        client.upload(BinaryData.fromBytes(data));
 
-        try (SeekableByteChannel channel = syncClient.openSeekableByteChannelRead(
+        try (SeekableByteChannel channel = client.openSeekableByteChannelRead(
             new BlobSeekableByteChannelReadOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
             Context.NONE).getChannel()) {
             ByteBuffer buf = ByteBuffer.allocate(data.length + 100);
@@ -163,5 +166,6 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
             buf.get(result, 0, totalRead);
             TestUtils.assertArraysEqual(data, result);
         }
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 }

@@ -3,8 +3,10 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -36,6 +38,8 @@ import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,10 +69,9 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     public void downloadStreamWithResponseContentValidation() throws IOException {
         byte[] randomData = getRandomByteArray(10 * 1024 * 1024);
 
-        bc.upload(Flux.just(ByteBuffer.wrap(randomData)), null, true).block();
-
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient downloadClient = createBlobAsyncClientWithRequestSniffer(recorded);
+        downloadClient.upload(BinaryData.fromBytes(randomData)).block();
 
         StepVerifier
             .create(downloadClient
@@ -77,6 +80,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -85,16 +89,17 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     @Test
     public void downloadContentWithResponseContentValidation() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient downloadClient = createBlobAsyncClientWithRequestSniffer(recorded);
+        downloadClient.upload(BinaryData.fromBytes(data)).block();
 
         StepVerifier
             .create(downloadClient.downloadContentWithResponse(
                 new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -106,10 +111,10 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     public void downloadToFileWithResponseContentValidation(int blockSize) throws IOException {
         int payloadSize = (4 * blockSize) + 1;
         byte[] randomData = getRandomByteArray(payloadSize);
-        bc.upload(Flux.just(ByteBuffer.wrap(randomData)), null, true).block();
 
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient downloadClient = createBlobAsyncClientWithRequestSniffer(recorded);
+        downloadClient.upload(BinaryData.fromBytes(randomData)).block();
 
         Path tempFile = Files.createTempFile("structured-download", ".bin");
         Files.deleteIfExists(tempFile);
@@ -126,6 +131,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
                 .verify(Duration.ofSeconds(60));
 
             TestUtils.assertArraysEqual(randomData, Files.readAllBytes(tempFile));
+            assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
         } finally {
             Files.deleteIfExists(tempFile);
         }
@@ -138,10 +144,10 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     public void structuredMessagePopulatesCrc64DownloadStreaming() throws IOException {
         int dataLength = 10 * 1024 * 1024;
         byte[] data = getRandomByteArray(dataLength);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient downloadClient = createBlobAsyncClientWithRequestSniffer(recorded);
+        downloadClient.upload(BinaryData.fromBytes(data)).block();
 
         long expectedCrc = StorageCrc64Calculator.compute(data, 0);
         byte[] expectedCrcBytes = new byte[8];
@@ -159,6 +165,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
                 TestUtils.assertArraysEqual(expectedCrcBytes, tuple.getT1().getDeserializedHeaders().getContentCrc64());
             })
             .verifyComplete();
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -344,10 +351,10 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     @Test
     public void downloadStreamWithAuto() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient downloadClient = createBlobAsyncClientWithRequestSniffer(recorded);
+        downloadClient.upload(BinaryData.fromBytes(data)).block();
 
         StepVerifier
             .create(downloadClient
@@ -356,6 +363,7 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     /**
@@ -379,16 +387,17 @@ public class BlobMessageAsyncDecoderDownloadTests extends BlobTestBase {
     @Test
     public void downloadContentWithAuto() {
         byte[] data = getRandomByteArray(10 * 1024 * 1024);
-        bc.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        BlobAsyncClient downloadClient
-            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl());
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient downloadClient = createBlobAsyncClientWithRequestSniffer(recorded);
+        downloadClient.upload(BinaryData.fromBytes(data)).block();
 
         StepVerifier
             .create(downloadClient.downloadContentWithResponse(
                 new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
 
     static boolean isLiveMode() {
