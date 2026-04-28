@@ -829,4 +829,95 @@ public class ConsistencyWriterTest {
             .expectComplete()
             .verify(Duration.ofSeconds(30));
     }
+
+    @Test(groups = "unit")
+    public void writeBarrier_AvoidQuorumSelectionAfterThrottling_NoFalse408() {
+        // Validates fix for stale lastAttemptWasThrottled flag:
+        // Iteration 1: all replicas return 429 → lastAttemptWasThrottled = true
+        // Iteration 2: replica returns avoidQuorumSelection exception (410/LeaseNotFound)
+        // The flag should be reset, so when retries exhaust, we get false (barrier not met) — NOT 408.
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        StoreResult throttledStoreResult = new StoreResult(
+            null, throttleException, "1", 0, 0, 0.0,
+            UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            4, 2, false, null, 0, 0, 1, 1, null, 0.3, 90.0);
+
+        // avoidQuorumSelection exception: GONE + LEASE_NOT_FOUND
+        GoneException leaseNotFoundGone = new GoneException(
+            "Lease not found",
+            SubStatusCodes.LEASE_NOT_FOUND);
+        StoreResult avoidQuorumResult = new StoreResult(
+            null, leaseNotFoundGone, "1", 0, 0, 0.0,
+            UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            4, 2, false, null, 0, 0, 1, 1, null, 0.3, 90.0);
+
+        StoreReader storeReader = Mockito.mock(StoreReader.class);
+        // First call: all throttled. Second+ calls: avoidQuorumSelection exception.
+        Mockito.when(storeReader.readMultipleReplicaAsync(
+                Mockito.any(), Mockito.anyBoolean(), Mockito.anyInt(),
+                Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.any(),
+                Mockito.anyBoolean(), Mockito.anyBoolean()))
+            .thenReturn(Mono.just(Collections.singletonList(throttledStoreResult)))
+            .thenReturn(Mono.just(Collections.singletonList(avoidQuorumResult)));
+
+        // Mock readPrimaryAsync for the avoidQuorum path's primary barrier check.
+        // Return a result that doesn't meet the barrier (LSN too low).
+        StoreResult primaryNotMetResult = new StoreResult(
+            null, leaseNotFoundGone, "1", 0, 0, 0.0,
+            UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            4, 2, false, null, 0, 0, 1, 1, null, 0.3, 90.0);
+        Mockito.when(storeReader.readPrimaryAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean()))
+            .thenReturn(Mono.just(primaryNotMetResult));
+
+        initializeConsistencyWriterWithStoreReader(false, storeReader);
+
+        RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        barrierRequest.requestContext.timeoutHelper = timeoutHelper;
+
+        Mono<Boolean> result = consistencyWriter.waitForWriteBarrierAsync(
+            barrierRequest, 100L, new java.util.concurrent.atomic.AtomicReference<>(null), BarrierType.GLOBAL_STRONG_WRITE);
+
+        // Should return false (barrier not met) — NOT throw 408, because
+        // lastAttemptWasThrottled was reset by the avoidQuorumSelection path.
+        StepVerifier.create(result)
+            .expectNext(Boolean.FALSE)
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
+    }
+
+    @Test(groups = "unit")
+    public void writeBarrier_NRegionCommit_AllReplicasThrottled_Returns408() {
+        // Same as writeBarrier_AllReplicasThrottled_Returns408 but with N_REGION_SYNCHRONOUS_COMMIT barrier type.
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        StoreResult throttledStoreResult = new StoreResult(
+            null, throttleException, "1", 0, 0, 0.0,
+            UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            4, 2, false, null, 0, 0, 1, 1, null, 0.3, 90.0);
+
+        StoreReader storeReader = Mockito.mock(StoreReader.class);
+        Mockito.when(storeReader.readMultipleReplicaAsync(
+                Mockito.any(), Mockito.anyBoolean(), Mockito.anyInt(),
+                Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.any(),
+                Mockito.anyBoolean(), Mockito.anyBoolean()))
+            .thenReturn(Mono.just(Collections.singletonList(throttledStoreResult)));
+
+        initializeConsistencyWriterWithStoreReader(false, storeReader);
+
+        RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        barrierRequest.requestContext.timeoutHelper = timeoutHelper;
+
+        Mono<Boolean> result = consistencyWriter.waitForWriteBarrierAsync(
+            barrierRequest, 100L, new java.util.concurrent.atomic.AtomicReference<>(null),
+            BarrierType.N_REGION_SYNCHRONOUS_COMMIT);
+
+        StepVerifier.create(result)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestTimeoutException.class);
+                RequestTimeoutException rte = (RequestTimeoutException) error;
+                assertThat(rte.getSubStatusCode()).isEqualTo(SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+            })
+            .verify(Duration.ofSeconds(30));
+    }
 }
