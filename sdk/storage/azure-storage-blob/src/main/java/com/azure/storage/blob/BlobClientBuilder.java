@@ -136,7 +136,7 @@ public final class BlobClientBuilder
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
-        validateSessionMode();
+        BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
@@ -215,13 +215,6 @@ public final class BlobClientBuilder
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
             perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
-    }
-
-    private void validateSessionMode() {
-        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
-        }
     }
 
     /**

@@ -29,6 +29,7 @@ import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
@@ -292,5 +293,12 @@ public final class BuilderHelper {
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
+    }
+
+    public static void validateSessionMode(SessionOptions sessionOptions, String containerName, ClientLogger logger) {
+        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
+        }
     }
 }
