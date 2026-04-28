@@ -14,7 +14,7 @@ import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
-import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
+
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -452,34 +452,6 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         SearchIndexKnowledgeSourceParameters result = params.setSemanticConfigurationName("another-config");
         assertSame(params, result);
-    }
-
-    @Test
-    public void permissionOptionsEnumValuesExist() {
-        assertNotNull(KnowledgeSourceIngestionPermissionOption.USER_IDS);
-        assertNotNull(KnowledgeSourceIngestionPermissionOption.GROUP_IDS);
-        assertNotNull(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE);
-
-        assertEquals("userIds", KnowledgeSourceIngestionPermissionOption.USER_IDS.toString());
-        assertEquals("groupIds", KnowledgeSourceIngestionPermissionOption.GROUP_IDS.toString());
-        assertEquals("rbacScope", KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE.toString());
-
-        KnowledgeSourceIngestionPermissionOption userIds
-            = KnowledgeSourceIngestionPermissionOption.fromString("userIds");
-        assertEquals(KnowledgeSourceIngestionPermissionOption.USER_IDS, userIds);
-
-        KnowledgeSourceIngestionPermissionOption groupIds
-            = KnowledgeSourceIngestionPermissionOption.fromString("groupIds");
-        assertEquals(KnowledgeSourceIngestionPermissionOption.GROUP_IDS, groupIds);
-
-        KnowledgeSourceIngestionPermissionOption rbacScope
-            = KnowledgeSourceIngestionPermissionOption.fromString("rbacScope");
-        assertEquals(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE, rbacScope);
-
-        KnowledgeSourceIngestionPermissionOption unknown
-            = KnowledgeSourceIngestionPermissionOption.fromString("unknownValue");
-        assertNotNull(unknown);
-        assertEquals("unknownValue", unknown.toString());
     }
 
     @Test

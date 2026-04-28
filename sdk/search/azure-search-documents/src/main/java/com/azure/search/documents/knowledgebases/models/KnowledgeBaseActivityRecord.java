@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.KnowledgeBaseModelWebSummarizationActivityRecord;
 import java.io.IOException;
 
 /**
@@ -160,7 +161,9 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("agenticReasoning".equals(discriminatorValue)) {
+                if ("modelWebSummarization".equals(discriminatorValue)) {
+                    return KnowledgeBaseModelWebSummarizationActivityRecord.fromJson(readerToUse.reset());
+                } else if ("agenticReasoning".equals(discriminatorValue)) {
                     return KnowledgeBaseAgenticReasoningActivityRecord.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

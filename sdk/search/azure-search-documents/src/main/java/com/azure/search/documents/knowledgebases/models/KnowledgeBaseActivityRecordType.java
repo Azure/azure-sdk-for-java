@@ -72,4 +72,10 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
     public static Collection<KnowledgeBaseActivityRecordType> values() {
         return values(KnowledgeBaseActivityRecordType.class);
     }
+
+    /**
+     * LLM web summarization activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType MODEL_WEB_SUMMARIZATION = fromString("modelWebSummarization");
 }

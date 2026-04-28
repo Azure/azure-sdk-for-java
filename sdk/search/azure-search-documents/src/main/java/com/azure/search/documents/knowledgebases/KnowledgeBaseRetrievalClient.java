@@ -97,7 +97,7 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -121,9 +121,9 @@ public final class KnowledgeBaseRetrievalClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -139,7 +139,7 @@ public final class KnowledgeBaseRetrievalClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -210,5 +210,4 @@ public final class KnowledgeBaseRetrievalClient {
         return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
             .toObject(KnowledgeBaseRetrievalResult.class);
     }
-
 }
