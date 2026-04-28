@@ -84,8 +84,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <!-- src_embed com.azure.data.applicationconfig.async.configurationclient.instantiation -->
  * <pre>
  * ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder&#40;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .endpoint&#40;endpoint&#41;
+ *     .connectionString&#40;connectionString&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.async.configurationclient.instantiation -->
@@ -1064,13 +1063,10 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
      * <pre>
-     * SettingSelector selector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;my-app&#47;*&quot;&#41;;
-     * client.checkConfigurationSettings&#40;selector&#41;
-     *     .byPage&#40;&#41;
-     *     .subscribe&#40;page -&gt; &#123;
-     *         System.out.println&#40;&quot;Status code: &quot; + page.getStatusCode&#40;&#41;&#41;;
-     *         System.out.println&#40;&quot;Page ETag: &quot; + page.getHeaders&#40;&#41;.getValue&#40;com.azure.core.http.HttpHeaderName.ETAG&#41;&#41;;
-     *     &#125;&#41;;
+     * client.checkConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;setting -&gt;
+     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
      *

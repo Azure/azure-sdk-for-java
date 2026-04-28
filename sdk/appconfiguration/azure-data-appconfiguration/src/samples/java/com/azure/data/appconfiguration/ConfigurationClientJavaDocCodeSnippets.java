@@ -614,6 +614,33 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates code sample for using {@link ConfigurationClient#checkConfigurationSettings(SettingSelector)}
+     */
+    public void checkConfigurationSettings() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        configurationClient.checkConfigurationSettings(settingSelector).forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#checkConfigurationSettings(SettingSelector, Context)}
+     */
+    public void checkConfigurationSettingsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        Context ctx = new Context(key2, value2);
+        configurationClient.checkConfigurationSettings(settingSelector, ctx).forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
+    }
+
+    /**
      * Implementation not provided for this method
      *
      * @return {@code null}

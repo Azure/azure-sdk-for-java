@@ -514,6 +514,19 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link ConfigurationAsyncClient#checkConfigurationSettings(SettingSelector)}
+     */
+    public void checkConfigurationSettingsCodeSnippet() {
+        ConfigurationAsyncClient client = getAsyncClient();
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings
+        client.checkConfigurationSettings(new SettingSelector().setKeyFilter("prodDBConnection"))
+            .contextWrite(Context.of(key1, value1, key2, value2))
+            .subscribe(setting ->
+                System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings
+    }
+
+    /**
      * Implementation not provided
      *
      * @return {@code null}
