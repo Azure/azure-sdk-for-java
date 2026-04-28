@@ -2245,7 +2245,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         try {
             sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
-                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(1), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null,
                 null, false, null, null);
 
             assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));

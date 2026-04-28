@@ -3003,7 +3003,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         Files.deleteIfExists(outFile.toPath());
 
         StepVerifier.create(sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(1), null, null,
+            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null, null,
             false)).expectNextCount(1).verifyComplete();
 
         Assertions.assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));

@@ -2258,7 +2258,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         try {
             StepVerifier.create(sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
-                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(1), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null,
                 null, false)).expectNextCount(1).verifyComplete();
 
             Assertions.assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));

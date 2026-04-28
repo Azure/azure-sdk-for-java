@@ -3216,7 +3216,7 @@ public class BlobApiTests extends BlobTestBase {
         Files.deleteIfExists(outFile.toPath());
 
         sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(1), null, null,
+            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null, null,
             false, null, null);
 
         assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
