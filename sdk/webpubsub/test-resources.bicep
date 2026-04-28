@@ -12,7 +12,7 @@ var webPubSubSocketIOName = '${baseName}-socketio-e2e'
 
 // Find role id by heading to the Web Pub Sub resource, selecting Access Control (IAM), Roles, choose the Role,
 // then click on View under Details and check out the JSON.
-var webPubSubContributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12cf5a90-567b-43ae-8102-96cf46c7d9b4')
+var webPubSubOwnerRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12cf5a90-567b-43ae-8102-96cf46c7d9b4')
 
 resource webPubSubSocketIO 'Microsoft.SignalRService/webPubSub@2024-10-01-preview' = {
   name: webPubSubSocketIOName
@@ -36,7 +36,7 @@ resource webPubSubSocketIO 'Microsoft.SignalRService/webPubSub@2024-10-01-previe
   }
 }
 
-resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
+resource webPubSub 'Microsoft.SignalRService/webPubSub@2024-10-01-preview' = {
   name: webPubSubName
   location: location
   sku: {
@@ -64,12 +64,23 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   }
 }
 
-resource webPubSubContributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid('contributor', webPubSubName)
+resource webPubSubOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('owner', webPubSub.id, testApplicationOid)
   scope: webPubSub
   properties: {
-    roleDefinitionId: webPubSubContributorRoleId
+    roleDefinitionId: webPubSubOwnerRoleId
     principalId: testApplicationOid
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource webPubSubSocketIOOwnerRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('owner', webPubSubSocketIO.id, testApplicationOid)
+  scope: webPubSubSocketIO
+  properties: {
+    roleDefinitionId: webPubSubOwnerRoleId
+    principalId: testApplicationOid
+    principalType: 'ServicePrincipal'
   }
 }
 
