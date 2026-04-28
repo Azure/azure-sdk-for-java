@@ -100,7 +100,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -124,9 +124,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -142,7 +142,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -215,5 +215,4 @@ public final class KnowledgeBaseRetrievalAsyncClient {
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResult.class));
     }
-
 }
