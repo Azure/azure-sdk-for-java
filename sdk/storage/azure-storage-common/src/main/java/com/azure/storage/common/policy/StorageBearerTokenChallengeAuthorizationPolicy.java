@@ -52,6 +52,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
+        // Delegate to superclass to maintain previous behavior
         super.authorizeRequestSync(context);
     }
 
