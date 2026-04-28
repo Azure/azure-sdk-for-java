@@ -1267,7 +1267,7 @@ class ManagementChannelTests {
      * silently skip or duplicate sessions on the next request.
      */
     @Test
-    void getMessageSessionsHonoursServerReturnedSkip() {
+    void getMessageSessionsHonorsServerReturnedSkip() {
         // Arrange - response page has 2 sessions but the server reports skip=10 (e.g. 8 entries
         // were filtered before the page boundary).
         final Map<String, Object> responseBody = new HashMap<>();

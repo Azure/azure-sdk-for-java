@@ -350,8 +350,26 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
 
     private PagedFlux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
         return new PagedFlux<>(() -> fetchSessionPage(lastUpdatedTime, 0, null), continuationToken -> {
+            if (continuationToken == null) {
+                return monoError(LOGGER, new IllegalArgumentException("'continuationToken' cannot be null."));
+            }
+
             final int separator = continuationToken.indexOf(CURSOR_SEPARATOR);
-            final int nextSkip = Integer.parseInt(continuationToken.substring(0, separator));
+            if (separator < 0) {
+                return monoError(LOGGER, new IllegalArgumentException(
+                    "Invalid continuation token. Expected format '<skip>" + CURSOR_SEPARATOR + "<lastSessionId>'."));
+            }
+
+            final int nextSkip;
+            try {
+                nextSkip = Integer.parseInt(continuationToken.substring(0, separator));
+            } catch (NumberFormatException ex) {
+                return monoError(LOGGER,
+                    new IllegalArgumentException(
+                        "Invalid continuation token. Expected a numeric skip value before '" + CURSOR_SEPARATOR + "'.",
+                        ex));
+            }
+
             final String lastSessionId = continuationToken.substring(separator + 1);
             return fetchSessionPage(lastUpdatedTime, nextSkip, lastSessionId);
         });
