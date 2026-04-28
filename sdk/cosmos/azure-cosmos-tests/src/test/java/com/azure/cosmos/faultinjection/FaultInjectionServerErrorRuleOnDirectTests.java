@@ -1919,9 +1919,15 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     public void faultInjection_readBarrierThrottled_yieldsEarly() throws JsonProcessingException {
         // Validates that when barrier HEAD requests are throttled (429) during a strong read,
         // the early yield mechanism fires and the 429 is propagated to the caller.
+        // This test requires a multi-region strong consistency account because read barriers
+        // are only triggered when numberOfReadRegions > 0.
 
         if (this.databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel() != ConsistencyLevel.STRONG) {
             throw new SkipException("Test only applicable to STRONG consistency level.");
+        }
+
+        if (this.accountLevelReadRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account for read barriers to be triggered.");
         }
 
         CosmosAsyncClient newClient = null;
@@ -1998,6 +2004,10 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             throw new SkipException("Test only applicable to STRONG consistency level.");
         }
 
+        if (this.accountLevelReadRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account for write barriers to be triggered.");
+        }
+
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-write-408-" + UUID.randomUUID();
         FaultInjectionRule barrierThrottleRule =
@@ -2069,6 +2079,10 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         if (this.databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel() != ConsistencyLevel.STRONG) {
             throw new SkipException("Test only applicable to STRONG consistency level.");
+        }
+
+        if (this.accountLevelReadRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account for read barriers to be triggered.");
         }
 
         CosmosAsyncClient newClient = null;
