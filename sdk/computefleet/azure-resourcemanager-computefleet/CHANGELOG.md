@@ -8,8 +8,8 @@
 
 #### `models.Fleet` was modified
 
-* `cancel(com.azure.core.util.Context)` was removed
 * `cancel()` was removed
+* `cancel(com.azure.core.util.Context)` was removed
 
 #### `models.FleetMode` was modified
 
@@ -29,8 +29,8 @@
 
 #### `models.FleetProperties` was modified
 
-* `withVmNamePrefix(java.lang.String)` was added
 * `vmNamePrefix()` was added
+* `withVmNamePrefix(java.lang.String)` was added
 
 #### `models.FleetMode` was modified
 
