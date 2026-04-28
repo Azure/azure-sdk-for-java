@@ -338,12 +338,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 return Flux.defer(() ->
                     managementNode.getMessageSessions(lastUpdatedTime, currentSkip[0], pageSize, null))
                     .repeat()
-                    .takeWhile(page -> {
-                        if (page.isEmpty()) {
-                            return false;
-                        }
+                    .takeWhile(page -> !page.isEmpty())
+                    .map(page -> {
                         currentSkip[0] += page.size();
-                        return true;
+                        return page;
                     })
                     .flatMapIterable(page -> page);
             });
