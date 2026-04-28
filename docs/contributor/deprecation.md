@@ -64,6 +64,6 @@ Trigger the library's standard release pipeline as documented in:
 
 ## See Also
 
-- [Release Checklist](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/release-checklist.md)
-- [Versioning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md)
+- [Release Checklist](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/release-checklist.md)
+- [Versioning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md)
 - [Azure SDK Support Policies](https://aka.ms/azsdk/support-policies)

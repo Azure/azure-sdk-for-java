@@ -56,7 +56,7 @@ Find the most specific signal in the failure log and jump directly:
 **Solution:**
 
 1. **Check whether the namespace is approved.** If the long namespace has been reviewed and approved (e.g. it matches the service name exactly):
-   - Add a Checkstyle suppression to [`eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml#L109-L110). For example:
+   - Add a Checkstyle suppression to [`eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml`](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml#L109-L110). For example:
      ```xml
      <!-- Suppress the long package name in yourservice -->
      <suppress checks="PackageName" files="com.azure.resourcemanager.yourverylongservicename.*" />

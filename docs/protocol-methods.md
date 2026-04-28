@@ -187,6 +187,6 @@ result.getJsonArray("entities").forEach(e -> {
 
 ## See Also
 
-- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md)
-- [Azure Identity Examples](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/identity-examples.md)
-- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/configuration.md)
+- [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md)
+- [Azure Identity Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md)
+- [Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/configuration.md)

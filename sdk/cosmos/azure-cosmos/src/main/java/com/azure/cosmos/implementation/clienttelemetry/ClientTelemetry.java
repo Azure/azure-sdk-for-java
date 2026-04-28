@@ -121,6 +121,21 @@ public class ClientTelemetry {
         return clientTelemetryConfig;
     }
 
+    // Non-blocking cache for machine ID. Populated by getMachineId() on first
+    // successful IMDS resolution (called during client init on non-event-loop threads).
+    // Read by components that cannot block (e.g., Netty channel handlers).
+    private static volatile String cachedMachineId;
+
+    /**
+     * Returns the cached machine ID without blocking.
+     * Returns empty string if the machine ID has not yet been resolved
+     * (i.e., getMachineId() has not been called yet from a non-event-loop thread).
+     */
+    public static String getCachedMachineId() {
+        String id = cachedMachineId;
+        return id != null ? id : "n/a";
+    }
+
     /**
      * Blocking version of machine ID lookup. Used by Spark connector (CosmosClientCache.scala).
      * Delegates to getMachineId which waits up to 5s for IMDS metadata.
@@ -136,6 +151,7 @@ public class ClientTelemetry {
             AzureVMMetadata metadata = CACHED_METADATA.block(Duration.ofSeconds(5));
             if (metadata != null && metadata != METADATA_NOT_AVAILABLE && metadata.getVmId() != null) {
                 String machineId = VM_ID_PREFIX + metadata.getVmId();
+                cachedMachineId = machineId;
                 if (diagnosticsClientConfig != null) {
                     diagnosticsClientConfig.withMachineId(machineId);
                 }

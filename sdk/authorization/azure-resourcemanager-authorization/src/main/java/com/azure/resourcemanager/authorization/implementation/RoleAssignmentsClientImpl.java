@@ -223,7 +223,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope, tenantId,
@@ -257,7 +257,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, tenantId, roleAssignmentName, accept, context);
@@ -344,7 +344,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -384,7 +384,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -470,7 +470,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, scope, tenantId,
@@ -504,7 +504,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, scope, tenantId, roleAssignmentName, accept,
@@ -588,7 +588,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), apiVersion, scope, filter, tenantId,
@@ -625,7 +625,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -759,7 +759,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -794,7 +794,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -917,7 +917,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -957,7 +957,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1103,7 +1103,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForResource(this.client.getEndpoint(), apiVersion,
@@ -1158,7 +1158,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1307,7 +1307,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion, roleAssignmentId, tenantId,
@@ -1339,7 +1339,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, roleAssignmentId, tenantId, accept, context);
@@ -1426,7 +1426,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1464,7 +1464,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1549,7 +1549,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteById(this.client.getEndpoint(), apiVersion, roleAssignmentId,
@@ -1581,7 +1581,7 @@ public final class RoleAssignmentsClientImpl implements InnerSupportsListing<Rol
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), apiVersion, roleAssignmentId, tenantId, accept, context);

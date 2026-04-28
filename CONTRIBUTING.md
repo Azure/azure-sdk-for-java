@@ -11,9 +11,9 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - After cloning the repo, copy the [pre-commit hooks file](https://github.com/Azure/azure-sdk-for-java/tree/main/eng/scripts/pre-commit) (located at `eng/scripts/pre-commit`) to your local `.git/hooks/` directory. This will run some validations before your changes are committed.
 
-- Refer to the [Code Quality guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, JaCoCo, and JavaDoc reports.
+- Refer to the [Code Quality guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, JaCoCo, and JavaDoc reports.
 
-- There are two Maven projects in the repo. Refer to the [Building guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md) to learn about project structure for each.
+- There are two Maven projects in the repo. Refer to the [Building guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md) to learn about project structure for each.
 
 Pull Requests
 -------------
@@ -51,7 +51,7 @@ Merging Pull Requests (for project contributors with write access)
 - Install [Maven](https://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
 
-See [Getting Started](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/getting-started.md) for detailed environment setup instructions.
+See [Getting Started](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/getting-started.md) for detailed environment setup instructions.
 
 >**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
 1.- Run this as Administrator on a command prompt:<br>
@@ -149,8 +149,8 @@ If you encounter a `401 Unauthorized` error when running Maven commands:
 
 ### Building and Unit Testing
 
-Refer to the [Building guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md) for Maven commands to build the SDK,
-and the [Unit Testing guide](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/unit-testing.md) for guidelines on writing and running unit tests.
+Refer to the [Building guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md) for Maven commands to build the SDK,
+and the [Unit Testing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/unit-testing.md) for guidelines on writing and running unit tests.
 
 
 ### Live testing
@@ -164,7 +164,7 @@ To see what resources will be deployed for a live service, check the
 `test-resources.json` ARM template files in the service you wish to deploy for
 testing, for example `sdk\keyvault\test-resources.json`.
 
-To deploy live resources for testing use the steps documented in [`Example 1 of New-TestResources.ps1`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/common/TestResources/New-TestResources.ps1.md#example-1)
+To deploy live resources for testing use the steps documented in [`Example 1 of New-TestResources.ps1`](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/TestResources/New-TestResources.ps1.md#example-1)
 to set up a service principal and deploy live testing resources.
 
 The script will provide instructions for setting environment variables before
@@ -182,7 +182,7 @@ information or instructions.
 
 ## Versions and versioning
 
-Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists a version text file for libraries ([version_client.txt](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/versioning/version_client.txt)).
+Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists a version text file for libraries ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt)).
 The format of the version files is as follows:
 
 `groupId:artifactId;dependency-version;current-version`
@@ -242,7 +242,7 @@ Similarly, libraries built as part of the same pipeline, that have interdependen
 azure-batch pipeline when `com.azure:azure-storage-blob` is declared as a dependency of `com.azure:azure-storage-blob-batch` it should be the *Current* version.
 
 **An example of an Unreleased Dependency version:** Additive, not breaking, API changes have been made to `com.azure:azure-core`. `com.azure:azure-storage-blob` has a dependency on `com.azure:azure-core` and requires the additive
-API change that has not yet been released. An unreleased entry needs to be created in [version_client.txt](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/versioning/version_client.txt), under the unreleased section, with the following format: `unreleased_<groupId>:<artifactId>;dependency-version`,
+API change that has not yet been released. An unreleased entry needs to be created in [version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt), under the unreleased section, with the following format: `unreleased_<groupId>:<artifactId>;dependency-version`,
 in this example that would be `unreleased_com.azure:azure-core;1.2.0` (this should match the 'current' version of core). The dependency update tags in the pom files that required this dependency would now reference
 `{x-version-update;unreleased_com.azure:azure-core;dependency}`. Once the updated library has been released the unreleased dependency version should be removed and the POM file update tags should be referencing the released version.
 
@@ -286,7 +286,7 @@ Let's say we've GA'd and I need to tick up the version of azure-storage librarie
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory.
    It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Dependencies for library components outside a given area would be downloading the
    appropriate dependency from Maven like we do for external dependencies.
-2. Execute the update_versions python script from the root of the enlistment. The exact syntax and commands will vary based upon what is being changed and some examples can be found in the use cases in the [update_versions.py](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/versioning/update_versions.py#L6) file.
+2. Execute the update_versions python script from the root of the enlistment. The exact syntax and commands will vary based upon what is being changed and some examples can be found in the use cases in the [update_versions.py](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/update_versions.py#L6) file.
 3. Review and submit a PR with the modified files.
 
 ### Next steps: Management plane
@@ -298,11 +298,11 @@ Let's say we've GA'd and I need to tick up the version of azure-storage librarie
 This is where the `unreleased_` dependency tags come into play. Using the Unreleased Dependency example above, where `com.azure:azure-storage-blob` has a dependency on an unreleased `com.azure:azure-core`:
 
 - [ ] Make the additive changes to `com.azure:azure-core`
-- [ ] In [version_client.txt](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/versioning/version_client.txt) add the entry for the unreleased azure core in the unreleased section at the bottom of the file. The entry would look like `unreleased_com.azure:azure-core;<version>`.
+- [ ] In [version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt) add the entry for the unreleased azure core in the unreleased section at the bottom of the file. The entry would look like `unreleased_com.azure:azure-core;<version>`.
       Note: The version of the library referenced in the unreleased version tag should match the current version of that library.
 - [ ] In the pom.xml file for `com.azure:azure-storage-blob`, the dependency tag for `com.azure:azure-core` which was originally `{x-version-update;com.azure:azure-core-test;dependency}` would now become `{x-version-update;unreleased_com.azure:azure-core-test;dependency}`
 After the unreleased version of `com.azure:azure-core` was released but before `com.azure:azure-storage-blob` has been released.
-- [ ] In [version_client.txt](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/versioning/version_client.txt) the dependency version of `com.azure:azure-core` would become the released version and the "unreleased_" entry, at this time, would be removed.
+- [ ] In [version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt) the dependency version of `com.azure:azure-core` would become the released version and the "unreleased_" entry, at this time, would be removed.
 - [ ] In the pom.xml file for `com.azure:azure-storage-blob`, the dependency tag for `com.azure:azure-core` would get changed back to `{x-version-update;com.azure:azure-core-test;dependency}`
 
 ## Packaging Versioning
