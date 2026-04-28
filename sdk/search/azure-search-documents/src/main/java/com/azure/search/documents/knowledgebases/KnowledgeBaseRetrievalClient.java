@@ -78,7 +78,6 @@ public final class KnowledgeBaseRetrievalClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -88,8 +87,8 @@ public final class KnowledgeBaseRetrievalClient {
      * @return the output contract for the retrieval response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeBaseRetrievalResult> retrieveWithResponse(String knowledgeBaseName,
-        KnowledgeBaseRetrievalOptions retrievalRequest, RequestOptions requestOptions) {
+    public Response<KnowledgeBaseRetrievalResult> retrieveWithResponse(KnowledgeBaseRetrievalOptions retrievalRequest,
+        RequestOptions requestOptions) {
         return convertResponse(
             this.serviceClient.retrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
             KnowledgeBaseRetrievalResult.class);
@@ -98,7 +97,7 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -122,9 +121,9 @@ public final class KnowledgeBaseRetrievalClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -212,22 +211,4 @@ public final class KnowledgeBaseRetrievalClient {
             .toObject(KnowledgeBaseRetrievalResult.class);
     }
 
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResult retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalOptions retrievalRequest) {
-        return retrieveWithResponse(knowledgeBaseName, retrievalRequest, new RequestOptions()).getValue();
-    }
 }
