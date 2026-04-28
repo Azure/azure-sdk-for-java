@@ -14,7 +14,7 @@ var webPubSubSocketIOName = '${baseName}-socketio-e2e'
 // then click on View under Details and check out the JSON.
 var webPubSubContributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12cf5a90-567b-43ae-8102-96cf46c7d9b4')
 
-resource webPubSubSocketIO 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
+resource webPubSubSocketIO 'Microsoft.SignalRService/webPubSub@2024-10-01-preview' = {
   name: webPubSubSocketIOName
   location: location
   kind: 'SocketIO'
