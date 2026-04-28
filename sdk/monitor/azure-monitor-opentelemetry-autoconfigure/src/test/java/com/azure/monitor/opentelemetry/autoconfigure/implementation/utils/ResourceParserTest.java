@@ -97,7 +97,7 @@ class ResourceParserTest {
     }
 
     private static ConfigProperties getConfiguration() {
-        return DefaultConfigProperties.create(Collections.singletonMap("HOSTNAME", DEFAULT_ROLE_INSTANCE));
+        return DefaultConfigProperties.createFromMap(Collections.singletonMap("HOSTNAME", DEFAULT_ROLE_INSTANCE));
     }
 
     private static Resource createTestResource(@Nullable String serviceName, @Nullable String serviceNameSpace,
