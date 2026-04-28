@@ -511,15 +511,19 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<List<String>> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
         String lastSessionId) {
+        if (lastUpdatedTime == null) {
+            return monoError(logger, new NullPointerException("'lastUpdatedTime' cannot be null."));
+        }
 
         // The service checks `lastUpdatedTime == DateTime.MaxValue` (C# 9999-12-31T23:59:59.9999999)
         // to switch between "active messages" mode and "updated since" mode. On the AMQP wire,
         // timestamps have millisecond precision, so DateTime.MaxValue becomes 253402300799999 ms.
-        // Year 9999 with .999999999 nanos produces this same ms value via Date.from(instant),
-        // ensuring the service-side comparison matches. Cap to year 9999 to avoid java.util.Date
-        // overflow (OffsetDateTime.MAX year 999999999 exceeds Date's range).
+        // Year 9999 with .999999999 nanos in UTC produces this same ms value via Date.from(instant),
+        // ensuring the service-side comparison matches. Cap to the max supported instant in UTC to
+        // avoid java.util.Date overflow (OffsetDateTime.MAX year 999999999 exceeds Date's range)
+        // while keeping the serialized sentinel stable even when the source offset is non-UTC.
         final OffsetDateTime cappedTime = lastUpdatedTime.getYear() > 9999
-            ? OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, lastUpdatedTime.getOffset())
+            ? OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC)
             : lastUpdatedTime;
 
         return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {
@@ -527,8 +531,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Message message = createManagementMessage(OPERATION_GET_MESSAGE_SESSIONS, null);
 
             final Map<String, Object> body = new HashMap<>();
-            body.put(ManagementConstants.LAST_UPDATED_TIME,
-                Date.from(cappedTime.toInstant()));
+            body.put(ManagementConstants.LAST_UPDATED_TIME, Date.from(cappedTime.toInstant()));
             body.put(ManagementConstants.SKIP, skip);
             body.put(ManagementConstants.TOP, top);
             if (!CoreUtils.isNullOrEmpty(lastSessionId)) {

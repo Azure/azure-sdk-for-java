@@ -21,10 +21,9 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 
@@ -310,8 +309,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     public Flux<String> listSessions() {
         // Use year 9999 as sentinel for "active messages" mode.
         // Cannot use OffsetDateTime.MAX because its year (999999999) overflows java.util.Date.
-        return listSessionsInternal(
-            OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC));
+        return listSessionsInternal(OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC));
     }
 
     /**
@@ -324,7 +322,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> listSessions(OffsetDateTime updatedAfter) {
         if (updatedAfter == null) {
-            return Flux.error(new NullPointerException("'updatedAfter' cannot be null."));
+            return fluxError(LOGGER, new NullPointerException("'updatedAfter' cannot be null."));
         }
         return listSessionsInternal(updatedAfter);
     }
@@ -334,9 +332,9 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         return connectionCacheWrapper.getConnection()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(managementNode -> {
-                final int[] currentSkip = {0};
-                return Flux.defer(() ->
-                    managementNode.getMessageSessions(lastUpdatedTime, currentSkip[0], pageSize, null))
+                final int[] currentSkip = { 0 };
+                return Flux
+                    .defer(() -> managementNode.getMessageSessions(lastUpdatedTime, currentSkip[0], pageSize, null))
                     .repeat()
                     .takeWhile(page -> !page.isEmpty())
                     .map(page -> {

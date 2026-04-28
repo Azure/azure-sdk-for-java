@@ -152,15 +152,17 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * Lists the session IDs for sessions that have active messages or whose state was updated
      * since the given time.
      *
-     * @param lastUpdatedTime Filter timestamp. Pass {@link java.time.OffsetDateTime#MAX} to get sessions with
-     *     active messages; pass a real timestamp to get sessions updated since that time.
+     * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the UTC sentinel
+     *     {@code 9999-12-31T23:59:59.999999999Z}; pass a real timestamp to get sessions updated since that
+     *     time. The implementation caps {@code lastUpdatedTime} values beyond year 9999 (such as
+     *     {@link java.time.OffsetDateTime#MAX}) to that UTC sentinel so the service-side sentinel
+     *     comparison matches.
      * @param skip Pagination offset.
      * @param top Page size.
      * @param lastSessionId Last session ID from the previous page (for cursor-based pagination), or null.
      * @return A list of session ID strings for this page.
      */
-    Mono<java.util.List<String>> getMessageSessions(java.time.OffsetDateTime lastUpdatedTime, int skip, int top,
-        String lastSessionId);
+    Mono<List<String>> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top, String lastSessionId);
 
     @Override
     void close();

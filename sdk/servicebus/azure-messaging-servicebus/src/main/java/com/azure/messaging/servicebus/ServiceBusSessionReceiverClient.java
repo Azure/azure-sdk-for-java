@@ -210,9 +210,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<String> listSessions() {
-        return sessionAsyncClient.listSessions()
-            .collectList()
-            .block(operationTimeout);
+        return sessionAsyncClient.listSessions().collectList().block(operationTimeout);
     }
 
     /**
@@ -224,9 +222,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<String> listSessions(OffsetDateTime updatedAfter) {
-        return sessionAsyncClient.listSessions(updatedAfter)
-            .collectList()
-            .block(operationTimeout);
+        return sessionAsyncClient.listSessions(updatedAfter).collectList().block(operationTimeout);
     }
 
     @Override

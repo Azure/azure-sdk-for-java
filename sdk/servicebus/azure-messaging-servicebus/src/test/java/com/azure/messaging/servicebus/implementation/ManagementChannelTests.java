@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -54,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -1080,15 +1080,12 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, skip, top, null))
-            .assertNext(result -> {
-                assertEquals(3, result.size());
-                assertEquals("session-1", result.get(0));
-                assertEquals("session-2", result.get(1));
-                assertEquals("session-3", result.get(2));
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, skip, top, null)).assertNext(result -> {
+            assertEquals(3, result.size());
+            assertEquals("session-1", result.get(0));
+            assertEquals("session-2", result.get(1));
+            assertEquals("session-3", result.get(2));
+        }).expectComplete().verify(TIMEOUT);
 
         // Verify the sent AMQP message
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
@@ -1127,19 +1124,17 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null))
-            .assertNext(result -> {
-                assertEquals(2, result.size());
-                assertEquals("active-1", result.get(0));
-                assertEquals("active-2", result.get(1));
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null)).assertNext(result -> {
+            assertEquals(2, result.size());
+            assertEquals("active-1", result.get(0));
+            assertEquals("active-2", result.get(1));
+        }).expectComplete().verify(TIMEOUT);
 
         // Verify the sent timestamp matches DateTime.MaxValue at ms precision
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         @SuppressWarnings("unchecked")
-        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
         final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
         assertEquals(253402300799999L, sentDate.getTime());
     }
@@ -1169,13 +1164,17 @@ class ManagementChannelTests {
      */
     @Test
     void getMessageSessionsNotFound() {
-        // Arrange - set response to 404 (sendWithVerify passes SessionNotFound through)
+        // Arrange - set response to 404 with the legacy SessionNotFound error-condition so
+        // sendWithVerify treats it as a non-error (only 404 + MESSAGE_NOT_FOUND or SESSION_NOT_FOUND
+        // is passed through; bare 404 would surface as an error).
         applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        applicationProperties.put("error-condition", AmqpErrorCondition.SESSION_NOT_FOUND.getErrorCondition());
         responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
         responseMessage.setBody(null);
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getMessageSessions(
+        StepVerifier
+            .create(managementChannel.getMessageSessions(
                 OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC), 0, 100, null))
             .assertNext(result -> assertTrue(result.isEmpty()))
             .expectComplete()
@@ -1191,7 +1190,8 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(new HashMap<>()));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getMessageSessions(
+        StepVerifier
+            .create(managementChannel.getMessageSessions(
                 OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC), 0, 100, null))
             .assertNext(result -> assertTrue(result.isEmpty()))
             .expectComplete()
@@ -1219,7 +1219,8 @@ class ManagementChannelTests {
         // Verify the sent timestamp is capped to year 9999
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         @SuppressWarnings("unchecked")
-        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
         final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
         // 253402300799999 ms = 9999-12-31T23:59:59.999Z (DateTime.MaxValue at ms precision)
         assertEquals(253402300799999L, sentDate.getTime());
@@ -1232,12 +1233,13 @@ class ManagementChannelTests {
     void getMessageSessionsWithLastSessionId() {
         // Arrange
         final String lastSessionId = "cursor-session-42";
-        responseMessage.setBody(new AmqpValue(Collections.singletonMap(
-            ManagementConstants.SESSIONS_IDS, new String[] { "next-1" })));
+        responseMessage.setBody(
+            new AmqpValue(Collections.singletonMap(ManagementConstants.SESSIONS_IDS, new String[] { "next-1" })));
 
         // Act
-        StepVerifier.create(managementChannel.getMessageSessions(
-                OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100, 100, lastSessionId))
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100,
+                100, lastSessionId))
             .assertNext(result -> assertEquals("next-1", result.get(0)))
             .expectComplete()
             .verify(TIMEOUT);
@@ -1245,7 +1247,8 @@ class ManagementChannelTests {
         // Assert last-session-id is in the body
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         @SuppressWarnings("unchecked")
-        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
         assertEquals(lastSessionId, body.get(ManagementConstants.LAST_SESSION_ID));
     }
 }
