@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2026-04-28)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Initial release for the azure-resourcemanager-appnetwork Java SDK.
 
 ## 1.0.0-beta.1 (2026-03-25)
 
