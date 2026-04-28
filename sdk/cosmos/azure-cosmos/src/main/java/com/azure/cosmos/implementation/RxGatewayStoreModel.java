@@ -376,6 +376,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
             // Ensure the readConsistencyStrategy header is set (requestContext-level may not have been written to headers yet)
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveReadConsistencyStrategy.toString());
+        } else if (effectiveReadConsistencyStrategy == ReadConsistencyStrategy.DEFAULT) {
+            // DEFAULT is transparent — remove the sentinel header, let ConsistencyLevel govern
+            headers.remove(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
         }
     }
 
@@ -1051,7 +1054,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         // Client-level readConsistencyStrategy from header
         String rcsHeader = request.getHeaders().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-        if (!Strings.isNullOrEmpty(rcsHeader)) {
+        if (!Strings.isNullOrEmpty(rcsHeader)
+            && !ReadConsistencyStrategy.DEFAULT.toString().equals(rcsHeader)) {
             return ReadConsistencyStrategy.SESSION.toString().equals(rcsHeader);
         }
 

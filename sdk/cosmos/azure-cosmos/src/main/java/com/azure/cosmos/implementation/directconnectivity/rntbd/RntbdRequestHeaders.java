@@ -18,6 +18,8 @@ import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PriorityLevel;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -48,6 +50,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 @JsonFilter("RntbdToken")
 final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestHeaders.class);
 
     private static ImplementationBridgeHelpers.PriorityLevelHelper.PriorityLevelAccessor priorityLevelAccessor() {
         return ImplementationBridgeHelpers.PriorityLevelHelper.getPriorityLevelAccessor();
@@ -851,6 +854,9 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.GlobalStrong.id());
                     break;
                 default:
+                    if (!"Default".equals(value)) {
+                        logger.warn("Unknown ReadConsistencyStrategy value '{}' — not encoded in RNTBD frame", value);
+                    }
                     break;
             }
         }

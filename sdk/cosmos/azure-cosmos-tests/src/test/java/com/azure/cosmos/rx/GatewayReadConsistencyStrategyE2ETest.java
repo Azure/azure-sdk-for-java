@@ -198,6 +198,28 @@ public class GatewayReadConsistencyStrategyE2ETest {
         assertEndpointForMode(mode, response.getCosmosDiagnostics());
     }
 
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void queryItems_withSession(String mode) {
+        String id = seedDocument(mode);
+
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
+            .setPartitionKey(new PartitionKey(id))
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+
+        SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c WHERE c.id=@id");
+        querySpec.setParameters(Arrays.asList(new SqlParameter("@id", id)));
+
+        FeedResponse<ObjectNode> response = containerFor(mode)
+            .queryItems(querySpec, queryOptions, ObjectNode.class)
+            .byPage()
+            .blockFirst();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getResults()).isNotNull();
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.SESSION);
+        assertEndpointForMode(mode, response.getCosmosDiagnostics());
+    }
+
     // endregion
 
     // region ReadAllItems
@@ -218,6 +240,25 @@ public class GatewayReadConsistencyStrategyE2ETest {
         assertThat(response).isNotNull();
         assertThat(response.getResults()).isNotNull();
         assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEndpointForMode(mode, response.getCosmosDiagnostics());
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void readAllItems_withSession(String mode) {
+        String pk = UUID.randomUUID().toString();
+        seedDocument(mode, UUID.randomUUID().toString(), pk);
+
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+
+        FeedResponse<ObjectNode> response = containerFor(mode)
+            .readAllItems(new PartitionKey(pk), queryOptions, ObjectNode.class)
+            .byPage()
+            .blockFirst();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getResults()).isNotNull();
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.SESSION);
         assertEndpointForMode(mode, response.getCosmosDiagnostics());
     }
 
@@ -246,6 +287,30 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
         FeedResponse<ObjectNode> firstPage = pages.get(0);
         assertEffectiveReadConsistencyStrategy(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertEndpointForMode(mode, firstPage.getCosmosDiagnostics());
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void changeFeed_withSession(String mode) {
+        String pkValue = UUID.randomUUID().toString();
+        seedDocument(mode, pkValue, pkValue);
+
+        CosmosChangeFeedRequestOptions cfOptions = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(
+                FeedRange.forLogicalPartition(new PartitionKey(pkValue)))
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+
+        List<FeedResponse<ObjectNode>> pages = containerFor(mode)
+            .queryChangeFeed(cfOptions, ObjectNode.class)
+            .byPage()
+            .collectList()
+            .block();
+
+        assertThat(pages).isNotNull();
+        assertThat(pages.isEmpty()).isFalse();
+
+        FeedResponse<ObjectNode> firstPage = pages.get(0);
+        assertEffectiveReadConsistencyStrategy(firstPage.getCosmosDiagnostics(), ReadConsistencyStrategy.SESSION);
         assertEndpointForMode(mode, firstPage.getCosmosDiagnostics());
     }
 
@@ -278,6 +343,31 @@ public class GatewayReadConsistencyStrategyE2ETest {
         assertEndpointForMode(mode, response.getCosmosDiagnostics());
     }
 
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void readMany_withSession(String mode) {
+        String pkValue = UUID.randomUUID().toString();
+        String id1 = UUID.randomUUID().toString();
+        String id2 = UUID.randomUUID().toString();
+        seedDocument(mode, id1, pkValue);
+        seedDocument(mode, id2, pkValue);
+
+        List<CosmosItemIdentity> identities = Arrays.asList(
+            new CosmosItemIdentity(new PartitionKey(pkValue), id1),
+            new CosmosItemIdentity(new PartitionKey(pkValue), id2));
+
+        CosmosReadManyRequestOptions readManyOptions = new CosmosReadManyRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
+
+        FeedResponse<ObjectNode> response =
+            containerFor(mode).readMany(identities, readManyOptions, ObjectNode.class).block();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getResults()).isNotNull();
+        assertThat(response.getResults().size()).isEqualTo(2);
+        assertEffectiveReadConsistencyStrategy(response.getCosmosDiagnostics(), ReadConsistencyStrategy.SESSION);
+        assertEndpointForMode(mode, response.getCosmosDiagnostics());
+    }
+
     // endregion
 
     // region Client-level ReadConsistencyStrategy
@@ -305,9 +395,32 @@ public class GatewayReadConsistencyStrategyE2ETest {
         }
     }
 
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void clientLevel_session_readItem(String mode) {
+        CosmosAsyncClient clientWithReadConsistencyStrategy = null;
+        try {
+            clientWithReadConsistencyStrategy = builderFor(mode)
+                .readConsistencyStrategy(ReadConsistencyStrategy.SESSION)
+                .buildAsyncClient();
+            CosmosAsyncContainer targetContainer = clientWithReadConsistencyStrategy.getDatabase(databaseId).getContainer(containerId);
+
+            String id = UUID.randomUUID().toString();
+            createAndInsertDocument(targetContainer, id);
+
+            CosmosItemResponse<ObjectNode> response =
+                targetContainer.readItem(id, new PartitionKey(id), ObjectNode.class).block();
+
+            assertSuccessfulRead(response);
+            assertEffectiveReadConsistencyStrategy(response.getDiagnostics(), ReadConsistencyStrategy.SESSION);
+            assertEndpointForMode(mode, response.getDiagnostics());
+        } finally {
+            safeClose(clientWithReadConsistencyStrategy);
+        }
+    }
+
     // endregion
 
-    // region Write operations — ReadConsistencyStrategy forced to DEFAULT
+    // region Write operations— ReadConsistencyStrategy forced to DEFAULT
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void writeItem_readConsistencyStrategyIgnored(String mode) {
