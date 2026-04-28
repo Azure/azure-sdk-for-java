@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.PagedIterable;
@@ -34,6 +35,7 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.SessionMode;
@@ -64,7 +66,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
@@ -80,6 +85,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -2202,6 +2208,49 @@ public class ContainerApiTests extends BlobTestBase {
             "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
         assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
             "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+        File outFile = File.createTempFile(prefix, ".tmp");
+        outFile.deleteOnExit();
+        Files.deleteIfExists(outFile.toPath());
+
+        try {
+            sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(1), null,
+                null, false, null, null);
+
+            assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+            assertTrue(downloadAuthSchemes.size() > 1,
+                "Expected multiple chunked download requests; saw " + downloadAuthSchemes);
+            assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+                "Expected all chunked blob downloads to use Session auth; saw " + downloadAuthSchemes);
+        } finally {
+            Files.deleteIfExists(outFile.toPath());
+        }
     }
 
     @Test

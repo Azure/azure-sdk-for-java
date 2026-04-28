@@ -747,6 +747,46 @@ public class BuilderHelperTests {
 
     // endregion
 
+    // region BlobClientBuilder sessionOptions tests
+
+    @Test
+    public void blobBuilderWithSingleSpecifiedContainerSessionBuilds() {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
+
+        assertDoesNotThrow(() -> new BlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("mycontainer")
+            .blobName("myblob")
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(options)
+            .buildClient());
+    }
+
+    @Test
+    public void blobBuilderWithSingleSpecifiedContainerSessionAndNoContainerNameThrows() {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("myblob")
+                .credential(new MockTokenCredential())
+                .httpClient(new NoOpHttpClient())
+                .sessionOptions(options)
+                .buildClient());
+    }
+
+    @Test
+    public void blobBuilderWithoutSessionOptionsBuilds() {
+        assertDoesNotThrow(() -> new BlobClientBuilder().endpoint(ENDPOINT)
+            .containerName("mycontainer")
+            .blobName("myblob")
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .buildClient());
+    }
+
+    // endregion
+
     // region BlobContainerClientBuilder sessionOptions tests
 
     @Test

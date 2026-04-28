@@ -4,12 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -25,6 +27,7 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.test.shared.TestHttpClientType;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -42,7 +45,10 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -2214,6 +2220,50 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
         assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
             "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(blobName);
+        blobClient.upload(BinaryData.fromBytes(data), true).block();
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobAsyncClient sessionBlob = sessionEnabledContainerAsyncClient(inspect).getBlobAsyncClient(blobName);
+        File outFile = File.createTempFile(prefix, ".tmp");
+        outFile.deleteOnExit();
+        Files.deleteIfExists(outFile.toPath());
+
+        try {
+            StepVerifier.create(sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(1), null,
+                null, false)).expectNextCount(1).verifyComplete();
+
+            Assertions.assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+            assertTrue(downloadAuthSchemes.size() > 1,
+                "Expected multiple chunked download requests; saw " + downloadAuthSchemes);
+            assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+                "Expected all chunked blob downloads to use Session auth; saw " + downloadAuthSchemes);
+        } finally {
+            Files.deleteIfExists(outFile.toPath());
+        }
     }
 
     @Test

@@ -31,6 +31,8 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.SessionMode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -92,6 +94,7 @@ public final class BlobClientBuilder
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and {@link
@@ -132,6 +135,8 @@ public final class BlobClientBuilder
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
+
+        validateSessionMode();
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
@@ -189,18 +194,34 @@ public final class BlobClientBuilder
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
             snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER, null, null);
+    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        if (containerName != null) {
+            sessionOptions.setContainerName(containerName);
+        }
+        if (sessionOptions.getAccountName() == null) {
+            sessionOptions.setAccountName(accountName);
+        }
+
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
+    }
+
+    private void validateSessionMode() {
+        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
+        }
     }
 
     /**
@@ -648,6 +669,22 @@ public final class BlobClientBuilder
      */
     public BlobClientBuilder audience(BlobAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionOptions} that controls how the SDK manages session-based authentication for this blob.
+     * <p>
+     * Sessions amortize authentication and authorization cost across many requests by signing them with a lightweight
+     * HMAC key instead of a full bearer token. When the session mode within the options is set to a value other than
+     * {@link SessionMode#NONE}, this builder's configured container name is used when the options don't specify one.
+     *
+     * @param sessionOptions The session options to use. If {@code null}, defaults to {@link SessionMode#AUTO}
+     * when identity-based authentication (bearer token) is configured.
+     * @return the updated BlobClientBuilder object.
+     */
+    public BlobClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        this.sessionOptions = SessionOptions.orDefault(sessionOptions);
         return this;
     }
 }
