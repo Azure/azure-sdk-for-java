@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -2152,6 +2153,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @ResourceLock("BlobSessionAuth")
     public void createSession() {
         BlobContainerAsyncClient oauthCcAsync
             = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
@@ -2166,6 +2168,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @ResourceLock("BlobSessionAuth")
     public void createSessionWithResponse() {
         BlobContainerAsyncClient oauthCcAsync
             = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
@@ -2184,6 +2187,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     @LiveOnly
+    @ResourceLock("BlobSessionAuth")
     public void downloadBlobOverSessionAuth() {
         int blobCount = 5;
         List<String> blobNames = new ArrayList<>();
@@ -2224,6 +2228,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     @LiveOnly
+    @ResourceLock("BlobSessionAuth")
     public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
         String blobName = generateBlobName();
         byte[] data = getRandomByteArray(4 * Constants.KB + 17);
@@ -2268,6 +2273,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     @LiveOnly
+    @ResourceLock("BlobSessionAuth")
     // This test validates that listing blobs with a session-enabled client uses Bearer authorization because
     // List Blobs is a container-level GET request, not a blob-level GET request.
     public void listBlobsOverSessionEnabledClient() {

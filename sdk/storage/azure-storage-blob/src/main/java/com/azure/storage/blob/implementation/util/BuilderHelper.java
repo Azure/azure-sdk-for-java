@@ -24,6 +24,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -124,8 +125,14 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
+        // Session credentials are bound to the client's network context. When the caller doesn't provide an
+        // HttpClient, create one default instance and share it between CreateSession and data requests instead of
+        // letting each pipeline create its own transport.
+        HttpClient effectiveHttpClient
+            = tokenCredential == null ? httpClient : getOrCreateHttpClient(httpClient, clientOptions);
+
         // When sessionOptions is non-null and the resolved session mode is not SessionMode.NONE, and a tokenCredential is
-        // present, a single essionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
+        // present, a single SessionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
         // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
         // the bearer token policy is added directly.
         if (tokenCredential != null) {
@@ -141,7 +148,8 @@ public final class BuilderHelper {
             BlobServiceVersion effectiveServiceVersion
                 = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
 
-            HttpPipeline bearerPipeline = buildBearerPipeline(policies, bearerPolicy, httpClient, clientOptions);
+            HttpPipeline bearerPipeline
+                = buildBearerPipeline(policies, bearerPolicy, effectiveHttpClient, clientOptions);
             BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
                 effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
 
@@ -166,7 +174,7 @@ public final class BuilderHelper {
         policies.add(new ScrubEtagPolicy());
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(effectiveHttpClient)
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
             .build();
@@ -186,6 +194,16 @@ public final class BuilderHelper {
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
             .build();
+    }
+
+    private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
+        if (httpClient != null) {
+            return httpClient;
+        }
+
+        return clientOptions instanceof HttpClientOptions
+            ? HttpClient.createDefault((HttpClientOptions) clientOptions)
+            : HttpClient.createDefault();
     }
 
     /**

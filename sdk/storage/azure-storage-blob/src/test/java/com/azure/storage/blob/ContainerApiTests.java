@@ -60,6 +60,7 @@ import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipeline
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -2144,6 +2145,7 @@ public class ContainerApiTests extends BlobTestBase {
     // Need to create a container client test here to test that sessions have been enabled and used
 
     @Test
+    @ResourceLock("BlobSessionAuth")
     public void createSession() {
         BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
         CreateSessionResponse response = oauthCc.createSession();
@@ -2157,6 +2159,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @ResourceLock("BlobSessionAuth")
     public void createSessionWithResponse() {
         BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
         Response<CreateSessionResponse> response = oauthCc.createSessionWithResponse(null, Context.NONE);
@@ -2174,6 +2177,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     @LiveOnly
+    @ResourceLock("BlobSessionAuth")
     public void downloadBlobOverSessionAuth() {
         int blobCount = 5;
         List<String> blobNames = new ArrayList<>();
@@ -2212,6 +2216,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     @LiveOnly
+    @ResourceLock("BlobSessionAuth")
     public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
         String blobName = generateBlobName();
         byte[] data = getRandomByteArray(4 * Constants.KB + 17);
@@ -2255,6 +2260,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     @LiveOnly
+    @ResourceLock("BlobSessionAuth")
     // This test validates that listing blobs with a session-enabled client uses Bearer authorization because
     // List Blobs is a container-level GET request, not a blob-level GET request so it users Bearer tokens instead of session tokens.
     public void listBlobsOverSessionEnabledClient() {
