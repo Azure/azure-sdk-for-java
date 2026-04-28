@@ -509,22 +509,20 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<List<String>> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
+    public Mono<MessageSessionsResult> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
         String lastSessionId) {
         if (lastUpdatedTime == null) {
             return monoError(logger, new NullPointerException("'lastUpdatedTime' cannot be null."));
         }
 
-        // The service checks `lastUpdatedTime == DateTime.MaxValue` (C# 9999-12-31T23:59:59.9999999)
-        // to switch between "active messages" mode and "updated since" mode. On the AMQP wire,
-        // timestamps have millisecond precision, so DateTime.MaxValue becomes 253402300799999 ms.
-        // Year 9999 with .999999999 nanos in UTC produces this same ms value via Date.from(instant),
-        // ensuring the service-side comparison matches. Cap to the max supported instant in UTC to
-        // avoid java.util.Date overflow (OffsetDateTime.MAX year 999999999 exceeds Date's range)
-        // while keeping the serialized sentinel stable even when the source offset is non-UTC.
-        final OffsetDateTime cappedTime = lastUpdatedTime.getYear() > 9999
-            ? OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC)
-            : lastUpdatedTime;
+        // Track 1's SessionBrowser uses new Date(253402300800000L) as the active-messages sentinel
+        // (1ms past 9999-12-31T23:59:59.999Z, i.e. 10000-01-01T00:00:00Z UTC). This is the wire
+        // value the broker has been validated against for years; align with it here. Any input at
+        // or beyond that instant (including OffsetDateTime.MAX, whose nanosecond precision and
+        // year-999_999_999 value would otherwise overflow java.util.Date) is clamped to it so the
+        // sentinel comparison and Date.from(...) both stay well-defined.
+        final OffsetDateTime cappedTime
+            = lastUpdatedTime.compareTo(ACTIVE_MESSAGES_SENTINEL) > 0 ? ACTIVE_MESSAGES_SENTINEL : lastUpdatedTime;
 
         return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {
             // No associated link name for entity-level operations
@@ -549,7 +547,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 if (value instanceof Map) {
                     @SuppressWarnings("unchecked")
                     final Map<String, Object> map = (Map<String, Object>) value;
-                    final Object sessionsObj = map.get(ManagementConstants.SESSIONS_IDS);
+                    final Object sessionsObj = map.get(ManagementConstants.SESSION_IDS);
+                    final int nextSkip = readResponseSkip(map, skip);
 
                     if (sessionsObj instanceof Object[]) {
                         final Object[] sessionArray = (Object[]) sessionsObj;
@@ -557,16 +556,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
                         for (Object id : sessionArray) {
                             sessionIds.add(String.valueOf(id));
                         }
-                        return Mono.just(sessionIds);
+                        return Mono.just(new MessageSessionsResult(sessionIds, nextSkip));
                     }
                 }
-                return Mono.just(Collections.emptyList());
+                return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
             } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
-                return Mono.just(Collections.emptyList());
+                return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
             } else if (statusCode == AmqpResponseCode.NOT_FOUND) {
                 // 404 + SessionNotFound means no sessions exist. sendWithVerify already passes
                 // this through as a successful response rather than an error.
-                return Mono.just(Collections.emptyList());
+                return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
             } else {
                 final String statusDescription = RequestResponseUtils.getStatusDescription(response);
                 throw logger.logExceptionAsWarning(new AmqpException(true,
@@ -574,6 +573,29 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     getErrorContext()));
             }
         });
+    }
+
+    /**
+     * Active-messages sentinel matching Track 1's {@code SessionBrowser.MAXDATE}
+     * ({@code new Date(253402300800000L)} == {@code 10000-01-01T00:00:00Z} UTC). Defined as
+     * {@link OffsetDateTime} so the cap can be expressed via {@link OffsetDateTime#compareTo} and
+     * the call site only deals in one type.
+     */
+    private static final OffsetDateTime ACTIVE_MESSAGES_SENTINEL
+        = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+    /**
+     * Reads the {@code skip} value the service returns alongside the session-ID page. Track 1 uses
+     * this server-returned value as the cursor for the next page rather than {@code currentSkip +
+     * page.size()}, so callers must propagate it verbatim. Falls back to the request {@code skip}
+     * if the field is missing or not numeric so a malformed response cannot stall pagination.
+     */
+    private static int readResponseSkip(Map<String, Object> responseBody, int requestSkip) {
+        final Object value = responseBody.get(ManagementConstants.SKIP);
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+        return requestSkip;
     }
 
     /**

@@ -152,17 +152,26 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * Lists the session IDs for sessions that have active messages or whose state was updated
      * since the given time.
      *
-     * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the UTC sentinel
-     *     {@code 9999-12-31T23:59:59.999999999Z}; pass a real timestamp to get sessions updated since that
-     *     time. The implementation caps {@code lastUpdatedTime} values beyond year 9999 (such as
-     *     {@link java.time.OffsetDateTime#MAX}) to that UTC sentinel so the service-side sentinel
-     *     comparison matches.
-     * @param skip Pagination offset.
+     * <p>Pagination follows the cursor semantics of Track 1's
+     * {@code com.microsoft.azure.servicebus.SessionBrowser}: the caller threads {@code skip} from
+     * {@link MessageSessionsResult#getNextSkip()} of the previous response and {@code lastSessionId}
+     * (the last entry of the previous page) into the next request, and stops when an empty page is
+     * returned.</p>
+     *
+     * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the
+     *     {@code 10000-01-01T00:00:00Z} sentinel (the implementation also accepts
+     *     {@link OffsetDateTime#MAX} and clamps it to that sentinel) so the wire timestamp matches
+     *     the {@code DateTime.MaxValue + 1ms} value used by Track 1. Pass a real timestamp to get
+     *     sessions updated since that time.
+     * @param skip Pagination offset (from {@link MessageSessionsResult#getNextSkip()} of the
+     *     previous page, or {@code 0} for the first page).
      * @param top Page size.
-     * @param lastSessionId Last session ID from the previous page (for cursor-based pagination), or null.
-     * @return A list of session ID strings for this page.
+     * @param lastSessionId Last session ID from the previous page (cursor); {@code null} for the
+     *     first page.
+     * @return The page of session IDs together with the {@code skip} value to use for the next page.
      */
-    Mono<List<String>> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top, String lastSessionId);
+    Mono<MessageSessionsResult> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
+        String lastSessionId);
 
     @Override
     void close();

@@ -9,6 +9,10 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -16,14 +20,13 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 
@@ -153,6 +156,16 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionO
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
+    private static final int LIST_SESSIONS_PAGE_SIZE = 100;
+    private static final char CURSOR_SEPARATOR = '\u001F';
+    private static final HttpHeaders EMPTY_HEADERS = new HttpHeaders(Collections.emptyMap());
+    /**
+     * Active-messages sentinel matching Track 1's {@code SessionBrowser.MAXDATE}
+     * ({@code new Date(253402300800000L)} == {@code 10000-01-01T00:00:00Z} UTC). Anything at or
+     * beyond this instant tells the broker to return sessions that currently have active messages
+     * (rather than sessions whose state was updated since some real timestamp).
+     */
+    static final OffsetDateTime ACTIVE_MESSAGES_SENTINEL = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -303,45 +316,63 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * Sessions on the dead-letter queue or sessions having only a session state (but no messages)
      * are not returned.</p>
      *
-     * @return A {@link Flux} of session ID strings.
+     * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
+     * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
+     * previous page) and terminates when the broker returns an empty page.</p>
+     *
+     * @return A {@link PagedFlux} of session ID strings.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<String> listSessions() {
-        // Use year 9999 as sentinel for "active messages" mode.
-        // Cannot use OffsetDateTime.MAX because its year (999999999) overflows java.util.Date.
-        return listSessionsInternal(OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC));
+    public PagedFlux<String> listSessions() {
+        // Wire value matches Track 1's SessionBrowser.MAXDATE so the broker switches into the
+        // active-messages mode it has historically been validated against.
+        return listSessionsInternal(ACTIVE_MESSAGES_SENTINEL);
     }
 
     /**
      * Lists the IDs of sessions whose state was updated after the specified time.
      *
+     * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
+     * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
+     * previous page) and terminates when the broker returns an empty page.</p>
+     *
      * @param updatedAfter Only sessions whose session state was updated after this time are returned.
-     * @return A {@link Flux} of session ID strings.
+     * @return A {@link PagedFlux} of session ID strings.
      * @throws NullPointerException if {@code updatedAfter} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<String> listSessions(OffsetDateTime updatedAfter) {
+    public PagedFlux<String> listSessions(OffsetDateTime updatedAfter) {
         if (updatedAfter == null) {
-            return fluxError(LOGGER, new NullPointerException("'updatedAfter' cannot be null."));
+            return new PagedFlux<>(() -> monoError(LOGGER, new NullPointerException("'updatedAfter' cannot be null.")));
         }
         return listSessionsInternal(updatedAfter);
     }
 
-    private Flux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
-        final int pageSize = 100;
+    private PagedFlux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
+        return new PagedFlux<>(() -> fetchSessionPage(lastUpdatedTime, 0, null), continuationToken -> {
+            final int separator = continuationToken.indexOf(CURSOR_SEPARATOR);
+            final int nextSkip = Integer.parseInt(continuationToken.substring(0, separator));
+            final String lastSessionId = continuationToken.substring(separator + 1);
+            return fetchSessionPage(lastUpdatedTime, nextSkip, lastSessionId);
+        });
+    }
+
+    private Mono<PagedResponse<String>> fetchSessionPage(OffsetDateTime lastUpdatedTime, int skip,
+        String lastSessionId) {
         return connectionCacheWrapper.getConnection()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(managementNode -> {
-                final int[] currentSkip = { 0 };
-                return Flux
-                    .defer(() -> managementNode.getMessageSessions(lastUpdatedTime, currentSkip[0], pageSize, null))
-                    .repeat()
-                    .takeWhile(page -> !page.isEmpty())
-                    .map(page -> {
-                        currentSkip[0] += page.size();
-                        return page;
-                    })
-                    .flatMapIterable(page -> page);
+            .flatMap(managementNode -> managementNode.getMessageSessions(lastUpdatedTime, skip, LIST_SESSIONS_PAGE_SIZE,
+                lastSessionId))
+            .map(result -> {
+                final java.util.List<String> sessionIds = result.getSessionIds();
+                // Empty page terminates pagination (matches Track 1's SessionBrowser loop and the
+                // broker contract). Continuation token encodes the server-returned skip and the
+                // last session ID of the page so the next call uses the same cursor Track 1 does.
+                final String continuationToken = sessionIds.isEmpty()
+                    ? null
+                    : result.getNextSkip() + CURSOR_SEPARATOR + sessionIds.get(sessionIds.size() - 1);
+                return new PagedResponseBase<Void, String>(null, 200, EMPTY_HEADERS, sessionIds, continuationToken,
+                    null);
             });
     }
 

@@ -1076,15 +1076,19 @@ class ManagementChannelTests {
         final String[] sessionIds = new String[] { "session-1", "session-2", "session-3" };
 
         final Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put(ManagementConstants.SESSIONS_IDS, sessionIds);
+        responseBody.put(ManagementConstants.SESSION_IDS, sessionIds);
+        responseBody.put(ManagementConstants.SKIP, 3);
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
         StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, skip, top, null)).assertNext(result -> {
-            assertEquals(3, result.size());
-            assertEquals("session-1", result.get(0));
-            assertEquals("session-2", result.get(1));
-            assertEquals("session-3", result.get(2));
+            assertEquals(3, result.getSessionIds().size());
+            assertEquals("session-1", result.getSessionIds().get(0));
+            assertEquals("session-2", result.getSessionIds().get(1));
+            assertEquals("session-3", result.getSessionIds().get(2));
+            // Cursor for the next page must be the server-returned skip (Track 1 SessionBrowser semantics),
+            // not currentSkip + page.size().
+            assertEquals(3, result.getNextSkip());
         }).expectComplete().verify(TIMEOUT);
 
         // Verify the sent AMQP message
@@ -1109,34 +1113,35 @@ class ManagementChannelTests {
     }
 
     /**
-     * Verifies getMessageSessions in active-sessions mode uses the DateTime.MaxValue sentinel.
-     * The sentinel (year 9999, nanos 999999999) should produce 253402300799999 ms on the wire,
-     * which the service recognizes as the "list sessions with active messages" mode.
+     * Verifies getMessageSessions in active-sessions mode uses the Track 1 active-messages sentinel.
+     * Track 1's {@code SessionBrowser.MAXDATE} is {@code new Date(253402300800000L)}
+     * (10000-01-01T00:00:00Z UTC, 1 ms past 9999-12-31T23:59:59.999Z), which the broker recognizes
+     * as the "list sessions with active messages" mode.
      */
     @Test
     void getMessageSessionsActiveSessionsMode() {
-        // Arrange - year 9999 sentinel (active messages mode)
-        final OffsetDateTime sentinel = OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
+        // Arrange - Track 1 active-messages sentinel (10000-01-01T00:00:00Z UTC).
+        final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final String[] sessionIds = new String[] { "active-1", "active-2" };
 
         final Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put(ManagementConstants.SESSIONS_IDS, sessionIds);
+        responseBody.put(ManagementConstants.SESSION_IDS, sessionIds);
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
         StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null)).assertNext(result -> {
-            assertEquals(2, result.size());
-            assertEquals("active-1", result.get(0));
-            assertEquals("active-2", result.get(1));
+            assertEquals(2, result.getSessionIds().size());
+            assertEquals("active-1", result.getSessionIds().get(0));
+            assertEquals("active-2", result.getSessionIds().get(1));
         }).expectComplete().verify(TIMEOUT);
 
-        // Verify the sent timestamp matches DateTime.MaxValue at ms precision
+        // Verify the sent timestamp matches Track 1's MAXDATE wire value.
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         @SuppressWarnings("unchecked")
         final Map<String, Object> body
             = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
         final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
-        assertEquals(253402300799999L, sentDate.getTime());
+        assertEquals(253402300800000L, sentDate.getTime());
     }
 
     /**
@@ -1149,11 +1154,11 @@ class ManagementChannelTests {
         responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
         responseMessage.setBody(null);
 
-        final OffsetDateTime lastUpdated = OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
+        final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, 0, 100, null))
-            .assertNext(result -> assertTrue(result.isEmpty()))
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null))
+            .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -1174,9 +1179,9 @@ class ManagementChannelTests {
 
         // Act & Assert
         StepVerifier
-            .create(managementChannel.getMessageSessions(
-                OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC), 0, 100, null))
-            .assertNext(result -> assertTrue(result.isEmpty()))
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -1191,39 +1196,41 @@ class ManagementChannelTests {
 
         // Act & Assert
         StepVerifier
-            .create(managementChannel.getMessageSessions(
-                OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC), 0, 100, null))
-            .assertNext(result -> assertTrue(result.isEmpty()))
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
             .expectComplete()
             .verify(TIMEOUT);
     }
 
     /**
-     * Verifies that getMessageSessions caps year > 9999 to avoid Date overflow.
+     * Verifies that getMessageSessions clamps inputs at or beyond the Track 1 sentinel down to
+     * the sentinel itself, both to avoid {@link java.util.Date} overflow for {@link OffsetDateTime#MAX}
+     * and to keep the broker's active-messages comparison stable.
      */
     @Test
     void getMessageSessionsCapsYear() {
-        // Arrange - use a year beyond 9999 (simulating OffsetDateTime.MAX)
+        // Arrange - year far beyond the sentinel (simulating OffsetDateTime.MAX or a similar caller mistake).
         final OffsetDateTime farFuture = OffsetDateTime.of(99999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
 
         final Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put(ManagementConstants.SESSIONS_IDS, new String[] { "s1" });
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "s1" });
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act - should NOT throw ArithmeticException
         StepVerifier.create(managementChannel.getMessageSessions(farFuture, 0, 100, null))
-            .assertNext(result -> assertEquals(1, result.size()))
+            .assertNext(result -> assertEquals(1, result.getSessionIds().size()))
             .expectComplete()
             .verify(TIMEOUT);
 
-        // Verify the sent timestamp is capped to year 9999
+        // Verify the sent timestamp is capped to the Track 1 active-messages sentinel.
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
         @SuppressWarnings("unchecked")
         final Map<String, Object> body
             = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
         final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
-        // 253402300799999 ms = 9999-12-31T23:59:59.999Z (DateTime.MaxValue at ms precision)
-        assertEquals(253402300799999L, sentDate.getTime());
+        // 253402300800000 ms == 10000-01-01T00:00:00Z UTC == Track 1's SessionBrowser.MAXDATE.
+        assertEquals(253402300800000L, sentDate.getTime());
     }
 
     /**
@@ -1234,13 +1241,13 @@ class ManagementChannelTests {
         // Arrange
         final String lastSessionId = "cursor-session-42";
         responseMessage.setBody(
-            new AmqpValue(Collections.singletonMap(ManagementConstants.SESSIONS_IDS, new String[] { "next-1" })));
+            new AmqpValue(Collections.singletonMap(ManagementConstants.SESSION_IDS, new String[] { "next-1" })));
 
         // Act
         StepVerifier
             .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100,
                 100, lastSessionId))
-            .assertNext(result -> assertEquals("next-1", result.get(0)))
+            .assertNext(result -> assertEquals("next-1", result.getSessionIds().get(0)))
             .expectComplete()
             .verify(TIMEOUT);
 
@@ -1250,5 +1257,33 @@ class ManagementChannelTests {
         final Map<String, Object> body
             = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
         assertEquals(lastSessionId, body.get(ManagementConstants.LAST_SESSION_ID));
+    }
+
+    /**
+     * Verifies that when the service returns a {@code skip} that differs from
+     * {@code requestSkip + page.size()} (the broker may filter out expired sessions and report a
+     * larger {@code skip} than the page length), the result preserves the server-returned value as
+     * the cursor. This is the Track 1 SessionBrowser contract; using a locally computed skip would
+     * silently skip or duplicate sessions on the next request.
+     */
+    @Test
+    void getMessageSessionsHonoursServerReturnedSkip() {
+        // Arrange - response page has 2 sessions but the server reports skip=10 (e.g. 8 entries
+        // were filtered before the page boundary).
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "a", "b" });
+        responseBody.put(ManagementConstants.SKIP, 10);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals(10, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

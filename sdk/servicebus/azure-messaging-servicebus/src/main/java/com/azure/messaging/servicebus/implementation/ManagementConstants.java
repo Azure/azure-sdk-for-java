@@ -25,7 +25,12 @@ public class ManagementConstants {
     public static final String SEQUENCE_NUMBERS = "sequence-numbers";
     public static final String SESSION_ID = "session-id";
     public static final String SESSION_STATE = "session-state";
-    public static final String SESSIONS_IDS = "sessions-ids";
+    /**
+     * Wire key for the session-ID array in the {@code OPERATION_GET_MESSAGE_SESSIONS} response. The
+     * field name ("sessions-ids") is fixed by the broker contract; the constant name omits the extra
+     * "s" so it reads consistently with {@link #SESSION_ID} and {@link #SEQUENCE_NUMBERS}.
+     */
+    public static final String SESSION_IDS = "sessions-ids";
     public static final String LAST_UPDATED_TIME = "last-updated-time";
     public static final String LAST_SESSION_ID = "last-session-id";
     public static final String VIA_PARTITION_KEY = "via-partition-key";
