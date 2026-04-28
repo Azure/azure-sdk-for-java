@@ -15,6 +15,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 
 - Fixed Event Hubs autoconfiguration where a dedicated `EventHubClientBuilder` registered by `consumer`-only or `producer`-only sub-level overrides (`connection-string` / `namespace` / `event-hub-name`) suppressed the root builder and got injected into the opposite shared section, causing the shared client to target the other section's event hub. The root builder is now registered under bean name `springCloudAzureEventHubsClientBuilder` with a name-based `@ConditionalOnMissingBean`, and the shared consumer/producer sections gate on and inject that specific bean via `@Qualifier`. ([#49245](https://github.com/Azure/azure-sdk-for-java/issues/49245))
+- Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
 
 ## 6.3.0 (2026-04-29)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
