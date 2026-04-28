@@ -112,7 +112,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 
