@@ -1333,4 +1333,33 @@ class ManagementChannelTests {
             .expectComplete()
             .verify(TIMEOUT);
     }
+
+    /**
+     * Verifies that {@code getMessageSessions} includes {@code last-session-id} when the cursor is
+     * the empty string, since Service Bus permits an empty session ID. Collapsing {@code ""} into
+     * "no cursor" would silently restart pagination from the first page when the previous page
+     * ended on an empty-ID session.
+     */
+    @Test
+    void getMessageSessionsForwardsEmptyLastSessionIdAsCursor() {
+        // Arrange
+        responseMessage.setBody(
+            new AmqpValue(Collections.singletonMap(ManagementConstants.SESSION_IDS, new String[] { "next-1" })));
+
+        // Act - pass empty-string cursor
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100,
+                100, ""))
+            .assertNext(result -> assertEquals("next-1", result.getSessionIds().get(0)))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Assert the empty cursor was sent (not collapsed away)
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        assertTrue(body.containsKey(ManagementConstants.LAST_SESSION_ID));
+        assertEquals("", body.get(ManagementConstants.LAST_SESSION_ID));
+    }
 }

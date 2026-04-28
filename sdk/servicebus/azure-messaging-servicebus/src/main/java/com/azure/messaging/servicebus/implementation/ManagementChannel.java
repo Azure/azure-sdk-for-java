@@ -539,7 +539,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
             body.put(ManagementConstants.LAST_UPDATED_TIME, Date.from(cappedTime.toInstant()));
             body.put(ManagementConstants.SKIP, skip);
             body.put(ManagementConstants.TOP, top);
-            if (!CoreUtils.isNullOrEmpty(lastSessionId)) {
+            // Empty string is a valid Service Bus session ID, so the broker contract distinguishes
+            // null (no cursor) from "" (cursor is the empty-ID session). Only omit the field when
+            // lastSessionId is null; never collapse empty strings into "no cursor".
+            if (lastSessionId != null) {
                 body.put(ManagementConstants.LAST_SESSION_ID, lastSessionId);
             }
 
