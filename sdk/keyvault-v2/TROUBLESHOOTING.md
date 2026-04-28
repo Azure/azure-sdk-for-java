@@ -167,7 +167,7 @@ For additional support, please search our [existing issues](https://github.com/A
 [kv_keys_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault-v2/azure-security-keyvault-keys/TROUBLESHOOTING.md
 [kv_secrets_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault-v2/azure-security-keyvault-secrets/TROUBLESHOOTING.md
 [identity_logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
-[identity_troubleshooting]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/core-v2/azure-core/TROUBLESHOOTING.md
+[identity_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core/README.md
 [identity_multitenant]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core/TROUBLESHOOTING.md#troubleshoot-multi-tenant-authentication-issues
 [rbac]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [release_notes_resource]: https://aka.ms/azsdk/blog/vault-uri
