@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Constants which is used for management calls to support operations for example renewlock, schedule, defer etc.
  */
@@ -31,6 +34,17 @@ public class ManagementConstants {
      * "s" so it reads consistently with {@link #SESSION_ID} and {@link #SEQUENCE_NUMBERS}.
      */
     public static final String SESSION_IDS = "sessions-ids";
+
+    /**
+     * Sentinel timestamp the broker recognizes as "list sessions with active messages" mode for the
+     * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. Matches Track 1's
+     * {@code SessionBrowser.MAXDATE = new Date(253402300800000L)} ({@code 10000-01-01T00:00:00Z}
+     * UTC); using any other value risks the broker not switching into the proven mode. Defined as
+     * {@link OffsetDateTime} so callers and the implementation can clamp inputs via
+     * {@link OffsetDateTime#compareTo} without each owning their own copy.
+     */
+    public static final OffsetDateTime ACTIVE_MESSAGES_SENTINEL
+        = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
     public static final String LAST_UPDATED_TIME = "last-updated-time";
     public static final String LAST_SESSION_ID = "last-session-id";
     public static final String VIA_PARTITION_KEY = "via-partition-key";

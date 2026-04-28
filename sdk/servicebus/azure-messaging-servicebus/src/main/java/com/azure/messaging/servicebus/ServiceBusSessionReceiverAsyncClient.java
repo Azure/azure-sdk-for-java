@@ -15,6 +15,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
@@ -22,8 +23,9 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusT
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -157,15 +159,14 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionO
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
     private static final int LIST_SESSIONS_PAGE_SIZE = 100;
-    private static final char CURSOR_SEPARATOR = '\u001F';
-    private static final HttpHeaders EMPTY_HEADERS = new HttpHeaders(Collections.emptyMap());
     /**
-     * Active-messages sentinel matching Track 1's {@code SessionBrowser.MAXDATE}
-     * ({@code new Date(253402300800000L)} == {@code 10000-01-01T00:00:00Z} UTC). Anything at or
-     * beyond this instant tells the broker to return sessions that currently have active messages
-     * (rather than sessions whose state was updated since some real timestamp).
+     * Continuation-token format is {@code <decimal-skip>|<base64url-utf8(lastSessionId)>}. The
+     * {@code |} is safe as a separator because the URL-safe Base64 alphabet (A-Z, a-z, 0-9, '-',
+     * '_') does not contain it, so any byte sequence in {@code lastSessionId} survives a round
+     * trip without escaping.
      */
-    static final OffsetDateTime ACTIVE_MESSAGES_SENTINEL = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    private static final char CURSOR_SEPARATOR = '|';
+    private static final HttpHeaders EMPTY_HEADERS = new HttpHeaders(Collections.emptyMap());
 
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -326,7 +327,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     public PagedFlux<String> listSessions() {
         // Wire value matches Track 1's SessionBrowser.MAXDATE so the broker switches into the
         // active-messages mode it has historically been validated against.
-        return listSessionsInternal(ACTIVE_MESSAGES_SENTINEL);
+        return listSessionsInternal(ManagementConstants.ACTIVE_MESSAGES_SENTINEL);
     }
 
     /**
@@ -357,20 +358,26 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             final int separator = continuationToken.indexOf(CURSOR_SEPARATOR);
             if (separator < 0) {
                 return monoError(LOGGER, new IllegalArgumentException(
-                    "Invalid continuation token. Expected format '<skip>" + CURSOR_SEPARATOR + "<lastSessionId>'."));
+                    "Invalid continuation token. Expected format '<skip>|<base64url(lastSessionId)>'."));
             }
 
             final int nextSkip;
             try {
                 nextSkip = Integer.parseInt(continuationToken.substring(0, separator));
             } catch (NumberFormatException ex) {
-                return monoError(LOGGER,
-                    new IllegalArgumentException(
-                        "Invalid continuation token. Expected a numeric skip value before '" + CURSOR_SEPARATOR + "'.",
-                        ex));
+                return monoError(LOGGER, new IllegalArgumentException(
+                    "Invalid continuation token. Expected a numeric skip value before the '|' separator.", ex));
             }
 
-            final String lastSessionId = continuationToken.substring(separator + 1);
+            final String lastSessionId;
+            try {
+                final byte[] decoded = Base64.getUrlDecoder().decode(continuationToken.substring(separator + 1));
+                lastSessionId = new String(decoded, StandardCharsets.UTF_8);
+            } catch (IllegalArgumentException ex) {
+                return monoError(LOGGER, new IllegalArgumentException(
+                    "Invalid continuation token. Expected base64url-encoded UTF-8 bytes after the '|' separator.", ex));
+            }
+
             return fetchSessionPage(lastUpdatedTime, nextSkip, lastSessionId);
         });
     }
@@ -386,9 +393,17 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 // Empty page terminates pagination (matches Track 1's SessionBrowser loop and the
                 // broker contract). Continuation token encodes the server-returned skip and the
                 // last session ID of the page so the next call uses the same cursor Track 1 does.
-                final String continuationToken = sessionIds.isEmpty()
-                    ? null
-                    : result.getNextSkip() + CURSOR_SEPARATOR + sessionIds.get(sessionIds.size() - 1);
+                // Base64url-encode the session ID so arbitrary byte sequences (including the '|'
+                // separator) round-trip without escaping.
+                final String continuationToken;
+                if (sessionIds.isEmpty()) {
+                    continuationToken = null;
+                } else {
+                    final String last = sessionIds.get(sessionIds.size() - 1);
+                    final String encoded
+                        = Base64.getUrlEncoder().withoutPadding().encodeToString(last.getBytes(StandardCharsets.UTF_8));
+                    continuationToken = result.getNextSkip() + String.valueOf(CURSOR_SEPARATOR) + encoded;
+                }
                 return new PagedResponseBase<Void, String>(null, 200, EMPTY_HEADERS, sessionIds, continuationToken,
                     null);
             });
