@@ -325,6 +325,31 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     @Test
+    public void policyFallsToBearerOn400Async() {
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
+        HttpResponse badRequestResponse = mock(HttpResponse.class);
+        HttpResponse bearerResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.process()).thenReturn(Mono.just(badRequestResponse));
+        when(retryNext.process()).thenReturn(Mono.just(bearerResponse));
+        when(badRequestResponse.getStatusCode()).thenReturn(400);
+        when(bearerResponse.getStatusCode()).thenReturn(200);
+
+        try (HttpResponse actualResponse = policy.process(context, next).block()) {
+            assertEquals(bearerResponse, actualResponse);
+            verify(badRequestResponse, times(1)).close();
+            verify(bearerPolicy, times(1)).process(any(), any());
+            String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+            assertTrue(authHeader == null || !authHeader.startsWith("Session"),
+                "Session auth should have been stripped but was: " + authHeader);
+        }
+    }
+
+    @Test
     public void policyFallsToBearerOn503SessionUnavailableSync() {
         HttpPipelineCallContext context = createContext();
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
@@ -345,6 +370,31 @@ public class SessionTokenCredentialPolicyTest {
             assertEquals(bearerResponse, actualResponse);
             verify(unavailableResponse, times(1)).close();
             // Verify that the bearer policy was invoked for fallback
+            verify(bearerPolicy, times(1)).processSync(any(), any());
+            String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+            assertTrue(authHeader == null || !authHeader.startsWith("Session"),
+                "Session auth should have been stripped but was: " + authHeader);
+        }
+    }
+
+    @Test
+    public void policyFallsToBearerOn400Sync() {
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
+        HttpResponse badRequestResponse = mock(HttpResponse.class);
+        HttpResponse bearerResponse = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionSync()).thenReturn(credentialWithToken(FIRST_TOKEN));
+        when(next.clone()).thenReturn(retryNext);
+        when(next.processSync()).thenReturn(badRequestResponse);
+        when(retryNext.processSync()).thenReturn(bearerResponse);
+        when(badRequestResponse.getStatusCode()).thenReturn(400);
+        when(bearerResponse.getStatusCode()).thenReturn(200);
+
+        try (HttpResponse actualResponse = policy.processSync(context, next)) {
+            assertEquals(bearerResponse, actualResponse);
+            verify(badRequestResponse, times(1)).close();
             verify(bearerPolicy, times(1)).processSync(any(), any());
             String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
             assertTrue(authHeader == null || !authHeader.startsWith("Session"),

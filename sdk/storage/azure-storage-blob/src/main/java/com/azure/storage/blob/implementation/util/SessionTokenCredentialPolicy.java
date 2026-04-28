@@ -259,16 +259,19 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Returns true for 503 with SessionOperationsTemporarilyUnavailable error code.
-     * The session infrastructure is temporarily down, so we strip session auth and
-     * delegate to the wrapped bearer policy to handle the request with a bearer token.
+     * Returns true for responses where retrying with bearer authentication can preserve
+     * request compatibility when session authentication is unavailable or rejected.
      */
     private static boolean shouldFallBackToBearer(HttpPipelineCallContext context, HttpResponse response) {
         if (Boolean.TRUE.equals(context.getData(RETRY_CONTEXT_KEY).orElse(false))) {
             return false;
         }
 
-        return isSessionUnavailable(response);
+        return isBadRequest(response) || isSessionUnavailable(response);
+    }
+
+    private static boolean isBadRequest(HttpResponse response) {
+        return response.getStatusCode() == 400;
     }
 
     private static boolean isSessionUnavailable(HttpResponse response) {
