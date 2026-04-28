@@ -5,7 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
-import com.azure.ai.agents.implementation.models.UpdateToolboxRequest1;
+import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxObject;
@@ -322,7 +322,7 @@ public final class ToolboxesClient {
      * </pre>
      *
      * @param toolboxName The name of the toolbox to update.
-     * @param updateToolboxRequest1 The updateToolboxRequest1 parameter.
+     * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -332,9 +332,9 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest1,
+    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateToolboxWithResponse(toolboxName, updateToolboxRequest1, requestOptions);
+        return this.serviceClient.updateToolboxWithResponse(toolboxName, updateToolboxRequest, requestOptions);
     }
 
     /**
@@ -615,9 +615,9 @@ public final class ToolboxesClient {
     public ToolboxObject updateToolbox(String toolboxName, String defaultVersion) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateToolboxRequest1 updateToolboxRequest1Obj = new UpdateToolboxRequest1(defaultVersion);
-        BinaryData updateToolboxRequest1 = BinaryData.fromObject(updateToolboxRequest1Obj);
-        return updateToolboxWithResponse(toolboxName, updateToolboxRequest1, requestOptions).getValue()
+        UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
+        BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
+        return updateToolboxWithResponse(toolboxName, updateToolboxRequest, requestOptions).getValue()
             .toObject(ToolboxObject.class);
     }
 

@@ -199,7 +199,7 @@ public final class ToolboxesImpl {
         Mono<Response<BinaryData>> updateToolbox(@HostParam("endpoint") String endpoint,
             @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest1,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest,
             RequestOptions requestOptions, Context context);
 
         @Patch("/toolboxes/{toolbox_name}")
@@ -211,7 +211,7 @@ public final class ToolboxesImpl {
         Response<BinaryData> updateToolboxSync(@HostParam("endpoint") String endpoint,
             @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest1,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest,
             RequestOptions requestOptions, Context context);
 
         @Delete("/toolboxes/{toolbox_name}")
@@ -1038,7 +1038,7 @@ public final class ToolboxesImpl {
      * </pre>
      * 
      * @param toolboxName The name of the toolbox to update.
-     * @param updateToolboxRequest1 The updateToolboxRequest1 parameter.
+     * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1049,12 +1049,12 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateToolboxWithResponseAsync(String toolboxName,
-        BinaryData updateToolboxRequest1, RequestOptions requestOptions) {
+        BinaryData updateToolboxRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateToolbox(this.client.getEndpoint(), toolboxName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest1,
+            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest,
             requestOptions, context));
     }
 
@@ -1083,7 +1083,7 @@ public final class ToolboxesImpl {
      * </pre>
      * 
      * @param toolboxName The name of the toolbox to update.
-     * @param updateToolboxRequest1 The updateToolboxRequest1 parameter.
+     * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1092,13 +1092,13 @@ public final class ToolboxesImpl {
      * @return a toolbox that stores reusable tool definitions for agents along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest1,
+    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateToolboxSync(this.client.getEndpoint(), toolboxName, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest1, requestOptions,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest, requestOptions,
             Context.NONE);
     }
 

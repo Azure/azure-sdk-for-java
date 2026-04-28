@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 /**
  * Cron based trigger.
@@ -35,7 +36,7 @@ public final class CronTrigger extends Trigger {
      * Time zone for the cron schedule.
      */
     @Generated
-    private String timeZone;
+    private TimeZone timeZone;
 
     /*
      * Start time for the cron schedule in ISO 8601 format.
@@ -76,20 +77,8 @@ public final class CronTrigger extends Trigger {
      * @return the timeZone value.
      */
     @Generated
-    public String getTimeZone() {
+    public TimeZone getTimeZone() {
         return this.timeZone;
-    }
-
-    /**
-     * Set the timeZone property: Time zone for the cron schedule.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the CronTrigger object itself.
-     */
-    @Generated
-    public CronTrigger setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
     }
 
     /**
@@ -115,13 +104,12 @@ public final class CronTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("expression", this.expression);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("timeZone", this.timeZone != null ? this.timeZone.getID() : null);
         jsonWriter.writeStringField("startTime",
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
         jsonWriter.writeStringField("endTime",
@@ -138,12 +126,11 @@ public final class CronTrigger extends Trigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CronTrigger.
      */
-    @Generated
     public static CronTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String expression = null;
             TriggerType type = TriggerType.CRON;
-            String timeZone = null;
+            TimeZone timeZone = null;
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -154,7 +141,8 @@ public final class CronTrigger extends Trigger {
                 } else if ("type".equals(fieldName)) {
                     type = TriggerType.fromString(reader.getString());
                 } else if ("timeZone".equals(fieldName)) {
-                    timeZone = reader.getString();
+                    String timeZoneId = reader.getString();
+                    timeZone = parseTimeZone(timeZoneId);
                 } else if ("startTime".equals(fieldName)) {
                     startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -172,6 +160,26 @@ public final class CronTrigger extends Trigger {
             deserializedCronTrigger.endTime = endTime;
             return deserializedCronTrigger;
         });
+    }
+
+    /**
+     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
+     *
+     * <p>{@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
+     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
+     *
+     * @param timeZoneId the timezone ID to parse, or {@code null}.
+     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
+     */
+    private static TimeZone parseTimeZone(String timeZoneId) {
+        if (timeZoneId == null) {
+            return null;
+        }
+        TimeZone tz = TimeZone.getTimeZone(timeZoneId);
+        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timeZoneId)) {
+            return null;
+        }
+        return tz;
     }
 
     /**
@@ -205,6 +213,18 @@ public final class CronTrigger extends Trigger {
     @Generated
     public CronTrigger setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
+        return this;
+    }
+
+    /**
+     * Set the timeZone property: Time zone for the cron schedule.
+     *
+     * @param timeZone the timeZone value to set.
+     * @return the CronTrigger object itself.
+     */
+    @Generated
+    public CronTrigger setTimeZone(TimeZone timeZone) {
+        this.timeZone = timeZone;
         return this;
     }
 }
