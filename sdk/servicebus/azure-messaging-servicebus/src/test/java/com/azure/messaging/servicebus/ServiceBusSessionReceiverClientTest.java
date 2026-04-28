@@ -132,8 +132,8 @@ class ServiceBusSessionReceiverClientTest {
     }
 
     /**
-     * Verifies that an error in the async {@code PagedFlux} (e.g., null {@code updatedAfter} from
-     * the async API contract) propagates out of the sync {@code PagedIterable} when iterated.
+     * Verifies that an error in the async {@code PagedFlux} (e.g., a transient broker failure)
+     * propagates out of the sync {@code PagedIterable} when iterated.
      */
     @Test
     void listSessionsPropagatesAsyncError() {
@@ -146,5 +146,18 @@ class ServiceBusSessionReceiverClientTest {
         final OffsetDateTime updatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         assertThrows(NullPointerException.class, () -> client.listSessions(updatedAfter).forEach(id -> {
         }));
+    }
+
+    /**
+     * Verifies the sync wrapper rejects a null {@code updatedAfter} eagerly (immediately on the
+     * call) rather than deferring the error until the {@code PagedIterable} is iterated, matching
+     * the behaviour documented on the public method.
+     */
+    @Test
+    void listSessionsRejectsNullUpdatedAfterEagerly() {
+        final ServiceBusSessionReceiverClient client
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofSeconds(5));
+
+        assertThrows(NullPointerException.class, () -> client.listSessions(null));
     }
 }

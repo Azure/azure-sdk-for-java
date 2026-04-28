@@ -474,4 +474,18 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .expectError(IllegalArgumentException.class)
             .verify(DEFAULT_TIMEOUT);
     }
+
+    /**
+     * Verifies that a continuation token whose decoded skip is negative (e.g., {@code "-1|...")} is
+     * rejected with {@link IllegalArgumentException} rather than producing an invalid management
+     * request with a negative {@code skip} on the wire.
+     */
+    @Test
+    void listSessionsRejectsNegativeSkipInContinuationToken() {
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("-1|YWJj"))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
 }

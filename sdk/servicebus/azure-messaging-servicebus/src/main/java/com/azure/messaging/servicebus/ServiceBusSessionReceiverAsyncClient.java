@@ -367,6 +367,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 return monoError(LOGGER, new IllegalArgumentException(
                     "Invalid continuation token. Expected a numeric skip value before the '|' separator.", ex));
             }
+            if (nextSkip < 0) {
+                return monoError(LOGGER, new IllegalArgumentException(
+                    "Invalid continuation token. Skip value must be non-negative; got " + nextSkip + "."));
+            }
 
             final String lastSessionId;
             try {

@@ -12,6 +12,11 @@ import java.util.List;
  * next page. Track 1's {@code SessionBrowser}/{@code MiscRequestResponseOperationHandler} uses the
  * server-returned skip (rather than {@code previousSkip + page.size()}) as the cursor for the
  * subsequent page, so consumers must propagate it verbatim instead of computing their own.</p>
+ *
+ * <p><strong>Internal:</strong> this class lives in the {@code implementation} package and is part
+ * of the SDK's internal contract, not its public API. It is declared {@code public} only because
+ * {@link ServiceBusManagementNode#getMessageSessions} is consumed from a different package; it may
+ * change or be removed without notice.</p>
  */
 public final class MessageSessionsResult {
     private final List<String> sessionIds;

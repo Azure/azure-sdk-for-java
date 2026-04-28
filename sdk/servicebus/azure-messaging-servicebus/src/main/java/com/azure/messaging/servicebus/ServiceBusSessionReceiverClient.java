@@ -230,6 +230,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSessions(OffsetDateTime updatedAfter) {
+        Objects.requireNonNull(updatedAfter, "'updatedAfter' cannot be null.");
         return new PagedIterable<>(sessionAsyncClient.listSessions(updatedAfter));
     }
 
