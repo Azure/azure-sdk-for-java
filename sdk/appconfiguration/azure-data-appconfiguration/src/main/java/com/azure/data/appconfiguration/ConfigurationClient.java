@@ -11,7 +11,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -34,11 +33,11 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.data.appconfiguration.models.SettingLabelFields;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
@@ -52,9 +51,9 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
+import static com.azure.data.appconfiguration.implementation.Utility.handleHeadNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.toHeadPagedResponse;
-import static com.azure.data.appconfiguration.implementation.Utility.handleHeadNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
@@ -1129,7 +1128,6 @@ public final class ConfigurationClient {
      * <p>Check all settings that use the key "prodDBConnection".</p>
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context -->
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context -->
      * <pre>
      * SettingSelector selector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;my-app&#47;*&quot;&#41;;
      * Context ctx = new Context&#40;key1, value1&#41;;
@@ -1164,7 +1162,7 @@ public final class ConfigurationClient {
                     acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
                     tagsFilter, context));
             } catch (HttpResponseException ex) {
-                return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER, true);
+                return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER);
             }
         }, afterToken -> {
             try {
@@ -1172,7 +1170,7 @@ public final class ConfigurationClient {
                     acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
                     tagsFilter, context));
             } catch (HttpResponseException ex) {
-                return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER, true);
+                return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER);
             }
         });
     }

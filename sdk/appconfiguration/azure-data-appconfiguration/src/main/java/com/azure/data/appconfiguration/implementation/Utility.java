@@ -23,8 +23,9 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
-import reactor.core.publisher.Mono;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import reactor.core.publisher.Mono;
 
 /**
  * App Configuration Utility methods, use internally.
@@ -226,7 +229,8 @@ public class Utility {
         }
         String afterValue = nextLink.substring(afterIdx + 6);
         int ampIdx = afterValue.indexOf('&');
-        return ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
+        String rawValue = ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
+        return URLDecoder.decode(rawValue, StandardCharsets.UTF_8);
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
@@ -256,7 +260,7 @@ public class Utility {
 
     // Handle 304 status code from HEAD request to a valid response - Sync handler
     public static PagedResponse<ConfigurationSetting>
-        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error, ClientLogger logger, boolean isHead) {
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error, ClientLogger logger) {
         HttpResponse httpResponse = error.getResponse();
         if (httpResponse == null) {
             throw logger.logExceptionAsError(error);
