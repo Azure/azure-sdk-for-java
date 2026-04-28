@@ -35,7 +35,7 @@ Contact the EngSys team immediately at **azuresdkengsysteam@microsoft.com**.
 
 ### False Positives (fake strings flagged by mistake)
 
-Suppress false positives in [`eng/CredScanSuppression.json`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/CredScanSuppression.json).
+Suppress false positives in [`eng/CredScanSuppression.json`](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/CredScanSuppression.json).
 
 **Preferred strategies (most to least preferred):**
 
@@ -75,7 +75,7 @@ Suppress false positives in [`eng/CredScanSuppression.json`](https://github.com/
 ## See Also
 
 - [CredScan overview](https://aka.ms/credscan)
-- [Suppression file](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/eng/CredScanSuppression.json)
+- [Suppression file](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/CredScanSuppression.json)
 
 [aggregate_reports]: https://dev.azure.com/azure-sdk/internal/_build?definitionId=1359
 [credscan_doc]: https://aka.ms/credscan

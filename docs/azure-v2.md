@@ -129,6 +129,6 @@ HttpClient okHttpClient = new OkHttpHttpClientBuilder().build();
 
 ## See Also
 
-- [Configuration](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/configuration.md#configure-http-clients) — for `com.azure` / `azure-core-http-netty` configuration
-- [Performance Tuning](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/performance-tuning.md)
+- [Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/configuration.md#configure-http-clients) — for `com.azure` / `azure-core-http-netty` configuration
+- [Performance Tuning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md)
 - General [Azure SDK exception policy](https://azure.github.io/azure-sdk/java_introduction.html)

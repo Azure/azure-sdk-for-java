@@ -1,6 +1,14 @@
 # Release History
 ## 7.3.0-beta.1 (Unreleased)
 
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+
+- Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
+
 ### Spring Cloud Azure Stream Binder Service Bus
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
 
@@ -11,12 +19,6 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
   failures. [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
 - Add support for injecting a custom `RetryTemplate` from Spring context for advanced retry scenarios.
   [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 7.2.0 (2026-04-17)
 - This release is compatible with Spring Boot 4.0.0-4.0.5. (Note: 4.0.x (x>5) should be supported, but they aren't tested with this release.)

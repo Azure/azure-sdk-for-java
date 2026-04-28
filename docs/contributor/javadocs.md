@@ -176,6 +176,6 @@ mvn install -f sdk/<service>/<module>/pom.xml -DskipTests -Dmaven.javadoc.skip
 
 ## See Also
 
-- [TypeSpec Quickstart — Improve SDK Documentation](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md#5-improve-documentation)
-- [Adding a Module](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/adding-a-module.md)
-- [Code Quality](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/code-quality.md)
+- [TypeSpec Quickstart — Improve SDK Documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md#5-improve-documentation)
+- [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md)
+- [Code Quality](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md)

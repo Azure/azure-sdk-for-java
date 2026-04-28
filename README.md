@@ -67,7 +67,7 @@ Format of the release tags are `<package-name>_<package-version>`. For more info
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
-The consolidated documentation hub for contributors (building, testing, versioning, release checklist, etc.) is at [`docs/`](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/README.md).
+The consolidated documentation hub for contributors (building, testing, versioning, release checklist, etc.) is at [`docs/`](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/README.md).
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, view [Microsoft's CLA](https://cla.microsoft.com).
 
@@ -80,7 +80,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 Many people all over the world have helped make this project better.  You'll want to check out:
 
 - [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
-- [How to build and test your change](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+- [How to build and test your change](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 - [How you can make a change happen!](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#pull-requests)
 - Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Java wiki](https://github.com/azure/azure-sdk-for-java/wiki).
 
