@@ -191,7 +191,9 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.forceNameCacheRefresh = false;
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
-        this.headers = headers != null ? headers : new HashMap<>();
+        // Pre-size to 32 (threshold 24 at 0.75 load factor) to accommodate typical request
+        // headers (auth, content-type, consistency, session-token, partition-key, etc.) without resize.
+        this.headers = headers != null ? headers : new HashMap<>(32);
         this.activityId = UUIDs.nonBlockingRandomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
@@ -225,7 +227,9 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
-        this.headers = headers != null ? headers : new HashMap<>();
+        // Pre-size to 32 (threshold 24 at 0.75 load factor) to accommodate typical request
+        // headers (auth, content-type, consistency, session-token, partition-key, etc.) without resize.
+        this.headers = headers != null ? headers : new HashMap<>(32);
         this.activityId = UUIDs.nonBlockingRandomUUID();
         this.isFeed = false;
 

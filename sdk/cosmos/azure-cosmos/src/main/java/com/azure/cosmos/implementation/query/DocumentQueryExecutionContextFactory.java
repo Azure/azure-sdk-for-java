@@ -107,7 +107,6 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         Instant startTime = Instant.now();
-        Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono;
 
         if (queryRequestOptionsAccessor()
             .isQueryPlanRetrievalDisallowed(cosmosQueryRequestOptions)) {
@@ -122,37 +121,53 @@ public class DocumentQueryExecutionContextFactory {
                 endTime);
         }
 
-        if (queryPlanCachingEnabled &&
-                isScopedToSinglePartition(cosmosQueryRequestOptions) &&
-                queryPlanCache.containsKey(query.getQueryText())) {
-            Instant endTime = Instant.now(); // endTime for query plan diagnostics
-            PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = queryPlanCache.get(query.getQueryText());
-            if (partitionedQueryExecutionInfo != null) {
-                logger.debug("Skipping query plan round trip by using the cached plan");
-                return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
-                                                    partitionedQueryExecutionInfo, startTime, endTime);
-            }
-        }
-
-        queryExecutionInfoMono =
-            QueryPlanRetriever.getQueryPlanThroughGatewayAsync(
-                diagnosticsClientContext,
-                client,
-                query,
-                resourceLink,
-                cosmosQueryRequestOptions);
-
-        return queryExecutionInfoMono.flatMap(
+        return fetchQueryPlan(
+            diagnosticsClientContext,
+            client,
+            query,
+            resourceLink,
+            cosmosQueryRequestOptions,
+            queryPlanCachingEnabled,
+            queryPlanCache)
+            .flatMap(
             partitionedQueryExecutionInfo -> {
 
                 Instant endTime = Instant.now();
 
+                return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
+                                                    partitionedQueryExecutionInfo, startTime, endTime);
+            });
+    }
+
+    private static Mono<PartitionedQueryExecutionInfo> fetchQueryPlan(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        SqlQuerySpec query,
+        String resourceLink,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        boolean queryPlanCachingEnabled,
+        Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
+
+        if (queryPlanCachingEnabled &&
+            isScopedToSinglePartition(cosmosQueryRequestOptions) &&
+            queryPlanCache.containsKey(query.getQueryText())) {
+            PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = queryPlanCache.get(query.getQueryText());
+            if (partitionedQueryExecutionInfo != null) {
+                logger.debug("Skipping query plan round trip by using the cached plan");
+                return Mono.just(partitionedQueryExecutionInfo);
+            }
+        }
+
+        return QueryPlanRetriever.getQueryPlanThroughGatewayAsync(
+            diagnosticsClientContext,
+            client,
+            query,
+            resourceLink,
+            cosmosQueryRequestOptions)
+            .doOnNext(partitionedQueryExecutionInfo -> {
                 if (queryPlanCachingEnabled && isScopedToSinglePartition(cosmosQueryRequestOptions)) {
                     tryCacheQueryPlan(query, partitionedQueryExecutionInfo, queryPlanCache);
                 }
-
-                return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
-                                                    partitionedQueryExecutionInfo, startTime, endTime);
             });
     }
 
@@ -232,11 +247,11 @@ public class DocumentQueryExecutionContextFactory {
                 "Query plan retrieval must not be suppressed when not using FeedRanges");
         }
 
-        QueryInfo queryInfo = QueryInfo.EMPTY;
-        queryInfo.setQueryPlanDiagnosticsContext(
-            new QueryInfo.QueryPlanDiagnosticsContext(
-                planFetchStartTime,
-                planFetchEndTime));
+        // Do NOT use QueryInfo.EMPTY here — setQueryPlanDiagnosticsContext would mutate
+        // the shared static singleton. Instead, capture the diagnostics context and create
+        // a fresh per-request QueryInfo inside the reactive chain.
+        QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext =
+            new QueryInfo.QueryPlanDiagnosticsContext(planFetchStartTime, planFetchEndTime);
 
         FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
         Mono<Range<String>> targetRange = queryExecutionContext
@@ -249,7 +264,14 @@ public class DocumentQueryExecutionContextFactory {
             ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
 
         return Mono.zip(targetRange, allRanges)
-            .map(tuple -> new PartitionKeyRangesAndQueryInfos(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2()));
+            .map(tuple -> {
+                // Set diagnostics on a per-request basis inside the reactive chain,
+                // not on the shared EMPTY singleton. Create a fresh QueryInfo only here.
+                QueryInfo perRequestQueryInfo = new QueryInfo();
+                perRequestQueryInfo.setQueryPlanDiagnosticsContext(queryPlanDiagnosticsContext);
+                return new PartitionKeyRangesAndQueryInfos(
+                    perRequestQueryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2());
+            });
     }
 
     synchronized private static void tryCacheQueryPlan(
@@ -316,6 +338,25 @@ public class DocumentQueryExecutionContextFactory {
                 cosmosQueryRequestOptions.getPartitionKey());
         }
         return feedRanges;
+    }
+
+    public static Mono<PartitionedQueryExecutionInfo> fetchQueryPlanForValidation(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient queryClient,
+        SqlQuerySpec sqlQuerySpec,
+        String resourceLink,
+        CosmosQueryRequestOptions queryRequestOptions,
+        boolean queryPlanCachingEnabled,
+        Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
+
+        return fetchQueryPlan(
+            diagnosticsClientContext,
+            queryClient,
+            sqlQuerySpec,
+            resourceLink,
+            queryRequestOptions,
+            queryPlanCachingEnabled,
+            queryPlanCache);
     }
 
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
