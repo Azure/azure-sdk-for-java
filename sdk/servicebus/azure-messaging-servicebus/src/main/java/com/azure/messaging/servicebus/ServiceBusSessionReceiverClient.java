@@ -12,6 +12,8 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -199,6 +201,32 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
             }))
             .onErrorMap(TimeoutException.class, e -> new IllegalStateException(e.getMessage(), e))
             .block();
+    }
+
+    /**
+     * Lists the IDs of sessions that have active messages in this entity.
+     *
+     * @return A list of session ID strings.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public List<String> listSessions() {
+        return sessionAsyncClient.listSessions()
+            .collectList()
+            .block(operationTimeout);
+    }
+
+    /**
+     * Lists the IDs of sessions whose state was updated after the specified time.
+     *
+     * @param updatedAfter Only sessions whose session state was updated after this time are returned.
+     * @return A list of session ID strings.
+     * @throws NullPointerException if {@code updatedAfter} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public List<String> listSessions(OffsetDateTime updatedAfter) {
+        return sessionAsyncClient.listSessions(updatedAfter)
+            .collectList()
+            .block(operationTimeout);
     }
 
     @Override

@@ -51,8 +51,10 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -64,6 +66,7 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
@@ -1057,5 +1060,192 @@ class ManagementChannelTests {
         // Got a warning about this being confusing because it was passed to varargs. So we cast to Object.
         final Object contents = new byte[] { 10, 11, 8, 88 };
         return Stream.of(Arguments.of(contents), Arguments.of((Object) null));
+    }
+
+    // --- getMessageSessions tests ---
+
+    /**
+     * Verifies getMessageSessions in updated-after mode sends the correct timestamp and parses the response.
+     */
+    @Test
+    void getMessageSessionsUpdatedAfterMode() {
+        // Arrange
+        final OffsetDateTime lastUpdated = OffsetDateTime.of(2026, 1, 15, 10, 30, 0, 0, ZoneOffset.UTC);
+        final int skip = 0;
+        final int top = 100;
+        final String[] sessionIds = new String[] { "session-1", "session-2", "session-3" };
+
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSIONS_IDS, sessionIds);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, skip, top, null))
+            .assertNext(result -> {
+                assertEquals(3, result.size());
+                assertEquals("session-1", result.get(0));
+                assertEquals("session-2", result.get(1));
+                assertEquals("session-3", result.get(2));
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Verify the sent AMQP message
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+
+        final Message sentMessage = messageCaptor.getValue();
+        assertTrue(sentMessage.getBody() instanceof AmqpValue);
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) sentMessage.getBody()).getValue();
+        assertTrue(body.get(ManagementConstants.LAST_UPDATED_TIME) instanceof Date);
+        assertEquals(skip, body.get(ManagementConstants.SKIP));
+        assertEquals(top, body.get(ManagementConstants.TOP));
+        assertFalse(body.containsKey(ManagementConstants.LAST_SESSION_ID));
+
+        // Assert operation name
+        final Map<String, Object> appProps = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_GET_MESSAGE_SESSIONS, appProps.get(MANAGEMENT_OPERATION_KEY));
+
+        // Assert no associated link name (entity-level operation)
+        assertFalse(appProps.containsKey(ASSOCIATED_LINK_NAME_KEY));
+    }
+
+    /**
+     * Verifies getMessageSessions in active-sessions mode uses the DateTime.MaxValue sentinel.
+     * The sentinel (year 9999, nanos 999999999) should produce 253402300799999 ms on the wire,
+     * which the service recognizes as the "list sessions with active messages" mode.
+     */
+    @Test
+    void getMessageSessionsActiveSessionsMode() {
+        // Arrange - year 9999 sentinel (active messages mode)
+        final OffsetDateTime sentinel = OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
+        final String[] sessionIds = new String[] { "active-1", "active-2" };
+
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSIONS_IDS, sessionIds);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.size());
+                assertEquals("active-1", result.get(0));
+                assertEquals("active-2", result.get(1));
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Verify the sent timestamp matches DateTime.MaxValue at ms precision
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
+        assertEquals(253402300799999L, sentDate.getTime());
+    }
+
+    /**
+     * Verifies that getMessageSessions returns empty list on 204 No Content.
+     */
+    @Test
+    void getMessageSessionsNoContent() {
+        // Arrange - set response to 204
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NO_CONTENT.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+        responseMessage.setBody(null);
+
+        final OffsetDateTime lastUpdated = OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, 0, 100, null))
+            .assertNext(result -> assertTrue(result.isEmpty()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions returns empty list on 404 Not Found (SessionNotFound).
+     * The service may return 404 + SessionNotFound when zero sessions exist.
+     */
+    @Test
+    void getMessageSessionsNotFound() {
+        // Arrange - set response to 404 (sendWithVerify passes SessionNotFound through)
+        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+        responseMessage.setBody(null);
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(
+                OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC), 0, 100, null))
+            .assertNext(result -> assertTrue(result.isEmpty()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions returns empty list when response has no sessions-ids key.
+     */
+    @Test
+    void getMessageSessionsEmptyResponse() {
+        // Arrange - 200 OK but empty map (no sessions-ids key)
+        responseMessage.setBody(new AmqpValue(new HashMap<>()));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(
+                OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC), 0, 100, null))
+            .assertNext(result -> assertTrue(result.isEmpty()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions caps year > 9999 to avoid Date overflow.
+     */
+    @Test
+    void getMessageSessionsCapsYear() {
+        // Arrange - use a year beyond 9999 (simulating OffsetDateTime.MAX)
+        final OffsetDateTime farFuture = OffsetDateTime.of(99999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
+
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSIONS_IDS, new String[] { "s1" });
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act - should NOT throw ArithmeticException
+        StepVerifier.create(managementChannel.getMessageSessions(farFuture, 0, 100, null))
+            .assertNext(result -> assertEquals(1, result.size()))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Verify the sent timestamp is capped to year 9999
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
+        // 253402300799999 ms = 9999-12-31T23:59:59.999Z (DateTime.MaxValue at ms precision)
+        assertEquals(253402300799999L, sentDate.getTime());
+    }
+
+    /**
+     * Verifies that getMessageSessions includes last-session-id when provided.
+     */
+    @Test
+    void getMessageSessionsWithLastSessionId() {
+        // Arrange
+        final String lastSessionId = "cursor-session-42";
+        responseMessage.setBody(new AmqpValue(Collections.singletonMap(
+            ManagementConstants.SESSIONS_IDS, new String[] { "next-1" })));
+
+        // Act
+        StepVerifier.create(managementChannel.getMessageSessions(
+                OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100, 100, lastSessionId))
+            .assertNext(result -> assertEquals("next-1", result.get(0)))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Assert last-session-id is in the body
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        assertEquals(lastSessionId, body.get(ManagementConstants.LAST_SESSION_ID));
     }
 }

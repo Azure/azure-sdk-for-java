@@ -16,8 +16,13 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -290,6 +295,58 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 }, sessionManager);
         });
         return tracer.traceMono("ServiceBus.acceptSession", acquireSessionReceiver);
+    }
+
+    /**
+     * Lists the IDs of sessions that have active messages in this entity.
+     *
+     * <p>Only sessions with active messages in the queue or subscription are returned.
+     * Sessions on the dead-letter queue or sessions having only a session state (but no messages)
+     * are not returned.</p>
+     *
+     * @return A {@link Flux} of session ID strings.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<String> listSessions() {
+        // Use year 9999 as sentinel for "active messages" mode.
+        // Cannot use OffsetDateTime.MAX because its year (999999999) overflows java.util.Date.
+        return listSessionsInternal(
+            OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC));
+    }
+
+    /**
+     * Lists the IDs of sessions whose state was updated after the specified time.
+     *
+     * @param updatedAfter Only sessions whose session state was updated after this time are returned.
+     * @return A {@link Flux} of session ID strings.
+     * @throws NullPointerException if {@code updatedAfter} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<String> listSessions(OffsetDateTime updatedAfter) {
+        if (updatedAfter == null) {
+            return Flux.error(new NullPointerException("'updatedAfter' cannot be null."));
+        }
+        return listSessionsInternal(updatedAfter);
+    }
+
+    private Flux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
+        final int pageSize = 100;
+        return connectionCacheWrapper.getConnection()
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(managementNode -> {
+                final int[] currentSkip = {0};
+                return Flux.defer(() ->
+                    managementNode.getMessageSessions(lastUpdatedTime, currentSkip[0], pageSize, null))
+                    .repeat()
+                    .takeWhile(page -> {
+                        if (page.isEmpty()) {
+                            return false;
+                        }
+                        currentSkip[0] += page.size();
+                        return true;
+                    })
+                    .flatMapIterable(page -> page);
+            });
     }
 
     @Override

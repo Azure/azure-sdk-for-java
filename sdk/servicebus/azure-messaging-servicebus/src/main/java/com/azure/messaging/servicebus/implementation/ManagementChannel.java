@@ -57,6 +57,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_PEEK;
@@ -502,6 +503,74 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             return sendWithVerify(channel, message, null);
         })).then();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<List<String>> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
+        String lastSessionId) {
+
+        // The service checks `lastUpdatedTime == DateTime.MaxValue` (C# 9999-12-31T23:59:59.9999999)
+        // to switch between "active messages" mode and "updated since" mode. On the AMQP wire,
+        // timestamps have millisecond precision, so DateTime.MaxValue becomes 253402300799999 ms.
+        // Year 9999 with .999999999 nanos produces this same ms value via Date.from(instant),
+        // ensuring the service-side comparison matches. Cap to year 9999 to avoid java.util.Date
+        // overflow (OffsetDateTime.MAX year 999999999 exceeds Date's range).
+        final OffsetDateTime cappedTime = lastUpdatedTime.getYear() > 9999
+            ? OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 999999999, lastUpdatedTime.getOffset())
+            : lastUpdatedTime;
+
+        return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {
+            // No associated link name for entity-level operations
+            final Message message = createManagementMessage(OPERATION_GET_MESSAGE_SESSIONS, null);
+
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.LAST_UPDATED_TIME,
+                Date.from(cappedTime.toInstant()));
+            body.put(ManagementConstants.SKIP, skip);
+            body.put(ManagementConstants.TOP, top);
+            if (!CoreUtils.isNullOrEmpty(lastSessionId)) {
+                body.put(ManagementConstants.LAST_SESSION_ID, lastSessionId);
+            }
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message, null);
+        })).flatMap(response -> {
+            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+
+            if (statusCode == AmqpResponseCode.OK) {
+                final Object value = ((AmqpValue) response.getBody()).getValue();
+                if (value instanceof Map) {
+                    @SuppressWarnings("unchecked")
+                    final Map<String, Object> map = (Map<String, Object>) value;
+                    final Object sessionsObj = map.get(ManagementConstants.SESSIONS_IDS);
+
+                    if (sessionsObj instanceof Object[]) {
+                        final Object[] sessionArray = (Object[]) sessionsObj;
+                        final List<String> sessionIds = new ArrayList<>(sessionArray.length);
+                        for (Object id : sessionArray) {
+                            sessionIds.add(String.valueOf(id));
+                        }
+                        return Mono.just(sessionIds);
+                    }
+                }
+                return Mono.just(Collections.emptyList());
+            } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                return Mono.just(Collections.emptyList());
+            } else if (statusCode == AmqpResponseCode.NOT_FOUND) {
+                // 404 + SessionNotFound means no sessions exist. sendWithVerify already passes
+                // this through as a successful response rather than an error.
+                return Mono.just(Collections.emptyList());
+            } else {
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+                throw logger.logExceptionAsWarning(new AmqpException(true,
+                    "Get message sessions failed. Status: " + statusCode + " Description: " + statusDescription,
+                    getErrorContext()));
+            }
+        });
     }
 
     /**

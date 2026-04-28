@@ -25,6 +25,9 @@ public class ManagementConstants {
     public static final String SEQUENCE_NUMBERS = "sequence-numbers";
     public static final String SESSION_ID = "session-id";
     public static final String SESSION_STATE = "session-state";
+    public static final String SESSIONS_IDS = "sessions-ids";
+    public static final String LAST_UPDATED_TIME = "last-updated-time";
+    public static final String LAST_SESSION_ID = "last-session-id";
     public static final String VIA_PARTITION_KEY = "via-partition-key";
     public static final String RULE_NAME = "rule-name";
     public static final String RULE_DESCRIPTION = "rule-description";
@@ -61,6 +64,7 @@ public class ManagementConstants {
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
+    static final String OPERATION_GET_MESSAGE_SESSIONS = AmqpConstants.VENDOR + ":get-message-sessions";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 

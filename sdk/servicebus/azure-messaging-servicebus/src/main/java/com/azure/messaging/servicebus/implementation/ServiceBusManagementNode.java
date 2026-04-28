@@ -148,6 +148,20 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Flux<RuleProperties> listRules();
 
+    /**
+     * Lists the session IDs for sessions that have active messages or whose state was updated
+     * since the given time.
+     *
+     * @param lastUpdatedTime Filter timestamp. Pass {@link java.time.OffsetDateTime#MAX} to get sessions with
+     *     active messages; pass a real timestamp to get sessions updated since that time.
+     * @param skip Pagination offset.
+     * @param top Page size.
+     * @param lastSessionId Last session ID from the previous page (for cursor-based pagination), or null.
+     * @return A list of session ID strings for this page.
+     */
+    Mono<java.util.List<String>> getMessageSessions(java.time.OffsetDateTime lastUpdatedTime, int skip, int top,
+        String lastSessionId);
+
     @Override
     void close();
 }
