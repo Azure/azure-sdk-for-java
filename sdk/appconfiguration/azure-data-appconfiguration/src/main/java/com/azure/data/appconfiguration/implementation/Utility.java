@@ -230,7 +230,7 @@ public class Utility {
         String afterValue = nextLink.substring(afterIdx + 6);
         int ampIdx = afterValue.indexOf('&');
         String rawValue = ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
-        return URLDecoder.decode(rawValue, StandardCharsets.UTF_8);
+        return URLDecoder.decode(rawValue, StandardCharsets.UTF_8.name());
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
