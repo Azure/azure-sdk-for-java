@@ -778,7 +778,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             for (PagedResponse<ConfigurationSetting> page : result.iterableByPage()) {
                 assertNotNull(page.getHeaders());
                 // Items should be empty since HEAD returns no body
-                assertTrue(page.getElements() == null || page.getElements().isEmpty());
+                assertTrue(page.getElements() == null || !page.getElements().iterator().hasNext());
                 // Page should have an ETag header
                 assertNotNull(page.getHeaders().getValue(HttpHeaderName.ETAG));
             }
