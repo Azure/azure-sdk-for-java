@@ -137,7 +137,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, scope,
@@ -172,7 +172,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, scope, roleManagementPolicyAssignmentName, accept,
@@ -262,7 +262,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -303,7 +303,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -391,7 +391,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, scope,
                 roleManagementPolicyAssignmentName, context))
@@ -424,7 +424,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, scope, roleManagementPolicyAssignmentName,
             context);
@@ -497,7 +497,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context))
@@ -527,7 +527,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2024-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listForScope(this.client.getEndpoint(), apiVersion, scope, accept, context)

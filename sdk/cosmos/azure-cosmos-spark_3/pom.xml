@@ -323,6 +323,7 @@
                 <include>org.apache.spark:spark-sql_2.12:[${spark35.version}]</include>
                 <include>org.apache.spark:spark-sql_2.13:[${spark35.version}]</include>
                 <include>org.apache.spark:spark-sql_2.13:[4.0.0]</include><!-- {x-include-update;cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.13:[4.1.0]</include><!-- {x-include-update;cosmos-spark_4-1_org.apache.spark:spark-sql_2.13;external_dependency} -->
                 <include>org.scala-lang:scala-library:[${scala.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[${scala-java8-compat.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_2.13:[${scala-java8-compat.version}]</include>
@@ -425,8 +426,8 @@
             <artifactId>scala-maven-plugin</artifactId>
             <version>4.8.1</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
+              <source>${maven.compiler.source}</source>
+              <target>${maven.compiler.target}</target>
               <scalaVersion>${scala.version}</scalaVersion>
             </configuration>
             <executions>
