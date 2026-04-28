@@ -112,7 +112,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id,
@@ -152,7 +152,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id, accept, context)

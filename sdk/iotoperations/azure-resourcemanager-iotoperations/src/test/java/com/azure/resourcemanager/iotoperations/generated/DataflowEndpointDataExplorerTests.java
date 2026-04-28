@@ -17,48 +17,44 @@ public final class DataflowEndpointDataExplorerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointDataExplorer model = BinaryData.fromString(
-            "{\"authentication\":{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"wvnhdldwmgx\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"rslpmutwuoeg\",\"scope\":\"khjwn\",\"tenantId\":\"yqsluic\"}},\"database\":\"dggkzzlvmbmpa\",\"host\":\"modfvuefywsbpfvm\",\"batching\":{\"latencySeconds\":1075239402,\"maxMessages\":22897042}}")
+            "{\"authentication\":{\"method\":\"UserAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"vypomgkopkwho\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"pajqgxysm\",\"scope\":\"mbqfqvmk\",\"tenantId\":\"xozap\"}},\"database\":\"helxprglya\",\"host\":\"dd\",\"batching\":{\"latencySeconds\":543994808,\"maxMessages\":2028979165}}")
             .toObject(DataflowEndpointDataExplorer.class);
-        Assertions.assertEquals(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY,
-            model.authentication().method());
-        Assertions.assertEquals("wvnhdldwmgx",
+        Assertions.assertEquals(DataExplorerAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY, model.authentication().method());
+        Assertions.assertEquals("vypomgkopkwho",
             model.authentication().systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("rslpmutwuoeg",
-            model.authentication().userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("khjwn", model.authentication().userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("yqsluic", model.authentication().userAssignedManagedIdentitySettings().tenantId());
-        Assertions.assertEquals("dggkzzlvmbmpa", model.database());
-        Assertions.assertEquals("modfvuefywsbpfvm", model.host());
-        Assertions.assertEquals(1075239402, model.batching().latencySeconds());
-        Assertions.assertEquals(22897042, model.batching().maxMessages());
+        Assertions.assertEquals("pajqgxysm", model.authentication().userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("mbqfqvmk", model.authentication().userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("xozap", model.authentication().userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("helxprglya", model.database());
+        Assertions.assertEquals("dd", model.host());
+        Assertions.assertEquals(543994808, model.batching().latencySeconds());
+        Assertions.assertEquals(2028979165, model.batching().maxMessages());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointDataExplorer model = new DataflowEndpointDataExplorer()
             .withAuthentication(new DataflowEndpointDataExplorerAuthentication()
-                .withMethod(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY)
+                .withMethod(DataExplorerAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY)
                 .withSystemAssignedManagedIdentitySettings(
-                    new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("wvnhdldwmgx"))
+                    new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("vypomgkopkwho"))
                 .withUserAssignedManagedIdentitySettings(
-                    new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("rslpmutwuoeg")
-                        .withScope("khjwn")
-                        .withTenantId("yqsluic")))
-            .withDatabase("dggkzzlvmbmpa")
-            .withHost("modfvuefywsbpfvm")
-            .withBatching(new BatchingConfiguration().withLatencySeconds(1075239402).withMaxMessages(22897042));
+                    new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("pajqgxysm")
+                        .withScope("mbqfqvmk")
+                        .withTenantId("xozap")))
+            .withDatabase("helxprglya")
+            .withHost("dd")
+            .withBatching(new BatchingConfiguration().withLatencySeconds(543994808).withMaxMessages(2028979165));
         model = BinaryData.fromObject(model).toObject(DataflowEndpointDataExplorer.class);
-        Assertions.assertEquals(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY,
-            model.authentication().method());
-        Assertions.assertEquals("wvnhdldwmgx",
+        Assertions.assertEquals(DataExplorerAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY, model.authentication().method());
+        Assertions.assertEquals("vypomgkopkwho",
             model.authentication().systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("rslpmutwuoeg",
-            model.authentication().userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("khjwn", model.authentication().userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("yqsluic", model.authentication().userAssignedManagedIdentitySettings().tenantId());
-        Assertions.assertEquals("dggkzzlvmbmpa", model.database());
-        Assertions.assertEquals("modfvuefywsbpfvm", model.host());
-        Assertions.assertEquals(1075239402, model.batching().latencySeconds());
-        Assertions.assertEquals(22897042, model.batching().maxMessages());
+        Assertions.assertEquals("pajqgxysm", model.authentication().userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("mbqfqvmk", model.authentication().userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("xozap", model.authentication().userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("helxprglya", model.database());
+        Assertions.assertEquals("dd", model.host());
+        Assertions.assertEquals(543994808, model.batching().latencySeconds());
+        Assertions.assertEquals(2028979165, model.batching().maxMessages());
     }
 }

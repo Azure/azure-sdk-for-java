@@ -236,6 +236,7 @@ cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;3.5.0
 cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;4.0.0
+cosmos-spark_4-1_org.apache.spark:spark-sql_2.13;4.1.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0

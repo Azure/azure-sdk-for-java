@@ -141,7 +141,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion,
@@ -174,7 +174,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -255,7 +255,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -295,7 +295,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -376,7 +376,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         return FluxUtil
             .withContext(context -> service.deleteById(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), scheduleDefinitionId, context))
@@ -407,7 +407,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             scheduleDefinitionId, context);
@@ -477,7 +477,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -511,7 +511,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -620,7 +620,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 scheduleDefinitionId, context))
@@ -651,7 +651,7 @@ public final class AccessReviewScheduleDefinitionsClientImpl implements AccessRe
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             scheduleDefinitionId, context);

@@ -80,7 +80,7 @@ class ActivityLogAlertImpl
     public Mono<ActivityLogAlert> createResourceAsync() {
         this.innerModel().withLocation("global");
         ActivityLogAlertAllOfCondition condition = new ActivityLogAlertAllOfCondition();
-        condition.withAllOf(new ArrayList<ActivityLogAlertLeafCondition>());
+        condition.withAllOf(new ArrayList<>());
         for (Map.Entry<String, String> cds : conditions.entrySet()) {
             ActivityLogAlertLeafCondition alalc = new ActivityLogAlertLeafCondition();
             alalc.withField(cds.getKey());
