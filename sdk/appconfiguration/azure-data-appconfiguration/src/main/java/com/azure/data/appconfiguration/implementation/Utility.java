@@ -230,7 +230,12 @@ public class Utility {
         String afterValue = nextLink.substring(afterIdx + 6);
         int ampIdx = afterValue.indexOf('&');
         String rawValue = ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
-        return URLDecoder.decode(rawValue, StandardCharsets.UTF_8.name());
+        try {
+            return URLDecoder.decode(rawValue, StandardCharsets.UTF_8.name());
+        } catch (java.io.UnsupportedEncodingException e) {
+            // UTF-8 is always supported
+            throw new RuntimeException(e);
+        }
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
