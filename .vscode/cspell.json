@@ -1577,7 +1577,10 @@
         "urllistofbytes",
         "urllistoflistofbytes",
         "urlmapofbytes",
-        "xffffffffffff"
+        "xffffffffffff",
+        "oidcrequesturi",
+        "uami",
+        "imds"
       ]
     },
     {

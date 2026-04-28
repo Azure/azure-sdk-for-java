@@ -55,25 +55,25 @@ import static com.azure.v2.core.implementation.identity.util.LoggingUtil.logAndT
 public class AzureCliCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredential.class);
 
-    private final DevToolsClient devToolslClient;
+    private final DevToolsClient devToolsClient;
 
     /**
      * Creates an AzureCliCredential with the given dev tools client options.
      * @param devToolsClientOptions the options to configure the dev tools client
      */
     AzureCliCredential(DevToolsClientOptions devToolsClientOptions) {
-        devToolslClient = new DevToolsClient(devToolsClientOptions);
+        devToolsClient = new DevToolsClient(devToolsClientOptions);
     }
 
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         try {
-            AccessToken accessToken = devToolslClient.authenticateWithAzureCli(request);
+            AccessToken accessToken = devToolsClient.authenticateWithAzureCli(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (RuntimeException ex) {
             throw logAndThrowTokenError(LOGGER, request, ex,
-                devToolslClient.getClientOptions().isChained()
+                devToolsClient.getClientOptions().isChained()
                     ? CredentialUnavailableException::new
                     : CredentialAuthenticationException::new);
         }

@@ -58,21 +58,21 @@ import static com.azure.v2.core.implementation.identity.util.LoggingUtil.logAndT
 public class AzurePowerShellCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePowerShellCredential.class);
 
-    private final DevToolsClient devToolslClient;
+    private final DevToolsClient devToolsClient;
 
     AzurePowerShellCredential(DevToolsClientOptions options) {
-        devToolslClient = new DevToolsClient(options);
+        devToolsClient = new DevToolsClient(options);
     }
 
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         try {
-            AccessToken accessToken = devToolslClient.authenticateWithAzurePowerShell(request);
+            AccessToken accessToken = devToolsClient.authenticateWithAzurePowerShell(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (RuntimeException ex) {
             throw logAndThrowTokenError(LOGGER, request, ex,
-                devToolslClient.getClientOptions().isChained()
+                devToolsClient.getClientOptions().isChained()
                     ? CredentialUnavailableException::new
                     : CredentialAuthenticationException::new);
         }
