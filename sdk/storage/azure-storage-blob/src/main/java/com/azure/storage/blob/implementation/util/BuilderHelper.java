@@ -32,6 +32,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
@@ -153,8 +154,12 @@ public final class BuilderHelper {
             BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
                 effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
 
-            policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
-                new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
+            if (effectiveSessionOptions.getSessionMode() == SessionMode.NONE) {
+                policies.add(bearerPolicy);
+            } else {
+                policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
+                    new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
+            }
         }
 
         if (azureSasCredential != null) {
