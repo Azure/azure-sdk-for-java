@@ -7,6 +7,7 @@
 * Added new `readManyByPartitionKeys` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 * Added `CosmosReadManyByPartitionKeysRequestOptions` - a dedicated request-options type for `readManyByPartitionKeys` that exposes `setContinuationToken(String)` for resuming previous invocations and `setMaxConcurrentBatchPrefetch(int)` to bound per-call prefetch parallelism. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 * Added `CosmosReadManyByPartitionKeysRequestOptions.setMaxBatchSize(Integer)` to set the max. number of partition keys used for a single batch. See [PR 48930](https://github.com/Azure/azure-sdk-for-java/pull/48930)
+* Added `getCustomItemSerializer()` to `CosmosRequestContext` and `setCustomItemSerializer(CosmosItemSerializer)` to `CosmosRequestOptions` to allow overriding the custom item serializer via operation policies. - See [PR 48963](https://github.com/Azure/azure-sdk-for-java/pull/48963)
 
 #### Breaking Changes
 
