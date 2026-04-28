@@ -350,11 +350,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     }
 
     private PagedFlux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
+        // PagedFlux invokes the next-page function only when the previous PagedResponse carried a
+        // non-null continuation token, so the lambda receives a non-null token here. byPage(null)
+        // is routed to the first-page supplier above, not into this lambda.
         return new PagedFlux<>(() -> fetchSessionPage(lastUpdatedTime, 0, null), continuationToken -> {
-            if (continuationToken == null) {
-                return monoError(LOGGER, new IllegalArgumentException("'continuationToken' cannot be null."));
-            }
-
             final int separator = continuationToken.indexOf(CURSOR_SEPARATOR);
             if (separator < 0) {
                 return monoError(LOGGER, new IllegalArgumentException(
