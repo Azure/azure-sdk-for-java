@@ -17,7 +17,7 @@
 
 
 ##  1. <a name='Context'></a>Context
-As is reported in https://github.com/Azure/azure-sdk-for-java/issues/30800#issuecomment-1254620865, when using Event Hubs for Kafka passwordless-conneciton, there are a batch of warning logs saying, "The configuration 'xxx' was supplied but isn't a known config".
+As is reported in https://github.com/Azure/azure-sdk-for-java/issues/30800#issuecomment-1254620865, when using Event Hubs for Kafka passwordless-connection, there are a batch of warning logs saying, "The configuration 'xxx' was supplied but isn't a known config".
 We should consider preventing those warning logs being printed.
 ```java
 2022-09-22 14:51:10.825  WARN 30520 --- [           main] o.a.k.clients.consumer.ConsumerConfig    : The configuration 'azure.profile.environment.gallery-endpoint' was supplied but isn't a known config.
@@ -36,7 +36,7 @@ The warning logs are caused because, in the mentioned 3 cases from the feature s
 
 2. For SCS Kafka binder properties with the prefix as `spring.cloud.stream.kafka.binder.`, we put those Azure properties to the KafkaBinderConfigurationProperties bean in the portion like [spring.cloud.stream.kafka.binder.producer-properties.{key}](https://github.com/spring-cloud/spring-cloud-stream-binder-kafka/blob/main/spring-cloud-stream-binder-kafka-core/src/main/java/org/springframework/cloud/stream/binder/kafka/properties/KafkaBinderConfigurationProperties.java#L89).
 
-Those properties are treated as configuraiton targeted to Kafka clients and will be passed to clients, however since the properties are not Kafka-defined so when Kafka tries to parse them, it fails to recognize and then starts to print warning logs.
+Those properties are treated as configuration targeted to Kafka clients and will be passed to clients, however since the properties are not Kafka-defined so when Kafka tries to parse them, it fails to recognize and then starts to print warning logs.
 
 ##  3. <a name='Solutiondesign'></a>Solution design
 In the above cases, there are Azure credential/profile properties placed to Kafka client properties. Those Azure properties are valuable since they provide the way to customizd the credentials used in password-less connection, and also mark the information about the target Event Hubs server, which will be picked by our callback handler when execute OAuth2 authentication. The thing is that we chose to place them in Kafka client configs, which breaks Kafka design to some extent. In that case, we need to consider placing those properties via other ways.
