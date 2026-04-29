@@ -1100,6 +1100,9 @@ class ManagementChannelTests {
         @SuppressWarnings("unchecked")
         final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) sentMessage.getBody()).getValue();
         assertTrue(body.get(ManagementConstants.LAST_UPDATED_TIME) instanceof Date);
+        // Assert exact wire timestamp matches the input - catches any regression in the
+        // OffsetDateTime -> Date conversion / rounding path.
+        assertEquals(Date.from(lastUpdated.toInstant()), body.get(ManagementConstants.LAST_UPDATED_TIME));
         assertEquals(skip, body.get(ManagementConstants.SKIP));
         assertEquals(top, body.get(ManagementConstants.TOP));
         assertFalse(body.containsKey(ManagementConstants.LAST_SESSION_ID));

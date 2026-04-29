@@ -526,8 +526,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
         // value the broker has been validated against for years; align with it here. Any input at
         // or beyond that instant (including OffsetDateTime.MAX, whose nanosecond precision and
         // year-999_999_999 value would otherwise overflow java.util.Date) is clamped to it so the
-        // sentinel comparison and Date.from(...) both stay well-defined.
-        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.ACTIVE_MESSAGES_SENTINEL) > 0
+        // sentinel comparison and Date.from(...) both stay well-defined. Comparing with >= so the
+        // sentinel-equal case is also routed through the clamp explicitly (it's a no-op for equal
+        // values, but keeps the comment/code contract precise).
+        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.ACTIVE_MESSAGES_SENTINEL) >= 0
             ? ManagementConstants.ACTIVE_MESSAGES_SENTINEL
             : lastUpdatedTime;
 
