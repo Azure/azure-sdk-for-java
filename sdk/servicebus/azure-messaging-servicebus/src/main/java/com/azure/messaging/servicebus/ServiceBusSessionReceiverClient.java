@@ -224,6 +224,11 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
      * session ID. Pages are fetched lazily as the iterator advances.</p>
      *
+     * <p>Values at or beyond the active-messages sentinel
+     * ({@code 10000-01-01T00:00:00Z} UTC, matching Track 1's {@code SessionBrowser.MAXDATE}) are
+     * clamped to that sentinel and behave the same as {@link #listSessions()}, returning sessions
+     * that have active messages.</p>
+     *
      * @param updatedAfter Only sessions whose session state was updated after this time are returned.
      * @return A {@link PagedIterable} of session ID strings.
      * @throws NullPointerException if {@code updatedAfter} is null.

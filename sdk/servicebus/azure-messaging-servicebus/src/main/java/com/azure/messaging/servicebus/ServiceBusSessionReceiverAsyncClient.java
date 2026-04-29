@@ -339,6 +339,11 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
      * previous page) and terminates when the broker returns an empty page.</p>
      *
+     * <p>Values at or beyond the active-messages sentinel
+     * ({@code 10000-01-01T00:00:00Z} UTC, matching Track 1's {@code SessionBrowser.MAXDATE}) are
+     * clamped to that sentinel and behave the same as {@link #listSessions()}, returning sessions
+     * that have active messages.</p>
+     *
      * @param updatedAfter Only sessions whose session state was updated after this time are returned.
      * @return A {@link PagedFlux} of session ID strings.
      * @throws NullPointerException if {@code updatedAfter} is null.
