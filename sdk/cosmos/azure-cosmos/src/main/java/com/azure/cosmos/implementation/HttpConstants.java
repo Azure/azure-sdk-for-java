@@ -308,10 +308,14 @@ public class HttpConstants {
     }
 
     public static class SDKSupportedCapabilities {
-        static final long NONE = 0; // 0
-        static final long PARTITION_MERGE = 1; // 1 << 0
+        // Visible for testing
+        static final long NONE = 0;
+        static final long PARTITION_MERGE = 1 << 0;
         static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 1 << 1;
         static final long THROUGHPUT_BUCKETING = 1 << 2;
+        // Signals the backend that the SDK can safely handle unrecognized RNTBD transport tokens.
+        // Required for N-Region Synchronous Commit, where the backend returns new response tokens
+        // (e.g., GlobalNRegionCommittedGLSN) that older SDK versions would not recognize.
         static final long IGNORE_UNKNOWN_RNTBD_TOKENS = 1 << 3;
         static final long CHANGE_FEED_TOKEN_WITH_GCN = 1 << 4;
 
