@@ -556,16 +556,28 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
 
             if (statusCode == AmqpResponseCode.OK) {
-                // Defensive: a misbehaving broker or proxy could return a null/non-AmqpValue body.
-                // Treat that as an empty page rather than NPE/CCE'ing pagination.
+                // Validate the response body shape strictly: an unexpected type indicates a
+                // broker/proxy compatibility issue and we should surface it rather than silently
+                // terminating pagination (which would drop any remaining results). Truly empty
+                // pages take the "no sessions-ids key" branch below.
                 final Object responseBody = response.getBody();
+                if (responseBody == null) {
+                    return monoError(logger,
+                        new IllegalStateException("Get message sessions returned a 200 OK response with no body."));
+                }
                 if (!(responseBody instanceof AmqpValue)) {
-                    return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
+                    return monoError(logger,
+                        new IllegalStateException(
+                            "Get message sessions returned a 200 OK response with an unexpected body type: "
+                                + responseBody.getClass().getName() + ". Expected AmqpValue."));
                 }
 
                 final Object value = ((AmqpValue) responseBody).getValue();
                 if (!(value instanceof Map)) {
-                    return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
+                    return monoError(logger,
+                        new IllegalStateException(
+                            "Get message sessions returned a 200 OK response whose AmqpValue payload was not a Map: "
+                                + (value == null ? "null" : value.getClass().getName()) + "."));
                 }
 
                 @SuppressWarnings("unchecked")

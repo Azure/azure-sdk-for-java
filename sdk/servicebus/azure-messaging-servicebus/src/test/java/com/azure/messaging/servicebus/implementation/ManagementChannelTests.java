@@ -1231,6 +1231,24 @@ class ManagementChannelTests {
     }
 
     /**
+     * Verifies that getMessageSessions fails the operation when the broker returns a 200 OK
+     * response whose AmqpValue payload is not a Map (e.g., the broker shape changed). Without
+     * this protocol check we'd silently terminate pagination and drop any remaining results.
+     */
+    @Test
+    void getMessageSessionsRejectsUnexpectedBodyType() {
+        // Arrange - 200 OK with an AmqpValue whose value is a String, not a Map.
+        responseMessage.setBody(new AmqpValue("unexpected-string-payload"));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .expectError(IllegalStateException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
      * Verifies that getMessageSessions clamps inputs at or beyond the Track 1 sentinel down to
      * the sentinel itself, both to avoid {@link java.util.Date} overflow for {@link OffsetDateTime#MAX}
      * and to keep the broker's active-messages comparison stable.

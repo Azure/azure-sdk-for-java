@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Result of a {@link ServiceBusManagementNode#getMessageSessions} call.
@@ -25,11 +27,15 @@ public final class MessageSessionsResult {
     /**
      * Creates a new result.
      *
-     * @param sessionIds Session IDs returned for this page.
+     * @param sessionIds Session IDs returned for this page; defensively copied and exposed as an
+     *     unmodifiable list so external mutation cannot alter the result after construction.
      * @param nextSkip The {@code skip} value the service returned for the next page request.
+     * @throws NullPointerException if {@code sessionIds} is null.
      */
     public MessageSessionsResult(List<String> sessionIds, int nextSkip) {
-        this.sessionIds = sessionIds;
+        Objects.requireNonNull(sessionIds, "'sessionIds' cannot be null.");
+        // Snapshot + wrap so callers see an immutable view even if the source list is later mutated.
+        this.sessionIds = Collections.unmodifiableList(new java.util.ArrayList<>(sessionIds));
         this.nextSkip = nextSkip;
     }
 
