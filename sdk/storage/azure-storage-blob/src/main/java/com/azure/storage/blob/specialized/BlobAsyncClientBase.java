@@ -1262,23 +1262,21 @@ public class BlobAsyncClientBase {
         ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
 
-        ContentValidationModeResolver.validateTransactionalChecksumOptions(getRangeContentMd5,
-            contentValidationAlgorithm);
-
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
-
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        // Eagerly convert headers for the response types and propagate any structured-message decoding flag.
-        // The same context is used for the initial range and any retry ranges.
-        Context downloadContext = ContentValidationModeResolver.addStructuredMessageDecodingToContext(context == null
-            ? new Context("azure-eagerly-convert-headers", true)
-            : context.addData("azure-eagerly-convert-headers", true), contentValidationAlgorithm);
+        context
+            = ContentValidationModeResolver.addStructuredMessageDecodingToContext(context, contentValidationAlgorithm);
 
+        // The first range should eagerly convert headers as they'll be used to create response types.
+        Context firstRangeContext = context == null
+            ? new Context("azure-eagerly-convert-headers", true)
+            : context.addData("azure-eagerly-convert-headers", true);
+        Context nextRangeContext = context;
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
-            downloadContext).map(response -> {
+            firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
@@ -1321,7 +1319,7 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, getMD5, downloadContext);
+                            eTag, getMD5, nextRangeContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
