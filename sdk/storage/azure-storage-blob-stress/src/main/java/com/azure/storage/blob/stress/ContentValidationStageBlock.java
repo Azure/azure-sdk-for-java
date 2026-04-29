@@ -1,38 +1,38 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.stress;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.stress.CrcInputStream;
-import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 
-public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
-    // Per-operation ceilings. Must be smaller than the Azure LB idle timeout (~4 min)
-    // so that a stalled request fails fast rather than hangs the whole test run.
-    private static final Duration STAGE_TIMEOUT = Duration.ofSeconds(120);
-    private static final Duration COMMIT_TIMEOUT = Duration.ofSeconds(30);
-    private static final Duration CHECK_MATCH_TIMEOUT = Duration.ofSeconds(30);
-
+/**
+ * Stage block with request content validation on the faulted client, then commit via the non-faulted client.
+ */
+public class ContentValidationStageBlock extends BlobScenarioBase<ContentValidationStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobClient syncNoFaultClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public CommitBlockList(StorageStressOptions options) {
+    public ContentValidationStageBlock(ContentValidationStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.syncNoFaultClient = getSyncContainerClientNoFault().getBlobClient(blobName);
@@ -42,17 +42,20 @@ public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected void runInternal(Context span) throws Exception {
+    protected void runInternal(Context span) {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
         BlockBlobClient blockBlobClientNoFault = syncNoFaultClient.getBlockBlobClient();
         String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString()
             .getBytes(StandardCharsets.UTF_8));
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
-            blockBlobClientNoFault.stageBlockWithResponse(blockId, inputStream, options.getSize(), null, null,
-                STAGE_TIMEOUT, span);
-            blockBlobClient.commitBlockListWithResponse(
-                new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)), COMMIT_TIMEOUT, span);
-            originalContent.checkMatch(inputStream.getContentInfo(), span).block(CHECK_MATCH_TIMEOUT);
+            BinaryData data = BinaryData.fromStream(inputStream, options.getSize());
+            blockBlobClient.stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(blockId, data)
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
+                null, span);
+            blockBlobClientNoFault.commitBlockListWithResponse(
+                new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)), null, span);
+            originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
 
@@ -64,14 +67,13 @@ public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
             .getBytes(StandardCharsets.UTF_8));
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
             .convertStreamToByteBuffer();
-        return blockBlobAsyncClientNoFault
-            .stageBlockWithResponse(blockId, byteBufferFlux, options.getSize(), null, null)
-            .timeout(STAGE_TIMEOUT)
-            .then(blockBlobAsyncClient
-                .commitBlockListWithResponse(
-                    new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)))
-                .timeout(COMMIT_TIMEOUT))
-            .then(originalContent.checkMatch(byteBufferFlux, span).timeout(CHECK_MATCH_TIMEOUT));
+        return BinaryData.fromFlux(byteBufferFlux, options.getSize(), false)
+            .flatMap(binaryData -> blockBlobAsyncClient.stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(blockId, binaryData)
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm())))
+            .then(blockBlobAsyncClientNoFault.commitBlockListWithResponse(
+                new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId))))
+            .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
     @Override
