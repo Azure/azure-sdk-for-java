@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
 
 /**
  * One-time trigger.
@@ -72,13 +71,14 @@ public final class OneTimeTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("triggerAt",
             this.triggerAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.triggerAt));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("timeZone", this.timeZone != null ? this.timeZone.getID() : null);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
         return jsonWriter.writeEndObject();
     }
 
@@ -91,11 +91,12 @@ public final class OneTimeTrigger extends Trigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OneTimeTrigger.
      */
+    @Generated
     public static OneTimeTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime triggerAt = null;
             TriggerType type = TriggerType.ONE_TIME;
-            TimeZone timeZone = null;
+            String timeZone = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -105,8 +106,7 @@ public final class OneTimeTrigger extends Trigger {
                 } else if ("type".equals(fieldName)) {
                     type = TriggerType.fromString(reader.getString());
                 } else if ("timeZone".equals(fieldName)) {
-                    String timeZoneId = reader.getString();
-                    timeZone = parseTimeZone(timeZoneId);
+                    timeZone = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -116,26 +116,6 @@ public final class OneTimeTrigger extends Trigger {
             deserializedOneTimeTrigger.timeZone = timeZone;
             return deserializedOneTimeTrigger;
         });
-    }
-
-    /**
-     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
-     *
-     * <p>{@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
-     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
-     *
-     * @param timeZoneId the timezone ID to parse, or {@code null}.
-     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
-     */
-    private static TimeZone parseTimeZone(String timeZoneId) {
-        if (timeZoneId == null) {
-            return null;
-        }
-        TimeZone tz = TimeZone.getTimeZone(timeZoneId);
-        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timeZoneId)) {
-            return null;
-        }
-        return tz;
     }
 
     /**
