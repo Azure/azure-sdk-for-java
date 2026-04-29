@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
  * cannot distinguish a validated download from a normal one – the validation is transparent.</p>
  */
 class DecodedResponse extends HttpResponse {
+    private final HttpResponse originalResponse;
     private final Flux<ByteBuffer> decodedBody;
     private final HttpHeaders httpHeaders;
     private final int statusCode;
@@ -38,6 +39,7 @@ class DecodedResponse extends HttpResponse {
         // Preserve the original request so retry policies, response models, and logging keep their reference chain
         // intact.
         super(httpResponse.getRequest());
+        this.originalResponse = httpResponse;
         this.decodedBody = decodedBody;
         this.statusCode = httpResponse.getStatusCode();
         this.httpHeaders = httpResponse.getHeaders();
@@ -76,5 +78,10 @@ class DecodedResponse extends HttpResponse {
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
         return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(b -> new String(b, charset));
+    }
+
+    @Override
+    public void close() {
+        originalResponse.close();
     }
 }

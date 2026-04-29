@@ -60,7 +60,7 @@ public class StructuredMessageDecoder {
     private long messageLength = -1;
     private StructuredMessageFlags flags;
     private int numSegments = -1;
-    private final long expectedContentLength;
+    private final long expectedEncodedMessageLength;
     // Number of encoded bytes consumed so far (headers + payloads + footers).
     private long messageOffset = 0;
     private int currentSegmentNumber = 0;
@@ -81,10 +81,11 @@ public class StructuredMessageDecoder {
     /**
      * Constructs a new StructuredMessageDecoder.
      *
-     * @param expectedContentLength The expected length of the content to be decoded.
+     * @param expectedEncodedMessageLength The expected encoded structured-message length (typically HTTP
+     * {@code Content-Length}).
      */
-    public StructuredMessageDecoder(long expectedContentLength) {
-        this.expectedContentLength = expectedContentLength;
+    public StructuredMessageDecoder(long expectedEncodedMessageLength) {
+        this.expectedEncodedMessageLength = expectedEncodedMessageLength;
     }
 
     /**
@@ -123,9 +124,10 @@ public class StructuredMessageDecoder {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException(enrichExceptionMessage("Message length too small: " + msgLen)));
         }
-        if (msgLen != expectedContentLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
-                "Structured message length " + msgLen + " did not match content length " + expectedContentLength)));
+        if (msgLen != expectedEncodedMessageLength) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage("Structured message length "
+                    + msgLen + " did not match content length " + expectedEncodedMessageLength)));
         }
 
         // Bytes 9-10: flags (NONE or STORAGE_CRC64). Bytes 11-12: number of segments.
@@ -502,7 +504,7 @@ public class StructuredMessageDecoder {
      */
     public boolean isComplete() {
         return messageLength != -1
-            && messageOffset >= messageLength
+            && messageOffset == messageLength
             && pendingBytes.size() == 0
             && !segmentHeaderRead
             && currentSegmentContentOffset == currentSegmentContentLength;

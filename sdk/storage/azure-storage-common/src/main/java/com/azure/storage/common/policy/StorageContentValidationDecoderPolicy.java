@@ -73,9 +73,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             // Confirm the service actually honored our structured-body request before we hand the body to the decoder.
             validateStructuredMessageHeaders(httpResponse);
 
-            long expectedLength = contentLength;
             // Fresh decoder per response so retries each get a clean state machine.
-            StructuredMessageDecoder decoder = new StructuredMessageDecoder(expectedLength);
+            StructuredMessageDecoder decoder = new StructuredMessageDecoder(contentLength);
 
             Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoder);
             return new DecodedResponse(httpResponse, decodedStream);
@@ -193,20 +192,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
-     * Wraps the decoder output in a Flux. The decoder hands back a freshly-allocated buffer wrapping its own
-     * internal byte array; we make a defensive copy so downstream consumers that aggregate or keep references to
-     * the buffer cannot accidentally see the decoder's internal storage if the decoder ever changes to reuse
-     * arrays.
+     * Wraps decoder output in a Flux.
      */
     private static Flux<ByteBuffer> emitDecodedPayload(ByteBuffer decodedPayload) {
         if (decodedPayload == null || !decodedPayload.hasRemaining()) {
             return Flux.empty();
         }
-
-        ByteBuffer copy = ByteBuffer.allocate(decodedPayload.remaining());
-        copy.put(decodedPayload.duplicate());
-        copy.flip();
-
-        return Flux.just(copy);
+        return Flux.just(decodedPayload);
     }
 }
